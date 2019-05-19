@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "./parkour-base-angular/dist/parkour-base-angular/",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
