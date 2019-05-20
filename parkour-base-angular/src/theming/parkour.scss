@@ -1,0 +1,16 @@
+@import '~@angular/material/theming';
+
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Available color palettes: https://material.io/design/color/
+$parkour-primary: mat-palette($mat-blue-grey, 900, #4f5b62, #000a12);
+
+$parkour-accent:  mat-palette($mat-indigo, A700, #768fff, #0039cb);
+
+$parkour-warn:    mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$parkour-theme: mat-light-theme($parkour-primary, $parkour-accent, $parkour-warn);
+
+@include angular-material-theme($parkour-theme);
