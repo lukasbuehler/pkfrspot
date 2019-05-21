@@ -12,6 +12,8 @@ import { MatButtonModule, MatCheckboxModule } from '@angular/material';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';  
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatCardModule } from '@angular/material/card'; 
 
 import { HomePageComponent } from './home-page/home-page.component';
 import { MapPageComponent } from './map-page/map-page.component';
@@ -41,6 +43,8 @@ import { PageHeaderComponent } from './page-header/page-header.component'
     MatToolbarModule,
     MatBadgeModule,
     MatTooltipModule,
+    MatSidenavModule,
+    MatCardModule
   ],
   exports: [
     MatButtonModule
