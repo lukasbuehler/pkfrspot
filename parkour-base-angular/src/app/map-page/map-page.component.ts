@@ -1,12 +1,7 @@
-<<<<<<< HEAD
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { keys } from "../../environments/keys"
 
 import { } from "googlemaps"
-=======
-import { Component, OnInit } from '@angular/core';
-import { environment } from "../../environments/environment"
->>>>>>> 327bf611de364cfcc02b100d63663e24f9289426
 
 @Component({
   selector: 'app-map-page',
