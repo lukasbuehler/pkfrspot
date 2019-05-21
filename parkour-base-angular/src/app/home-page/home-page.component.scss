@@ -1,0 +1,29 @@
+mat-drawer-container {
+  background: none;
+  min-height: calc(100vh - 64px);
+
+  mat-drawer {
+    background: none;
+    border: none;
+    padding: 10px;
+    width: 20vw;
+    min-width: 100px;
+
+    mat-card {
+      height: 100%;
+    }
+  }
+}
+
+.example-header-image {
+  background-image: url("https://material.angular.io/assets/img/examples/shiba1.jpg");
+  background-size: cover;
+}
+
+mat-card {
+  mat-card-actions {
+    button {
+      margin-right: 10px;
+    }
+  }
+}

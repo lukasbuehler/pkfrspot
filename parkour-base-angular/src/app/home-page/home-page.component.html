@@ -1,0 +1,62 @@
+<mat-drawer-container autosize>
+    <mat-drawer #friendDrawer id="friendDrawer" mode="side" position="start" opened="true">
+        <mat-card class="mat-elevation-z5">
+            <mat-card-title>Friends</mat-card-title>
+        </mat-card>
+    </mat-drawer>
+
+    <mat-drawer #suggestionDrawer id="suggestionDrawer" mode="side" position="end">
+        <mat-card>
+            <mat-card-title>Suggestions</mat-card-title>
+        </mat-card>
+    </mat-drawer>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <h1 class="mat-h2">Updates</h1>
+                <button color="accent" type="button" mat-raised-button (click)="friendDrawer.toggle()">
+                    Toggle left
+                </button>
+                <mat-card *ngFor="let post of posts" class="mt-2 text-left">
+                    <mat-card-header>
+                        <div mat-card-avatar class="example-header-image"></div>
+                        <mat-card-title>{{post.title}}</mat-card-title>
+                        <mat-card-subtitle>{{post.username}}</mat-card-subtitle>
+                    </mat-card-header>
+                    <img mat-card-image src="{{post.image_src}}" >
+                    <mat-card-content>{{post.text}}</mat-card-content>
+                    <mat-card-actions>
+                        <button color="accent" mat-flat-button>LIKE</button>
+                        <button color="primary" mat-flat-button>SHARE</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+            <div class="col-md-6 text-center">
+                <h1 class="mat-h2">Trending</h1>
+                <button color="accent" type="button" mat-raised-button
+                    (click)="suggestionDrawer.toggle()">
+                    Toggle right
+                </button>
+
+                <!-- Just copied that-->
+                <mat-card *ngFor="let post of posts" class="mt-2 text-left">
+                    <mat-card-header>
+                        <div mat-card-avatar class="example-header-image"></div>
+                        <mat-card-title>{{post.title}}</mat-card-title>
+                        <mat-card-subtitle>{{post.username}}</mat-card-subtitle>
+                    </mat-card-header>
+                    <img mat-card-image src="{{post.image_src}}">
+                    <mat-card-content>{{post.text}}</mat-card-content>
+                    <mat-card-actions>
+                        <button color="accent" mat-flat-button>LIKE</button>
+                        <button color="primary" mat-flat-button>SHARE</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</mat-drawer-container>
+
+
+
