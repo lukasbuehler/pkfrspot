@@ -1,4 +1,4 @@
-<mat-toolbar color="{{navbarConfig.color}}">
+<mat-toolbar color="{{navbarConfig.color}}" class="mat-elevation-z6 mb-2">
   <span class="{{navbarConfig.logo.class}}">{{navbarConfig.logo.text}}</span>
   <button mat-button *ngFor="let button of navbarConfig.buttons" routerLink="{{button.link}}"
     matBadge="{{button.badge.number}}" matBadgeColor="{{button.badge.color}}"
