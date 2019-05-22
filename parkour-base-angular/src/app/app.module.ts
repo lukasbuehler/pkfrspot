@@ -15,6 +15,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon'; 
 
 import { HomePageComponent } from './home-page/home-page.component';
 import { MapPageComponent } from './map-page/map-page.component';
@@ -49,6 +51,8 @@ import { PostCollectionComponent } from './post-collection/post-collection.compo
     MatSidenavModule,
     MatCardModule,
     MatTabsModule,
+    MatMenuModule,
+    MatIconModule,
   ],
   exports: [
     MatButtonModule
