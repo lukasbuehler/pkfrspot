@@ -15,15 +15,11 @@ mat-drawer-container {
   }
 }
 
-.example-header-image {
-  background-image: url("https://material.angular.io/assets/img/examples/shiba1.jpg");
-  background-size: cover;
+mat-tab-group {
+  max-width: 100%;
 }
 
-mat-card {
-  mat-card-actions {
-    button {
-      margin-right: 10px;
-    }
-  }
+.mat-tab-body-wrapper
+{
+  padding: 15px;
 }

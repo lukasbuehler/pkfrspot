@@ -11,15 +11,17 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatButtonModule, MatCheckboxModule } from '@angular/material';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatBadgeModule } from '@angular/material/badge';
-import { MatTooltipModule } from '@angular/material/tooltip';  
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatCardModule } from '@angular/material/card'; 
+import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { HomePageComponent } from './home-page/home-page.component';
 import { MapPageComponent } from './map-page/map-page.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { WikiPageComponent } from './wiki-page/wiki-page.component';
-import { PageHeaderComponent } from './page-header/page-header.component'
+import { PageHeaderComponent } from './page-header/page-header.component';
+import { PostCollectionComponent } from './post-collection/post-collection.component'
 
 
 @NgModule({
@@ -29,7 +31,8 @@ import { PageHeaderComponent } from './page-header/page-header.component'
     MapPageComponent,
     NotFoundPageComponent,
     WikiPageComponent,
-    PageHeaderComponent
+    PageHeaderComponent,
+    PostCollectionComponent
   ],
   imports: [
     BrowserModule,
@@ -38,13 +41,14 @@ import { PageHeaderComponent } from './page-header/page-header.component'
     NgbModule,
 
     BrowserAnimationsModule,
-    MatButtonModule, 
+    MatButtonModule,
     MatCheckboxModule,
     MatToolbarModule,
     MatBadgeModule,
     MatTooltipModule,
     MatSidenavModule,
-    MatCardModule
+    MatCardModule,
+    MatTabsModule,
   ],
   exports: [
     MatButtonModule

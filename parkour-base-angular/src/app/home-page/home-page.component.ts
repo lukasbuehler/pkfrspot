@@ -22,19 +22,19 @@ export class HomePageComponent implements OnInit
       text: "Wuff"
     },
     {
-      title: "Doggo 1",
+      title: "Doggo 2",
       username: "Shiiiiba",
       image_src: "https://material.angular.io/assets/img/examples/shiba2.jpg",
       text: "Wuff"
     },
     {
-      title: "Doggo 1",
+      title: "Doggo 3",
       username: "Shiiiiba",
       image_src: "https://material.angular.io/assets/img/examples/shiba2.jpg",
       text: "Wuff"
     },
     {
-      title: "Doggo 1",
+      title: "Doggo 4",
       username: "Shiiiiba",
       image_src: "https://material.angular.io/assets/img/examples/shiba2.jpg",
       text: "Wuff"
