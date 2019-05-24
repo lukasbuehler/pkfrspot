@@ -40,4 +40,12 @@ export class HomePageComponent implements OnInit
       text: "Wuff"
     }
   ]
+
+  scrolledDown()
+  {
+    for(let i = 0; i < 4; ++i)
+    {
+      this.posts.push(this.posts[0]);
+    }
+  }
 }

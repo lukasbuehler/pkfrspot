@@ -13,29 +13,35 @@
         </mat-card>
     </mat-drawer>
 
-    <div class="container-fluid pt-3 d-none d-md-block">
-        <div class="row">
-            <div class="col-md-6 text-center">
-                <h1 class="mat-h2">Updates</h1>
-                <app-post-collection [posts]="posts"></app-post-collection>
-            </div>
-            <div class="col-md-6 text-center">
-                <h1 class="mat-h2">Trending</h1>
-                <app-post-collection [posts]="posts"></app-post-collection>
+    <div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollUpDistance]="1.5"
+        [infiniteScrollThrottle]="50" 
+        (scrolled)="scrolledDown()">
+
+        <div class="container-fluid pt-3 d-none d-md-block">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <h1 class="mat-h2">Updates</h1>
+                    <app-post-collection [posts]="posts"></app-post-collection>
+                </div>
+                <div class="col-md-6 text-center">
+                    <h1 class="mat-h2">Trending</h1>
+                    <app-post-collection [posts]="posts"></app-post-collection>
+                </div>
             </div>
         </div>
+
+        <mat-tab-group mat-stretch-tabs class="d-md-none" mat-align-tabs="center">
+            <mat-tab label="Updates">
+                <div class="p-3">
+                    <app-post-collection [posts]="posts"></app-post-collection>
+                </div>
+            </mat-tab>
+            <mat-tab label="Trending">
+                <div class="p-3">
+                    <app-post-collection [posts]="posts"></app-post-collection>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
     </div>
 
-    <mat-tab-group mat-stretch-tabs class="d-md-none" mat-align-tabs="center">
-        <mat-tab label="Updates">
-            <div class="p-3">
-                <app-post-collection [posts]="posts"></app-post-collection>
-            </div>
-        </mat-tab>
-        <mat-tab label="Trending">
-            <div class="p-3">
-                <app-post-collection [posts]="posts"></app-post-collection>
-            </div>
-        </mat-tab>
-    </mat-tab-group>
 </mat-drawer-container>

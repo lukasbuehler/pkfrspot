@@ -23,3 +23,8 @@ mat-tab-group {
 {
   padding: 15px;
 }
+
+.container, .container-fluid {
+  height: 100%;
+  //overflow: scroll;
+}

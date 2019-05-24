@@ -8,6 +8,10 @@ import { AppComponent } from './app.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
 import { MatButtonModule, MatCheckboxModule } from '@angular/material';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatBadgeModule } from '@angular/material/badge';
@@ -42,6 +46,8 @@ import { PostCollectionComponent } from './post-collection/post-collection.compo
 
     NgbModule,
 
+    InfiniteScrollModule,
+
     BrowserAnimationsModule,
     MatButtonModule,
     MatCheckboxModule,
@@ -61,3 +67,6 @@ import { PostCollectionComponent } from './post-collection/post-collection.compo
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+
+platformBrowserDynamic().bootstrapModule(AppModule);
