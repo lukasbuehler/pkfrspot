@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DatabaseService } from 'src/app/database.service';
+import { PostSchema } from 'src/scripts/db/Post';
+import { PostCollectionComponent } from '../post-collection/post-collection.component';
 
 @Component({
   selector: 'app-home-page',
@@ -8,44 +11,41 @@ import { Component, OnInit } from '@angular/core';
 export class HomePageComponent implements OnInit
 {
 
-  constructor() { }
+  constructor(private _dbService: DatabaseService) { }
+
+  updatePosts: any[] = [];
+  trendingPosts: any[] = [];
+
+  @ViewChild("updateCollection") updateCollection: PostCollectionComponent;
 
   ngOnInit()
   {
+    
+    this._dbService.getPosts().subscribe(
+      data =>
+      {
+        console.log(data);
+        
+        this.updatePosts = this.updatePosts.concat(data);
+      },
+      error =>
+      {
+        console.error(error);
+      },
+      () => { } // complete 
+    );
   }
 
-  posts = [
-    {
-      title: "Doggo 1",
-      username: "Shiiiiba",
-      image_src: "https://material.angular.io/assets/img/examples/shiba2.jpg",
-      text: "Wuff"
-    },
-    {
-      title: "Doggo 2",
-      username: "Shiiiiba",
-      image_src: "https://material.angular.io/assets/img/examples/shiba2.jpg",
-      text: "Wuff"
-    },
-    {
-      title: "Doggo 3",
-      username: "Shiiiiba",
-      image_src: "https://material.angular.io/assets/img/examples/shiba2.jpg",
-      text: "Wuff"
-    },
-    {
-      title: "Doggo 4",
-      username: "Shiiiiba",
-      image_src: "https://material.angular.io/assets/img/examples/shiba2.jpg",
-      text: "Wuff"
-    }
-  ]
+  
+  
+
+  getMorePosts()
+  {
+    // get More posts
+  }
 
   scrolledDown()
   {
-    for(let i = 0; i < 4; ++i)
-    {
-      this.posts.push(this.posts[0]);
-    }
+    this.getMorePosts();
   }
 }

@@ -2,12 +2,14 @@
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
     <mat-card-title>{{post.title}}</mat-card-title>
-    <mat-card-subtitle>{{post.username}}</mat-card-subtitle>
+    <mat-card-subtitle>{{"Date"}}</mat-card-subtitle>
   </mat-card-header>
   <img mat-card-image src="{{post.image_src}}">
-  <mat-card-content>{{post.text}}</mat-card-content>
+  <mat-card-content>{{post.body}}</mat-card-content>
   <mat-card-actions>
-    <button color="accent" mat-flat-button>LIKE</button>
+    <button color="accent" mat-icon-button>
+      <mat-icon>favorite</mat-icon>
+    </button>
     <button color="primary" mat-flat-button>SHARE</button>
   </mat-card-actions>
 </mat-card>
