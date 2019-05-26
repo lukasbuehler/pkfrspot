@@ -20,11 +20,18 @@
         <div class="container-fluid pt-3 d-none d-md-block">
             <div class="row">
                 <div class="col-md-6 text-center">
-                    <h1 class="mat-h2">Updates</h1>
+                    <h2 class="mat-h2">
+                        Updates
+                        <mat-icon>group</mat-icon>
+                    </h2>
                     <app-post-collection #updateCollection [posts]="updatePosts"></app-post-collection>
                 </div>
                 <div class="col-md-6 text-center">
-                    <h1 class="mat-h2">Trending</h1>
+                    <h2 class="mat-h2">
+                        
+                        Trending
+                        <mat-icon>whatshot</mat-icon>
+                    </h2>
                     <app-post-collection [posts]="updatePosts"></app-post-collection>
                 </div>
             </div>

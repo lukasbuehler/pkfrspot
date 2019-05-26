@@ -2,14 +2,15 @@
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
     <mat-card-title>{{post.title}}</mat-card-title>
-    <mat-card-subtitle>{{"Date"}}</mat-card-subtitle>
+    <mat-card-subtitle>{{getPostTime(post)}}</mat-card-subtitle>
   </mat-card-header>
   <img mat-card-image src="{{post.image_src}}">
   <mat-card-content>{{post.body}}</mat-card-content>
   <mat-card-actions>
-    <button color="accent" mat-icon-button>
-      <mat-icon>favorite</mat-icon>
+    <button color="warn" mat-icon-button (click)="likeButtonPress(post)">
+      <mat-icon *ngIf="!post.liked_by_user" >favorite_border</mat-icon>
+      <mat-icon *ngIf="post.liked_by_user">favorite</mat-icon>
     </button>
-    <button color="primary" mat-flat-button>SHARE</button>
+    <span class="mat-b">{{post.likes}}</span>
   </mat-card-actions>
 </mat-card>
