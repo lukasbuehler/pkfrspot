@@ -1,13 +1,12 @@
+.collection-container {
+  height: 100%;
+  overflow-y: scroll;
 
-.example-header-image {
-  background-image: url("https://material.angular.io/assets/img/examples/shiba1.jpg");
-  background-size: cover;
+  -ms-overflow-style: none;  // IE 10+
+    scrollbar-width: none;  // Firefox
 }
 
-mat-card {
-  mat-card-actions {
-    .button-group {
-      margin-right: 10px;
-    }
-  }
+.collection-container::-webkit-scrollbar { 
+  display: none; 
 }
+

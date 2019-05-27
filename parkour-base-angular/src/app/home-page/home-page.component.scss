@@ -1,22 +1,42 @@
+::ng-deep app-home-page {
+  height: 100%;
+}
+
 mat-drawer-container {
   background: none;
-  min-height: calc(100vh - 64px);
+
+  @media (max-width:599px) 
+  {
+    height: calc(100% - 56px);
+  }
+  @media (min-width:600px)
+  {
+    height: calc(100% - 64px);
+  }
+  
 
   mat-drawer {
     background: none;
     border: none;
     padding: 10px;
     width: 20vw;
-    min-width: 100px;
+    min-width: 300px;
+    max-width: 400px;
 
     mat-card {
       height: 100%;
     }
   }
+
+  ::ng-deep mat-drawer-content, ::ng-deep mat-drawer-content>div {
+    height: 100%;
+    overflow: hidden;
+  }
 }
 
 mat-tab-group {
   max-width: 100%;
+  height: 100%;
 }
 
 .mat-tab-body-wrapper
@@ -26,5 +46,44 @@ mat-tab-group {
 
 .container, .container-fluid {
   height: 100%;
-  //overflow: scroll;
+  padding-top: 0px;
+}
+
+.row {
+  height: 100%;
+  margin: 0px;
+
+  .col-md-6 {
+    height: 100%;
+    padding: 0px;
+  }
+}
+
+button#createFab {
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  z-index: 1;
+}
+
+button#openFollowingFab {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+
+button#openSuggestionsFab {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+button#closeFollowingDrawerFab {
+  float: right;
+  margin-right: -15px;
+}
+
+button#closeSuggestionsDrawerFab {
+  float: left;
+  margin-left: -15px;
 }

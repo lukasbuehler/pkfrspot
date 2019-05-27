@@ -34,7 +34,8 @@ import { MapPageComponent } from './map-page/map-page.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { WikiPageComponent } from './wiki-page/wiki-page.component';
 import { PageHeaderComponent } from './page-header/page-header.component';
-import { PostCollectionComponent } from './post-collection/post-collection.component'
+import { PostCollectionComponent } from './post-collection/post-collection.component';
+import { PostComponent } from './post/post.component'
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { PostCollectionComponent } from './post-collection/post-collection.compo
     NotFoundPageComponent,
     WikiPageComponent,
     PageHeaderComponent,
-    PostCollectionComponent
+    PostCollectionComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,

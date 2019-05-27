@@ -1,0 +1,17 @@
+<mat-card class="text-left" ng-class="{mat-elevation-z0: !showCard}">
+  <mat-card-header>
+    <mat-card-title>{{post.title}}</mat-card-title>
+    <mat-card-subtitle>
+      <span>by <a href="/users/{{post.user.id}}">{{post.user.name || "Unknown"}}</a></span>
+      <span>{{timeAgoString}} ({{dateAndTimeString}})</span></mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-image src="{{post.image_src}}">
+  <mat-card-content>{{post.body}}</mat-card-content>
+  <mat-card-actions>
+    <button color="warn" mat-icon-button (click)="likeButtonPress(post)">
+      <mat-icon *ngIf="!post.liked_by_user">favorite_border</mat-icon>
+      <mat-icon *ngIf="post.liked_by_user">favorite</mat-icon>
+    </button>
+    <span class="mat-b">{{post.likes}}</span>
+  </mat-card-actions>
+</mat-card>

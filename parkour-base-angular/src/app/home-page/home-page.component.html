@@ -1,38 +1,36 @@
 <mat-drawer-container autosize>
-    <mat-drawer #friendDrawer id="friendDrawer" class="mat-elevation-z2 d-none d-md-block"
+    <mat-drawer #followingDrawer id="followingDrawer" class="mat-elevation-z2 d-none d-md-block"
         mode="side" position="start" opened="true">
         <mat-card>
-            <mat-card-title>Friends</mat-card-title>
+            <mat-card-title>
+                Following
+                <button mat-icon-button #closeFollowingDrawerFab id="closeFollowingDrawerFab" (click)="followingDrawer.close()">
+                    <mat-icon>navigate_before</mat-icon>
+                </button>
+            </mat-card-title>
         </mat-card>
     </mat-drawer>
 
-    <mat-drawer #suggestionDrawer id="suggestionDrawer" class="mat-elevation-z2 d-none d-md-block"
+    <mat-drawer #suggestionsDrawer id="suggestionsDrawer" class="mat-elevation-z2 d-none d-md-block"
         mode="side" position="end" opened="true">
         <mat-card>
-            <mat-card-title>Suggestions</mat-card-title>
+            <mat-card-title>
+                <button mat-icon-button #closeSuggestionsDrawerFab id="closeSuggestionsDrawerFab" (click)="suggestionsDrawer.close()">
+                    <mat-icon>navigate_next</mat-icon>
+                </button>
+                Suggestions
+            </mat-card-title>
         </mat-card>
     </mat-drawer>
 
-    <div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollUpDistance]="1.5"
-        [infiniteScrollThrottle]="50" 
-        (scrolled)="scrolledDown()">
-
-        <div class="container-fluid pt-3 d-none d-md-block">
+    <div>
+        <div class="container pt-3 d-none d-md-block">
             <div class="row">
                 <div class="col-md-6 text-center">
-                    <h2 class="mat-h2">
-                        Updates
-                        <mat-icon>group</mat-icon>
-                    </h2>
-                    <app-post-collection #updateCollection [posts]="updatePosts"></app-post-collection>
+                    <app-post-collection #updateCollection [posts]="updatePosts" [title]="'Updates'"></app-post-collection>
                 </div>
                 <div class="col-md-6 text-center">
-                    <h2 class="mat-h2">
-                        
-                        Trending
-                        <mat-icon>whatshot</mat-icon>
-                    </h2>
-                    <app-post-collection [posts]="updatePosts"></app-post-collection>
+                    <app-post-collection [posts]="updatePosts" [title]="'Trending'"></app-post-collection>
                 </div>
             </div>
         </div>
@@ -51,4 +49,19 @@
         </mat-tab-group>
     </div>
 
+    <button mat-fab #createFab id="createFab" (click)="createPost()">
+        <mat-icon aria-label="Button with pen to create a post">create</mat-icon>
+    </button>
+
+    <button mat-mini-fab #openFollowingFab id="openFollowingFab" class="d-none d-md-block"(click)="followingDrawer.open()" 
+        *ngIf="!followingDrawer.opened">
+        <mat-icon aria-label="Button with people on it to open the following drawer">people</mat-icon>
+    </button>
+
+    <button mat-mini-fab #openSuggestionsFab id="openSuggestionsFab" class="d-none d-md-block" (click)="suggestionsDrawer.open()"
+        *ngIf="!suggestionsDrawer.opened">
+        <mat-icon aria-label="Button with bubbles on it to open the suggestions drawer">bubble_chart</mat-icon>
+    </button>
+
 </mat-drawer-container>
+

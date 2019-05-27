@@ -10,3 +10,9 @@ button:focus {
 mat-icon, .mat-icon {
     vertical-align: middle;
 }
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}

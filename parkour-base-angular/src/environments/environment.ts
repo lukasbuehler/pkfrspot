@@ -7,7 +7,7 @@ import { keys } from './keys';
 export const environment = {
   production: false,
   keys: {
-    google_maps: "AIzaSyAv_ogjKAWB3Ud_siO0M5F7ZvHglF9KAX4"
+    google_maps: keys.google_maps
   },
   firebase: keys.firebaseConfig
 };

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatabaseService } from 'src/app/database.service';
 import { PostSchema } from 'src/scripts/db/Post';
 import { PostCollectionComponent } from '../post-collection/post-collection.component';
+import { MatDrawer } from '@angular/material';
 
 @Component({
   selector: 'app-home-page',
@@ -17,6 +18,9 @@ export class HomePageComponent implements OnInit
   trendingPosts: any[] = [];
 
   @ViewChild("updateCollection") updateCollection: PostCollectionComponent;
+
+  @ViewChild("followingDrawer") followingDrawer: MatDrawer;
+  @ViewChild("suggestionsDrawer") suggestionsDrawer: MatDrawer; 
 
   ngOnInit()
   {
@@ -47,5 +51,10 @@ export class HomePageComponent implements OnInit
   scrolledDown()
   {
     this.getMorePosts();
+  }
+
+  createPost()
+  {
+    this.updatePosts.push(this.updatePosts[0]);
   }
 }
