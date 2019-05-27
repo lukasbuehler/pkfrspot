@@ -1,10 +1,15 @@
 service cloud.firestore {
   match /databases/{database}/documents {
     match /posts/{post}
+    {
       allow read: if true;
+    }
     match /spots/{spot}
+    {
       allow read: if true;
-    match /users/{user} {
+    }
+    match /users/{user} 
+    {
       allow read, write: if false;
     }
   }
