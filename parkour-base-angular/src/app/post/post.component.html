@@ -8,10 +8,45 @@
   <img mat-card-image src="{{post.image_src}}">
   <mat-card-content>{{post.body}}</mat-card-content>
   <mat-card-actions>
-    <button color="warn" mat-icon-button (click)="likeButtonPress(post)">
-      <mat-icon *ngIf="!post.liked_by_user">favorite_border</mat-icon>
-      <mat-icon *ngIf="post.liked_by_user">favorite</mat-icon>
+    <div class="mr-2">
+      <button color="warn" mat-icon-button (click)="likeButtonPress(post)">
+        <mat-icon *ngIf="!post.liked_by_user">favorite_border</mat-icon>
+        <mat-icon *ngIf="post.liked_by_user">favorite</mat-icon>
+      </button>
+      <span class="mat-b">{{post.likes}}</span>
+    </div>
+
+    <button mat-icon-button>
+      <mat-icon>comment</mat-icon>
     </button>
-    <span class="mat-b">{{post.likes}}</span>
+
+    <button mat-icon-button>
+      <mat-icon>share</mat-icon>
+    </button>
+
+    <div class="spacer"></div>
+
+    <button mat-icon-button [matMenuTriggerFor]="postMenu">
+      <mat-icon>more_horiz</mat-icon>
+    </button>
   </mat-card-actions>
 </mat-card>
+
+<mat-menu #postMenu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>info</mat-icon>
+    <span>More Information</span>
+  </button>
+  <button *ngIf="true" mat-menu-item>
+    <mat-icon>place</mat-icon>
+    <span>Open on Map</span>
+  </button>
+  <button mat-menu-item disabled="true">
+    <mat-icon>report</mat-icon>
+    <span>Report post</span>
+  </button>
+  <button *ngIf="true" mat-menu-item>
+    <mat-icon>delete</mat-icon>
+    <span>Delete post</span>
+  </button>
+</mat-menu>
