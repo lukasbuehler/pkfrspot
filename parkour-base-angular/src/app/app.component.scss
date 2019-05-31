@@ -5,6 +5,9 @@
 }
 
 mat-toolbar {
+    position: relative;
+    z-index: 10;
+
     button {
         margin-left: 5px;
         margin-right: 5px;

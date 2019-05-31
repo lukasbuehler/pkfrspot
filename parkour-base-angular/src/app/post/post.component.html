@@ -13,12 +13,16 @@
         <mat-icon *ngIf="!post.liked_by_user">favorite_border</mat-icon>
         <mat-icon *ngIf="post.liked_by_user">favorite</mat-icon>
       </button>
-      <span class="mat-b">{{post.likes}}</span>
+      <b class="mat-b">{{post.likes || 0}}</b>
     </div>
 
-    <button mat-icon-button>
-      <mat-icon>comment</mat-icon>
-    </button>
+    <div class="mr-2">
+      <button mat-icon-button>
+        <mat-icon>comment</mat-icon>
+      </button>
+      <span>{{post.comments || 0}}</span>
+    </div>
+    
 
     <button mat-icon-button>
       <mat-icon>share</mat-icon>

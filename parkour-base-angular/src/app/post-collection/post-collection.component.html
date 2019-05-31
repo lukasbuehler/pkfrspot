@@ -1,7 +1,7 @@
-<div class="collection-container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollUpDistance]="1.5"
+<div class="collection-container pt-3" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollUpDistance]="1.5"
         [infiniteScrollThrottle]="50" 
         (scrolled)="scrolledDown()">
-  <h2 class="mat-h2">
+  <h2 *ngIf="title" class="mat-h2">
     {{title}}
   </h2>
   <app-post *ngFor="let post of posts" [post]="post" class="mt-2"></app-post>
