@@ -29,7 +29,7 @@ export class DatabaseService {
     );
   }
 
-  getPosts(): Observable<any[]>
+  getPostUpdates(): Observable<any[]>
   {
     return new Observable<any[]>(observer => {
       this.db.collection("posts").get().subscribe((querySnapshot) =>
@@ -48,7 +48,35 @@ export class DatabaseService {
       },
       () => {})
     });
-    
+  }
+
+  getTrendingPosts()
+  {
+
+  }
+
+  getTestSpots()
+  {
+    return new Observable<any[]>(observer =>
+    {
+      this.db.collection("spots").get().subscribe((querySnapshot) =>
+      {
+        let spots = [];
+
+        querySnapshot.forEach((doc) =>
+        {
+          spots.push(doc.data());
+        });
+
+        observer.next(spots);
+        observer.complete();
+      },
+        error =>
+        {
+          observer.error(error);
+        },
+        () => { })
+    });
   }
 
   

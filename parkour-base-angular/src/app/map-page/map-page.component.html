@@ -1,23 +1,26 @@
-<div class="map-container">
-  <div #map id="map"></div>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-3">
-        <mat-card>
-          <mat-card-title>Find & Explore</mat-card-title>
-        </mat-card>
-      </div>
-      <div class="col-md-6">
-      </div>
-      <div class="col-md-3">
-        <!--
-        <mat-card>
-          <mat-card-title>Suggestions</mat-card-title>
-        </mat-card>
-        -->
-      </div>
-    </div>
+<mat-drawer-container autosize>
+  <div class="d-none d-sm-block">
+    <mat-drawer #desktopDrawer id="desktopDrawer" mode="side" position="start" opened="true">
+      <app-map-search-card></app-map-search-card>
+    </mat-drawer>
+  </div>
+  <div class="d-sm-none">
+    <mat-drawer #mobileDrawer id="mobileDrawer" mode="over" opened="false">
+      <app-map-search-card></app-map-search-card>
+    </mat-drawer>
   </div>
 
-  
-</div>
+  <agm-map #map id="map" [latitude]="start_coordinates.lat" [longitude]="start_coordinates.lng"
+    [zoom]="15" [backgroundColor]="'#000a12'" [clickableIcons]="false" [disableDefaultUI]="true"
+    [fitBounds]="true" gestureHandling="'greedy'" [mapTypeId]="'satellite'"
+    (mapClick)="clickedMap($event)" >
+    <agm-polygon [paths]="paths" [fillColor]="'#304ffe'" [strokeColor]="'#304ffe'" [fillOpacity]="0.15"
+    (polyClick)="clickedSpot($event)"></agm-polygon>
+    <agm-marker [agmFitBounds]="true" [latitude]="start_coordinates.lat" [longitude]="start_coordinates.lng" [label]="spots[0].name"></agm-marker>
+  </agm-map>
+
+  <button mat-fab #searchFab id="searchFab" class="d-sm-none" (click)="mobileDrawer.open()">
+    <mat-icon aria-label="Button with magnifying lens to search for spots">search</mat-icon>
+  </button>
+</mat-drawer-container>
+

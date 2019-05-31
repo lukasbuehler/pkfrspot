@@ -1,41 +1,49 @@
-$navbar-height: 64px;
-$padding: 15px;
-
-.map-container {
-  height: calc(100vh - 64px - 2 * 15px);
+::ng-deep app-map-page {
+  height: 100%;
 }
 
-.container-fluid {
-  padding: 15px;
-  .row,
-  .row > * {
-    height: 100%;
+mat-drawer-container {
+
+  @media (max-width:599px) 
+  {
+    height: calc(100% - 56px);
   }
-  height: 100%;
-  pointer-events: none;
+  @media (min-width:600px)
+  {
+    height: calc(100% - 64px);
+  }
+  mat-drawer {
+    border: none;
+    background: none;
+
+    padding: 10px;
+    width: 20vw;
+    min-width: 300px;
+    max-width: 400px;
+  }
+}
+
+#desktopDrawer {
+  width: 20vw;
+  min-width: 300px;
+  max-width: 400px;
+}
+
+#mobileDrawer {
+  width: 100%;
+  max-width: 100%;
+  min-width: auto;
+}
+
+#searchFab {
+  position: absolute;
+  z-index: 2;
+
+  left: 20px;
+  top: 20px;
 }
 
 #map {
-  position: absolute;
-  top:64px;
-  bottom:0;
-  left:0;
-  right:0;
-  background: #cccccc;
-  border-radius: inherit;
-  margin-bottom: 0px;
-}
-
-@media (max-width:599px) {
-  #map {
-    top:56px;
-  }
-}
-
-mat-card {
   height: 100%;
-  pointer-events: all;
-}
-mat-card.map-card {
-  padding: 0px;
+  width: 100%;
 }

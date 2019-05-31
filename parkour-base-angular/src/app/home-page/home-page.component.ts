@@ -25,11 +25,9 @@ export class HomePageComponent implements OnInit
   ngOnInit()
   {
     
-    this._dbService.getPosts().subscribe(
+    this._dbService.getPostUpdates().subscribe(
       data =>
       {
-        console.log(data);
-        
         this.updatePosts = this.updatePosts.concat(data);
       },
       error =>

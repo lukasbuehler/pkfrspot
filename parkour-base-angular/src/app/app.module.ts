@@ -18,6 +18,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { AgmCoreModule } from '@agm/core'; 
 
 import { MatButtonModule, MatCheckboxModule } from '@angular/material';
 import { MatToolbarModule } from "@angular/material/toolbar";
@@ -35,7 +36,8 @@ import { NotFoundPageComponent } from './not-found-page/not-found-page.component
 import { WikiPageComponent } from './wiki-page/wiki-page.component';
 import { PageHeaderComponent } from './page-header/page-header.component';
 import { PostCollectionComponent } from './post-collection/post-collection.component';
-import { PostComponent } from './post/post.component'
+import { PostComponent } from './post/post.component';
+import { MapSearchCardComponent } from './map-search-card/map-search-card.component'
 
 
 @NgModule({
@@ -47,7 +49,8 @@ import { PostComponent } from './post/post.component'
     WikiPageComponent,
     PageHeaderComponent,
     PostCollectionComponent,
-    PostComponent
+    PostComponent,
+    MapSearchCardComponent
   ],
   imports: [
     BrowserModule,
@@ -61,6 +64,9 @@ import { PostComponent } from './post/post.component'
     AngularFireStorageModule,
 
     InfiniteScrollModule,
+    AgmCoreModule.forRoot({
+      apiKey: environment.keys.google_maps
+    }),
 
     BrowserAnimationsModule,
     MatButtonModule,
