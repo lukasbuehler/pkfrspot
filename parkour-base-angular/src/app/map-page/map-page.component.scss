@@ -3,6 +3,7 @@
 }
 
 mat-drawer-container {
+  background-color: black;
 
   @media (max-width:599px) 
   {
@@ -12,27 +13,28 @@ mat-drawer-container {
   {
     height: calc(100% - 64px);
   }
-  mat-drawer {
-    border: none;
-    background: none;
+}
 
-    padding: 10px;
+#drawer {
+  border: none;
+  background: white;
+
+  padding: 15px;
+  width: 20vw;
+  min-width: 300px;
+  max-width: 400px;
+
+  @media (min-width: 576px) {
     width: 20vw;
     min-width: 300px;
     max-width: 400px;
   }
-}
 
-#desktopDrawer {
-  width: 20vw;
-  min-width: 300px;
-  max-width: 400px;
-}
-
-#mobileDrawer {
-  width: 100%;
-  max-width: 100%;
-  min-width: auto;
+  @media (max-width: 575px) {
+    width: 100%;
+    max-width: 100%;
+    min-width: auto;
+  }
 }
 
 #searchFab {
@@ -41,6 +43,18 @@ mat-drawer-container {
 
   left: 20px;
   top: 20px;
+}
+
+#mapStyleFab {
+  position: absolute;
+  z-index: 2;
+
+  right: 20px;
+  top: 20px;
+}
+
+#closeDrawerFab {
+  float: right;
 }
 
 #map {

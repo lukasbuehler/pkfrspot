@@ -1,26 +1,33 @@
 <mat-drawer-container autosize>
-  <div class="d-none d-sm-block">
-    <mat-drawer #desktopDrawer id="desktopDrawer" mode="side" position="start" opened="true">
-      <app-map-search-card></app-map-search-card>
-    </mat-drawer>
-  </div>
-  <div class="d-sm-none">
-    <mat-drawer #mobileDrawer id="mobileDrawer" mode="over" opened="false">
-      <app-map-search-card></app-map-search-card>
-    </mat-drawer>
-  </div>
+  <mat-drawer #drawer id="drawer" mode="{{(false) ? 'over' : 'side'}}" position="start" opened="true" [disableClose]="true">
+    <h2 class="mat-h2">
+      Search
+      <button mat-icon-button #closeDrawerFab id="closeDrawerFab"
+        (click)="drawer.close()">
+        <mat-icon>navigate_before</mat-icon>
+      </button>
+    </h2>
+  </mat-drawer>
 
   <agm-map #map id="map" [latitude]="start_coordinates.lat" [longitude]="start_coordinates.lng"
     [zoom]="15" [backgroundColor]="'#000a12'" [clickableIcons]="false" [disableDefaultUI]="true"
-    [fitBounds]="true" gestureHandling="'greedy'" [mapTypeId]="'satellite'"
+    [zoomControl]="false" [streetViewControl]="false"
+    [fitBounds]="true" gestureHandling="'greedy'" [mapTypeId]="mapStyle" [styles]="mapStylesConfig"
     (mapClick)="clickedMap($event)" >
     <agm-polygon [paths]="paths" [fillColor]="'#304ffe'" [strokeColor]="'#304ffe'" [fillOpacity]="0.15"
-    (polyClick)="clickedSpot($event)"></agm-polygon>
-    <agm-marker [agmFitBounds]="true" [latitude]="start_coordinates.lat" [longitude]="start_coordinates.lng" [label]="spots[0].name"></agm-marker>
+      [editable]="true"
+      (polyClick)="clickedSpot($event)"></agm-polygon>
+    <agm-marker [agmFitBounds]="true" [latitude]="start_coordinates.lat" [longitude]="start_coordinates.lng" [title]="'Test'"></agm-marker>
   </agm-map>
 
-  <button mat-fab #searchFab id="searchFab" class="d-sm-none" (click)="mobileDrawer.open()">
+  <button mat-fab #searchFab id="searchFab" (click)="drawer.open()">
     <mat-icon aria-label="Button with magnifying lens to search for spots">search</mat-icon>
+  </button>
+
+  <button mat-mini-fab #mapStyleFab color="white" id="mapStyleFab" (click)="toggleMapStyle()">
+    <mat-icon aria-label="Button with magnifying lens to search for spots">
+      {{ (mapStyle === 'roadmap') ? 'terrain' : 'map' }}
+    </mat-icon>
   </button>
 </mat-drawer-container>
 

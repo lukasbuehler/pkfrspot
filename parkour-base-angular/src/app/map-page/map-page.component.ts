@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { keys } from "../../environments/keys"
+import { map_style } from "./map_style"
 
 import { } from "googlemaps"
 import { DatabaseService } from '../database.service';
-import { LatLngLiteral } from '@agm/core';
+import { LatLngLiteral, AgmMap } from '@agm/core';
+import { MapStyle } from 'src/scripts/MapStyle';
 
 @Component({
   selector: 'app-map-page',
@@ -12,10 +13,17 @@ import { LatLngLiteral } from '@agm/core';
 })
 export class MapPageComponent implements OnInit
 {
+
+  @ViewChild('map') map: AgmMap;
+  mapStyle: MapStyle = MapStyle.Simple;
+  mapStylesConfig = map_style;
+
   start_coordinates = {
     lat: 47.206796,
     lng: 8.794528
   }
+
+  
 
   spots: any[] = [];
   paths: Array<LatLngLiteral> = [];
@@ -25,6 +33,18 @@ export class MapPageComponent implements OnInit
 
   clickedMap(event) {
     console.log(event);
+  }
+
+  toggleMapStyle() 
+  {
+    if(this.map.mapTypeId === MapStyle.Simple)
+    {
+      this.mapStyle = MapStyle.Satellite;
+    }
+    else
+    {
+      this.mapStyle = MapStyle.Simple;
+    }
   }
 
   clickedSpot(event) {
