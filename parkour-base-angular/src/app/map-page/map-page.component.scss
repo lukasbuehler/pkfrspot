@@ -15,7 +15,7 @@ mat-drawer-container {
   }
 }
 
-#drawer {
+mat-drawer {
   border: none;
   background: white;
 
@@ -25,9 +25,9 @@ mat-drawer-container {
   max-width: 400px;
 
   @media (min-width: 576px) {
-    width: 20vw;
+    width: 25vw;
     min-width: 300px;
-    max-width: 400px;
+    max-width: 500px;
   }
 
   @media (max-width: 575px) {
@@ -35,6 +35,44 @@ mat-drawer-container {
     max-width: 100%;
     min-width: auto;
   }
+}
+
+#endDrawer {
+  padding: 0px;
+  border: none;
+}
+
+#searchFormField {
+  width: 100%;
+  
+}
+
+.editCardContainer
+{
+  position: absolute;
+  padding: 10px;
+  top: 85px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+
+  pointer-events: none;
+
+  @media (min-width: 768px) 
+  { 
+    top: 0px;
+    right: 100px;
+    left: 100px;
+  }
+}
+
+#editCard {
+  pointer-events: all;
+
+  position: relative;
+  margin: 0 auto;
+  width: 50vw;
+  max-width: 100%;
 }
 
 #searchFab {
@@ -45,6 +83,27 @@ mat-drawer-container {
   top: 20px;
 }
 
+#saveBoundsEditFab {
+  position: absolute;
+  z-index: 2;
+
+  bottom: 20px;
+  right: 20px;
+}
+
+#searchSpotList {
+  mat-card {
+    cursor: pointer
+  }
+}
+
+mat-card {
+  ::ng-deep .mat-card-header-text {
+      width: 100%;
+      margin: 0;
+    }
+}
+
 #mapStyleFab {
   position: absolute;
   z-index: 2;
@@ -53,7 +112,7 @@ mat-drawer-container {
   top: 20px;
 }
 
-#closeDrawerFab {
+#closeStartDrawerFab {
   float: right;
 }
 

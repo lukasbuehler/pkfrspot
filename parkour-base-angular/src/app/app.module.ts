@@ -29,6 +29,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon'; 
+import { MatInputModule } from '@angular/material/input'; 
+import { MatRippleModule } from '@angular/material/core';
 
 import { HomePageComponent } from './home-page/home-page.component';
 import { MapPageComponent } from './map-page/map-page.component';
@@ -37,7 +39,7 @@ import { WikiPageComponent } from './wiki-page/wiki-page.component';
 import { PageHeaderComponent } from './page-header/page-header.component';
 import { PostCollectionComponent } from './post-collection/post-collection.component';
 import { PostComponent } from './post/post.component';
-import { MapSearchCardComponent } from './map-search-card/map-search-card.component'
+import { SpotCardComponent } from './spot-card/spot-card.component';
 
 
 @NgModule({
@@ -50,7 +52,7 @@ import { MapSearchCardComponent } from './map-search-card/map-search-card.compon
     PageHeaderComponent,
     PostCollectionComponent,
     PostComponent,
-    MapSearchCardComponent
+    SpotCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,6 +81,8 @@ import { MapSearchCardComponent } from './map-search-card/map-search-card.compon
     MatTabsModule,
     MatMenuModule,
     MatIconModule,
+    MatInputModule,
+    MatRippleModule,
   ],
   exports: [
     MatButtonModule

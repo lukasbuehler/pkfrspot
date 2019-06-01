@@ -1,26 +1,40 @@
 <mat-drawer-container autosize>
-  <mat-drawer #drawer id="drawer" mode="{{(false) ? 'over' : 'side'}}" position="start" opened="true" [disableClose]="true">
+  <mat-drawer #startDrawer id="startDrawer" class="mat-elevation-z5" mode="side" position="start" opened="true">
     <h2 class="mat-h2">
       Search
-      <button mat-icon-button #closeDrawerFab id="closeDrawerFab"
-        (click)="drawer.close()">
+      <button mat-icon-button #closeStartDrawerFab id="closeStartDrawerFab"
+        (click)="startDrawer.close()">
         <mat-icon>navigate_before</mat-icon>
       </button>
     </h2>
+      <mat-form-field #searchFormField id="searchFormField">
+        <input matInput placeholder="Search Spots">
+      </mat-form-field>
+    <div id="searchSpotList" >
+      <app-spot-card *ngFor="let spot of spots" [spot]="spot" [clickable]="true" [preview]="true" (click)="selectedSpot = spot; startDrawer.close()"></app-spot-card>
+    </div>
+  </mat-drawer>
+
+  <mat-drawer #endDrawer id="endDrawer" class="mat-elevation-z5" mode="side" position="end" [opened]="selectedSpot && !editing">
+    <div *ngIf="selectedSpot">
+      <app-spot-card [spot]="selectedSpot" [flat]="true" [dismissable]="true" (dismiss)="selectedSpot = null;"
+        (edit)="editing = true;"></app-spot-card>
+    </div>
   </mat-drawer>
 
   <agm-map #map id="map" [latitude]="start_coordinates.lat" [longitude]="start_coordinates.lng"
     [zoom]="15" [backgroundColor]="'#000a12'" [clickableIcons]="false" [disableDefaultUI]="true"
     [zoomControl]="false" [streetViewControl]="false"
-    [fitBounds]="true" gestureHandling="'greedy'" [mapTypeId]="mapStyle" [styles]="mapStylesConfig"
+    [fitBounds]="false" gestureHandling="'greedy'" [mapTypeId]="mapStyle" [styles]="mapStylesConfig"
     (mapClick)="clickedMap($event)" >
+
     <agm-polygon [paths]="paths" [fillColor]="'#304ffe'" [strokeColor]="'#304ffe'" [fillOpacity]="0.15"
-      [editable]="true"
-      (polyClick)="clickedSpot($event)"></agm-polygon>
+      [editable]="editing"
+      (polyClick)="clickedSpot(spots[0])"></agm-polygon>
     <agm-marker [agmFitBounds]="true" [latitude]="start_coordinates.lat" [longitude]="start_coordinates.lng" [title]="'Test'"></agm-marker>
   </agm-map>
 
-  <button mat-fab #searchFab id="searchFab" (click)="drawer.open()">
+  <button mat-fab #searchFab id="searchFab" (click)="startDrawer.open()">
     <mat-icon aria-label="Button with magnifying lens to search for spots">search</mat-icon>
   </button>
 
@@ -28,6 +42,10 @@
     <mat-icon aria-label="Button with magnifying lens to search for spots">
       {{ (mapStyle === 'roadmap') ? 'terrain' : 'map' }}
     </mat-icon>
+  </button>
+
+  <button *ngIf="editing" mat-fab #saveBoundsEditFab id="saveBoundsEditFab" (click)="editing = false">
+    <mat-icon aria-label="Button with check mark to stop editing the bounds of the spot">check</mat-icon>
   </button>
 </mat-drawer-container>
 

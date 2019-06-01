@@ -1,0 +1,16 @@
+mat-card {
+  ::ng-deep .mat-card-header-text {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+#closeSpotFab {
+  float: left;
+  margin-left: -10px;
+  margin-right: 5px;
+}

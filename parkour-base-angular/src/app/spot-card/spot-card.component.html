@@ -1,0 +1,20 @@
+<mat-card matRipple [matRippleDisabled]="!clickable" [class.mat-elevation-z0]="flat" [class.clickable]="clickable">
+  <mat-card-header>
+    <mat-card-title>
+      <button *ngIf="dismissable" mat-icon-button #closeSpotFab id="closeSpotFab"
+        (click)="dismissed()">
+        <mat-icon>close</mat-icon>
+      </button>
+      {{spot.name}}
+    </mat-card-title>
+    <mat-card-subtitle>{{spot.type}}</mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-image src="{{spot.image_src}}">
+  <mat-card-content>
+    {{spot.address}}
+  </mat-card-content>
+  <mat-card-actions *ngIf="!preview">
+    <button mat-button (click)="editRequested()">Edit</button>
+    <button mat-button>Share</button>
+  </mat-card-actions>
+</mat-card>

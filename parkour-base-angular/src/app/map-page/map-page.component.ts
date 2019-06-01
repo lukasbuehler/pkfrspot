@@ -13,10 +13,12 @@ import { MapStyle } from 'src/scripts/MapStyle';
 })
 export class MapPageComponent implements OnInit
 {
-
   @ViewChild('map') map: AgmMap;
   mapStyle: MapStyle = MapStyle.Simple;
   mapStylesConfig = map_style;
+
+  editing: boolean = false;
+  selectedSpot = null;
 
   start_coordinates = {
     lat: 47.206796,
@@ -48,7 +50,7 @@ export class MapPageComponent implements OnInit
   }
 
   clickedSpot(event) {
-    console.log(event);
+    this.selectedSpot = event;
   }
 
 
