@@ -18,7 +18,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AgmCoreModule } from '@agm/core'; 
+import { AgmCoreModule } from '@agm/core';
+import { FirebaseUIModule, firebase, firebaseui } from 'firebaseui-angular';
 
 import { MatButtonModule, MatCheckboxModule } from '@angular/material';
 import { MatToolbarModule } from "@angular/material/toolbar";
@@ -40,6 +41,7 @@ import { PageHeaderComponent } from './page-header/page-header.component';
 import { PostCollectionComponent } from './post-collection/post-collection.component';
 import { PostComponent } from './post/post.component';
 import { SpotCardComponent } from './spot-card/spot-card.component';
+import { SignInPageComponent } from './sign-in-page/sign-in-page.component';
 
 
 @NgModule({
@@ -53,6 +55,7 @@ import { SpotCardComponent } from './spot-card/spot-card.component';
     PostCollectionComponent,
     PostComponent,
     SpotCardComponent,
+    SignInPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,6 +72,7 @@ import { SpotCardComponent } from './spot-card/spot-card.component';
     AgmCoreModule.forRoot({
       apiKey: environment.keys.google_maps
     }),
+    FirebaseUIModule.forRoot(environment.firebaseUiAuthConfig as firebaseui.auth.Config),
 
     BrowserAnimationsModule,
     MatButtonModule,

@@ -23,7 +23,26 @@
       </button>
   </mat-menu>
   
-
+  <button mat-button [matMenuTriggerFor]="navUserMenu" class="user-display text-right">
+    {{(authService.isSignedIn() && authService.user) ? authService.user.displayName : ""}}
+    <img *ngIf="authService.isSignedIn() && authService.userProfilePic" src="{{authService.userProfilePic}}"/>
+    <mat-icon *ngIf="!authService.isSignedIn()">person_outline</mat-icon>
+  </button>
 </mat-toolbar>
+
+<mat-menu #navUserMenu="matMenu">
+  <a href="/sign-in" *ngIf="!authService.isSignedIn()" mat-menu-item>
+    <mat-icon>label_important</mat-icon>
+    <span>Sign in</span>
+  </a>
+  <a href="/profile" *ngIf="authService.isSignedIn()" mat-menu-item>
+    <mat-icon>face</mat-icon>
+    <span>My Profile</span>
+  </a>
+  <button *ngIf="authService.isSignedIn()" mat-menu-item (click)="authService.logUserOut()">
+    <mat-icon>cancel</mat-icon>
+    <span>Logout</span>
+  </button>
+</mat-menu>
 
 <router-outlet></router-outlet>

@@ -1,0 +1,6 @@
+
+<app-page-header [title]="'Sign In'"></app-page-header>
+<h2 class="mat-h2">You are currently {{(authService.isSignedIn()) ? "signed in :)" : "not signed in. You can do so below."}}</h2>
+
+<firebase-ui (signInSuccessWithAuthResult)="successCallback($event)"
+    (signInFailure)="errorCallback($event)"></firebase-ui>

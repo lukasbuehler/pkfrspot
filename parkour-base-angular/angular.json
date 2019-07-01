@@ -29,7 +29,8 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss",
-              "src/theming/parkour.scss"
+              "src/theming/parkour.scss",
+              "node_modules/firebaseui/dist/firebaseui.css"
             ],
             "scripts": [],
             "es5BrowserSupport": true
@@ -86,7 +87,8 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/firebaseui/dist/firebaseui.css"
             ],
             "scripts": [],
             "assets": [

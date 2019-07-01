@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
-
+import { AuthenticationService } from './authentication.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent{
+
+  constructor(public authService: AuthenticationService) {}
+
 
   navbarConfig = {
     color: "primary",
@@ -54,7 +57,7 @@ export class AppComponent {
           color: "accent"
         },
         tooltip: ""
-      }
+      },
     ]
   };
 }

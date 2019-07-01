@@ -1,4 +1,5 @@
 import { keys } from './keys';
+import { firebase, firebaseui } from "firebaseui-angular";
 
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
@@ -9,7 +10,24 @@ export const environment = {
   keys: {
     google_maps: keys.google_maps
   },
-  firebase: keys.firebaseConfig
+  firebase: keys.firebaseConfig,
+
+  firebaseUiAuthConfig: {
+    signInFlow: 'redirect',
+    autoUpgradeAnonymousUsers: true,
+    signInSuccessUrl: "/",
+    signInOptions: [
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+      {
+        requireDisplayName: true,
+        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID
+      }
+    ],
+    tosUrl: '/terms_of_service',
+    privacyPolicyUrl: '/privacy_policy',
+    credentialHelper: firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM
+  }
 };
 
 /*
