@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Spot } from 'src/scripts/db/Spot';
 
 @Component({
   selector: 'app-spot-card',
@@ -7,7 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class SpotCardComponent implements OnInit {
 
-  @Input() spot;
+  @Input() spot: Spot.Class;
   @Input() preview: boolean = false;
   @Input() dismissable: boolean = false;
   @Input() flat: boolean = false;

@@ -28,10 +28,15 @@
     [fitBounds]="false" gestureHandling="'greedy'" [mapTypeId]="mapStyle" [styles]="mapStylesConfig"
     (mapClick)="clickedMap($event)" >
 
-    <agm-polygon [paths]="paths" [fillColor]="'#304ffe'" [strokeColor]="'#304ffe'" [fillOpacity]="0.15"
+    
+    <agm-polygon *ngFor="let spot of spots" [paths]="spot.paths" [fillColor]="'#304ffe'" [strokeColor]="'#304ffe'" [fillOpacity]="0.15"
       [editable]="editing"
-      (polyClick)="clickedSpot(spots[0])"></agm-polygon>
-    <agm-marker [agmFitBounds]="true" [latitude]="start_coordinates.lat" [longitude]="start_coordinates.lng" [title]="'Test'"></agm-marker>
+      (polyClick)="clickedSpot(spot)" (polyPathsChange)="pathsChanged($event)">
+      <agm-marker [agmFitBounds]="true" [latitude]="spot.data.location._lat"
+        [longitude]="spot.data.location._long" [title]="'Test'"></agm-marker>
+    </agm-polygon>
+
+    <agm-marker *ngIf="droppedMarkerLocation" #droppedMarker id="droppedMarker" [latitude]="droppedMarkerLocation.lat" [longitude]="droppedMarkerLocation.lng"></agm-marker>
   </agm-map>
 
   <button mat-fab #searchFab id="searchFab" (click)="startDrawer.open()">
@@ -44,7 +49,7 @@
     </mat-icon>
   </button>
 
-  <button *ngIf="editing" mat-fab #saveBoundsEditFab id="saveBoundsEditFab" (click)="editing = false">
+  <button *ngIf="editing" mat-fab #saveBoundsEditFab id="saveBoundsEditFab" (click)="saveBoundsEdit()">
     <mat-icon aria-label="Button with check mark to stop editing the bounds of the spot">check</mat-icon>
   </button>
 </mat-drawer-container>

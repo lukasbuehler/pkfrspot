@@ -5,13 +5,13 @@
         (click)="dismissed()">
         <mat-icon>close</mat-icon>
       </button>
-      {{spot.name}}
+      {{spot.data.name}}
     </mat-card-title>
-    <mat-card-subtitle>{{spot.type}}</mat-card-subtitle>
+    <mat-card-subtitle>{{spot.data.type}}</mat-card-subtitle>
   </mat-card-header>
-  <img mat-card-image src="{{spot.image_src}}">
+  <img mat-card-image src="{{spot.data.image_src}}">
   <mat-card-content>
-    {{spot.address}}
+    {{spot.data.address}}
   </mat-card-content>
   <mat-card-actions *ngIf="!preview">
     <button mat-button (click)="editRequested()">Edit</button>

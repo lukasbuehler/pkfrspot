@@ -3,8 +3,9 @@ import { map_style } from "./map_style"
 
 import { } from "googlemaps"
 import { DatabaseService } from '../database.service';
-import { LatLngLiteral, AgmMap } from '@agm/core';
+import { LatLngLiteral, AgmMap, AgmPolygon, PolygonManager } from '@agm/core';
 import { MapStyle } from 'src/scripts/MapStyle';
+import { Spot } from 'src/scripts/db/Spot';
 
 @Component({
   selector: 'app-map-page',
@@ -16,25 +17,27 @@ export class MapPageComponent implements OnInit
   @ViewChild('map') map: AgmMap;
   mapStyle: MapStyle = MapStyle.Simple;
   mapStylesConfig = map_style;
+  spotPolygons: AgmPolygon[] = []
 
   editing: boolean = false;
-  selectedSpot = null;
+  selectedSpot: Spot.Class = null;
+  editingPaths: Array<Array<LatLngLiteral>> = [];
+
+  droppedMarkerLocation = null;
 
   start_coordinates = {
     lat: 47.206796,
     lng: 8.794528
   }
 
-  
-
-  spots: any[] = [];
-  paths: Array<LatLngLiteral> = [];
+  spots: Spot.Class[] = [];
 
   constructor(private _dbService: DatabaseService)
   { }
 
-  clickedMap(event) {
-    console.log(event);
+  clickedMap(coords) {
+    console.log(coords);
+    this.droppedMarkerLocation = coords.coords;
   }
 
   toggleMapStyle() 
@@ -49,29 +52,41 @@ export class MapPageComponent implements OnInit
     }
   }
 
-  clickedSpot(event) {
-    this.selectedSpot = event;
+  clickedSpot(spot: Spot.Class) {
+    this.selectedSpot = spot;
+    this.editingPaths = spot.paths
   }
 
+  saveBoundsEdit()
+  {
+    this.selectedSpot.paths = this.editingPaths;
+    this._dbService.setSpot(this.selectedSpot).subscribe(
+      value => {
+        console.log("Successful save!")
+        console.log(value);
+
+        this.editing = false;
+      },
+      error => {
+        console.error(error);
+      },
+      () => {}
+    )
+  }
+
+  pathsChanged(pathsChangedEvent)
+  {
+    console.log(pathsChangedEvent)
+
+    this.editingPaths = pathsChangedEvent.newArr;
+  }
 
   ngOnInit()
   {
     this._dbService.getTestSpots().subscribe(
       data =>
       {
-        console.log(data);
-
         this.spots = this.spots.concat(data);
-
-        this.paths = [];
-        for(let spot of this.spots)
-        { 
-          for(let point of spot.bounds)
-          {
-            this.paths.push({ lat: point._lat, lng: point._long})
-          }
-        }
-        
       },
       error =>
       {
