@@ -1,10 +1,16 @@
-
+import { DbDate } from "./Interfaces";
 
 export module User {
-    interface Schema {
-        name: string;
-        nickname: string;
-        birthday: Date;
-        nation: string;
-    }
+  export interface Schema {
+    name: string;
+    nickname: string;
+    birthday: DbDate;
+    nation: string;
+  }
+
+  export interface ReferenceSchema {
+    id: string;
+    name: string;
+    ref: string;
+  }
 }

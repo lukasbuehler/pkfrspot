@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { keys } from "src/environments/keys";
 
-import { Post, PostSchema } from "src/scripts/db/Post";
+import { Post } from "src/scripts/db/Post";
 import { Spot } from "src/scripts/db/Spot";
 
 import {
@@ -17,7 +17,7 @@ import { Observable } from "rxjs";
 export class DatabaseService {
   constructor(private db: AngularFirestore) {}
 
-  addPost(newPost: PostSchema) {
+  addPost(newPost: Post.Schema) {
     this.db
       .collection("posts")
       .add(newPost)
@@ -29,17 +29,18 @@ export class DatabaseService {
       });
   }
 
-  getPostUpdates(): Observable<any[]> {
-    return new Observable<any[]>(observer => {
+  getPostUpdates(): Observable<Post.Class[]> {
+    return new Observable<Post.Class[]>(observer => {
       this.db
         .collection("posts")
         .get()
         .subscribe(
           querySnapshot => {
-            let posts = [];
+            let posts: Post.Class[] = [];
 
             querySnapshot.forEach(doc => {
-              posts.push(doc.data());
+              let postSchema: Post.Schema = doc.data() as Post.Schema;
+              posts.push(new Post.Class(doc.id, postSchema));
             });
 
             observer.next(posts);

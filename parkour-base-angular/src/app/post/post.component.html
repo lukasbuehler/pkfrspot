@@ -1,28 +1,37 @@
-<mat-card class="text-left" ng-class="{mat-elevation-z0: !showCard}">
+<mat-card
+  *ngIf="post"
+  class="text-left"
+  ng-class="{mat-elevation-z0: !showCard}"
+>
   <mat-card-header>
-    <mat-card-title>{{post.title}}</mat-card-title>
+    <mat-card-title>{{ post.title }}</mat-card-title>
     <mat-card-subtitle>
-      <span>by <a href="/users/{{post.user.id}}">{{post.user.name || "Unknown"}}</a></span>
-      <span>{{timeAgoString}} ({{dateAndTimeString}})</span></mat-card-subtitle>
+      <span
+        >by
+        <a href="/users/{{ post.user.id }}">{{
+          post.user.name || "Unknown"
+        }}</a></span
+      >
+      <span>{{ timeAgoString }}</span></mat-card-subtitle
+    >
   </mat-card-header>
-  <img mat-card-image src="{{post.image_src}}">
-  <mat-card-content>{{post.body}}</mat-card-content>
+  <img mat-card-image src="{{ post.imageSrc }}" />
+  <mat-card-content>{{ post.body }}</mat-card-content>
   <mat-card-actions>
     <div class="mr-2">
       <button color="warn" mat-icon-button (click)="likeButtonPress(post)">
-        <mat-icon *ngIf="!post.liked_by_user">favorite_border</mat-icon>
-        <mat-icon *ngIf="post.liked_by_user">favorite</mat-icon>
+        <mat-icon *ngIf="!likedByUser">favorite_border</mat-icon>
+        <mat-icon *ngIf="likedByUser">favorite</mat-icon>
       </button>
-      <b class="mat-b">{{post.likes || 0}}</b>
+      <strong class="mat-b">{{ post.likes || 0 }}</strong>
     </div>
 
     <div class="mr-2">
       <button mat-icon-button>
         <mat-icon>comment</mat-icon>
       </button>
-      <span>{{post.comments || 0}}</span>
+      <span>{{ post.comments || 0 }}</span>
     </div>
-    
 
     <button mat-icon-button>
       <mat-icon>share</mat-icon>

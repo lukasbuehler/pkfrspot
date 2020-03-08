@@ -1,0 +1,19 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+mat-form-field,
+.form-group {
+  width: 100%;
+}
+
+mat-dialog-actions {
+  margin-left: -4px;
+  margin-right: -4px;
+}
+
+button.mat-button,
+button.mat-flat-button {
+  margin-left: 4px;
+  margin-right: 4px;
+}

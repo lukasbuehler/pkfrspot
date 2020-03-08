@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>{{ isCreating ? "Create" : "Edit" }} post</h1>
+<mat-dialog-content>
+  <form onsubmit="event.preventDefault()">
+    <mat-form-field>
+      <mat-label>Title</mat-label>
+      <input type="text" matInput />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        #imageInput
+        hidden="true"
+        type="file"
+        onclick="this.value=null"
+        (change)="onSelectImage($event.target.files)"
+      />
+      <mat-label>Image</mat-label>
+      <input
+        #filenameInput
+        matInput
+        type="text"
+        ng-readonly="true"
+        (click)="imageInput.click()"
+        readonly
+        [value]="uploadFileName"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>
+        Content
+      </mat-label>
+      <textarea #content matInput></textarea>
+      <mat-hint>{{ content.value.length }} / 1024</mat-hint>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-flat-button color="warn">Discard</button>
+  <div class="spacer"></div>
+  <button mat-button>Save draft</button>
+  <button mat-flat-button color="accent">Post</button>
+</mat-dialog-actions>

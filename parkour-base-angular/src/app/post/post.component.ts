@@ -1,49 +1,45 @@
-import { Component, OnInit, Input } from '@angular/core';
-import * as moment from "moment"
+import { Component, OnInit, Input } from "@angular/core";
+import * as moment from "moment";
+import { Post } from "src/scripts/db/Post";
 
 @Component({
-  selector: 'app-post',
-  templateUrl: './post.component.html',
-  styleUrls: ['./post.component.scss']
+  selector: "app-post",
+  templateUrl: "./post.component.html",
+  styleUrls: ["./post.component.scss"]
 })
 export class PostComponent implements OnInit {
-
-  @Input() post: any = {};
+  @Input() post: Post.Class;
   @Input() showCard: boolean = true;
 
   dateAndTimeString: string;
   timeAgoString: string;
+  likedByUser: boolean;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.dateAndTimeString = this.getDateAndTimeString();
     this.timeAgoString = this.getTimeAgoString();
-  } 
-
-  getTimeAgoString(): string
-  {
-    return moment.duration(this.post.time_posted.seconds, "seconds").subtract((new Date()).getTime(), "milliseconds").humanize(true);
   }
 
-  getDateAndTimeString(): string
-  {
-    return moment.unix(this.post.time_posted.seconds).format("lll");
+  getTimeAgoString(): string {
+    console.log(this.post.timePosted);
+    return moment(this.post.timePosted).fromNow();
   }
 
-  likeButtonPress()
-  {
-    if (this.post.liked_by_user)
-    {
+  getDateAndTimeString(): string {
+    return moment(this.post.timePosted).format("lll");
+  }
+
+  likeButtonPress() {
+    if (this.likedByUser) {
       // The post is liked => unlike
-      this.post.liked_by_user = false;
-      this.post.likes--;
-    }
-    else
-    {
+      this.likedByUser = false;
+      this.post.likes--; // TODO Upadte the post
+    } else {
       // The post is not liked => like
-      this.post.liked_by_user = true;
-      this.post.likes++;
+      this.likedByUser = true;
+      this.post.likes++; // TODO Update the post
     }
   }
 }

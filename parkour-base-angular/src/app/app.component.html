@@ -1,32 +1,58 @@
-<mat-toolbar color="{{navbarConfig.color}}" class="mat-elevation-z8">
-  <span class="{{navbarConfig.logo.class}}">{{navbarConfig.logo.text}}</span>
+<mat-toolbar color="{{ navbarConfig.color }}" class="mat-elevation-z8">
+  <span class="{{ navbarConfig.logo.class }}">{{
+    navbarConfig.logo.text
+  }}</span>
 
   <div class="d-none d-md-block">
-    <button mat-button *ngFor="let button of navbarConfig.buttons" routerLink="{{button.link}}"
-      matBadge="{{button.badge.number}}" matBadgeColor="{{button.badge.color}}"
-      [matBadgeHidden]="button.badge.number === 0" matTooltip="{{button.tooltip}}"
-      matTooltipPosition="below" [matTooltipShowDelay]="1500">{{button.name}}
+    <button
+      mat-button
+      *ngFor="let button of navbarConfig.buttons"
+      routerLink="{{ button.link }}"
+      matBadge="{{ button.badge.number }}"
+      matBadgeColor="{{ button.badge.color }}"
+      [matBadgeHidden]="button.badge.number === 0"
+      matTooltip="{{ button.tooltip }}"
+      matTooltipPosition="below"
+      [matTooltipShowDelay]="1500"
+    >
+      {{ button.name }}
     </button>
   </div>
 
   <span class="spacer"></span>
 
-  <button mat-icon-button [matMenuTriggerFor]="navMenu" class="d-md-none">
-    <mat-icon aria-label="Example icon-button with a heart icon">menu</mat-icon>
+  <mat-menu #navMenu="matMenu">
+    <button
+      mat-menu-item
+      *ngFor="let button of navbarConfig.buttons"
+      routerLink="{{ button.link }}"
+      matBadge="{{ button.badge.number }}"
+      matBadgeColor="{{ button.badge.color }}"
+      [matBadgeHidden]="button.badge.number === 0"
+    >
+      {{ button.name }}
+    </button>
+  </mat-menu>
+
+  <button
+    mat-button
+    [matMenuTriggerFor]="navUserMenu"
+    class="user-display text-right"
+  >
+    {{
+      authService.isSignedIn() && authService.user
+        ? authService.user.displayName
+        : ""
+    }}
+    <img
+      *ngIf="authService.isSignedIn() && authService.userProfilePic"
+      src="{{ authService.userProfilePic }}"
+    />
+    <mat-icon *ngIf="!authService.isSignedIn()">person_outline</mat-icon>
   </button>
 
-  <mat-menu #navMenu="matMenu">
-      <button mat-menu-item *ngFor="let button of navbarConfig.buttons" routerLink="{{button.link}}"
-        matBadge="{{button.badge.number}}" matBadgeColor="{{button.badge.color}}"
-        [matBadgeHidden]="button.badge.number === 0">
-        {{button.name}}
-      </button>
-  </mat-menu>
-  
-  <button mat-button [matMenuTriggerFor]="navUserMenu" class="user-display text-right">
-    {{(authService.isSignedIn() && authService.user) ? authService.user.displayName : ""}}
-    <img *ngIf="authService.isSignedIn() && authService.userProfilePic" src="{{authService.userProfilePic}}"/>
-    <mat-icon *ngIf="!authService.isSignedIn()">person_outline</mat-icon>
+  <button mat-icon-button [matMenuTriggerFor]="navMenu" class="d-md-none">
+    <mat-icon aria-label="Example icon-button with a heart icon">menu</mat-icon>
   </button>
 </mat-toolbar>
 
@@ -39,7 +65,11 @@
     <mat-icon>face</mat-icon>
     <span>My Profile</span>
   </a>
-  <button *ngIf="authService.isSignedIn()" mat-menu-item (click)="authService.logUserOut()">
+  <button
+    *ngIf="authService.isSignedIn()"
+    mat-menu-item
+    (click)="authService.logUserOut()"
+  >
     <mat-icon>cancel</mat-icon>
     <span>Logout</span>
   </button>
