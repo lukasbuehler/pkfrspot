@@ -43,7 +43,7 @@ export class HomePageComponent implements OnInit {
 
   createPost() {
     const createPostDialog = this.dialog.open(EditPostDialogComponent, {
-      width: "400px"
+      width: "600px"
     });
 
     createPostDialog.afterClosed().subscribe(

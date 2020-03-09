@@ -13,7 +13,7 @@
         onclick="this.value=null"
         (change)="onSelectImage($event.target.files)"
       />
-      <mat-label>Image</mat-label>
+      <mat-label>Upload Media</mat-label>
       <input
         #filenameInput
         matInput
@@ -23,6 +23,11 @@
         readonly
         [value]="uploadFileName"
       />
+      <mat-hint>{{
+        uploadFile
+          ? "Size: " + uploadFileSizeString + ", Type: " + uploadFile.type
+          : "Click field to select media"
+      }}</mat-hint>
     </mat-form-field>
     <mat-form-field>
       <mat-label>
@@ -34,8 +39,10 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-flat-button color="warn">Discard</button>
+  <button mat-flat-button [color]="hasChanged ? 'warn' : ''" (click)="close()">
+    {{ hasChanged ? "Discard" : "Cancel" }}
+  </button>
   <div class="spacer"></div>
-  <button mat-button>Save draft</button>
-  <button mat-flat-button color="accent">Post</button>
+  <button mat-button [disabled]="!hasChanged">Save draft</button>
+  <button mat-flat-button color="accent" [disabled]="!hasChanged">Post</button>
 </mat-dialog-actions>
