@@ -22,10 +22,10 @@ export class HomePageComponent implements OnInit {
   updatePosts: Post.Class[] = [];
   trendingPosts: Post.Class[] = [];
 
-  @ViewChild("updateCollection") updateCollection: PostCollectionComponent;
+  @ViewChild("updateCollection", { static: true }) updateCollection: PostCollectionComponent;
 
-  @ViewChild("followingDrawer") followingDrawer: MatDrawer;
-  @ViewChild("suggestionsDrawer") suggestionsDrawer: MatDrawer;
+  @ViewChild("followingDrawer", { static: true }) followingDrawer: MatDrawer;
+  @ViewChild("suggestionsDrawer", { static: true }) suggestionsDrawer: MatDrawer;
 
   ngOnInit() {
     this._dbService.getPostUpdates().subscribe(

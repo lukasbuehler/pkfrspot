@@ -33,6 +33,7 @@ export class DatabaseService {
     return new Observable<Post.Class[]>(observer => {
       this.db
         .collection("posts")
+        //.orderBy("time_posted")
         .get()
         .subscribe(
           querySnapshot => {

@@ -14,7 +14,7 @@ import { Spot } from 'src/scripts/db/Spot';
 })
 export class MapPageComponent implements OnInit
 {
-  @ViewChild('map') map: AgmMap;
+  @ViewChild('map', { static: true }) map: AgmMap;
   mapStyle: MapStyle = MapStyle.Simple;
   mapStylesConfig = map_style;
   spotPolygons: AgmPolygon[] = []
