@@ -19,7 +19,7 @@ export class DatabaseService {
 
   addPost(newPost: Post.Schema) {
     this.db
-      .collection("posts")
+      .collection<Post.Schema>("posts")
       .add(newPost)
       .then(docRef => {
         console.log("Post Document written with ID: " + docRef.id);
@@ -32,8 +32,9 @@ export class DatabaseService {
   getPostUpdates(): Observable<Post.Class[]> {
     return new Observable<Post.Class[]>(observer => {
       this.db
-        .collection("posts")
-        //.orderBy("time_posted")
+        .collection<Post.Schema>("posts", ref =>
+          ref.orderBy("time_posted", "desc")
+        )
         .get()
         .subscribe(
           querySnapshot => {
