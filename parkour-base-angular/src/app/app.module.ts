@@ -31,7 +31,10 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatRippleModule } from "@angular/material/core";
-import { MatDialogModule } from "@angular/material/dialog";
+import {
+  MatDialogModule,
+  MAT_DIALOG_DEFAULT_OPTIONS
+} from "@angular/material/dialog";
 
 import { HomePageComponent } from "./home-page/home-page.component";
 import { MapPageComponent } from "./map-page/map-page.component";
@@ -43,6 +46,7 @@ import { PostComponent } from "./post/post.component";
 import { SpotCardComponent } from "./spot-card/spot-card.component";
 import { SignInPageComponent } from "./sign-in-page/sign-in-page.component";
 import { EditPostDialogComponent } from "./edit-post-dialog/edit-post-dialog.component";
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -61,6 +65,7 @@ import { EditPostDialogComponent } from "./edit-post-dialog/edit-post-dialog.com
   entryComponents: [EditPostDialogComponent],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     HttpClientModule,
 
@@ -94,7 +99,9 @@ import { EditPostDialogComponent } from "./edit-post-dialog/edit-post-dialog.com
     MatDialogModule
   ],
   exports: [MatButtonModule],
-  providers: [],
+  providers: [
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

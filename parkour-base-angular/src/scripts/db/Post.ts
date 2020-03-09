@@ -1,5 +1,6 @@
 import { User } from "./User";
 import { DbDate } from "./Interfaces";
+import * as firebase from "firebase/app";
 
 export module Post {
   export class Class {
@@ -41,6 +42,6 @@ export module Post {
 
     likes: number;
 
-    time_posted: DbDate; // seconds
+    time_posted: firebase.firestore.Timestamp;
   }
 }

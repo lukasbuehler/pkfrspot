@@ -3,7 +3,13 @@
   <form onsubmit="event.preventDefault()">
     <mat-form-field>
       <mat-label>Title</mat-label>
-      <input type="text" matInput />
+      <input
+        type="text"
+        matInput
+        name="title"
+        (keyup)="hasChanged = true"
+        [(ngModel)]="postTitle"
+      />
     </mat-form-field>
     <mat-form-field>
       <input
@@ -17,6 +23,7 @@
       <input
         #filenameInput
         matInput
+        name="media"
         type="text"
         ng-readonly="true"
         (click)="imageInput.click()"
@@ -33,7 +40,13 @@
       <mat-label>
         Content
       </mat-label>
-      <textarea #content matInput></textarea>
+      <textarea
+        #content
+        matInput
+        name="content"
+        (keyup)="hasChanged = true"
+        [(ngModel)]="postBody"
+      ></textarea>
       <mat-hint>{{ content.value.length }} / 1024</mat-hint>
     </mat-form-field>
   </form>
@@ -44,5 +57,12 @@
   </button>
   <div class="spacer"></div>
   <button mat-button [disabled]="!hasChanged">Save draft</button>
-  <button mat-flat-button color="accent" [disabled]="!hasChanged">Post</button>
+  <button
+    mat-flat-button
+    color="accent"
+    [disabled]="!hasChanged"
+    [mat-dialog-close]="makePostToReturn()"
+  >
+    Post
+  </button>
 </mat-dialog-actions>
