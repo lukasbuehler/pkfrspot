@@ -20,7 +20,8 @@ import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import { AgmCoreModule } from "@agm/core";
 import { FirebaseUIModule, firebase, firebaseui } from "firebaseui-angular";
 
-import { MatButtonModule, MatCheckboxModule } from "@angular/material";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatBadgeModule } from "@angular/material/badge";
 import { MatTooltipModule } from "@angular/material/tooltip";

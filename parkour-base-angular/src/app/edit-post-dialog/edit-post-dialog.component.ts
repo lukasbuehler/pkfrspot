@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, Inject } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { humanFileSize } from "./../../scripts/Helpers";
 import { Post } from "src/scripts/db/Post";
 import { StorageService, StorageFolders } from "../storage.service";
