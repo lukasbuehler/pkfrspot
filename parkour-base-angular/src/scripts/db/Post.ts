@@ -18,8 +18,18 @@ export module Post {
       return this._data.body;
     }
 
-    get imageSrc() {
-      return this._data.image_src;
+    get mediaSrc() {
+      if (this._data.media) {
+        return this._data.media.src || "";
+      }
+      return null;
+    }
+
+    get mediaIsImage() {
+      if (this._data.media) {
+        return this._data.media.is_image;
+      }
+      return null;
     }
 
     get likes(): number {
@@ -38,7 +48,10 @@ export module Post {
     title: string;
     user: User.ReferenceSchema;
     body: string;
-    image_src: string;
+    media: {
+      is_image: boolean;
+      src: string;
+    };
 
     likes: number;
 

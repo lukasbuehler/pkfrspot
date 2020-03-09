@@ -38,22 +38,30 @@ export class EditPostDialogComponent implements OnInit {
   ngOnInit() {}
 
   onSelectImage(files: FileList) {
-    console.log(files);
-    this.uploadFile = files.item(0);
-    this.uploadFileName = this.uploadFile.name;
-    this.uploadFileSizeString = humanFileSize(this.uploadFile.size, true);
+    let type = files.item(0).type;
+    if (type === "video/mp4" || type.includes("image")) {
+      this.uploadFile = files.item(0);
+      this.uploadFileName = this.uploadFile.name;
+      this.uploadFileSizeString = humanFileSize(this.uploadFile.size, true);
 
-    this.hasChanged = true;
+      this.hasChanged = true;
+    }
   }
 
   makePostToReturn() {
-    this._storageService.setUploadToStorage(
-      this.uploadFile,
-      StorageFolders.PostMedia
-    );
+    let isImage = false;
+    if (this.uploadFile) {
+      this._storageService.setUploadToStorage(
+        this.uploadFile,
+        StorageFolders.PostMedia
+      );
+      isImage = this.uploadFile.type.includes("image");
+    }
+
     return {
       title: this.postTitle,
-      body: this.postBody
+      body: this.postBody,
+      is_image: isImage
     };
   }
 

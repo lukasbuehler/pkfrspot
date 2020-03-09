@@ -23,10 +23,12 @@ export class HomePageComponent implements OnInit {
   updatePosts: Post.Class[] = [];
   trendingPosts: Post.Class[] = [];
 
-  @ViewChild("updateCollection", { static: true }) updateCollection: PostCollectionComponent;
+  @ViewChild("updateCollection", { static: true })
+  updateCollection: PostCollectionComponent;
 
   @ViewChild("followingDrawer", { static: true }) followingDrawer: MatDrawer;
-  @ViewChild("suggestionsDrawer", { static: true }) suggestionsDrawer: MatDrawer;
+  @ViewChild("suggestionsDrawer", { static: true })
+  suggestionsDrawer: MatDrawer;
 
   ngOnInit() {
     this._dbService.getPostUpdates().subscribe(
@@ -56,7 +58,7 @@ export class HomePageComponent implements OnInit {
 
     createPostDialog.afterClosed().subscribe(
       result => {
-        this.saveNewPost(result.title, result.body);
+        this.saveNewPost(result.title, result.body, result.is_image);
       },
       error => {
         console.error(error);
@@ -64,14 +66,17 @@ export class HomePageComponent implements OnInit {
     );
   }
 
-  saveNewPost(title: string, body: string) {
+  saveNewPost(title: string, body: string, isImage: boolean) {
     this._storageService.upload().subscribe(
-      img_src => {
+      src => {
         // now create the DB entry for the post
         this._dbService.addPost({
           title: title,
           body: body,
-          image_src: img_src,
+          media: {
+            is_image: isImage,
+            src: src
+          },
           likes: 0,
           time_posted: firebase.firestore.Timestamp.now(),
           user: {

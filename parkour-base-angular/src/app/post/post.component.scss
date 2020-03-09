@@ -31,3 +31,19 @@ mat-card {
 .spacer {
   flex: 1 1 auto;
 }
+
+::ng-deep mat-video .progress {
+  background: transparent;
+  overflow: visible;
+
+  ::ng-deep mat-seek-progress-control {
+    width: 100%;
+    overflow: visible;
+  }
+}
+
+mat-video.mat-card-video {
+  display: block;
+  width: calc(100% + 32px);
+  margin: 0 -16px 16px -16px;
+}

@@ -37,6 +37,8 @@ import {
   MAT_DIALOG_DEFAULT_OPTIONS
 } from "@angular/material/dialog";
 
+import { MatVideoModule } from "mat-video";
+
 import { HomePageComponent } from "./home-page/home-page.component";
 import { MapPageComponent } from "./map-page/map-page.component";
 import { NotFoundPageComponent } from "./not-found-page/not-found-page.component";
@@ -97,7 +99,9 @@ import { FormsModule } from "@angular/forms";
     MatIconModule,
     MatInputModule,
     MatRippleModule,
-    MatDialogModule
+    MatDialogModule,
+
+    MatVideoModule
   ],
   exports: [MatButtonModule],
   providers: [

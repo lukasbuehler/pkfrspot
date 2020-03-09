@@ -15,7 +15,19 @@
       <span>{{ timeAgoString }}</span></mat-card-subtitle
     >
   </mat-card-header>
-  <img mat-card-image src="{{ post.imageSrc }}" />
+  <img
+    mat-card-image
+    *ngIf="post.mediaSrc && post.mediaIsImage"
+    src="{{ post.mediaSrc }}"
+    [alt]="post.title + ' Image'"
+  />
+  <mat-video
+    *ngIf="post.mediaSrc && !post.mediaIsImage"
+    class="mat-card-video"
+    [quality]="false"
+    color="accent"
+    [src]="post.mediaSrc"
+  ></mat-video>
   <mat-card-content>{{ post.body }}</mat-card-content>
   <mat-card-actions>
     <div class="mr-2">

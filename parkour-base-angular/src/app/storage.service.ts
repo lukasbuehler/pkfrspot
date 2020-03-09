@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { AngularFireStorage } from "@angular/fire/storage";
 import * as firebase from "firebase/app";
 import { Observable } from "rxjs";
+import { generateUUID } from "src/scripts/Helpers";
 
 export enum StorageFolders {
   PostMedia = "post_media",
@@ -21,7 +22,7 @@ export class StorageService {
 
   setUploadToStorage(file: File, location: StorageFolders): Observable<string> {
     this.uploadObs = new Observable<string>(subscriber => {
-      let filename = "test";
+      let filename = generateUUID();
       let uploadRef = this.storageRef.child(`${location}/${filename}`);
 
       let uploadTask = uploadRef.put(file);

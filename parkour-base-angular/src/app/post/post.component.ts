@@ -23,7 +23,6 @@ export class PostComponent implements OnInit {
   }
 
   getTimeAgoString(): string {
-    console.log(this.post.timePosted);
     return moment(this.post.timePosted).fromNow();
   }
 

@@ -5,15 +5,12 @@
 mat-drawer-container {
   background: none;
 
-  @media (max-width:599px) 
-  {
+  @media (max-width: 599px) {
     height: calc(100% - 56px);
   }
-  @media (min-width:600px)
-  {
+  @media (min-width: 600px) {
     height: calc(100% - 64px);
   }
-  
 
   mat-drawer {
     border: none;
@@ -24,7 +21,8 @@ mat-drawer-container {
     }
   }
 
-  ::ng-deep mat-drawer-content, ::ng-deep mat-drawer-content>div {
+  ::ng-deep mat-drawer-content,
+  ::ng-deep mat-drawer-content > div {
     height: 100%;
     overflow: hidden;
   }
@@ -35,12 +33,12 @@ mat-tab-group {
   height: 100%;
 }
 
-.mat-tab-body-wrapper
-{
+.mat-tab-body-wrapper {
   padding: 15px;
 }
 
-.container, .container-fluid {
+.container,
+.container-fluid {
   height: 100%;
   padding-top: 0px;
 }

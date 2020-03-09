@@ -35,6 +35,7 @@
     "firebaseui-angular": "^4.0.1",
     "hammerjs": "^2.0.8",
     "jquery": "^3.4.1",
+    "mat-video": "^2.7.2",
     "moment": "^2.24.0",
     "ngx-infinite-scroll": "^7.2.0",
     "popper.js": "^1.16.1",
