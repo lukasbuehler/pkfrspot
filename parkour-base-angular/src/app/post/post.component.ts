@@ -27,7 +27,15 @@ export class PostComponent implements OnInit {
     this.dateAndTimeString = this.getDateAndTimeString();
     this.timeAgoString = this.getTimeAgoString();
 
-    this.likedByUser = false; // TODO Temp
+    this.likedByUser = false;
+    this._databaseService
+      .userHasLikedPost(this.post.id, this._authenticationService.uid)
+      .then(bool => {
+        this.likedByUser = bool;
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
 
   getTimeAgoString(): string {
@@ -42,7 +50,11 @@ export class PostComponent implements OnInit {
     if (this._authenticationService.isSignedIn()) {
       if (this.likedByUser !== null) {
         if (!this.likedByUser) {
+          // show the like
           this.likedByUser = true;
+          this.post.like();
+
+          // save the like
           this._databaseService.addLike(
             this.post.id,
             this._authenticationService.uid,
@@ -54,7 +66,15 @@ export class PostComponent implements OnInit {
             }
           );
         } else {
+          // show the unlike
           this.likedByUser = false;
+          this.post.unlike();
+
+          // save the unlike
+          this._databaseService.removeLike(
+            this.post.id,
+            this._authenticationService.uid
+          );
         }
       }
     } else {

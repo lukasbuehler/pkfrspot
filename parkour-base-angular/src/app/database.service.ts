@@ -30,6 +30,27 @@ export class DatabaseService {
       });
   }
 
+  userHasLikedPost(postId: string, userId: string): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this.db
+        .collection<Like.Schema>(`posts/${postId}/likes`)
+        .doc(userId)
+        .get()
+        .subscribe(
+          snap => {
+            if (snap.exists) {
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          },
+          error => {
+            reject(error);
+          }
+        );
+    });
+  }
+
   addLike(postId: string, userUID: string, newLike: Like.Schema) {
     if (userUID !== newLike.user.uid) {
       console.error("Schema user UID and given UID don't match!");
@@ -48,7 +69,19 @@ export class DatabaseService {
       });
   }
 
-  removeLike(postId: string, likeId) {}
+  removeLike(postId: string, userUID: string) {
+    this.db
+      .collection<Like.Schema>(`posts/${postId}/likes`)
+      .doc(userUID)
+      .delete()
+      .then(() => {
+        console.log("Your like was removed successfully");
+      })
+      .catch(error => {
+        console.error("Couldn't remove your like");
+        console.error(error);
+      });
+  }
 
   getPostUpdates(): Observable<any> {
     return new Observable<any>(observer => {

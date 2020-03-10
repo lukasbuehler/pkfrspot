@@ -36,11 +36,16 @@ export module Post {
     }
 
     get likeCount(): number {
-      return this._data.like_count;
+      return this._data.like_count + this._likeOffset;
     }
 
-    like(): void {}
-    unlinke(): void {}
+    private _likeOffset: number = 0;
+    like(): void {
+      this._likeOffset++;
+    }
+    unlike(): void {
+      this._likeOffset--;
+    }
 
     get timePosted(): Date {
       return new Date(this._data.time_posted.seconds * 1000);
@@ -48,6 +53,7 @@ export module Post {
 
     updateData(data: Post.Schema) {
       this._data = data;
+      this._likeOffset = 0;
     }
   }
 

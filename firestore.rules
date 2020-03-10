@@ -15,8 +15,9 @@ service cloud.firestore {
         allow read: if request.auth.uid != null;
 
         // Only you can edit your like
-        allow write: if request.auth.uid == userId
+        allow create, update: if request.auth.uid == userId
           && request.auth.uid == request.resource.data.user.uid;
+        allow delete: if request.auth.uid == userId
       }
     }
     match /spots/{spot}
