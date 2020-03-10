@@ -1,6 +1,6 @@
 <mat-card
   *ngIf="post"
-  class="text-left"
+  class="text-left mat-elevation-z5"
   ng-class="{mat-elevation-z0: !showCard}"
 >
   <mat-card-header>
@@ -31,28 +31,29 @@
   <mat-card-content>{{ post.body }}</mat-card-content>
   <mat-card-actions>
     <div class="mr-2">
-      <button color="warn" mat-icon-button (click)="likeButtonPress(post)">
-        <mat-icon *ngIf="!likedByUser">favorite_border</mat-icon>
-        <mat-icon *ngIf="likedByUser">favorite</mat-icon>
+      <button color="accent" mat-icon-button (click)="likeButtonPress(post)">
+        <mat-icon [color]="likedByUser ? 'accent' : 'primary'"
+          >thumb_up</mat-icon
+        >
       </button>
       <strong class="mat-b">{{ post.likes || 0 }}</strong>
     </div>
 
     <div class="mr-2">
       <button mat-icon-button>
-        <mat-icon>comment</mat-icon>
+        <mat-icon color="primary">comment</mat-icon>
       </button>
       <span>{{ post.comments || 0 }}</span>
     </div>
 
     <button mat-icon-button>
-      <mat-icon>share</mat-icon>
+      <mat-icon color="primary">share</mat-icon>
     </button>
 
     <div class="spacer"></div>
 
     <button mat-icon-button [matMenuTriggerFor]="postMenu">
-      <mat-icon>more_horiz</mat-icon>
+      <mat-icon color="primary">more_horiz</mat-icon>
     </button>
   </mat-card-actions>
 </mat-card>
