@@ -3,10 +3,12 @@ service cloud.firestore {
     match /posts/{post}
     {
       allow read: if true;
+      allow write: if request.auth.uid != null;
     }
     match /spots/{spot}
     {
       allow read: if true;
+      allow write: if request.auth.uid != null;
     }
     match /users/{user} 
     {
