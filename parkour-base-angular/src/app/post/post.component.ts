@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from "@angular/core";
 import * as moment from "moment";
 import { Post } from "src/scripts/db/Post";
+import { DatabaseService } from "../database.service";
+import { AuthenticationService } from "../authentication.service";
+import * as firebase from "firebase/app";
 
 @Component({
   selector: "app-post",
@@ -13,13 +16,18 @@ export class PostComponent implements OnInit {
 
   dateAndTimeString: string;
   timeAgoString: string;
-  likedByUser: boolean;
+  likedByUser: boolean = null;
 
-  constructor() {}
+  constructor(
+    private _databaseService: DatabaseService,
+    private _authenticationService: AuthenticationService
+  ) {}
 
   ngOnInit() {
     this.dateAndTimeString = this.getDateAndTimeString();
     this.timeAgoString = this.getTimeAgoString();
+
+    this.likedByUser = false; // TODO Temp
   }
 
   getTimeAgoString(): string {
@@ -31,14 +39,26 @@ export class PostComponent implements OnInit {
   }
 
   likeButtonPress() {
-    if (this.likedByUser) {
-      // The post is liked => unlike
-      this.likedByUser = false;
-      this.post.likes--; // TODO Upadte the post
+    if (this._authenticationService.isSignedIn()) {
+      if (this.likedByUser !== null) {
+        if (!this.likedByUser) {
+          this.likedByUser = true;
+          this._databaseService.addLike(
+            this.post.id,
+            this._authenticationService.uid,
+            {
+              time: firebase.firestore.Timestamp.now(),
+              user: {
+                uid: this._authenticationService.uid
+              }
+            }
+          );
+        } else {
+          this.likedByUser = false;
+        }
+      }
     } else {
-      // The post is not liked => like
-      this.likedByUser = true;
-      this.post.likes++; // TODO Update the post
+      // TODO show that you need to sign in
     }
   }
 }

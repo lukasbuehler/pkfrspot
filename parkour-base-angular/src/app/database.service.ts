@@ -10,6 +10,7 @@ import {
 } from "@angular/fire/firestore";
 
 import { Observable } from "rxjs";
+import { Like } from "src/scripts/db/Like";
 
 @Injectable({
   providedIn: "root"
@@ -29,30 +30,48 @@ export class DatabaseService {
       });
   }
 
-  getPostUpdates(): Observable<Post.Class[]> {
-    return new Observable<Post.Class[]>(observer => {
-      this.db
+  addLike(postId: string, userUID: string, newLike: Like.Schema) {
+    if (userUID !== newLike.user.uid) {
+      console.error("Schema user UID and given UID don't match!");
+      return;
+    }
+
+    this.db
+      .collection<Like.Schema>(`posts/${postId}/likes`)
+      .doc(userUID)
+      .set(newLike)
+      .then(() => {
+        console.log("Added like on " + postId + " for " + userUID);
+      })
+      .catch(error => {
+        console.error("Couldn't add like.", error);
+      });
+  }
+
+  removeLike(postId: string, likeId) {}
+
+  getPostUpdates(): Observable<any> {
+    return new Observable<any>(observer => {
+      let snapshotChanges = this.db
         .collection<Post.Schema>("posts", ref =>
           ref.orderBy("time_posted", "desc")
         )
-        .get()
-        .subscribe(
-          querySnapshot => {
-            let posts: Post.Class[] = [];
+        .snapshotChanges();
 
-            querySnapshot.forEach(doc => {
-              let postSchema: Post.Schema = doc.data() as Post.Schema;
-              posts.push(new Post.Class(doc.id, postSchema));
-            });
+      snapshotChanges.subscribe(
+        changeActions => {
+          let postSchemasMap: any = {};
+          changeActions.forEach(action => {
+            const id = action.payload.doc.id;
+            postSchemasMap[id] = action.payload.doc.data();
+          });
 
-            observer.next(posts);
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          },
-          () => {}
-        );
+          observer.next(postSchemasMap);
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 

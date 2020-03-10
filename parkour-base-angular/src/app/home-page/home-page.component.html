@@ -22,29 +22,6 @@
     </mat-card>
   </mat-drawer>
 
-  <mat-drawer
-    #suggestionsDrawer
-    id="suggestionsDrawer"
-    class="mat-elevation-z2 d-none d-md-block"
-    mode="side"
-    position="end"
-    opened="true"
-  >
-    <mat-card>
-      <mat-card-title>
-        <button
-          mat-icon-button
-          #closeSuggestionsDrawerFab
-          id="closeSuggestionsDrawerFab"
-          (click)="suggestionsDrawer.close()"
-        >
-          <mat-icon>navigate_next</mat-icon>
-        </button>
-        Suggestions
-      </mat-card-title>
-    </mat-card>
-  </mat-drawer>
-
   <div>
     <div class="container d-none d-md-block">
       <div class="row">
@@ -92,20 +69,6 @@
   >
     <mat-icon aria-label="Button with people on it to open the following drawer"
       >people</mat-icon
-    >
-  </button>
-
-  <button
-    mat-mini-fab
-    #openSuggestionsFab
-    id="openSuggestionsFab"
-    class="d-none d-md-block"
-    (click)="suggestionsDrawer.open()"
-    *ngIf="!suggestionsDrawer.opened"
-  >
-    <mat-icon
-      aria-label="Button with bubbles on it to open the suggestions drawer"
-      >bubble_chart</mat-icon
     >
   </button>
 </mat-drawer-container>

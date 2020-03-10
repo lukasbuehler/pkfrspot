@@ -1,5 +1,4 @@
 import { User } from "./User";
-import { DbDate } from "./Interfaces";
 import * as firebase from "firebase/app";
 
 export module Post {
@@ -18,6 +17,10 @@ export module Post {
       return this._data.body;
     }
 
+    get id() {
+      return this._id;
+    }
+
     get mediaSrc() {
       if (this._data.media) {
         return this._data.media.src || "";
@@ -32,15 +35,19 @@ export module Post {
       return null;
     }
 
-    get likes(): number {
-      return this._data.likes;
+    get likeCount(): number {
+      return this._data.like_count;
     }
-    set likes(likes: number) {
-      this._data.likes = likes;
-    }
+
+    like(): void {}
+    unlinke(): void {}
 
     get timePosted(): Date {
       return new Date(this._data.time_posted.seconds * 1000);
+    }
+
+    updateData(data: Post.Schema) {
+      this._data = data;
     }
   }
 
@@ -53,7 +60,7 @@ export module Post {
       src: string;
     };
 
-    likes: number;
+    like_count?: number;
 
     time_posted: firebase.firestore.Timestamp;
   }

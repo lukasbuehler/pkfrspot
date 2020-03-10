@@ -27,13 +27,23 @@ export class HomePageComponent implements OnInit {
   updateCollection: PostCollectionComponent;
 
   @ViewChild("followingDrawer", { static: true }) followingDrawer: MatDrawer;
-  @ViewChild("suggestionsDrawer", { static: true })
-  suggestionsDrawer: MatDrawer;
 
   ngOnInit() {
     this._dbService.getPostUpdates().subscribe(
-      data => {
-        this.updatePosts = this.updatePosts.concat(data);
+      postMap => {
+        for (let postId in postMap) {
+          let docIndex = this.updatePosts.findIndex((post, index, obj) => {
+            return post.id === postId;
+          });
+          if (docIndex >= 0) {
+            // the document already exists already in this array
+            this.updatePosts[docIndex].updateData(postMap[postId]);
+          } else {
+            // create and add new Post
+            console.log();
+            this.updatePosts.push(new Post.Class(postId, postMap[postId]));
+          }
+        }
       },
       error => {
         console.error(error);
@@ -77,7 +87,6 @@ export class HomePageComponent implements OnInit {
             is_image: isImage,
             src: src
           },
-          likes: 0,
           time_posted: firebase.firestore.Timestamp.now(),
           user: {
             id: "pAxfc6rwUU9qLhsqj36l",

@@ -32,21 +32,21 @@
   <mat-card-actions>
     <div class="mr-2">
       <button color="accent" mat-icon-button (click)="likeButtonPress(post)">
-        <mat-icon [color]="likedByUser ? 'accent' : 'primary'"
-          >thumb_up</mat-icon
-        >
+        <mat-icon [color]="likedByUser ? 'accent' : 'primary'">
+          thumb_up
+        </mat-icon>
       </button>
-      <strong class="mat-b">{{ post.likes || 0 }}</strong>
+      <strong class="mat-b">{{ post.likeCount }}</strong>
     </div>
 
-    <div class="mr-2">
+    <div *ngIf="false" class="mr-2">
       <button mat-icon-button>
         <mat-icon color="primary">comment</mat-icon>
       </button>
-      <span>{{ post.comments || 0 }}</span>
+      <span>{{ post.commentCount || 0 }}</span>
     </div>
 
-    <button mat-icon-button>
+    <button *ngIf="false" mat-icon-button>
       <mat-icon color="primary">share</mat-icon>
     </button>
 

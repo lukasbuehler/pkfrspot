@@ -3,7 +3,21 @@ service cloud.firestore {
     match /posts/{post}
     {
       allow read: if true;
-      allow write: if request.auth.uid != null;
+
+      // only authenticated users can create posts and only edit it if it's their post. Also, they can't set the like_count variable.
+      allow write: if request.auth.uid != null 
+        && request.resource.data.like_count == null 
+        && request.auth.uid == request.resource.data.user.uid;
+
+      // match the subcollection likes
+      match /likes/{userId} {
+        // Only authenticated users can view likes
+        allow read: if request.auth.uid != null;
+
+        // Only you can edit your like
+        allow write: if request.auth.uid == userId
+          && request.auth.uid == request.resource.data.user.uid;
+      }
     }
     match /spots/{spot}
     {
