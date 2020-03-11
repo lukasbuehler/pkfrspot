@@ -50,7 +50,19 @@
           </mat-form-field>
         </div>
       </mat-tab>
-      <mat-tab label="Link Media"></mat-tab>
+      <mat-tab label="Link Media">
+        <span class="mat-small"
+          >Link YouTube videos, Vimeo videos, pictures and .mp4 videos.</span
+        >
+        <mat-form-field>
+          <mat-label>Link Media</mat-label>
+          <input #linkInput matInput name="link" type="text" />
+          <mat-icon matSuffix>link</mat-icon>
+          <mat-hint>{{
+            false ? "Platform: " + "TODO" : "Enter a media link"
+          }}</mat-hint>
+        </mat-form-field>
+      </mat-tab>
     </mat-tab-group>
     <mat-form-field>
       <mat-label>

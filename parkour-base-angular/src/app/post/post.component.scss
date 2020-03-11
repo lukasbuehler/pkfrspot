@@ -44,8 +44,22 @@ mat-card {
   }
 }
 
-mat-video.mat-card-video {
+mat-video.mat-card-video,
+.youtube-video-container {
   display: block;
   width: calc(100% + 32px);
   margin: 0 -16px 16px -16px;
+}
+
+.youtube-video-container {
+  position: relative;
+  padding-bottom: calc(((100% + 32px) / 16) * 9);
+  height: 0;
+}
+.youtube-video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }

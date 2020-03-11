@@ -19,11 +19,14 @@ button.mat-flat-button {
   margin-right: 4px;
 }
 
+::ng-deep .mat-tab-body-content {
+  padding: 10px;
+  padding-top: 20px;
+}
+
 ::ng-deep .upload-media-box {
   display: flex;
   align-items: center;
-  padding: 10px;
-  padding-top: 20px;
 
   button {
     margin-right: 15px;

@@ -28,6 +28,15 @@
     [src]="post.mediaSrc"
     [keyboard]="false"
   ></mat-video>
+  <div *ngIf="!post.mediaSrc" class="youtube-video-container">
+    <iframe
+      src="https://www.youtube.com/embed/Z6ri_jm0bYA"
+      frameborder="0"
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+  </div>
+
   <mat-card-content>{{ post.body }}</mat-card-content>
   <mat-card-actions>
     <div class="mr-2">
