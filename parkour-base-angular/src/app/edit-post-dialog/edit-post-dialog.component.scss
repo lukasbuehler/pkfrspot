@@ -3,7 +3,8 @@
 }
 
 mat-form-field,
-.form-group {
+.form-group,
+::ng-deep .mat-form-field-wrapper {
   width: 100%;
 }
 
@@ -16,4 +17,15 @@ button.mat-button,
 button.mat-flat-button {
   margin-left: 4px;
   margin-right: 4px;
+}
+
+::ng-deep .upload-media-box {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  padding-top: 20px;
+
+  button {
+    margin-right: 15px;
+  }
 }

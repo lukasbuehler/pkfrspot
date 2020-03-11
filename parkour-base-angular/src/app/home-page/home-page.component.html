@@ -55,7 +55,13 @@
     </mat-tab-group>
   </div>
 
-  <button mat-fab #createFab id="createFab" (click)="createPost()">
+  <button
+    *ngIf="isUserSignedIn"
+    mat-fab
+    #createFab
+    id="createFab"
+    (click)="createPost()"
+  >
     <mat-icon aria-label="Button with pen to create a post">create</mat-icon>
   </button>
 

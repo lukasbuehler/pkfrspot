@@ -18,6 +18,10 @@ import { Like } from "src/scripts/db/Like";
 export class DatabaseService {
   constructor(private db: AngularFirestore) {}
 
+  docRef(path: string) {
+    return this.db.doc(path).ref;
+  }
+
   addPost(newPost: Post.Schema) {
     this.db
       .collection<Post.Schema>("posts")
@@ -27,6 +31,9 @@ export class DatabaseService {
       })
       .catch(error => {
         console.error("Error adding Post Document: ", error);
+        console.log(newPost);
+
+        // remove the uploaded data after...
       });
   }
 

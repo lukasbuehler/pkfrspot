@@ -28,6 +28,11 @@ mat-drawer-container {
   }
 }
 
+::ng-deep mat-dialog-container {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
 mat-tab-group {
   max-width: 100%;
   height: 100%;

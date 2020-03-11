@@ -7,6 +7,7 @@ import { MatDrawer } from "@angular/material/sidenav";
 import { EditPostDialogComponent } from "../edit-post-dialog/edit-post-dialog.component";
 import { StorageService } from "../storage.service";
 import * as firebase from "firebase/app";
+import { AuthenticationService } from "../authentication.service";
 
 @Component({
   selector: "app-home-page",
@@ -15,13 +16,16 @@ import * as firebase from "firebase/app";
 })
 export class HomePageComponent implements OnInit {
   constructor(
+    private _authService: AuthenticationService,
     private _dbService: DatabaseService,
-    public dialog: MatDialog,
-    private _storageService: StorageService
+    private _storageService: StorageService,
+    public dialog: MatDialog
   ) {}
 
   updatePosts: Post.Class[] = [];
   trendingPosts: Post.Class[] = [];
+
+  isUserSignedIn: boolean = false;
 
   @ViewChild("updateCollection", { static: true })
   updateCollection: PostCollectionComponent;
@@ -29,6 +33,19 @@ export class HomePageComponent implements OnInit {
   @ViewChild("followingDrawer", { static: true }) followingDrawer: MatDrawer;
 
   ngOnInit() {
+    this._authService.state$.subscribe(
+      user => {
+        if (user) {
+          this.isUserSignedIn = true;
+        } else {
+          this.isUserSignedIn = false;
+        }
+      },
+      error => {
+        console.error(error);
+      }
+    );
+
     this._dbService.getPostUpdates().subscribe(
       postMap => {
         for (let postId in postMap) {
@@ -40,8 +57,10 @@ export class HomePageComponent implements OnInit {
             this.updatePosts[docIndex].updateData(postMap[postId]);
           } else {
             // create and add new Post
-            console.log();
             this.updatePosts.push(new Post.Class(postId, postMap[postId]));
+            this.updatePosts.sort((a, b) => {
+              return b.timePosted.getTime() - a.timePosted.getTime();
+            });
           }
         }
       },
@@ -89,9 +108,9 @@ export class HomePageComponent implements OnInit {
           },
           time_posted: firebase.firestore.Timestamp.now(),
           user: {
-            id: "pAxfc6rwUU9qLhsqj36l",
-            name: "Lukas Bühler",
-            ref: "users/pAxfc6rwUU9qLhsqj36l"
+            uid: this._authService.uid,
+            display_name: this._authService.user.displayName,
+            ref: this._dbService.docRef("users/" + this._authService.uid)
           }
         });
       },

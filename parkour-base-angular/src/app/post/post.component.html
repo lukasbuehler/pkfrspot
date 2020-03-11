@@ -6,12 +6,11 @@
   <mat-card-header>
     <mat-card-title>{{ post.title }}</mat-card-title>
     <mat-card-subtitle>
-      <span
-        >by
-        <a href="/users/{{ post.user.id }}">{{
-          post.user.name || "Unknown"
-        }}</a></span
-      >
+      <span>
+        <a href="/users/{{ post.user.uid }}">{{
+          post.user.display_name || "A Traceur"
+        }}</a>
+      </span>
       <span>{{ timeAgoString }}</span></mat-card-subtitle
     >
   </mat-card-header>
@@ -27,6 +26,7 @@
     [quality]="false"
     color="accent"
     [src]="post.mediaSrc"
+    [keyboard]="false"
   ></mat-video>
   <mat-card-content>{{ post.body }}</mat-card-content>
   <mat-card-actions>
@@ -36,7 +36,7 @@
           thumb_up
         </mat-icon>
       </button>
-      <strong class="mat-b">{{ post.likeCount }}</strong>
+      <strong class="mat-b">{{ post.likeCount || 0 }}</strong>
     </div>
 
     <div *ngIf="false" class="mr-2">

@@ -1,37 +1,42 @@
 import { Injectable } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
 import * as firebase from "firebase/app";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthenticationService {
   constructor(public angularFireAuth: AngularFireAuth) {
-    this.angularFireAuth.authState.subscribe(
+    angularFireAuth.authState.subscribe(
       this.firebaseAuthChangeListener,
       this.firebaseAuthChangeError
     );
   }
 
-  private currentUser: firebase.User = null;
+  private _currentUser: firebase.User = null;
+
+  get state$(): Observable<firebase.User> {
+    return this.angularFireAuth.authState;
+  }
+
   get user() {
-    return this.currentUser;
+    return this._currentUser;
   }
 
   get uid() {
-    return this.currentUser.uid;
+    return this._currentUser.uid;
   }
 
   get userProfilePic() {
-    return this.currentUser.photoURL;
+    return this._currentUser.photoURL;
   }
 
   firebaseAuthChangeListener = (user: firebase.User) => {
     if (user) {
-      this.currentUser = user;
-      console.log("User UID = " + this.uid);
+      this._currentUser = user;
     } else {
-      this.currentUser = null;
+      this._currentUser = null;
     }
   };
 
@@ -40,7 +45,7 @@ export class AuthenticationService {
   };
 
   isSignedIn(): boolean {
-    if (this.currentUser) {
+    if (this._currentUser) {
       return true;
     }
     return false;

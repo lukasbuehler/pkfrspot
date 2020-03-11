@@ -60,7 +60,7 @@ export class EditPostDialogComponent implements OnInit {
 
     return {
       title: this.postTitle,
-      body: this.postBody,
+      body: this.postBody || "",
       is_image: isImage
     };
   }
