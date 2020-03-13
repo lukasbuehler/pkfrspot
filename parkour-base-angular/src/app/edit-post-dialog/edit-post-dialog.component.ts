@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { humanFileSize } from "./../../scripts/Helpers";
 import { Post } from "src/scripts/db/Post";
 import { StorageService, StorageFolders } from "../storage.service";
+import { FormControl } from "@angular/forms";
 
 export interface PostDialogData {
   isCreating: string;
@@ -35,6 +36,17 @@ export class EditPostDialogComponent implements OnInit {
   postBody: "";
   postImageSrc: "";
 
+  // If this is false, then link is selected
+  isUploadSelected = true;
+
+  mediaLink = {
+    text: "",
+    platform: "",
+    id: ""
+  };
+
+  linkInputFormControl = new FormControl("");
+
   ngOnInit() {}
 
   onSelectImage(files: FileList) {
@@ -45,6 +57,48 @@ export class EditPostDialogComponent implements OnInit {
       this.uploadFileSizeString = humanFileSize(this.uploadFile.size, true);
 
       this.hasChanged = true;
+    }
+  }
+
+  tabChanged(index: number) {
+    if (index === 0) {
+      this.isUploadSelected = true;
+    } else if (index === 1) {
+      this.isUploadSelected = false;
+    }
+    console.log("isUploadSelected " + this.isUploadSelected);
+  }
+
+  onLinkUpdate(str: string) {
+    this.mediaLink.text = str;
+    this.hasChanged = true;
+
+    if (str) {
+      if (str.includes("youtube") || str.includes("youtu.be")) {
+        // It's a youtube video
+        this.mediaLink.platform = "YouTube";
+
+        // get the youtube video id
+        let videoIdRegEx = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/gi;
+        let videoIdMatch = videoIdRegEx.exec(str);
+        if (videoIdMatch) {
+          let id = videoIdMatch[1];
+          this.mediaLink.id = id;
+          let embedLink = `https://www.youtube.com/embed/${id}`;
+
+          this.linkInputFormControl.setErrors(null);
+        } else {
+          this.linkInputFormControl.setErrors({
+            invalid: true
+          });
+        }
+      } else if (str.includes("vimeo")) {
+        // vimeo video
+      } else {
+        this.linkInputFormControl.setErrors({ invalid: true });
+      }
+    } else {
+      this.linkInputFormControl.setErrors({ invalid: true });
     }
   }
 

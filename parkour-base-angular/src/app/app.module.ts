@@ -49,7 +49,7 @@ import { PostComponent } from "./post/post.component";
 import { SpotCardComponent } from "./spot-card/spot-card.component";
 import { SignInPageComponent } from "./sign-in-page/sign-in-page.component";
 import { EditPostDialogComponent } from "./edit-post-dialog/edit-post-dialog.component";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -69,6 +69,7 @@ import { FormsModule } from "@angular/forms";
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
 

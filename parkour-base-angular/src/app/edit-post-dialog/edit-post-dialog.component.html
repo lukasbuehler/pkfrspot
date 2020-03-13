@@ -11,7 +11,7 @@
         [(ngModel)]="postTitle"
       />
     </mat-form-field>
-    <mat-tab-group>
+    <mat-tab-group (selectedIndexChange)="tabChanged($event.valueOf())">
       <mat-tab label="Upload Media">
         <div class="upload-media-box">
           <button
@@ -22,14 +22,14 @@
           >
             <mat-icon>attach_file</mat-icon>
           </button>
+          <input
+            #imageInput
+            hidden="true"
+            type="file"
+            onclick="this.value=null"
+            (change)="onSelectImage($event.target.files)"
+          />
           <mat-form-field>
-            <input
-              #imageInput
-              hidden="true"
-              type="file"
-              onclick="this.value=null"
-              (change)="onSelectImage($event.target.files)"
-            />
             <mat-label>Upload Media</mat-label>
             <input
               #filenameInput
@@ -51,20 +51,30 @@
         </div>
       </mat-tab>
       <mat-tab label="Link Media">
-        <span class="mat-small"
-          >Link YouTube videos, Vimeo videos, pictures and .mp4 videos.</span
-        >
         <mat-form-field>
           <mat-label>Link Media</mat-label>
-          <input #linkInput matInput name="link" type="text" />
+          <input
+            #linkInput
+            matInput
+            name="link"
+            type="text"
+            (input)="onLinkUpdate($event.target.value)"
+            [formControl]="linkInputFormControl"
+          />
           <mat-icon matSuffix>link</mat-icon>
           <mat-hint>{{
-            false ? "Platform: " + "TODO" : "Enter a media link"
+            mediaLink.text && mediaLink.platform
+              ? "Platform: " + mediaLink.platform + ", Video ID: " + mediaLink.id
+              : "Enter a media link"
           }}</mat-hint>
+          <mat-error *ngIf="linkInputFormControl.hasError('invalid')"
+            >The {{ mediaLink.platform ? mediaLink.platform : "media" }} link is
+            not valid!</mat-error
+          >
         </mat-form-field>
       </mat-tab>
     </mat-tab-group>
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>
         Content
       </mat-label>
