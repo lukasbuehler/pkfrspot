@@ -5,12 +5,10 @@
 mat-drawer-container {
   background-color: black;
 
-  @media (max-width:599px) 
-  {
+  @media (max-width: 599px) {
     height: calc(100% - 56px);
   }
-  @media (min-width:600px)
-  {
+  @media (min-width: 600px) {
     height: calc(100% - 64px);
   }
 }
@@ -44,11 +42,9 @@ mat-drawer {
 
 #searchFormField {
   width: 100%;
-  
 }
 
-.editCardContainer
-{
+.editCardContainer {
   position: absolute;
   padding: 10px;
   top: 85px;
@@ -58,8 +54,7 @@ mat-drawer {
 
   pointer-events: none;
 
-  @media (min-width: 768px) 
-  { 
+  @media (min-width: 768px) {
     top: 0px;
     right: 100px;
     left: 100px;
@@ -83,25 +78,26 @@ mat-drawer {
   top: 20px;
 }
 
-#saveBoundsEditFab {
+#saveBoundsEditFab,
+#createSpotFab {
   position: absolute;
   z-index: 2;
 
-  bottom: 20px;
-  right: 20px;
+  bottom: 30px;
+  right: 30px;
 }
 
 #searchSpotList {
   mat-card {
-    cursor: pointer
+    cursor: pointer;
   }
 }
 
 mat-card {
   ::ng-deep .mat-card-header-text {
-      width: 100%;
-      margin: 0;
-    }
+    width: 100%;
+    margin: 0;
+  }
 }
 
 #mapStyleFab {

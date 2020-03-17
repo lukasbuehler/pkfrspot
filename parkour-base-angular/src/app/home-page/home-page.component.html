@@ -1,80 +1,42 @@
-<mat-drawer-container autosize>
-  <mat-drawer
-    #followingDrawer
-    id="followingDrawer"
-    class="mat-elevation-z2 d-none d-md-block"
-    mode="side"
-    position="start"
-    opened="true"
-  >
-    <mat-card>
-      <mat-card-title>
-        Following
-        <button
-          mat-icon-button
-          #closeFollowingDrawerFab
-          id="closeFollowingDrawerFab"
-          (click)="followingDrawer.close()"
-        >
-          <mat-icon>navigate_before</mat-icon>
-        </button>
-      </mat-card-title>
-    </mat-card>
-  </mat-drawer>
-
-  <div>
-    <div class="container d-none d-md-block">
-      <div class="row">
-        <div class="col-md-6 text-center">
-          <app-post-collection
-            #updateCollection
-            [posts]="updatePosts"
-            [title]="'Updates'"
-          ></app-post-collection>
-        </div>
-        <div class="col-md-6 text-center">
-          <app-post-collection
-            [posts]=""
-            [title]="'Trending'"
-          ></app-post-collection>
-        </div>
+<div class="home-page-container">
+  <div class="container d-none d-md-block">
+    <div class="row">
+      <div class="col-md-6 text-center">
+        <app-post-collection
+          #updateCollection
+          [posts]="updatePosts"
+          [title]="'Updates'"
+        ></app-post-collection>
+      </div>
+      <div class="col-md-6 text-center">
+        <app-post-collection
+          [posts]=""
+          [title]="'Trending'"
+        ></app-post-collection>
       </div>
     </div>
-
-    <mat-tab-group mat-stretch-tabs class="d-md-none" mat-align-tabs="center">
-      <mat-tab label="Updates">
-        <div class="p-3">
-          <app-post-collection [posts]="updatePosts"></app-post-collection>
-        </div>
-      </mat-tab>
-      <mat-tab label="Trending">
-        <div class="p-3">
-          <app-post-collection [posts]=""></app-post-collection>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
   </div>
 
-  <button
-    *ngIf="isUserSignedIn"
-    mat-fab
-    #createFab
-    id="createFab"
-    (click)="createPost()"
-  >
-    <mat-icon aria-label="Button with pen to create a post">create</mat-icon>
-  </button>
+  <mat-tab-group mat-stretch-tabs class="d-md-none" mat-align-tabs="center">
+    <mat-tab label="Updates">
+      <div class="p-3">
+        <app-post-collection [posts]="updatePosts"></app-post-collection>
+      </div>
+    </mat-tab>
+    <mat-tab label="Trending">
+      <div class="p-3">
+        <app-post-collection [posts]=""></app-post-collection>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
 
-  <button
-    mat-mini-fab
-    #openFollowingFab
-    id="openFollowingFab"
-    class="d-none d-md-block"
-    (click)="followingDrawer.open()"
-    *ngIf="!followingDrawer.opened"
-  >
-    <mat-icon aria-label="Button with people on it to open the following drawer"
-      >people</mat-icon
-    >
-  </button>
-</mat-drawer-container>
+<button
+  *ngIf="isUserSignedIn"
+  mat-fab
+  #createFab
+  id="createFab"
+  (click)="createPost()"
+>
+  <mat-icon aria-label="Button with pen to create a post">create</mat-icon>
+</button>

@@ -1,5 +1,6 @@
 import { LatLngLiteral } from "@agm/core";
 import { DbDate, DbLocation } from "./Interfaces";
+import * as firebase from "firebase";
 
 export module Spot {
   export class Class {
@@ -25,23 +26,26 @@ export module Spot {
     }
 
     private makePathsFromBounds(
-      bounds: DbLocation[]
+      bounds: firebase.firestore.GeoPoint[]
     ): Array<Array<LatLngLiteral>> {
       let path: Array<Array<LatLngLiteral>> = [[]];
 
       for (let point of bounds) {
-        path[0].push({ lat: point._lat, lng: point._long });
+        path[0].push({
+          lat: point.latitude || point["_lat"],
+          lng: point.longitude || point["_long"]
+        });
       }
       return path;
     }
 
     private makeBoundsFromPaths(
       path: Array<Array<LatLngLiteral>>
-    ): DbLocation[] {
-      let bounds: DbLocation[] = [];
+    ): firebase.firestore.GeoPoint[] {
+      let bounds: firebase.firestore.GeoPoint[] = [];
 
       for (let point of path[0]) {
-        bounds.push({ _lat: point.lat, _long: point.lng });
+        bounds.push(new firebase.firestore.GeoPoint(point.lat, point.lng));
       }
 
       return bounds;
@@ -50,14 +54,15 @@ export module Spot {
 
   export interface Schema {
     name: string;
-    location: DbLocation;
+    location: firebase.firestore.GeoPoint;
+    tile_16: { x: number; y: number };
     address: string;
     image_src: string;
     type: string;
 
-    bounds: DbLocation[];
+    bounds: firebase.firestore.GeoPoint[];
 
-    time_created: DbDate;
+    time_created: firebase.firestore.Timestamp;
     time_updated: { seconds: number; nanoseconds: number };
   }
 }

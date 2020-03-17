@@ -30,8 +30,6 @@ export class HomePageComponent implements OnInit {
   @ViewChild("updateCollection", { static: true })
   updateCollection: PostCollectionComponent;
 
-  @ViewChild("followingDrawer", { static: true }) followingDrawer: MatDrawer;
-
   ngOnInit() {
     this._authService.state$.subscribe(
       user => {
@@ -73,10 +71,6 @@ export class HomePageComponent implements OnInit {
 
   getMorePosts() {
     // get More posts
-  }
-
-  scrolledDown() {
-    this.getMorePosts();
   }
 
   createPost() {

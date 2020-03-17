@@ -1,56 +1,149 @@
 <mat-drawer-container autosize>
-  <mat-drawer #startDrawer id="startDrawer" class="mat-elevation-z5" mode="side" position="start" opened="true">
+  <mat-drawer
+    #startDrawer
+    id="startDrawer"
+    class="mat-elevation-z5"
+    mode="side"
+    position="start"
+    opened="false"
+  >
     <h2 class="mat-h2">
       Search
-      <button mat-icon-button #closeStartDrawerFab id="closeStartDrawerFab"
-        (click)="startDrawer.close()">
+      <button
+        mat-icon-button
+        #closeStartDrawerFab
+        id="closeStartDrawerFab"
+        (click)="startDrawer.close()"
+      >
         <mat-icon>navigate_before</mat-icon>
       </button>
     </h2>
-      <mat-form-field #searchFormField id="searchFormField">
-        <input matInput placeholder="Search Spots">
-      </mat-form-field>
-    <div id="searchSpotList" >
-      <app-spot-card *ngFor="let spot of spots" [spot]="spot" [clickable]="true" [preview]="true" (click)="selectedSpot = spot; startDrawer.close()"></app-spot-card>
+    <mat-form-field #searchFormField id="searchFormField">
+      <input matInput placeholder="Search Spots" />
+    </mat-form-field>
+    <div id="searchSpotList">
+      <app-spot-card
+        *ngFor="let spot of searchSpots"
+        [spot]="spot"
+        [clickable]="true"
+        [preview]="true"
+        (click)="selectedSpot = spot; startDrawer.close()"
+      ></app-spot-card>
     </div>
   </mat-drawer>
 
-  <mat-drawer #endDrawer id="endDrawer" class="mat-elevation-z5" mode="side" position="end" [opened]="selectedSpot && !editing">
+  <mat-drawer
+    #endDrawer
+    id="endDrawer"
+    class="mat-elevation-z5"
+    mode="side"
+    position="end"
+    [opened]="selectedSpot && !editingBounds"
+  >
     <div *ngIf="selectedSpot">
-      <app-spot-card [spot]="selectedSpot" [flat]="true" [dismissable]="true" (dismiss)="selectedSpot = null;"
-        (edit)="editing = true;"></app-spot-card>
+      <app-spot-card
+        [spot]="selectedSpot"
+        [flat]="true"
+        [dismissable]="true"
+        (dismiss)="selectedSpot = null"
+        (edit)="editingBounds = true"
+      ></app-spot-card>
     </div>
   </mat-drawer>
 
-  <agm-map #map id="map" [latitude]="start_coordinates.lat" [longitude]="start_coordinates.lng"
-    [zoom]="15" [backgroundColor]="'#000a12'" [clickableIcons]="false" [disableDefaultUI]="true"
-    [zoomControl]="false" [streetViewControl]="false"
-    [fitBounds]="false" gestureHandling="'greedy'" [mapTypeId]="mapStyle" [styles]="mapStylesConfig"
-    (mapClick)="clickedMap($event)" >
-
-    
-    <agm-polygon *ngFor="let spot of spots" [paths]="spot.paths" [fillColor]="'#304ffe'" [strokeColor]="'#304ffe'" [fillOpacity]="0.15"
-      [editable]="editing"
-      (polyClick)="clickedSpot(spot)" (polyPathsChange)="pathsChanged($event)">
-      <agm-marker [agmFitBounds]="true" [latitude]="spot.data.location._lat"
-        [longitude]="spot.data.location._long" [title]="'Test'"></agm-marker>
+  <agm-map
+    #map
+    id="map"
+    [latitude]="start_coordinates.lat"
+    [longitude]="start_coordinates.lng"
+    [zoom]="3"
+    [backgroundColor]="'#000a12'"
+    [clickableIcons]="false"
+    [disableDefaultUI]="true"
+    [zoomControl]="false"
+    [streetViewControl]="true"
+    [fitBounds]="false"
+    gestureHandling="'greedy'"
+    [mapTypeId]="mapStyle"
+    [styles]="mapStylesConfig"
+    (mapClick)="clickedMap($event)"
+    (zoomChange)="zoomChanged($event)"
+    (boundsChange)="boundsChanged($event)"
+  >
+    <agm-polygon
+      *ngFor="let spot of visibleSpots"
+      [paths]="spot.paths"
+      [fillColor]="'#304ffe'"
+      [strokeColor]="'#304ffe'"
+      [fillOpacity]="0.15"
+      [editable]="editingBounds"
+      (polyClick)="clickedSpot(spot)"
+      (polyPathsChange)="pathsChanged($event)"
+    >
+      <agm-marker
+        *ngIf="spot === selectedSpot"
+        [agmFitBounds]="true"
+        [latitude]="spot.data.location.latitude"
+        [longitude]="spot.data.location.longitude"
+        [title]="'Test'"
+        iconUrl="/assets/icons/marker.png"
+        [markerDraggable]="false"
+        [markerClickable]="false"
+      ></agm-marker>
     </agm-polygon>
 
-    <agm-marker *ngIf="droppedMarkerLocation" #droppedMarker id="droppedMarker" [latitude]="droppedMarkerLocation.lat" [longitude]="droppedMarkerLocation.lng"></agm-marker>
+    <agm-marker
+      *ngIf="droppedMarkerLocation"
+      #droppedMarker
+      id="droppedMarker"
+      [latitude]="droppedMarkerLocation.lat"
+      [longitude]="droppedMarkerLocation.lng"
+      iconUrl="/assets/icons/marker.png"
+      [markerDraggable]="true"
+      [markerClickable]="true"
+    ></agm-marker>
   </agm-map>
 
   <button mat-fab #searchFab id="searchFab" (click)="startDrawer.open()">
-    <mat-icon aria-label="Button with magnifying lens to search for spots">search</mat-icon>
+    <mat-icon aria-label="Button with magnifying lens to search for spots"
+      >search</mat-icon
+    >
   </button>
 
-  <button mat-mini-fab #mapStyleFab color="white" id="mapStyleFab" (click)="toggleMapStyle()">
+  <button
+    mat-mini-fab
+    #mapStyleFab
+    color="white"
+    id="mapStyleFab"
+    (click)="toggleMapStyle()"
+  >
     <mat-icon aria-label="Button with magnifying lens to search for spots">
-      {{ (mapStyle === 'roadmap') ? 'terrain' : 'map' }}
+      {{ mapStyle === "roadmap" ? "terrain" : "map" }}
     </mat-icon>
   </button>
 
-  <button *ngIf="editing" mat-fab #saveBoundsEditFab id="saveBoundsEditFab" (click)="saveBoundsEdit()">
-    <mat-icon aria-label="Button with check mark to stop editing the bounds of the spot">check</mat-icon>
+  <button
+    *ngIf="!editingBounds"
+    mat-fab
+    #createSpotFab
+    id="createSpotFab"
+    (click)="createSpot()"
+  >
+    <mat-icon aria-label="Button with plus to create a new spot"
+      >add_location</mat-icon
+    >
+  </button>
+
+  <button
+    *ngIf="editingBounds"
+    mat-fab
+    #saveBoundsEditFab
+    id="saveBoundsEditFab"
+    (click)="saveBoundsEdit()"
+  >
+    <mat-icon
+      aria-label="Button with check mark to stop editing the bounds of the spot"
+      >check</mat-icon
+    >
   </button>
 </mat-drawer-container>
-

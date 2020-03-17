@@ -1,31 +1,15 @@
-::ng-deep app-home-page {
-  height: 100%;
-}
-
-mat-drawer-container {
-  background: none;
-
+.home-page-container {
   @media (max-width: 599px) {
     height: calc(100% - 56px);
   }
   @media (min-width: 600px) {
     height: calc(100% - 64px);
   }
+  overflow: hidden;
+}
 
-  mat-drawer {
-    border: none;
-    padding: 10px;
-
-    mat-card {
-      height: 100%;
-    }
-  }
-
-  ::ng-deep mat-drawer-content,
-  ::ng-deep mat-drawer-content > div {
-    height: 100%;
-    overflow: hidden;
-  }
+::ng-deep app-home-page {
+  height: 100%;
 }
 
 ::ng-deep mat-dialog-container {

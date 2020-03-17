@@ -153,17 +153,49 @@ export class DatabaseService {
     });
   }
 
+  getSpotsForTiles(tiles: { x: number; y: number }[]) {
+    return new Observable<Spot.Class[]>(observer => {
+      for (let tile of tiles) {
+        this.db
+          .collection("spots", ref =>
+            ref
+              .where("tile_16.x", "==", tile.x)
+              .where("tile_16.y", "==", tile.y)
+          )
+          .get()
+          .subscribe(
+            snapshot => {
+              let newSpots: Spot.Class[] = [];
+
+              snapshot.forEach(doc => {
+                if (doc.data() as Spot.Schema) {
+                  let newSpot: Spot.Class = new Spot.Class(
+                    doc.id,
+                    doc.data() as Spot.Schema
+                  );
+                  newSpots.push(newSpot);
+                } else {
+                  console.error("Spot could not be cast to Spot.Schema!");
+                }
+              });
+
+              observer.next(newSpots);
+            },
+            error => {
+              observer.error(error);
+            }
+          );
+      }
+    });
+  }
+
   getSpotSearch(searchString: string): Observable<Spot.Class[]> {
     return new Observable<any[]>(observer => {
       this.db.collection("spots").get();
     });
   }
 
-  getSpotsOnMap() {}
-
   setSpot(spot: Spot.Class): Observable<any> {
-    let spotId: string = spot.id;
-
     return new Observable<any>(observer => {
       this.db
         .collection("spots")
