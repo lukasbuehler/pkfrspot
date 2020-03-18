@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: "", component: HomePageComponent },
   { path: "home", redirectTo: "/", pathMatch: "full" },
   { path: "map", component: MapPageComponent },
+  { path: "map/:spot", component: MapPageComponent },
   { path: "wiki", component: WikiPageComponent },
   { path: "teams", component: SignInPageComponent },
   { path: "sign-in", component: SignInPageComponent },

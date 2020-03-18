@@ -14,6 +14,8 @@ import {
 import { MapStyle } from "src/scripts/MapStyle";
 import { Spot } from "src/scripts/db/Spot";
 import { MapHelper } from "./map_helper";
+import { ActivatedRoute } from "@angular/router";
+import { Location } from "@angular/common";
 
 @Component({
   selector: "app-map-page",
@@ -33,12 +35,19 @@ export class MapPageComponent implements OnInit {
   droppedMarkerLocation = null;
 
   // The default coordinates are Paris, the origin of parkour.
-  start_coordinates = {
+  // modiying this resets the map
+  start_coordinates: LatLngLiteral = {
     lat: 48.8517386,
     lng: 2.298386
   };
 
-  private _zoom: number = 3;
+  // these are updated from user input
+  center_coordinates: LatLngLiteral = {
+    lat: 0,
+    lng: 0
+  };
+
+  zoom: number = 3;
   private readonly _loadSpotsZoomLevel: number = 16;
 
   visibleSpots: Spot.Class[] = [];
@@ -48,22 +57,45 @@ export class MapPageComponent implements OnInit {
   private _northEastTileCoords: google.maps.Point;
   private _southWestTileCoords: google.maps.Point;
 
-  constructor(private _dbService: DatabaseService) {}
+  constructor(
+    private _dbService: DatabaseService,
+    private route: ActivatedRoute,
+    private location: Location
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    let spotId: string = this.route.snapshot.paramMap.get("spot") || "";
+    let lat = this.route.snapshot.queryParamMap.get("lat") || null;
+    let lng = this.route.snapshot.queryParamMap.get("lng") || null;
+    let zoom = this.route.snapshot.queryParamMap.get("z") || null;
+
+    if (spotId) {
+      //openSpot(spotId);
+      console.log("SpotId = " + spotId);
+
+      if (lat && lng) {
+        this.start_coordinates.lat = Number(lat);
+        this.start_coordinates.lng = Number(lng);
+        this.zoom = Number(zoom);
+      } else {
+      }
+    }
+
+    if (lat && lng) {
+      this.start_coordinates.lat = Number(lat);
+      this.start_coordinates.lng = Number(lng);
+      this.zoom = Number(zoom);
+    }
+  }
 
   clickedMap(coords) {
     console.log(coords);
     this.droppedMarkerLocation = coords.coords;
-    console.log(MapHelper.getTileCoordinates(coords.coords, this._zoom));
-  }
-
-  zoomChanged(zoomLevel: number) {
-    this._zoom = zoomLevel;
+    console.log(MapHelper.getTileCoordinates(coords.coords, this.zoom));
   }
 
   boundsChanged(bounds: LatLngBounds) {
-    let zoomLevel = this._zoom;
+    let zoomLevel = this.zoom;
     if (zoomLevel >= this._loadSpotsZoomLevel) {
       // inside this zoom level we are constantly loading spots if new tiles become visible
 
@@ -91,6 +123,21 @@ export class MapPageComponent implements OnInit {
       this.loadNewSpotOnTiles(northEastTileCoords, southWestTileCoords);
       this.updateVisibleSpots();
     }
+  }
+
+  centerChanged(center: LatLngLiteral) {
+    this.center_coordinates.lat = center.lat;
+    this.center_coordinates.lng = center.lng;
+    this.upadateMapURL(center, this.zoom);
+  }
+
+  zoomChanged(newZoom: number) {
+    this.zoom = newZoom;
+    this.upadateMapURL(this.center_coordinates, newZoom);
+  }
+
+  upadateMapURL(center: LatLngLiteral, zoom: number) {
+    this.location.go(`/map?lat=${center.lat}&lng=${center.lng}&z=${zoom}`);
   }
 
   /**
@@ -203,4 +250,8 @@ export class MapPageComponent implements OnInit {
       () => {} // complete
     );
   }
+
+  openSpot() {}
+
+  shareSpot() {}
 }

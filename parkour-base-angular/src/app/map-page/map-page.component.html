@@ -56,7 +56,7 @@
     id="map"
     [latitude]="start_coordinates.lat"
     [longitude]="start_coordinates.lng"
-    [zoom]="3"
+    [zoom]="this.zoom"
     [backgroundColor]="'#000a12'"
     [clickableIcons]="false"
     [disableDefaultUI]="true"
@@ -67,8 +67,9 @@
     [mapTypeId]="mapStyle"
     [styles]="mapStylesConfig"
     (mapClick)="clickedMap($event)"
-    (zoomChange)="zoomChanged($event)"
     (boundsChange)="boundsChanged($event)"
+    (centerChange)="centerChanged($event)"
+    (zoomChange)="zoomChanged($event)"
   >
     <agm-polygon
       *ngFor="let spot of visibleSpots"
