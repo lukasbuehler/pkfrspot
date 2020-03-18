@@ -252,6 +252,4 @@ export class MapPageComponent implements OnInit {
   }
 
   openSpot() {}
-
-  shareSpot() {}
 }
