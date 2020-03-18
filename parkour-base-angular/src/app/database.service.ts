@@ -153,6 +153,24 @@ export class DatabaseService {
     });
   }
 
+  getSpotById(spotId: string) {
+    return new Observable<Spot.Class>(observer => {
+      this.db
+        .collection<Spot.Schema>("spots")
+        .doc<Spot.Schema>(spotId)
+        .get()
+        .subscribe(
+          snap => {
+            let spot = new Spot.Class(snap.id, snap.data() as Spot.Schema);
+            observer.next(spot);
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
+  }
+
   getSpotsForTiles(tiles: { x: number; y: number }[]) {
     return new Observable<Spot.Class[]>(observer => {
       for (let tile of tiles) {

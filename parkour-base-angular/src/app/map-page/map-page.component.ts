@@ -70,15 +70,24 @@ export class MapPageComponent implements OnInit {
     let zoom = this.route.snapshot.queryParamMap.get("z") || null;
 
     if (spotId) {
-      //openSpot(spotId);
-      console.log("SpotId = " + spotId);
-
-      if (lat && lng) {
-        this.start_coordinates.lat = Number(lat);
-        this.start_coordinates.lng = Number(lng);
-        this.zoom = Number(zoom);
-      } else {
-      }
+      this._dbService.getSpotById(spotId).subscribe(spot => {
+        this.selectedSpot = spot;
+        if (lat && lng && zoom && lat) {
+          let _lat = Number(lat);
+          let _lng = Number(lng);
+          if (!(_lat === 0 && _lng === 0)) {
+            this.start_coordinates.lat = _lat;
+            this.start_coordinates.lng = _lng;
+            this.zoom = Number(zoom);
+          }
+        } else {
+          this.start_coordinates.lat = spot.data.location.latitude;
+          this.start_coordinates.lng = spot.data.location.longitude;
+          this.zoom = 19;
+        }
+      });
+      console.log("Loading spot");
+      // Show loading spot to open
     }
 
     if (lat && lng) {
@@ -137,7 +146,13 @@ export class MapPageComponent implements OnInit {
   }
 
   upadateMapURL(center: LatLngLiteral, zoom: number) {
-    this.location.go(`/map?lat=${center.lat}&lng=${center.lng}&z=${zoom}`);
+    if (this.selectedSpot) {
+      this.location.go(
+        `/map/${this.selectedSpot.id}?lat=${center.lat}&lng=${center.lng}&z=${zoom}`
+      );
+    } else {
+      this.location.go(`/map?lat=${center.lat}&lng=${center.lng}&z=${zoom}`);
+    }
   }
 
   /**
@@ -207,6 +222,7 @@ export class MapPageComponent implements OnInit {
   clickedSpot(spot: Spot.Class) {
     this.selectedSpot = spot;
     this.editingPaths = spot.paths;
+    this.upadateMapURL(this.center_coordinates, this.zoom);
   }
 
   saveBoundsEdit() {
@@ -252,4 +268,13 @@ export class MapPageComponent implements OnInit {
   }
 
   openSpot() {}
+
+  editSpot() {
+    this.editingBounds = true;
+  }
+
+  closeSpot() {
+    this.selectedSpot = null;
+    this.upadateMapURL(this.center_coordinates, this.zoom);
+  }
 }

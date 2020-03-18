@@ -45,8 +45,8 @@
         [spot]="selectedSpot"
         [flat]="true"
         [dismissable]="true"
-        (dismiss)="selectedSpot = null"
-        (edit)="editingBounds = true"
+        (dismiss)="closeSpot()"
+        (edit)="editSpot()"
       ></app-spot-card>
     </div>
   </mat-drawer>
@@ -82,7 +82,7 @@
       (polyPathsChange)="pathsChanged($event)"
     >
       <agm-marker
-        *ngIf="spot === selectedSpot"
+        *ngIf="selectedSpot && spot.id === selectedSpot.id"
         [agmFitBounds]="true"
         [latitude]="spot.data.location.latitude"
         [longitude]="spot.data.location.longitude"
