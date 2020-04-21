@@ -3,7 +3,9 @@ import { LatLngLiteral } from "@agm/core";
 export module MapHelper {
   const TILE_SIZE = 256;
 
-  export function mercator_projection(latLng: LatLngLiteral) {
+  export function mercator_projection(
+    latLng: LatLngLiteral
+  ): google.maps.Point {
     var siny = Math.sin((latLng.lat * Math.PI) / 180);
 
     // Truncating to 0.9999 effectively limits latitude to 89.189. This is
@@ -16,7 +18,10 @@ export module MapHelper {
     );
   }
 
-  export function getTileCoordinates(latLng: LatLngLiteral, zoom: number) {
+  export function getTileCoordinates(
+    latLng: LatLngLiteral,
+    zoom: number
+  ): google.maps.Point {
     var scale = 1 << zoom; // 2^zoom
 
     var worldCoordinate = mercator_projection(latLng);

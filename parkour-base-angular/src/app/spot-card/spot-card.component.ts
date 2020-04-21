@@ -33,7 +33,7 @@ export class SpotCardComponent implements OnInit {
 
     let link = baseUrl + "/map/" + this.spot.id;
 
-    if (navigator.share) {
+    if (navigator["share"]) {
       try {
         const shareData = {
           title: "Spot: " + this.spot.data.name,
