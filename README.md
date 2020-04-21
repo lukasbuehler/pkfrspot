@@ -12,7 +12,7 @@ This platform is still a work in progress and might not be functional at this po
 
 Lukas Bühler [contact@lukasbuehler.ch](mailto:contact.lukasbuehler.ch)
 
-### Nameing suggestions welcome
+### Naming suggestions welcome
 
 The name "Parkour-Base" is not final and only the name for the projet while in development. Suggestions welcome.
 
