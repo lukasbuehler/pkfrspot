@@ -136,6 +136,18 @@
   </button>
 
   <button
+    color="white"
+    *ngIf="editingBounds"
+    mat-mini-fab
+    #exitBoundsEditFab
+    id="exitBoundsEditFab"
+    (click)="stopEditingSpot()"
+  >
+    <mat-icon aria-label="Button with cross to spot editing">
+      close
+    </mat-icon>
+  </button>
+  <button
     *ngIf="editingBounds"
     mat-fab
     #saveBoundsEditFab

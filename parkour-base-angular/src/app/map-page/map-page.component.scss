@@ -87,6 +87,13 @@ mat-drawer {
   right: 30px;
 }
 
+#exitBoundsEditFab {
+  position: absolute;
+  z-index: 2;
+  right: 38px;
+  bottom: 95px;
+}
+
 #searchSpotList {
   mat-card {
     cursor: pointer;

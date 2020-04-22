@@ -9,7 +9,7 @@ import {
   AgmPolygon,
   PolygonManager,
   LatLngBounds,
-  LatLng
+  LatLng,
 } from "@agm/core";
 import { MapStyle } from "src/scripts/MapStyle";
 import { Spot } from "src/scripts/db/Spot";
@@ -20,7 +20,7 @@ import { Location } from "@angular/common";
 @Component({
   selector: "app-map-page",
   templateUrl: "./map-page.component.html",
-  styleUrls: ["./map-page.component.scss"]
+  styleUrls: ["./map-page.component.scss"],
 })
 export class MapPageComponent implements OnInit {
   @ViewChild("map", { static: true }) map: AgmMap;
@@ -38,13 +38,13 @@ export class MapPageComponent implements OnInit {
   // modiying this resets the map
   start_coordinates: LatLngLiteral = {
     lat: 48.8517386,
-    lng: 2.298386
+    lng: 2.298386,
   };
 
   // these are updated from user input
   center_coordinates: LatLngLiteral = {
     lat: 0,
-    lng: 0
+    lng: 0,
   };
 
   zoom: number = 3;
@@ -70,7 +70,7 @@ export class MapPageComponent implements OnInit {
     let zoom = this.route.snapshot.queryParamMap.get("z") || null;
 
     if (spotId) {
-      this._dbService.getSpotById(spotId).subscribe(spot => {
+      this._dbService.getSpotById(spotId).subscribe((spot) => {
         this.selectedSpot = spot;
         if (lat && lng && zoom && lat) {
           let _lat = Number(lat);
@@ -110,11 +110,11 @@ export class MapPageComponent implements OnInit {
 
       let northEastLiteral: LatLngLiteral = {
         lat: bounds.getNorthEast().lat(),
-        lng: bounds.getNorthEast().lng()
+        lng: bounds.getNorthEast().lng(),
       };
       let southWestLiteral: LatLngLiteral = {
         lat: bounds.getSouthWest().lat(),
-        lng: bounds.getSouthWest().lng()
+        lng: bounds.getSouthWest().lng(),
       };
 
       let northEastTileCoords = MapHelper.getTileCoordinates(
@@ -228,13 +228,13 @@ export class MapPageComponent implements OnInit {
   saveBoundsEdit() {
     this.selectedSpot.paths = this.editingPaths;
     this._dbService.setSpot(this.selectedSpot).subscribe(
-      value => {
+      (value) => {
         console.log("Successful save!");
         console.log(value);
 
         this.editingBounds = false;
       },
-      error => {
+      (error) => {
         console.error(error);
       },
       () => {}
@@ -253,14 +253,14 @@ export class MapPageComponent implements OnInit {
 
   loadSpotsForTiles(tilesToLoad: { x: number; y: number }[]) {
     this._dbService.getSpotsForTiles(tilesToLoad).subscribe(
-      spots => {
+      (spots) => {
         if (spots.length > 0) {
           let tile = spots[0].data.tile_16;
           this.loadedSpots[`${tile.x}_${tile.y}`] = spots;
           this.updateVisibleSpots();
         }
       },
-      error => {
+      (error) => {
         console.error(error);
       },
       () => {} // complete
@@ -271,6 +271,9 @@ export class MapPageComponent implements OnInit {
 
   editSpot() {
     this.editingBounds = true;
+  }
+  stopEditingSpot() {
+    this.editingBounds = false;
   }
 
   closeSpot() {
