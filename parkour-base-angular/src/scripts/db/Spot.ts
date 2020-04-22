@@ -33,7 +33,7 @@ export module Spot {
       for (let point of bounds) {
         path[0].push({
           lat: point.latitude || point["_lat"],
-          lng: point.longitude || point["_long"]
+          lng: point.longitude || point["_long"],
         });
       }
       return path;
@@ -59,6 +59,7 @@ export module Spot {
     address: string;
     image_src: string;
     type: string;
+    rating: number;
 
     bounds: firebase.firestore.GeoPoint[];
 

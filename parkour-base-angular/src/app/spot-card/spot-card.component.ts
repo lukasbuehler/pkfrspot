@@ -4,7 +4,7 @@ import { Spot } from "src/scripts/db/Spot";
 @Component({
   selector: "app-spot-card",
   templateUrl: "./spot-card.component.html",
-  styleUrls: ["./spot-card.component.scss"]
+  styleUrls: ["./spot-card.component.scss"],
 })
 export class SpotCardComponent implements OnInit {
   @Input() spot: Spot.Class;
@@ -38,7 +38,7 @@ export class SpotCardComponent implements OnInit {
         const shareData = {
           title: "Spot: " + this.spot.data.name,
           text: `Parkour Base Spot: ${this.spot.data.name} (${this.spot.data.type}) at ${this.spot.data.address}`,
-          url: link
+          url: link,
         };
 
         await navigator["share"](shareData);

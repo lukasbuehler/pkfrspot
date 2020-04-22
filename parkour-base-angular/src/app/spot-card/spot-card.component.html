@@ -17,7 +17,15 @@
       </button>
       {{ spot.data.name }}
     </mat-card-title>
-    <mat-card-subtitle>{{ spot.data.type }}</mat-card-subtitle>
+    <mat-card-subtitle>
+      {{ spot.data.type }}
+      <app-rating
+        class="float-right"
+        *ngIf="spot?.data?.rating"
+        [rating]="spot.data.rating"
+        color="accent"
+      ></app-rating>
+    </mat-card-subtitle>
   </mat-card-header>
   <img mat-card-image src="{{ spot.data.image_src }}" />
   <mat-card-content>

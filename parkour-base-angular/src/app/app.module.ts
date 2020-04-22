@@ -50,6 +50,7 @@ import { SpotCardComponent } from "./spot-card/spot-card.component";
 import { SignInPageComponent } from "./sign-in-page/sign-in-page.component";
 import { EditPostDialogComponent } from "./edit-post-dialog/edit-post-dialog.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { RatingComponent } from './rating/rating.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     PostComponent,
     SpotCardComponent,
     SignInPageComponent,
-    EditPostDialogComponent
+    EditPostDialogComponent,
+    RatingComponent
   ],
   entryComponents: [EditPostDialogComponent],
   imports: [

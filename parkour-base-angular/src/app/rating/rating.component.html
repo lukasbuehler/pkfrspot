@@ -1,0 +1,22 @@
+<div
+  class="rating-container"
+  *ngIf="rating"
+  [matTooltip]="rating + '/' + 10"
+  matTooltipPosition="above"
+>
+  <mat-icon
+    [color]="color"
+    *ngFor="let number of makeIndexNumberArray(ratingFullStars)"
+  >
+    star
+  </mat-icon>
+  <mat-icon [color]="color" *ngIf="ratingHalfStar">
+    star_half
+  </mat-icon>
+  <mat-icon
+    [color]="color"
+    *ngFor="let number of makeIndexNumberArray(ratingEmptyStars)"
+  >
+    star_border
+  </mat-icon>
+</div>
