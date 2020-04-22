@@ -71,6 +71,20 @@
     (centerChange)="centerChanged($event)"
     (zoomChange)="zoomChanged($event)"
   >
+    <agm-circle
+      *ngFor="let dot of visibleDots"
+      [fillColor]="'#304ffe'"
+      [latitude]="dot.location.latitude"
+      [longitude]="dot.location.longitude"
+      [circleDraggable]="false"
+      [circleDraggable]="false"
+      [strokeWeight]="0"
+      [strokeOpacity]="0"
+      [radius]="getDotRadius(zoom, dot.location)"
+      [visible]="true"
+      [fillOpacity]="1"
+    ></agm-circle>
+
     <agm-polygon
       *ngFor="let spot of visibleSpots"
       [paths]="spot.paths"
@@ -81,17 +95,17 @@
       (polyClick)="clickedSpot(spot)"
       (polyPathsChange)="pathsChanged($event)"
     >
-      <agm-marker
-        *ngIf="selectedSpot && spot.id === selectedSpot.id"
-        [agmFitBounds]="true"
-        [latitude]="spot.data.location.latitude"
-        [longitude]="spot.data.location.longitude"
-        [title]="'Test'"
-        iconUrl="/assets/icons/marker.png"
-        [markerDraggable]="false"
-        [markerClickable]="false"
-      ></agm-marker>
     </agm-polygon>
+    <agm-marker
+      *ngIf="selectedSpot"
+      [agmFitBounds]="true"
+      [latitude]="selectedSpot.data.location.latitude"
+      [longitude]="selectedSpot.data.location.longitude"
+      [title]="'Test'"
+      iconUrl="/assets/icons/marker.png"
+      [markerDraggable]="false"
+      [markerClickable]="false"
+    ></agm-marker>
 
     <agm-marker
       *ngIf="droppedMarkerLocation"

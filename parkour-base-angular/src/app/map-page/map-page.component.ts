@@ -48,11 +48,14 @@ export class MapPageComponent implements OnInit {
   };
 
   zoom: number = 3;
-  private readonly _loadSpotsZoomLevel: number = 16;
+  private readonly _loadSpotsZoomLevel: number = 16; // This is fixed for the platform and should not be changed
+  // TODO ensure this is is constant with storing it somewhere else
 
   visibleSpots: Spot.Class[] = [];
   searchSpots: Spot.Class[] = [];
-  loadedSpots: any[] = []; // is a map of tile coords to spot arrays
+  loadedSpots: any = {}; // is a map of tile coords to spot arrays
+  visibleDots: any[] = [];
+  loadedDots: any[] = [];
 
   private _northEastTileCoords: google.maps.Point;
   private _southWestTileCoords: google.maps.Point;
@@ -83,11 +86,12 @@ export class MapPageComponent implements OnInit {
         } else {
           this.start_coordinates.lat = spot.data.location.latitude;
           this.start_coordinates.lng = spot.data.location.longitude;
-          this.zoom = 19;
+          this.zoom = 18;
         }
       });
-      console.log("Loading spot");
+      console.log("Loading spot " + spotId);
       // Show loading spot to open
+      // TODO snackbar
     }
 
     if (lat && lng) {
@@ -105,17 +109,19 @@ export class MapPageComponent implements OnInit {
 
   boundsChanged(bounds: LatLngBounds) {
     let zoomLevel = this.zoom;
-    if (zoomLevel >= this._loadSpotsZoomLevel) {
-      // inside this zoom level we are constantly loading spots if new tiles become visible
 
-      let northEastLiteral: LatLngLiteral = {
-        lat: bounds.getNorthEast().lat(),
-        lng: bounds.getNorthEast().lng(),
-      };
-      let southWestLiteral: LatLngLiteral = {
-        lat: bounds.getSouthWest().lat(),
-        lng: bounds.getSouthWest().lng(),
-      };
+    let northEastLiteral: LatLngLiteral = {
+      lat: bounds.getNorthEast().lat(),
+      lng: bounds.getNorthEast().lng(),
+    };
+    let southWestLiteral: LatLngLiteral = {
+      lat: bounds.getSouthWest().lat(),
+      lng: bounds.getSouthWest().lng(),
+    };
+
+    if (zoomLevel >= this._loadSpotsZoomLevel) {
+      this.visibleDots = [];
+      // inside this zoom level we are constantly loading spots if new tiles become visible
 
       let northEastTileCoords = MapHelper.getTileCoordinates(
         northEastLiteral,
@@ -131,7 +137,34 @@ export class MapPageComponent implements OnInit {
 
       this.loadNewSpotOnTiles(northEastTileCoords, southWestTileCoords);
       this.updateVisibleSpots();
+    } else {
+      // hide the spots and show the clusters
+      if (zoomLevel <= this._loadSpotsZoomLevel - 2) {
+        this.visibleSpots = [];
+
+        let northEastTileCoords = MapHelper.getTileCoordinates(
+          northEastLiteral,
+          this._loadSpotsZoomLevel
+        );
+        let southWestTileCoords = MapHelper.getTileCoordinates(
+          southWestLiteral,
+          this._loadSpotsZoomLevel
+        );
+
+        this.loadNewSpotDotsOnTiles(
+          zoomLevel,
+          northEastTileCoords,
+          southWestTileCoords
+        );
+        this.updateVisibleDots();
+      }
     }
+  }
+
+  getDotRadius(zoom, location) {
+    let mercator = Math.cos((location.latitude * Math.PI) / 180);
+    let radius = 5 * (1 << (16 - zoom)) * (1 / mercator);
+    return radius;
   }
 
   centerChanged(center: LatLngLiteral) {
@@ -207,8 +240,26 @@ export class MapPageComponent implements OnInit {
         }
       }
     }
-
     this.loadSpotsForTiles(tilesToLoad);
+  }
+
+  loadNewSpotDotsOnTiles(
+    zoom: number,
+    northEastTileCoords: google.maps.Point,
+    southWestTileCoords: google.maps.Point
+  ) {}
+
+  updateVisibleDots() {
+    this.visibleDots = [];
+    for (let spot of this.loadedSpots["34368_22995"]) {
+      this.visibleDots.push({
+        location: {
+          latitude: spot.data.location.latitude,
+          longitude: spot.data.location.longitude,
+        },
+        value: 1,
+      });
+    }
   }
 
   toggleMapStyle() {
@@ -255,7 +306,7 @@ export class MapPageComponent implements OnInit {
     this._dbService.getSpotsForTiles(tilesToLoad).subscribe(
       (spots) => {
         if (spots.length > 0) {
-          let tile = spots[0].data.tile_16;
+          let tile = spots[0].data.tile_coordinates.z16;
           this.loadedSpots[`${tile.x}_${tile.y}`] = spots;
           this.updateVisibleSpots();
         }

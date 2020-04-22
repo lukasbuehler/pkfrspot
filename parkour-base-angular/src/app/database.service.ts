@@ -6,14 +6,14 @@ import { Spot } from "src/scripts/db/Spot";
 
 import {
   AngularFirestore,
-  AngularFirestoreCollection
+  AngularFirestoreCollection,
 } from "@angular/fire/firestore";
 
 import { Observable } from "rxjs";
 import { Like } from "src/scripts/db/Like";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class DatabaseService {
   constructor(private db: AngularFirestore) {}
@@ -26,10 +26,10 @@ export class DatabaseService {
     this.db
       .collection<Post.Schema>("posts")
       .add(newPost)
-      .then(docRef => {
+      .then((docRef) => {
         console.log("Post Document written with ID: " + docRef.id);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error adding Post Document: ", error);
         console.log(newPost);
 
@@ -44,14 +44,14 @@ export class DatabaseService {
         .doc(userId)
         .get()
         .subscribe(
-          snap => {
+          (snap) => {
             if (snap.exists) {
               resolve(true);
             } else {
               resolve(false);
             }
           },
-          error => {
+          (error) => {
             reject(error);
           }
         );
@@ -71,7 +71,7 @@ export class DatabaseService {
       .then(() => {
         console.log("Added like on " + postId + " for " + userUID);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Couldn't add like.", error);
       });
   }
@@ -84,31 +84,31 @@ export class DatabaseService {
       .then(() => {
         console.log("Your like was removed successfully");
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Couldn't remove your like");
         console.error(error);
       });
   }
 
   getPostUpdates(): Observable<any> {
-    return new Observable<any>(observer => {
+    return new Observable<any>((observer) => {
       let snapshotChanges = this.db
-        .collection<Post.Schema>("posts", ref =>
+        .collection<Post.Schema>("posts", (ref) =>
           ref.orderBy("time_posted", "desc")
         )
         .snapshotChanges();
 
       snapshotChanges.subscribe(
-        changeActions => {
+        (changeActions) => {
           let postSchemasMap: any = {};
-          changeActions.forEach(action => {
+          changeActions.forEach((action) => {
             const id = action.payload.doc.id;
             postSchemasMap[id] = action.payload.doc.data();
           });
 
           observer.next(postSchemasMap);
         },
-        error => {
+        (error) => {
           observer.error(error);
         }
       );
@@ -118,15 +118,15 @@ export class DatabaseService {
   getTrendingPosts() {}
 
   getTestSpots(): Observable<Spot.Class[]> {
-    return new Observable<Spot.Class[]>(observer => {
+    return new Observable<Spot.Class[]>((observer) => {
       this.db
         .collection("spots")
         .get()
         .subscribe(
-          querySnapshot => {
+          (querySnapshot) => {
             let spots: Spot.Class[] = [];
 
-            querySnapshot.forEach(doc => {
+            querySnapshot.forEach((doc) => {
               if (doc.data() as Spot.Schema) {
                 let newSpot: Spot.Class = new Spot.Class(
                   doc.id,
@@ -144,7 +144,7 @@ export class DatabaseService {
             observer.next(spots);
             observer.complete();
           },
-          error => {
+          (error) => {
             observer.error(error);
             observer.complete();
           },
@@ -154,17 +154,17 @@ export class DatabaseService {
   }
 
   getSpotById(spotId: string) {
-    return new Observable<Spot.Class>(observer => {
+    return new Observable<Spot.Class>((observer) => {
       this.db
         .collection<Spot.Schema>("spots")
         .doc<Spot.Schema>(spotId)
         .get()
         .subscribe(
-          snap => {
+          (snap) => {
             let spot = new Spot.Class(snap.id, snap.data() as Spot.Schema);
             observer.next(spot);
           },
-          error => {
+          (error) => {
             observer.error(error);
           }
         );
@@ -172,20 +172,20 @@ export class DatabaseService {
   }
 
   getSpotsForTiles(tiles: { x: number; y: number }[]) {
-    return new Observable<Spot.Class[]>(observer => {
+    return new Observable<Spot.Class[]>((observer) => {
       for (let tile of tiles) {
         this.db
-          .collection("spots", ref =>
+          .collection("spots", (ref) =>
             ref
-              .where("tile_16.x", "==", tile.x)
-              .where("tile_16.y", "==", tile.y)
+              .where("tile_coordinates.z16.x", "==", tile.x)
+              .where("tile_coordinates.z16.y", "==", tile.y)
           )
           .get()
           .subscribe(
-            snapshot => {
+            (snapshot) => {
               let newSpots: Spot.Class[] = [];
 
-              snapshot.forEach(doc => {
+              snapshot.forEach((doc) => {
                 if (doc.data() as Spot.Schema) {
                   let newSpot: Spot.Class = new Spot.Class(
                     doc.id,
@@ -199,7 +199,7 @@ export class DatabaseService {
 
               observer.next(newSpots);
             },
-            error => {
+            (error) => {
               observer.error(error);
             }
           );
@@ -208,27 +208,27 @@ export class DatabaseService {
   }
 
   getSpotSearch(searchString: string): Observable<Spot.Class[]> {
-    return new Observable<any[]>(observer => {
+    return new Observable<any[]>((observer) => {
       this.db.collection("spots").get();
     });
   }
 
   setSpot(spot: Spot.Class): Observable<any> {
-    return new Observable<any>(observer => {
+    return new Observable<any>((observer) => {
       this.db
         .collection("spots")
         .doc(spot.id)
         .set(spot.data)
         .then(
-          /* fulfilled */ value => {
+          /* fulfilled */ (value) => {
             observer.next(value);
             observer.complete();
           },
-          /* rejected */ reason => {
+          /* rejected */ (reason) => {
             observer.error(reason);
           }
         )
-        .catch(error => {
+        .catch((error) => {
           observer.error(error);
         });
     });

@@ -37,7 +37,7 @@ export class SpotCardComponent implements OnInit {
       try {
         const shareData = {
           title: "Spot: " + this.spot.data.name,
-          text: `Parkour Base Spot: ${this.spot.data.name} (${this.spot.data.type}) at ${this.spot.data.address}`,
+          text: `Parkour Base Spot: ${this.spot.data.name}`,
           url: link,
         };
 

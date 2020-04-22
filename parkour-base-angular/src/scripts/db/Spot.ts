@@ -55,10 +55,20 @@ export module Spot {
   export interface Schema {
     name: string;
     location: firebase.firestore.GeoPoint;
-    tile_16: { x: number; y: number };
-    address: string;
+    tile_coordinates: {
+      z2: { x: number; y: number };
+      z4: { x: number; y: number };
+      z6: { x: number; y: number };
+      z8: { x: number; y: number };
+      z10: { x: number; y: number };
+      z12: { x: number; y: number };
+      z14: { x: number; y: number };
+      z16: { x: number; y: number };
+    };
+    occupied_z16_tiles: { x: number; y: number }[];
     image_src: string;
     type: string;
+    area: string;
     rating: number;
 
     bounds: firebase.firestore.GeoPoint[];
