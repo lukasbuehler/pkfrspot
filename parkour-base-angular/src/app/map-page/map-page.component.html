@@ -91,16 +91,16 @@
       [fillColor]="'#304ffe'"
       [strokeColor]="'#304ffe'"
       [fillOpacity]="0.15"
-      [editable]="editingBounds"
-      (polyClick)="clickedSpot(spot)"
+      [editable]="editingBounds && spot === selectedSpot"
+      (polyClick)="openSpot(spot)"
       (polyPathsChange)="pathsChanged($event)"
     >
     </agm-polygon>
     <agm-marker
       *ngIf="selectedSpot"
       [agmFitBounds]="true"
-      [latitude]="selectedSpot.data.location.latitude"
-      [longitude]="selectedSpot.data.location.longitude"
+      [latitude]="selectedSpot.location.lat"
+      [longitude]="selectedSpot.location.lng"
       [title]="'Test'"
       iconUrl="/assets/icons/marker.png"
       [markerDraggable]="editingBounds"

@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { map_style } from "./map_style";
 
+import * as firebase from "firebase";
+
 import {} from "googlemaps";
 import { DatabaseService } from "../database.service";
 import {
@@ -37,15 +39,15 @@ export class MapPageComponent implements OnInit {
 
   // The default coordinates are Paris, the origin of parkour.
   // modiying this resets the map
-  start_coordinates: LatLngLiteral = {
+  readonly start_coordinates: LatLngLiteral = {
     lat: 48.8517386,
     lng: 2.298386,
   };
 
   // these are updated from user input
   center_coordinates: LatLngLiteral = {
-    lat: 0,
-    lng: 0,
+    lat: this.start_coordinates.lat,
+    lng: this.start_coordinates.lat,
   };
 
   zoom: number = 3;
@@ -74,7 +76,8 @@ export class MapPageComponent implements OnInit {
 
     if (spotId) {
       this._dbService.getSpotById(spotId).subscribe((spot) => {
-        this.selectedSpot = spot;
+        console.log("Done loading spot");
+        this.openSpot(spot);
         if (lat && lng && zoom && lat) {
           let _lat = Number(lat);
           let _lng = Number(lng);
@@ -314,7 +317,7 @@ export class MapPageComponent implements OnInit {
     }
   }
 
-  clickedSpot(spot: Spot.Class) {
+  openSpot(spot: Spot.Class) {
     // Maybe just opened spot
     this.selectedSpot = spot;
     this.editingPaths = spot.paths;
@@ -340,8 +343,14 @@ export class MapPageComponent implements OnInit {
   createSpot() {
     console.log("Create Spot");
 
-    // TODO
-    // open modal
+    this.selectedSpot = new Spot.Class("", {
+      name: "New Spot",
+      location: new firebase.firestore.GeoPoint(
+        this.center_coordinates.lat,
+        this.center_coordinates.lng
+      ),
+    });
+    this.editingBounds = true;
   }
 
   pathsChanged(pathsChangedEvent) {

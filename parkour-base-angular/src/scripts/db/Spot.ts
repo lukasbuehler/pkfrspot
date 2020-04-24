@@ -6,7 +6,9 @@ import { MapHelper } from "../map_helper";
 export module Spot {
   export class Class {
     constructor(private _id: string, private _data: Spot.Schema) {
-      this._paths = this.makePathsFromBounds(_data.bounds);
+      if (_data.bounds) {
+        this._paths = this._makePathsFromBounds(_data.bounds);
+      }
     }
 
     private _paths = [];
@@ -15,7 +17,7 @@ export module Spot {
     }
     set paths(paths) {
       this._paths = paths;
-      this._data.bounds = this.makeBoundsFromPaths(paths);
+      this._data.bounds = this._makeBoundsFromPaths(paths);
     }
 
     get id() {
@@ -47,7 +49,7 @@ export module Spot {
       }
     }
 
-    private makePathsFromBounds(
+    private _makePathsFromBounds(
       bounds: firebase.firestore.GeoPoint[]
     ): Array<Array<LatLngLiteral>> {
       let path: Array<Array<LatLngLiteral>> = [[]];
@@ -61,7 +63,7 @@ export module Spot {
       return path;
     }
 
-    private makeBoundsFromPaths(
+    private _makeBoundsFromPaths(
       path: Array<Array<LatLngLiteral>>
     ): firebase.firestore.GeoPoint[] {
       let bounds: firebase.firestore.GeoPoint[] = [];
@@ -77,7 +79,7 @@ export module Spot {
   export interface Schema {
     name: string;
     location: firebase.firestore.GeoPoint;
-    tile_coordinates: {
+    tile_coordinates?: {
       z2: { x: number; y: number };
       z4: { x: number; y: number };
       z6: { x: number; y: number };
@@ -87,15 +89,15 @@ export module Spot {
       z14: { x: number; y: number };
       z16: { x: number; y: number };
     };
-    occupied_z16_tiles: { x: number; y: number }[];
-    image_src: string;
-    type: string;
-    area: string;
-    rating: number;
+    occupied_z16_tiles?: { x: number; y: number }[];
+    image_src?: string;
+    type?: string;
+    area?: string;
+    rating?: number;
 
-    bounds: firebase.firestore.GeoPoint[];
+    bounds?: firebase.firestore.GeoPoint[];
 
-    time_created: firebase.firestore.Timestamp;
-    time_updated: { seconds: number; nanoseconds: number };
+    time_created?: firebase.firestore.Timestamp;
+    time_updated?: { seconds: number; nanoseconds: number };
   }
 }
