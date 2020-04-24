@@ -183,21 +183,7 @@ export class DatabaseService {
           .get()
           .subscribe(
             (snapshot) => {
-              let newSpots: Spot.Class[] = [];
-
-              snapshot.forEach((doc) => {
-                if (doc.data() as Spot.Schema) {
-                  let newSpot: Spot.Class = new Spot.Class(
-                    doc.id,
-                    doc.data() as Spot.Schema
-                  );
-                  newSpots.push(newSpot);
-                } else {
-                  console.error("Spot could not be cast to Spot.Schema!");
-                }
-              });
-
-              observer.next(newSpots);
+              observer.next(this.parseSpots(snapshot));
             },
             (error) => {
               observer.error(error);
@@ -205,6 +191,47 @@ export class DatabaseService {
           );
       }
     });
+  }
+
+  getPreviewSpotsForTiles(zoom: number, tiles: { x: number; y: number }[]) {
+    return new Observable<Spot.Class[]>((observer) => {
+      for (let tile of tiles) {
+        this.db
+          .collection("spots", (ref) =>
+            ref
+              .where(`tile_coordinates.z${zoom}.x`, "==", tile.x)
+              .where(`tile_coordinates.z${zoom}.y`, "==", tile.y)
+              .limit(10)
+          )
+          .get()
+          .subscribe(
+            (snapshot) => {
+              observer.next(this.parseSpots(snapshot));
+            },
+            (error) => {
+              observer.error(error);
+            }
+          );
+      }
+    });
+  }
+
+  private parseSpots(snapshot): Spot.Class[] {
+    let newSpots: Spot.Class[] = [];
+
+    snapshot.forEach((doc) => {
+      if (doc.data() as Spot.Schema) {
+        let newSpot: Spot.Class = new Spot.Class(
+          doc.id,
+          doc.data() as Spot.Schema
+        );
+        newSpots.push(newSpot);
+      } else {
+        console.error("Spot could not be cast to Spot.Schema!");
+      }
+    });
+
+    return newSpots;
   }
 
   getSpotSearch(searchString: string): Observable<Spot.Class[]> {

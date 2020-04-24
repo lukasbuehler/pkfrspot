@@ -103,8 +103,9 @@
       [longitude]="selectedSpot.data.location.longitude"
       [title]="'Test'"
       iconUrl="/assets/icons/marker.png"
-      [markerDraggable]="false"
+      [markerDraggable]="editingBounds"
       [markerClickable]="false"
+      (dragEnd)="spotMarkerMoved($event)"
     ></agm-marker>
 
     <agm-marker

@@ -10,10 +10,11 @@ import {
   PolygonManager,
   LatLngBounds,
   LatLng,
+  MouseEvent,
 } from "@agm/core";
 import { MapStyle } from "src/scripts/MapStyle";
 import { Spot } from "src/scripts/db/Spot";
-import { MapHelper } from "./map_helper";
+import { MapHelper } from "../../scripts/map_helper";
 import { ActivatedRoute } from "@angular/router";
 import { Location } from "@angular/common";
 
@@ -48,17 +49,16 @@ export class MapPageComponent implements OnInit {
   };
 
   zoom: number = 3;
-  private readonly _loadSpotsZoomLevel: number = 16; // This is fixed for the platform and should not be changed
+  private readonly _loadAllSpotsZoomLevel: number = 16; // This is fixed for the platform and should not be changed
   // TODO ensure this is is constant with storing it somewhere else
 
   visibleSpots: Spot.Class[] = [];
   searchSpots: Spot.Class[] = [];
   loadedSpots: any = {}; // is a map of tile coords to spot arrays
   visibleDots: any[] = [];
-  loadedDots: any[] = [];
 
-  private _northEastTileCoords: google.maps.Point;
-  private _southWestTileCoords: google.maps.Point;
+  private _northEastTileCoordsZ16: google.maps.Point;
+  private _southWestTileCoordsZ16: google.maps.Point;
 
   constructor(
     private _dbService: DatabaseService,
@@ -119,45 +119,50 @@ export class MapPageComponent implements OnInit {
       lng: bounds.getSouthWest().lng(),
     };
 
-    if (zoomLevel >= this._loadSpotsZoomLevel) {
+    let northEastTileCoords = MapHelper.getTileCoordinates(
+      northEastLiteral,
+      this._loadAllSpotsZoomLevel
+    );
+    let southWestTileCoords = MapHelper.getTileCoordinates(
+      southWestLiteral,
+      this._loadAllSpotsZoomLevel
+    );
+
+    this._northEastTileCoordsZ16 = northEastTileCoords;
+    this._southWestTileCoordsZ16 = southWestTileCoords;
+
+    if (zoomLevel >= this._loadAllSpotsZoomLevel) {
       this.visibleDots = [];
       // inside this zoom level we are constantly loading spots if new tiles become visible
-
-      let northEastTileCoords = MapHelper.getTileCoordinates(
-        northEastLiteral,
-        this._loadSpotsZoomLevel
-      );
-      let southWestTileCoords = MapHelper.getTileCoordinates(
-        southWestLiteral,
-        this._loadSpotsZoomLevel
-      );
-
-      this._northEastTileCoords = northEastTileCoords;
-      this._southWestTileCoords = southWestTileCoords;
 
       this.loadNewSpotOnTiles(northEastTileCoords, southWestTileCoords);
       this.updateVisibleSpots();
     } else {
-      // hide the spots and show the clusters
-      if (zoomLevel <= this._loadSpotsZoomLevel - 2) {
-        this.visibleSpots = [];
-
-        let northEastTileCoords = MapHelper.getTileCoordinates(
-          northEastLiteral,
-          this._loadSpotsZoomLevel
-        );
-        let southWestTileCoords = MapHelper.getTileCoordinates(
-          southWestLiteral,
-          this._loadSpotsZoomLevel
-        );
-
-        this.loadNewSpotDotsOnTiles(
-          zoomLevel,
-          northEastTileCoords,
-          southWestTileCoords
-        );
-        this.updateVisibleDots();
+      // hide the spots and show the dots
+      this.visibleSpots = [];
+      if (zoomLevel <= 2) {
+        zoomLevel = 2;
+        this._northEastTileCoordsZ16.x = 0;
+        this._northEastTileCoordsZ16.y = 0;
+        this._southWestTileCoordsZ16.x = (1 << 16) - 1;
+        this._southWestTileCoordsZ16.y = (1 << 16) - 1;
       }
+      if (zoomLevel <= this._loadAllSpotsZoomLevel - 2 && zoomLevel % 2 === 0) {
+        const tileCoords: { ne: google.maps.Point; sw: google.maps.Point } = {
+          ne: new google.maps.Point(
+            this._northEastTileCoordsZ16.x >> (16 - zoomLevel),
+            this._northEastTileCoordsZ16.y >> (16 - zoomLevel)
+          ),
+          sw: new google.maps.Point(
+            this._southWestTileCoordsZ16.x >> (16 - zoomLevel),
+            this._southWestTileCoordsZ16.y >> (16 - zoomLevel)
+          ),
+        };
+
+        this.loadNewSpotDotsOnTiles(zoomLevel, tileCoords.ne, tileCoords.sw);
+      }
+
+      this.updateVisibleDots();
     }
   }
 
@@ -198,20 +203,20 @@ export class MapPageComponent implements OnInit {
     this.visibleSpots = [];
 
     for (
-      let x = this._southWestTileCoords.x;
-      x <= this._northEastTileCoords.x;
+      let x = this._southWestTileCoordsZ16.x;
+      x <= this._northEastTileCoordsZ16.x;
       x++
     ) {
       for (
-        let y = this._northEastTileCoords.y;
-        y <= this._southWestTileCoords.y;
+        let y = this._northEastTileCoordsZ16.y;
+        y <= this._southWestTileCoordsZ16.y;
         y++
       ) {
         // here we go through all the x,y pairs for every visible tile on screen right now.
 
-        if (this.loadedSpots[`${x}_${y}`]) {
+        if (this.loadedSpots[`z${16}_${x}_${y}`]) {
           this.visibleSpots = this.visibleSpots.concat(
-            this.loadedSpots[`${x}_${y}`]
+            this.loadedSpots[`z${16}_${x}_${y}`]
           );
         }
       }
@@ -228,14 +233,14 @@ export class MapPageComponent implements OnInit {
     for (let x = southWestTileCoords.x; x <= northEastTileCoords.x; x++) {
       for (let y = northEastTileCoords.y; y <= southWestTileCoords.y; y++) {
         // here we go through all the x,y pairs for every visible tile on screen right now.
-        if (!this.loadedSpots[`${x}_${y}`]) {
+        if (!this.loadedSpots[`z${16}_${x}_${y}`]) {
           // the tile was not loaded before
 
           // mark this tile as loaded, will be filled after the data was
           // fetched. This prevents multiple fetches for the same tile
           // !([]) is false, !(undefined) is true
           // this way it wont be loaded twice
-          this.loadedSpots[`${x}_${y}`] = [];
+          this.loadedSpots[`z${16}_${x}_${y}`] = [];
           tilesToLoad.push({ x: x, y: y });
         }
       }
@@ -247,19 +252,58 @@ export class MapPageComponent implements OnInit {
     zoom: number,
     northEastTileCoords: google.maps.Point,
     southWestTileCoords: google.maps.Point
-  ) {}
+  ) {
+    let tilesToLoad: { x: number; y: number }[] = [];
+
+    // make a list of coordinate pairs that we need to fetch from this.
+    for (let x = southWestTileCoords.x; x <= northEastTileCoords.x; x++) {
+      for (let y = northEastTileCoords.y; y <= southWestTileCoords.y; y++) {
+        // here we go through all the x,y pairs for every visible tile on screen right now.
+        if (!this.loadedSpots[`z${zoom}_${x}_${y}`]) {
+          // the tile was not loaded before
+
+          // mark this tile as loaded, will be filled after the data was
+          // fetched. This prevents multiple fetches for the same tile
+          // !([]) is false, !(undefined) is true
+          // this way it wont be loaded twice
+          this.loadedSpots[`z${zoom}_${x}_${y}`] = [];
+          tilesToLoad.push({ x: x, y: y });
+        }
+      }
+    }
+
+    this._dbService.getPreviewSpotsForTiles(zoom, tilesToLoad).subscribe(
+      (spots) => {
+        if (spots.length > 0) {
+          let tile = spots[0].data.tile_coordinates.z16;
+          this.loadedSpots[`z${zoom}_${tile.x}_${tile.y}`] = spots;
+          console.log("new sposts laoded:");
+          console.log(spots);
+          this.updateVisibleDots();
+        }
+      },
+      (error) => {
+        console.error(error);
+      },
+      () => {} // complete
+    );
+  }
 
   updateVisibleDots() {
-    this.visibleDots = [];
-    for (let spot of this.loadedSpots["34368_22995"]) {
-      this.visibleDots.push({
+    const allSpots = [].concat.apply(
+      [],
+      Object.values<Spot.Class[]>(this.loadedSpots)
+    );
+
+    this.visibleDots = allSpots.map((spot) => {
+      return {
         location: {
           latitude: spot.data.location.latitude,
           longitude: spot.data.location.longitude,
         },
         value: 1,
-      });
-    }
+      };
+    });
   }
 
   toggleMapStyle() {
@@ -271,6 +315,7 @@ export class MapPageComponent implements OnInit {
   }
 
   clickedSpot(spot: Spot.Class) {
+    // Maybe just opened spot
     this.selectedSpot = spot;
     this.editingPaths = spot.paths;
     this.upadateMapURL(this.center_coordinates, this.zoom);
@@ -294,6 +339,9 @@ export class MapPageComponent implements OnInit {
 
   createSpot() {
     console.log("Create Spot");
+
+    // TODO
+    // open modal
   }
 
   pathsChanged(pathsChangedEvent) {
@@ -307,7 +355,7 @@ export class MapPageComponent implements OnInit {
       (spots) => {
         if (spots.length > 0) {
           let tile = spots[0].data.tile_coordinates.z16;
-          this.loadedSpots[`${tile.x}_${tile.y}`] = spots;
+          this.loadedSpots[`z${16}_${tile.x}_${tile.y}`] = spots;
           this.updateVisibleSpots();
         }
       },
@@ -318,13 +366,21 @@ export class MapPageComponent implements OnInit {
     );
   }
 
-  openSpot() {}
-
   editSpot() {
     this.editingBounds = true;
   }
   stopEditingSpot() {
     this.editingBounds = false;
+  }
+
+  spotMarkerMoved(event: MouseEvent) {
+    if (this.selectedSpot) {
+      this.selectedSpot.location = event.coords;
+    } else {
+      console.error(
+        "User somehow could change the spot marker position without having a spot selected"
+      );
+    }
   }
 
   closeSpot() {

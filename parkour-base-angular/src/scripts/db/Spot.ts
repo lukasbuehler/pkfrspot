@@ -1,6 +1,7 @@
 import { LatLngLiteral } from "@agm/core";
 import { DbDate, DbLocation } from "./Interfaces";
 import * as firebase from "firebase";
+import { MapHelper } from "../map_helper";
 
 export module Spot {
   export class Class {
@@ -23,6 +24,27 @@ export module Spot {
 
     get data() {
       return this._data;
+    }
+    get location() {
+      const point = this._data.location;
+      return { lat: point.latitude, lng: point.longitude };
+    }
+    set location(location: LatLngLiteral) {
+      this._data.location = new firebase.firestore.GeoPoint(
+        location.lat,
+        location.lng
+      );
+      // update tile coords
+      this._data.tile_coordinates.z16 = MapHelper.getTileCoordinates(
+        location,
+        16
+      );
+      for (let zoom = 16; zoom >= 2; zoom -= 2) {
+        this._data.tile_coordinates[`z${zoom}`] = {
+          x: this._data.tile_coordinates.z16.x >> (16 - zoom),
+          y: this._data.tile_coordinates.z16.y >> (16 - zoom),
+        };
+      }
     }
 
     private makePathsFromBounds(
