@@ -34,8 +34,10 @@ import { MatInputModule } from "@angular/material/input";
 import { MatRippleModule } from "@angular/material/core";
 import {
   MatDialogModule,
-  MAT_DIALOG_DEFAULT_OPTIONS
+  MAT_DIALOG_DEFAULT_OPTIONS,
 } from "@angular/material/dialog";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { MatSelectModule } from "@angular/material/select";
 
 import { MatVideoModule } from "mat-video";
 
@@ -50,7 +52,8 @@ import { SpotCardComponent } from "./spot-card/spot-card.component";
 import { SignInPageComponent } from "./sign-in-page/sign-in-page.component";
 import { EditPostDialogComponent } from "./edit-post-dialog/edit-post-dialog.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { RatingComponent } from './rating/rating.component';
+import { RatingComponent } from "./rating/rating.component";
+import { SpotDetailComponent } from "./spot-detail/spot-detail.component";
 
 @NgModule({
   declarations: [
@@ -65,7 +68,8 @@ import { RatingComponent } from './rating/rating.component';
     SpotCardComponent,
     SignInPageComponent,
     EditPostDialogComponent,
-    RatingComponent
+    RatingComponent,
+    SpotDetailComponent,
   ],
   entryComponents: [EditPostDialogComponent],
   imports: [
@@ -83,7 +87,7 @@ import { RatingComponent } from './rating/rating.component';
 
     InfiniteScrollModule,
     AgmCoreModule.forRoot({
-      apiKey: environment.keys.google_maps
+      apiKey: environment.keys.google_maps,
     }),
     FirebaseUIModule.forRoot(
       environment.firebaseUiAuthConfig as firebaseui.auth.Config
@@ -103,14 +107,16 @@ import { RatingComponent } from './rating/rating.component';
     MatInputModule,
     MatRippleModule,
     MatDialogModule,
+    MatExpansionModule,
+    MatSelectModule,
 
-    MatVideoModule
+    MatVideoModule,
   ],
   exports: [MatButtonModule],
   providers: [
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
 

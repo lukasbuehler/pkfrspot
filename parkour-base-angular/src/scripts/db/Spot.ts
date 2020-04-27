@@ -100,4 +100,18 @@ export module Spot {
     time_created?: firebase.firestore.Timestamp;
     time_updated?: { seconds: number; nanoseconds: number };
   }
+
+  export enum Types {
+    Playground = "playground",
+    Park = "park",
+    Gym = "gym",
+    Other = "other",
+  }
+
+  export enum Areas {
+    Public = "public",
+    Commercial = "commercial",
+    Private = "private",
+    Other = "other",
+  }
 }

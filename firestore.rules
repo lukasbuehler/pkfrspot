@@ -2,31 +2,36 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /posts/{post}
     {
+      // every post is publicy available to everyone.
       allow read: if true;
 
-      // only authenticated users can create posts and only edit it if it's their post. Also, they can't set the like_count variable.
+      // only authenticated users can create and edit posts and only create and edit it if it's their post. Also, they can't set the like_count variable.
       allow write: if request.auth.uid != null 
         && !('like_count' in request.resource.data) 
         && request.auth.uid == request.resource.data.user.uid;
 
       // match the subcollection likes
       match /likes/{userId} {
-        // Only authenticated users can view likes
+        // Only authenticated users can view who liked a post
         allow read: if request.auth.uid != null;
 
         // Only you can edit your like
-        allow create, update: if request.auth.uid == userId
+        allow write: if request.auth.uid == userId
           && request.auth.uid == request.resource.data.user.uid;
-        allow delete: if request.auth.uid == userId
       }
     }
     match /spots/{spot}
     {
+      // all the spots are visible to everyone, authenticated or not
       allow read: if true;
+
+      // TODO: In the future there should be a voting feature for changes on spots.
+      // for now every authenticated user can write for every spot.
       allow write: if request.auth.uid != null;
     }
     match /users/{user} 
     {
+      // temporarily disabled
       allow read, write: if false;
     }
   }

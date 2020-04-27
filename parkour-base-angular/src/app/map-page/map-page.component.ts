@@ -47,7 +47,7 @@ export class MapPageComponent implements OnInit {
   // these are updated from user input
   center_coordinates: LatLngLiteral = {
     lat: this.start_coordinates.lat,
-    lng: this.start_coordinates.lat,
+    lng: this.start_coordinates.lng,
   };
 
   zoom: number = 3;
@@ -72,36 +72,49 @@ export class MapPageComponent implements OnInit {
     let spotId: string = this.route.snapshot.paramMap.get("spot") || "";
     let lat = this.route.snapshot.queryParamMap.get("lat") || null;
     let lng = this.route.snapshot.queryParamMap.get("lng") || null;
-    let zoom = this.route.snapshot.queryParamMap.get("z") || null;
+    let zoom = this.route.snapshot.queryParamMap.get("z") || 3; // TODO ?? syntax
 
     if (spotId) {
-      this._dbService.getSpotById(spotId).subscribe((spot) => {
-        console.log("Done loading spot");
-        this.openSpot(spot);
-        if (lat && lng && zoom && lat) {
-          let _lat = Number(lat);
-          let _lng = Number(lng);
-          if (!(_lat === 0 && _lng === 0)) {
-            this.start_coordinates.lat = _lat;
-            this.start_coordinates.lng = _lng;
-            this.zoom = Number(zoom);
-          }
-        } else {
-          this.start_coordinates.lat = spot.data.location.latitude;
-          this.start_coordinates.lng = spot.data.location.longitude;
-          this.zoom = 18;
+      this._dbService.getSpotById(spotId).subscribe(
+        (spot) => {
+          console.log("Done loading spot");
+          this.openSpot(spot); // Opens the spot in the drawer
+          this.setStartMap(
+            {
+              lat: spot.data.location.latitude,
+              lng: spot.data.location.longitude,
+            },
+            Number(zoom) || 16
+          );
+        },
+        (error) => {
+          // the spot wasn't found, just go to the location if there is one
+          this.setStartMap(
+            { lat: Number(lat), lng: Number(lng) },
+            Number(zoom)
+          );
         }
-      });
+      );
       console.log("Loading spot " + spotId);
       // Show loading spot to open
       // TODO snackbar
+    } else {
+      this.setStartMap({ lat: Number(lat), lng: Number(lng) }, Number(zoom));
     }
+  }
 
-    if (lat && lng) {
-      this.start_coordinates.lat = Number(lat);
-      this.start_coordinates.lng = Number(lng);
-      this.zoom = Number(zoom);
+  setStartMap(coords: LatLngLiteral, zoom: number) {
+    if (coords && coords.lat && coords.lng) {
+      this.start_coordinates.lat = coords.lat;
+      this.start_coordinates.lng = coords.lng;
+      this.zoom = Number(zoom || 16);
+
+      this.center_coordinates = {
+        lat: this.start_coordinates.lat,
+        lng: this.start_coordinates.lng,
+      };
     }
+    this.zoom = zoom || this.zoom || 16;
   }
 
   clickedMap(coords) {
@@ -298,6 +311,9 @@ export class MapPageComponent implements OnInit {
       Object.values<Spot.Class[]>(this.loadedSpots)
     );
 
+    // temporary: // TODO REMOVE
+    this.searchSpots = allSpots;
+
     this.visibleDots = allSpots.map((spot) => {
       return {
         location: {
@@ -375,7 +391,7 @@ export class MapPageComponent implements OnInit {
     );
   }
 
-  editSpot() {
+  editSpotBounds() {
     this.editingBounds = true;
   }
   stopEditingSpot() {

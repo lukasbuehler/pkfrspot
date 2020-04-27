@@ -26,7 +26,6 @@
         *ngFor="let spot of searchSpots"
         [spot]="spot"
         [clickable]="true"
-        [preview]="true"
         (click)="selectedSpot = spot; startDrawer.close()"
       ></app-spot-card>
     </div>
@@ -38,16 +37,18 @@
     class="mat-elevation-z5"
     mode="side"
     position="end"
-    [opened]="selectedSpot && !editingBounds"
+    [opened]="selectedSpot"
   >
     <div *ngIf="selectedSpot">
-      <app-spot-card
+      <app-spot-detail
         [spot]="selectedSpot"
         [flat]="true"
         [dismissable]="true"
+        [infoOnly]="false"
+        [editable]="true"
         (dismiss)="closeSpot()"
-        (edit)="editSpot()"
-      ></app-spot-card>
+        (editBounds)="editSpotBounds()"
+      ></app-spot-detail>
     </div>
   </mat-drawer>
 

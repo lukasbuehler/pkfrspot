@@ -1,0 +1,125 @@
+<mat-card
+  matRipple
+  [matRippleDisabled]="!clickable"
+  [class.mat-elevation-z0]="flat"
+  [class.clickable]="clickable"
+>
+  <mat-card-header>
+    <mat-card-title>
+      <button
+        *ngIf="dismissable"
+        mat-icon-button
+        #closeSpotFab
+        id="closeSpotFab"
+        (click)="dismissed()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <span *ngIf="!editingDetails">
+        {{ spot.data.name }}
+      </span>
+      <form *ngIf="editingDetails">
+        <mat-form-field style="width: calc(100% - 35px);">
+          <mat-label>Spot name</mat-label>
+          <input
+            #spotNameInput
+            matInput
+            [value]="spot.data.name"
+            (change)="spot.data.name = this.spotNameInput.value"
+          />
+        </mat-form-field>
+      </form>
+      <mat-icon *ngIf="visited && !editingDetails" style="float: right;"
+        >check</mat-icon
+      >
+    </mat-card-title>
+    <mat-card-subtitle>
+      <span *ngIf="!editingDetails">
+        {{ capitalize(spot.data.type) }}
+        <app-rating
+          class="float-right"
+          *ngIf="spot?.data?.rating"
+          [rating]="spot.data.rating"
+          color="accent"
+        ></app-rating>
+      </span>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="true" [class.mat-elevation-z1]="flat">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Details
+        </mat-panel-title>
+        <mat-panel-description>
+          Info and pictures
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <span *ngIf="!editingDetails">
+        {{ capitalize(spot.data.type) }} in {{ spot.data.area }} area
+      </span>
+      <form *ngIf="editingDetails">
+        <mat-form-field style="width: 100%;">
+          <mat-label>Spot type</mat-label>
+          <mat-select [(value)]="spot.data.type">
+            <mat-option *ngFor="let type of spotTypes" [value]="type">
+              {{ capitalize(type) }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field style="width: 100%;">
+          <mat-label>Spot area</mat-label>
+          <mat-select [(value)]="spot.data.area">
+            <mat-option *ngFor="let area of spotAreas" [value]="area">
+              {{ capitalize(area) }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+      <img
+        *ngIf="!editingDetails"
+        src="{{ spot.data.image_src }}"
+        class="spot-img"
+        alt=""
+      />
+      <div *ngIf="!editingDetails" class="spot-button-row">
+        <button mat-button color="accent" (click)="shareSpot()">
+          Share
+        </button>
+        <button mat-button (click)="focusClick()">Focus</button>
+        <button mat-button>Visited</button>
+        <button mat-button color="">Rate</button>
+      </div>
+      <div class="spot-button-row">
+        <button *ngIf="editable" mat-button (click)="editDetailsClick()">
+          {{ editingDetails ? "Save Details" : "Edit details" }}
+        </button>
+        <button *ngIf="editable" mat-button (click)="editBoundsClick()">
+          {{ !!spot.data.bounds ? "Edit" : "Add" }} bounds
+        </button>
+      </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel [class.mat-elevation-z1]="flat">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Posts
+        </mat-panel-title>
+        <mat-panel-description>
+          Posts from this spot
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-post-collection [posts]="[]"></app-post-collection>
+    </mat-expansion-panel>
+    <mat-expansion-panel [class.mat-elevation-z1]="flat">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Edit Suggestions
+        </mat-panel-title>
+        <mat-panel-description>
+          Vote on changes
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      ...Coming soon...
+    </mat-expansion-panel>
+  </mat-accordion>
+</mat-card>

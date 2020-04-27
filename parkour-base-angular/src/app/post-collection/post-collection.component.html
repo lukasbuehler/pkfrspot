@@ -9,4 +9,11 @@
     {{ title }}
   </h2>
   <app-post *ngFor="let post of posts" [post]="post" class="mt-2"></app-post>
+  <p
+    *ngIf="!posts || posts.length === 0"
+    class="noPostsText"
+    class="text-center"
+  >
+    No posts to show
+  </p>
 </div>
