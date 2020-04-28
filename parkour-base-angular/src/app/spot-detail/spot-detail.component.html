@@ -15,26 +15,26 @@
       >
         <mat-icon>close</mat-icon>
       </button>
-      <span *ngIf="!editingDetails">
+      <span *ngIf="!isEditing">
         {{ spot.data.name }}
       </span>
-      <form *ngIf="editingDetails">
+      <form *ngIf="isEditing">
         <mat-form-field style="width: calc(100% - 35px);">
           <mat-label>Spot name</mat-label>
           <input
             #spotNameInput
             matInput
-            [value]="spot.data.name"
-            (change)="spot.data.name = this.spotNameInput.value"
+            [value]="spot.data.name || ''"
+            (change)="spot.data.name = $event.target.value"
           />
         </mat-form-field>
       </form>
-      <mat-icon *ngIf="visited && !editingDetails" style="float: right;"
+      <mat-icon *ngIf="visited && !isEditing" style="float: right;"
         >check</mat-icon
       >
     </mat-card-title>
     <mat-card-subtitle>
-      <span *ngIf="!editingDetails">
+      <span *ngIf="!isEditing">
         {{ capitalize(spot.data.type) }}
         <app-rating
           class="float-right"
@@ -45,7 +45,61 @@
       </span>
     </mat-card-subtitle>
   </mat-card-header>
-  <mat-accordion>
+  <mat-card-content>
+    <form *ngIf="isEditing">
+      <mat-form-field style="width: 100%;">
+        <mat-label>Spot type</mat-label>
+        <mat-select [(value)]="spot.data.type">
+          <mat-option *ngFor="let type of spotTypes" [value]="type">
+            {{ capitalize(type) }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field style="width: 100%;">
+        <mat-label>Spot area</mat-label>
+        <mat-select [(value)]="spot.data.area">
+          <mat-option *ngFor="let area of spotAreas" [value]="area">
+            {{ capitalize(area) }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field style="width: 100%;">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          placeholder="Description of the spot, its features and more..."
+          [value]="spot.data.description || ''"
+          (change)="spot.data.description = $event.target.value"
+        ></textarea>
+      </mat-form-field>
+    </form>
+    <button
+      *ngIf="editable && !hasBounds()"
+      mat-button
+      (click)="addBoundsClicked()"
+    >
+      Add bounds
+    </button>
+  </mat-card-content>
+  <mat-card-actions *ngIf="isEditing">
+    <button
+      color="accent"
+      *ngIf="editable"
+      mat-button
+      (click)="saveButtonClick()"
+    >
+      Save changes
+    </button>
+    <button
+      color="primary"
+      *ngIf="editable"
+      mat-button
+      (click)="saveButtonClick()"
+    >
+      Discard changes
+    </button>
+  </mat-card-actions>
+  <mat-accordion *ngIf="!isEditing">
     <mat-expansion-panel [expanded]="true" [class.mat-elevation-z1]="flat">
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -55,34 +109,14 @@
           Info and pictures
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <span *ngIf="!editingDetails">
-        {{ capitalize(spot.data.type) }} in {{ spot.data.area }} area
-      </span>
-      <form *ngIf="editingDetails">
-        <mat-form-field style="width: 100%;">
-          <mat-label>Spot type</mat-label>
-          <mat-select [(value)]="spot.data.type">
-            <mat-option *ngFor="let type of spotTypes" [value]="type">
-              {{ capitalize(type) }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field style="width: 100%;">
-          <mat-label>Spot area</mat-label>
-          <mat-select [(value)]="spot.data.area">
-            <mat-option *ngFor="let area of spotAreas" [value]="area">
-              {{ capitalize(area) }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </form>
-      <img
-        *ngIf="!editingDetails"
-        src="{{ spot.data.image_src }}"
-        class="spot-img"
-        alt=""
-      />
-      <div *ngIf="!editingDetails" class="spot-button-row">
+      <img src="{{ spot.data.image_src }}" class="spot-img" alt="" />
+      <p *ngIf="spot.data.description">
+        {{ spot.data.description }}
+      </p>
+      <p *ngIf="spot.data.type">Type: {{ capitalize(spot.data.type) }}</p>
+      <p *ngIf="spot.data.area">Area: {{ capitalize(spot.data.area) }}</p>
+
+      <div class="spot-button-row">
         <button mat-button color="accent" (click)="shareSpot()">
           Share
         </button>
@@ -91,11 +125,15 @@
         <button mat-button color="">Rate</button>
       </div>
       <div class="spot-button-row">
-        <button *ngIf="editable" mat-button (click)="editDetailsClick()">
-          {{ editingDetails ? "Save Details" : "Edit details" }}
+        <button *ngIf="editable" mat-button (click)="editButtonClick()">
+          Edit Spot
         </button>
-        <button *ngIf="editable" mat-button (click)="editBoundsClick()">
-          {{ !!spot.data.bounds ? "Edit" : "Add" }} bounds
+        <button
+          *ngIf="editable && !hasBounds()"
+          mat-button
+          (click)="addBoundsClicked()"
+        >
+          Add bounds
         </button>
       </div>
     </mat-expansion-panel>

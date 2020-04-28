@@ -9,6 +9,9 @@ export module Spot {
       if (_data.bounds) {
         this._paths = this._makePathsFromBounds(_data.bounds);
       }
+      if (_data.location) {
+        this.setTileCoordinates();
+      }
     }
 
     private _paths = [];
@@ -27,6 +30,13 @@ export module Spot {
     get data() {
       return this._data;
     }
+    set data(data) {
+      // TODO Remove?
+      this._data = data;
+      if (this.data.location) {
+        this.setTileCoordinates();
+      }
+    }
     get location() {
       const point = this._data.location;
       return { lat: point.latitude, lng: point.longitude };
@@ -37,8 +47,15 @@ export module Spot {
         location.lng
       );
       // update tile coords
+      this.setTileCoordinates();
+    }
+
+    public setTileCoordinates() {
+      if (!this._data.tile_coordinates) {
+        this._data.tile_coordinates = {};
+      }
       this._data.tile_coordinates.z16 = MapHelper.getTileCoordinates(
-        location,
+        this.location,
         16
       );
       for (let zoom = 16; zoom >= 2; zoom -= 2) {
@@ -80,14 +97,14 @@ export module Spot {
     name: string;
     location: firebase.firestore.GeoPoint;
     tile_coordinates?: {
-      z2: { x: number; y: number };
-      z4: { x: number; y: number };
-      z6: { x: number; y: number };
-      z8: { x: number; y: number };
-      z10: { x: number; y: number };
-      z12: { x: number; y: number };
-      z14: { x: number; y: number };
-      z16: { x: number; y: number };
+      z2?: { x: number; y: number };
+      z4?: { x: number; y: number };
+      z6?: { x: number; y: number };
+      z8?: { x: number; y: number };
+      z10?: { x: number; y: number };
+      z12?: { x: number; y: number };
+      z14?: { x: number; y: number };
+      z16?: { x: number; y: number };
     };
     occupied_z16_tiles?: { x: number; y: number }[];
     image_src?: string;

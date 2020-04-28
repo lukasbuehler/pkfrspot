@@ -33,7 +33,6 @@ export class MapPageComponent implements OnInit {
 
   editingBounds: boolean = false;
   selectedSpot: Spot.Class = null;
-  editingPaths: Array<Array<LatLngLiteral>> = [];
 
   droppedMarkerLocation = null;
 
@@ -336,43 +335,26 @@ export class MapPageComponent implements OnInit {
   openSpot(spot: Spot.Class) {
     // Maybe just opened spot
     this.selectedSpot = spot;
-    this.editingPaths = spot.paths;
     this.upadateMapURL(this.center_coordinates, this.zoom);
-  }
-
-  saveBoundsEdit() {
-    this.selectedSpot.paths = this.editingPaths;
-    this._dbService.setSpot(this.selectedSpot).subscribe(
-      (value) => {
-        console.log("Successful save!");
-        console.log(value);
-
-        this.editingBounds = false;
-      },
-      (error) => {
-        console.error(error);
-      },
-      () => {}
-    );
   }
 
   createSpot() {
     console.log("Create Spot");
 
-    this.selectedSpot = new Spot.Class("", {
-      name: "New Spot",
-      location: new firebase.firestore.GeoPoint(
-        this.center_coordinates.lat,
-        this.center_coordinates.lng
-      ),
-    });
-    this.editingBounds = true;
+    this.selectedSpot = new Spot.Class(
+      "", // The id needs to be empty for the spot to be recognized and created in the database
+      {
+        name: "New Spot",
+        location: new firebase.firestore.GeoPoint(
+          this.center_coordinates.lat,
+          this.center_coordinates.lng
+        ),
+      }
+    );
   }
 
   pathsChanged(pathsChangedEvent) {
-    console.log(pathsChangedEvent);
-
-    this.editingPaths = pathsChangedEvent.newArr;
+    this.selectedSpot.paths = pathsChangedEvent.newArr;
   }
 
   loadSpotsForTiles(tilesToLoad: { x: number; y: number }[]) {
@@ -391,13 +373,6 @@ export class MapPageComponent implements OnInit {
     );
   }
 
-  editSpotBounds() {
-    this.editingBounds = true;
-  }
-  stopEditingSpot() {
-    this.editingBounds = false;
-  }
-
   spotMarkerMoved(event: MouseEvent) {
     if (this.selectedSpot) {
       this.selectedSpot.location = event.coords;
@@ -407,9 +382,23 @@ export class MapPageComponent implements OnInit {
       );
     }
   }
-
   closeSpot() {
     this.selectedSpot = null;
     this.upadateMapURL(this.center_coordinates, this.zoom);
+  }
+
+  addBounds() {
+    const dist = 0.0005; //
+    const location = this.selectedSpot.location;
+    let paths: Array<Array<LatLngLiteral>> = [
+      [
+        { lat: location.lat + dist, lng: location.lng + dist },
+        { lat: location.lat - dist, lng: location.lng + dist },
+        { lat: location.lat - dist, lng: location.lng - dist },
+        { lat: location.lat + dist, lng: location.lng - dist },
+      ],
+    ];
+    console.log("made bounds");
+    this.selectedSpot.paths = paths;
   }
 }

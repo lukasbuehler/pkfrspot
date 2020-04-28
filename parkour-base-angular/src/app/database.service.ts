@@ -240,6 +240,25 @@ export class DatabaseService {
     });
   }
 
+  createSpot(spot: Spot.Class): Observable<any> {
+    return new Observable<any>((observer) => {
+      this.db
+        .collection("spots").add(spot.data)
+        .then(
+          /* fulfilled */ (value) => {
+            observer.next(value);
+            observer.complete();
+          },
+          /* rejected */ (reason) => {
+            observer.error(reason);
+          }
+        )
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
+  }
+  
   setSpot(spot: Spot.Class): Observable<any> {
     return new Observable<any>((observer) => {
       this.db

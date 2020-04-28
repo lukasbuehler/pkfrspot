@@ -46,8 +46,9 @@
         [dismissable]="true"
         [infoOnly]="false"
         [editable]="true"
+        [(isEditing)]="this.editingBounds"
         (dismiss)="closeSpot()"
-        (editBounds)="editSpotBounds()"
+        (addBoundsClick)="addBounds()"
       ></app-spot-detail>
     </div>
   </mat-drawer>
@@ -78,34 +79,48 @@
       [latitude]="dot.location.latitude"
       [longitude]="dot.location.longitude"
       [circleDraggable]="false"
-      [circleDraggable]="false"
       [strokeWeight]="0"
       [strokeOpacity]="0"
       [radius]="getDotRadius(zoom, dot.location)"
       [visible]="true"
-      [fillOpacity]="1"
+      [fillOpacity]="0.75"
     ></agm-circle>
 
-    <agm-polygon
+    <agm-circle
       *ngFor="let spot of visibleSpots"
-      [paths]="spot.paths"
       [fillColor]="'#304ffe'"
-      [strokeColor]="'#304ffe'"
-      [fillOpacity]="0.15"
-      [editable]="editingBounds && spot === selectedSpot"
-      (polyClick)="openSpot(spot)"
-      (polyPathsChange)="pathsChanged($event)"
+      [latitude]="spot.location.lat"
+      [longitude]="spot.location.lng"
+      [circleDraggable]="false"
+      [strokeWeight]="0"
+      [strokeOpacity]="0"
+      [radius]="5"
+      [visible]="true"
+      [fillOpacity]="0.75"
+      (circleClick)="openSpot(spot)"
     >
-    </agm-polygon>
+      <agm-polygon
+        [paths]="spot.paths"
+        [fillColor]="'#304ffe'"
+        [strokeColor]="'#304ffe'"
+        [fillOpacity]="0.15"
+        [editable]="
+          editingBounds && spot && selectedSpot && spot.id === selectedSpot.id
+        "
+        (polyClick)="openSpot(spot)"
+        (polyPathsChange)="pathsChanged($event)"
+      ></agm-polygon>
+    </agm-circle>
+
     <agm-marker
       *ngIf="selectedSpot"
       [agmFitBounds]="true"
       [latitude]="selectedSpot.location.lat"
       [longitude]="selectedSpot.location.lng"
-      [title]="'Test'"
+      [title]="selectedSpot.name"
       iconUrl="/assets/icons/marker.png"
       [markerDraggable]="editingBounds"
-      [markerClickable]="false"
+      [markerClickable]="true"
       (dragEnd)="spotMarkerMoved($event)"
     ></agm-marker>
 
@@ -149,31 +164,5 @@
     <mat-icon aria-label="Button with plus to create a new spot"
       >add_location</mat-icon
     >
-  </button>
-
-  <button
-    color="white"
-    *ngIf="editingBounds"
-    mat-mini-fab
-    #exitBoundsEditFab
-    id="exitBoundsEditFab"
-    (click)="stopEditingSpot()"
-  >
-    <mat-icon aria-label="Button with cross to spot editing">
-      close
-    </mat-icon>
-  </button>
-  <button
-    *ngIf="editingBounds"
-    mat-fab
-    #saveBoundsEditFab
-    id="saveBoundsEditFab"
-    (click)="saveBoundsEdit()"
-  >
-    <mat-icon
-      aria-label="Button with check mark to stop editing the bounds of the spot"
-    >
-      check
-    </mat-icon>
   </button>
 </mat-drawer-container>
