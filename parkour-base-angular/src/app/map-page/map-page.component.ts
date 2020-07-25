@@ -1,4 +1,11 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+  QueryList,
+  ViewChildren,
+} from "@angular/core";
 import { map_style } from "./map_style";
 
 import * as firebase from "firebase";
@@ -19,6 +26,7 @@ import { Spot } from "src/scripts/db/Spot";
 import { MapHelper } from "../../scripts/map_helper";
 import { ActivatedRoute } from "@angular/router";
 import { Location } from "@angular/common";
+import { SpotDetailComponent } from "../spot-detail/spot-detail.component";
 
 @Component({
   selector: "app-map-page",
@@ -27,6 +35,12 @@ import { Location } from "@angular/common";
 })
 export class MapPageComponent implements OnInit {
   @ViewChild("map", { static: true }) map: AgmMap;
+  @ViewChildren("polygon", { read: AgmPolygon }) polygons: QueryList<
+    AgmPolygon
+  >;
+  @ViewChild(SpotDetailComponent, { static: false })
+  spotDetail: SpotDetailComponent;
+
   mapStyle: MapStyle = MapStyle.Simple;
   mapStylesConfig = map_style;
   spotPolygons: AgmPolygon[] = [];
@@ -353,9 +367,29 @@ export class MapPageComponent implements OnInit {
     );
   }
 
-  pathsChanged(pathsChangedEvent) {
-    this.selectedSpot.paths = pathsChangedEvent.newArr;
-    //console.log(pathsChangedEvent.newArr);
+  getPathsFromSpotPolygon() {
+    this.polygons.forEach((polygon) => {
+      if (polygon.editable) {
+        polygon
+          .getPaths()
+          .then((val) => {
+            console.log(val);
+
+            let paths: Array<Array<LatLngLiteral>> = [];
+            paths[0] = val[0].map((v, i, arr) => {
+              return { lat: v.lat(), lng: v.lng() };
+            });
+
+            console.log(paths);
+
+            this.selectedSpot.paths = paths;
+            this.spotDetail.save();
+          })
+          .catch((reason) => {
+            console.error(reason);
+          });
+      }
+    });
   }
 
   loadSpotsForTiles(tilesToLoad: { x: number; y: number }[]) {
@@ -389,7 +423,7 @@ export class MapPageComponent implements OnInit {
   }
 
   addBounds() {
-    const dist = 0.0002; //
+    const dist = 0.0001; //
     const location = this.selectedSpot.location;
     let _paths: Array<Array<LatLngLiteral>> = [
       [
@@ -399,7 +433,7 @@ export class MapPageComponent implements OnInit {
         { lat: location.lat + dist, lng: location.lng - dist },
       ],
     ];
-    console.log("made bounds");
+    console.log("made inital bounds");
     this.selectedSpot.paths = _paths;
   }
 }

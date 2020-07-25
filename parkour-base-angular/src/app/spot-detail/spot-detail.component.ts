@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 import { Spot } from "src/scripts/db/Spot";
 import { DatabaseService } from "../database.service";
+import { LatLng } from "@agm/core";
 
 @Component({
   selector: "app-spot-detail",
@@ -22,6 +23,7 @@ export class SpotDetailComponent implements OnInit {
   @Input() clickable: boolean = false;
   @Input() editable: boolean = false;
   @Input() isEditing: boolean = false;
+  @Output() callGetPathsPromiseFunction = new EventEmitter<void>();
 
   @Output() isEditingChange: EventEmitter<boolean> = new EventEmitter<
     boolean
@@ -58,11 +60,12 @@ export class SpotDetailComponent implements OnInit {
     }
   }
   saveButtonClick() {
-    this.isEditing = false;
-    this.save();
-    this.isEditingChange.emit(false);
+    this.updatePaths();
+    //this.isEditing = false;
+    //this.save();
+    //this.isEditingChange.emit(false);
   }
-  discardButtonClikc() {
+  discardButtonClick() {
     this.isEditing = false;
     this.isEditingChange.emit(false);
     this.spot.data = this.backupSpotData;
@@ -77,6 +80,10 @@ export class SpotDetailComponent implements OnInit {
   }
 
   focusClick() {}
+
+  private updatePaths() {
+    this.callGetPathsPromiseFunction.emit();
+  }
 
   async shareSpot() {
     let baseUrl = "localhost:4200";
@@ -104,15 +111,17 @@ export class SpotDetailComponent implements OnInit {
   }
 
   hasBounds() {
-    return this.spot.paths.length > 0;
+    return this.spot && this.spot.hasBounds();
   }
 
-  save() {
+  public save() {
     if (this.spot.id) {
       // this is an old spot that is edited
       this._dbService.setSpot(this.spot).subscribe(
         () => {
           console.log("Successful save!");
+          this.isEditing = false;
+          this.isEditingChange.emit(false);
         },
         (error) => {
           console.error("Error on spot save", error);
@@ -123,6 +132,8 @@ export class SpotDetailComponent implements OnInit {
       this._dbService.createSpot(this.spot).subscribe(
         () => {
           console.log("Successful spot creation");
+          this.isEditing = false;
+          this.isEditingChange.emit(false);
         },
         (error) => {
           console.error("There was an error creating this spot!");

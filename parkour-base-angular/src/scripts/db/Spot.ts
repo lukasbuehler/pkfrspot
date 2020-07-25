@@ -6,7 +6,7 @@ import { MapHelper } from "../map_helper";
 export module Spot {
   export class Class {
     constructor(private _id: string, private _data: Spot.Schema) {
-      if (_data.bounds) {
+      if (this.hasBounds()) {
         this._paths = this._makePathsFromBounds(_data.bounds);
       }
       if (_data.location) {
@@ -48,6 +48,10 @@ export module Spot {
       );
       // update tile coords
       this.setTileCoordinates();
+    }
+
+    public hasBounds() {
+      return !!this._data.bounds;
     }
 
     public setTileCoordinates() {

@@ -41,6 +41,7 @@
   >
     <div *ngIf="selectedSpot">
       <app-spot-detail
+        #spotDetail
         [spot]="selectedSpot"
         [flat]="true"
         [dismissable]="true"
@@ -49,6 +50,7 @@
         [(isEditing)]="this.editingBounds"
         (dismiss)="closeSpot()"
         (addBoundsClick)="addBounds()"
+        (callGetPathsPromiseFunction)="getPathsFromSpotPolygon()"
       ></app-spot-detail>
     </div>
   </mat-drawer>
@@ -100,6 +102,7 @@
       (circleClick)="openSpot(spot)"
     >
       <agm-polygon
+        #polygon
         [paths]="spot.paths"
         [fillColor]="'#304ffe'"
         [strokeColor]="'#304ffe'"
@@ -108,7 +111,6 @@
           editingBounds && spot && selectedSpot && spot.id === selectedSpot.id
         "
         (polyClick)="openSpot(spot)"
-        (polyPathsChange)="pathsChanged($event)"
       ></agm-polygon>
     </agm-circle>
 
