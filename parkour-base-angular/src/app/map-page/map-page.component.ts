@@ -355,6 +355,7 @@ export class MapPageComponent implements OnInit {
 
   pathsChanged(pathsChangedEvent) {
     this.selectedSpot.paths = pathsChangedEvent.newArr;
+    //console.log(pathsChangedEvent.newArr);
   }
 
   loadSpotsForTiles(tilesToLoad: { x: number; y: number }[]) {
@@ -388,9 +389,9 @@ export class MapPageComponent implements OnInit {
   }
 
   addBounds() {
-    const dist = 0.0005; //
+    const dist = 0.0002; //
     const location = this.selectedSpot.location;
-    let paths: Array<Array<LatLngLiteral>> = [
+    let _paths: Array<Array<LatLngLiteral>> = [
       [
         { lat: location.lat + dist, lng: location.lng + dist },
         { lat: location.lat - dist, lng: location.lng + dist },
@@ -399,6 +400,6 @@ export class MapPageComponent implements OnInit {
       ],
     ];
     console.log("made bounds");
-    this.selectedSpot.paths = paths;
+    this.selectedSpot.paths = _paths;
   }
 }

@@ -73,13 +73,6 @@
         ></textarea>
       </mat-form-field>
     </form>
-    <button
-      *ngIf="editable && !hasBounds()"
-      mat-button
-      (click)="addBoundsClicked()"
-    >
-      Add bounds
-    </button>
   </mat-card-content>
   <mat-card-actions *ngIf="isEditing">
     <button
@@ -120,8 +113,8 @@
         <button mat-button color="accent" (click)="shareSpot()">
           Share
         </button>
-        <button mat-button (click)="focusClick()">Focus</button>
-        <button mat-button>Visited</button>
+        <button mat-button (click)="focusClick()">Focus on map</button>
+        <button mat-button>Mark as visited</button>
         <button mat-button color="">Rate</button>
       </div>
       <div class="spot-button-row">
@@ -151,13 +144,13 @@
     <mat-expansion-panel [class.mat-elevation-z1]="flat">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Edit Suggestions
+          Edit voting
         </mat-panel-title>
         <mat-panel-description>
-          Vote on changes
+          Vote for spot details changes
         </mat-panel-description>
       </mat-expansion-panel-header>
-      ...Coming soon...
+      ... Coming soon ...
     </mat-expansion-panel>
   </mat-accordion>
 </mat-card>
