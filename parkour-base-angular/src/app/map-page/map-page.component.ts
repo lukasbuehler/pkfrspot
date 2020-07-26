@@ -38,6 +38,7 @@ export class MapPageComponent implements OnInit {
   @ViewChildren("polygon", { read: AgmPolygon }) polygons: QueryList<
     AgmPolygon
   >;
+  // SpotDetailComponent is only there if there is a spot selected, so static must be set to false.
   @ViewChild(SpotDetailComponent, { static: false })
   spotDetail: SpotDetailComponent;
 
@@ -365,6 +366,11 @@ export class MapPageComponent implements OnInit {
         ),
       }
     );
+
+    this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(this.selectedSpot);
+
+    // sets the map and the spot to edit mode
+    this.editingBounds = true;
   }
 
   getPathsFromSpotPolygon() {
@@ -373,23 +379,28 @@ export class MapPageComponent implements OnInit {
         polygon
           .getPaths()
           .then((val) => {
-            console.log(val);
-
+            // Convert LatLng[][] to LatLngLiteral[][]
             let paths: Array<Array<LatLngLiteral>> = [];
             paths[0] = val[0].map((v, i, arr) => {
               return { lat: v.lat(), lng: v.lng() };
             });
 
-            console.log(paths);
-
+            // this sets the paths for the selected spot and also sets the bounds for the spot data structure.
             this.selectedSpot.paths = paths;
-            this.spotDetail.save();
+
+            if (this.spotDetail) {
+              this.spotDetail.save();
+            }
+            // If the sidepanel is not open while editing, it might not be able to save.
           })
           .catch((reason) => {
             console.error(reason);
           });
       }
     });
+
+    // If we get here, no editable polygon was found, a spot without bounds was saved
+    this.spotDetail.save();
   }
 
   loadSpotsForTiles(tilesToLoad: { x: number; y: number }[]) {
@@ -422,9 +433,12 @@ export class MapPageComponent implements OnInit {
     this.upadateMapURL(this.center_coordinates, this.zoom);
   }
 
+  /**
+   * Add the first bounds to a spot. This can be used if the spot has no bounds attached to it.
+   */
   addBounds() {
     const dist = 0.0001; //
-    const location = this.selectedSpot.location;
+    const location: LatLngLiteral = this.selectedSpot.location;
     let _paths: Array<Array<LatLngLiteral>> = [
       [
         { lat: location.lat + dist, lng: location.lng + dist },
@@ -435,5 +449,63 @@ export class MapPageComponent implements OnInit {
     ];
     console.log("made inital bounds");
     this.selectedSpot.paths = _paths;
+
+    this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(this.selectedSpot);
+  }
+
+  /**
+   * Add a newly created spot (before first save) to the loaded spots for nice display. It can be identified by having its ID set to empty string
+   * @param newSpot The newly created spot class.
+   */
+  addOrUpdateNewSpotToLoadedSpotsAndUpdate(newSpot: Spot.Class) {
+    // Get the tile coordinates to save in loaded spots
+    let tile = MapHelper.getTileCoordinates(newSpot.location, 16);
+
+    // Get all the spots on the same z=16 tile
+    let spots: Spot.Class[] =
+      this.loadedSpots[`z${16}_${tile.x}_${tile.y}`] || [];
+
+    // Check if this new spot already exists in the loaded spots.
+    let spot = spots.find((v, i, obj) => {
+      v.id === "";
+    });
+
+    if (spot) {
+      // The spot exists and should be updated
+      // get the index in the array
+      let spotIndex = spots.indexOf(spot);
+
+      // Update the spot
+      this.loadedSpots[`z${16}_${tile.x}_${tile.y}`][
+        spotIndex
+      ] = this.selectedSpot;
+    } else {
+      // the spot does not exist
+      this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].push(this.selectedSpot);
+    }
+
+    // update the map to show the new spot on the loaded spots array.
+    this.updateVisibleSpots();
+  }
+
+  /**
+   * This function is used if the new spot was deleted, discarded or never saved. It removes the first spot it finds without an id.
+   */
+  removeNewSpotFromLoadedSpotsAndUpdate() {
+    // TODO
+  }
+
+  /**
+   * This funciton is used if the new spot was saved and now has an id. It replaces the first spot it finds with no ID with the newSaveSpot
+   * @param newSavedSpot The new spot that replaces the unsaved new spot
+   */
+  updateNewSpotIdOnLoadedSpotsAndUpdate(newSavedSpot: Spot.Class) {
+    if (newSavedSpot.id) {
+      // TODO
+    } else {
+      console.error(
+        "The newly saved spot doesn't have an ID attached to it. Something is wrong"
+      );
+    }
   }
 }

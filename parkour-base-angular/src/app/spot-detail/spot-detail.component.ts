@@ -54,6 +54,7 @@ export class SpotDetailComponent implements OnInit {
   }
 
   editButtonClick() {
+    this.backupSpotData = this.spot.data;
     if (this.editable) {
       this.isEditing = true;
       this.isEditingChange.emit(true);
@@ -79,7 +80,13 @@ export class SpotDetailComponent implements OnInit {
     this.addBoundsClick.emit();
   }
 
-  focusClick() {}
+  focusClick() {
+    console.log("focus clicked");
+  }
+
+  rateClick() {
+    console.log("rate clicked");
+  }
 
   private updatePaths() {
     this.callGetPathsPromiseFunction.emit();
