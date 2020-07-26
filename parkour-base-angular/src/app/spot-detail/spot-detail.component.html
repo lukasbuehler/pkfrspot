@@ -112,6 +112,14 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
       <img src="{{ spot.data.image_src }}" class="spot-img" alt="" />
+      <div *ngIf="!spot.data.image_src" class="upload-spot-image-box">
+        <p>There are no images for this spot</p>
+        <app-upload-media-ui (uploadMedia)="setSpotImage($event)">
+        </app-upload-media-ui>
+        <button mat-flat-button (click)="uploadImage()" color="accent">
+          Upload Spot Image
+        </button>
+      </div>
       <p *ngIf="spot.data.description">
         {{ spot.data.description }}
       </p>

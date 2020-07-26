@@ -2,13 +2,13 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 admin.initializeApp(functions.config().firebase);
 
-import algoliasearch from "algoliasearch";
-const ALGOLIA_ID = functions.config().algolia.app_id;
-const ALGOLIA_ADMIN_KEY = functions.config().algolia.api_key;
-const ALGOLIA_SEARCH_KEY = functions.config().algolia.search_key;
+//import algoliasearch from "algoliasearch";
+//const ALGOLIA_ID = functions.config().algolia.app_id;
+//const ALGOLIA_ADMIN_KEY = functions.config().algolia.api_key;
+//const ALGOLIA_SEARCH_KEY = functions.config().algolia.search_key;
 
-const ALGOLIA_INDEX_NAME = "spots";
-const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY);
+//const ALGOLIA_INDEX_NAME = "spots";
+//const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY);
 
 /**
  * This function counts all the likes on one post and updates the number of likes on the post document. It is run everytime a like is added, updated or removed.
@@ -31,6 +31,7 @@ export const countPostLikesOnWrite = functions.firestore
       });
   });
 
+/*
 // Update the search index every time a blog post is written.
 export const createTextSearchIndexOnSpotWrite = functions.firestore
   .document("spots/{spotId}")
@@ -46,6 +47,7 @@ export const createTextSearchIndexOnSpotWrite = functions.firestore
 
     return index.saveObject(spot);
   });
+  */
 
 /**
  * This function clusters spots and puts them in a document for overviewing the spot map.

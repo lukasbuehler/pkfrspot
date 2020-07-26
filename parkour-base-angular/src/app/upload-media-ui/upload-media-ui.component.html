@@ -1,0 +1,36 @@
+<div class="main">
+  <button
+    mat-mini-fab
+    id="attachMedia"
+    class="mini-fab"
+    (click)="imageInput.click()"
+  >
+    <mat-icon>attach_file</mat-icon>
+  </button>
+  <input
+    #imageInput
+    hidden="true"
+    type="file"
+    onclick="this.value=null"
+    (change)="onSelectMedia($event.target.files)"
+  />
+  <mat-form-field>
+    <mat-label>Upload Media</mat-label>
+    <input
+      #filenameInput
+      matInput
+      name="media"
+      type="text"
+      ng-readonly="true"
+      (click)="imageInput.click()"
+      readonly
+      [value]="uploadFileName"
+    />
+    <mat-icon matSuffix>cloud_upload</mat-icon>
+    <mat-hint>{{
+      uploadFile
+        ? "Size: " + uploadFileSizeString + ", Type: " + uploadFile.type
+        : "Click to select media"
+    }}</mat-hint>
+  </mat-form-field>
+</div>

@@ -54,6 +54,7 @@ import { EditPostDialogComponent } from "./edit-post-dialog/edit-post-dialog.com
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RatingComponent } from "./rating/rating.component";
 import { SpotDetailComponent } from "./spot-detail/spot-detail.component";
+import { UploadMediaUiComponent } from './upload-media-ui/upload-media-ui.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { SpotDetailComponent } from "./spot-detail/spot-detail.component";
     EditPostDialogComponent,
     RatingComponent,
     SpotDetailComponent,
+    UploadMediaUiComponent,
   ],
   entryComponents: [EditPostDialogComponent],
   imports: [

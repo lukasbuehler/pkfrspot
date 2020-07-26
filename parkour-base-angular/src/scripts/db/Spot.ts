@@ -54,6 +54,10 @@ export module Spot {
       return !!this._data.bounds;
     }
 
+    public addNewImage(link: string) {
+      this._data.image_src = link;
+    }
+
     public setTileCoordinates() {
       if (!this._data.tile_coordinates) {
         this._data.tile_coordinates = {};

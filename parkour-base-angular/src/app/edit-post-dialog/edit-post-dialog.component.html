@@ -13,42 +13,10 @@
     </mat-form-field>
     <mat-tab-group (selectedIndexChange)="tabChanged($event.valueOf())">
       <mat-tab label="Upload Media">
-        <div class="upload-media-box">
-          <button
-            mat-mini-fab
-            id="attachMedia"
-            class="mini-fab"
-            (click)="imageInput.click()"
-          >
-            <mat-icon>attach_file</mat-icon>
-          </button>
-          <input
-            #imageInput
-            hidden="true"
-            type="file"
-            onclick="this.value=null"
-            (change)="onSelectImage($event.target.files)"
-          />
-          <mat-form-field>
-            <mat-label>Upload Media</mat-label>
-            <input
-              #filenameInput
-              matInput
-              name="media"
-              type="text"
-              ng-readonly="true"
-              (click)="imageInput.click()"
-              readonly
-              [value]="uploadFileName"
-            />
-            <mat-icon matSuffix>cloud_upload</mat-icon>
-            <mat-hint>{{
-              uploadFile
-                ? "Size: " + uploadFileSizeString + ", Type: " + uploadFile.type
-                : "Click to select media"
-            }}</mat-hint>
-          </mat-form-field>
-        </div>
+        <app-upload-media-ui
+          (changed)="hasChanged = true"
+          (uploadMedia)="onUploadMediaSelect($event)"
+        ></app-upload-media-ui>
       </mat-tab>
       <mat-tab label="Link Media">
         <mat-form-field>
@@ -64,7 +32,10 @@
           <mat-icon matSuffix>link</mat-icon>
           <mat-hint>{{
             mediaLink.text && mediaLink.platform
-              ? "Platform: " + mediaLink.platform + ", Video ID: " + mediaLink.id
+              ? "Platform: " +
+                mediaLink.platform +
+                ", Video ID: " +
+                mediaLink.id
               : "Enter a media link"
           }}</mat-hint>
           <mat-error *ngIf="linkInputFormControl.hasError('invalid')"

@@ -28,11 +28,7 @@ button.mat-flat-button {
   padding-top: 20px;
 }
 
-::ng-deep .upload-media-box {
+::ng-deep app-upload-media-ui {
   display: flex;
   align-items: center;
-
-  button {
-    margin-right: 15px;
-  }
 }

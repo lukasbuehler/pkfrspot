@@ -1,0 +1,23 @@
+div.main {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+app-upload-media-ui {
+  display: flex;
+  align-items: center;
+}
+
+button {
+  margin-right: 15px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+mat-form-field,
+.form-group,
+::ng-deep .mat-form-field-wrapper {
+  width: 100%;
+}

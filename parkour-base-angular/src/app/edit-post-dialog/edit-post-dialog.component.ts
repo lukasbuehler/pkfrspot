@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { humanFileSize } from "./../../scripts/Helpers";
+
 import { Post } from "src/scripts/db/Post";
 import { StorageService, StorageFolders } from "../storage.service";
 import { FormControl } from "@angular/forms";
@@ -12,7 +12,7 @@ export interface PostDialogData {
 @Component({
   selector: "app-edit-post-dialog",
   templateUrl: "./edit-post-dialog.component.html",
-  styleUrls: ["./edit-post-dialog.component.scss"]
+  styleUrls: ["./edit-post-dialog.component.scss"],
 })
 export class EditPostDialogComponent implements OnInit {
   constructor(
@@ -27,8 +27,6 @@ export class EditPostDialogComponent implements OnInit {
   isCreating: boolean = false;
 
   uploadFile: File = null;
-  uploadFileName: string = "";
-  uploadFileSizeString: string = "";
 
   hasChanged = false;
 
@@ -42,23 +40,12 @@ export class EditPostDialogComponent implements OnInit {
   mediaLink = {
     text: "",
     platform: "",
-    id: ""
+    id: "",
   };
 
   linkInputFormControl = new FormControl("");
 
   ngOnInit() {}
-
-  onSelectImage(files: FileList) {
-    let type = files.item(0).type;
-    if (type === "video/mp4" || type.includes("image")) {
-      this.uploadFile = files.item(0);
-      this.uploadFileName = this.uploadFile.name;
-      this.uploadFileSizeString = humanFileSize(this.uploadFile.size, true);
-
-      this.hasChanged = true;
-    }
-  }
 
   tabChanged(index: number) {
     if (index === 0) {
@@ -89,7 +76,7 @@ export class EditPostDialogComponent implements OnInit {
           this.linkInputFormControl.setErrors(null);
         } else {
           this.linkInputFormControl.setErrors({
-            invalid: true
+            invalid: true,
           });
         }
       } else if (str.includes("vimeo")) {
@@ -100,6 +87,10 @@ export class EditPostDialogComponent implements OnInit {
     } else {
       this.linkInputFormControl.setErrors({ invalid: true });
     }
+  }
+
+  onUploadMediaSelect(file) {
+    this.uploadFile = file;
   }
 
   makePostToReturn() {
@@ -115,7 +106,7 @@ export class EditPostDialogComponent implements OnInit {
     return {
       title: this.postTitle,
       body: this.postBody || "",
-      is_image: isImage
+      is_image: isImage,
     };
   }
 

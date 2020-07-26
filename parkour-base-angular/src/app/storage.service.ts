@@ -6,11 +6,12 @@ import { generateUUID } from "src/scripts/Helpers";
 
 export enum StorageFolders {
   PostMedia = "post_media",
-  ProfileImages = "profile_images"
+  ProfilePictures = "profile_pictures",
+  SpotPictures = "spot_pictures",
 }
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class StorageService {
   constructor() {}
@@ -21,7 +22,7 @@ export class StorageService {
   getStoredContent() {}
 
   setUploadToStorage(file: File, location: StorageFolders): Observable<string> {
-    this.uploadObs = new Observable<string>(subscriber => {
+    this.uploadObs = new Observable<string>((subscriber) => {
       let filename = generateUUID();
       let uploadRef = this.storageRef.child(`${location}/${filename}`);
 
@@ -29,12 +30,12 @@ export class StorageService {
 
       uploadTask.on(
         firebase.storage.TaskEvent.STATE_CHANGED,
-        snapshot => {},
-        error => {
+        (snapshot) => {},
+        (error) => {
           subscriber.error(error);
         },
         () => {
-          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+          uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
             console.log("File available at", downloadURL);
             subscriber.next(downloadURL);
           });

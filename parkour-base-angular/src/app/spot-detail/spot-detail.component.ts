@@ -9,6 +9,8 @@ import {
 import { Spot } from "src/scripts/db/Spot";
 import { DatabaseService } from "../database.service";
 import { LatLng } from "@agm/core";
+import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
+import { StorageService, StorageFolders } from "../storage.service";
 
 @Component({
   selector: "app-spot-detail",
@@ -31,12 +33,19 @@ export class SpotDetailComponent implements OnInit {
   @Output() dismiss: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() addBoundsClick: EventEmitter<void> = new EventEmitter<void>();
 
+  @ViewChild(UploadMediaUiComponent, { static: false }) uploadMediaComp;
+
   backupSpotData: Spot.Schema;
 
   spotTypes = Object.values(Spot.Types);
   spotAreas = Object.values(Spot.Areas);
 
-  constructor(private _dbService: DatabaseService) {
+  newSpotImage: File = null;
+
+  constructor(
+    private _dbService: DatabaseService,
+    private _storageService: StorageService
+  ) {
     if (this.spot) {
       this.backupSpotData = this.spot.data;
     }
@@ -86,6 +95,39 @@ export class SpotDetailComponent implements OnInit {
 
   rateClick() {
     console.log("rate clicked");
+  }
+
+  setSpotImage(file: File) {
+    console.log("setting image");
+    if (this.uploadMediaComp.isImageSelected()) {
+      this.newSpotImage = file;
+    }
+  }
+
+  uploadImage() {
+    if (!this.newSpotImage) {
+      console.error("No file selected or passed to this component");
+    }
+
+    if (this.uploadMediaComp) {
+      if (this.uploadMediaComp.isImageSelected()) {
+        let observable = this._storageService.setUploadToStorage(
+          this.newSpotImage,
+          StorageFolders.SpotPictures
+        );
+
+        observable.subscribe(
+          (imageLink) => {
+            this.spot.addNewImage(imageLink);
+          },
+          (error) => {}
+        );
+      } else {
+        console.error("Selected media is not an image");
+      }
+    } else {
+      console.error("The upload media is not even loaded");
+    }
   }
 
   private updatePaths() {
