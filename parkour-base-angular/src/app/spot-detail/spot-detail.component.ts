@@ -33,7 +33,7 @@ export class SpotDetailComponent implements OnInit {
   @Output() dismiss: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() addBoundsClick: EventEmitter<void> = new EventEmitter<void>();
 
-  @ViewChild(UploadMediaUiComponent, { static: false }) uploadMediaComp;
+  @ViewChild(UploadMediaUiComponent) uploadMediaComp;
 
   backupSpotData: Spot.Schema;
 

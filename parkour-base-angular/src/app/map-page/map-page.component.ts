@@ -39,7 +39,7 @@ export class MapPageComponent implements OnInit {
     AgmPolygon
   >;
   // SpotDetailComponent is only there if there is a spot selected, so static must be set to false.
-  @ViewChild(SpotDetailComponent, { static: false })
+  @ViewChild(SpotDetailComponent)
   spotDetail: SpotDetailComponent;
 
   mapStyle: MapStyle = MapStyle.Simple;
