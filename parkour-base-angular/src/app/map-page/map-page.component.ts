@@ -10,7 +10,7 @@ import { map_style } from "./map_style";
 
 import * as firebase from "firebase";
 
-import {} from "googlemaps";
+//import { } from "googlemaps";
 import { DatabaseService } from "../database.service";
 import {
   LatLngLiteral,
