@@ -8,11 +8,12 @@ import { EditPostDialogComponent } from "../edit-post-dialog/edit-post-dialog.co
 import { StorageService } from "../storage.service";
 import * as firebase from "firebase/app";
 import { AuthenticationService } from "../authentication.service";
+import { Spot } from "src/scripts/db/Spot";
 
 @Component({
   selector: "app-home-page",
   templateUrl: "./home-page.component.html",
-  styleUrls: ["./home-page.component.scss"]
+  styleUrls: ["./home-page.component.scss"],
 })
 export class HomePageComponent implements OnInit {
   constructor(
@@ -32,20 +33,20 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit() {
     this._authService.state$.subscribe(
-      user => {
+      (user) => {
         if (user) {
           this.isUserSignedIn = true;
         } else {
           this.isUserSignedIn = false;
         }
       },
-      error => {
+      (error) => {
         console.error(error);
       }
     );
 
     this._dbService.getPostUpdates().subscribe(
-      postMap => {
+      (postMap) => {
         for (let postId in postMap) {
           let docIndex = this.updatePosts.findIndex((post, index, obj) => {
             return post.id === postId;
@@ -62,7 +63,7 @@ export class HomePageComponent implements OnInit {
           }
         }
       },
-      error => {
+      (error) => {
         console.error(error);
       },
       () => {} // complete
@@ -76,39 +77,68 @@ export class HomePageComponent implements OnInit {
   createPost() {
     const createPostDialog = this.dialog.open(EditPostDialogComponent, {
       width: "600px",
-      data: { isCreating: true }
+      data: { isCreating: true },
     });
 
     createPostDialog.afterClosed().subscribe(
-      result => {
-        this.saveNewPost(result.title, result.body, result.is_image);
+      (result) => {
+        this.saveNewPost(
+          result.title,
+          result.body,
+          result.mediaType,
+          null,
+          null
+        );
       },
-      error => {
+      (error) => {
         console.error(error);
       }
     );
   }
 
-  saveNewPost(title: string, body: string, isImage: boolean) {
-    this._storageService.upload().subscribe(
-      src => {
-        // now create the DB entry for the post
-        this._dbService.addPost({
-          title: title,
-          body: body,
-          media: {
-            is_image: isImage,
-            src: src
-          },
-          time_posted: firebase.firestore.Timestamp.now(),
-          user: {
-            uid: this._authService.uid,
-            display_name: this._authService.user.displayName,
-            ref: this._dbService.docRef("users/" + this._authService.uid)
-          }
-        });
+  saveNewPost(
+    title: string,
+    body: string,
+    mediaType: Post.MediaTypes,
+    location: google.maps.LatLngLiteral | null,
+    spot: Spot.Class | null
+  ) {
+    let post: Post.Schema = {
+      title: title,
+      body: body,
+      time_posted: firebase.firestore.Timestamp.now(),
+      user: {
+        uid: this._authService.uid,
+        display_name: this._authService.user.displayName,
+        ref: this._dbService.docRef("users/" + this._authService.uid),
       },
-      error => {
+    };
+
+    if (location) {
+      post.location = new firebase.firestore.GeoPoint(
+        location.lat,
+        location.lng
+      );
+    }
+
+    if (spot) {
+      post.spot = {
+        name: spot.data.name,
+        spot_location: spot.data.location,
+        ref: this._dbService.docRef("spots/" + spot.id),
+      };
+    }
+
+    this._storageService.upload().subscribe(
+      (src) => {
+        // now create the DB entry for the post
+        (post.media = {
+          type: mediaType,
+          src: src,
+        }),
+          this._dbService.addPost(post);
+      },
+      (error) => {
         console.error(error);
       }
     );

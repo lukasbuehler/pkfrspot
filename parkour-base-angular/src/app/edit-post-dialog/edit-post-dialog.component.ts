@@ -95,18 +95,21 @@ export class EditPostDialogComponent implements OnInit {
 
   makePostToReturn() {
     let isImage = false;
+    let mediaType: Post.MediaTypes = Post.MediaTypes.None;
     if (this.uploadFile) {
       this._storageService.setUploadToStorage(
         this.uploadFile,
         StorageFolders.PostMedia
       );
-      isImage = this.uploadFile.type.includes("image");
+      if (this.uploadFile.type.includes("image")) {
+        mediaType = Post.MediaTypes.Image;
+      }
     }
 
     return {
       title: this.postTitle,
       body: this.postBody || "",
-      is_image: isImage,
+      mediaType: mediaType,
     };
   }
 

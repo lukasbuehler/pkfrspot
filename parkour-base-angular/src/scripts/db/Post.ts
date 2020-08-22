@@ -30,7 +30,7 @@ export module Post {
 
     get mediaIsImage() {
       if (this._data.media) {
-        return this._data.media.is_image;
+        return this._data.media.type === MediaTypes.Image;
       }
       return null;
     }
@@ -57,13 +57,28 @@ export module Post {
     }
   }
 
+  export enum MediaTypes {
+    None = "none",
+    Video = "video",
+    Image = "image",
+    YouTube = "youtube",
+    Instagram = "instagram",
+    Vimeo = "vimeo",
+  }
+
   export interface Schema {
     title: string;
     user: User.ReferenceSchema;
     body: string;
-    media: {
-      is_image: boolean;
+    media?: {
+      type: MediaTypes;
       src: string;
+    };
+    location?: firebase.firestore.GeoPoint; // where the media was taken
+    spot?: {
+      name: string;
+      spot_location: firebase.firestore.GeoPoint;
+      ref: firebase.firestore.DocumentReference;
     };
 
     like_count?: number;
