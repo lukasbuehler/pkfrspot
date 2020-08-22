@@ -40,6 +40,7 @@ import { MatExpansionModule } from "@angular/material/expansion";
 import { MatSelectModule } from "@angular/material/select";
 
 import { MatVideoModule } from "mat-video";
+import { PlyrModule } from "ngx-plyr";
 
 import { HomePageComponent } from "./home-page/home-page.component";
 import { MapPageComponent } from "./map-page/map-page.component";
@@ -113,6 +114,7 @@ import { UploadMediaUiComponent } from "./upload-media-ui/upload-media-ui.compon
     MatSelectModule,
 
     MatVideoModule,
+    PlyrModule,
   ],
   exports: [MatButtonModule],
   providers: [

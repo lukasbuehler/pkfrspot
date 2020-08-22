@@ -20,18 +20,18 @@
     src="{{ post.mediaSrc }}"
     [alt]="post.title + ' Image'"
   />
-  <mat-video
-    *ngIf="post.mediaSrc && !post.mediaIsImage"
+  <div
+    #videoPlayer
+    *ngIf="!post.mediaIsImage && post.mediaSrc"
     class="mat-card-video"
-    [quality]="false"
-    color="accent"
-    [src]="post.mediaSrc"
-    [keyboard]="false"
-  ></mat-video>
+    plyr
+    plyrType="video"
+    [plyrSources]="[{ src: post.mediaSrc, type: 'video/mp4' }]"
+  ></div>
   <div *ngIf="!post.mediaSrc" class="youtube-video-container">
     <iframe
+      title="YouTube Embed"
       src="https://www.youtube.com/embed/Z6ri_jm0bYA"
-      frameborder="0"
       allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen
     ></iframe>

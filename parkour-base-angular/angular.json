@@ -31,7 +31,8 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss",
               "src/theming/parkour.scss",
-              "node_modules/firebaseui/dist/firebaseui.css"
+              "node_modules/firebaseui/dist/firebaseui.css",
+              "node_modules/plyr/dist/plyr.css"
             ],
             "scripts": [],
             "es5BrowserSupport": true

@@ -1,18 +1,21 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import * as moment from "moment";
 import { Post } from "src/scripts/db/Post";
 import { DatabaseService } from "../database.service";
 import { AuthenticationService } from "../authentication.service";
 import * as firebase from "firebase/app";
+import { PlyrComponent } from "ngx-plyr";
 
 @Component({
   selector: "app-post",
   templateUrl: "./post.component.html",
-  styleUrls: ["./post.component.scss"]
+  styleUrls: ["./post.component.scss"],
 })
 export class PostComponent implements OnInit {
   @Input() post: Post.Class;
   @Input() showCard: boolean = true;
+
+  @ViewChild(PlyrComponent) plyr: PlyrComponent;
 
   dateAndTimeString: string;
   timeAgoString: string;
@@ -30,10 +33,10 @@ export class PostComponent implements OnInit {
     this.likedByUser = false;
     this._databaseService
       .userHasLikedPost(this.post.id, this._authenticationService.uid)
-      .then(bool => {
+      .then((bool) => {
         this.likedByUser = bool;
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
       });
   }
@@ -61,8 +64,8 @@ export class PostComponent implements OnInit {
             {
               time: firebase.firestore.Timestamp.now(),
               user: {
-                uid: this._authenticationService.uid
-              }
+                uid: this._authenticationService.uid,
+              },
             }
           );
         } else {
