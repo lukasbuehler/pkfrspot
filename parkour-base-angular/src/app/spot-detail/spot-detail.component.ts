@@ -37,6 +37,8 @@ export class SpotDetailComponent implements OnInit {
 
   backupSpotData: Spot.Schema;
 
+  visited: boolean = false;
+
   spotTypes = Object.values(Spot.Types);
   spotAreas = Object.values(Spot.Areas);
 

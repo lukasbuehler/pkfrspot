@@ -54,7 +54,7 @@ import { EditPostDialogComponent } from "./edit-post-dialog/edit-post-dialog.com
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RatingComponent } from "./rating/rating.component";
 import { SpotDetailComponent } from "./spot-detail/spot-detail.component";
-import { UploadMediaUiComponent } from './upload-media-ui/upload-media-ui.component';
+import { UploadMediaUiComponent } from "./upload-media-ui/upload-media-ui.component";
 
 @NgModule({
   declarations: [
@@ -121,5 +121,3 @@ import { UploadMediaUiComponent } from './upload-media-ui/upload-media-ui.compon
   bootstrap: [AppComponent],
 })
 export class AppModule {}
-
-platformBrowserDynamic().bootstrapModule(AppModule);
