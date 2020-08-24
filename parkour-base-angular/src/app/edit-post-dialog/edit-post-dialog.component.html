@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>{{ isCreating ? "Create" : "Edit" }} post</h1>
 <mat-dialog-content>
   <form onsubmit="event.preventDefault()">
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Title</mat-label>
       <input
         type="text"
@@ -11,7 +11,10 @@
         [(ngModel)]="postTitle"
       />
     </mat-form-field>
-    <mat-tab-group (selectedIndexChange)="tabChanged($event.valueOf())">
+    <mat-tab-group
+      class="outline-box"
+      (selectedIndexChange)="tabChanged($event.valueOf())"
+    >
       <mat-tab label="Upload Media">
         <app-upload-media-ui
           (changed)="hasChanged = true"

@@ -2,6 +2,11 @@
   flex: 1 1 auto;
 }
 
+.outline-box {
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
 mat-form-field,
 .form-group,
 ::ng-deep .mat-form-field-wrapper {
@@ -24,7 +29,7 @@ button.mat-flat-button {
 }
 
 ::ng-deep .mat-tab-body-content {
-  padding: 10px;
+  padding: 20px;
   padding-top: 20px;
 }
 
