@@ -412,7 +412,7 @@ export class MapPageComponent implements OnInit {
     );
   }
 
-  spotMarkerMoved(event: google.maps.MapMouseEvent) {
+  spotMarkerMoved(event: google.maps.MouseEvent) {
     if (this.selectedSpot) {
       let latLng = event.latLng;
       this.selectedSpot.location = { lat: latLng.lat(), lng: latLng.lng() };
