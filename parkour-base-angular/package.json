@@ -36,7 +36,6 @@
     "firebaseui": "^4.7.1",
     "firebaseui-angular": "^4.1.0",
     "jquery": "^3.5.1",
-    "mat-video": "^2.8.1",
     "moment": "^2.29.1",
     "ngx-infinite-scroll": "^7.2.0",
     "ngx-plyr": "^4.0.0",
