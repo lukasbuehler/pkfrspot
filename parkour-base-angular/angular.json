@@ -34,7 +34,7 @@
               "node_modules/firebaseui/dist/firebaseui.css",
               "node_modules/plyr/dist/plyr.css"
             ],
-            "scripts": [],
+            "scripts": []
           },
           "configurations": {
             "production": {

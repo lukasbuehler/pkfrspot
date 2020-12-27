@@ -64,8 +64,6 @@
     [backgroundColor]="'#000a12'"
     [clickableIcons]="false"
     [disableDefaultUI]="true"
-    [zoomControl]="false"
-    [streetViewControl]="true"
     [fitBounds]="false"
     gestureHandling="'greedy'"
     [mapTypeId]="mapStyle"
@@ -119,7 +117,7 @@
       [agmFitBounds]="true"
       [latitude]="selectedSpot.location.lat"
       [longitude]="selectedSpot.location.lng"
-      [title]="selectedSpot.name"
+      [title]="selectedSpot.data.name"
       iconUrl="/assets/icons/marker.png"
       [markerDraggable]="editingBounds"
       [markerClickable]="true"
@@ -152,7 +150,9 @@
     (click)="toggleMapStyle()"
   >
     <mat-icon aria-label="Button with magnifying lens to search for spots">
-      {{ mapStyle === "roadmap" ? "terrain" : "map" }}
+      {{
+        mapStyle.toLowerCase() === "ROADMAP".toLowerCase() ? "terrain" : "map"
+      }}
     </mat-icon>
   </button>
 

@@ -1,10 +1,8 @@
-import { LatLngLiteral } from "@agm/core";
-
 export module MapHelper {
   const TILE_SIZE = 256;
 
   export function mercator_projection(
-    latLng: LatLngLiteral
+    latLng: google.maps.LatLngLiteral
   ): google.maps.Point {
     var siny = Math.sin((latLng.lat * Math.PI) / 180);
 
@@ -19,7 +17,7 @@ export module MapHelper {
   }
 
   export function getTileCoordinates(
-    latLng: LatLngLiteral,
+    latLng: google.maps.LatLngLiteral,
     zoom: number
   ): google.maps.Point {
     var scale = 1 << zoom; // 2^zoom

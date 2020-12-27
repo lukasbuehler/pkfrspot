@@ -13,16 +13,7 @@ import * as firebase from "firebase";
 //import "googlemaps";
 
 import { DatabaseService } from "../database.service";
-import {
-  LatLngLiteral,
-  AgmMap,
-  AgmPolygon,
-  PolygonManager,
-  LatLngBounds,
-  LatLng,
-  MouseEvent,
-} from "@agm/core";
-import { MapStyle } from "src/scripts/MapStyle";
+import { AgmMap, AgmPolygon, PolygonManager } from "@agm/core";
 import { Spot } from "src/scripts/db/Spot";
 import { MapHelper } from "../../scripts/map_helper";
 import { ActivatedRoute } from "@angular/router";
@@ -36,14 +27,14 @@ import { SpotDetailComponent } from "../spot-detail/spot-detail.component";
 })
 export class MapPageComponent implements OnInit {
   @ViewChild("map", { static: true }) map: AgmMap;
-  @ViewChildren("polygon", { read: AgmPolygon }) polygons: QueryList<
-    AgmPolygon
-  >;
+  @ViewChildren("polygon", { read: AgmPolygon })
+  polygons: QueryList<AgmPolygon>;
   // SpotDetailComponent is only there if there is a spot selected, so static must be set to false.
   @ViewChild(SpotDetailComponent)
   spotDetail: SpotDetailComponent;
 
-  mapStyle: MapStyle = MapStyle.Simple;
+  //mapStyle: google.maps.MapTypeId = google.maps.MapTypeId.ROADMAP;
+  mapStyle = "roadmap";
   mapStylesConfig = map_style;
   spotPolygons: AgmPolygon[] = [];
 
@@ -54,13 +45,13 @@ export class MapPageComponent implements OnInit {
 
   // The default coordinates are Paris, the origin of parkour.
   // modiying this resets the map
-  readonly start_coordinates: LatLngLiteral = {
+  readonly start_coordinates: google.maps.LatLngLiteral = {
     lat: 48.8517386,
     lng: 2.298386,
   };
 
   // these are updated from user input
-  center_coordinates: LatLngLiteral = {
+  center_coordinates: google.maps.LatLngLiteral = {
     lat: this.start_coordinates.lat,
     lng: this.start_coordinates.lng,
   };
@@ -118,7 +109,7 @@ export class MapPageComponent implements OnInit {
     }
   }
 
-  setStartMap(coords: LatLngLiteral, zoom: number) {
+  setStartMap(coords: google.maps.LatLngLiteral, zoom: number) {
     if (coords && coords.lat && coords.lng) {
       this.start_coordinates.lat = coords.lat;
       this.start_coordinates.lng = coords.lng;
@@ -138,14 +129,14 @@ export class MapPageComponent implements OnInit {
     console.log(MapHelper.getTileCoordinates(coords.coords, this.zoom));
   }
 
-  boundsChanged(bounds: LatLngBounds) {
+  boundsChanged(bounds: google.maps.LatLngBounds) {
     let zoomLevel = this.zoom;
 
-    let northEastLiteral: LatLngLiteral = {
+    let northEastLiteral: google.maps.LatLngLiteral = {
       lat: bounds.getNorthEast().lat(),
       lng: bounds.getNorthEast().lng(),
     };
-    let southWestLiteral: LatLngLiteral = {
+    let southWestLiteral: google.maps.LatLngLiteral = {
       lat: bounds.getSouthWest().lat(),
       lng: bounds.getSouthWest().lng(),
     };
@@ -203,7 +194,7 @@ export class MapPageComponent implements OnInit {
     return radius;
   }
 
-  centerChanged(center: LatLngLiteral) {
+  centerChanged(center: google.maps.LatLngLiteral) {
     this.center_coordinates.lat = center.lat;
     this.center_coordinates.lng = center.lng;
     this.upadateMapURL(center, this.zoom);
@@ -214,7 +205,7 @@ export class MapPageComponent implements OnInit {
     this.upadateMapURL(this.center_coordinates, newZoom);
   }
 
-  upadateMapURL(center: LatLngLiteral, zoom: number) {
+  upadateMapURL(center: google.maps.LatLngLiteral, zoom: number) {
     if (this.selectedSpot) {
       this.location.go(
         `/map/${this.selectedSpot.id}?lat=${center.lat}&lng=${center.lng}&z=${zoom}`
@@ -341,10 +332,15 @@ export class MapPageComponent implements OnInit {
   }
 
   toggleMapStyle() {
-    if (this.map.mapTypeId === MapStyle.Simple) {
-      this.mapStyle = MapStyle.Satellite;
+    if (
+      this.map.mapTypeId.toLowerCase() ===
+      google.maps.MapTypeId.ROADMAP.toLowerCase()
+    ) {
+      // if it is equal to roadmap, toggle to satellite
+      this.mapStyle = google.maps.MapTypeId.SATELLITE;
     } else {
-      this.mapStyle = MapStyle.Simple;
+      // otherwise toggle back to roadmap
+      this.mapStyle = google.maps.MapTypeId.ROADMAP;
     }
   }
 
@@ -381,7 +377,7 @@ export class MapPageComponent implements OnInit {
           .getPaths()
           .then((val) => {
             // Convert LatLng[][] to LatLngLiteral[][]
-            let paths: Array<Array<LatLngLiteral>> = [];
+            let paths: Array<Array<google.maps.LatLngLiteral>> = [];
             paths[0] = val[0].map((v, i, arr) => {
               return { lat: v.lat(), lng: v.lng() };
             });
@@ -420,9 +416,10 @@ export class MapPageComponent implements OnInit {
     );
   }
 
-  spotMarkerMoved(event: MouseEvent) {
+  spotMarkerMoved(event: google.maps.MouseEvent) {
     if (this.selectedSpot) {
-      this.selectedSpot.location = event.coords;
+      let latLng = event.latLng;
+      this.selectedSpot.location = { lat: latLng.lat(), lng: latLng.lng() };
     } else {
       console.error(
         "User somehow could change the spot marker position without having a spot selected"
@@ -439,8 +436,8 @@ export class MapPageComponent implements OnInit {
    */
   addBounds() {
     const dist = 0.0001; //
-    const location: LatLngLiteral = this.selectedSpot.location;
-    let _paths: Array<Array<LatLngLiteral>> = [
+    const location: google.maps.LatLngLiteral = this.selectedSpot.location;
+    let _paths: Array<Array<google.maps.LatLngLiteral>> = [
       [
         { lat: location.lat + dist, lng: location.lng + dist },
         { lat: location.lat - dist, lng: location.lng + dist },

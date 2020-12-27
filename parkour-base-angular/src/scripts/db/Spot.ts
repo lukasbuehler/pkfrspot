@@ -1,4 +1,3 @@
-import { LatLngLiteral } from "@agm/core";
 import { DbDate, DbLocation } from "./Interfaces";
 import * as firebase from "firebase";
 import { MapHelper } from "../map_helper";
@@ -41,7 +40,7 @@ export module Spot {
       const point = this._data.location;
       return { lat: point.latitude, lng: point.longitude };
     }
-    set location(location: LatLngLiteral) {
+    set location(location: google.maps.LatLngLiteral) {
       this._data.location = new firebase.firestore.GeoPoint(
         location.lat,
         location.lng
@@ -76,8 +75,8 @@ export module Spot {
 
     private _makePathsFromBounds(
       bounds: firebase.firestore.GeoPoint[]
-    ): Array<Array<LatLngLiteral>> {
-      let path: Array<Array<LatLngLiteral>> = [[]];
+    ): Array<Array<google.maps.LatLngLiteral>> {
+      let path: Array<Array<google.maps.LatLngLiteral>> = [[]];
 
       for (let point of bounds) {
         path[0].push({
@@ -89,7 +88,7 @@ export module Spot {
     }
 
     private _makeBoundsFromPaths(
-      path: Array<Array<LatLngLiteral>>
+      path: Array<Array<google.maps.LatLngLiteral>>
     ): firebase.firestore.GeoPoint[] {
       let bounds: firebase.firestore.GeoPoint[] = [];
 
