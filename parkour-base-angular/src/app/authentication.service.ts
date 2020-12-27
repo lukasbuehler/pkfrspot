@@ -4,7 +4,7 @@ import * as firebase from "firebase/app";
 import { Observable } from "rxjs";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class AuthenticationService {
   constructor(public angularFireAuth: AngularFireAuth) {
@@ -14,9 +14,9 @@ export class AuthenticationService {
     );
   }
 
-  private _currentUser: firebase.User = null;
+  private _currentUser: firebase.default.User = null;
 
-  get state$(): Observable<firebase.User> {
+  get state$(): Observable<firebase.default.User> {
     return this.angularFireAuth.authState;
   }
 
@@ -32,7 +32,7 @@ export class AuthenticationService {
     return this._currentUser.photoURL;
   }
 
-  firebaseAuthChangeListener = (user: firebase.User) => {
+  firebaseAuthChangeListener = (user: firebase.default.User) => {
     if (user) {
       this._currentUser = user;
     } else {
@@ -52,6 +52,6 @@ export class AuthenticationService {
   }
 
   logUserOut(callback: () => void) {
-    this.angularFireAuth.auth.signOut();
+    this.angularFireAuth.signOut();
   }
 }

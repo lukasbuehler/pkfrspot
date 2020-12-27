@@ -1,5 +1,4 @@
-
 export enum MapStyle {
-    Simple = "roadmap",
-    Satellite = "satellite"
+  Roadmap = "ROADMAP",
+  Satellite = "SATELLITE",
 }

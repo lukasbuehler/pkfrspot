@@ -4,7 +4,7 @@ export module Like {
   export class Class {}
 
   export interface Schema {
-    time: firebase.firestore.Timestamp;
+    time: firebase.default.firestore.Timestamp;
     user: {
       uid: string;
     };

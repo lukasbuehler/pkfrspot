@@ -16,7 +16,7 @@ export enum StorageFolders {
 export class StorageService {
   constructor() {}
 
-  storageRef = firebase.storage().ref();
+  storageRef = firebase.default.storage().ref();
   uploadObs: Observable<string> = null;
 
   getStoredContent() {}
@@ -29,7 +29,7 @@ export class StorageService {
       let uploadTask = uploadRef.put(file);
 
       uploadTask.on(
-        firebase.storage.TaskEvent.STATE_CHANGED,
+        firebase.default.storage.TaskEvent.STATE_CHANGED,
         (snapshot) => {},
         (error) => {
           subscriber.error(error);

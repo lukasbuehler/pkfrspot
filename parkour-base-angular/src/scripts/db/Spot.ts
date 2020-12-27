@@ -1,4 +1,3 @@
-import { LatLngLiteral } from "@agm/core";
 import { DbDate, DbLocation } from "./Interfaces";
 import * as firebase from "firebase";
 import { MapHelper } from "../map_helper";
@@ -37,12 +36,12 @@ export module Spot {
         this.setTileCoordinates();
       }
     }
-    get location() {
+    get location(): google.maps.LatLngLiteral {
       const point = this._data.location;
       return { lat: point.latitude, lng: point.longitude };
     }
-    set location(location: LatLngLiteral) {
-      this._data.location = new firebase.firestore.GeoPoint(
+    set location(location: google.maps.LatLngLiteral) {
+      this._data.location = new firebase.default.firestore.GeoPoint(
         location.lat,
         location.lng
       );
@@ -75,9 +74,9 @@ export module Spot {
     }
 
     private _makePathsFromBounds(
-      bounds: firebase.firestore.GeoPoint[]
-    ): Array<Array<LatLngLiteral>> {
-      let path: Array<Array<LatLngLiteral>> = [[]];
+      bounds: firebase.default.firestore.GeoPoint[]
+    ): Array<Array<google.maps.LatLngLiteral>> {
+      let path: Array<Array<google.maps.LatLngLiteral>> = [[]];
 
       for (let point of bounds) {
         path[0].push({
@@ -89,12 +88,14 @@ export module Spot {
     }
 
     private _makeBoundsFromPaths(
-      path: Array<Array<LatLngLiteral>>
-    ): firebase.firestore.GeoPoint[] {
-      let bounds: firebase.firestore.GeoPoint[] = [];
+      path: Array<Array<google.maps.LatLngLiteral>>
+    ): firebase.default.firestore.GeoPoint[] {
+      let bounds: firebase.default.firestore.GeoPoint[] = [];
 
       for (let point of path[0]) {
-        bounds.push(new firebase.firestore.GeoPoint(point.lat, point.lng));
+        bounds.push(
+          new firebase.default.firestore.GeoPoint(point.lat, point.lng)
+        );
       }
 
       return bounds;
@@ -103,7 +104,7 @@ export module Spot {
 
   export interface Schema {
     name: string;
-    location: firebase.firestore.GeoPoint;
+    location: firebase.default.firestore.GeoPoint;
     tile_coordinates?: {
       z2?: { x: number; y: number };
       z4?: { x: number; y: number };
@@ -120,9 +121,9 @@ export module Spot {
     area?: string;
     rating?: number;
 
-    bounds?: firebase.firestore.GeoPoint[];
+    bounds?: firebase.default.firestore.GeoPoint[];
 
-    time_created?: firebase.firestore.Timestamp;
+    time_created?: firebase.default.firestore.Timestamp;
     time_updated?: { seconds: number; nanoseconds: number };
   }
 

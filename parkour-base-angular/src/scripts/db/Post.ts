@@ -74,15 +74,15 @@ export module Post {
       type: MediaTypes;
       src: string;
     };
-    location?: firebase.firestore.GeoPoint; // where the media was taken
+    location?: firebase.default.firestore.GeoPoint; // where the media was taken
     spot?: {
       name: string;
-      spot_location: firebase.firestore.GeoPoint;
-      ref: firebase.firestore.DocumentReference;
+      spot_location: firebase.default.firestore.GeoPoint;
+      ref: firebase.default.firestore.DocumentReference;
     };
 
     like_count?: number;
 
-    time_posted: firebase.firestore.Timestamp;
+    time_posted: firebase.default.firestore.Timestamp;
   }
 }

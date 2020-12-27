@@ -106,7 +106,7 @@ export class HomePageComponent implements OnInit {
     let post: Post.Schema = {
       title: title,
       body: body,
-      time_posted: firebase.firestore.Timestamp.now(),
+      time_posted: firebase.default.firestore.Timestamp.now(),
       user: {
         uid: this._authService.uid,
         display_name: this._authService.user.displayName,
@@ -115,7 +115,7 @@ export class HomePageComponent implements OnInit {
     };
 
     if (location) {
-      post.location = new firebase.firestore.GeoPoint(
+      post.location = new firebase.default.firestore.GeoPoint(
         location.lat,
         location.lng
       );

@@ -34,8 +34,7 @@
               "node_modules/firebaseui/dist/firebaseui.css",
               "node_modules/plyr/dist/plyr.css"
             ],
-            "scripts": [],
-            "es5BrowserSupport": true
+            "scripts": []
           },
           "configurations": {
             "production": {
