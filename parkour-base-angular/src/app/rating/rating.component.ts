@@ -15,6 +15,24 @@ export class RatingComponent implements OnInit {
   ratingHalfStar: boolean = false;
   ratingEmptyStars: number = 0;
 
+  ratingMeaning = [
+    "Not rated", // 0 (0 stars)
+    "Horrible", // 1 (0.5 stars)
+    "Wack", // 2 (1 star)
+    "Pretty bad", // 3 (1.5 stars)
+    "Meh", // 4 (2 stars)
+    "Alright", // 5 (2.5 stars) - Middle
+    "Good", // 6 (3 stars)
+    "Great", // 7 (3.5 stars)
+    "Amazing", // 8 (4 stars)
+    "Unbelieveable", // 9 (4.5 stars)
+    "Perfect", // 10 (5 stars)
+  ];
+
+  getRatingMeaning(rating: number): string {
+    return this.ratingMeaning[Math.min(Math.max(Math.round(rating), 0), 10)];
+  }
+
   makeIndexNumberArray(number: number) {
     return Array(number)
       .fill(0)

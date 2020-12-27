@@ -1,65 +1,59 @@
-import { Component } from '@angular/core';
-import { AuthenticationService } from './authentication.service';
+import { Component } from "@angular/core";
+import { AuthenticationService } from "./authentication.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"],
 })
-export class AppComponent{
-
+export class AppComponent {
   constructor(public authService: AuthenticationService) {}
 
+  hasAds = window["canRunAds"];
 
   navbarConfig = {
     color: "primary",
     logo: {
       text: "Parkour Base",
-      class: "logo"
+      class: "logo",
     },
     buttons: [
       {
         name: "Home",
         link: "/",
-        badge:
-        {
+        badge: {
           number: 0,
-          color: "accent"
+          color: "accent",
         },
-        tooltip: ""
+        tooltip: "",
       },
       {
         name: "Map",
         link: "/map",
-        badge:
-        {
+        badge: {
           number: 0,
-          color: "accent"
+          color: "accent",
         },
-        tooltip: ""
+        tooltip: "",
       },
       {
         name: "Wiki",
         link: "/wiki",
-        badge:
-        {
+        badge: {
           number: 0,
-          color: "accent"
+          color: "accent",
         },
-        tooltip: ""
+        tooltip: "",
       },
       {
         name: "Teams",
         link: "/teams",
-        badge:
-        {
+        badge: {
           number: 0,
-          color: "accent"
+          color: "accent",
         },
-        tooltip: ""
+        tooltip: "",
       },
-    ]
+    ],
   };
 }
-
-

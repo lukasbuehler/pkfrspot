@@ -39,16 +39,16 @@
     [matMenuTriggerFor]="navUserMenu"
     class="user-display text-right"
   >
-    {{
-      authService.isSignedIn() && authService.user
-        ? authService.user.displayName
-        : ""
-    }}
     <img
       *ngIf="authService.isSignedIn() && authService.userProfilePic"
       src="{{ authService.userProfilePic }}"
     />
     <mat-icon *ngIf="!authService.isSignedIn()">person_outline</mat-icon>
+    {{
+      authService.isSignedIn() && authService.user
+        ? authService.user.displayName
+        : ""
+    }}
   </button>
 
   <button mat-icon-button [matMenuTriggerFor]="navMenu" class="d-md-none">

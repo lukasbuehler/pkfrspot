@@ -44,6 +44,10 @@ mat-card {
   }
 }
 
+div.mat-card-video {
+  --plyr-color-main: var(--accent-color);
+}
+
 div.mat-card-video,
 .youtube-video-container {
   display: block;

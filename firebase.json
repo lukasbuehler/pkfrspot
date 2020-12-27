@@ -1,6 +1,12 @@
 {
   "hosting": {
     "public": "./parkour-base-angular/dist/parkour-base-angular/",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
     "ignore": [
       "firebase.json",
       "**/.*",

@@ -2,19 +2,25 @@
 
 //@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-@import '~firebaseui/dist/firebaseui.css';
+@import "~firebaseui/dist/firebaseui.css";
 
+:root {
+  --primary-color: #000a12;
+  --accent-color: #0039cb;
+}
 
 button:focus {
-    outline: none;
+  outline: none;
 }
 
-mat-icon, .mat-icon {
-    vertical-align: middle;
+mat-icon,
+.mat-icon {
+  vertical-align: middle;
 }
 
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }

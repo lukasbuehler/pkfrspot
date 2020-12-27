@@ -1,17 +1,18 @@
-.title, .logo {
-    font-family: 'Condiment', cursive;
-    margin-bottom: -7px;
-    margin-right: 15px;
+.title,
+.logo {
+  font-family: "Condiment", cursive;
+  margin-bottom: -7px;
+  margin-right: 15px;
 }
 
 mat-toolbar {
-    position: relative;
-    z-index: 10;
+  position: relative;
+  z-index: 10;
 
-    button {
-        margin-left: 5px;
-        margin-right: 5px;
-    }
+  button {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
 }
 
 .spacer {
@@ -19,24 +20,27 @@ mat-toolbar {
 }
 
 .user-display {
-    display: flex;
-    flex-direction: row;
-    img {
-        background: white;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-    }
+  display: flex;
+  flex-direction: row;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  img {
+    background: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
 
-    .mat-button-wrapper {
-        padding: 5px;
-    }
+  .mat-button-wrapper {
+    padding: 5px;
+  }
 }
-::ng-deep .user-display>span.mat-button-wrapper {
-    width: 100%;
-    text-align: center;
+::ng-deep .user-display > span.mat-button-wrapper {
+  width: 100%;
+  text-align: center;
 }
 
 ::ng-deep a.mat-menu-item {
-    text-decoration: none;    
+  text-decoration: none;
 }
