@@ -74,7 +74,6 @@ import { UploadMediaUiComponent } from "./upload-media-ui/upload-media-ui.compon
     SpotDetailComponent,
     UploadMediaUiComponent,
   ],
-  entryComponents: [EditPostDialogComponent],
   imports: [
     BrowserModule,
     FormsModule,

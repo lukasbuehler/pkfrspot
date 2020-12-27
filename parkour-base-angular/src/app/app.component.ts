@@ -14,7 +14,7 @@ export class AppComponent {
   navbarConfig = {
     color: "primary",
     logo: {
-      text: "Parkour Base",
+      text: "The PKFR Spot",
       class: "logo",
     },
     buttons: [

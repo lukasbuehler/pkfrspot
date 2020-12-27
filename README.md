@@ -1,4 +1,4 @@
-# [Parkour-Base](https://parkour-base-project.web.app/)
+# PKFR Spot ([pkfrspot.com](https://pkfrspot.com))
 
 A platform for parkour and freerunning.
 
@@ -12,23 +12,15 @@ This platform is still a work in progress and might not be functional at this po
 
 Lukas Bühler [contact@lukasbuehler.ch](mailto:contact.lukasbuehler.ch)
 
-### Naming suggestions welcome
-
-The name "Parkour-Base" is not final and only the name for the projet while in development. Suggestions welcome.
-
-### Visit our website
-
-The latest stable build is deployed and available on [https://parkour-base-project.web.app/](https://parkour-base-project.web.app/).
-
 #### Technologies
 
-### Parkour-Base App
+### App
 
 We intend to produce an app for iOS and Android for this platform so that it is even easier to use the platform on the go.
 
 Development hasn't started yet.
 
-## Our Ethics
+## Our Intentions
 
 We intend to be "from the community, for the community". Meaning that our profits will be used for further development of this platform or be brought back to the community in other ways. Ideas would be: Our App, faster servers or even hosting competitions and creating and maintaining spots to be used by the community free of charge.
 

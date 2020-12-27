@@ -27,9 +27,8 @@ export class SpotDetailComponent implements OnInit {
   @Input() isEditing: boolean = false;
   @Output() callGetPathsPromiseFunction = new EventEmitter<void>();
 
-  @Output() isEditingChange: EventEmitter<boolean> = new EventEmitter<
-    boolean
-  >();
+  @Output()
+  isEditingChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() dismiss: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() addBoundsClick: EventEmitter<void> = new EventEmitter<void>();
 
@@ -145,7 +144,7 @@ export class SpotDetailComponent implements OnInit {
       try {
         const shareData = {
           title: "Spot: " + this.spot.data.name,
-          text: `Parkour Base Spot: ${this.spot.data.name}`,
+          text: `PKFR Spot: ${this.spot.data.name}`,
           url: link,
         };
 
