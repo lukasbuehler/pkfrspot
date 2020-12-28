@@ -8,7 +8,6 @@ import {
 } from "@angular/core";
 import { Spot } from "src/scripts/db/Spot";
 import { DatabaseService } from "../database.service";
-import {} from "@agm/core";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
 import { StorageService, StorageFolders } from "../storage.service";
 

@@ -64,7 +64,6 @@
     [backgroundColor]="'#000a12'"
     [clickableIcons]="false"
     [disableDefaultUI]="true"
-    [disableDoubleClickZoom]="true"
     [fitBounds]="false"
     gestureHandling="'greedy'"
     [mapTypeId]="mapStyle"
@@ -151,7 +150,9 @@
     (click)="toggleMapStyle()"
   >
     <mat-icon aria-label="Button with magnifying lens to search for spots">
-      {{ mapStyle === "ROADMAP" ? "terrain" : "map" }}
+      {{
+        mapStyle.toLowerCase() === "ROADMAP".toLowerCase() ? "terrain" : "map"
+      }}
     </mat-icon>
   </button>
 

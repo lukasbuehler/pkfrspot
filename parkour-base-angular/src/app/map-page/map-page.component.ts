@@ -13,9 +13,7 @@ import * as firebase from "firebase";
 //import "googlemaps";
 
 import { DatabaseService } from "../database.service";
-import { AgmMap, AgmPolygon, PolygonManager } from "@agm/core";
-//import {} from "googlemaps"
-import { MapStyle } from "src/scripts/MapStyle";
+import { AgmMap, AgmPolygon } from "@agm/core";
 import { Spot } from "src/scripts/db/Spot";
 import { MapHelper } from "../../scripts/map_helper";
 import { ActivatedRoute } from "@angular/router";
@@ -35,7 +33,8 @@ export class MapPageComponent implements OnInit {
   @ViewChild(SpotDetailComponent)
   spotDetail: SpotDetailComponent;
 
-  mapStyle: MapStyle = MapStyle.Roadmap;
+  //mapStyle: google.maps.MapTypeId = google.maps.MapTypeId.ROADMAP;
+  mapStyle = "roadmap";
   mapStylesConfig = map_style;
   spotPolygons: AgmPolygon[] = [];
 
@@ -333,10 +332,15 @@ export class MapPageComponent implements OnInit {
   }
 
   toggleMapStyle() {
-    if (this.map.mapTypeId === MapStyle.Roadmap) {
-      this.mapStyle = MapStyle.Satellite;
+    if (
+      this.map.mapTypeId.toLowerCase() ===
+      google.maps.MapTypeId.ROADMAP.toLowerCase()
+    ) {
+      // if it is equal to roadmap, toggle to satellite
+      this.mapStyle = google.maps.MapTypeId.SATELLITE;
     } else {
-      this.mapStyle = MapStyle.Roadmap;
+      // otherwise toggle back to roadmap
+      this.mapStyle = google.maps.MapTypeId.ROADMAP;
     }
   }
 
@@ -368,7 +372,7 @@ export class MapPageComponent implements OnInit {
 
   getPathsFromSpotPolygon() {
     this.polygons.forEach((polygon) => {
-      if (polygon.editable) {
+      if (polygon?.editable) {
         polygon
           .getPaths()
           .then((val) => {
