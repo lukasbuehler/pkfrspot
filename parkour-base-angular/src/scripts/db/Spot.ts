@@ -130,7 +130,8 @@ export module Spot {
   export enum Types {
     Playground = "playground",
     Park = "park",
-    Gym = "gym",
+    PkPark = "parkour park",
+    Gym = "parkour gym",
     Other = "other",
   }
 

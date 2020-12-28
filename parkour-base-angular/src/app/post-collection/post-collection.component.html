@@ -10,10 +10,13 @@
   </h2>
   <app-post *ngFor="let post of posts" [post]="post" class="mt-2"></app-post>
   <p
-    *ngIf="!posts || posts.length === 0"
+    *ngIf="(!posts || posts.length === 0) && !loading"
     class="noPostsText"
     class="text-center"
   >
     No posts to show
   </p>
+  <div class="spinner">
+    <mat-spinner *ngIf="loading" color="accent" [diameter]="50"></mat-spinner>
+  </div>
 </div>

@@ -25,6 +25,7 @@ export class HomePageComponent implements OnInit {
 
   updatePosts: Post.Class[] = [];
   trendingPosts: Post.Class[] = [];
+  loadingPosts: boolean = false;
 
   isUserSignedIn: boolean = false;
 
@@ -45,6 +46,7 @@ export class HomePageComponent implements OnInit {
       }
     );
 
+    this.loadingPosts = true;
     this._dbService.getPostUpdates().subscribe(
       (postMap) => {
         for (let postId in postMap) {
@@ -62,11 +64,15 @@ export class HomePageComponent implements OnInit {
             });
           }
         }
+        this.loadingPosts = false;
       },
       (error) => {
+        this.loadingPosts = false;
         console.error(error);
       },
-      () => {} // complete
+      () => {
+        this.loadingPosts = false;
+      } // complete
     );
   }
 

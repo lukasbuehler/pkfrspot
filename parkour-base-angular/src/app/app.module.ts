@@ -38,6 +38,7 @@ import {
 } from "@angular/material/dialog";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatSelectModule } from "@angular/material/select";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 import { PlyrModule } from "ngx-plyr";
 
@@ -110,6 +111,7 @@ import { UploadMediaUiComponent } from "./upload-media-ui/upload-media-ui.compon
     MatDialogModule,
     MatExpansionModule,
     MatSelectModule,
+    MatProgressSpinnerModule,
 
     PlyrModule,
   ],
