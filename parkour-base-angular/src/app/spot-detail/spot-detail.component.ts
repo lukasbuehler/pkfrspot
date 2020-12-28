@@ -135,7 +135,7 @@ export class SpotDetailComponent implements OnInit {
   }
 
   async shareSpot() {
-    let baseUrl = "localhost:4200";
+    let baseUrl = "https://pkfrspot.com";
 
     let link = baseUrl + "/map/" + this.spot.id;
 

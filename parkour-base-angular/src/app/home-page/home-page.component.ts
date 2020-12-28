@@ -131,6 +131,7 @@ export class HomePageComponent implements OnInit {
       post.spot = {
         name: spot.data.name,
         spot_location: spot.data.location,
+        image_src: spot.data.image_src,
         ref: this._dbService.docRef("spots/" + spot.id),
       };
     }

@@ -35,6 +35,23 @@ export module Post {
       return null;
     }
 
+    get location(): google.maps.LatLngLiteral {
+      if (this._data.location) {
+        return {
+          lat: this._data.location.latitude,
+          lng: this._data.location.longitude,
+        };
+      }
+      return null;
+    }
+
+    get spot() {
+      if (this._data.spot) {
+        return this._data.spot;
+      }
+      return null;
+    }
+
     get likeCount(): number {
       return this._data.like_count + this._likeOffset;
     }
@@ -78,6 +95,7 @@ export module Post {
     spot?: {
       name: string;
       spot_location: firebase.default.firestore.GeoPoint;
+      image_src: string;
       ref: firebase.default.firestore.DocumentReference;
     };
 
