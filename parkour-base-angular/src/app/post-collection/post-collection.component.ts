@@ -9,7 +9,7 @@ import { Post } from "src/scripts/db/Post";
 export class PostCollectionComponent implements OnInit {
   @Input() posts: Post.Class[];
   @Input() title: string;
-  @Input() loading: boolean;
+  @Input() loading: boolean = false;
 
   constructor() {}
 

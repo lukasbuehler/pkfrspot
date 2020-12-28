@@ -94,7 +94,7 @@ export class DatabaseService {
     return new Observable<any>((observer) => {
       let snapshotChanges = this.db
         .collection<Post.Schema>("posts", (ref) =>
-          ref.orderBy("time_posted", "desc")
+          ref.orderBy("time_posted", "desc").limit(10)
         )
         .snapshotChanges();
 
@@ -278,6 +278,31 @@ export class DatabaseService {
         .catch((error) => {
           observer.error(error);
         });
+    });
+  }
+
+  getPostsFromSpot(spot: Spot.Class): Observable<Post.Schema> {
+    return new Observable<Post.Schema>((observer) => {
+      let snapshotChanges = this.db
+        .collection<Post.Schema>("posts", (ref) =>
+          ref.where("spot.ref", "==", this.docRef("spots/" + spot.id)).limit(10)
+        )
+        .snapshotChanges();
+
+      snapshotChanges.subscribe(
+        (changeActions) => {
+          let postSchemasMap: any = {};
+          changeActions.forEach((action) => {
+            const id = action.payload.doc.id;
+            postSchemasMap[id] = action.payload.doc.data();
+          });
+
+          observer.next(postSchemasMap);
+        },
+        (error) => {
+          observer.error(error);
+        }
+      );
     });
   }
 }

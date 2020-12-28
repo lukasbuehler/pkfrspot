@@ -19,7 +19,7 @@
         {{ spot.data.name }}
       </span>
       <form *ngIf="isEditing">
-        <mat-form-field style="width: calc(100% - 35px);">
+        <mat-form-field style="width: calc(100% - 35px)">
           <mat-label>Spot name</mat-label>
           <input
             #spotNameInput
@@ -29,7 +29,7 @@
           />
         </mat-form-field>
       </form>
-      <mat-icon *ngIf="visited && !isEditing" style="float: right;"
+      <mat-icon *ngIf="visited && !isEditing" style="float: right"
         >check</mat-icon
       >
     </mat-card-title>
@@ -47,7 +47,7 @@
   </mat-card-header>
   <mat-card-content>
     <form *ngIf="isEditing">
-      <mat-form-field style="width: 100%;">
+      <mat-form-field style="width: 100%">
         <mat-label>Spot type</mat-label>
         <mat-select [(value)]="spot.data.type">
           <mat-option *ngFor="let type of spotTypes" [value]="type">
@@ -55,7 +55,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field style="width: 100%;">
+      <mat-form-field style="width: 100%">
         <mat-label>Spot area</mat-label>
         <mat-select [(value)]="spot.data.area">
           <mat-option *ngFor="let area of spotAreas" [value]="area">
@@ -63,7 +63,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field style="width: 100%;">
+      <mat-form-field style="width: 100%">
         <mat-label>Description</mat-label>
         <textarea
           matInput
@@ -104,12 +104,8 @@
   <mat-accordion *ngIf="!isEditing">
     <mat-expansion-panel [expanded]="true" [class.mat-elevation-z1]="flat">
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          Details
-        </mat-panel-title>
-        <mat-panel-description>
-          Info and pictures
-        </mat-panel-description>
+        <mat-panel-title> Details </mat-panel-title>
+        <mat-panel-description> Info and pictures </mat-panel-description>
       </mat-expansion-panel-header>
       <img src="{{ spot.data.image_src }}" class="spot-img" alt="" />
       <div *ngIf="!spot.data.image_src" class="upload-spot-image-box">
@@ -134,9 +130,7 @@
           {{ !visited ? "Mark as visited" : "Remove from visited" }}
         </button>
         <button mat-button (click)="focusClick()">Focus</button>
-        <button mat-button color="accent" (click)="shareSpot()">
-          Share
-        </button>
+        <button mat-button color="accent" (click)="shareSpot()">Share</button>
       </div>
       <div class="spot-button-row">
         <button *ngIf="editable" mat-button (click)="editButtonClick()">
@@ -144,22 +138,20 @@
         </button>
       </div>
     </mat-expansion-panel>
-    <mat-expansion-panel [class.mat-elevation-z1]="flat">
+    <mat-expansion-panel
+      [class.mat-elevation-z1]="flat"
+      (opened)="postPanelOpened()"
+      (closed)="postPanelClosed()"
+    >
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          Posts
-        </mat-panel-title>
-        <mat-panel-description>
-          Posts from this spot
-        </mat-panel-description>
+        <mat-panel-title> Posts </mat-panel-title>
+        <mat-panel-description> Posts from this spot </mat-panel-description>
       </mat-expansion-panel-header>
-      <app-post-collection [posts]="[]"></app-post-collection>
+      <app-post-collection [posts]="spotPosts"></app-post-collection>
     </mat-expansion-panel>
     <mat-expansion-panel [class.mat-elevation-z1]="flat">
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          Edit voting
-        </mat-panel-title>
+        <mat-panel-title> Edit voting </mat-panel-title>
         <mat-panel-description>
           Vote for spot details changes
         </mat-panel-description>

@@ -27,6 +27,11 @@ mat-expansion-panel {
   margin-left: -6px;
   margin-right: -6px;
   width: calc(100% + 2 * 6px);
+
+  ::ng-deep .mat-expansion-panel-content {
+    max-height: calc(100vh - (56px + 3 * 48px + 170px));
+    overflow-y: scroll;
+  }
 }
 
 .spot-button-row {
