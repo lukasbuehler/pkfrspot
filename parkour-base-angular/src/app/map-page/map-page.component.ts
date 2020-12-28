@@ -13,7 +13,7 @@ import * as firebase from "firebase";
 //import "googlemaps";
 
 import { DatabaseService } from "../database.service";
-import { AgmMap, AgmPolygon, PolygonManager } from "@agm/core";
+import { AgmMap, AgmPolygon } from "@agm/core";
 import { Spot } from "src/scripts/db/Spot";
 import { MapHelper } from "../../scripts/map_helper";
 import { ActivatedRoute } from "@angular/router";
@@ -357,7 +357,7 @@ export class MapPageComponent implements OnInit {
       "", // The id needs to be empty for the spot to be recognized and created in the database
       {
         name: "New Spot",
-        location: new firebase.firestore.GeoPoint(
+        location: new firebase.default.firestore.GeoPoint(
           this.center_coordinates.lat,
           this.center_coordinates.lng
         ),
@@ -372,7 +372,7 @@ export class MapPageComponent implements OnInit {
 
   getPathsFromSpotPolygon() {
     this.polygons.forEach((polygon) => {
-      if (polygon.editable) {
+      if (polygon?.editable) {
         polygon
           .getPaths()
           .then((val) => {

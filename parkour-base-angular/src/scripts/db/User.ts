@@ -20,7 +20,7 @@ export module User {
   export interface Schema {
     display_name: string;
     full_name?: string;
-    birthday?: firebase.firestore.Timestamp;
+    birthday?: firebase.default.firestore.Timestamp;
     nation?: string;
     profile_picture?: string;
   }
@@ -29,6 +29,6 @@ export module User {
     uid: string;
     display_name: string;
     profile_picture?: string;
-    ref: firebase.firestore.DocumentReference;
+    ref: firebase.default.firestore.DocumentReference;
   }
 }

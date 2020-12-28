@@ -120,7 +120,7 @@ export class DatabaseService {
   getTestSpots(): Observable<Spot.Class[]> {
     return new Observable<Spot.Class[]>((observer) => {
       this.db
-        .collection("spots")
+        .collection<Spot.Schema>("spots")
         .get()
         .subscribe(
           (querySnapshot) => {
@@ -175,7 +175,7 @@ export class DatabaseService {
     return new Observable<Spot.Class[]>((observer) => {
       for (let tile of tiles) {
         this.db
-          .collection("spots", (ref) =>
+          .collection<Spot.Schema>("spots", (ref) =>
             ref
               .where("tile_coordinates.z16.x", "==", tile.x)
               .where("tile_coordinates.z16.y", "==", tile.y)
@@ -197,7 +197,7 @@ export class DatabaseService {
     return new Observable<Spot.Class[]>((observer) => {
       for (let tile of tiles) {
         this.db
-          .collection("spots", (ref) =>
+          .collection<Spot.Schema>("spots", (ref) =>
             ref
               .where(`tile_coordinates.z${zoom}.x`, "==", tile.x)
               .where(`tile_coordinates.z${zoom}.y`, "==", tile.y)
@@ -236,14 +236,15 @@ export class DatabaseService {
 
   getSpotSearch(searchString: string): Observable<Spot.Class[]> {
     return new Observable<any[]>((observer) => {
-      this.db.collection("spots").get();
+      this.db.collection<Spot.Schema>("spots").get();
     });
   }
 
   createSpot(spot: Spot.Class): Observable<any> {
     return new Observable<any>((observer) => {
       this.db
-        .collection("spots").add(spot.data)
+        .collection<Spot.Schema>("spots")
+        .add(spot.data)
         .then(
           /* fulfilled */ (value) => {
             observer.next(value);
@@ -258,11 +259,11 @@ export class DatabaseService {
         });
     });
   }
-  
+
   setSpot(spot: Spot.Class): Observable<any> {
     return new Observable<any>((observer) => {
       this.db
-        .collection("spots")
+        .collection<Spot.Schema>("spots")
         .doc(spot.id)
         .set(spot.data)
         .then(

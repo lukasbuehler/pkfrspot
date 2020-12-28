@@ -62,7 +62,7 @@ export class PostComponent implements OnInit {
             this.post.id,
             this._authenticationService.uid,
             {
-              time: firebase.firestore.Timestamp.now(),
+              time: firebase.default.firestore.Timestamp.now(),
               user: {
                 uid: this._authenticationService.uid,
               },

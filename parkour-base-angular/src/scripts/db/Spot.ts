@@ -41,7 +41,7 @@ export module Spot {
       return { lat: point.latitude, lng: point.longitude };
     }
     set location(location: google.maps.LatLngLiteral) {
-      this._data.location = new firebase.firestore.GeoPoint(
+      this._data.location = new firebase.default.firestore.GeoPoint(
         location.lat,
         location.lng
       );
@@ -74,7 +74,7 @@ export module Spot {
     }
 
     private _makePathsFromBounds(
-      bounds: firebase.firestore.GeoPoint[]
+      bounds: firebase.default.firestore.GeoPoint[]
     ): Array<Array<google.maps.LatLngLiteral>> {
       let path: Array<Array<google.maps.LatLngLiteral>> = [[]];
 
@@ -89,11 +89,13 @@ export module Spot {
 
     private _makeBoundsFromPaths(
       path: Array<Array<google.maps.LatLngLiteral>>
-    ): firebase.firestore.GeoPoint[] {
-      let bounds: firebase.firestore.GeoPoint[] = [];
+    ): firebase.default.firestore.GeoPoint[] {
+      let bounds: firebase.default.firestore.GeoPoint[] = [];
 
       for (let point of path[0]) {
-        bounds.push(new firebase.firestore.GeoPoint(point.lat, point.lng));
+        bounds.push(
+          new firebase.default.firestore.GeoPoint(point.lat, point.lng)
+        );
       }
 
       return bounds;
@@ -102,7 +104,7 @@ export module Spot {
 
   export interface Schema {
     name: string;
-    location: firebase.firestore.GeoPoint;
+    location: firebase.default.firestore.GeoPoint;
     tile_coordinates?: {
       z2?: { x: number; y: number };
       z4?: { x: number; y: number };
@@ -119,9 +121,9 @@ export module Spot {
     area?: string;
     rating?: number;
 
-    bounds?: firebase.firestore.GeoPoint[];
+    bounds?: firebase.default.firestore.GeoPoint[];
 
-    time_created?: firebase.firestore.Timestamp;
+    time_created?: firebase.default.firestore.Timestamp;
     time_updated?: { seconds: number; nanoseconds: number };
   }
 
