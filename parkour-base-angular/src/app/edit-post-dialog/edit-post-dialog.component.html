@@ -49,9 +49,51 @@
       </mat-tab>
     </mat-tab-group>
     <mat-form-field appearance="outline">
-      <mat-label>
-        Content
-      </mat-label>
+      <mat-label>Location (Coming soon)</mat-label>
+      <input
+        type="text"
+        matInput
+        name="location"
+        (keyup)="hasChanged = true"
+        [(ngModel)]="postLocation"
+        disabled
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Spot</mat-label>
+      <input
+        matInput
+        name="spot"
+        [matAutocomplete]="spotAutocomplete"
+        (keyup)="hasChanged = true"
+      />
+      <mat-autocomplete
+        #spotAutocomplete="matAutocomplete"
+        (optionSelected)="selectSpot($event.option.value)"
+        [displayWith]="getSpotNameFromId"
+      >
+        <mat-option
+          class="spotAutocompleteOption"
+          *ngFor="let spot of filteredSpots"
+          [value]="spot.id"
+        >
+          <img
+            *ngIf="spot?.data?.image_src"
+            [src]="spot.data.image_src"
+            alt="Img"
+          />
+          <span>{{ spot.data.name }}</span> |
+          <small
+            >Location: {{ spot.location.lat }}, {{ spot.location.lng }}</small
+          >
+        </mat-option>
+      </mat-autocomplete>
+      <mat-hint>{{
+        postSpot ? "Spot ID: " + postSpot : "No spot selected"
+      }}</mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label> Text body </mat-label>
       <textarea
         #content
         matInput

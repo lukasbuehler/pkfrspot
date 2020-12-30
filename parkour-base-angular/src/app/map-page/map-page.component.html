@@ -81,9 +81,9 @@
       [circleDraggable]="false"
       [strokeWeight]="0"
       [strokeOpacity]="0"
-      [radius]="getDotRadius(zoom, dot.location)"
+      [radius]="spotDotZoomRadii[zoom]"
       [visible]="true"
-      [fillOpacity]="0.75"
+      [fillOpacity]="getDotOpacityForZoom(zoom)"
     ></agm-circle>
 
     <agm-circle
@@ -104,7 +104,7 @@
         [paths]="spot.paths"
         [fillColor]="'#304ffe'"
         [strokeColor]="'#304ffe'"
-        [fillOpacity]="0.15"
+        [fillOpacity]="0.1"
         [editable]="
           editingBounds && spot && selectedSpot && spot.id === selectedSpot.id
         "

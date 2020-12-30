@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { keys } from "src/environments/keys";
 
 import { Post } from "src/scripts/db/Post";
 import { Spot } from "src/scripts/db/Spot";
@@ -117,10 +116,12 @@ export class DatabaseService {
 
   getTrendingPosts() {}
 
-  getTestSpots(): Observable<Spot.Class[]> {
+  getTestSpots(isNotForMap?: boolean): Observable<Spot.Class[]> {
     return new Observable<Spot.Class[]>((observer) => {
       this.db
-        .collection<Spot.Schema>("spots")
+        .collection<Spot.Schema>("spots", (ref) =>
+          ref.orderBy("name", "asc").limit(10)
+        )
         .get()
         .subscribe(
           (querySnapshot) => {
@@ -130,7 +131,8 @@ export class DatabaseService {
               if (doc.data() as Spot.Schema) {
                 let newSpot: Spot.Class = new Spot.Class(
                   doc.id,
-                  doc.data() as Spot.Schema
+                  doc.data() as Spot.Schema,
+                  !!isNotForMap
                 );
                 console.log(newSpot);
 

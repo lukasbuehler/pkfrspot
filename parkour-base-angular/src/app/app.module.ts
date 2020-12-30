@@ -10,6 +10,8 @@ import { AppComponent } from "./app.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { environment } from "src/environments/environment";
+import { keys } from "src/environments/keys";
+
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireStorageModule } from "@angular/fire/storage";
@@ -39,6 +41,7 @@ import {
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatSelectModule } from "@angular/material/select";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
 
 import { PlyrModule } from "ngx-plyr";
 
@@ -82,14 +85,14 @@ import { UploadMediaUiComponent } from "./upload-media-ui/upload-media-ui.compon
     HttpClientModule,
 
     NgbModule,
-    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule.initializeApp(keys.firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
 
     InfiniteScrollModule,
     AgmCoreModule.forRoot({
-      apiKey: environment.keys.google_maps,
+      apiKey: keys.google_maps,
     }),
     FirebaseUIModule.forRoot(
       environment.firebaseUiAuthConfig as firebaseui.auth.Config
@@ -112,6 +115,7 @@ import { UploadMediaUiComponent } from "./upload-media-ui/upload-media-ui.compon
     MatExpansionModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+    MatAutocompleteModule,
 
     PlyrModule,
   ],

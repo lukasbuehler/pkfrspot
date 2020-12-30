@@ -43,6 +43,8 @@ export class MapPageComponent implements OnInit {
 
   droppedMarkerLocation = null;
 
+  spotDotZoomRadii: number[] = Array<number>(16);
+
   // The default coordinates are Paris, the origin of parkour.
   // modiying this resets the map
   readonly start_coordinates: google.maps.LatLngLiteral = {
@@ -79,6 +81,8 @@ export class MapPageComponent implements OnInit {
     let lat = this.route.snapshot.queryParamMap.get("lat") || null;
     let lng = this.route.snapshot.queryParamMap.get("lng") || null;
     let zoom = this.route.snapshot.queryParamMap.get("z") || 3; // TODO ?? syntax
+
+    this.calculateAllDotRadii();
 
     if (spotId) {
       this._dbService.getSpotById(spotId).subscribe(
@@ -187,7 +191,22 @@ export class MapPageComponent implements OnInit {
     }
   }
 
-  getDotRadius(zoom, location) {
+  calculateAllDotRadii() {
+    for (let i = 0; i < 16; i++) {
+      this.spotDotZoomRadii[i] = this.calculateDotRadius(i);
+    }
+  }
+
+  calculateDotRadius(zoom: number) {
+    let radius = 10 * (1 << (16 - zoom));
+    return radius;
+  }
+
+  getDotOpacityForZoom(zoom) {
+    return Math.min(Math.max((zoom - 4) / 20, 0.05), 0.8);
+  }
+
+  oldDotRadius(zoom, location) {
     let mercator = Math.cos((location.latitude * Math.PI) / 180);
     let radius = 5 * (1 << (16 - zoom)) * (1 / mercator);
     return radius;
