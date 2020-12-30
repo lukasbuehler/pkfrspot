@@ -83,14 +83,13 @@ export class MapPageComponent implements OnInit {
     if (spotId) {
       this._dbService.getSpotById(spotId).subscribe(
         (spot) => {
-          console.log("Done loading spot");
           this.openSpot(spot); // Opens the spot in the drawer
           this.setStartMap(
             {
               lat: spot.data.location.latitude,
               lng: spot.data.location.longitude,
             },
-            Number(zoom) || 16
+            20
           );
         },
         (error) => {
@@ -349,6 +348,8 @@ export class MapPageComponent implements OnInit {
     this.selectedSpot = spot;
     this.upadateMapURL(this.center_coordinates, this.zoom);
   }
+
+  focusSpot(spot: Spot.Class) {}
 
   createSpot() {
     console.log("Create Spot");
