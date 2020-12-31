@@ -104,7 +104,7 @@ export class MapPageComponent implements OnInit {
           );
         }
       );
-      console.log("Loading spot " + spotId);
+      //console.log("Loading spot " + spotId);
       // Show loading spot to open
       // TODO snackbar
     } else {
@@ -127,13 +127,12 @@ export class MapPageComponent implements OnInit {
   }
 
   clickedMap(coords) {
-    console.log(coords);
+    //console.log(coords);
     this.droppedMarkerLocation = coords.coords;
-    console.log(MapHelper.getTileCoordinates(coords.coords, this.zoom));
+    //console.log(MapHelper.getTileCoordinates(coords.coords, this.zoom));
   }
 
   boundsChanged(bounds: google.maps.LatLngBounds) {
-    console.log("Bounds changes");
     let zoomLevel = this.zoom;
 
     let northEastLiteral: google.maps.LatLngLiteral = {
@@ -321,8 +320,8 @@ export class MapPageComponent implements OnInit {
         if (spots.length > 0) {
           let tile = spots[0].data.tile_coordinates.z16;
           this.loadedSpots[`z${zoom}_${tile.x}_${tile.y}`] = spots;
-          console.log("new sposts laoded:");
-          console.log(spots);
+          //console.log("new sposts laoded:");
+          //console.log(spots);
           this.updateVisibleDots();
         }
       },
@@ -375,7 +374,7 @@ export class MapPageComponent implements OnInit {
   focusSpot(spot: Spot.Class) {}
 
   createSpot() {
-    console.log("Create Spot");
+    //console.log("Create Spot");
 
     this.selectedSpot = new Spot.Class(
       "", // The id needs to be empty for the spot to be recognized and created in the database
@@ -392,6 +391,7 @@ export class MapPageComponent implements OnInit {
 
     // sets the map and the spot to edit mode
     this.editingBounds = true;
+    this.spotDetail.isEditing = true;
   }
 
   getPathsFromSpotPolygon() {
@@ -469,7 +469,7 @@ export class MapPageComponent implements OnInit {
         { lat: location.lat + dist, lng: location.lng - dist },
       ],
     ];
-    console.log("made inital bounds");
+    //console.log("made inital bounds");
     this.selectedSpot.paths = _paths;
 
     this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(this.selectedSpot);
