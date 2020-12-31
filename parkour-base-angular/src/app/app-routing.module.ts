@@ -6,6 +6,7 @@ import { MapPageComponent } from "./map-page/map-page.component";
 import { WikiPageComponent } from "./wiki-page/wiki-page.component";
 import { SignInPageComponent } from "./sign-in-page/sign-in-page.component";
 import { CommunityPageComponent } from "./community-page/community-page.component";
+import { AboutPageComponent } from "./about-page/about-page.component";
 
 const routes: Routes = [
   { path: "", component: HomePageComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: "map/:spot", component: MapPageComponent },
   { path: "wiki", component: WikiPageComponent },
   { path: "community", component: CommunityPageComponent },
+  { path: "about", component: AboutPageComponent },
   { path: "sign-in", component: SignInPageComponent },
 
   { path: "**", component: NotFoundPageComponent },

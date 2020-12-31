@@ -54,6 +54,15 @@ export class AppComponent {
         },
         tooltip: "",
       },*/
+      {
+        name: "About",
+        link: "/about",
+        badge: {
+          number: 0,
+          color: "accent",
+        },
+        tootltip: "",
+      },
     ],
   };
 }

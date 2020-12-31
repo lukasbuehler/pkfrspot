@@ -61,6 +61,7 @@ import { RatingComponent } from "./rating/rating.component";
 import { SpotDetailComponent } from "./spot-detail/spot-detail.component";
 import { UploadMediaUiComponent } from "./upload-media-ui/upload-media-ui.component";
 import { CommunityPageComponent } from "./community-page/community-page.component";
+import { AboutPageComponent } from './about-page/about-page.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { CommunityPageComponent } from "./community-page/community-page.componen
     SpotDetailComponent,
     UploadMediaUiComponent,
     CommunityPageComponent,
+    AboutPageComponent,
   ],
   imports: [
     BrowserModule,
