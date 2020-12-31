@@ -42,6 +42,16 @@ div.mat-card-video {
   --plyr-color-main: var(--accent-color);
 }
 
+::ng-deep div.mat-card-video > div {
+  max-height: 40vh;
+}
+
+::ng-deep div.mat-card-video.fill {
+  .plyr:not(:fullscreen) video {
+    object-fit: cover;
+  }
+}
+
 div.mat-card-video,
 .youtube-video-container {
   display: block;

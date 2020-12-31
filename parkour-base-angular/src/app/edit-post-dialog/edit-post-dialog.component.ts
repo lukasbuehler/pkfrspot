@@ -48,7 +48,7 @@ export class EditPostDialogComponent implements AfterViewInit {
   postBody = "";
   postImageSrc = "";
   postLocation = "";
-  postSpot = "";
+  postSpot: Spot.Class = null;
 
   // If this is false, then link is selected
   isUploadSelected = true;
@@ -124,7 +124,12 @@ export class EditPostDialogComponent implements AfterViewInit {
     this.uploadFile = file;
   }
 
-  makePostToReturn() {
+  makePostToReturn(): {
+    title: string;
+    body: string;
+    mediaType: Post.MediaTypes;
+    spot: Spot.Class;
+  } {
     let isImage = false;
     let mediaType: Post.MediaTypes = Post.MediaTypes.None;
     if (this.uploadFile) {
@@ -141,6 +146,7 @@ export class EditPostDialogComponent implements AfterViewInit {
       title: this.postTitle,
       body: this.postBody || "",
       mediaType: mediaType,
+      spot: this.postSpot,
     };
   }
 
@@ -156,11 +162,11 @@ export class EditPostDialogComponent implements AfterViewInit {
       });
       console.log(findSpot);
       if (findSpot) {
-        this.postSpot = findSpot.id;
+        this.postSpot = findSpot;
         return;
       }
     }
-    this.postSpot = "";
+    this.postSpot = null;
   }
 
   getSpotNameFromId = (spotId) => {

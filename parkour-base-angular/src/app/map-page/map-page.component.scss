@@ -19,13 +19,13 @@ mat-drawer {
 
   padding: 15px;
   width: 20vw;
-  min-width: 300px;
-  max-width: 400px;
+  min-width: 400px;
+  max-width: 600px;
 
   @media (min-width: 576px) {
-    width: 25vw;
-    min-width: 300px;
-    max-width: 500px;
+    width: 30vw;
+    min-width: 400px;
+    max-width: 600px;
   }
 
   @media (max-width: 575px) {

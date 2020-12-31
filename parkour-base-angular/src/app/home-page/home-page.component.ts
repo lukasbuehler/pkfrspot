@@ -93,7 +93,7 @@ export class HomePageComponent implements OnInit {
           result.body,
           result.mediaType,
           null,
-          null
+          result.spot
         );
       },
       (error) => {
@@ -129,9 +129,9 @@ export class HomePageComponent implements OnInit {
 
     if (spot) {
       post.spot = {
-        name: spot.data.name,
+        name: spot.data.name || "",
         spot_location: spot.data.location,
-        image_src: spot.data.image_src,
+        image_src: spot.data.image_src || "",
         ref: this._dbService.docRef("spots/" + spot.id),
       };
     }
