@@ -36,7 +36,7 @@ export class AppComponent {
         },
         tooltip: "",
       },
-      {
+      /*{
         name: "Wiki",
         link: "/wiki",
         badge: {
@@ -44,8 +44,8 @@ export class AppComponent {
           color: "accent",
         },
         tooltip: "",
-      },
-      {
+      },*/
+      /*{
         name: "Community",
         link: "/community",
         badge: {
@@ -53,7 +53,7 @@ export class AppComponent {
           color: "accent",
         },
         tooltip: "",
-      },
+      },*/
     ],
   };
 }

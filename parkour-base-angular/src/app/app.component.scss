@@ -13,6 +13,9 @@ mat-toolbar {
     margin-left: 5px;
     margin-right: 5px;
   }
+  button.mat-stroked-button {
+    border-color: white;
+  }
 }
 
 .spacer {
