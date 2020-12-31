@@ -136,11 +136,14 @@ export module Spot {
     Park = "park",
     PkPark = "parkour park",
     Gym = "parkour gym",
+    School = "school",
+    UniversityCampus = "university campus",
     Other = "other",
   }
 
   export enum Areas {
     Public = "public",
+    Residential = "residential",
     Commercial = "commercial",
     Private = "private",
     Other = "other",

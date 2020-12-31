@@ -5,6 +5,7 @@ import { NotFoundPageComponent } from "./not-found-page/not-found-page.component
 import { MapPageComponent } from "./map-page/map-page.component";
 import { WikiPageComponent } from "./wiki-page/wiki-page.component";
 import { SignInPageComponent } from "./sign-in-page/sign-in-page.component";
+import { CommunityPageComponent } from "./community-page/community-page.component";
 
 const routes: Routes = [
   { path: "", component: HomePageComponent },
@@ -12,14 +13,14 @@ const routes: Routes = [
   { path: "map", component: MapPageComponent },
   { path: "map/:spot", component: MapPageComponent },
   { path: "wiki", component: WikiPageComponent },
-  { path: "teams", component: SignInPageComponent },
+  { path: "community", component: CommunityPageComponent },
   { path: "sign-in", component: SignInPageComponent },
 
-  { path: "**", component: NotFoundPageComponent }
+  { path: "**", component: NotFoundPageComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}
