@@ -133,6 +133,7 @@ export class MapPageComponent implements OnInit {
   }
 
   boundsChanged(bounds: google.maps.LatLngBounds) {
+    console.log("Bounds changes");
     let zoomLevel = this.zoom;
 
     let northEastLiteral: google.maps.LatLngLiteral = {
@@ -172,7 +173,10 @@ export class MapPageComponent implements OnInit {
         this._southWestTileCoordsZ16.x = (1 << 16) - 1;
         this._southWestTileCoordsZ16.y = (1 << 16) - 1;
       }
-      if (zoomLevel <= this._loadAllSpotsZoomLevel - 2 && zoomLevel % 2 === 0) {
+      if (zoomLevel <= this._loadAllSpotsZoomLevel - 2) {
+        if (zoomLevel % 2 !== 0) {
+          zoomLevel--;
+        }
         const tileCoords: { ne: google.maps.Point; sw: google.maps.Point } = {
           ne: new google.maps.Point(
             this._northEastTileCoordsZ16.x >> (16 - zoomLevel),
