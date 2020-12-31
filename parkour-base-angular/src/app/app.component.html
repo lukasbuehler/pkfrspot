@@ -5,7 +5,7 @@
 
   <div class="d-none d-md-block">
     <button
-      mat-button
+      [ngClass]="button.badge?.number ? 'mat-stroked-button' : 'mat-button'"
       *ngFor="let button of navbarConfig.buttons"
       routerLink="{{ button.link }}"
       matBadge="{{ button.badge.number }}"

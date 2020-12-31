@@ -6,12 +6,14 @@
           #updateCollection
           [posts]="updatePosts"
           [title]="'Updates'"
+          [loading]="loadingPosts"
         ></app-post-collection>
       </div>
       <div class="col-md-6 text-center">
         <app-post-collection
           [posts]=""
           [title]="'Trending'"
+          [loading]="true"
         ></app-post-collection>
       </div>
     </div>

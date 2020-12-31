@@ -31,9 +31,27 @@ button.mat-flat-button {
 ::ng-deep .mat-tab-body-content {
   padding: 20px;
   padding-top: 20px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 ::ng-deep app-upload-media-ui {
+  width: 100%;
   display: flex;
   align-items: center;
+}
+
+.spotAutocompleteOption {
+  img {
+    vertical-align: middle;
+    margin-right: 10px;
+    max-height: 40px;
+    max-width: 50px;
+  }
+  [dir="rtl"] img {
+    margin-right: 0px;
+    margin-left: 10px;
+  }
 }

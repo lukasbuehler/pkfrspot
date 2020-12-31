@@ -5,6 +5,7 @@ import { DatabaseService } from "../database.service";
 import { AuthenticationService } from "../authentication.service";
 import * as firebase from "firebase/app";
 import { PlyrComponent } from "ngx-plyr";
+import { MapHelper } from "../../scripts/map_helper";
 
 @Component({
   selector: "app-post",
@@ -83,5 +84,12 @@ export class PostComponent implements OnInit {
     } else {
       // TODO show that you need to sign in
     }
+  }
+
+  getLocationDisplayCoordinates(coords: google.maps.LatLngLiteral) {
+    if (coords) {
+      return MapHelper.getDisplayCoordinates(coords);
+    }
+    return "";
   }
 }

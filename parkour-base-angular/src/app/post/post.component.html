@@ -14,6 +14,8 @@
       <span>{{ timeAgoString }}</span></mat-card-subtitle
     >
   </mat-card-header>
+
+  <!-- Media display -->
   <img
     mat-card-image
     *ngIf="post.mediaSrc && post.mediaIsImage"
@@ -23,7 +25,7 @@
   <div
     #videoPlayer
     *ngIf="!post.mediaIsImage && post.mediaSrc"
-    class="mat-card-video"
+    class="mat-card-video fill"
     plyr
     plyrType="video"
     [plyrSources]="[{ src: post.mediaSrc, type: 'video/mp4' }]"
@@ -36,6 +38,49 @@
       allowfullscreen
     ></iframe>
   </div>
+
+  <!-- Location display -->
+  <span *ngIf="post.location" class="location-text">
+    <a
+      [href]="
+        '/map?lat=' + post.location.lat + '&lng=' + post.location.lng + '&z=19'
+      "
+      >{{ getLocationDisplayCoordinates(post.location) }}</a
+    >
+  </span>
+
+  <!-- Spot display -->
+  <a
+    class="spot-container-link"
+    *ngIf="post.spot && (post.spot?.ref || post.spot?.spot_location)"
+    [href]="
+      post.spot?.ref
+        ? '/map/' + post.spot?.ref?.id
+        : '/map?lat=' +
+          post.spot.spot_location.latitude +
+          '&lng=' +
+          post.spot.spot_location.longitude +
+          '&z=19'
+    "
+  >
+    <div class="spot-container shadow-sm border rounded">
+      <div class="spot-container-image">
+        <img [src]="post.spot.image_src" alt="" />
+      </div>
+
+      <div class="spot-container-text">
+        <h5>{{ post.spot.name }}</h5>
+        <span>{{
+          post.spot?.spot_location
+            ? getLocationDisplayCoordinates({
+                lat: post.spot.spot_location.latitude,
+                lng: post.spot.spot_location.longitude
+              })
+            : ""
+        }}</span>
+      </div>
+    </div>
+  </a>
 
   <mat-card-content>{{ post.body }}</mat-card-content>
   <mat-card-actions>

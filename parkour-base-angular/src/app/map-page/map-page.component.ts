@@ -43,6 +43,8 @@ export class MapPageComponent implements OnInit {
 
   droppedMarkerLocation = null;
 
+  spotDotZoomRadii: number[] = Array<number>(16);
+
   // The default coordinates are Paris, the origin of parkour.
   // modiying this resets the map
   readonly start_coordinates: google.maps.LatLngLiteral = {
@@ -80,17 +82,18 @@ export class MapPageComponent implements OnInit {
     let lng = this.route.snapshot.queryParamMap.get("lng") || null;
     let zoom = this.route.snapshot.queryParamMap.get("z") || 3; // TODO ?? syntax
 
+    this.calculateAllDotRadii();
+
     if (spotId) {
       this._dbService.getSpotById(spotId).subscribe(
         (spot) => {
-          console.log("Done loading spot");
           this.openSpot(spot); // Opens the spot in the drawer
           this.setStartMap(
             {
               lat: spot.data.location.latitude,
               lng: spot.data.location.longitude,
             },
-            Number(zoom) || 16
+            20
           );
         },
         (error) => {
@@ -101,7 +104,7 @@ export class MapPageComponent implements OnInit {
           );
         }
       );
-      console.log("Loading spot " + spotId);
+      //console.log("Loading spot " + spotId);
       // Show loading spot to open
       // TODO snackbar
     } else {
@@ -124,9 +127,9 @@ export class MapPageComponent implements OnInit {
   }
 
   clickedMap(coords) {
-    console.log(coords);
+    //console.log(coords);
     this.droppedMarkerLocation = coords.coords;
-    console.log(MapHelper.getTileCoordinates(coords.coords, this.zoom));
+    //console.log(MapHelper.getTileCoordinates(coords.coords, this.zoom));
   }
 
   boundsChanged(bounds: google.maps.LatLngBounds) {
@@ -169,7 +172,10 @@ export class MapPageComponent implements OnInit {
         this._southWestTileCoordsZ16.x = (1 << 16) - 1;
         this._southWestTileCoordsZ16.y = (1 << 16) - 1;
       }
-      if (zoomLevel <= this._loadAllSpotsZoomLevel - 2 && zoomLevel % 2 === 0) {
+      if (zoomLevel <= this._loadAllSpotsZoomLevel - 2) {
+        if (zoomLevel % 2 !== 0) {
+          zoomLevel--;
+        }
         const tileCoords: { ne: google.maps.Point; sw: google.maps.Point } = {
           ne: new google.maps.Point(
             this._northEastTileCoordsZ16.x >> (16 - zoomLevel),
@@ -188,7 +194,22 @@ export class MapPageComponent implements OnInit {
     }
   }
 
-  getDotRadius(zoom, location) {
+  calculateAllDotRadii() {
+    for (let i = 0; i < 16; i++) {
+      this.spotDotZoomRadii[i] = this.calculateDotRadius(i);
+    }
+  }
+
+  calculateDotRadius(zoom: number) {
+    let radius = 10 * (1 << (16 - zoom));
+    return radius;
+  }
+
+  getDotOpacityForZoom(zoom) {
+    return Math.min(Math.max((zoom - 4) / 20, 0.05), 0.8);
+  }
+
+  oldDotRadius(zoom, location) {
     let mercator = Math.cos((location.latitude * Math.PI) / 180);
     let radius = 5 * (1 << (16 - zoom)) * (1 / mercator);
     return radius;
@@ -299,8 +320,8 @@ export class MapPageComponent implements OnInit {
         if (spots.length > 0) {
           let tile = spots[0].data.tile_coordinates.z16;
           this.loadedSpots[`z${zoom}_${tile.x}_${tile.y}`] = spots;
-          console.log("new sposts laoded:");
-          console.log(spots);
+          //console.log("new sposts laoded:");
+          //console.log(spots);
           this.updateVisibleDots();
         }
       },
@@ -350,8 +371,10 @@ export class MapPageComponent implements OnInit {
     this.upadateMapURL(this.center_coordinates, this.zoom);
   }
 
+  focusSpot(spot: Spot.Class) {}
+
   createSpot() {
-    console.log("Create Spot");
+    //console.log("Create Spot");
 
     this.selectedSpot = new Spot.Class(
       "", // The id needs to be empty for the spot to be recognized and created in the database
@@ -368,6 +391,7 @@ export class MapPageComponent implements OnInit {
 
     // sets the map and the spot to edit mode
     this.editingBounds = true;
+    this.spotDetail.isEditing = true;
   }
 
   getPathsFromSpotPolygon() {
@@ -445,7 +469,7 @@ export class MapPageComponent implements OnInit {
         { lat: location.lat + dist, lng: location.lng - dist },
       ],
     ];
-    console.log("made inital bounds");
+    //console.log("made inital bounds");
     this.selectedSpot.paths = _paths;
 
     this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(this.selectedSpot);

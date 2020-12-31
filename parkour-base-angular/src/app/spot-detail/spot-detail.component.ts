@@ -10,6 +10,8 @@ import { Spot } from "src/scripts/db/Spot";
 import { DatabaseService } from "../database.service";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
 import { StorageService, StorageFolders } from "../storage.service";
+import { Post } from "src/scripts/db/Post";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-spot-detail",
@@ -41,6 +43,9 @@ export class SpotDetailComponent implements OnInit {
   spotAreas = Object.values(Spot.Areas);
 
   newSpotImage: File = null;
+
+  spotPosts: Post.Class[] = [];
+  postSubscription: Subscription;
 
   constructor(
     private _dbService: DatabaseService,
@@ -135,7 +140,7 @@ export class SpotDetailComponent implements OnInit {
   }
 
   async shareSpot() {
-    let baseUrl = "localhost:4200";
+    let baseUrl = "https://pkfrspot.com";
 
     let link = baseUrl + "/map/" + this.spot.id;
 
@@ -193,5 +198,35 @@ export class SpotDetailComponent implements OnInit {
 
   capitalize(s: string) {
     return s && s[0].toUpperCase() + s.slice(1);
+  }
+
+  postPanelOpened() {
+    this.loadSpotPosts();
+  }
+
+  postPanelClosed() {
+    this.unsubscribeFromSpotPosts();
+  }
+
+  loadSpotPosts() {
+    console.log("Loading posts");
+    this.postSubscription = this._dbService
+      .getPostsFromSpot(this.spot)
+      .subscribe(
+        (postsSchemaMap) => {
+          console.log(postsSchemaMap);
+          this.spotPosts = [];
+          for (let id in postsSchemaMap) {
+            this.spotPosts.push(new Post.Class(id, postsSchemaMap[id]));
+          }
+        },
+        (error) => {},
+        () => {}
+      );
+  }
+
+  unsubscribeFromSpotPosts() {
+    console.log("Unsubscribing...");
+    this.postSubscription.unsubscribe();
   }
 }

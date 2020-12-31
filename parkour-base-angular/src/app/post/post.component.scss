@@ -16,6 +16,10 @@ mat-card {
     }
   }
 
+  mat-card-content {
+    margin-top: 10px;
+  }
+
   mat-card-actions {
     display: flex;
     align-items: center;
@@ -34,18 +38,18 @@ mat-card {
   flex: 1 1 auto;
 }
 
-::ng-deep mat-video .progress {
-  background: transparent;
-  overflow: visible;
-
-  ::ng-deep mat-seek-progress-control {
-    width: 100%;
-    overflow: visible;
-  }
-}
-
 div.mat-card-video {
   --plyr-color-main: var(--accent-color);
+}
+
+::ng-deep div.mat-card-video > div {
+  max-height: 40vh;
+}
+
+::ng-deep div.mat-card-video.fill {
+  .plyr:not(:fullscreen) video {
+    object-fit: cover;
+  }
 }
 
 div.mat-card-video,
@@ -66,4 +70,41 @@ div.mat-card-video,
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+a.spot-container-link {
+  text-decoration: none !important;
+}
+.spot-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  overflow: hidden;
+
+  height: 80px;
+
+  .spot-container-image {
+    height: 80px;
+    background-color: black;
+
+    img {
+      max-height: 100px;
+      max-width: 125px;
+      height: 100%;
+    }
+  }
+
+  .spot-container-text {
+    padding: 10px;
+  }
+}
+
+.location-text {
+  font-size: 14px;
+
+  a {
+    color: rgba(0, 0, 0, 0.54);
+    text-decoration: none;
+  }
 }

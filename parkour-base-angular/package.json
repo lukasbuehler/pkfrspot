@@ -4,13 +4,14 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build-test": "ng build",
+    "build-prod": "ng build --prod",
     "dev": "ng serve --watch",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "deploy": "firebase deploy",
-    "prod": "npm run build && npm run deploy"
+    "prod": "npm run build-pord && npm run deploy"
   },
   "private": true,
   "dependencies": {

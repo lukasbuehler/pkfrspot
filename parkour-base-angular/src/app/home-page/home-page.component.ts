@@ -25,6 +25,7 @@ export class HomePageComponent implements OnInit {
 
   updatePosts: Post.Class[] = [];
   trendingPosts: Post.Class[] = [];
+  loadingPosts: boolean = false;
 
   isUserSignedIn: boolean = false;
 
@@ -45,6 +46,7 @@ export class HomePageComponent implements OnInit {
       }
     );
 
+    this.loadingPosts = true;
     this._dbService.getPostUpdates().subscribe(
       (postMap) => {
         for (let postId in postMap) {
@@ -62,11 +64,15 @@ export class HomePageComponent implements OnInit {
             });
           }
         }
+        this.loadingPosts = false;
       },
       (error) => {
+        this.loadingPosts = false;
         console.error(error);
       },
-      () => {} // complete
+      () => {
+        this.loadingPosts = false;
+      } // complete
     );
   }
 
@@ -87,7 +93,7 @@ export class HomePageComponent implements OnInit {
           result.body,
           result.mediaType,
           null,
-          null
+          result.spot
         );
       },
       (error) => {
@@ -123,8 +129,9 @@ export class HomePageComponent implements OnInit {
 
     if (spot) {
       post.spot = {
-        name: spot.data.name,
+        name: spot.data.name || "",
         spot_location: spot.data.location,
+        image_src: spot.data.image_src || "",
         ref: this._dbService.docRef("spots/" + spot.id),
       };
     }

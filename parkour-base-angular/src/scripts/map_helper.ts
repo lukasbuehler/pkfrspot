@@ -29,4 +29,33 @@ export module MapHelper {
       Math.floor((worldCoordinate.y * scale) / TILE_SIZE)
     );
   }
+
+  export function getDisplayCoordinates(
+    coordinates: google.maps.LatLngLiteral
+  ) {
+    let lat: number = coordinates.lat;
+    let lng: number = coordinates.lng;
+
+    let isNorth: boolean = lat >= 0;
+    let isEast: boolean = lng >= 0;
+    lat = Math.abs(lat);
+    lng = Math.abs(lng);
+
+    let latDegrees = Math.floor(lat);
+    let lngDegrees = Math.floor(lng);
+
+    lat = (lat - latDegrees) * 60;
+    lng = (lng - lngDegrees) * 60;
+    let latMinutes = Math.floor(lat);
+    let lngMinutes = Math.floor(lng);
+
+    lat = (lat - latMinutes) * 60;
+    lng = (lng - lngMinutes) * 60;
+    let latSeconds = Math.round(lat * 1000) / 1000;
+    let lngSeconds = Math.round(lng * 1000) / 1000;
+
+    return `${latDegrees}° ${latMinutes}' ${latSeconds}'' ${
+      isNorth ? "N" : "S"
+    }, ${lngDegrees}° ${lngMinutes}' ${lngSeconds}'' ${isEast ? "E" : "W"}`;
+  }
 }

@@ -1,4 +1,3 @@
-import { keys } from './keys';
 import { firebase, firebaseui } from "firebaseui-angular";
 
 // This file can be replaced during build by using the `fileReplacements` array.
@@ -7,13 +6,8 @@ import { firebase, firebaseui } from "firebaseui-angular";
 
 export const environment = {
   production: false,
-  keys: {
-    google_maps: keys.google_maps
-  },
-  firebase: keys.firebaseConfig,
-
   firebaseUiAuthConfig: {
-    signInFlow: 'redirect',
+    signInFlow: "redirect",
     autoUpgradeAnonymousUsers: true,
     signInSuccessUrl: "/",
     signInOptions: [
@@ -21,13 +15,13 @@ export const environment = {
       firebase.auth.TwitterAuthProvider.PROVIDER_ID,
       {
         requireDisplayName: true,
-        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID
-      }
+        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+      },
     ],
-    tosUrl: '/terms_of_service',
-    privacyPolicyUrl: '/privacy_policy',
-    credentialHelper: firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM
-  }
+    tosUrl: "/terms_of_service",
+    privacyPolicyUrl: "/privacy_policy",
+    credentialHelper: firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM,
+  },
 };
 
 /*

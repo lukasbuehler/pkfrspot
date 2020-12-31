@@ -10,6 +10,8 @@ import { AppComponent } from "./app.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { environment } from "src/environments/environment";
+import { keys } from "src/environments/keys";
+
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireStorageModule } from "@angular/fire/storage";
@@ -38,6 +40,9 @@ import {
 } from "@angular/material/dialog";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatSelectModule } from "@angular/material/select";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatListModule } from "@angular/material/list";
 
 import { PlyrModule } from "ngx-plyr";
 
@@ -55,6 +60,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RatingComponent } from "./rating/rating.component";
 import { SpotDetailComponent } from "./spot-detail/spot-detail.component";
 import { UploadMediaUiComponent } from "./upload-media-ui/upload-media-ui.component";
+import { CommunityPageComponent } from "./community-page/community-page.component";
 
 @NgModule({
   declarations: [
@@ -72,6 +78,7 @@ import { UploadMediaUiComponent } from "./upload-media-ui/upload-media-ui.compon
     RatingComponent,
     SpotDetailComponent,
     UploadMediaUiComponent,
+    CommunityPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,14 +88,14 @@ import { UploadMediaUiComponent } from "./upload-media-ui/upload-media-ui.compon
     HttpClientModule,
 
     NgbModule,
-    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule.initializeApp(keys.firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
 
     InfiniteScrollModule,
     AgmCoreModule.forRoot({
-      apiKey: environment.keys.google_maps,
+      apiKey: keys.google_maps,
     }),
     FirebaseUIModule.forRoot(
       environment.firebaseUiAuthConfig as firebaseui.auth.Config
@@ -110,6 +117,9 @@ import { UploadMediaUiComponent } from "./upload-media-ui/upload-media-ui.compon
     MatDialogModule,
     MatExpansionModule,
     MatSelectModule,
+    MatProgressSpinnerModule,
+    MatAutocompleteModule,
+    MatListModule,
 
     PlyrModule,
   ],

@@ -4,11 +4,15 @@ import { MapHelper } from "../map_helper";
 
 export module Spot {
   export class Class {
-    constructor(private _id: string, private _data: Spot.Schema) {
+    constructor(
+      private _id: string,
+      private _data: Spot.Schema,
+      isNotForMap?: boolean
+    ) {
       if (this.hasBounds()) {
         this._paths = this._makePathsFromBounds(_data.bounds);
       }
-      if (_data.location) {
+      if (_data.location && !isNotForMap) {
         this.setTileCoordinates();
       }
     }
@@ -130,12 +134,16 @@ export module Spot {
   export enum Types {
     Playground = "playground",
     Park = "park",
-    Gym = "gym",
+    PkPark = "parkour park",
+    Gym = "parkour gym",
+    School = "school",
+    UniversityCampus = "university campus",
     Other = "other",
   }
 
   export enum Areas {
     Public = "public",
+    Residential = "residential",
     Commercial = "commercial",
     Private = "private",
     Other = "other",

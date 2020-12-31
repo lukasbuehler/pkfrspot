@@ -1,9 +1,21 @@
-import { Component, OnInit, Input, ViewChild, Inject } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  ViewChild,
+  Inject,
+  AfterViewInit,
+} from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 import { Post } from "src/scripts/db/Post";
+import { Spot } from "src/scripts/db/Spot";
+
 import { StorageService, StorageFolders } from "../storage.service";
+import { DatabaseService } from "../database.service";
+
 import { FormControl } from "@angular/forms";
+import { MatAutocomplete } from "@angular/material/autocomplete";
 
 export interface PostDialogData {
   isCreating: string;
@@ -14,14 +26,14 @@ export interface PostDialogData {
   templateUrl: "./edit-post-dialog.component.html",
   styleUrls: ["./edit-post-dialog.component.scss"],
 })
-export class EditPostDialogComponent implements OnInit {
+export class EditPostDialogComponent implements AfterViewInit {
   constructor(
     public dialogRef: MatDialogRef<EditPostDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: PostDialogData,
-    private _storageService: StorageService
+    private _storageService: StorageService,
+    private _databaseService: DatabaseService
   ) {
     this.isCreating = Boolean(data.isCreating);
-    console.log(this.isCreating);
   }
 
   isCreating: boolean = false;
@@ -30,9 +42,13 @@ export class EditPostDialogComponent implements OnInit {
 
   hasChanged = false;
 
-  postTitle: "";
-  postBody: "";
-  postImageSrc: "";
+  filteredSpots: Spot.Class[] = [];
+
+  postTitle = "";
+  postBody = "";
+  postImageSrc = "";
+  postLocation = "";
+  postSpot: Spot.Class = null;
 
   // If this is false, then link is selected
   isUploadSelected = true;
@@ -45,7 +61,22 @@ export class EditPostDialogComponent implements OnInit {
 
   linkInputFormControl = new FormControl("");
 
-  ngOnInit() {}
+  ngAfterViewInit() {
+    // TODO Remove in later:
+    this._databaseService.getTestSpots(true).subscribe(
+      (spots) => {
+        spots.forEach((spot) => {
+          this.filteredSpots.push(spot);
+        });
+        console.log(
+          "Added " + spots.length + " spots to the autocomplete array"
+        );
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
 
   tabChanged(index: number) {
     if (index === 0) {
@@ -93,7 +124,12 @@ export class EditPostDialogComponent implements OnInit {
     this.uploadFile = file;
   }
 
-  makePostToReturn() {
+  makePostToReturn(): {
+    title: string;
+    body: string;
+    mediaType: Post.MediaTypes;
+    spot: Spot.Class;
+  } {
     let isImage = false;
     let mediaType: Post.MediaTypes = Post.MediaTypes.None;
     if (this.uploadFile) {
@@ -110,10 +146,39 @@ export class EditPostDialogComponent implements OnInit {
       title: this.postTitle,
       body: this.postBody || "",
       mediaType: mediaType,
+      spot: this.postSpot,
     };
   }
 
   close() {
+    console.log(this.postSpot);
     this.dialogRef.close();
   }
+
+  selectSpot(value: string) {
+    if (value) {
+      let findSpot = this.filteredSpots.find((spot) => {
+        return spot.id === value;
+      });
+      console.log(findSpot);
+      if (findSpot) {
+        this.postSpot = findSpot;
+        return;
+      }
+    }
+    this.postSpot = null;
+  }
+
+  getSpotNameFromId = (spotId) => {
+    if (this.filteredSpots && this.filteredSpots.length > 0) {
+      let findSpot = this.filteredSpots.find((spot) => {
+        return spot.id === spotId;
+      });
+      if (findSpot) {
+        return findSpot.data.name;
+      }
+    }
+
+    return "";
+  };
 }

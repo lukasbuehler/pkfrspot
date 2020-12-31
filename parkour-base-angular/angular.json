@@ -34,7 +34,20 @@
               "node_modules/firebaseui/dist/firebaseui.css",
               "node_modules/plyr/dist/plyr.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "firebase",
+              "@firebase/app",
+              "firebase/app",
+              "@firebase/database",
+              "@firebase/firestore",
+              "@firebase/functions",
+              "@firebase/performance",
+              "@firebase/remote-config",
+              "@angular/fire",
+              "@angular/fire/firestore",
+              "dialog-polyfill"
+            ]
           },
           "configurations": {
             "production": {
@@ -42,6 +55,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/environments/keys.ts",
+                  "with": "src/environments/keys.prod.ts"
                 }
               ],
               "optimization": true,

@@ -28,7 +28,7 @@ export class AppComponent {
         tooltip: "",
       },
       {
-        name: "Map",
+        name: "Spot map",
         link: "/map",
         badge: {
           number: 0,
@@ -36,7 +36,7 @@ export class AppComponent {
         },
         tooltip: "",
       },
-      {
+      /*{
         name: "Wiki",
         link: "/wiki",
         badge: {
@@ -44,16 +44,16 @@ export class AppComponent {
           color: "accent",
         },
         tooltip: "",
-      },
-      {
-        name: "Teams",
-        link: "/teams",
+      },*/
+      /*{
+        name: "Community",
+        link: "/community",
         badge: {
           number: 0,
           color: "accent",
         },
         tooltip: "",
-      },
+      },*/
     ],
   };
 }

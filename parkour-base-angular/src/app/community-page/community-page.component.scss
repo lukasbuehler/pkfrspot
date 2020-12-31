@@ -1,0 +1,20 @@
+::ng-deep app-community-page,
+.mat-drawer-container {
+  min-height: 100%;
+}
+
+.mat-drawer {
+  padding: 20px;
+  min-width: 300px;
+}
+
+.container-content {
+  padding-top: 20px;
+}
+
+.group-picture {
+  height: 32px !important;
+  width: 32px !important;
+  border-radius: 100%;
+  padding: 0 !important;
+}
