@@ -10,6 +10,14 @@
   display: none;
 }
 
+.app-post {
+  display: inline-block;
+  overflow: hidden;
+  transform-origin: top;
+
+  margin: 10px;
+}
+
 .spinner {
   display: flex;
   align-items: center;

@@ -1,6 +1,6 @@
+import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { NgModule } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -61,7 +61,8 @@ import { RatingComponent } from "./rating/rating.component";
 import { SpotDetailComponent } from "./spot-detail/spot-detail.component";
 import { UploadMediaUiComponent } from "./upload-media-ui/upload-media-ui.component";
 import { CommunityPageComponent } from "./community-page/community-page.component";
-import { AboutPageComponent } from './about-page/about-page.component';
+import { AboutPageComponent } from "./about-page/about-page.component";
+import { FancyCounterComponent } from './fancy-counter/fancy-counter.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { AboutPageComponent } from './about-page/about-page.component';
     UploadMediaUiComponent,
     CommunityPageComponent,
     AboutPageComponent,
+    FancyCounterComponent,
   ],
   imports: [
     BrowserModule,

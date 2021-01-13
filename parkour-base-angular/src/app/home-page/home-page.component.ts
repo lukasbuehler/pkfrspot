@@ -29,6 +29,8 @@ export class HomePageComponent implements OnInit {
 
   isUserSignedIn: boolean = false;
 
+  debugCounterNumber = 0;
+
   @ViewChild("updateCollection", { static: true })
   updateCollection: PostCollectionComponent;
 

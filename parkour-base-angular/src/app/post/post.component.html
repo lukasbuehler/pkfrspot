@@ -90,7 +90,9 @@
           thumb_up
         </mat-icon>
       </button>
-      <strong class="mat-b">{{ post.likeCount || 0 }}</strong>
+      <strong class="mat-b"
+        ><app-fancy-counter [number]="post.likeCount || 0"></app-fancy-counter
+      ></strong>
     </div>
 
     <div *ngIf="false" class="mr-2">

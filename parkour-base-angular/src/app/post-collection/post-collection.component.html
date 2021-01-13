@@ -1,4 +1,5 @@
 <div
+  [@postCollectionAnimation]
   class="collection-container pt-3"
   infiniteScroll
   [infiniteScrollDistance]="2"
@@ -8,7 +9,18 @@
   <h2 *ngIf="title" class="mat-h2">
     {{ title }}
   </h2>
-  <app-post *ngFor="let post of posts" [post]="post" class="mt-2"></app-post>
+  <button mat-raised-button color="accent" (click)="posts.unshift(posts[0])">
+    Add
+  </button>
+  <button mat-raised-button color="accent" (click)="posts.shift()">
+    Remove
+  </button>
+  <app-post
+    [@postAnimation]
+    *ngFor="let post of posts"
+    [post]="post"
+    class="app-post mt-2"
+  ></app-post>
   <p
     *ngIf="(!posts || posts.length === 0) && !loading"
     class="noPostsText"

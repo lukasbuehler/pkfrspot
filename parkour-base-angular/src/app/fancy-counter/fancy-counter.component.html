@@ -1,0 +1,14 @@
+<span class="counter">
+  <span
+    [@digitChange]="{
+      value: number,
+      params: {
+        incrementMinus: getMinusIfIncrementing(number, true),
+        decrementMinus: getMinusIfIncrementing(number, false)
+      }
+    }"
+    *ngFor="let digit of ('' + number).split('')"
+    class="digit-container"
+    >{{ digit }}</span
+  >
+</span>

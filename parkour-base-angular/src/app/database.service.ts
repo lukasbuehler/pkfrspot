@@ -86,6 +86,7 @@ export class DatabaseService {
       .catch((error) => {
         console.error("Couldn't remove your like");
         console.error(error);
+        console.log("Called with: ", postId, userUID);
       });
   }
 
