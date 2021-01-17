@@ -11,6 +11,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "deploy": "firebase deploy",
+    "deploy-rules": "firebase deploy --only firestore:rules",
     "prod": "npm run build-prod && npm run deploy"
   },
   "private": true,
@@ -31,6 +32,7 @@
     "@ng-bootstrap/ng-bootstrap": "^8.0.0",
     "@types/googlemaps": "3.39.12",
     "algoliasearch": "^4.8.3",
+    "angular-resize-event": "^2.0.1",
     "bootstrap": "^4.5.3",
     "core-js": "^2.6.12",
     "firebase": "^8.2.1",

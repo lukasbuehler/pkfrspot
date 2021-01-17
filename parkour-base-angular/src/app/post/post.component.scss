@@ -43,7 +43,7 @@ div.mat-card-video {
 }
 
 ::ng-deep div.mat-card-video > div {
-  max-height: 40vh;
+  //max-height: 40vh;
 }
 
 ::ng-deep div.mat-card-video.fill {
@@ -52,11 +52,27 @@ div.mat-card-video {
   }
 }
 
+div.mat-card-media {
+  width: calc(100% + 32px);
+  margin: 0 -16px 16px -16px;
+  overflow: hidden;
+}
+
+::ng-deep div.mat-card-media > div {
+  height: 100%;
+
+  .plyr {
+    height: 100%;
+  }
+}
+
+div.mat-card-media > img {
+  width: 100%;
+}
+
 div.mat-card-video,
 .youtube-video-container {
   display: block;
-  width: calc(100% + 32px);
-  margin: 0 -16px 16px -16px;
 }
 
 .youtube-video-container {

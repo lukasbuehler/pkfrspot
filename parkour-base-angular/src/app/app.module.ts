@@ -45,6 +45,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatListModule } from "@angular/material/list";
 
 import { PlyrModule } from "ngx-plyr";
+import { AngularResizedEventModule } from "angular-resize-event";
 
 import { HomePageComponent } from "./home-page/home-page.component";
 import { MapPageComponent } from "./map-page/map-page.component";
@@ -122,6 +123,7 @@ import { CommunityPageComponent } from "./community-page/community-page.componen
     MatListModule,
 
     PlyrModule,
+    AngularResizedEventModule,
   ],
   exports: [MatButtonModule],
   providers: [
