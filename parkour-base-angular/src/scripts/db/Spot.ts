@@ -40,7 +40,7 @@ export module Spot {
         this.setTileCoordinates();
       }
     }
-    get location() {
+    get location(): google.maps.LatLngLiteral {
       const point = this._data.location;
       return { lat: point.latitude, lng: point.longitude };
     }

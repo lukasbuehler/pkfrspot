@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
 import * as moment from "moment";
 import { Post } from "src/scripts/db/Post";
 import { DatabaseService } from "../database.service";
@@ -6,6 +6,7 @@ import { AuthenticationService } from "../authentication.service";
 import * as firebase from "firebase/app";
 import { PlyrComponent } from "ngx-plyr";
 import { MapHelper } from "../../scripts/map_helper";
+import { ResizedEvent } from "angular-resize-event";
 
 @Component({
   selector: "app-post",
@@ -16,11 +17,14 @@ export class PostComponent implements OnInit {
   @Input() post: Post.Class;
   @Input() showCard: boolean = true;
 
+  @ViewChild("matCardMedia") matCardMedia: ElementRef;
   @ViewChild(PlyrComponent) plyr: PlyrComponent;
 
   dateAndTimeString: string;
   timeAgoString: string;
   likedByUser: boolean = null;
+
+  maxHeightToWidthRatio: number = 0;
 
   constructor(
     private _databaseService: DatabaseService,
@@ -40,6 +44,10 @@ export class PostComponent implements OnInit {
       .catch((err) => {
         console.error(err);
       });
+  }
+
+  onResized(event: ResizedEvent) {
+    this.updateMediaHeight(event.newWidth, event.newHeight);
   }
 
   getTimeAgoString(): string {
@@ -91,5 +99,15 @@ export class PostComponent implements OnInit {
       return MapHelper.getDisplayCoordinates(coords);
     }
     return "";
+  }
+
+  updateMediaHeight(width, height) {
+    if (height / width > this.maxHeightToWidthRatio) {
+      this.maxHeightToWidthRatio = height / width;
+    }
+
+    if (this.maxHeightToWidthRatio > 1 && height / width !== 1) {
+      this.matCardMedia.nativeElement.style.height = width + "px";
+    }
   }
 }

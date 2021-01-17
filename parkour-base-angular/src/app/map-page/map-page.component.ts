@@ -489,7 +489,7 @@ export class MapPageComponent implements OnInit {
 
     // Check if this new spot already exists in the loaded spots.
     let spot = spots.find((v, i, obj) => {
-      v.id === "";
+      return v.id === "";
     });
 
     if (spot) {
