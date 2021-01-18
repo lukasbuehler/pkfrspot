@@ -7,17 +7,34 @@ import { WikiPageComponent } from "./wiki-page/wiki-page.component";
 import { SignInPageComponent } from "./sign-in-page/sign-in-page.component";
 import { CommunityPageComponent } from "./community-page/community-page.component";
 import { AboutPageComponent } from "./about-page/about-page.component";
+import { KmlImportPageComponent } from "./kml-import-page/kml-import-page.component";
+import { PostPageComponent } from "./post-page/post-page.component";
+import { ProfilePageComponent } from "./profile-page/profile-page.component";
 
 const routes: Routes = [
+  // Home page and posts (displays posts and updates)
   { path: "", component: HomePageComponent },
   { path: "home", redirectTo: "/", pathMatch: "full" },
+  { path: "post/:postId", component: PostPageComponent },
+
+  // Map page
   { path: "map", component: MapPageComponent },
   { path: "map/:spot", component: MapPageComponent },
-  { path: "wiki", component: WikiPageComponent },
+  { path: "kml-import", component: KmlImportPageComponent },
+
+  // Community, Groups, Teams, Sessions
   { path: "community", component: CommunityPageComponent },
-  { path: "about", component: AboutPageComponent },
+
+  // Wiki page
+  { path: "wiki", component: WikiPageComponent },
+
+  // Profiles and sign-in flow
+  { path: "profile/:profileId", component: ProfilePageComponent },
+  { path: "sign-up", component: SignInPageComponent },
   { path: "sign-in", component: SignInPageComponent },
 
+  // Other
+  { path: "about", component: AboutPageComponent },
   { path: "**", component: NotFoundPageComponent },
 ];
 

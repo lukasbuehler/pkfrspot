@@ -64,6 +64,9 @@ import { UploadMediaUiComponent } from "./upload-media-ui/upload-media-ui.compon
 import { CommunityPageComponent } from "./community-page/community-page.component";
 import { AboutPageComponent } from "./about-page/about-page.component";
 import { FancyCounterComponent } from './fancy-counter/fancy-counter.component';
+import { KmlImportPageComponent } from './kml-import-page/kml-import-page.component';
+import { ProfilePageComponent } from './profile-page/profile-page.component';
+import { PostPageComponent } from './post-page/post-page.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +87,9 @@ import { FancyCounterComponent } from './fancy-counter/fancy-counter.component';
     CommunityPageComponent,
     AboutPageComponent,
     FancyCounterComponent,
+    KmlImportPageComponent,
+    ProfilePageComponent,
+    PostPageComponent,
   ],
   imports: [
     BrowserModule,
