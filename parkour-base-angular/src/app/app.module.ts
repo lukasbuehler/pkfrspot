@@ -43,6 +43,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatListModule } from "@angular/material/list";
+import { MatStepperModule } from "@angular/material/stepper";
 
 import { PlyrModule } from "ngx-plyr";
 import { AngularResizedEventModule } from "angular-resize-event";
@@ -63,10 +64,10 @@ import { SpotDetailComponent } from "./spot-detail/spot-detail.component";
 import { UploadMediaUiComponent } from "./upload-media-ui/upload-media-ui.component";
 import { CommunityPageComponent } from "./community-page/community-page.component";
 import { AboutPageComponent } from "./about-page/about-page.component";
-import { FancyCounterComponent } from './fancy-counter/fancy-counter.component';
-import { KmlImportPageComponent } from './kml-import-page/kml-import-page.component';
-import { ProfilePageComponent } from './profile-page/profile-page.component';
-import { PostPageComponent } from './post-page/post-page.component';
+import { FancyCounterComponent } from "./fancy-counter/fancy-counter.component";
+import { KmlImportPageComponent } from "./kml-import-page/kml-import-page.component";
+import { ProfilePageComponent } from "./profile-page/profile-page.component";
+import { PostPageComponent } from "./post-page/post-page.component";
 
 @NgModule({
   declarations: [
@@ -131,6 +132,7 @@ import { PostPageComponent } from './post-page/post-page.component';
     MatProgressSpinnerModule,
     MatAutocompleteModule,
     MatListModule,
+    MatStepperModule,
 
     PlyrModule,
     AngularResizedEventModule,

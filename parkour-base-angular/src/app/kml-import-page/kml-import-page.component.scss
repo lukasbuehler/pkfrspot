@@ -1,0 +1,9 @@
+.kml-import-page-container {
+  @media (max-width: 599px) {
+    height: calc(100% - 56px);
+  }
+  @media (min-width: 600px) {
+    height: calc(100% - 64px);
+  }
+  overflow: hidden;
+}

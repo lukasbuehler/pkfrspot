@@ -1,1 +1,99 @@
-<p>kml-import-page works!</p>
+<div class="kml-import-page-container">
+  <div class="container d-none d-md-block">
+    <div class="row">
+      <div class="col-md-12 pt-5 pb-3">
+        <h1 class="mat-display-1 text-center">KML Import</h1>
+        <p class="mat-body">
+          Here you can upload KML files to transfer spots to PKFR Spot for free.
+          Anyone can then see, share and review the uploaded spots.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <mat-horizontal-stepper
+          [linear]="true"
+          #stepperHorizontal
+          color="accent"
+        >
+          <mat-step [stepControl]="uploadFormGroup">
+            <form class="pt-3 px-5" [formGroup]="uploadFormGroup">
+              <ng-template matStepLabel>Upload</ng-template>
+              <app-upload-media-ui
+                (uploadMedia)="onUploadMediaSelect($event)"
+                [isMediaUpload]="false"
+                [maximumSizeInBytes]="0"
+                formControlName="uploadCtrl"
+                required
+              ></app-upload-media-ui>
+              <div>
+                <button
+                  mat-raised-button
+                  color="accent"
+                  class="float-right mt-5"
+                  [disabled]="!kmlUploadFile"
+                  matStepperNext
+                >
+                  Continue to setup
+                </button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="setupFormGroup" label="Setup">
+            <form class="px-5" [formGroup]="setupFormGroup">
+              <mat-form-field>
+                <mat-label>Name Regex</mat-label>
+                <input
+                  matInput
+                  formControlName="setupCtrl"
+                  placeholder="\S*(.+)\S*"
+                  required
+                />
+              </mat-form-field>
+              <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext>Next</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step>
+            <ng-template matStepLabel>Run</ng-template>
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </mat-step>
+          <mat-step>
+            <ng-template matStepLabel>Verify</ng-template>
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </mat-step>
+          <mat-step>
+            <ng-template matStepLabel>Save</ng-template>
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </mat-step>
+          <mat-step>
+            <ng-template matStepLabel>Done</ng-template>
+            <p>You are now done.</p>
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button (click)="stepperHorizontal.reset()">
+                Reset
+              </button>
+            </div>
+          </mat-step>
+        </mat-horizontal-stepper>
+      </div>
+    </div>
+  </div>
+  <!--
+  <mat-vertical-stepper [linear]="true" #stepperVertical class="d-md-none">
+    vertical stepper goes here
+  </mat-vertical-stepper>
+  -->
+</div>
