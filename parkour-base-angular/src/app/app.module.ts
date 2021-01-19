@@ -44,6 +44,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatListModule } from "@angular/material/list";
 import { MatStepperModule } from "@angular/material/stepper";
+import { MatDividerModule } from "@angular/material/divider";
 
 import { PlyrModule } from "ngx-plyr";
 import { AngularResizedEventModule } from "angular-resize-event";
@@ -133,6 +134,7 @@ import { PostPageComponent } from "./post-page/post-page.component";
     MatAutocompleteModule,
     MatListModule,
     MatStepperModule,
+    MatDividerModule,
 
     PlyrModule,
     AngularResizedEventModule,

@@ -5,5 +5,15 @@
   @media (min-width: 600px) {
     height: calc(100% - 64px);
   }
-  overflow: hidden;
+}
+
+ul.checkbox-list {
+  list-style-type: none;
+  margin-top: 4px;
+  padding-left: 0px;
+}
+
+.helpIcon {
+  vertical-align: top;
+  margin-left: 5px;
 }

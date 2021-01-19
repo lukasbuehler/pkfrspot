@@ -16,7 +16,9 @@
     [formControl]="ngControl.control"
   />
   <mat-form-field>
-    <mat-label>Upload Media</mat-label>
+    <mat-label
+      >Please select {{ isMediaUpload ? "Media" : "a File" }}</mat-label
+    >
     <input
       #filenameInput
       matInput
@@ -32,7 +34,7 @@
     <mat-hint *ngIf="!hasError || ngControl.invalid">{{
       uploadFile
         ? "Size: " + uploadFileSizeString + ", Type: " + uploadFile.type
-        : "Click to select media"
+        : "Click to select a file"
     }}</mat-hint>
     <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
   </mat-form-field>
