@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { STEPPER_GLOBAL_OPTIONS } from "@angular/cdk/stepper";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatHorizontalStepper } from "@angular/material/stepper";
 import { KmlParserService, KMLSetupInfo } from "../kml-parser.service";
@@ -7,18 +8,15 @@ import { KmlParserService, KMLSetupInfo } from "../kml-parser.service";
   selector: "app-kml-import-page",
   templateUrl: "./kml-import-page.component.html",
   styleUrls: ["./kml-import-page.component.scss"],
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: { displayDefaultIndicatorType: false },
+    },
+  ],
 })
-export class KmlImportPageComponent implements OnInit {
-  @ViewChild("stepperHorizontal") stepperHorizontal: MatHorizontalStepper;
-
-  /**
-   * Steps:
-   * 1) Select KML
-   * 2) Setup - Select folders, language, name regex, test
-   * 3) Run - Runs in browsers and gets information from server
-   * 4) Verify - Check possible duplicates, bounds
-   * 5) Save - Apply changes and save new spots
-   */
+export class KmlImportPageComponent implements OnInit, AfterViewInit {
+  @ViewChild("stepperHorizontal") stepperHorizontal;
 
   uploadFormGroup: FormGroup;
   setupFormGroup: FormGroup;
@@ -47,11 +45,23 @@ export class KmlImportPageComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(): void {
+    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    //Add 'implements AfterViewInit' to the class.
+    // set a step for debug stuff:
+    //this.stepperHorizontal.selectedIndex = 2; // go to the step directly
+  }
+
   onUploadMediaSelect(file) {
     this.kmlUploadFile = file;
   }
 
   continueToSetup() {
+    if (!this.kmlUploadFile) {
+      // the file doesn't exist
+      console.error("The KML file was not set properly or is invalid!");
+      return;
+    }
     this.kmlUploadFile.text().then(
       (data) => {
         this._kmlParserService.parseKMLString$(data).subscribe(
@@ -77,4 +87,8 @@ export class KmlImportPageComponent implements OnInit {
       (reason) => {}
     );
   }
+
+  startImport() {}
+
+  abortImportAndGoToSetup() {}
 }

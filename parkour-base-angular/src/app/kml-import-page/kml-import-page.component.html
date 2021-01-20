@@ -1,5 +1,5 @@
 <div class="kml-import-page-container">
-  <div class="container d-none d-md-block">
+  <div class="container">
     <div class="row">
       <div class="col-md-12 pt-5 pb-3">
         <h1 class="mat-display-1 text-center">KML Import</h1>
@@ -14,9 +14,38 @@
         <mat-horizontal-stepper
           [linear]="true"
           #stepperHorizontal
-          color="accent"
+          color="primary"
         >
-          <mat-step label="Select" [stepControl]="uploadFormGroup">
+          <!-- Icon overrides -->
+          <ng-template matStepperIcon="select">
+            <mat-icon>description</mat-icon>
+          </ng-template>
+          <ng-template matStepperIcon="setup">
+            <mat-icon>settings</mat-icon>
+          </ng-template>
+          <ng-template matStepperIcon="import">
+            <mat-icon>add</mat-icon>
+          </ng-template>
+          <ng-template matStepperIcon="verify">
+            <mat-icon>where_to_vote</mat-icon>
+          </ng-template>
+          <ng-template matStepperIcon="save">
+            <mat-icon>publish</mat-icon>
+          </ng-template>
+          <ng-template matStepperIcon="done">
+            <mat-icon>done</mat-icon>
+          </ng-template>
+
+          <!-- Steps -->
+          <!-- Select step -->
+          <mat-step
+            [stepControl]="uploadFormGroup"
+            [editable]="false"
+            state="select"
+          >
+            <ng-template matStepLabel
+              ><span class="d-none d-md-block">Select</span></ng-template
+            >
             <form class="pt-3 px-3" [formGroup]="uploadFormGroup">
               <h3 class="mat-h3">Please select a KML file.</h3>
               <app-upload-media-ui
@@ -39,7 +68,16 @@
               </div>
             </form>
           </mat-step>
-          <mat-step [stepControl]="setupFormGroup" label="Setup">
+
+          <!-- Setup step -->
+          <mat-step
+            [stepControl]="setupFormGroup"
+            [editable]="false"
+            state="setup"
+          >
+            <ng-template matStepLabel
+              ><span class="d-none d-md-block">Setup</span></ng-template
+            >
             <form class="px-3" [formGroup]="setupFormGroup">
               <div class="container d-lg-block mt-3">
                 <div class="row">
@@ -89,7 +127,7 @@
                     <mat-icon
                       matSuffix
                       class="helpIcon"
-                      matTooltip="Removes whitespaces around all the spot names."
+                      matTooltip="Removes whitespaces around all the spot names. It is recommended to have this option enabled."
                       >help_outline</mat-icon
                     >
                     <mat-form-field class="w-100" appearance="outline">
@@ -149,28 +187,69 @@
               </div>
             </form>
           </mat-step>
-          <mat-step label="Import">
+
+          <!-- Import step -->
+          <mat-step [editable]="false" state="import">
+            <!-- 
+              What needs to be done:
+              1) Generate spots from locations in KML file
+              2) Query the database for spots that are close to some spot. Returns an observable but we are able to continue to the next step and start verifying the first results.
+            -->
+            <ng-template matStepLabel
+              ><span class="d-none d-md-block">Import</span></ng-template
+            >
+            <div class="text-center">
+              <h2 class="mat-h2">
+                {{ true ? "Generating new Spots" : "Checking for duplicates" }}
+              </h2>
+              <mat-progress-spinner
+                *ngIf="true"
+                color="accent"
+                [mode]="true ? 'indeterminate' : 'determinate'"
+                [value]="10"
+              ></mat-progress-spinner>
+            </div>
+            <div>
+              <button
+                mat-raised-button
+                color="warn"
+                (click)="abortImportAndGoToSetup()"
+                class="float-left"
+              >
+                Abort Import and go to Setup
+              </button>
+              <button
+                mat-raised-button
+                color="accent"
+                class="float-right"
+                matStepperNext
+              >
+                Start verifying Spots
+              </button>
+            </div>
+          </mat-step>
+          <mat-step [editable]="false" state="verify">
+            <ng-template matStepLabel
+              ><span class="d-none d-md-block">Verify</span></ng-template
+            >
             <div>
               <button mat-button matStepperPrevious>Back</button>
               <button mat-button matStepperNext>Next</button>
             </div>
           </mat-step>
-          <mat-step>
-            <ng-template matStepLabel>Verify</ng-template>
+          <mat-step [editable]="false" state="save">
+            <ng-template matStepLabel
+              ><span class="d-none d-md-block">Save</span></ng-template
+            >
             <div>
               <button mat-button matStepperPrevious>Back</button>
               <button mat-button matStepperNext>Next</button>
             </div>
           </mat-step>
-          <mat-step>
-            <ng-template matStepLabel>Save</ng-template>
-            <div>
-              <button mat-button matStepperPrevious>Back</button>
-              <button mat-button matStepperNext>Next</button>
-            </div>
-          </mat-step>
-          <mat-step>
-            <ng-template matStepLabel>Done</ng-template>
+          <mat-step [editable]="false" state="done">
+            <ng-template matStepLabel
+              ><span class="d-none d-md-block">Done</span></ng-template
+            >
             <p>You are now done.</p>
             <div>
               <button mat-button matStepperPrevious>Back</button>
@@ -180,23 +259,6 @@
             </div>
           </mat-step>
         </mat-horizontal-stepper>
-      </div>
-    </div>
-  </div>
-  <div class="container-fluid d-md-none">
-    <div class="row">
-      <div class="col-md-12 px-5 pt-5 text-center">
-        <h2 class="mat-h2">Sorry!</h2>
-      </div>
-      <div class="col-md-12 px-5 text-center">
-        <p class="mat-body">
-          KML Import is not supported on small devices yet!
-        </p>
-        <!--
-        <mat-vertical-stepper [linear]="true" #stepperVertical class="d-md-none">
-          vertical stepper goes here
-        </mat-vertical-stepper>
-        -->
       </div>
     </div>
   </div>

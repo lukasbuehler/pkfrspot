@@ -69,6 +69,7 @@ import { FancyCounterComponent } from "./fancy-counter/fancy-counter.component";
 import { KmlImportPageComponent } from "./kml-import-page/kml-import-page.component";
 import { ProfilePageComponent } from "./profile-page/profile-page.component";
 import { PostPageComponent } from "./post-page/post-page.component";
+import { SpeedDialFabComponent } from './speed-dial-fab/speed-dial-fab.component';
 
 @NgModule({
   declarations: [
@@ -92,6 +93,7 @@ import { PostPageComponent } from "./post-page/post-page.component";
     KmlImportPageComponent,
     ProfilePageComponent,
     PostPageComponent,
+    SpeedDialFabComponent,
   ],
   imports: [
     BrowserModule,
