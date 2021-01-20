@@ -10,7 +10,7 @@
     [color]="buttonConfig?.mainButton?.color || 'primary'"
     [matTooltipDisabled]="!buttonConfig?.mainButton?.tooltip || !openOnHover"
     [matTooltip]="buttonConfig?.mainButton?.tooltip || ''"
-    [matTooltipPosition]="'left'"
+    [matTooltipPosition]="buttonConfig?.tooltipPosition || 'left'"
     (click)="onMainClick($event)"
   >
     <mat-icon
@@ -34,7 +34,7 @@
       class="mini-fab"
       [color]="buttonConfig?.miniButtonColor || 'secondary'"
       [matTooltip]="miniBtn.tooltip"
-      [matTooltipPosition]="'left'"
+      [matTooltipPosition]="buttonConfig?.tooltipPosition || 'left'"
       (click)="miniButtonClick(i)"
     >
       <mat-icon>{{ miniBtn.icon }}</mat-icon>
