@@ -1,0 +1,43 @@
+<div
+  #fabContainer
+  class="fab-container"
+  (mouseenter)="onMouseEnter($event)"
+  (mouseleave)="onMouseLeave($event)"
+>
+  <button
+    mat-fab
+    class="sd-toggler"
+    [color]="buttonConfig?.mainButton?.color || 'primary'"
+    [matTooltipDisabled]="!buttonConfig?.mainButton?.tooltip || !openOnHover"
+    [matTooltip]="buttonConfig?.mainButton?.tooltip || ''"
+    [matTooltipPosition]="'left'"
+    (click)="onMainClick($event)"
+  >
+    <mat-icon
+      [@mainFabButtonIconRotation]="{
+        value: isOpen ? 'open' : 'closed',
+        params: { degrees: rotationDegrees }
+      }"
+      >{{
+        buttonConfig?.mainButton?.icon ? buttonConfig.mainButton.icon : "add"
+      }}</mat-icon
+    >
+  </button>
+  <div
+    class="mini-fab-container"
+    *ngIf="isOpen"
+    [@speedDialStagger]="{ value: buttonConfig?.miniButtons?.length || 0 }"
+  >
+    <button
+      *ngFor="let miniBtn of buttonConfig.miniButtons; let i = index"
+      mat-mini-fab
+      class="mini-fab"
+      [color]="buttonConfig?.miniButtonColor || 'secondary'"
+      [matTooltip]="miniBtn.tooltip"
+      [matTooltipPosition]="'left'"
+      (click)="miniButtonClick(i)"
+    >
+      <mat-icon>{{ miniBtn.icon }}</mat-icon>
+    </button>
+  </div>
+</div>

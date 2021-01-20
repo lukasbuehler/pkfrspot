@@ -16,9 +16,10 @@ import { DatabaseService } from "../database.service";
 import { AgmMap, AgmPolygon } from "@agm/core";
 import { Spot } from "src/scripts/db/Spot";
 import { MapHelper } from "../../scripts/map_helper";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Location } from "@angular/common";
 import { SpotDetailComponent } from "../spot-detail/spot-detail.component";
+import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
 
 @Component({
   selector: "app-map-page",
@@ -32,6 +33,36 @@ export class MapPageComponent implements OnInit {
   // SpotDetailComponent is only there if there is a spot selected, so static must be set to false.
   @ViewChild(SpotDetailComponent)
   spotDetail: SpotDetailComponent;
+
+  speedDialButtonConfig: SpeedDialFabButtonConfig = {
+    mainButton: {
+      icon: "add_location",
+      tooltip: "Create a new spot",
+      color: "accent",
+    },
+    miniButtonColor: "secondary",
+    miniButtons: [
+      {
+        icon: "note_add",
+        tooltip: "Import Spots from a KML file",
+      },
+    ],
+  };
+
+  mainFabClicked() {
+    this.createSpot();
+  }
+
+  miniFabPressed(index: number) {
+    switch (index) {
+      case 0:
+        this.router.navigateByUrl("/kml-import");
+        break;
+      default:
+        console.error("Uncaught fab click registered");
+        break;
+    }
+  }
 
   //mapStyle: google.maps.MapTypeId = google.maps.MapTypeId.ROADMAP;
   mapStyle = "roadmap";
@@ -73,7 +104,8 @@ export class MapPageComponent implements OnInit {
   constructor(
     private _dbService: DatabaseService,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -503,7 +535,12 @@ export class MapPageComponent implements OnInit {
       ] = this.selectedSpot;
     } else {
       // the spot does not exist
-      this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].push(this.selectedSpot);
+      let spots = this.loadedSpots[`z${16}_${tile.x}_${tile.y}`];
+      if (spots) {
+        spots.push(this.selectedSpot);
+      } else {
+        console.error("There are no spots loaded for this tile");
+      }
     }
 
     // update the map to show the new spot on the loaded spots array.

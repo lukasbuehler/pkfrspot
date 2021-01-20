@@ -1,0 +1,16 @@
+.fab-container {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+
+  > div.mini-fab-container {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    margin-bottom: 5px;
+
+    button {
+      margin-bottom: 17px;
+    }
+  }
+}

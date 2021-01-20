@@ -156,15 +156,15 @@
     </mat-icon>
   </button>
 
-  <button
+  <!-- Add / import spots speed dial-->
+  <app-speed-dial-fab
     *ngIf="!editingBounds"
-    mat-fab
-    #createSpotFab
-    id="createSpotFab"
-    (click)="createSpot()"
-  >
-    <mat-icon aria-label="Button with plus to create a new spot"
-      >add_location</mat-icon
-    >
-  </button>
+    #createSpotSpeedDial
+    id="createSpotSpeedDial"
+    [buttonConfig]="speedDialButtonConfig"
+    [openOnHover]="true"
+    [rotationDegrees]="0"
+    (mainFabClick)="mainFabClicked()"
+    (miniFabClick)="miniFabPressed($event)"
+  ></app-speed-dial-fab>
 </mat-drawer-container>
