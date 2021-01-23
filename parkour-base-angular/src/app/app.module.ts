@@ -45,6 +45,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatListModule } from "@angular/material/list";
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatDividerModule } from "@angular/material/divider";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 import { PlyrModule } from "ngx-plyr";
 import { AngularResizedEventModule } from "angular-resize-event";
@@ -69,7 +70,8 @@ import { FancyCounterComponent } from "./fancy-counter/fancy-counter.component";
 import { KmlImportPageComponent } from "./kml-import-page/kml-import-page.component";
 import { ProfilePageComponent } from "./profile-page/profile-page.component";
 import { PostPageComponent } from "./post-page/post-page.component";
-import { SpeedDialFabComponent } from './speed-dial-fab/speed-dial-fab.component';
+import { SpeedDialFabComponent } from "./speed-dial-fab/speed-dial-fab.component";
+import { RegexInputComponent } from './regex-input/regex-input.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +96,7 @@ import { SpeedDialFabComponent } from './speed-dial-fab/speed-dial-fab.component
     ProfilePageComponent,
     PostPageComponent,
     SpeedDialFabComponent,
+    RegexInputComponent,
   ],
   imports: [
     BrowserModule,
@@ -137,6 +140,7 @@ import { SpeedDialFabComponent } from './speed-dial-fab/speed-dial-fab.component
     MatListModule,
     MatStepperModule,
     MatDividerModule,
+    MatSlideToggleModule,
 
     PlyrModule,
     AngularResizedEventModule,

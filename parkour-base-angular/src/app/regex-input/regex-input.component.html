@@ -1,0 +1,15 @@
+<div
+  role="group"
+  [formGroup]="parts"
+  [attr.aria-describedby]="''"
+  [attr.aria-labelledby]="parentFormField?.getLabelId()"
+>
+  <span>/</span>
+  <input
+    #regexInput
+    class="regularExpression"
+    formControlName="regularExpression"
+  />
+  <span class="expressionFlagsSpan">/</span>
+  <input class="expressionFlags" formControlName="expressionFlags" />
+</div>

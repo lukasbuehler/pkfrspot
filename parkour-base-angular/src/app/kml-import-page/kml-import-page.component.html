@@ -121,9 +121,9 @@
                         >help_outline</mat-icon
                       >
                     </mat-form-field>
-                    <mat-checkbox color="accent" [checked]="true">
-                      Trim name
-                    </mat-checkbox>
+                    <mat-slide-toggle color="accent" [checked]="true"
+                      >Trim name</mat-slide-toggle
+                    >
                     <mat-icon
                       matSuffix
                       class="helpIcon"
@@ -132,15 +132,20 @@
                     >
                     <mat-form-field class="w-100" appearance="outline">
                       <mat-label>Name RegEx</mat-label>
-                      <input
-                        matInput
-                        formControlName="setupRegExCtrl"
-                        placeholder="/.*\-?\s*(\w)$/gi"
-                      />
+                      <app-regex-input
+                        formControlName="setupRegexCtrl"
+                        flagsString="gi"
+                        [disabledFlags]="true"
+                        required
+                      ></app-regex-input>
                       <mat-icon
                         matSuffix
-                        matTooltip="A regular expression applied to the name of each Spot. The first capture is used for the name."
+                        matTooltip="You can provide a regular expression that will be applied to every imported spot name. The first capturing group will be used as the new spot name. Spot names that don't produce any matches will need to be checked by you on step 4. Visit https://regexr.com/ for help."
                         >help_outline</mat-icon
+                      >
+                      <mat-hint
+                        >The first capturing group is used as the spot
+                        name.</mat-hint
                       >
                     </mat-form-field>
                   </div>

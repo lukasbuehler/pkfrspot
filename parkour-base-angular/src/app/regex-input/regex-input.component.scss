@@ -1,0 +1,31 @@
+div {
+  display: flex;
+
+  > .regularExpression {
+    flex-grow: 1;
+  }
+  > .expressionFlags {
+    width: 4em;
+  }
+}
+input {
+  border: none;
+  background: none;
+  padding: 0;
+  outline: none;
+  font: inherit;
+  min-width: 0;
+}
+
+span {
+  opacity: 0;
+  transition: opacity 200ms;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+span.expressionFlagsSpan {
+  opacity: 0.5;
+}
+:host.floating span {
+  opacity: 1;
+}

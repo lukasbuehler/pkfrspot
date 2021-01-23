@@ -72,7 +72,7 @@ export class SpeedDialFabComponent implements OnInit {
     this.isOpen ? this.close() : this.open();
   }
 
-  onMainClick($event) {
+  onMainClick() {
     if (this.openOnHover && this.isOpen) {
       // call the action function provided for the mainButton
       this.mainFabClick.emit();
@@ -85,14 +85,14 @@ export class SpeedDialFabComponent implements OnInit {
     }
   }
 
-  onMouseEnter($event) {
+  onMouseEnter() {
     // open the fab button if it is configured to
     if (this.openOnHover) {
       this.open();
     }
   }
 
-  onMouseLeave($event) {
+  onMouseLeave() {
     // we want to close it anyhow
     if (this.openOnHover) {
       this.close();

@@ -1,8 +1,8 @@
 <div
   #fabContainer
   class="fab-container"
-  (mouseenter)="onMouseEnter($event)"
-  (mouseleave)="onMouseLeave($event)"
+  (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave()"
 >
   <button
     mat-fab
@@ -11,7 +11,7 @@
     [matTooltipDisabled]="!buttonConfig?.mainButton?.tooltip || !openOnHover"
     [matTooltip]="buttonConfig?.mainButton?.tooltip || ''"
     [matTooltipPosition]="buttonConfig?.tooltipPosition || 'left'"
-    (click)="onMainClick($event)"
+    (click)="onMainClick()"
   >
     <mat-icon
       [@mainFabButtonIconRotation]="{
