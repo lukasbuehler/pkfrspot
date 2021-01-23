@@ -41,7 +41,7 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
     });
     this.setupFormGroup = this._formBuilder.group({
       setupLangCtrl: ["", Validators.required],
-      setupRegexCtrl: ["", [Validators.required]],
+      setupRegexCtrl: ["", []],
     });
   }
 

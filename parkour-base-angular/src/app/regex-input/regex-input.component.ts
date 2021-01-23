@@ -19,7 +19,10 @@ import {
   FormGroup,
   NgControl,
   NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator,
   ValidatorFn,
+  Validators,
 } from "@angular/forms";
 import {
   MatFormField,
@@ -55,13 +58,16 @@ class MyRegex {
 export function regexValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     let isValid = true;
-    let regexStr = control.value.regularExpression;
+    let regexStr = control.value;
 
     try {
-      new RegExp(regexStr);
+      let regex = new RegExp(regexStr);
+      regex.compile();
     } catch (e) {
       isValid = false;
     }
+
+    console.log(regexStr, "isValid: ", isValid);
 
     return !isValid ? { invalidRegex: { value: control.value } } : null;
   };
@@ -79,7 +85,11 @@ export function regexValidator(): ValidatorFn {
   },
 })
 export class RegexInputComponent
-  implements MatFormFieldControl<MyRegex>, ControlValueAccessor, OnDestroy {
+  implements
+    MatFormFieldControl<MyRegex>,
+    ControlValueAccessor,
+    Validator,
+    OnDestroy {
   // stateChanges
   stateChanges = new Subject<void>();
 
@@ -97,7 +107,15 @@ export class RegexInputComponent
   }
 
   // errorState
-  errorState = false;
+  get errorState() {
+    return this.parts.invalid && this.parts.dirty;
+  }
+  getErrorMessage() {
+    if (this.parts.get("regularExpression").errors.invalidRegex) {
+      return "The regular expression is invalid";
+    }
+    return "An unkown error occured";
+  }
 
   // controlType
   controlType = "regex-input";
@@ -161,7 +179,13 @@ export class RegexInputComponent
   }
   set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
-    this._disabled ? this.parts.disable() : this.parts.enable();
+    if (this.disabledFlags) {
+      this._disabled
+        ? this.parts.disable()
+        : this.parts.get("regularExpression").enable();
+    } else {
+      this._disabled ? this.parts.disable() : this.parts.enable();
+    }
     this.stateChanges.next();
   }
   private _disabled = false;
@@ -201,7 +225,6 @@ export class RegexInputComponent
   }
 
   constructor(
-    private _renderer: Renderer2,
     fb: FormBuilder,
     @Optional() @Self() public ngControl: NgControl,
     private fm: FocusMonitor,
@@ -216,10 +239,10 @@ export class RegexInputComponent
 
     this.parts = fb.group(
       {
-        regularExpression: "",
-        expressionFlags: "gim",
+        regularExpression: ["", [regexValidator()]],
+        expressionFlags: ["gim", []],
       },
-      { validators: [regexValidator()] }
+      { validators: [] }
     );
 
     // focused
@@ -228,12 +251,12 @@ export class RegexInputComponent
       this.stateChanges.next();
     });
   }
+  validate(control: AbstractControl): ValidationErrors {
+    return this.parts.errors;
+  }
+  registerOnValidatorChange?(fn: () => void): void {}
   writeValue(value: any): void {
-    this._renderer.setProperty(
-      this._elementRef.nativeElement.querySelector("input"),
-      "value",
-      value
-    );
+    this.value = value;
   }
   registerOnChange(fn: (_: any) => void): void {
     this._onChange = fn;

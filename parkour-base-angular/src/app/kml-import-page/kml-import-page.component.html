@@ -121,33 +121,49 @@
                         >help_outline</mat-icon
                       >
                     </mat-form-field>
-                    <mat-slide-toggle color="accent" [checked]="true"
-                      >Trim name</mat-slide-toggle
-                    >
-                    <mat-icon
-                      matSuffix
-                      class="helpIcon"
-                      matTooltip="Removes whitespaces around all the spot names. It is recommended to have this option enabled."
-                      >help_outline</mat-icon
-                    >
-                    <mat-form-field class="w-100" appearance="outline">
-                      <mat-label>Name RegEx</mat-label>
-                      <app-regex-input
-                        formControlName="setupRegexCtrl"
-                        flagsString="gi"
-                        [disabledFlags]="true"
-                        required
-                      ></app-regex-input>
+                    <div>
+                      <mat-slide-toggle color="accent" [checked]="true"
+                        >Trim name</mat-slide-toggle
+                      >
                       <mat-icon
                         matSuffix
-                        matTooltip="You can provide a regular expression that will be applied to every imported spot name. The first capturing group will be used as the new spot name. Spot names that don't produce any matches will need to be checked by you on step 4. Visit https://regexr.com/ for help."
+                        class="helpIcon"
+                        matTooltip="Removes whitespaces around all the spot names. It is recommended to have this option enabled."
                         >help_outline</mat-icon
                       >
-                      <mat-hint
-                        >The first capturing group is used as the spot
-                        name.</mat-hint
+                    </div>
+
+                    <div>
+                      <mat-slide-toggle
+                        #regexToggle
+                        color="accent"
+                        [checked]="false"
+                        >RegEx for Spot name</mat-slide-toggle
                       >
-                    </mat-form-field>
+
+                      <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Name RegEx</mat-label>
+                        <app-regex-input
+                          #regex
+                          formControlName="setupRegexCtrl"
+                          flagsString="gim"
+                          [disabledFlags]="true"
+                          [disabled]="!regexToggle.checked"
+                        ></app-regex-input>
+                        <mat-icon
+                          matSuffix
+                          matTooltip="You can provide a regular expression that will be applied to every imported spot name. The first capturing group will be used as the new spot name. Spot names that don't produce any matches will need to be checked by you on step 4. Visit https://regexr.com/ for help."
+                          >help_outline</mat-icon
+                        >
+                        <mat-hint *ngIf="!regex.errorState && !regex.disabled"
+                          >The first capturing group is used as the spot
+                          name.</mat-hint
+                        >
+                        <mat-error *ngIf="regex.errorState">{{
+                          regex.getErrorMessage()
+                        }}</mat-error>
+                      </mat-form-field>
+                    </div>
                   </div>
                   <div class="col-md-6">
                     <h2 class="mat-h2">Folders to import</h2>
@@ -186,6 +202,7 @@
                   class="float-right"
                   color="accent"
                   matStepperNext
+                  [disabled]="setupFormGroup.invalid || regex.errorState"
                 >
                   Import Spots
                 </button>
