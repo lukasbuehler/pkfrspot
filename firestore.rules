@@ -31,10 +31,11 @@ service cloud.firestore {
       // for now every authenticated user can write for every spot.
       allow write: if request.auth.uid != null;
     }
-    match /users/{user} 
+    match /users/{userId} 
     {
-      // temporarily disabled
-      allow read, write: if false;
+      // all users and their profiles are currently public
+      allow read: if request.auth != null;
+      allow write: if request.auth.uid == userId;
     }
   }
 }

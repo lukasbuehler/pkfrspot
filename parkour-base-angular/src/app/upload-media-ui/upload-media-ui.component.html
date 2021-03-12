@@ -11,6 +11,7 @@
     #fileInput
     hidden="true"
     type="file"
+    [accept]="acceptString"
     onclick="this.value=null"
     (change)="onSelectFile($event.target.files)"
     [formControl]="ngControl.control"

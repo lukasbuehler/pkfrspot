@@ -11,18 +11,15 @@ export module User {
     get displayName() {
       return this._data.display_name;
     }
-
-    get fullName(): string {
-      return this._data.full_name || "";
-    }
   }
 
   export interface Schema {
     display_name: string;
-    full_name?: string;
+    //full_name?: string;
     birthday?: firebase.default.firestore.Timestamp;
-    nation?: string;
+    nationality?: string;
     profile_picture?: string;
+    verified_email: boolean;
   }
 
   export interface ReferenceSchema {

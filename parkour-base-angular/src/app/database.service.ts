@@ -10,6 +10,7 @@ import {
 
 import { Observable } from "rxjs";
 import { Like } from "src/scripts/db/Like";
+import { User } from "src/scripts/db/User";
 
 @Injectable({
   providedIn: "root",
@@ -306,6 +307,15 @@ export class DatabaseService {
           observer.error(error);
         }
       );
+    });
+  }
+
+  addUser(userId, display_name): Promise<User.Schema> {
+    return new Promise<User.Schema>((resolve, reject) => {
+      this.db.collection("users").doc(userId).set({
+        display_name: display_name,
+        verified_email: false,
+      });
     });
   }
 }

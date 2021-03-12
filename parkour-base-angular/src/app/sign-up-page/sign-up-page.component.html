@@ -19,49 +19,72 @@
     </div>
   </div>
   <div class="row justify-content-center">
-    <div class="col-md-6 d-flex flex-column">
+    <div class="col-md-6">
       <h2 class="mat-h2 mt-5">Create a new account</h2>
-      <mat-form-field appearance="outline">
-        <mat-label>E-Mail address</mat-label>
-        <input matInput />
-        <mat-hint>Hint</mat-hint>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Password</mat-label>
-        <input matInput type="password" />
-        <mat-hint>Hint</mat-hint>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Repeat Password</mat-label>
-        <input matInput type="password" />
-        <mat-hint>Hint</mat-hint>
-      </mat-form-field>
+      <form [formGroup]="createAccountForm" class="d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Display Name</mat-label>
+          <input matInput type="text" formControlName="displayName" required />
+          <mat-hint>The display name can be changed at any time.</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>E-Mail address</mat-label>
+          <input matInput type="email" formControlName="email" required />
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" required />
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Repeat Password</mat-label>
+          <input
+            matInput
+            type="password"
+            formControlName="repeatPassword"
+            required
+          />
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>
 
-      <!-- Accept Terms and conditions -->
-      <div class="mt-4 d-flex flex-row justify-content-between">
-        <button
-          mat-stroked-button
-          routerLink="/terms-of-service"
-          color="accent"
-        >
-          Terms of Service
-        </button>
-        <button mat-stroked-button routerLink="/thingy" color="accent">
-          Privacy declaration
-        </button>
-      </div>
+        <!-- Accept Terms and conditions -->
+        <div class="mt-4 d-flex flex-row justify-content-between">
+          <button
+            mat-stroked-button
+            routerLink="/terms-of-service"
+            color="accent"
+          >
+            Terms of Service
+          </button>
+          <button mat-stroked-button routerLink="/thingy" color="accent">
+            Privacy declaration
+          </button>
+        </div>
 
-      <div class="mt-4 d-flex flex-row align-items-center">
-        <mat-checkbox class="mr-3"></mat-checkbox
-        ><span class="mat-body"
-          >I have read and understood the <b>Terms of Service</b> and
-          <b>privacy declaration</b> and agree to both.</span
-        >
-      </div>
+        <div class="mt-4 d-flex flex-row align-items-center">
+          <mat-checkbox
+            class="mr-3"
+            formControlName="agreeCheck"
+            required
+          ></mat-checkbox
+          ><span class="mat-body"
+            >I have read and understood the <b>Terms of Service</b> and
+            <b>privacy declaration</b> and agree to both.</span
+          >
+        </div>
 
-      <div class="mt-5 d-flex flex-row justify-content-center">
-        <button mat-raised-button color="accent">Create Account</button>
-      </div>
+        <div class="mt-5 mb-5 d-flex flex-row justify-content-center">
+          <button
+            mat-raised-button
+            color="accent"
+            type="submit"
+            (click)="tryCreateAccount(createAccountForm.value)"
+          >
+            Create Account
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

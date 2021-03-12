@@ -19,6 +19,7 @@ export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
   @Input() isMediaUpload: boolean = true;
   @Input() maximumSizeInBytes: number = null;
   @Input() requiredMimeType: string = null;
+  @Input() acceptString: string = "";
   @Output() changed = new EventEmitter<void>();
   @Output() uploadMedia = new EventEmitter<File>();
 
