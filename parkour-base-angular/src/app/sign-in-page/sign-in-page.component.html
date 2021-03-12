@@ -1,6 +1,50 @@
-
-<app-page-header [title]="'Sign In'"></app-page-header>
-<h2 class="mat-h2">You are currently {{(authService.isSignedIn()) ? "signed in :)" : "not signed in. You can do so below."}}</h2>
-
-<firebase-ui (signInSuccessWithAuthResult)="successCallback($event)"
-    (signInFailure)="errorCallback($event)"></firebase-ui>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <app-page-header [title]="'Sign In'"></app-page-header>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-sm-12 col-md-6 d-flex flex-column">
+      <h2 class="mat-h2">E-Mail and password</h2>
+      <mat-form-field appearance="outline">
+        <mat-label>E-Mail</mat-label>
+        <input matInput />
+        <mat-hint>Hint</mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" />
+        <mat-hint>Hint</mat-hint>
+      </mat-form-field>
+      <div class="mt-3 d-flex flex-row justify-content-between">
+        <button mat-stroked-button>Forgot password</button>
+        <button mat-raised-button color="accent">Sign in</button>
+      </div>
+    </div>
+    <div class="col-sm-12 d-md-none">
+      <mat-divider class="mt-3 mb-3"></mat-divider>
+    </div>
+    <div class="col-md-3">
+      <h3 class="mat-h2 text-center d-none d-md-block">OAuth providers</h3>
+      <p class="mat-body text-center">You can also sign in with:</p>
+      <div class="oauth-buttons d-flex flex-column align-items-center">
+        <button mat-flat-button color="warn">Google</button>
+        <button mat-flat-button disabled color="accent">Twitter</button>
+        <button mat-flat-button disabled color="primary">Github</button>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-md-9 text-center">
+      <mat-divider class="mt-4 mb-3"></mat-divider>
+      <p class="mat-body">
+        Don't have an account? Simply sign in with an existing Google, Twitter
+        or Github account or create an account and sign up instead.
+      </p>
+      <button mat-stroked-button routerLink="/sign-up" color="accent">
+        Sign up here
+      </button>
+    </div>
+  </div>
+</div>

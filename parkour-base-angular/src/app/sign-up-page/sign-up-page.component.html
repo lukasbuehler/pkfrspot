@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <app-page-header [title]="'Sign Up'"></app-page-header>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-md-12 text-center">
+      <h3 class="mat-h2 text-center">Sign in instead?</h3>
+
+      <div class="oauth-buttons d-flex flex-row justify-content-center">
+        <button mat-flat-button color="accent" routerLink="/sign-in">
+          Sign in
+        </button>
+        <button mat-flat-button color="warn">Google</button>
+        <button mat-flat-button disabled color="accent">Twitter</button>
+        <button mat-flat-button disabled color="primary">Github</button>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-md-6 d-flex flex-column">
+      <h2 class="mat-h2 mt-5">Create a new account</h2>
+      <mat-form-field appearance="outline">
+        <mat-label>E-Mail address</mat-label>
+        <input matInput />
+        <mat-hint>Hint</mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" />
+        <mat-hint>Hint</mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Repeat Password</mat-label>
+        <input matInput type="password" />
+        <mat-hint>Hint</mat-hint>
+      </mat-form-field>
+
+      <!-- Accept Terms and conditions -->
+      <div class="mt-4 d-flex flex-row justify-content-between">
+        <button
+          mat-stroked-button
+          routerLink="/terms-of-service"
+          color="accent"
+        >
+          Terms of Service
+        </button>
+        <button mat-stroked-button routerLink="/thingy" color="accent">
+          Privacy declaration
+        </button>
+      </div>
+
+      <div class="mt-4 d-flex flex-row align-items-center">
+        <mat-checkbox class="mr-3"></mat-checkbox
+        ><span class="mat-body"
+          >I have read and understood the <b>Terms of Service</b> and
+          <b>privacy declaration</b> and agree to both.</span
+        >
+      </div>
+
+      <div class="mt-5 d-flex flex-row justify-content-center">
+        <button mat-raised-button color="accent">Create Account</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,12 @@
-h1, h2 {
-    text-align: center;
-    
+h1,
+h2 {
+  text-align: center;
+}
+
+.oauth-buttons {
+  button {
+    margin-bottom: 10px;
+    width: 150px;
+    max-width: 100%;
+  }
 }

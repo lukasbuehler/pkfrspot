@@ -72,6 +72,8 @@ import { ProfilePageComponent } from "./profile-page/profile-page.component";
 import { PostPageComponent } from "./post-page/post-page.component";
 import { SpeedDialFabComponent } from "./speed-dial-fab/speed-dial-fab.component";
 import { RegexInputComponent } from './regex-input/regex-input.component';
+import { WelcomePageComponent } from './welcome-page/welcome-page.component';
+import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +99,8 @@ import { RegexInputComponent } from './regex-input/regex-input.component';
     PostPageComponent,
     SpeedDialFabComponent,
     RegexInputComponent,
+    WelcomePageComponent,
+    SignUpPageComponent,
   ],
   imports: [
     BrowserModule,

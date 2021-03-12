@@ -5,7 +5,7 @@ export const environment = {
   firebaseUiAuthConfig: {
     signInFlow: "redirect",
     autoUpgradeAnonymousUsers: false,
-    signInSuccessUrl: "/",
+    signInSuccessUrl: "/welcome",
     signInOptions: [
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       firebase.auth.TwitterAuthProvider.PROVIDER_ID,
@@ -16,6 +16,6 @@ export const environment = {
     ],
     tosUrl: "/terms_of_service",
     privacyPolicyUrl: "/privacy_policy",
-    credentialHelper: firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM,
+    credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
   },
 };

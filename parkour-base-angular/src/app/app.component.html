@@ -57,11 +57,19 @@
 </mat-toolbar>
 
 <mat-menu #navUserMenu="matMenu">
-  <a href="/sign-in" *ngIf="!authService.isSignedIn()" mat-menu-item>
-    <mat-icon>label_important</mat-icon>
+  <a routerLink="/sign-in" *ngIf="!authService.isSignedIn()" mat-menu-item>
+    <mat-icon>login</mat-icon>
     <span>Sign in</span>
   </a>
-  <a href="/profile" *ngIf="authService.isSignedIn()" mat-menu-item>
+  <a *ngIf="!authService.isSignedIn()" routerLink="/sign-up" mat-menu-item>
+    <mat-icon>person_add</mat-icon>
+    <span>Sign up</span>
+  </a>
+  <a
+    [routerLink]="'/u/' + authService.uid"
+    *ngIf="authService.isSignedIn()"
+    mat-menu-item
+  >
     <mat-icon>face</mat-icon>
     <span>My Profile</span>
   </a>
@@ -70,7 +78,7 @@
     mat-menu-item
     (click)="authService.logUserOut()"
   >
-    <mat-icon>cancel</mat-icon>
+    <mat-icon>logout</mat-icon>
     <span>Logout</span>
   </button>
 </mat-menu>
