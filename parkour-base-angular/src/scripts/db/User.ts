@@ -1,7 +1,7 @@
 import * as firebase from "firebase/app";
 
 export module User {
-  export class User {
+  export class Class {
     constructor(private _uid: string, private _data: User.Schema) {}
 
     uid(): string {

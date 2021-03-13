@@ -96,7 +96,11 @@ export class AuthenticationService {
           .createUserWithEmailAndPassword(email, password)
           .then(
             (res) => {
-              console.log(res);
+              // Set the user chose Display name
+              res.user.updateProfile({
+                displayName: displayName,
+              });
+
               // create a database entry for the user
               this._databaseService.addUser(res.user.uid, displayName);
 

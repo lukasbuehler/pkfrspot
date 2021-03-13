@@ -1,5 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
 import { Router } from "@angular/router";
 import { isEmailValid } from "src/scripts/Helpers";
 import { AuthenticationService } from "../authentication.service";
@@ -19,13 +24,27 @@ export class SignUpPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.createAccountForm = this._formBuilder.group({
-      displayName: ["", [Validators.required]],
-      email: ["", [Validators.email]],
-      password: ["", [Validators.min(6)]],
-      repeatPassword: ["", []],
-      agreeCheck: ["", [Validators.required]],
-    });
+    this.createAccountForm = this._formBuilder.group(
+      {
+        displayName: ["", [Validators.required]],
+        email: ["", [Validators.email]],
+        password: ["", [Validators.minLength(6)]],
+        repeatPassword: ["", []],
+        agreeCheck: ["", [Validators.required]],
+      },
+      {
+        validators: [
+          (c: AbstractControl) => {
+            if (c.get("password").value === c.get("repeatPassword").value) {
+              return null; // all good
+            } else {
+              // repeated password does not match password
+              return { repeatedPasswordDoesNotMatchPassword: true };
+            }
+          },
+        ],
+      }
+    );
   }
 
   tryCreateAccount(createAccountFormValue) {

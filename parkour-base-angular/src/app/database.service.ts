@@ -22,6 +22,8 @@ export class DatabaseService {
     return this.db.doc(path).ref;
   }
 
+  // Posts --------------------------------------------------------------------
+
   addPost(newPost: Post.Schema) {
     this.db
       .collection<Post.Schema>("posts")
@@ -36,6 +38,35 @@ export class DatabaseService {
         // remove the uploaded data after...
       });
   }
+
+  getPostUpdates(): Observable<any> {
+    return new Observable<any>((observer) => {
+      let snapshotChanges = this.db
+        .collection<Post.Schema>("posts", (ref) =>
+          ref.orderBy("time_posted", "desc").limit(10)
+        )
+        .snapshotChanges();
+
+      snapshotChanges.subscribe(
+        (changeActions) => {
+          let postSchemasMap: any = {};
+          changeActions.forEach((action) => {
+            const id = action.payload.doc.id;
+            postSchemasMap[id] = action.payload.doc.data();
+          });
+
+          observer.next(postSchemasMap);
+        },
+        (error) => {
+          observer.error(error);
+        }
+      );
+    });
+  }
+
+  getTrendingPosts() {}
+
+  // Post Likes
 
   userHasLikedPost(postId: string, userId: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
@@ -91,32 +122,7 @@ export class DatabaseService {
       });
   }
 
-  getPostUpdates(): Observable<any> {
-    return new Observable<any>((observer) => {
-      let snapshotChanges = this.db
-        .collection<Post.Schema>("posts", (ref) =>
-          ref.orderBy("time_posted", "desc").limit(10)
-        )
-        .snapshotChanges();
-
-      snapshotChanges.subscribe(
-        (changeActions) => {
-          let postSchemasMap: any = {};
-          changeActions.forEach((action) => {
-            const id = action.payload.doc.id;
-            postSchemasMap[id] = action.payload.doc.data();
-          });
-
-          observer.next(postSchemasMap);
-        },
-        (error) => {
-          observer.error(error);
-        }
-      );
-    });
-  }
-
-  getTrendingPosts() {}
+  // Spots --------------------------------------------------------------------
 
   getTestSpots(isNotForMap?: boolean): Observable<Spot.Class[]> {
     return new Observable<Spot.Class[]>((observer) => {
@@ -310,12 +316,32 @@ export class DatabaseService {
     });
   }
 
+  // Users --------------------------------------------------------------------
+
   addUser(userId, display_name): Promise<User.Schema> {
     return new Promise<User.Schema>((resolve, reject) => {
       this.db.collection("users").doc(userId).set({
         display_name: display_name,
         verified_email: false,
       });
+    });
+  }
+
+  getUserById(userId) {
+    return new Observable<User.Class>((observer) => {
+      this.db
+        .collection<Spot.Schema>("users")
+        .doc<Spot.Schema>(userId)
+        .get()
+        .subscribe(
+          (snap) => {
+            let user = new User.Class(snap.id, snap.data() as User.Schema);
+            observer.next(user);
+          },
+          (err) => {
+            observer.error(err);
+          }
+        );
     });
   }
 }
