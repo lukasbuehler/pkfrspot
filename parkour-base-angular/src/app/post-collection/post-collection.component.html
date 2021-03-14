@@ -9,12 +9,6 @@
   <h2 *ngIf="title" class="mat-h2">
     {{ title }}
   </h2>
-  <button mat-raised-button color="accent" (click)="posts.unshift(posts[0])">
-    Add
-  </button>
-  <button mat-raised-button color="accent" (click)="posts.shift()">
-    Remove
-  </button>
   <app-post
     [@postAnimation]
     *ngFor="let post of posts"

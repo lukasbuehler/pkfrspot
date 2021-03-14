@@ -1,1 +1,29 @@
-<p>profile-page works!</p>
+<div class="container text-center">
+  <div class="row">
+    <div *ngIf="isLoading" class="col-md-12 d-flex justify-content-center">
+      <mat-spinner></mat-spinner>
+    </div>
+  </div>
+  <div class="row">
+    <div *ngIf="user && !isLoading" class="col-md-12 pt-4">
+      <mat-card class="text-left">
+        <div
+          class="header d-flex flex-row justify-content-left align-items-center"
+        >
+          <img class="profile-pic mr-4" [src]="user.profilePicture" alt="" />
+          <h1 class="mat-display-1 mb-0">{{ user.displayName }}</h1>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+  <div class="row">
+    <div *ngIf="user && !isLoading" class="col-lg-6 pt-3">
+      <app-post-collection
+        [title]="'Posts from ' + user.displayName"
+        [loading]="postsFromUserLoading"
+        [posts]="postsFromUser"
+      ></app-post-collection>
+    </div>
+    <div *ngIf="user && !isLoading" class="col-lg-6 pt-3"></div>
+  </div>
+</div>

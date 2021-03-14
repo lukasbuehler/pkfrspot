@@ -109,7 +109,7 @@ export class MapPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    let spotId: string = this.route.snapshot.paramMap.get("spot") || "";
+    let spotId: string = this.route.snapshot.paramMap.get("spotID") || "";
     let lat = this.route.snapshot.queryParamMap.get("lat") || null;
     let lng = this.route.snapshot.queryParamMap.get("lng") || null;
     let zoom = this.route.snapshot.queryParamMap.get("z") || 3; // TODO ?? syntax

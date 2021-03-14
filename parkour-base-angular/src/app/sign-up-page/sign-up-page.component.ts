@@ -6,6 +6,7 @@ import {
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
+import * as firebase from "firebase";
 import { isEmailValid } from "src/scripts/Helpers";
 import { AuthenticationService } from "../authentication.service";
 
@@ -16,12 +17,15 @@ import { AuthenticationService } from "../authentication.service";
 })
 export class SignUpPageComponent implements OnInit {
   createAccountForm: FormGroup;
+  signUpError: string = "";
 
   constructor(
     private _authService: AuthenticationService,
     private _formBuilder: FormBuilder,
     private _router: Router
   ) {}
+
+  private _recaptchaSolved = false;
 
   ngOnInit(): void {
     this.createAccountForm = this._formBuilder.group(
@@ -30,7 +34,8 @@ export class SignUpPageComponent implements OnInit {
         email: ["", [Validators.email]],
         password: ["", [Validators.minLength(6)]],
         repeatPassword: ["", []],
-        agreeCheck: ["", [Validators.required]],
+        agreeCheck: [false, [Validators.required]],
+        inviteCode: ["", Validators.required],
       },
       {
         validators: [
@@ -45,6 +50,28 @@ export class SignUpPageComponent implements OnInit {
         ],
       }
     );
+
+    this.setupSignUpReCaptcha();
+  }
+
+  setupSignUpReCaptcha() {
+    let recaptcha = new firebase.default.auth.RecaptchaVerifier(
+      "reCaptchaDiv",
+      {
+        size: "invisible",
+        callback: (response) => {
+          // reCAPTCHA solved, allow sign in
+          this._recaptchaSolved = true;
+          console.log("recaptcha solved");
+          console.log(response);
+        },
+        "expired-callback": () => {
+          // Response expired. Ask user to solve reCAPTCHA again.
+          console.error("Response expired");
+        },
+      }
+    );
+    recaptcha.render();
   }
 
   tryCreateAccount(createAccountFormValue) {
@@ -56,14 +83,11 @@ export class SignUpPageComponent implements OnInit {
 
     // trim, lower case and validate email address
     email = String(email).toLowerCase().trim();
-    if (!email || !isEmailValid(email)) {
-      console.error("Email is not valid!");
-      return;
-    }
 
     // check that the repeated password matches the password
     if (!password || !repeatedPassword || password !== repeatedPassword) {
       console.error("Password and repeated password don't match");
+      this.signUpError = "";
       return;
     }
 

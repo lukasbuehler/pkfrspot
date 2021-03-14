@@ -66,6 +66,57 @@ export class DatabaseService {
 
   getTrendingPosts() {}
 
+  getPostsFromSpot(spot: Spot.Class): Observable<Post.Schema> {
+    return new Observable<Post.Schema>((observer) => {
+      let snapshotChanges = this.db
+        .collection<Post.Schema>("posts", (ref) =>
+          ref.where("spot.ref", "==", this.docRef("spots/" + spot.id)).limit(10)
+        )
+        .snapshotChanges();
+
+      snapshotChanges.subscribe(
+        (changeActions) => {
+          let postSchemasMap: any = {};
+          changeActions.forEach((action) => {
+            const id = action.payload.doc.id;
+            postSchemasMap[id] = action.payload.doc.data();
+          });
+
+          observer.next(postSchemasMap);
+        },
+        (error) => {
+          observer.error(error);
+        }
+      );
+    });
+  }
+
+  getPostsFromUser(userId: string): Observable<Post.Schema> {
+    // currently loading all posts, add pagination // TODO
+    return new Observable<Post.Schema>((observer) => {
+      let snapshotChanges = this.db
+        .collection<Post.Schema>("posts", (ref) =>
+          ref.where("user.uid", "==", userId)
+        )
+        .snapshotChanges();
+
+      snapshotChanges.subscribe(
+        (changeActions) => {
+          let postSchemasMap: any = {};
+          changeActions.forEach((action) => {
+            const id = action.payload.doc.id;
+            postSchemasMap[id] = action.payload.doc.data();
+          });
+
+          observer.next(postSchemasMap);
+        },
+        (error) => {
+          observer.error(error);
+        }
+      );
+    });
+  }
+
   // Post Likes
 
   userHasLikedPost(postId: string, userId: string): Promise<boolean> {
@@ -288,31 +339,6 @@ export class DatabaseService {
         .catch((error) => {
           observer.error(error);
         });
-    });
-  }
-
-  getPostsFromSpot(spot: Spot.Class): Observable<Post.Schema> {
-    return new Observable<Post.Schema>((observer) => {
-      let snapshotChanges = this.db
-        .collection<Post.Schema>("posts", (ref) =>
-          ref.where("spot.ref", "==", this.docRef("spots/" + spot.id)).limit(10)
-        )
-        .snapshotChanges();
-
-      snapshotChanges.subscribe(
-        (changeActions) => {
-          let postSchemasMap: any = {};
-          changeActions.forEach((action) => {
-            const id = action.payload.doc.id;
-            postSchemasMap[id] = action.payload.doc.data();
-          });
-
-          observer.next(postSchemasMap);
-        },
-        (error) => {
-          observer.error(error);
-        }
-      );
     });
   }
 

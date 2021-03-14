@@ -7,7 +7,7 @@
     <mat-card-title>{{ post.title }}</mat-card-title>
     <mat-card-subtitle>
       <span>
-        <a href="/users/{{ post.user.uid }}">{{
+        <a routerLink="/u/{{ post.user.uid }}">{{
           post.user.display_name || "A Traceur"
         }}</a>
       </span>
@@ -48,7 +48,7 @@
   <!-- Location display -->
   <span *ngIf="post.location" class="location-text">
     <a
-      [href]="
+      [routerLink]="
         '/map?lat=' + post.location.lat + '&lng=' + post.location.lng + '&z=19'
       "
       >{{ getLocationDisplayCoordinates(post.location) }}</a
@@ -59,7 +59,7 @@
   <a
     class="spot-container-link"
     *ngIf="post.spot && (post.spot?.ref || post.spot?.spot_location)"
-    [href]="
+    [routerLink]="
       post.spot?.ref
         ? '/map/' + post.spot?.ref?.id
         : '/map?lat=' +
@@ -125,15 +125,15 @@
     <mat-icon>info</mat-icon>
     <span>More Information</span>
   </button>
-  <button *ngIf="true" mat-menu-item>
+  <button *ngIf="post.location || post.spot" mat-menu-item routerLink="/map">
     <mat-icon>place</mat-icon>
     <span>Open on Map</span>
   </button>
-  <button mat-menu-item disabled="true">
+  <button *ngIf="post.user.uid !== currentlyAuthenticatedUserId" mat-menu-item>
     <mat-icon>report</mat-icon>
     <span>Report post</span>
   </button>
-  <button *ngIf="true" mat-menu-item>
+  <button *ngIf="post.user.uid === currentlyAuthenticatedUserId" mat-menu-item>
     <mat-icon>delete</mat-icon>
     <span>Delete post</span>
   </button>

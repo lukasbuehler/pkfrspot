@@ -31,6 +31,10 @@ export class PostComponent implements OnInit {
     private _authenticationService: AuthenticationService
   ) {}
 
+  get currentlyAuthenticatedUserId() {
+    return this._authenticationService.user.uid;
+  }
+
   ngOnInit() {
     this.dateAndTimeString = this.getDateAndTimeString();
     this.timeAgoString = this.getTimeAgoString();
