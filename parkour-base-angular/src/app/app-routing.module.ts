@@ -13,6 +13,8 @@ import { ProfilePageComponent } from "./profile-page/profile-page.component";
 import { WelcomePageComponent } from "./welcome-page/welcome-page.component";
 import { SpotDetailComponent } from "./spot-detail/spot-detail.component";
 import { SignUpPageComponent } from "./sign-up-page/sign-up-page.component";
+import { TermsOfServiceComponent } from "./terms-of-service/terms-of-service.component";
+import { PrivacyPolicyComponent } from "./privacy-policy/privacy-policy.component";
 
 const routes: Routes = [
   // Home page and posts (displays posts and updates)
@@ -42,6 +44,10 @@ const routes: Routes = [
   // Other
   { path: "about", component: AboutPageComponent },
   { path: "welcome", component: WelcomePageComponent },
+  { path: "terms_of_service", component: TermsOfServiceComponent },
+  { path: "tos", redirectTo: "/terms_of_service", pathMatch: "full" },
+  { path: "privacy_policy", component: PrivacyPolicyComponent },
+  { path: "pp", redirectTo: "/privacy_policy", pathMatch: "full" },
   { path: "**", component: NotFoundPageComponent },
 ];
 
