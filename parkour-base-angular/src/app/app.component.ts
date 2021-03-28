@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { AuthenticationService } from "./authentication.service";
 
 @Component({
@@ -6,10 +7,40 @@ import { AuthenticationService } from "./authentication.service";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
 })
-export class AppComponent {
-  constructor(public authService: AuthenticationService) {}
+export class AppComponent implements OnInit {
+  constructor(
+    public authService: AuthenticationService,
+    private _snackbar: MatSnackBar
+  ) {}
 
   hasAds = window["canRunAds"];
+  wasSignedIn = false;
+
+  ngOnInit() {
+    this.authService.state$.subscribe(
+      (user) => {
+        if (user) {
+          this.wasSignedIn = true;
+          this._snackbar.open(`Welcome ${user.displayName}!`, "", {
+            duration: 2000,
+            horizontalPosition: "center",
+            verticalPosition: "bottom",
+          });
+        } else {
+          if (this.wasSignedIn) {
+            this._snackbar.open("You have been signed out!", "", {
+              duration: 2000,
+              horizontalPosition: "center",
+              verticalPosition: "bottom",
+            });
+          }
+        }
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
 
   navbarConfig = {
     color: "primary",

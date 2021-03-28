@@ -7,6 +7,8 @@ import * as firebase from "firebase/app";
 import { PlyrComponent } from "ngx-plyr";
 import { MapHelper } from "../../scripts/map_helper";
 import { ResizedEvent } from "angular-resize-event";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-post",
@@ -28,11 +30,13 @@ export class PostComponent implements OnInit {
 
   constructor(
     private _databaseService: DatabaseService,
-    private _authenticationService: AuthenticationService
+    private _authenticationService: AuthenticationService,
+    private _snackbar: MatSnackBar,
+    private _router: Router
   ) {}
 
   get currentlyAuthenticatedUserId() {
-    return this._authenticationService.user.uid;
+    return this._authenticationService.uid;
   }
 
   ngOnInit() {
@@ -40,14 +44,29 @@ export class PostComponent implements OnInit {
     this.timeAgoString = this.getTimeAgoString();
 
     this.likedByUser = false;
-    this._databaseService
-      .userHasLikedPost(this.post.id, this._authenticationService.uid)
-      .then((bool) => {
-        this.likedByUser = bool;
-      })
-      .catch((err) => {
+
+    // Check if posts are liked by the user if a user is authenticated, every time the uid changes
+
+    this._authenticationService.uid$.subscribe(
+      (uid) => {
+        console.log("Auth state changed");
+        if (uid) {
+          this._databaseService
+            .userHasLikedPost(this.post.id, uid)
+            .then((bool) => {
+              this.likedByUser = bool;
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        } else {
+          this.likedByUser = false;
+        }
+      },
+      (err) => {
         console.error(err);
-      });
+      }
+    );
   }
 
   onResized(event: ResizedEvent) {
@@ -95,6 +114,16 @@ export class PostComponent implements OnInit {
       }
     } else {
       // TODO show that you need to sign in
+      this._snackbar
+        .open("Please sign in to like this post!", "Sign in", {
+          duration: 5000,
+          horizontalPosition: "center",
+          verticalPosition: "bottom",
+        })
+        .onAction()
+        .subscribe(() => {
+          this._router.navigateByUrl("/sign-in");
+        });
     }
   }
 

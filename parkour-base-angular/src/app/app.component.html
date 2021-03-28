@@ -41,7 +41,7 @@
   >
     <img
       *ngIf="authService.isSignedIn() && authService.userProfilePic"
-      src="{{ authService.userProfilePic }}"
+      [src]="authService.userProfilePic"
     />
     <mat-icon *ngIf="!authService.isSignedIn()">person_outline</mat-icon>
     {{

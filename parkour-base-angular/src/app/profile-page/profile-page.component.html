@@ -10,7 +10,11 @@
         <div
           class="header d-flex flex-row justify-content-left align-items-center"
         >
-          <img class="profile-pic mr-4" [src]="user.profilePicture" alt="" />
+          <img
+            class="profile-pic mr-4"
+            [src]="user.profilePictrue || authProfilePic"
+            alt=""
+          />
           <h1 class="mat-display-1 mb-0">{{ user.displayName }}</h1>
         </div>
       </mat-card>

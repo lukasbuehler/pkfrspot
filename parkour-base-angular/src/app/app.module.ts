@@ -46,6 +46,7 @@ import { MatListModule } from "@angular/material/list";
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 import { PlyrModule } from "ngx-plyr";
 import { AngularResizedEventModule } from "angular-resize-event";
@@ -71,11 +72,11 @@ import { KmlImportPageComponent } from "./kml-import-page/kml-import-page.compon
 import { ProfilePageComponent } from "./profile-page/profile-page.component";
 import { PostPageComponent } from "./post-page/post-page.component";
 import { SpeedDialFabComponent } from "./speed-dial-fab/speed-dial-fab.component";
-import { RegexInputComponent } from './regex-input/regex-input.component';
-import { WelcomePageComponent } from './welcome-page/welcome-page.component';
-import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
-import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
-import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { RegexInputComponent } from "./regex-input/regex-input.component";
+import { WelcomePageComponent } from "./welcome-page/welcome-page.component";
+import { SignUpPageComponent } from "./sign-up-page/sign-up-page.component";
+import { TermsOfServiceComponent } from "./terms-of-service/terms-of-service.component";
+import { PrivacyPolicyComponent } from "./privacy-policy/privacy-policy.component";
 
 @NgModule({
   declarations: [
@@ -149,6 +150,7 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
     MatStepperModule,
     MatDividerModule,
     MatSlideToggleModule,
+    MatSnackBarModule,
 
     PlyrModule,
     AngularResizedEventModule,

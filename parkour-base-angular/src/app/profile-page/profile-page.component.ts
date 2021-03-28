@@ -30,6 +30,10 @@ export class ProfilePageComponent implements OnInit {
     }
   }
 
+  get authProfilePic() {
+    return this._authService.userProfilePic;
+  }
+
   loadProfile(userId: string) {
     this._databaseService.getUserById(userId).subscribe(
       (user) => {

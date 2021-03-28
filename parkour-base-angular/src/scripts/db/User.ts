@@ -11,14 +11,18 @@ export module User {
     get displayName() {
       return this._data.display_name;
     }
+
+    get profilePicture() {
+      return this._data.profile_picture;
+    }
   }
 
   export interface Schema {
     display_name: string;
+    profile_picture?: string;
     //full_name?: string;
     birthday?: firebase.default.firestore.Timestamp;
     nationality?: string;
-    profile_picture?: string;
     verified_email: boolean;
   }
 

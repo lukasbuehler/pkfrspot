@@ -4,6 +4,7 @@ import { AngularFireAuth } from "@angular/fire/auth";
 import { rejects } from "assert";
 import * as firebase from "firebase/app";
 import { Observable } from "rxjs";
+import { map, filter, tap } from "rxjs/operators";
 import { DatabaseService } from "./database.service";
 
 @Injectable({
@@ -32,10 +33,27 @@ export class AuthenticationService {
   }
 
   get uid() {
+    if (!this._currentFirebaseUser) {
+      return "";
+    }
+
     return this._currentFirebaseUser.uid;
   }
 
+  get uid$() {
+    return this.state$.pipe(
+      //filter((fireUser) => fireUser.uid !== this.uid),
+      map((user) => {
+        return user?.uid;
+      })
+    );
+  }
+
   get userProfilePic() {
+    if (!this._currentFirebaseUser) {
+      return "";
+    }
+
     return this._currentFirebaseUser.photoURL;
   }
 
