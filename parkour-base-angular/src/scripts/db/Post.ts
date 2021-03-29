@@ -1,5 +1,6 @@
 import { User } from "./User";
 import * as firebase from "firebase/app";
+import { Media, MediaType } from "./Interfaces";
 
 export module Post {
   export class Class {
@@ -30,7 +31,7 @@ export module Post {
 
     get mediaIsImage() {
       if (this._data.media) {
-        return this._data.media.type === MediaTypes.Image;
+        return this._data.media.type === MediaType.Image;
       }
       return null;
     }
@@ -74,23 +75,11 @@ export module Post {
     }
   }
 
-  export enum MediaTypes {
-    None = "none",
-    Video = "video",
-    Image = "image",
-    YouTube = "youtube",
-    Instagram = "instagram",
-    Vimeo = "vimeo",
-  }
-
   export interface Schema {
     title: string;
     user: User.ReferenceSchema;
     body: string;
-    media?: {
-      type: MediaTypes;
-      src: string;
-    };
+    media?: Media;
     location?: firebase.default.firestore.GeoPoint; // where the media was taken
     spot?: {
       name: string;

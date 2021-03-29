@@ -1,6 +1,14 @@
-import { DbDate, DbLocation } from "./Interfaces";
+import {
+  ContributedMedia,
+  DbDate,
+  DbLocation,
+  LocaleMap,
+  MediaType,
+} from "./Interfaces";
 import * as firebase from "firebase";
 import { MapHelper } from "../map_helper";
+import { DatabaseService } from "src/app/database.service";
+import { Observable } from "rxjs";
 
 export module Spot {
   export class Class {
@@ -15,6 +23,66 @@ export module Spot {
       if (_data.location && !isNotForMap) {
         this.setTileCoordinates();
       }
+    }
+
+    get name(): string {
+      return this._data.name.de_CH || "Unnamed";
+    }
+    set name(newName) {
+      this._data.name.de_CH = newName;
+    }
+
+    get isMiniSpot(): boolean {
+      return this._data.isMiniSpot;
+    }
+
+    get rating(): number {
+      return this._data.rating;
+    }
+
+    get description(): string {
+      return this._data.description.en_GB || "Description goes here";
+    }
+
+    get hasMedia() {
+      return this._data.media && this._data.media.length > 0;
+    }
+
+    get previewImage(): string {
+      if (this.hasMedia && this._data.media[0].type === MediaType.Image) {
+        return this.getMediaByIndex(0).src;
+      }
+      return "";
+    }
+
+    get media() {
+      return this._data.media;
+    }
+
+    getMediaByIndex(index: number) {
+      return this._data.media[index];
+    }
+
+    public addMedia(src: string, type: MediaType, uid: string) {
+      if (!this._data.media) {
+        this._data.media = [];
+      }
+
+      this._data.media.push({ src: src, type: type, uid: uid });
+    }
+
+    get type(): string {
+      return this._data.type;
+    }
+    set type(newType) {
+      this._data.type = newType;
+    }
+
+    get area(): string {
+      return this._data.area;
+    }
+    set area(newArea) {
+      this._data.area = newArea;
     }
 
     private _paths = [];
@@ -33,13 +101,7 @@ export module Spot {
     get data() {
       return this._data;
     }
-    set data(data) {
-      // TODO Remove?
-      this._data = data;
-      if (this.data.location) {
-        this.setTileCoordinates();
-      }
-    }
+
     get location(): google.maps.LatLngLiteral {
       const point = this._data.location;
       return { lat: point.latitude, lng: point.longitude };
@@ -55,10 +117,6 @@ export module Spot {
 
     public hasBounds() {
       return !!this._data.bounds;
-    }
-
-    public addNewImage(link: string) {
-      this._data.image_src = link;
     }
 
     public setTileCoordinates() {
@@ -107,7 +165,8 @@ export module Spot {
   }
 
   export interface Schema {
-    name: string;
+    name: LocaleMap;
+
     location: firebase.default.firestore.GeoPoint;
     tile_coordinates?: {
       z2?: { x: number; y: number };
@@ -120,10 +179,14 @@ export module Spot {
       z16?: { x: number; y: number };
     };
     occupied_z16_tiles?: { x: number; y: number }[];
-    image_src?: string;
+
+    isMiniSpot?: boolean;
+    rating?: number;
+    description?: LocaleMap;
+    media?: ContributedMedia[];
+
     type?: string;
     area?: string;
-    rating?: number;
 
     bounds?: firebase.default.firestore.GeoPoint[];
 

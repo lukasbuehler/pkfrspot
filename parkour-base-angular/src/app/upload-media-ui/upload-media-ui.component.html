@@ -1,4 +1,4 @@
-<div class="main">
+<div class="main" [formGroup]="formGroup">
   <button
     mat-mini-fab
     id="attachMedia"
@@ -14,7 +14,8 @@
     [accept]="acceptString"
     onclick="this.value=null"
     (change)="onSelectFile($event.target.files)"
-    [formControl]="ngControl.control"
+    formControlName="input"
+    required
   />
   <mat-form-field>
     <mat-label
@@ -29,10 +30,9 @@
       (click)="fileInput.click()"
       readonly
       [value]="uploadFileName"
-      [formControl]="ngControl.control"
     />
     <mat-icon matSuffix>cloud_upload</mat-icon>
-    <mat-hint *ngIf="!hasError || ngControl.invalid">{{
+    <mat-hint *ngIf="!hasError || formGroup.get('input').invalid">{{
       uploadFile
         ? "Size: " + uploadFileSizeString + ", Type: " + uploadFile.type
         : "Click to select a file"

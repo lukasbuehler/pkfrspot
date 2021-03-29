@@ -77,12 +77,8 @@
           *ngFor="let spot of filteredSpots"
           [value]="spot.id"
         >
-          <img
-            *ngIf="spot?.data?.image_src"
-            [src]="spot.data.image_src"
-            alt="Img"
-          />
-          <span>{{ spot.data.name }}</span> |
+          <img *ngIf="spot.previewImage" [src]="spot.previewImage" alt="Img" />
+          <span>{{ spot.name }}</span> |
           <small
             >Location: {{ spot.location.lat }}, {{ spot.location.lng }}</small
           >

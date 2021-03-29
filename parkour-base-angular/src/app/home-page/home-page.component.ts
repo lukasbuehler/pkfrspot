@@ -9,6 +9,7 @@ import { StorageService } from "../storage.service";
 import * as firebase from "firebase/app";
 import { AuthenticationService } from "../authentication.service";
 import { Spot } from "src/scripts/db/Spot";
+import { MediaType } from "src/scripts/db/Interfaces";
 
 @Component({
   selector: "app-home-page",
@@ -94,7 +95,7 @@ export class HomePageComponent implements OnInit {
           result.title,
           result.body,
           result.mediaType,
-          null,
+          result.location,
           result.spot
         );
       },
@@ -107,7 +108,7 @@ export class HomePageComponent implements OnInit {
   saveNewPost(
     title: string,
     body: string,
-    mediaType: Post.MediaTypes,
+    mediaType: MediaType | null,
     location: google.maps.LatLngLiteral | null,
     spot: Spot.Class | null
   ) {
@@ -131,25 +132,27 @@ export class HomePageComponent implements OnInit {
 
     if (spot) {
       post.spot = {
-        name: spot.data.name || "",
+        name: spot.data.name.de_CH || "",
         spot_location: spot.data.location,
-        image_src: spot.data.image_src || "",
+        image_src: spot.data.media[0]?.src || "",
         ref: this._dbService.docRef("spots/" + spot.id),
       };
     }
 
-    this._storageService.upload().subscribe(
-      (src) => {
-        // now create the DB entry for the post
-        (post.media = {
-          type: mediaType,
-          src: src,
-        }),
-          this._dbService.addPost(post);
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+    if (mediaType) {
+      this._storageService.upload().subscribe(
+        (src) => {
+          // now create the DB entry for the post
+          (post.media = {
+            type: mediaType,
+            src: src,
+          }),
+            this._dbService.addPost(post);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    }
   }
 }

@@ -16,6 +16,8 @@ import { DatabaseService } from "../database.service";
 
 import { FormControl } from "@angular/forms";
 import { MatAutocomplete } from "@angular/material/autocomplete";
+import { MediaType } from "src/scripts/db/Interfaces";
+import { Observable } from "rxjs";
 
 export interface PostDialogData {
   isCreating: string;
@@ -126,27 +128,43 @@ export class EditPostDialogComponent implements AfterViewInit {
 
   makePostToReturn(): {
     title: string;
-    body: string;
-    mediaType: Post.MediaTypes;
-    spot: Spot.Class;
+    body?: string;
+    spot?: Spot.Class;
+    location?: google.maps.LatLngLiteral | null;
+    mediaType?: MediaType;
   } {
     let isImage = false;
-    let mediaType: Post.MediaTypes = Post.MediaTypes.None;
+    let mediaType: MediaType | null = null;
     if (this.uploadFile) {
+      // Get the media type
+      if (this.uploadFile.type.includes("image")) {
+        mediaType = MediaType.Image;
+      } else if (this.uploadFile.type.includes("video")) {
+        mediaType = MediaType.Video;
+      } else {
+        // The media type could not be distinguished.
+        // It is not supported.
+        console.error("This media type is not supported.");
+
+        return {
+          title: this.postTitle,
+          body: this.postBody || "",
+          spot: this.postSpot || null,
+        };
+      }
+
+      // Upload file to storage
       this._storageService.setUploadToStorage(
         this.uploadFile,
         StorageFolders.PostMedia
       );
-      if (this.uploadFile.type.includes("image")) {
-        mediaType = Post.MediaTypes.Image;
-      }
     }
 
     return {
       title: this.postTitle,
       body: this.postBody || "",
+      spot: this.postSpot || null,
       mediaType: mediaType,
-      spot: this.postSpot,
     };
   }
 

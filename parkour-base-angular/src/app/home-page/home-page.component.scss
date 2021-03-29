@@ -4,12 +4,11 @@
   }
   @media (min-width: 600px) {
     height: calc(100% - 64px);
+    overflow-y: scroll;
   }
-  overflow: hidden;
-}
-
-::ng-deep app-home-page {
-  height: 100%;
+  @media (max-width: 767px) {
+    overflow: hidden;
+  }
 }
 
 ::ng-deep mat-dialog-container {
@@ -28,16 +27,13 @@ mat-tab-group {
 
 .container,
 .container-fluid {
-  height: 100%;
   padding-top: 0px;
 }
 
 .row.posts {
-  height: 100%;
   margin: 0px;
 
   .col-md-6 {
-    height: 100%;
     padding: 0px;
   }
 }

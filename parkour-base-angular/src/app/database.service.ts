@@ -301,11 +301,11 @@ export class DatabaseService {
     });
   }
 
-  createSpot(spot: Spot.Class): Observable<any> {
+  createSpot(spotData: Spot.Schema): Observable<any> {
     return new Observable<any>((observer) => {
       this.db
         .collection<Spot.Schema>("spots")
-        .add(spot.data)
+        .add(spotData)
         .then(
           /* fulfilled */ (value) => {
             observer.next(value);
@@ -321,12 +321,12 @@ export class DatabaseService {
     });
   }
 
-  setSpot(spot: Spot.Class): Observable<any> {
+  setSpot(spotId: string, spotData: Spot.Schema): Observable<any> {
     return new Observable<any>((observer) => {
       this.db
         .collection<Spot.Schema>("spots")
-        .doc(spot.id)
-        .set(spot.data)
+        .doc(spotId)
+        .set(spotData)
         .then(
           /* fulfilled */ (value) => {
             observer.next(value);

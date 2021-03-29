@@ -82,7 +82,7 @@ export class PostComponent implements OnInit {
   }
 
   likeButtonPress() {
-    if (this._authenticationService.isSignedIn()) {
+    if (this._authenticationService.isSignedIn) {
       if (this.likedByUser !== null) {
         if (!this.likedByUser) {
           // show the like

@@ -40,12 +40,12 @@
     class="user-display text-right"
   >
     <img
-      *ngIf="authService.isSignedIn() && authService.userProfilePic"
+      *ngIf="authService.isSignedIn && authService.userProfilePic"
       [src]="authService.userProfilePic"
     />
-    <mat-icon *ngIf="!authService.isSignedIn()">person_outline</mat-icon>
+    <mat-icon *ngIf="!authService.isSignedIn">person_outline</mat-icon>
     {{
-      authService.isSignedIn() && authService.user
+      authService.isSignedIn && authService.user
         ? authService.user.displayName
         : ""
     }}
@@ -57,24 +57,24 @@
 </mat-toolbar>
 
 <mat-menu #navUserMenu="matMenu">
-  <a routerLink="/sign-in" *ngIf="!authService.isSignedIn()" mat-menu-item>
+  <a routerLink="/sign-in" *ngIf="!authService.isSignedIn" mat-menu-item>
     <mat-icon>login</mat-icon>
     <span>Sign in</span>
   </a>
-  <a *ngIf="!authService.isSignedIn()" routerLink="/sign-up" mat-menu-item>
+  <a *ngIf="!authService.isSignedIn" routerLink="/sign-up" mat-menu-item>
     <mat-icon>person_add</mat-icon>
     <span>Sign up</span>
   </a>
   <a
     [routerLink]="'/u/' + authService.uid"
-    *ngIf="authService.isSignedIn()"
+    *ngIf="authService.isSignedIn"
     mat-menu-item
   >
     <mat-icon>face</mat-icon>
     <span>My Profile</span>
   </a>
   <button
-    *ngIf="authService.isSignedIn()"
+    *ngIf="authService.isSignedIn"
     mat-menu-item
     (click)="authService.logUserOut()"
   >

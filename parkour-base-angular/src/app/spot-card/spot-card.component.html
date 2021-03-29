@@ -7,20 +7,21 @@
 >
   <mat-card-header>
     <mat-card-title>
-      {{ spot.data.name }}
+      {{ spot.name }}
     </mat-card-title>
     <mat-card-subtitle>
-      {{ capitalize(spot.data.type) }}
+      {{ capitalize(spot.type) }}
+      {{ spot.isMiniSpot ? "| Mini-Spot" : "" }}
       <app-rating
         class="float-right"
-        *ngIf="spot?.data?.rating"
-        [rating]="spot.data.rating"
+        *ngIf="spot?.rating"
+        [rating]="spot.rating"
         color="accent"
       ></app-rating>
     </mat-card-subtitle>
   </mat-card-header>
-  <img mat-card-image src="{{ spot.data.image_src }}" />
+  <img mat-card-image src="{{ spot.previewImage }}" />
   <mat-card-content>
-    {{ capitalize(spot.data.type) }} in {{ spot.data.area }} area
+    {{ capitalize(spot.type) }} in {{ spot.area }} area
   </mat-card-content>
 </mat-card>

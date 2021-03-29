@@ -16,7 +16,7 @@
         <mat-icon>close</mat-icon>
       </button>
       <span *ngIf="!isEditing">
-        {{ spot.data.name }}
+        {{ spot.name }}
       </span>
       <form *ngIf="isEditing">
         <mat-form-field style="width: calc(100% - 35px)">
@@ -24,8 +24,8 @@
           <input
             #spotNameInput
             matInput
-            [value]="spot.data.name || ''"
-            (change)="spot.data.name = $event.target.value"
+            [value]="spot.name || ''"
+            (change)="spot.name = $event.target.value"
           />
         </mat-form-field>
       </form>
@@ -35,11 +35,11 @@
     </mat-card-title>
     <mat-card-subtitle>
       <span *ngIf="!isEditing">
-        {{ capitalize(spot.data.type) }}
+        {{ capitalize(spot.type) }}
         <app-rating
           class="float-right"
-          *ngIf="spot?.data?.rating"
-          [rating]="spot.data.rating"
+          *ngIf="spot?.rating"
+          [rating]="spot.rating"
           color="accent"
         ></app-rating>
       </span>
@@ -49,7 +49,7 @@
     <form *ngIf="isEditing">
       <mat-form-field style="width: 100%">
         <mat-label>Spot type</mat-label>
-        <mat-select [(value)]="spot.data.type">
+        <mat-select [(value)]="spot.type">
           <mat-option *ngFor="let type of spotTypes" [value]="type">
             {{ capitalize(type) }}
           </mat-option>
@@ -57,7 +57,7 @@
       </mat-form-field>
       <mat-form-field style="width: 100%">
         <mat-label>Spot area</mat-label>
-        <mat-select [(value)]="spot.data.area">
+        <mat-select [(value)]="spot.area">
           <mat-option *ngFor="let area of spotAreas" [value]="area">
             {{ capitalize(area) }}
           </mat-option>
@@ -68,8 +68,8 @@
         <textarea
           matInput
           placeholder="Description of the spot, its features and more..."
-          [value]="spot.data.description || ''"
-          (change)="spot.data.description = $event.target.value"
+          [value]="spot.description || ''"
+          (change)="spot.description = $event.target.value"
         ></textarea>
       </mat-form-field>
     </form>
@@ -107,8 +107,8 @@
         <mat-panel-title> Details </mat-panel-title>
         <mat-panel-description> Info and pictures </mat-panel-description>
       </mat-expansion-panel-header>
-      <img src="{{ spot.data.image_src }}" class="spot-img" alt="" />
-      <div *ngIf="!spot.data.image_src" class="upload-spot-image-box">
+      <img src="{{ spot.previewImage }}" class="spot-img" alt="" />
+      <div *ngIf="!spot.hasMedia" class="upload-spot-image-box">
         <p>There are no images for this spot</p>
         <app-upload-media-ui (uploadMedia)="setSpotImage($event)">
         </app-upload-media-ui>
@@ -116,11 +116,11 @@
           Upload Spot Image
         </button>
       </div>
-      <p *ngIf="spot.data.description">
-        {{ spot.data.description }}
+      <p *ngIf="spot.description">
+        {{ spot.description }}
       </p>
-      <p *ngIf="spot.data.type">Type: {{ capitalize(spot.data.type) }}</p>
-      <p *ngIf="spot.data.area">Area: {{ capitalize(spot.data.area) }}</p>
+      <p *ngIf="spot.type">Type: {{ capitalize(spot.type) }}</p>
+      <p *ngIf="spot.area">Area: {{ capitalize(spot.area) }}</p>
 
       <div class="spot-button-row">
         <button *ngIf="visited" mat-button (click)="rateClick()" color="accent">

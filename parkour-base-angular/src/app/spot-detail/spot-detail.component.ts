@@ -12,6 +12,8 @@ import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.compo
 import { StorageService, StorageFolders } from "../storage.service";
 import { Post } from "src/scripts/db/Post";
 import { Subscription } from "rxjs";
+import { AuthenticationService } from "../authentication.service";
+import { MediaType } from "src/scripts/db/Interfaces";
 
 @Component({
   selector: "app-spot-detail",
@@ -35,7 +37,7 @@ export class SpotDetailComponent implements OnInit {
 
   @ViewChild(UploadMediaUiComponent) uploadMediaComp;
 
-  backupSpotData: Spot.Schema;
+  backupSpot: Spot.Class;
 
   visited: boolean = false;
 
@@ -49,10 +51,11 @@ export class SpotDetailComponent implements OnInit {
 
   constructor(
     private _dbService: DatabaseService,
-    private _storageService: StorageService
+    private _storageService: StorageService,
+    private _authenticationService: AuthenticationService
   ) {
     if (this.spot) {
-      this.backupSpotData = this.spot.data;
+      this.backupSpot = this.spot;
     }
   }
 
@@ -68,8 +71,8 @@ export class SpotDetailComponent implements OnInit {
   }
 
   editButtonClick() {
-    this.backupSpotData = this.spot.data;
-    if (this.editable) {
+    this.backupSpot = this.spot;
+    if (this.editable && this._authenticationService.isSignedIn) {
       this.isEditing = true;
       this.isEditingChange.emit(true);
     }
@@ -83,7 +86,7 @@ export class SpotDetailComponent implements OnInit {
   discardButtonClick() {
     this.isEditing = false;
     this.isEditingChange.emit(false);
-    this.spot.data = this.backupSpotData;
+    this.spot = this.backupSpot;
   }
 
   addBoundsClicked() {
@@ -123,7 +126,11 @@ export class SpotDetailComponent implements OnInit {
 
         observable.subscribe(
           (imageLink) => {
-            this.spot.addNewImage(imageLink);
+            this.spot.addMedia(
+              imageLink,
+              MediaType.Image,
+              this._authenticationService.uid
+            );
           },
           (error) => {}
         );
@@ -147,8 +154,8 @@ export class SpotDetailComponent implements OnInit {
     if (navigator["share"]) {
       try {
         const shareData = {
-          title: "Spot: " + this.spot.data.name,
-          text: `PKFR Spot: ${this.spot.data.name}`,
+          title: "Spot: " + this.spot.name,
+          text: `PKFR Spot: ${this.spot.name}`,
           url: link,
         };
 
@@ -169,13 +176,12 @@ export class SpotDetailComponent implements OnInit {
   }
 
   public save() {
+    // If the spot does not have an ID, it does not exist in the database yet.
     if (this.spot.id) {
       // this is an old spot that is edited
-      this._dbService.setSpot(this.spot).subscribe(
+      this._dbService.setSpot(this.spot.id, this.spot.data).subscribe(
         () => {
-          console.log("Successful save!");
-          this.isEditing = false;
-          this.isEditingChange.emit(false);
+          // Successfully updated
         },
         (error) => {
           console.error("Error on spot save", error);
@@ -183,14 +189,12 @@ export class SpotDetailComponent implements OnInit {
       );
     } else {
       // this is a new spot
-      this._dbService.createSpot(this.spot).subscribe(
-        () => {
-          console.log("Successful spot creation");
-          this.isEditing = false;
-          this.isEditingChange.emit(false);
+      this._dbService.createSpot(this.spot.data).subscribe(
+        (id) => {
+          // Successfully created
         },
         (error) => {
-          console.error("There was an error creating this spot!");
+          console.error("There was an error creating this spot!", error);
         }
       );
     }

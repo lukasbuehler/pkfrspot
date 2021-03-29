@@ -411,7 +411,7 @@ export class MapPageComponent implements OnInit {
     this.selectedSpot = new Spot.Class(
       "", // The id needs to be empty for the spot to be recognized and created in the database
       {
-        name: "New Spot",
+        name: { de_CH: "New Spot" },
         location: new firebase.default.firestore.GeoPoint(
           this.center_coordinates.lat,
           this.center_coordinates.lng

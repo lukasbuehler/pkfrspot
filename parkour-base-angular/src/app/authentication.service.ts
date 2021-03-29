@@ -24,6 +24,13 @@ export class AuthenticationService {
   private _currentFirebaseUser: firebase.default.User = null;
   private _currentUserData = null;
 
+  get isSignedIn(): boolean {
+    if (this._currentFirebaseUser) {
+      return true;
+    }
+    return false;
+  }
+
   get state$(): Observable<firebase.default.User> {
     return this.angularFireAuth.authState;
   }
@@ -68,13 +75,6 @@ export class AuthenticationService {
   firebaseAuthChangeError = (error: any) => {
     console.error(error);
   };
-
-  isSignedIn(): boolean {
-    if (this._currentFirebaseUser) {
-      return true;
-    }
-    return false;
-  }
 
   signInEmailPassword(email, password) {
     return new Promise<firebase.default.auth.UserCredential>(
