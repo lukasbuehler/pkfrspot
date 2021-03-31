@@ -38,6 +38,7 @@ const routes: Routes = [
 
   // Profiles and sign-in flow
   { path: "u/:userID", component: ProfilePageComponent },
+  //{ path: "u/:userID/edit", component: EditProfilePageComponent },
   { path: "sign-in", component: SignInPageComponent },
   { path: "sign-up", component: SignUpPageComponent },
 

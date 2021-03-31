@@ -4,43 +4,72 @@
       <mat-spinner></mat-spinner>
     </div>
   </div>
-  <div class="row" *ngIf="user && !isLoading">
+  <div class="row d-lg-flex flex-row" *ngIf="user && !isLoading">
     <div class="col-lg-8 pt-4">
       <mat-card class="mat-elevation-z3 text-left">
         <mat-card-content class="p-4">
           <div class="d-flex flex-row justify-content-left align-items-center">
             <img
-              *ngIf="user.profilePictrue"
+              *ngIf="profilePicture"
               class="profile-pic mr-5"
-              [src]="user.profilePictrue || authProfilePic"
+              [src]="profilePicture"
               alt=""
             />
             <div
               class="d-flex flex-column justify-content-center align-items-left flex-grow-1"
             >
-              <h1 class="mat-display-1 mb-2">
-                {{ user.displayName }}
-              </h1>
+              <div class="d-flex justify-content-between">
+                <h1 class="mat-display-1 mb-2 flex-full">
+                  {{ user.displayName }}
+                </h1>
+                <mat-chip-list class="d-flex pb-2">
+                  <mat-chip
+                    color="accent"
+                    *ngIf="isMyProfile"
+                    [selectable]="false"
+                    >You</mat-chip
+                  >
+                  <mat-chip *ngIf="!isMyProfile && false">Follows you</mat-chip>
+                </mat-chip-list>
+              </div>
               <div class="d-md-flex flex-row justify-content-between">
                 <h3 *ngIf="false" class="mat-h3 mb-2">
                   Member of <b>Team name</b>
                 </h3>
-                <h3 *ngIf="user.startTimeAgoString" class="mat-h3 mb-2">
-                  Freerunner {{ startTimeAgoString }}
+                <h3 *ngIf="user.startTimeDiffString" class="mat-h3 mb-2">
+                  Freerunner since {{ user.startTimeDiffString }}
                 </h3>
               </div>
               <h3 class="mat-h3">
                 <b>{{ user.followerCount }}</b> Followers
               </h3>
-              <div class="d-flex flex-row">
-                <button mat-flat-button color="accent" class="flex-fill">
-                  Follow
+              <div *ngIf="!isMyProfile" class="d-flex flex-row">
+                <button
+                  mat-flat-button
+                  [color]="isFollowing ? 'primary' : 'accent'"
+                  class="flex-fill"
+                >
+                  {{ isFollowing ? "Unfollow" : "Follow" }}
                 </button>
-                <button mat-flat-button color="primary" class="mx-3 flex-fill">
+                <button
+                  mat-stroked-button
+                  color="default"
+                  class="mx-3 flex-fill"
+                >
                   Contact
                 </button>
                 <button mat-stroked-button color="default" class="flex-fill">
                   Report
+                </button>
+              </div>
+              <div *ngIf="isMyProfile" class="d-flex flex-row">
+                <button
+                  mat-stroked-button
+                  color="default"
+                  class="flex-fill"
+                  [routerLink]="'/u/' + userId + '/edit'"
+                >
+                  Edit Profile
                 </button>
               </div>
             </div>
@@ -49,7 +78,7 @@
       </mat-card>
     </div>
     <div class="col-lg-4 pt-4">
-      <mat-card class="mat-elevation-z3">
+      <mat-card class="mat-elevation-z3 h-100">
         <mat-card-header>
           <mat-card-title>Groups</mat-card-title>
         </mat-card-header>

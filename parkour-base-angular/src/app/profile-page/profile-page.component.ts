@@ -11,6 +11,7 @@ import { DatabaseService } from "../database.service";
   styleUrls: ["./profile-page.component.scss"],
 })
 export class ProfilePageComponent implements OnInit {
+  userId: string = "";
   user: User.Class = null;
   isLoading: boolean = false;
 
@@ -24,14 +25,44 @@ export class ProfilePageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    let userId: string = this._route.snapshot.paramMap.get("userID") || "";
-    if (userId) {
-      this.loadProfile(userId);
+    this.userId = this._route.snapshot.paramMap.get("userID") || "";
+    this.init();
+
+    this._route.paramMap.subscribe((map) => {
+      console.log("Map updated");
+      let _userId = map.get("userID");
+      console.log(_userId);
+
+      if (_userId) {
+        this.userId = _userId || "";
+        this.init();
+      }
+    });
+  }
+
+  init() {
+    console.log("init");
+    if (this.userId) {
+      // clear info
+      this.user = null;
+      this.postsFromUser = [];
+
+      // load stuff
+      this.loadProfile(this.userId);
     }
   }
 
-  get authProfilePic() {
-    return this._authService.userProfilePic;
+  get profilePicture() {
+    return this.user.profilePicture;
+  }
+
+  get isMyProfile() {
+    return this.userId === this._authService.uid;
+  }
+
+  get isFollowing() {
+    // TODO
+    return null;
   }
 
   loadProfile(userId: string) {

@@ -3,31 +3,20 @@ import * as moment from "moment";
 
 export module User {
   export class Class {
-    constructor(private _uid: string, private _data: User.Schema) {}
-
-    uid(): string {
-      return this._uid;
+    constructor(private _uid: string, private _data: User.Schema) {
+      this.uid = this._uid;
+      this.displayName = this._data.display_name;
+      this.profilePicture = this._data.profile_picture;
+      this.startTimeDiffString = moment(this._data.start_date.toDate()).fromNow(
+        true
+      );
     }
 
-    get displayName() {
-      return this._data.display_name;
-    }
-
-    get profilePicture() {
-      return this._data.profile_picture;
-    }
-
-    get startTimeAgoString() {
-      if (this._data.start_date) {
-        return moment(this._data.start_date).fromNow();
-      }
-      return "";
-    }
-
-    get followerCount() {
-      // TODO
-      return 0;
-    }
+    public uid: string = "";
+    public displayName: string = "";
+    public profilePicture: string = "";
+    public startTimeDiffString: string = "";
+    public followerCount: number = 0;
   }
 
   export interface Schema {

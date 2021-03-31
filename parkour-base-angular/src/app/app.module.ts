@@ -47,6 +47,7 @@ import { MatStepperModule } from "@angular/material/stepper";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatChipsModule } from "@angular/material/chips";
 
 import { PlyrModule } from "ngx-plyr";
 import { AngularResizedEventModule } from "angular-resize-event";
@@ -151,6 +152,7 @@ import { PrivacyPolicyComponent } from "./privacy-policy/privacy-policy.componen
     MatDividerModule,
     MatSlideToggleModule,
     MatSnackBarModule,
+    MatChipsModule,
 
     PlyrModule,
     AngularResizedEventModule,
