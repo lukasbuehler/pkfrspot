@@ -41,7 +41,7 @@ export module Spot {
     }
 
     get description(): string {
-      return this._data.description.en_GB || "Description goes here";
+      return this._data.description?.en_GB || "Description goes here";
     }
 
     get hasMedia() {

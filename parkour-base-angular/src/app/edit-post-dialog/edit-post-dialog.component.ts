@@ -193,7 +193,7 @@ export class EditPostDialogComponent implements AfterViewInit {
         return spot.id === spotId;
       });
       if (findSpot) {
-        return findSpot.data.name;
+        return findSpot.name;
       }
     }
 

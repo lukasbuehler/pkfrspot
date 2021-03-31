@@ -37,7 +37,7 @@
     class="mat-elevation-z5"
     mode="side"
     position="end"
-    [opened]="selectedSpot"
+    [opened]="!!selectedSpot"
   >
     <div *ngIf="selectedSpot">
       <app-spot-detail
@@ -117,7 +117,7 @@
       [agmFitBounds]="true"
       [latitude]="selectedSpot.location.lat"
       [longitude]="selectedSpot.location.lng"
-      [title]="selectedSpot.data.name"
+      [title]="selectedSpot.name"
       iconUrl="/assets/icons/marker.png"
       [markerDraggable]="editingBounds"
       [markerClickable]="true"

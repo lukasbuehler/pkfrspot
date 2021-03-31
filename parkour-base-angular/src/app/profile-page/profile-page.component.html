@@ -4,8 +4,8 @@
       <mat-spinner></mat-spinner>
     </div>
   </div>
-  <div class="row">
-    <div *ngIf="user && !isLoading" class="col-md-12 pt-4">
+  <div class="row" *ngIf="user && !isLoading">
+    <div class="col-md-8 pt-4">
       <mat-card class="text-left">
         <div
           class="header d-flex flex-row justify-content-left align-items-center"
@@ -19,15 +19,18 @@
         </div>
       </mat-card>
     </div>
+    <div class="col-md-4 pt-4">
+      <mat-card> moin meine aktiven freunde </mat-card>
+    </div>
   </div>
-  <div class="row">
-    <div *ngIf="user && !isLoading" class="col-lg-6 pt-3">
+  <div class="row" *ngIf="user && !isLoading">
+    <div class="col-lg-6 pt-3">
       <app-post-collection
         [title]="'Posts from ' + user.displayName"
         [loading]="postsFromUserLoading"
         [posts]="postsFromUser"
       ></app-post-collection>
     </div>
-    <div *ngIf="user && !isLoading" class="col-lg-6 pt-3"></div>
+    <div class="col-lg-6 pt-3"></div>
   </div>
 </div>

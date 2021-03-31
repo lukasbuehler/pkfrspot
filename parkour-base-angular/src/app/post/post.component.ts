@@ -49,7 +49,6 @@ export class PostComponent implements OnInit {
 
     this._authenticationService.uid$.subscribe(
       (uid) => {
-        console.log("Auth state changed");
         if (uid) {
           this._databaseService
             .userHasLikedPost(this.post.id, uid)

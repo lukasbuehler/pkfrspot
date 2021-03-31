@@ -131,10 +131,12 @@ export class HomePageComponent implements OnInit {
     }
 
     if (spot) {
+      const lat = spot.location.lat;
+      const lng = spot.location.lng;
       post.spot = {
-        name: spot.data.name.de_CH || "",
-        spot_location: spot.data.location,
-        image_src: spot.data.media[0]?.src || "",
+        name: spot.name || "",
+        spot_location: new firebase.default.firestore.GeoPoint(lat, lng),
+        image_src: spot.media[0]?.src || "",
         ref: this._dbService.docRef("spots/" + spot.id),
       };
     }

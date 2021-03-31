@@ -122,8 +122,8 @@ export class MapPageComponent implements OnInit {
           this.openSpot(spot); // Opens the spot in the drawer
           this.setStartMap(
             {
-              lat: spot.data.location.latitude,
-              lng: spot.data.location.longitude,
+              lat: spot.location.lat,
+              lng: spot.location.lng,
             },
             20
           );
@@ -376,8 +376,8 @@ export class MapPageComponent implements OnInit {
     this.visibleDots = allSpots.map((spot) => {
       return {
         location: {
-          latitude: spot.data.location.latitude,
-          longitude: spot.data.location.longitude,
+          latitude: spot.location.lat,
+          longitude: spot.location.lng,
         },
         value: 1,
       };
