@@ -7,9 +7,12 @@ export module User {
       this.uid = this._uid;
       this.displayName = this._data.display_name;
       this.profilePicture = this._data.profile_picture;
-      this.startTimeDiffString = moment(this._data.start_date.toDate()).fromNow(
-        true
-      );
+
+      if (this._data.start_date) {
+        this.startTimeDiffString = moment(
+          this._data.start_date.toDate()
+        ).fromNow(true);
+      }
     }
 
     public uid: string = "";
