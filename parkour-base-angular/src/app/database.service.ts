@@ -171,6 +171,25 @@ export class DatabaseService {
     });
   }
 
+  deletePost(postId): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (!postId) {
+        reject("The post ID is invalid");
+      }
+
+      this.db
+        .collection<Post.Schema>("posts")
+        .doc(postId)
+        .delete()
+        .then(() => {
+          resolve();
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
   // Post Likes
 
   userHasLikedPost(postId: string, userId: string): Promise<boolean> {

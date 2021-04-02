@@ -26,6 +26,8 @@ export class PostComponent implements OnInit {
   timeAgoString: string;
   likedByUser: boolean = null;
 
+  currentlyAuthenticatedUserId: string = "";
+
   maxHeightToWidthRatio: number = 0;
 
   constructor(
@@ -34,10 +36,6 @@ export class PostComponent implements OnInit {
     private _snackbar: MatSnackBar,
     private _router: Router
   ) {}
-
-  get currentlyAuthenticatedUserId() {
-    return this._authenticationService.uid;
-  }
 
   ngOnInit() {
     this.dateAndTimeString = this.getDateAndTimeString();
@@ -50,6 +48,8 @@ export class PostComponent implements OnInit {
     this._authenticationService.uid$.subscribe(
       (uid) => {
         if (uid) {
+          this.currentlyAuthenticatedUserId = this._authenticationService.uid;
+
           this._databaseService
             .userHasLikedPost(this.post.id, uid)
             .then((bool) => {
@@ -166,5 +166,29 @@ export class PostComponent implements OnInit {
     if (this.maxHeightToWidthRatio > 1 && height / width !== 1) {
       this.matCardMedia.nativeElement.style.height = width + "px";
     }
+  }
+
+  deletePost() {
+    this._databaseService
+      .deletePost(this.post.id)
+      .then(() => {
+        this._snackbar.open("Your post was successfully deleted", "Dismiss", {
+          duration: 3000,
+          verticalPosition: "bottom",
+          horizontalPosition: "center",
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        this._snackbar.open(
+          "Error. Your post could not be deleted!",
+          "Dismiss",
+          {
+            duration: 5000,
+            verticalPosition: "bottom",
+            horizontalPosition: "center",
+          }
+        );
+      });
   }
 }

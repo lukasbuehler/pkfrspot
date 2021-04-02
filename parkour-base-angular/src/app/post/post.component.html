@@ -129,11 +129,25 @@
     <mat-icon>place</mat-icon>
     <span>Open on Map</span>
   </button>
-  <button *ngIf="post.user.uid !== currentlyAuthenticatedUserId" mat-menu-item>
+  <button
+    *ngIf="
+      currentlyAuthenticatedUserId &&
+      post.user.uid !== currentlyAuthenticatedUserId
+    "
+    mat-menu-item
+  >
     <mat-icon>report</mat-icon>
     <span>Report post</span>
   </button>
-  <button *ngIf="post.user.uid === currentlyAuthenticatedUserId" mat-menu-item>
+  <button
+    *ngIf="
+      currentlyAuthenticatedUserId &&
+      post.user.uid === currentlyAuthenticatedUserId
+    "
+    mat-menu-item
+    (click)="deletePost()"
+    color="warn"
+  >
     <mat-icon>delete</mat-icon>
     <span>Delete post</span>
   </button>
