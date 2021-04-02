@@ -39,7 +39,19 @@ export class DatabaseService {
       });
   }
 
-  getPostUpdates(): Observable<any> {
+  /**
+   *
+   * @returns
+   */
+  getPostUpdates(userId): Observable<any> {
+    /**
+     * 1) Get all followings of the currently authenticated user
+     * 2) Make multiple arrays of size 10 with all the followings
+     * 3) Call all the observables to those batches of 10 users with in queries for posts with pagination.
+     * 4) Construct one giant observable with all those listeners
+     * 5) Return that
+     */
+
     return new Observable<any>((observer) => {
       let snapshotChanges = this.db
         .collection<Post.Schema>("posts", (ref) =>
@@ -66,6 +78,48 @@ export class DatabaseService {
 
   getTrendingPosts() {}
 
+  /**
+   * Top posts in the last 24 hours
+   * @returns a map of post schemas with the IDs as the keys and the data as the values
+   */
+  getTodaysTopPosts(): Observable<any> {
+    return new Observable<any>((observer) => {
+      const twentyFourHoursInMilliSeconds = 24 * 60 * 60 * 1000;
+      const yesterday = new Date(Date.now() - twentyFourHoursInMilliSeconds);
+      console.log("yesterday", yesterday);
+      this.db
+        .collection<Post.Schema>(
+          "posts",
+          (ref) =>
+            ref
+              .where("time_posted", ">", yesterday)
+              .orderBy("time_posted", "desc")
+              .orderBy("like_count", "desc")
+              .limit(10)
+          // TODO Pagination
+        )
+        .snapshotChanges()
+        .subscribe(
+          (changeActions) => {
+            const postSchemasMap: any = {};
+            changeActions.forEach((action) => {
+              const id = action.payload.doc.id;
+              postSchemasMap[id] = action.payload.doc.data();
+            });
+            observer.next(postSchemasMap);
+          },
+          (err) => {
+            observer.error(err);
+          }
+        );
+    });
+  }
+
+  /**
+   * Gets the posts lined to a spot
+   * @param spot The spot class we want to find the posts for
+   * @returns a map of post schemas with the IDs as the keys and the data as the values
+   */
   getPostsFromSpot(spot: Spot.Class): Observable<Post.Schema> {
     return new Observable<Post.Schema>((observer) => {
       let snapshotChanges = this.db

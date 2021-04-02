@@ -1,9 +1,6 @@
 .collection-container {
-  height: 100%;
-  overflow-y: scroll;
-
-  -ms-overflow-style: none; // IE 10+
-  scrollbar-width: none; // Firefox
+  display: flex;
+  flex-direction: column;
 }
 
 .collection-container::-webkit-scrollbar {

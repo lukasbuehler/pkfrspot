@@ -1,19 +1,19 @@
 <div class="home-page-container">
   <div class="container d-none d-md-block">
     <div class="row posts">
-      <div class="col-md-6 text-center">
+      <div class="col-md-6 text-center px-3">
         <app-post-collection
           #updateCollection
           [posts]="updatePosts"
           [title]="'Updates'"
-          [loading]="loadingPosts"
+          [loading]="loadingUpdates"
         ></app-post-collection>
       </div>
-      <div class="col-md-6 text-center">
+      <div class="col-md-6 text-center px-3">
         <app-post-collection
-          [posts]=""
-          [title]="'Trending'"
-          [loading]="true"
+          [posts]="todaysTopPosts"
+          [title]="'Today\'s top posts'"
+          [loading]="loadingTodaysTopPosts"
         ></app-post-collection>
       </div>
     </div>
@@ -21,12 +21,18 @@
   <mat-tab-group mat-stretch-tabs class="d-md-none" mat-align-tabs="center">
     <mat-tab label="Updates">
       <div class="p-3">
-        <app-post-collection [posts]="updatePosts"></app-post-collection>
+        <app-post-collection
+          [posts]="updatePosts"
+          [loading]="loadingUpdates"
+        ></app-post-collection>
       </div>
     </mat-tab>
-    <mat-tab label="Trending">
+    <mat-tab label="Today's top posts">
       <div class="p-3">
-        <app-post-collection [posts]=""></app-post-collection>
+        <app-post-collection
+          [posts]="todaysTopPosts"
+          [loading]="loadingTodaysTopPosts"
+        ></app-post-collection>
       </div>
     </mat-tab>
   </mat-tab-group>

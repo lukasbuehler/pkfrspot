@@ -25,8 +25,9 @@ export class HomePageComponent implements OnInit {
   ) {}
 
   updatePosts: Post.Class[] = [];
-  trendingPosts: Post.Class[] = [];
-  loadingPosts: boolean = false;
+  todaysTopPosts: Post.Class[] = [];
+  loadingUpdates: boolean = false;
+  loadingTodaysTopPosts: boolean = false;
 
   isUserSignedIn: boolean = false;
 
@@ -40,6 +41,7 @@ export class HomePageComponent implements OnInit {
       (user) => {
         if (user) {
           this.isUserSignedIn = true;
+          this.getUpdates();
         } else {
           this.isUserSignedIn = false;
         }
@@ -49,11 +51,53 @@ export class HomePageComponent implements OnInit {
       }
     );
 
-    this.loadingPosts = true;
-    this._dbService.getPostUpdates().subscribe(
+    this.getTodaysTopPosts();
+  }
+
+  getMorePosts() {
+    // get More posts
+  }
+
+  getUpdates() {
+    const userId = this._authService.uid;
+    if (userId) {
+      this.loadingUpdates = true;
+      this._dbService.getPostUpdates(userId).subscribe(
+        (postMap) => {
+          for (let postId in postMap) {
+            let docIndex = this.updatePosts.findIndex((post, index, obj) => {
+              return post.id === postId;
+            });
+            if (docIndex >= 0) {
+              // the document already exists already in this array
+              this.updatePosts[docIndex].updateData(postMap[postId]);
+            } else {
+              // create and add new Post
+              this.updatePosts.push(new Post.Class(postId, postMap[postId]));
+              this.updatePosts.sort((a, b) => {
+                return b.timePosted.getTime() - a.timePosted.getTime();
+              });
+            }
+          }
+          this.loadingUpdates = false;
+        },
+        (error) => {
+          this.loadingUpdates = false;
+          console.error(error);
+        },
+        () => {
+          this.loadingUpdates = false;
+        } // complete
+      );
+    }
+  }
+
+  getTodaysTopPosts() {
+    this.loadingTodaysTopPosts = true;
+    this._dbService.getTodaysTopPosts().subscribe(
       (postMap) => {
         for (let postId in postMap) {
-          let docIndex = this.updatePosts.findIndex((post, index, obj) => {
+          let docIndex = this.todaysTopPosts.findIndex((post, index, obj) => {
             return post.id === postId;
           });
           if (docIndex >= 0) {
@@ -61,26 +105,30 @@ export class HomePageComponent implements OnInit {
             this.updatePosts[docIndex].updateData(postMap[postId]);
           } else {
             // create and add new Post
-            this.updatePosts.push(new Post.Class(postId, postMap[postId]));
-            this.updatePosts.sort((a, b) => {
-              return b.timePosted.getTime() - a.timePosted.getTime();
+            this.todaysTopPosts.push(new Post.Class(postId, postMap[postId]));
+            console.log("added post");
+
+            // sort
+            /*
+            this.todaysTopPosts.sort((a, b) => {
+              return (
+                b.likeCount - a.likeCount ||
+                b.timePosted.getTime() - a.timePosted.getTime()
+              );
             });
+            */
           }
         }
-        this.loadingPosts = false;
+        this.loadingTodaysTopPosts = false;
       },
       (error) => {
-        this.loadingPosts = false;
+        this.loadingTodaysTopPosts = false;
         console.error(error);
       },
       () => {
-        this.loadingPosts = false;
+        this.loadingTodaysTopPosts = false;
       } // complete
     );
-  }
-
-  getMorePosts() {
-    // get More posts
   }
 
   createPost() {
@@ -155,6 +203,8 @@ export class HomePageComponent implements OnInit {
           console.error(error);
         }
       );
+    } else {
+      this._dbService.addPost(post);
     }
   }
 }
