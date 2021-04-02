@@ -4,74 +4,61 @@ import { Media, MediaType } from "./Interfaces";
 
 export module Post {
   export class Class {
-    constructor(private _id: string, private _data: Post.Schema) {}
+    id: string = "";
+    title: string = "";
+    user: User.ReferenceSchema = null;
+    body: string = "";
+    mediaSrc: string = "";
+    mediaIsImage: boolean = false;
+    location: google.maps.LatLngLiteral = null;
+    spot = null;
+    likeCount: number = 0;
+    timePosted: Date = null;
 
-    get title() {
-      return this._data.title;
+    constructor(private _id: string, private _data: Post.Schema) {
+      this.id = _id;
+      this.updateData(_data);
     }
 
-    get user() {
-      return this._data.user;
-    }
-
-    get body() {
-      return this._data.body;
-    }
-
-    get id() {
-      return this._id;
-    }
-
-    get mediaSrc() {
-      if (this._data.media) {
-        return this._data.media.src || "";
-      }
-      return null;
-    }
-
-    get mediaIsImage() {
-      if (this._data.media) {
-        return this._data.media.type === MediaType.Image;
-      }
-      return null;
-    }
-
-    get location(): google.maps.LatLngLiteral {
-      if (this._data.location) {
-        return {
-          lat: this._data.location.latitude,
-          lng: this._data.location.longitude,
-        };
-      }
-      return null;
-    }
-
-    get spot() {
-      if (this._data.spot) {
-        return this._data.spot;
-      }
-      return null;
-    }
-
-    get likeCount(): number {
-      return this._data.like_count + this._likeOffset;
-    }
-
-    private _likeOffset: number = 0;
     like(): void {
-      this._likeOffset++;
+      this.likeCount++;
     }
     unlike(): void {
-      this._likeOffset--;
+      this.likeCount--;
     }
 
-    get timePosted(): Date {
-      return new Date(this._data.time_posted.seconds * 1000);
+    getData(): Post.Schema {
+      return this._data;
     }
 
     updateData(data: Post.Schema) {
       this._data = data;
-      this._likeOffset = 0;
+
+      this.title = data.title;
+      this.user = data.user;
+      this.body = data.body;
+      this.mediaSrc = data.media?.src || "";
+      this.mediaIsImage = data.media?.type === MediaType.Image;
+
+      if (data.location) {
+        this.location = {
+          lat: data.location.latitude,
+          lng: data.location.longitude,
+        };
+      }
+
+      if (this._data.spot) {
+        this.spot = data.spot;
+      }
+
+      this.likeCount = data.like_count;
+
+      if (data.time_posted) {
+        this.timePosted = new Date(data.time_posted.seconds * 1000);
+      } else {
+        console.error("time_posted is not defined on post " + this.id);
+        console.log(data);
+      }
     }
   }
 
@@ -80,7 +67,7 @@ export module Post {
     user: User.ReferenceSchema;
     body: string;
     media?: Media;
-    location?: firebase.default.firestore.GeoPoint; // where the media was taken
+    location?: firebase.default.firestore.GeoPoint; // where the media was taken or the post was made
     spot?: {
       name: string;
       spot_location: firebase.default.firestore.GeoPoint;

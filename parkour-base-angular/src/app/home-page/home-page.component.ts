@@ -10,6 +10,7 @@ import * as firebase from "firebase/app";
 import { AuthenticationService } from "../authentication.service";
 import { Spot } from "src/scripts/db/Spot";
 import { MediaType } from "src/scripts/db/Interfaces";
+import { DocumentChangeType } from "@angular/fire/firestore";
 
 @Component({
   selector: "app-home-page",
@@ -63,23 +64,35 @@ export class HomePageComponent implements OnInit {
     if (userId) {
       this.loadingUpdates = true;
       this._dbService.getPostUpdates(userId).subscribe(
-        (postMap) => {
-          for (let postId in postMap) {
-            let docIndex = this.updatePosts.findIndex((post, index, obj) => {
-              return post.id === postId;
+        (changes: { type: DocumentChangeType; post: Post.Class }[]) => {
+          this.loadingUpdates = false;
+          changes.forEach((change) => {
+            console.log(change.type);
+            console.log(change.post);
+
+            const index2 = this.updatePosts.findIndex((post, index, obj) => {
+              return post.id === change.post.id;
             });
-            if (docIndex >= 0) {
+            if (index2 >= 0) {
               // the document already exists already in this array
-              this.updatePosts[docIndex].updateData(postMap[postId]);
+              this.updatePosts[index2].updateData(change.post.getData());
             } else {
               // create and add new Post
-              this.updatePosts.push(new Post.Class(postId, postMap[postId]));
+              this.updatePosts.push(change.post);
               this.updatePosts.sort((a, b) => {
                 return b.timePosted.getTime() - a.timePosted.getTime();
               });
             }
-          }
-          this.loadingUpdates = false;
+
+            /*
+                const index = this.updatePosts.findIndex((post, index, obj) => {
+                  return post.id === change.post.id;
+                });
+                if (index >= 0) {
+                  this.updatePosts.splice(index, 1);
+                }
+                */
+          });
         },
         (error) => {
           this.loadingUpdates = false;
@@ -102,11 +115,10 @@ export class HomePageComponent implements OnInit {
           });
           if (docIndex >= 0) {
             // the document already exists already in this array
-            this.updatePosts[docIndex].updateData(postMap[postId]);
+            this.todaysTopPosts[docIndex].updateData(postMap[postId]);
           } else {
             // create and add new Post
             this.todaysTopPosts.push(new Post.Class(postId, postMap[postId]));
-            console.log("added post");
 
             // sort
             /*

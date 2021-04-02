@@ -6,11 +6,14 @@ import { Spot } from "src/scripts/db/Spot";
 import {
   AngularFirestore,
   AngularFirestoreCollection,
+  DocumentChangeAction,
+  DocumentChangeType,
 } from "@angular/fire/firestore";
 
 import { Observable } from "rxjs";
 import { Like } from "src/scripts/db/Like";
 import { User } from "src/scripts/db/User";
+import { merge } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -43,7 +46,9 @@ export class DatabaseService {
    *
    * @returns
    */
-  getPostUpdates(userId): Observable<any> {
+  getPostUpdates(
+    userId
+  ): Observable<{ type: DocumentChangeType; post: Post.Class }[]> {
     /**
      * 1) Get all followings of the currently authenticated user
      * 2) Make multiple arrays of size 10 with all the followings
@@ -52,31 +57,83 @@ export class DatabaseService {
      * 5) Return that
      */
 
-    return new Observable<any>((observer) => {
-      let snapshotChanges = this.db
-        .collection<Post.Schema>("posts", (ref) =>
-          ref.orderBy("time_posted", "desc").limit(10)
-        )
-        .snapshotChanges();
+    return new Observable<{ type: DocumentChangeType; post: Post.Class }[]>(
+      (obs) => {
+        // 1) Get all the followings of the currently authenticated user
+        let allFollowingsIds: string[] = [];
+        this.db
+          .collection<User.FollowingSchema>(`users/${userId}/following`)
+          .get()
+          .subscribe((snap) => {
+            allFollowingsIds = snap.docs.map((val) => {
+              return val.id;
+            });
+            // add the currently authenticated user to the Ids
+            // We want to see our own posts as well
+            allFollowingsIds.unshift(userId);
 
-      snapshotChanges.subscribe(
-        (changeActions) => {
-          let postSchemasMap: any = {};
-          changeActions.forEach((action) => {
-            const id = action.payload.doc.id;
-            postSchemasMap[id] = action.payload.doc.data();
+            if (allFollowingsIds.length === 0) {
+              // This user doesn't follow anyone, just complete the observable.
+              //
+              obs.complete();
+            }
+
+            // 2) Make multiple arrays of size 10 with all the followings
+            let chunks: string[][] = [];
+            const chunkSize = 10;
+            for (
+              let beginIndex = 0, endIndex = allFollowingsIds.length;
+              beginIndex < endIndex;
+              beginIndex += chunkSize
+            ) {
+              chunks.push(
+                allFollowingsIds.slice(beginIndex, beginIndex + chunkSize)
+              );
+            }
+
+            // 3) Call all the observables to those batches of 10 users with in queries for posts with pagination.
+            let observables: Observable<
+              DocumentChangeAction<Post.Schema>[]
+            >[] = [];
+            chunks.forEach((ids: string[]) => {
+              observables.push(
+                this.db
+                  .collection<Post.Schema>(
+                    "posts",
+                    (ref) =>
+                      ref
+                        .where("user.uid", "in", ids)
+                        .orderBy("time_posted", "desc")
+                        .limit(10)
+                    // TODO Pagination
+                  )
+                  .snapshotChanges()
+              );
+            });
+            merge(...observables).subscribe(
+              (changeActions) => {
+                let postChanges: {
+                  type: DocumentChangeType;
+                  post: Post.Class;
+                }[] = [];
+                changeActions.forEach((action) => {
+                  console.log(action.type);
+                  console.log(action.payload.type);
+                  const id = action.payload.doc.id;
+                  const data = action.payload.doc.data();
+                  const _post = new Post.Class(id, data);
+                  postChanges.push({ type: action.type, post: _post });
+                });
+                obs.next(postChanges);
+              },
+              (err) => {
+                obs.error(err);
+              }
+            );
           });
-
-          observer.next(postSchemasMap);
-        },
-        (error) => {
-          observer.error(error);
-        }
-      );
-    });
+      }
+    );
   }
-
-  getTrendingPosts() {}
 
   /**
    * Top posts in the last 24 hours
@@ -86,15 +143,14 @@ export class DatabaseService {
     return new Observable<any>((observer) => {
       const twentyFourHoursInMilliSeconds = 24 * 60 * 60 * 1000;
       const yesterday = new Date(Date.now() - twentyFourHoursInMilliSeconds);
-      console.log("yesterday", yesterday);
       this.db
         .collection<Post.Schema>(
           "posts",
           (ref) =>
             ref
-              .where("time_posted", ">", yesterday)
-              .orderBy("time_posted", "desc")
+              //.where("time_posted", ">", yesterday)
               .orderBy("like_count", "desc")
+              .orderBy("time_posted", "desc")
               .limit(10)
           // TODO Pagination
         )

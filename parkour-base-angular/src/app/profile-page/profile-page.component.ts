@@ -48,7 +48,6 @@ export class ProfilePageComponent implements OnInit {
   }
 
   init() {
-    console.log("init");
     if (this.userId) {
       // clear info
       this.user = null;
