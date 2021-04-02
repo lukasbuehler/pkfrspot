@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute } from "@angular/router";
 import { Post } from "src/scripts/db/Post";
 import { User } from "src/scripts/db/User";
@@ -21,8 +22,14 @@ export class ProfilePageComponent implements OnInit {
   constructor(
     private _authService: AuthenticationService,
     private _databaseService: DatabaseService,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private _snackbar: MatSnackBar
   ) {}
+
+  profilePicture: string = "";
+  isMyProfile: boolean = false;
+  loadingFollowing: boolean = false;
+  isFollowing: boolean = false;
 
   ngOnInit(): void {
     this.userId = this._route.snapshot.paramMap.get("userID") || "";
@@ -46,33 +53,49 @@ export class ProfilePageComponent implements OnInit {
       // clear info
       this.user = null;
       this.postsFromUser = [];
+      this.profilePicture = "";
+      this.isMyProfile = this.userId === this._authService.uid;
+      this.isFollowing = false;
 
       // load stuff
       this.loadProfile(this.userId);
     }
   }
 
-  get profilePicture() {
-    return this.user.profilePicture;
-  }
-
-  get isMyProfile() {
-    return this.userId === this._authService.uid;
-  }
-
-  get isFollowing() {
-    // TODO
-    return null;
-  }
-
   loadProfile(userId: string) {
     this._databaseService.getUserById(userId).subscribe(
       (user) => {
         this.user = user;
-        console.log(user);
         this.isLoading = false;
 
+        // Load the profile picture of this user
+        this.profilePicture = this.user.profilePicture;
+
+        // Load all the posts from this user
         this.loadPostsForUser(userId);
+
+        // Check if this user follows the authenticated user
+
+        let myUserId = this._authService.uid;
+        if (myUserId) {
+          this.loadingFollowing = true;
+          this._databaseService
+            .isFollowingUser(myUserId, userId)
+            .then((isFollowing) => {
+              this.loadingFollowing = false;
+              this.isFollowing = isFollowing;
+            })
+            .catch((err) => {
+              this.loadingFollowing = false;
+              console.error(
+                "There was an error checking if you follow this user"
+              );
+              console.error(err);
+            });
+        }
+
+        // Load the groups of this user
+        // TODO
       },
       (err) => {
         console.error(err);
@@ -108,5 +131,58 @@ export class ProfilePageComponent implements OnInit {
       }
     );
     this.postsFromUserLoading = true;
+  }
+
+  followButtonClick() {
+    this.loadingFollowing = true;
+
+    if (this.user && !this.isMyProfile) {
+      if (this.isFollowing) {
+        // Already following this user, unfollow
+        this._databaseService
+          .unfollowUser(this._authService.uid, this.userId)
+          .then(() => {
+            this.isFollowing = false;
+            this.loadingFollowing = false;
+          })
+          .catch((err) => {
+            this.loadingFollowing = false;
+            this._snackbar.open(
+              "There was an error unfollowing the user!",
+              "OK",
+              {
+                verticalPosition: "bottom",
+                horizontalPosition: "center",
+              }
+            );
+          });
+      } else {
+        console.log(this.user.data);
+        // Not following this user, follow
+        this._databaseService
+          .followUser(
+            this._authService.uid,
+            this._authService.user.data,
+            this.userId,
+            this.user.data
+          )
+          .then(() => {
+            this.isFollowing = true;
+            this.loadingFollowing = false;
+          })
+          .catch((err) => {
+            console.error(err);
+            this.loadingFollowing = false;
+            this._snackbar.open(
+              "There was an error following the user!",
+              "OK",
+              {
+                verticalPosition: "bottom",
+                horizontalPosition: "center",
+              }
+            );
+          });
+      }
+    }
   }
 }

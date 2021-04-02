@@ -8,11 +8,20 @@ export module User {
       this.displayName = this._data.display_name;
       this.profilePicture = this._data.profile_picture;
 
+      // Start date
       if (this._data.start_date) {
         this.startTimeDiffString = moment(
           this._data.start_date.toDate()
         ).fromNow(true);
       }
+
+      // Followers
+      if (this._data.follower_count) {
+        this.followerCount = this._data.follower_count;
+      }
+
+      // Data
+      this.data = this._data;
     }
 
     public uid: string = "";
@@ -20,12 +29,14 @@ export module User {
     public profilePicture: string = "";
     public startTimeDiffString: string = "";
     public followerCount: number = 0;
+
+    public data: User.Schema = null;
   }
 
   export interface Schema {
     display_name: string;
     profile_picture?: string;
-    //full_name?: string;
+    follower_count?: number;
     start_date?: firebase.default.firestore.Timestamp;
     nationality?: string;
     verified_email: boolean;
@@ -38,5 +49,13 @@ export module User {
     display_name: string;
     profile_picture?: string;
     ref: firebase.default.firestore.DocumentReference;
+  }
+
+  export interface FollowingSchema {
+    // UID is not needed as it is the identifier of the following
+    display_name: string;
+    profile_picture?: string;
+
+    start_following?: firebase.default.firestore.Timestamp;
   }
 }

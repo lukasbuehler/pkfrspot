@@ -140,37 +140,34 @@ export class DatabaseService {
     });
   }
 
-  addLike(postId: string, userUID: string, newLike: Like.Schema) {
-    if (userUID !== newLike.user.uid) {
-      console.error("Schema user UID and given UID don't match!");
-      return;
-    }
+  addLike(
+    postId: string,
+    userUID: string,
+    newLike: Like.Schema
+  ): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (userUID !== newLike.user.uid) {
+        reject("The User ID and User ID on the like don't match!");
+      }
 
-    this.db
-      .collection<Like.Schema>(`posts/${postId}/likes`)
-      .doc(userUID)
-      .set(newLike)
-      .then(() => {
-        console.log("Added like on " + postId + " for " + userUID);
-      })
-      .catch((error) => {
-        console.error("Couldn't add like.", error);
-      });
+      this.db
+        .collection<Like.Schema>(`posts/${postId}/likes`)
+        .doc(userUID)
+        .set(newLike)
+        .then(() => {
+          resolve();
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
   }
 
-  removeLike(postId: string, userUID: string) {
-    this.db
+  removeLike(postId: string, userUID: string): Promise<void> {
+    return this.db
       .collection<Like.Schema>(`posts/${postId}/likes`)
       .doc(userUID)
-      .delete()
-      .then(() => {
-        console.log("Your like was removed successfully");
-      })
-      .catch((error) => {
-        console.error("Couldn't remove your like");
-        console.error(error);
-        console.log("Called with: ", postId, userUID);
-      });
+      .delete();
   }
 
   // Spots --------------------------------------------------------------------
@@ -356,8 +353,8 @@ export class DatabaseService {
   getUserById(userId) {
     return new Observable<User.Class>((observer) => {
       this.db
-        .collection<Spot.Schema>("users")
-        .doc<Spot.Schema>(userId)
+        .collection<User.Schema>("users")
+        .doc<User.Schema>(userId)
         .get()
         .subscribe(
           (snap) => {
@@ -368,6 +365,138 @@ export class DatabaseService {
             observer.error(err);
           }
         );
+    });
+  }
+
+  isFollowingUser(myUserId: string, otherUserId: string): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this.db
+        .collection<User.FollowingSchema>(`users/${myUserId}/following`)
+        .doc(otherUserId)
+        .get()
+        .subscribe(
+          (snap) => {
+            if (snap.exists) {
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          },
+          (err) => {
+            reject(err);
+          }
+        );
+    });
+  }
+
+  userIsFollowingYou(myUserId: string, otherUserId: string): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this.db
+        .collection<User.FollowingSchema>(`users/${myUserId}/followers`)
+        .doc(otherUserId)
+        .get()
+        .subscribe(
+          (snap) => {
+            if (snap.exists) {
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          },
+          (err) => {
+            reject(err);
+          }
+        );
+    });
+  }
+
+  /**
+   *
+   * @param myUserId
+   * @param otherUserId
+   * @param otherUserData
+   * @returns A promise of type void that resolves upon successful follow creation.
+   */
+  followUser(
+    myUserId: string,
+    myUserData: User.Schema,
+    otherUserId: string,
+    otherUserData: User.Schema
+  ): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (!myUserId) {
+        reject("Your User ID is empty");
+      }
+      if (!otherUserId) {
+        reject("The User ID of the user you want to follow is empty");
+      }
+      if (!otherUserData || !otherUserData.display_name) {
+        reject("The User data of the user you want to follow is not valid");
+      }
+
+      let followingData: User.FollowingSchema = {
+        display_name: otherUserData.display_name,
+        profile_picture: otherUserData.profile_picture || "",
+      };
+      let followerData: User.FollowingSchema = {
+        display_name: myUserData.display_name,
+        profile_picture: myUserData.profile_picture,
+      };
+      this.db
+        .collection<User.FollowingSchema>(`users/${myUserId}/following`)
+        .doc(otherUserId)
+        .set(followingData)
+        .then(() => {
+          // TODO Eventually this part should be handled by a cloud function
+          this.db
+            .collection<User.FollowingSchema>(`users/${otherUserId}/followers`)
+            .doc(myUserId)
+            .set(followerData)
+            .then(() => {
+              // Now we can resolve it
+              resolve();
+            })
+            .catch((err) => {
+              console.error(
+                "Error on setting the following data on the other user"
+              );
+              reject(err);
+            });
+        })
+        .catch((err) => {
+          console.error("Error while setting the following data on my User");
+          reject(err);
+        });
+    });
+  }
+
+  unfollowUser(myUserId: string, otherUserId: string) {
+    return new Promise<void>((resolve, reject) => {
+      this.db
+        .collection<User.FollowingSchema>(`users/${myUserId}/following`)
+        .doc(otherUserId)
+        .delete()
+        .then(() => {
+          // Now delete it from the follower list as well
+          this.db
+            .collection<User.FollowingSchema>(`users/${otherUserId}/followers`)
+            .doc(myUserId)
+            .delete()
+            .then(() => {
+              // Now we can resolve it
+              resolve();
+            })
+            .catch((err) => {
+              console.error(
+                "Error deleting my user from the other users followers list"
+              );
+              reject(err);
+            });
+        })
+        .catch((err) => {
+          console.error("Error deleting the other user from my following list");
+          reject(err);
+        });
     });
   }
 }

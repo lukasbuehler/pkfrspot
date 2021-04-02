@@ -89,26 +89,51 @@ export class PostComponent implements OnInit {
           this.post.like();
 
           // save the like
-          this._databaseService.addLike(
-            this.post.id,
-            this._authenticationService.uid,
-            {
+          this._databaseService
+            .addLike(this.post.id, this._authenticationService.uid, {
               time: firebase.default.firestore.Timestamp.now(),
               user: {
                 uid: this._authenticationService.uid,
               },
-            }
-          );
+            })
+            .then(() => {
+              // The like was sucessfully added
+              // Do nothing
+            })
+            .catch((err) => {
+              // There was an error adding the like
+              this._snackbar.open(
+                "Your like could not be cast! " + err,
+                "Dismiss",
+                {
+                  duration: 5000,
+                  horizontalPosition: "center",
+                  verticalPosition: "bottom",
+                }
+              );
+            });
         } else {
           // show the unlike
           this.likedByUser = false;
           this.post.unlike();
 
           // save the unlike
-          this._databaseService.removeLike(
-            this.post.id,
-            this._authenticationService.uid
-          );
+          this._databaseService
+            .removeLike(this.post.id, this._authenticationService.uid)
+            .then(() => {
+              console.log("Your like was removed successfully");
+            })
+            .catch((err) => {
+              this._snackbar.open(
+                "Your like could not be removed! " + err,
+                "Dismiss",
+                {
+                  duration: 5000,
+                  horizontalPosition: "center",
+                  verticalPosition: "bottom",
+                }
+              );
+            });
         }
       }
     } else {

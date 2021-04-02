@@ -34,8 +34,21 @@ service cloud.firestore {
     match /users/{userId} 
     {
       // all users and their profiles are currently public
-      allow read: if request.auth != null;
-      allow write: if request.auth.uid == userId;
+      allow read: if true;
+      // It is not allowed to update the follower_count. This is handled by a cloud function.
+      allow write: if request.auth.uid == userId && !('follower_count' in request.resource.data);
+
+      match /following/{otherUserId} {
+        // A user can only see and update his own following
+        allow read: if request.auth.uid == userId;
+        allow write: if request.auth.uid == userId;
+      }
+      match /followers/{otherUserId} {
+        // A user can only see his own followers
+        allow read: if request.auth.uid == userId;
+        // TODO write cloud function to handle updating followers and remove this permission to write.
+        allow write: if request.auth.uid == otherUserId;
+      }
     }
   }
 }

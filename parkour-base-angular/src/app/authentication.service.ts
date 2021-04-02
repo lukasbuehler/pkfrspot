@@ -5,6 +5,7 @@ import { rejects } from "assert";
 import * as firebase from "firebase/app";
 import { Observable } from "rxjs";
 import { map, filter, tap } from "rxjs/operators";
+import { User } from "src/scripts/db/User";
 import { DatabaseService } from "./database.service";
 
 @Injectable({
@@ -22,7 +23,7 @@ export class AuthenticationService {
   }
 
   private _currentFirebaseUser: firebase.default.User = null;
-  private _currentUserData = null;
+  public user: User.Class = null;
 
   get isSignedIn(): boolean {
     if (this._currentFirebaseUser) {
@@ -33,10 +34,6 @@ export class AuthenticationService {
 
   get state$(): Observable<firebase.default.User> {
     return this.angularFireAuth.authState;
-  }
-
-  get user() {
-    return this._currentFirebaseUser;
   }
 
   get uid() {
@@ -64,9 +61,17 @@ export class AuthenticationService {
     return this._currentFirebaseUser.photoURL;
   }
 
-  firebaseAuthChangeListener = (user: firebase.default.User) => {
-    if (user) {
-      this._currentFirebaseUser = user;
+  firebaseAuthChangeListener = (firebaseUser: firebase.default.User) => {
+    if (firebaseUser) {
+      this._currentFirebaseUser = firebaseUser;
+      this._databaseService.getUserById(firebaseUser.uid).subscribe(
+        (_user) => {
+          this.user = _user;
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
     } else {
       this._currentFirebaseUser = null;
     }

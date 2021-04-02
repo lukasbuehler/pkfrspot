@@ -41,32 +41,50 @@
                 </h3>
               </div>
               <h3 class="mat-h3">
-                <b>{{ user.followerCount }}</b> Followers
+                <b>{{ user.followerCount }}</b> Follower{{
+                  user.followerCount === 1 ? "" : "s"
+                }}
               </h3>
-              <div *ngIf="!isMyProfile" class="d-flex flex-row">
+              <div
+                *ngIf="!isMyProfile"
+                class="profileButtonRow d-flex flex-row"
+              >
                 <button
                   mat-flat-button
                   [color]="isFollowing ? 'primary' : 'accent'"
-                  class="flex-fill"
+                  class="d-flex justify-content-center align-items-center align-middle"
+                  (click)="followButtonClick()"
                 >
+                  <mat-spinner
+                    *ngIf="loadingFollowing"
+                    diameter="24"
+                    class="float-left followingSpinner mr-2"
+                  ></mat-spinner>
                   {{ isFollowing ? "Unfollow" : "Follow" }}
                 </button>
-                <button
-                  mat-stroked-button
-                  color="default"
-                  class="mx-3 flex-fill"
-                >
-                  Contact
-                </button>
-                <button mat-stroked-button color="default" class="flex-fill">
-                  Report
+                <button mat-stroked-button color="default">Contact</button>
+                <button mat-stroked-button color="default">
+                  Block / Report
                 </button>
               </div>
-              <div *ngIf="isMyProfile" class="d-flex flex-row">
+              <div *ngIf="isMyProfile" class="profileButtonRow d-flex flex-row">
+                <button
+                  mat-flat-button
+                  color="primary"
+                  [routerLink]="'/u/' + userId + '/followers'"
+                >
+                  View Followers
+                </button>
+                <button
+                  mat-flat-button
+                  color="primary"
+                  [routerLink]="'/u/' + userId + '/following'"
+                >
+                  View Following
+                </button>
                 <button
                   mat-stroked-button
                   color="default"
-                  class="flex-fill"
                   [routerLink]="'/u/' + userId + '/edit'"
                 >
                   Edit Profile

@@ -4,3 +4,19 @@
   border-radius: 50%;
   background-color: lightgrey;
 }
+
+.followingSpinner {
+  margin-top: 6px;
+}
+::ng-deep .followingSpinner circle {
+  stroke: white;
+}
+
+.profileButtonRow {
+  margin-right: -5px;
+  button {
+    flex-grow: 1;
+    flex-basis: 0;
+    margin-right: 5px;
+  }
+}

@@ -45,7 +45,7 @@
     />
     <mat-icon *ngIf="!authService.isSignedIn">person_outline</mat-icon>
     {{
-      authService.isSignedIn && authService.user
+      authService.isSignedIn && authService.user?.displayName
         ? authService.user.displayName
         : ""
     }}
