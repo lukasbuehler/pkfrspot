@@ -1,0 +1,25 @@
+<div class="container p-4">
+  <div class="row">
+    <div class="col-md-3">Menu here</div>
+    <div *ngIf="user" class="col-md-9 d-flex flex-column">
+      <!-- Basic profile properties -->
+      <mat-form-field appearance="outline">
+        <mat-label>Display Name</mat-label>
+        <input matInput type="text" [value]="user.displayName" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>E-mail address</mat-label>
+        <input matInput type="text" [value]="authService.email" />
+        <mat-icon matSuffix>verified</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Start Date</mat-label>
+        <input matInput [matDatepicker]="picker" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+</div>

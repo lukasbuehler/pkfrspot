@@ -41,9 +41,11 @@
                 </h3>
               </div>
               <h3 class="mat-h3">
-                <app-fancy-counter
-                  [number]="user.followerCount || 0"
-                ></app-fancy-counter>
+                <b>
+                  <app-fancy-counter
+                    [number]="user.followerCount || 0"
+                  ></app-fancy-counter
+                ></b>
                 Follower{{ user.followerCount === 1 ? "" : "s" }}
               </h3>
               <div
@@ -86,7 +88,7 @@
                 <button
                   mat-stroked-button
                   color="default"
-                  [routerLink]="'/u/' + userId + '/edit'"
+                  routerLink="/settings/profile"
                 >
                   Edit Profile
                 </button>

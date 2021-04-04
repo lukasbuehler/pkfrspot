@@ -15,6 +15,8 @@ export class AuthenticationService {
   // Public properties
   public isSignedIn: boolean = false;
   public uid: string = "";
+  public email: string = "";
+  public emailVerified: boolean = false;
 
   /**
    * The user from the database corresponding to the currently authenticated user
@@ -45,6 +47,8 @@ export class AuthenticationService {
       this._currentFirebaseUser = firebaseUser;
       this.isSignedIn = true;
       this.uid = firebaseUser.uid;
+      this.email = firebaseUser.email;
+      this.emailVerified = firebaseUser.emailVerified;
 
       this._databaseService.getUserById(firebaseUser.uid).subscribe(
         (_user) => {

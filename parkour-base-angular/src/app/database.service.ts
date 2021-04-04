@@ -584,10 +584,18 @@ export class DatabaseService {
       let followingData: User.FollowingSchema = {
         display_name: otherUserData.display_name,
         profile_picture: otherUserData.profile_picture || "",
+        start_following: new firebase.default.firestore.Timestamp(
+          Date.now() / 1000,
+          0
+        ),
       };
       let followerData: User.FollowingSchema = {
         display_name: myUserData.display_name,
         profile_picture: myUserData.profile_picture,
+        start_following: new firebase.default.firestore.Timestamp(
+          Date.now() / 1000,
+          0
+        ),
       };
       this.db
         .collection<User.FollowingSchema>(`users/${myUserId}/following`)

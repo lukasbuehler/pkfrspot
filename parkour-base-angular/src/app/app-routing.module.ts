@@ -15,6 +15,7 @@ import { SpotDetailComponent } from "./spot-detail/spot-detail.component";
 import { SignUpPageComponent } from "./sign-up-page/sign-up-page.component";
 import { TermsOfServiceComponent } from "./terms-of-service/terms-of-service.component";
 import { PrivacyPolicyComponent } from "./privacy-policy/privacy-policy.component";
+import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 
 const routes: Routes = [
   // Home page and posts (displays posts and updates)
@@ -38,9 +39,12 @@ const routes: Routes = [
 
   // Profiles and sign-in flow
   { path: "u/:userID", component: ProfilePageComponent },
-  //{ path: "u/:userID/edit", component: EditProfilePageComponent },
   { path: "sign-in", component: SignInPageComponent },
   { path: "sign-up", component: SignUpPageComponent },
+
+  // Settings
+  // { path: "settings", component: SettingsPageComponent },
+  { path: "settings/profile", component: EditProfileComponent },
 
   // Other
   { path: "about", component: AboutPageComponent },

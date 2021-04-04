@@ -49,6 +49,8 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatTableModule } from "@angular/material/table";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from "@angular/material/core";
 
 import { PlyrModule } from "ngx-plyr";
 import { AngularResizedEventModule } from "angular-resize-event";
@@ -83,7 +85,7 @@ import {
   FollowDurationPipe,
   FollowListComponent,
 } from "./follow-list/follow-list.component";
-import { EditProfilePageComponent } from "./edit-profile-page/edit-profile-page.component";
+import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 
 @NgModule({
   declarations: [
@@ -114,7 +116,7 @@ import { EditProfilePageComponent } from "./edit-profile-page/edit-profile-page.
     TermsOfServiceComponent,
     PrivacyPolicyComponent,
     FollowListComponent,
-    EditProfilePageComponent,
+    EditProfileComponent,
 
     FollowDurationPipe,
   ],
@@ -164,6 +166,8 @@ import { EditProfilePageComponent } from "./edit-profile-page/edit-profile-page.
     MatSnackBarModule,
     MatChipsModule,
     MatTableModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
 
     PlyrModule,
     AngularResizedEventModule,
