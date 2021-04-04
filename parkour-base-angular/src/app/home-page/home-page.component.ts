@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { DatabaseService } from "src/app/database.service";
 import { Post } from "src/scripts/db/Post";
 import { PostCollectionComponent } from "../post-collection/post-collection.component";
@@ -11,20 +11,22 @@ import { AuthenticationService } from "../authentication.service";
 import { Spot } from "src/scripts/db/Spot";
 import { MediaType } from "src/scripts/db/Interfaces";
 import { DocumentChangeType } from "@angular/fire/firestore";
+import { Observable, Subscription } from "rxjs";
 
 @Component({
   selector: "app-home-page",
   templateUrl: "./home-page.component.html",
   styleUrls: ["./home-page.component.scss"],
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent implements OnInit, OnDestroy {
   constructor(
-    private _authService: AuthenticationService,
+    public authService: AuthenticationService,
     private _dbService: DatabaseService,
     private _storageService: StorageService,
     public dialog: MatDialog
   ) {}
 
+  private _updatesSubscription: Subscription = null;
   updatePosts: Post.Class[] = [];
   todaysTopPosts: Post.Class[] = [];
   loadingUpdates: boolean = false;
@@ -38,70 +40,84 @@ export class HomePageComponent implements OnInit {
   updateCollection: PostCollectionComponent;
 
   ngOnInit() {
-    this._authService.state$.subscribe(
+    // Load the top posts
+    this.getTodaysTopPosts();
+
+    if (this.authService.isSignedIn) {
+      this._subscribeToUpdates(this.authService.uid);
+    }
+    this.authService.authState$.subscribe(
       (user) => {
+        console.log("User, changed, getting new updates");
+        this.updatePosts = [];
+
         if (user) {
-          this.isUserSignedIn = true;
-          this.getUpdates();
+          this._subscribeToUpdates(user.uid);
         } else {
-          this.isUserSignedIn = false;
+          this._unsubscribeFromUpdates();
         }
       },
-      (error) => {
-        console.error(error);
+      (err) => {
+        console.error("Could not get user", err);
       }
     );
+  }
 
-    this.getTodaysTopPosts();
+  ngOnDestroy() {
+    this._unsubscribeFromUpdates();
   }
 
   getMorePosts() {
     // get More posts
   }
 
-  getUpdates() {
-    const userId = this._authService.uid;
+  public _unsubscribeFromUpdates() {
+    this._updatesSubscription.unsubscribe();
+  }
+
+  private _subscribeToUpdates(userId: string) {
     if (userId) {
       this.loadingUpdates = true;
-      this._dbService.getPostUpdates(userId).subscribe(
-        (changes: { type: DocumentChangeType; post: Post.Class }[]) => {
-          this.loadingUpdates = false;
-          changes.forEach((change) => {
-            console.log(change.type);
-            console.log(change.post);
 
-            const index2 = this.updatePosts.findIndex((post, index, obj) => {
-              return post.id === change.post.id;
-            });
-            if (index2 >= 0) {
-              // the document already exists already in this array
-              this.updatePosts[index2].updateData(change.post.getData());
-            } else {
-              // create and add new Post
-              this.updatePosts.push(change.post);
-              this.updatePosts.sort((a, b) => {
-                return b.timePosted.getTime() - a.timePosted.getTime();
+      if (this._updatesSubscription && !this._updatesSubscription.closed) {
+        // The subscription is still open, but we are requesting a new one.
+        console.warn(
+          "There is already an open subscription to user updates but a new one was requested. Closing and opening a new one..."
+        );
+        this._unsubscribeFromUpdates();
+      }
+
+      this._updatesSubscription = this._dbService
+        .getPostUpdates(userId)
+        .subscribe(
+          (changes: { type: DocumentChangeType; post: Post.Class }[]) => {
+            this.loadingUpdates = false;
+            changes.forEach((change) => {
+              const index2 = this.updatePosts.findIndex((post, index, obj) => {
+                return post.id === change.post.id;
               });
-            }
-
-            /*
-                const index = this.updatePosts.findIndex((post, index, obj) => {
-                  return post.id === change.post.id;
+              if (index2 >= 0) {
+                // the document already exists already in this array
+                this.updatePosts[index2].updateData(change.post.getData());
+              } else {
+                // create and add new Post
+                this.updatePosts.push(change.post);
+                this.updatePosts.sort((a, b) => {
+                  return b.timePosted.getTime() - a.timePosted.getTime();
                 });
-                if (index >= 0) {
-                  this.updatePosts.splice(index, 1);
-                }
-                */
-          });
-        },
-        (error) => {
-          this.loadingUpdates = false;
-          console.error(error);
-        },
-        () => {
-          this.loadingUpdates = false;
-        } // complete
-      );
+              }
+            });
+          },
+          (error) => {
+            this.loadingUpdates = false;
+            console.error(error);
+          },
+          () => {
+            this.loadingUpdates = false;
+          } // complete
+        );
+    } else {
+      console.warn("Error subscribing to updates. User ID is invalid");
     }
   }
 
@@ -177,9 +193,9 @@ export class HomePageComponent implements OnInit {
       body: body,
       time_posted: firebase.default.firestore.Timestamp.now(),
       user: {
-        uid: this._authService.uid,
-        display_name: this._authService.user.displayName,
-        ref: this._dbService.docRef("users/" + this._authService.uid),
+        uid: this.authService.uid,
+        display_name: this.authService.user.displayName,
+        ref: this._dbService.docRef("users/" + this.authService.uid),
       },
     };
 

@@ -97,13 +97,9 @@ export class SpotDetailComponent implements OnInit {
     this.addBoundsClick.emit();
   }
 
-  focusClick() {
-    console.log("focus clicked");
-  }
+  focusClick() {}
 
-  rateClick() {
-    console.log("rate clicked");
-  }
+  rateClick() {}
 
   setSpotImage(file: File) {
     console.log("setting image");

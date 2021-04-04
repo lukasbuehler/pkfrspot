@@ -3,8 +3,30 @@ import * as moment from "moment";
 
 export module User {
   export class Class {
+    public uid: string = "";
+    public displayName: string = "";
+    public profilePicture: string = "";
+    public startTimeDiffString: string = "";
+    public followerCount: number = 0;
+
+    public data: User.Schema = null;
+
     constructor(private _uid: string, private _data: User.Schema) {
       this.uid = this._uid;
+      this._updateData();
+    }
+
+    public setUserData(data: User.Schema) {
+      this._data = data;
+      this._updateData();
+    }
+
+    public setProfilePicture(url: string) {
+      this._data.profile_picture = url;
+      this._updateData();
+    }
+
+    private _updateData() {
       this.displayName = this._data.display_name;
       this.profilePicture = this._data.profile_picture;
 
@@ -23,14 +45,6 @@ export module User {
       // Data
       this.data = this._data;
     }
-
-    public uid: string = "";
-    public displayName: string = "";
-    public profilePicture: string = "";
-    public startTimeDiffString: string = "";
-    public followerCount: number = 0;
-
-    public data: User.Schema = null;
   }
 
   export interface Schema {

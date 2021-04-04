@@ -169,7 +169,6 @@ export class EditPostDialogComponent implements AfterViewInit {
   }
 
   close() {
-    console.log(this.postSpot);
     this.dialogRef.close();
   }
 
@@ -178,7 +177,6 @@ export class EditPostDialogComponent implements AfterViewInit {
       let findSpot = this.filteredSpots.find((spot) => {
         return spot.id === value;
       });
-      console.log(findSpot);
       if (findSpot) {
         this.postSpot = findSpot;
         return;

@@ -73,11 +73,7 @@
     <mat-icon>face</mat-icon>
     <span>My Profile</span>
   </a>
-  <button
-    *ngIf="authService.isSignedIn"
-    mat-menu-item
-    (click)="authService.logUserOut()"
-  >
+  <button *ngIf="authService.isSignedIn" mat-menu-item (click)="logUserOut()">
     <mat-icon>logout</mat-icon>
     <span>Logout</span>
   </button>

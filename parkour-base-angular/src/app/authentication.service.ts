@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { rejects } from "assert";
 import * as firebase from "firebase/app";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { map, filter, tap } from "rxjs/operators";
 import { User } from "src/scripts/db/User";
 import { DatabaseService } from "./database.service";
@@ -12,87 +12,93 @@ import { DatabaseService } from "./database.service";
   providedIn: "root",
 })
 export class AuthenticationService {
+  // Public properties
+  public isSignedIn: boolean = false;
+  public uid: string = "";
+
+  /**
+   * The user from the database corresponding to the currently authenticated user
+   */
+  public user: User.Class = null;
+  public userProfilePic: string = "";
+
+  public authState$: Subject<User.Class> = new Subject();
+
   constructor(
     public angularFireAuth: AngularFireAuth,
     private _databaseService: DatabaseService
   ) {
-    angularFireAuth.authState.subscribe(
+    this.angularFireAuth.authState.subscribe(
       this.firebaseAuthChangeListener,
       this.firebaseAuthChangeError
     );
   }
 
   private _currentFirebaseUser: firebase.default.User = null;
-  public user: User.Class = null;
 
-  get isSignedIn(): boolean {
-    if (this._currentFirebaseUser) {
-      return true;
-    }
-    return false;
-  }
-
-  get state$(): Observable<firebase.default.User> {
-    return this.angularFireAuth.authState;
-  }
-
-  get uid() {
-    if (!this._currentFirebaseUser) {
-      return "";
-    }
-
-    return this._currentFirebaseUser.uid;
-  }
-
-  get uid$() {
-    return this.state$.pipe(
-      //filter((fireUser) => fireUser.uid !== this.uid),
-      map((user) => {
-        return user?.uid;
-      })
-    );
-  }
-
-  get userProfilePic() {
-    if (!this._currentFirebaseUser) {
-      return "";
-    }
-
-    return this._currentFirebaseUser.photoURL;
-  }
-
-  firebaseAuthChangeListener = (firebaseUser: firebase.default.User) => {
+  private firebaseAuthChangeListener = (
+    firebaseUser: firebase.default.User
+  ) => {
+    // Auth state changed
     if (firebaseUser) {
+      // If we have a firebase user, we are signed in.
       this._currentFirebaseUser = firebaseUser;
+      this.isSignedIn = true;
+      this.uid = firebaseUser.uid;
+
       this._databaseService.getUserById(firebaseUser.uid).subscribe(
         (_user) => {
           this.user = _user;
+          this.userProfilePic = _user.profilePicture;
+
+          this.authState$.next(_user);
+
+          // TODO This is not so nice
+          if (!_user.profilePicture && firebaseUser.photoURL) {
+            // There is no profile picture in the database, use the photo from the firebase user and save it in the database.
+            _user.setProfilePicture(firebaseUser.photoURL);
+            this._databaseService
+              .updateUser(_user.uid, _user.data)
+              .then(() => {
+                // Successfully updated the user data with the new profile picture
+              })
+              .catch((err) => {
+                // There was an error updating the profile picture
+              });
+          }
         },
         (err) => {
           console.error(err);
         }
       );
     } else {
+      // We don't have a firebase user, we are not signed in
       this._currentFirebaseUser = null;
+      this.isSignedIn = false;
+      this.uid = "";
+
+      this.authState$.next(null);
     }
   };
 
-  firebaseAuthChangeError = (error: any) => {
+  private firebaseAuthChangeError = (error: any) => {
     console.error(error);
   };
 
-  signInEmailPassword(email, password) {
+  public signInEmailPassword(email, password) {
     return new Promise<firebase.default.auth.UserCredential>(
       (resolve, reject) => {
         this.angularFireAuth.signInWithEmailAndPassword(email, password).then(
-          (res) => resolve(res),
+          (res) => {
+            resolve(res);
+          },
           (err) => reject(err)
         );
       }
     );
   }
 
-  signInGoogle() {
+  public signInGoogle() {
     return new Promise<any>((resolve, reject) => {
       let provider = new firebase.default.auth.GoogleAuthProvider();
       provider.addScope("email");
@@ -108,15 +114,15 @@ export class AuthenticationService {
     });
   }
 
-  logUserOut(callback: () => void) {
-    this.angularFireAuth.signOut();
+  public logUserOut(): Promise<void> {
+    return this.angularFireAuth.signOut();
   }
 
-  createAccount(email, password, displayName) {
+  public createAccount(email, confirmedPassword, displayName) {
     return new Promise<firebase.default.auth.UserCredential>(
       (resolve, reject) => {
         this.angularFireAuth
-          .createUserWithEmailAndPassword(email, password)
+          .createUserWithEmailAndPassword(email, confirmedPassword)
           .then(
             (res) => {
               // Set the user chose Display name

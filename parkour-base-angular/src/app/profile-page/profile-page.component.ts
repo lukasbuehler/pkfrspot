@@ -36,9 +36,7 @@ export class ProfilePageComponent implements OnInit {
     this.init();
 
     this._route.paramMap.subscribe((map) => {
-      console.log("Map updated");
       let _userId = map.get("userID");
-      console.log(_userId);
 
       if (_userId) {
         this.userId = _userId || "";
@@ -156,7 +154,6 @@ export class ProfilePageComponent implements OnInit {
             );
           });
       } else {
-        console.log(this.user.data);
         // Not following this user, follow
         this._databaseService
           .followUser(

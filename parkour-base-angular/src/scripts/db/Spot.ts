@@ -12,54 +12,63 @@ import { Observable } from "rxjs";
 
 export module Spot {
   export class Class {
+    public readonly id: string = "";
+    public name: string = "";
+    public isMiniSpot: boolean = false;
+    public rating: number = null;
+    public description: string = "";
+    public hasMedia: boolean = false;
+    public previewImage: string = "";
+    public media: ContributedMedia[] = null;
+    public type: string = "";
+    public area: string = "";
+
+    public paths = [];
+
+    public data: Spot.Schema = null;
+
     constructor(
       private _id: string,
       private _data: Spot.Schema,
-      isNotForMap?: boolean
+      private _isNotForMap?: boolean
     ) {
-      if (this.hasBounds()) {
-        this._paths = this._makePathsFromBounds(_data.bounds);
+      this.id = _id;
+      this._updateData();
+    }
+
+    private _updateData() {
+      this.name = this._data.name?.de_CH || "Unnamed";
+      this.isMiniSpot = this._data.isMiniSpot;
+      this.rating = this._data.rating;
+      this.description =
+        this._data.description?.en_GB || "Description goes here";
+
+      // Media
+      this.hasMedia = this._data.media && this._data.media.length > 0;
+      if (this.hasMedia && this._data.media[0].type === MediaType.Image) {
+        this.previewImage = this.getMediaByIndex(0).src;
       }
-      if (_data.location && !isNotForMap) {
+      this.media = this._data.media;
+
+      this.type = this._data.type;
+      this.area = this._data.area;
+
+      this.data = this._data;
+
+      if (this.hasBounds()) {
+        this.paths = this._makePathsFromBounds(this._data.bounds);
+      }
+      if (this._data.location && !this._isNotForMap) {
         this.setTileCoordinates();
       }
     }
 
-    get name(): string {
-      return this._data.name.de_CH || "Unnamed";
-    }
-    set name(newName) {
+    public setName(newName: string) {
       this._data.name.de_CH = newName;
+      this._updateData();
     }
 
-    get isMiniSpot(): boolean {
-      return this._data.isMiniSpot;
-    }
-
-    get rating(): number {
-      return this._data.rating;
-    }
-
-    get description(): string {
-      return this._data.description?.en_GB || "Description goes here";
-    }
-
-    get hasMedia() {
-      return this._data.media && this._data.media.length > 0;
-    }
-
-    get previewImage(): string {
-      if (this.hasMedia && this._data.media[0].type === MediaType.Image) {
-        return this.getMediaByIndex(0).src;
-      }
-      return "";
-    }
-
-    get media() {
-      return this._data.media;
-    }
-
-    getMediaByIndex(index: number) {
+    public getMediaByIndex(index: number) {
       return this._data.media[index];
     }
 
@@ -69,37 +78,20 @@ export module Spot {
       }
 
       this._data.media.push({ src: src, type: type, uid: uid });
+      this._updateData();
     }
 
-    get type(): string {
-      return this._data.type;
-    }
-    set type(newType) {
+    setType(newType) {
       this._data.type = newType;
     }
 
-    get area(): string {
-      return this._data.area;
-    }
-    set area(newArea) {
+    setArea(newArea) {
       this._data.area = newArea;
     }
 
-    private _paths = [];
-    get paths() {
-      return this._paths;
-    }
-    set paths(paths) {
-      this._paths = paths;
+    setPpaths(paths) {
+      this.paths = paths;
       this._data.bounds = this._makeBoundsFromPaths(paths);
-    }
-
-    get id() {
-      return this._id;
-    }
-
-    get data() {
-      return this._data;
     }
 
     get location(): google.maps.LatLngLiteral {

@@ -71,6 +71,7 @@ export class DatabaseService {
             // add the currently authenticated user to the Ids
             // We want to see our own posts as well
             allFollowingsIds.unshift(userId);
+            console.log(allFollowingsIds);
 
             if (allFollowingsIds.length === 0) {
               // This user doesn't follow anyone, just complete the observable.
@@ -117,8 +118,6 @@ export class DatabaseService {
                   post: Post.Class;
                 }[] = [];
                 changeActions.forEach((action) => {
-                  console.log(action.type);
-                  console.log(action.payload.type);
                   const id = action.payload.doc.id;
                   const data = action.payload.doc.data();
                   const _post = new Post.Class(id, data);
@@ -496,6 +495,23 @@ export class DatabaseService {
         );
     });
   }
+
+  updateUser(userId: string, _data: User.Schema, _merge: boolean = false) {
+    return new Promise<void>((resolve, reject) => {
+      this.db
+        .collection<User.Schema>("users")
+        .doc(userId)
+        .set(_data, { merge: _merge })
+        .then(() => resolve())
+        .catch((err) => reject(err));
+    });
+  }
+
+  deleteUser() {
+    // TODO
+  }
+
+  // Following
 
   isFollowingUser(myUserId: string, otherUserId: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {

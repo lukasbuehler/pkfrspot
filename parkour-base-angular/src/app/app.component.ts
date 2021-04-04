@@ -14,26 +14,18 @@ export class AppComponent implements OnInit {
   ) {}
 
   hasAds = window["canRunAds"];
-  wasSignedIn = false;
 
   ngOnInit() {
-    this.authService.state$.subscribe(
+    this.authService.authState$.subscribe(
       (user) => {
         if (user) {
-          this.wasSignedIn = true;
-          this._snackbar.open(`Welcome ${user.displayName}!`, "", {
+          this._snackbar.open(`Welcome ${user.displayName}!`, "Dismiss", {
             duration: 2000,
             horizontalPosition: "center",
             verticalPosition: "bottom",
           });
         } else {
-          if (this.wasSignedIn) {
-            this._snackbar.open("You have been signed out!", "", {
-              duration: 2000,
-              horizontalPosition: "center",
-              verticalPosition: "bottom",
-            });
-          }
+          // User is not signed in
         }
       },
       (error) => {
@@ -96,4 +88,29 @@ export class AppComponent implements OnInit {
       },
     ],
   };
+
+  logUserOut() {
+    this.authService
+      .logUserOut()
+      .then(() => {
+        // Successfully logged out
+        this._snackbar.open("You were successfully signed out!", "OK", {
+          duration: 2000,
+          horizontalPosition: "center",
+          verticalPosition: "bottom",
+        });
+      })
+      .catch((err) => {
+        // There was an error logging out.
+        this._snackbar.open(
+          "Error, there was a problem signing out!",
+          "Dismiss",
+          {
+            duration: 5000,
+            horizontalPosition: "center",
+            verticalPosition: "bottom",
+          }
+        );
+      });
+  }
 }

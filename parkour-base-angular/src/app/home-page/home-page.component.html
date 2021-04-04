@@ -39,7 +39,7 @@
 </div>
 
 <button
-  *ngIf="isUserSignedIn"
+  *ngIf="authService.isSignedIn"
   mat-fab
   #createFab
   id="createFab"

@@ -45,27 +45,18 @@ export class PostComponent implements OnInit {
 
     // Check if posts are liked by the user if a user is authenticated, every time the uid changes
 
-    this._authenticationService.uid$.subscribe(
-      (uid) => {
-        if (uid) {
-          this.currentlyAuthenticatedUserId = this._authenticationService.uid;
+    if (this._authenticationService.uid) {
+      this.currentlyAuthenticatedUserId = this._authenticationService.uid;
 
-          this._databaseService
-            .userHasLikedPost(this.post.id, uid)
-            .then((bool) => {
-              this.likedByUser = bool;
-            })
-            .catch((err) => {
-              console.error(err);
-            });
-        } else {
-          this.likedByUser = false;
-        }
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
+      this._databaseService
+        .userHasLikedPost(this.post.id, this.currentlyAuthenticatedUserId)
+        .then((bool) => {
+          this.likedByUser = bool;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   }
 
   onResized(event: ResizedEvent) {

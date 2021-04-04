@@ -42,13 +42,13 @@ service cloud.firestore {
       match /following/{otherUserId} {
         // A user can only see and update his own following
         allow read: if request.auth.uid == userId;
-        allow write: if request.auth.uid == userId;
+        allow write: if request.auth.uid == userId && request.auth.uid != otherUserId;
       }
       match /followers/{otherUserId} {
         // A user can only see his own followers
         allow read: if request.auth.uid == userId;
         // TODO write cloud function to handle updating followers and remove this permission to write.
-        allow write: if request.auth.uid == otherUserId;
+        allow write: if request.auth.uid == otherUserId && request.auth.uid != userId;
       }
     }
   }

@@ -67,8 +67,6 @@ export function regexValidator(): ValidatorFn {
       isValid = false;
     }
 
-    console.log(regexStr, "isValid: ", isValid);
-
     return !isValid ? { invalidRegex: { value: control.value } } : null;
   };
 }
