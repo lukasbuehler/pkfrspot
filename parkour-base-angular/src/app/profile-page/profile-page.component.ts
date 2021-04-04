@@ -1,10 +1,12 @@
 import { Component, OnInit } from "@angular/core";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute } from "@angular/router";
 import { Post } from "src/scripts/db/Post";
 import { User } from "src/scripts/db/User";
 import { AuthenticationService } from "../authentication.service";
 import { DatabaseService } from "../database.service";
+import { FollowListComponent } from "../follow-list/follow-list.component";
 
 @Component({
   selector: "app-profile-page",
@@ -20,6 +22,7 @@ export class ProfilePageComponent implements OnInit {
   postsFromUserLoading: boolean = false;
 
   constructor(
+    public followListDialog: MatDialog,
     private _authService: AuthenticationService,
     private _databaseService: DatabaseService,
     private _route: ActivatedRoute,
@@ -30,6 +33,18 @@ export class ProfilePageComponent implements OnInit {
   isMyProfile: boolean = false;
   loadingFollowing: boolean = false;
   isFollowing: boolean = false;
+
+  private dialogConfig: MatDialogConfig = {
+    autoFocus: true,
+    restoreFocus: true,
+    disableClose: false,
+    hasBackdrop: true,
+    width: "600px",
+    maxWidth: "95%",
+    maxHeight: "80%",
+  };
+
+  private lastLoadedFollowing: firebase.default.firestore.Timestamp;
 
   ngOnInit(): void {
     this.userId = this._route.snapshot.paramMap.get("userID") || "";
@@ -43,18 +58,27 @@ export class ProfilePageComponent implements OnInit {
         this.init();
       }
     });
+
+    this._authService.authState$.subscribe((user) => {
+      if (user) {
+        this.isMyProfile = this.userId === user.uid;
+      } else {
+        this.isMyProfile = false;
+        this.isFollowing = false;
+      }
+    });
   }
 
   init() {
-    if (this.userId) {
-      // clear info
-      this.user = null;
-      this.postsFromUser = [];
-      this.profilePicture = "";
-      this.isMyProfile = this.userId === this._authService.uid;
-      this.isFollowing = false;
+    // clear info
+    this.user = null;
+    this.postsFromUser = [];
+    this.profilePicture = "";
+    this.isFollowing = false;
 
+    if (this.userId) {
       // load stuff
+      this.isMyProfile = this.userId === this._authService.uid;
       this.loadProfile(this.userId);
     }
   }
@@ -179,6 +203,32 @@ export class ProfilePageComponent implements OnInit {
             );
           });
       }
+    }
+  }
+
+  viewFollowers() {
+    if (this.isMyProfile) {
+      const followDialogRef = this.followListDialog.open(FollowListComponent, {
+        ...this.dialogConfig,
+        data: {
+          userId: this.userId,
+          type: "followers",
+          followUsers: [],
+        },
+      });
+    }
+  }
+
+  viewFollowing() {
+    if (this.isMyProfile) {
+      const followDialogRef = this.followListDialog.open(FollowListComponent, {
+        ...this.dialogConfig,
+        data: {
+          userId: this.userId,
+          type: "following",
+          followUsers: [],
+        },
+      });
     }
   }
 }

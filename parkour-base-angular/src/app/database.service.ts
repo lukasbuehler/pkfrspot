@@ -14,6 +14,8 @@ import { Observable } from "rxjs";
 import { Like } from "src/scripts/db/Like";
 import { User } from "src/scripts/db/User";
 import { merge } from "rxjs";
+import { map } from "rxjs/operators";
+import * as firebase from "firebase";
 
 @Injectable({
   providedIn: "root",
@@ -643,5 +645,71 @@ export class DatabaseService {
           reject(err);
         });
     });
+  }
+
+  /**
+   * Gets the current followers of a user. (Not updated live)
+   * @param userId
+   * @returns
+   */
+  getFollowersOfUser(
+    userId: string,
+    chunkSize: number = 20,
+    startAfter?: firebase.default.firestore.Timestamp
+  ) {
+    if (!startAfter)
+      startAfter = new firebase.default.firestore.Timestamp(
+        Date.now() / 1000,
+        0
+      );
+
+    return this.db
+      .collection<User.FollowingSchema>(`users/${userId}/followers`, (ref) =>
+        ref
+          .orderBy("start_following", "asc")
+          .startAfter(startAfter)
+          .limit(chunkSize)
+      )
+      .get()
+      .pipe(
+        map((snap) => {
+          return snap.docs.map((doc) => {
+            return doc.data() as User.FollowingSchema;
+          });
+        })
+      );
+  }
+
+  /**
+   * Gets the current following of a user. (Not updated live)
+   * @param userId
+   * @returns
+   */
+  getFollowingsOfUser(
+    userId: string,
+    chunkSize: number = 20,
+    startAfter?: firebase.default.firestore.Timestamp
+  ) {
+    if (!startAfter)
+      startAfter = new firebase.default.firestore.Timestamp(
+        Date.now() / 1000,
+        0
+      );
+
+    return this.db
+      .collection<User.FollowingSchema>(`users/${userId}/following`, (ref) =>
+        ref
+          .orderBy("start_following", "desc")
+          .startAfter(startAfter)
+          .limit(chunkSize)
+      )
+      .get()
+      .pipe(
+        map((snap) => {
+          return snap.docs.map((doc) => {
+            return doc.data() as User.FollowingSchema;
+          });
+        })
+      );
   }
 }

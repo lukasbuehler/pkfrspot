@@ -41,9 +41,10 @@
                 </h3>
               </div>
               <h3 class="mat-h3">
-                <b>{{ user.followerCount }}</b> Follower{{
-                  user.followerCount === 1 ? "" : "s"
-                }}
+                <app-fancy-counter
+                  [number]="user.followerCount || 0"
+                ></app-fancy-counter>
+                Follower{{ user.followerCount === 1 ? "" : "s" }}
               </h3>
               <div
                 *ngIf="!isMyProfile"
@@ -71,14 +72,14 @@
                 <button
                   mat-flat-button
                   color="primary"
-                  [routerLink]="'/u/' + userId + '/followers'"
+                  (click)="viewFollowers()"
                 >
                   View Followers
                 </button>
                 <button
                   mat-flat-button
                   color="primary"
-                  [routerLink]="'/u/' + userId + '/following'"
+                  (click)="viewFollowing()"
                 >
                   View Following
                 </button>

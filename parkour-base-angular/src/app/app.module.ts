@@ -48,6 +48,7 @@ import { MatDividerModule } from "@angular/material/divider";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatChipsModule } from "@angular/material/chips";
+import { MatTableModule } from "@angular/material/table";
 
 import { PlyrModule } from "ngx-plyr";
 import { AngularResizedEventModule } from "angular-resize-event";
@@ -78,6 +79,11 @@ import { WelcomePageComponent } from "./welcome-page/welcome-page.component";
 import { SignUpPageComponent } from "./sign-up-page/sign-up-page.component";
 import { TermsOfServiceComponent } from "./terms-of-service/terms-of-service.component";
 import { PrivacyPolicyComponent } from "./privacy-policy/privacy-policy.component";
+import {
+  FollowDurationPipe,
+  FollowListComponent,
+} from "./follow-list/follow-list.component";
+import { EditProfilePageComponent } from "./edit-profile-page/edit-profile-page.component";
 
 @NgModule({
   declarations: [
@@ -107,6 +113,10 @@ import { PrivacyPolicyComponent } from "./privacy-policy/privacy-policy.componen
     SignUpPageComponent,
     TermsOfServiceComponent,
     PrivacyPolicyComponent,
+    FollowListComponent,
+    EditProfilePageComponent,
+
+    FollowDurationPipe,
   ],
   imports: [
     BrowserModule,
@@ -153,6 +163,7 @@ import { PrivacyPolicyComponent } from "./privacy-policy/privacy-policy.componen
     MatSlideToggleModule,
     MatSnackBarModule,
     MatChipsModule,
+    MatTableModule,
 
     PlyrModule,
     AngularResizedEventModule,
