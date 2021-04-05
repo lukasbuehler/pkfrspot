@@ -1,25 +1,29 @@
-<div class="container p-4">
-  <div class="row">
-    <div class="col-md-3">Menu here</div>
-    <div *ngIf="user" class="col-md-9 d-flex flex-column">
-      <!-- Basic profile properties -->
-      <mat-form-field appearance="outline">
-        <mat-label>Display Name</mat-label>
-        <input matInput type="text" [value]="user.displayName" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>E-mail address</mat-label>
-        <input matInput type="text" [value]="authService.email" />
-        <mat-icon matSuffix>verified</mat-icon>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Start Date</mat-label>
-        <input matInput [matDatepicker]="picker" />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-    </div>
+<div *ngIf="user" class="d-flex flex-column">
+  <div
+    class="rounded border p-3 mt-3 mb-4 d-flex flex-column align-items-center"
+  >
+    <img
+      class="img-circle"
+      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9mPu_TDZ3QfRk7gkjfM3DRyoNOhslCeqK-hY9Yj9m3af5euB0W_m5YQU64TXAhGTEGQo&usqp=CAU"
+      alt=""
+    />
+    <app-upload-media-ui class="w-100"></app-upload-media-ui>
   </div>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Display Name</mat-label>
+    <input matInput type="text" [value]="user.displayName" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Start Date</mat-label>
+    <input matInput [matDatepicker]="picker" />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-hint
+      >This is the date you started practicing Parkour and Freerunning. It will
+      be rounded to full years after one year or more so don't sweat
+      it.</mat-hint
+    >
+  </mat-form-field>
 </div>

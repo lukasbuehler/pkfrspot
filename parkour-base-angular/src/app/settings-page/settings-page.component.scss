@@ -1,0 +1,20 @@
+div.menu {
+  overflow: hidden;
+}
+
+button.menuButton {
+  text-align: left;
+  height: 48px;
+  border-radius: 0;
+  padding-left: 18px;
+
+  mat-icon {
+    margin-right: 10px;
+  }
+}
+
+button.menuButton.selected {
+  border-left: 2px solid;
+  border-color: #0039cb;
+  padding-left: 16px;
+}

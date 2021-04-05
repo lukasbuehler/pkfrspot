@@ -86,6 +86,7 @@ import {
   FollowListComponent,
 } from "./follow-list/follow-list.component";
 import { EditProfileComponent } from "./edit-profile/edit-profile.component";
+import { SettingsPageComponent } from './settings-page/settings-page.component';
 
 @NgModule({
   declarations: [
@@ -119,6 +120,8 @@ import { EditProfileComponent } from "./edit-profile/edit-profile.component";
     EditProfileComponent,
 
     FollowDurationPipe,
+
+    SettingsPageComponent,
   ],
   imports: [
     BrowserModule,
