@@ -4,7 +4,7 @@ import * as firebase from "firebase/app";
 import { Observable } from "rxjs";
 import { generateUUID } from "src/scripts/Helpers";
 
-export enum StorageFolders {
+export enum StorageFolder {
   PostMedia = "post_media",
   ProfilePictures = "profile_pictures",
   SpotPictures = "spot_pictures",
@@ -21,12 +21,23 @@ export class StorageService {
 
   getStoredContent() {}
 
-  setUploadToStorage(file: File, location: StorageFolders): Observable<string> {
+  /**
+   * Uploads a file or blob to a specified locatin in cloud storage
+   * @param blob
+   * @param location
+   * @param filename
+   * @returns Observable which sends the download URL as soon as the upload is completed
+   */
+  setUploadToStorage(
+    blob: Blob,
+    location: StorageFolder,
+    filename?: string
+  ): Observable<string> {
     this.uploadObs = new Observable<string>((subscriber) => {
-      let filename = generateUUID();
-      let uploadRef = this.storageRef.child(`${location}/${filename}`);
+      let uploadFileName = filename || generateUUID();
+      let uploadRef = this.storageRef.child(`${location}/${uploadFileName}`);
 
-      let uploadTask = uploadRef.put(file);
+      let uploadTask = uploadRef.put(blob);
 
       uploadTask.on(
         firebase.default.storage.TaskEvent.STATE_CHANGED,

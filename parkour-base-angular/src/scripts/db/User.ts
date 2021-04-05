@@ -48,26 +48,26 @@ export module User {
   }
 
   export interface Schema {
-    display_name: string;
+    display_name?: string;
     profile_picture?: string;
     follower_count?: number;
     start_date?: firebase.default.firestore.Timestamp;
     nationality?: string;
-    verified_email: boolean;
+    verified_email?: boolean;
 
-    creationDate: firebase.default.firestore.Timestamp;
+    creationDate?: firebase.default.firestore.Timestamp;
   }
 
   export interface ReferenceSchema {
-    uid: string;
-    display_name: string;
+    uid?: string;
+    display_name?: string;
     profile_picture?: string;
-    ref: firebase.default.firestore.DocumentReference;
+    ref?: firebase.default.firestore.DocumentReference;
   }
 
   export interface FollowingSchema {
     // UID is not needed as it is the identifier of the following
-    display_name: string;
+    display_name?: string;
     profile_picture?: string;
 
     start_following?: firebase.default.firestore.Timestamp;

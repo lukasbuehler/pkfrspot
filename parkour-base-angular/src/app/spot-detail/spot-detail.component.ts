@@ -9,7 +9,7 @@ import {
 import { Spot } from "src/scripts/db/Spot";
 import { DatabaseService } from "../database.service";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
-import { StorageService, StorageFolders } from "../storage.service";
+import { StorageService, StorageFolder } from "../storage.service";
 import { Post } from "src/scripts/db/Post";
 import { Subscription } from "rxjs";
 import { AuthenticationService } from "../authentication.service";
@@ -117,7 +117,7 @@ export class SpotDetailComponent implements OnInit {
       if (this.uploadMediaComp.isImageSelected()) {
         let observable = this._storageService.setUploadToStorage(
           this.newSpotImage,
-          StorageFolders.SpotPictures
+          StorageFolder.SpotPictures
         );
 
         observable.subscribe(

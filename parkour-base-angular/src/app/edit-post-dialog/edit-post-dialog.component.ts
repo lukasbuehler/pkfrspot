@@ -11,7 +11,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Post } from "src/scripts/db/Post";
 import { Spot } from "src/scripts/db/Spot";
 
-import { StorageService, StorageFolders } from "../storage.service";
+import { StorageService, StorageFolder } from "../storage.service";
 import { DatabaseService } from "../database.service";
 
 import { FormControl } from "@angular/forms";
@@ -156,7 +156,7 @@ export class EditPostDialogComponent implements AfterViewInit {
       // Upload file to storage
       this._storageService.setUploadToStorage(
         this.uploadFile,
-        StorageFolders.PostMedia
+        StorageFolder.PostMedia
       );
     }
 

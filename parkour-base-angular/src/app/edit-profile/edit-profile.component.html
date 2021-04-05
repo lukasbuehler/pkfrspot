@@ -2,12 +2,26 @@
   <div
     class="rounded border p-3 mt-3 mb-4 d-flex flex-column align-items-center"
   >
-    <img
-      class="img-circle"
-      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9mPu_TDZ3QfRk7gkjfM3DRyoNOhslCeqK-hY9Yj9m3af5euB0W_m5YQU64TXAhGTEGQo&usqp=CAU"
-      alt=""
-    />
-    <app-upload-media-ui class="w-100"></app-upload-media-ui>
+    <div *ngIf="user.profilePicture && !newProfilePicture">
+      <img class="profile-picture" [src]="user.profilePicture" />
+    </div>
+    <app-upload-media-ui
+      class="w-100"
+      acceptString="image/png,image/jpeg"
+      [allowedMimeTypes]="['image/png', 'image/jpeg']"
+      (uploadMedia)="setNewProfilePicture($event)"
+    ></app-upload-media-ui>
+    <div class="pt-3">
+      <div id="croppie" #croppie></div>
+    </div>
+    <button
+      *ngIf="newProfilePicture"
+      mat-flat-button
+      color="accent"
+      (click)="uploadAndSaveProfilePicture()"
+    >
+      Upload and save
+    </button>
   </div>
 
   <mat-form-field appearance="outline">

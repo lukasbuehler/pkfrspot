@@ -17,9 +17,8 @@ import { humanFileSize } from "./../../scripts/Helpers";
 })
 export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
   @Input() required: boolean = false;
-  @Input() isMediaUpload: boolean = true;
   @Input() maximumSizeInBytes: number = null;
-  @Input() requiredMimeType: string = null;
+  @Input() allowedMimeTypes: string[] = null;
   @Input() acceptString: string = "";
   @Output() changed = new EventEmitter<void>();
   @Output() uploadMedia = new EventEmitter<File>();
@@ -60,19 +59,7 @@ export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
     this.hasError = false;
     let type = files.item(0).type;
 
-    if (
-      this.isMediaUpload &&
-      !(type === "video/mp4" || type.includes("image"))
-    ) {
-      console.log(
-        "A file was selected, but it was not an mp4 video nor an image. Please select media"
-      );
-      this._errorMessage = "An invalid media type was selected";
-      this.hasError = true;
-      return;
-    }
-
-    if (this.requiredMimeType !== null && this.requiredMimeType)
+    if (this.allowedMimeTypes && this.allowedMimeTypes.includes(type)) {
       if (
         this.maximumSizeInBytes !== null &&
         files.item(0).size > this.maximumSizeInBytes
@@ -89,6 +76,14 @@ export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
         this.hasError = true;
         return;
       }
+    } else {
+      console.log(
+        "A file was selected, but its mime type is not allowed. Please select a different file"
+      );
+      this._errorMessage = "The type of this file is not allowed";
+      this.hasError = true;
+      return;
+    }
 
     this.uploadFile = files.item(0);
     this.uploadFileName = this.uploadFile.name;
