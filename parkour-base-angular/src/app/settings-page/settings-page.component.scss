@@ -18,3 +18,11 @@ button.menuButton.selected {
   border-color: #0039cb;
   padding-left: 16px;
 }
+
+#saveSpeedDial {
+  position: absolute;
+  z-index: 2;
+
+  bottom: 30px;
+  right: 30px;
+}

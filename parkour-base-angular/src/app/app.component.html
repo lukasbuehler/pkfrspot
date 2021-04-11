@@ -1,4 +1,4 @@
-<mat-toolbar color="{{ navbarConfig.color }}" class="mat-elevation-z8">
+<mat-toolbar color="{{ navbarConfig.color }}" class="mat-elevation-z1">
   <span class="{{ navbarConfig.logo.class }}">{{
     navbarConfig.logo.text
   }}</span>
@@ -40,8 +40,8 @@
     class="user-display text-right"
   >
     <img
-      *ngIf="authService.isSignedIn && authService.userProfilePic"
-      [src]="authService.userProfilePic"
+      *ngIf="authService.isSignedIn && authService.user?.profilePicture"
+      [src]="authService.user.profilePicture"
     />
     <mat-icon *ngIf="!authService.isSignedIn">person_outline</mat-icon>
     {{

@@ -1,9 +1,17 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from "@angular/core";
 import { User } from "src/scripts/db/User";
 import { AuthenticationService } from "../authentication.service";
 import * as Croppie from "croppie";
 import { DatabaseService } from "../database.service";
 import { StorageFolder, StorageService } from "../storage.service";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-edit-profile",
@@ -12,22 +20,30 @@ import { StorageFolder, StorageService } from "../storage.service";
 })
 export class EditProfileComponent implements OnInit {
   @ViewChild("croppie") croppie: ElementRef;
+  @Output("changes")
+  changes: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   user: User.Class = null;
+  // user properties
+  displayName: string;
+
   newProfilePicture: File = null;
   newProfilePictureSrc: string = "";
   croppieObj: Croppie = null;
+  isUpdatingProfilePicture: boolean = false;
 
   constructor(
     public authService: AuthenticationService,
     private _databaseService: DatabaseService,
-    private _storageService: StorageService
+    private _storageService: StorageService,
+    private _snackbar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
     this.user = this.authService.user;
     this.authService.authState$.subscribe((user) => {
       this.user = user;
+      this.displayName = user.displayName;
     });
   }
 
@@ -64,54 +80,129 @@ export class EditProfileComponent implements OnInit {
     };
 
     reader.readAsDataURL(file);
+    this.detectIfChanges();
   }
 
-  uploadAndSaveProfilePicture() {
-    if (
-      this.user &&
-      this.user.uid &&
-      this.newProfilePictureSrc &&
-      this.croppieObj
-    ) {
-      const userId = this.user.uid;
-      this.croppieObj
-        .result({
-          type: "blob",
-          format: "png",
-          circle: false,
-        })
-        .then((blob) => {
-          this._storageService
-            .setUploadToStorage(blob, StorageFolder.ProfilePictures, userId)
-            .subscribe(
-              (url) => {
-                this._databaseService
-                  .updateUser(
-                    userId,
-                    {
-                      profile_picture: url,
-                    },
-                    true
-                  )
-                  .then(() => {
-                    console.log("successfully saved the profile picture");
-                  })
-                  .catch((err) => {
-                    console.error(
-                      "Error saving the url to the newly uploaded profile picture",
-                      err
-                    );
-                  });
-              },
-              (err) => {
-                console.error("Error on profile picture upload");
-              }
-            );
-        })
-        .catch((err) => {
-          console.error("Error getting the blob from croppie");
-          console.error(err);
+  private saveNewProfilePicture() {
+    this._handleProfilePictureUploadAndSave()
+      .then(() => {
+        this._snackbar.open(
+          "Successfully saved new profile picture",
+          "Dismiss",
+          {
+            duration: 3000,
+            horizontalPosition: "center",
+            verticalPosition: "bottom",
+          }
+        );
+      })
+      .catch((readableError) => {
+        this._snackbar.open(readableError, "Dismiss", {
+          duration: 5000,
+          horizontalPosition: "center",
+          verticalPosition: "bottom",
         });
+      });
+  }
+
+  private _handleProfilePictureUploadAndSave(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (
+        this.user &&
+        this.user.uid &&
+        this.newProfilePictureSrc &&
+        this.croppieObj
+      ) {
+        const userId = this.user.uid;
+        this.isUpdatingProfilePicture = true;
+
+        this.croppieObj
+          .result({
+            type: "blob",
+            format: "png",
+            circle: false,
+          })
+          .then((blob) => {
+            this._storageService
+              .setUploadToStorage(blob, StorageFolder.ProfilePictures, userId)
+              .subscribe(
+                (url) => {
+                  this._databaseService
+                    .updateUser(
+                      userId,
+                      {
+                        profile_picture: url,
+                      },
+                      true
+                    )
+                    .then(() => {
+                      this.isUpdatingProfilePicture = false;
+                      this.newProfilePicture = null;
+                      this.user.profilePicture = url;
+                      this.newProfilePictureSrc = "";
+                      this.croppieObj.destroy();
+                      resolve();
+                    })
+                    .catch((err) => {
+                      console.error(
+                        "Error saving the url to the newly uploaded profile picture",
+                        err
+                      );
+                      this.isUpdatingProfilePicture = false;
+                      reject("Error saving the uploaded profile picture!");
+                    });
+                },
+                (err) => {
+                  console.error("Error on profile picture upload", err);
+                  reject("Error uploading the cropped image!");
+                  this.isUpdatingProfilePicture = false;
+                }
+              );
+          })
+          .catch((err) => {
+            console.error("Error getting the blob from croppie", err);
+            reject("Error Cropping the image!");
+            this.isUpdatingProfilePicture = false;
+          });
+      }
+    });
+  }
+
+  detectIfChanges() {
+    if (this.displayName !== this.user.displayName || this.newProfilePicture) {
+      this.changes.emit(true);
+    } else {
+      this.changes.emit(false);
+    }
+  }
+
+  saveAllChanges() {
+    if (this.user && this.user.uid) {
+      let promises: Promise<void>[] = [];
+      let data: User.Schema = {};
+
+      // Update display name if changed
+      if (this.displayName !== this.user.displayName) {
+        data.display_name = this.displayName;
+      }
+
+      // Update profile picture if changed
+      if (
+        this.newProfilePictureSrc &&
+        this.croppieObj &&
+        this.newProfilePicture
+      ) {
+        promises.push(this._handleProfilePictureUploadAndSave());
+      }
+
+      // Update user data if changed
+      if (Object.keys(data).length > 0) {
+        promises.push(
+          this._databaseService.updateUser(this.user.uid, data, true)
+        );
+      }
+
+      return Promise.all(promises);
     }
   }
 }

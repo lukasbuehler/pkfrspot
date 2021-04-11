@@ -6,7 +6,7 @@
   </div>
   <div class="row d-lg-flex flex-row" *ngIf="user && !isLoading">
     <div class="col-lg-8 pt-4">
-      <mat-card class="mat-elevation-z3 text-left">
+      <mat-card class="mat-elevation-z0 border rounded text-left">
         <mat-card-content class="p-4">
           <div class="d-flex flex-row justify-content-left align-items-center">
             <img
@@ -76,14 +76,14 @@
                   color="primary"
                   (click)="viewFollowers()"
                 >
-                  View Followers
+                  Followers
                 </button>
                 <button
                   mat-flat-button
                   color="primary"
                   (click)="viewFollowing()"
                 >
-                  View Following
+                  Following
                 </button>
                 <button
                   mat-stroked-button
@@ -99,7 +99,7 @@
       </mat-card>
     </div>
     <div class="col-lg-4 pt-4">
-      <mat-card class="mat-elevation-z3 h-100">
+      <mat-card class="mat-elevation-z0 border h-100">
         <mat-card-header>
           <mat-card-title>Groups</mat-card-title>
         </mat-card-header>

@@ -14,16 +14,20 @@ export class AppComponent implements OnInit {
   ) {}
 
   hasAds = window["canRunAds"];
+  userId: string = "";
 
   ngOnInit() {
     this.authService.authState$.subscribe(
       (user) => {
         if (user) {
-          this._snackbar.open(`Welcome ${user.displayName}!`, "Dismiss", {
-            duration: 2000,
-            horizontalPosition: "center",
-            verticalPosition: "bottom",
-          });
+          if (user.uid !== this.userId) {
+            this._snackbar.open(`Welcome ${user.displayName}!`, "Dismiss", {
+              duration: 2000,
+              horizontalPosition: "center",
+              verticalPosition: "bottom",
+            });
+            this.userId = user.uid;
+          }
         } else {
           // User is not signed in
         }

@@ -22,7 +22,6 @@ export class AuthenticationService {
    * The user from the database corresponding to the currently authenticated user
    */
   public user: User.Class = null;
-  public userProfilePic: string = "";
 
   public authState$: Subject<User.Class> = new Subject();
 
@@ -50,31 +49,7 @@ export class AuthenticationService {
       this.email = firebaseUser.email;
       this.emailVerified = firebaseUser.emailVerified;
 
-      this._databaseService.getUserById(firebaseUser.uid).subscribe(
-        (_user) => {
-          this.user = _user;
-          this.userProfilePic = _user.profilePicture;
-
-          this.authState$.next(_user);
-
-          // TODO This is not so nice
-          if (!_user.profilePicture && firebaseUser.photoURL) {
-            // There is no profile picture in the database, use the photo from the firebase user and save it in the database.
-            _user.setProfilePicture(firebaseUser.photoURL);
-            this._databaseService
-              .updateUser(_user.uid, _user.data)
-              .then(() => {
-                // Successfully updated the user data with the new profile picture
-              })
-              .catch((err) => {
-                // There was an error updating the profile picture
-              });
-          }
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
+      this._fetchUserData(firebaseUser.uid, true);
     } else {
       // We don't have a firebase user, we are not signed in
       this._currentFirebaseUser = null;
@@ -88,6 +63,32 @@ export class AuthenticationService {
   private firebaseAuthChangeError = (error: any) => {
     console.error(error);
   };
+
+  private _fetchUserData(uid, sendUpdate = true) {
+    this._databaseService.getUserById(uid).subscribe(
+      (_user) => {
+        this.user = _user;
+
+        if (sendUpdate) {
+          this.authState$.next(_user);
+        }
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+  }
+
+  /**
+   * Refetches the user data from the database. This only updates the data of the currently authenticated user.
+   *
+   * Meaning if, for example the display name changed in the background and this function is called on your own profile page, the name only changes in the navbar in the top right but not in the profile. Since the profile information is fetched seperately from the data belonging to the corresponding user
+   *
+   * Also: Following and Followers are not updated with this function call. Only things like display name, profile picture and so on.
+   */
+  public refetchUserData() {
+    this._fetchUserData(this.uid, true);
+  }
 
   public signInEmailPassword(email, password) {
     return new Promise<firebase.default.auth.UserCredential>(

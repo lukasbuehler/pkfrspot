@@ -1,5 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogRef,
+} from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute } from "@angular/router";
 import { Post } from "src/scripts/db/Post";
@@ -33,6 +37,8 @@ export class ProfilePageComponent implements OnInit {
   isMyProfile: boolean = false;
   loadingFollowing: boolean = false;
   isFollowing: boolean = false;
+
+  followDialogRef: MatDialogRef<FollowListComponent> = null;
 
   private dialogConfig: MatDialogConfig = {
     autoFocus: true,
@@ -80,6 +86,10 @@ export class ProfilePageComponent implements OnInit {
       // load stuff
       this.isMyProfile = this.userId === this._authService.uid;
       this.loadProfile(this.userId);
+    }
+
+    if (this.followDialogRef) {
+      this.followDialogRef.close();
     }
   }
 
@@ -208,7 +218,7 @@ export class ProfilePageComponent implements OnInit {
 
   viewFollowers() {
     if (this.isMyProfile) {
-      const followDialogRef = this.followListDialog.open(FollowListComponent, {
+      this.followDialogRef = this.followListDialog.open(FollowListComponent, {
         ...this.dialogConfig,
         data: {
           userId: this.userId,
@@ -221,7 +231,7 @@ export class ProfilePageComponent implements OnInit {
 
   viewFollowing() {
     if (this.isMyProfile) {
-      const followDialogRef = this.followListDialog.open(FollowListComponent, {
+      this.followDialogRef = this.followListDialog.open(FollowListComponent, {
         ...this.dialogConfig,
         data: {
           userId: this.userId,

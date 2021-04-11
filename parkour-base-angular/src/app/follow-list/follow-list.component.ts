@@ -5,11 +5,12 @@ import { User } from "src/scripts/db/User";
 import * as firebase from "firebase/app";
 import * as moment from "moment";
 import { DatabaseService } from "../database.service";
+import { Observable } from "rxjs";
 
 export interface FollowListDialogData {
   userId: string;
   type: "followers" | "following";
-  followUsers: User.FollowingSchema[];
+  followUsers: User.FollowingDataSchema[];
   allLoaded: boolean;
 }
 
@@ -38,7 +39,7 @@ export class FollowListComponent implements OnInit {
     private _databaseService: DatabaseService
   ) {}
 
-  displayedColumns: string[] = ["user", "duration"];
+  displayedColumns: string[] = ["user", "duration", "open"];
 
   isLoading: boolean = false;
   hasLoadedAll: boolean = false;
@@ -56,7 +57,7 @@ export class FollowListComponent implements OnInit {
     this.isLoading = true;
     const chunkSize = 20;
 
-    let obs;
+    let obs: Observable<User.FollowingDataSchema[]>;
     if (this.data.type === "followers") {
       obs = this._databaseService.getFollowersOfUser(
         this.data.userId,

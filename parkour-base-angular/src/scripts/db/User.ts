@@ -65,11 +65,15 @@ export module User {
     ref?: firebase.default.firestore.DocumentReference;
   }
 
-  export interface FollowingSchema {
+  export interface FollowingDataSchema {
     // UID is not needed as it is the identifier of the following
     display_name?: string;
     profile_picture?: string;
 
     start_following?: firebase.default.firestore.Timestamp;
+  }
+
+  export interface FollowingSchema extends FollowingDataSchema {
+    uid: string;
   }
 }

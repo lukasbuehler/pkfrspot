@@ -64,7 +64,7 @@ export class DatabaseService {
         // 1) Get all the followings of the currently authenticated user
         let allFollowingsIds: string[] = [];
         this.db
-          .collection<User.FollowingSchema>(`users/${userId}/following`)
+          .collection<User.FollowingDataSchema>(`users/${userId}/following`)
           .get()
           .subscribe((snap) => {
             allFollowingsIds = snap.docs.map((val) => {
@@ -518,7 +518,7 @@ export class DatabaseService {
   isFollowingUser(myUserId: string, otherUserId: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       this.db
-        .collection<User.FollowingSchema>(`users/${myUserId}/following`)
+        .collection<User.FollowingDataSchema>(`users/${myUserId}/following`)
         .doc(otherUserId)
         .get()
         .subscribe(
@@ -539,7 +539,7 @@ export class DatabaseService {
   userIsFollowingYou(myUserId: string, otherUserId: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       this.db
-        .collection<User.FollowingSchema>(`users/${myUserId}/followers`)
+        .collection<User.FollowingDataSchema>(`users/${myUserId}/followers`)
         .doc(otherUserId)
         .get()
         .subscribe(
@@ -581,7 +581,7 @@ export class DatabaseService {
         reject("The User data of the user you want to follow is not valid");
       }
 
-      let followingData: User.FollowingSchema = {
+      let followingData: User.FollowingDataSchema = {
         display_name: otherUserData.display_name,
         profile_picture: otherUserData.profile_picture || "",
         start_following: new firebase.default.firestore.Timestamp(
@@ -589,7 +589,7 @@ export class DatabaseService {
           0
         ),
       };
-      let followerData: User.FollowingSchema = {
+      let followerData: User.FollowingDataSchema = {
         display_name: myUserData.display_name,
         profile_picture: myUserData.profile_picture,
         start_following: new firebase.default.firestore.Timestamp(
@@ -598,13 +598,15 @@ export class DatabaseService {
         ),
       };
       this.db
-        .collection<User.FollowingSchema>(`users/${myUserId}/following`)
+        .collection<User.FollowingDataSchema>(`users/${myUserId}/following`)
         .doc(otherUserId)
         .set(followingData)
         .then(() => {
           // TODO Eventually this part should be handled by a cloud function
           this.db
-            .collection<User.FollowingSchema>(`users/${otherUserId}/followers`)
+            .collection<User.FollowingDataSchema>(
+              `users/${otherUserId}/followers`
+            )
             .doc(myUserId)
             .set(followerData)
             .then(() => {
@@ -628,13 +630,15 @@ export class DatabaseService {
   unfollowUser(myUserId: string, otherUserId: string) {
     return new Promise<void>((resolve, reject) => {
       this.db
-        .collection<User.FollowingSchema>(`users/${myUserId}/following`)
+        .collection<User.FollowingDataSchema>(`users/${myUserId}/following`)
         .doc(otherUserId)
         .delete()
         .then(() => {
           // Now delete it from the follower list as well
           this.db
-            .collection<User.FollowingSchema>(`users/${otherUserId}/followers`)
+            .collection<User.FollowingDataSchema>(
+              `users/${otherUserId}/followers`
+            )
             .doc(myUserId)
             .delete()
             .then(() => {
@@ -672,17 +676,23 @@ export class DatabaseService {
       );
 
     return this.db
-      .collection<User.FollowingSchema>(`users/${userId}/followers`, (ref) =>
-        ref
-          .orderBy("start_following", "asc")
-          .startAfter(startAfter)
-          .limit(chunkSize)
+      .collection<User.FollowingDataSchema>(
+        `users/${userId}/followers`,
+        (ref) =>
+          ref
+            .orderBy("start_following", "desc")
+            .startAfter(startAfter)
+            .limit(chunkSize)
       )
       .get()
       .pipe(
         map((snap) => {
           return snap.docs.map((doc) => {
-            return doc.data() as User.FollowingSchema;
+            const data = doc.data() as User.FollowingSchema;
+            return {
+              ...data,
+              uid: doc.id,
+            };
           });
         })
       );
@@ -697,7 +707,7 @@ export class DatabaseService {
     userId: string,
     chunkSize: number = 20,
     startAfter?: firebase.default.firestore.Timestamp
-  ) {
+  ): Observable<User.FollowingSchema[]> {
     if (!startAfter)
       startAfter = new firebase.default.firestore.Timestamp(
         Date.now() / 1000,
@@ -705,17 +715,23 @@ export class DatabaseService {
       );
 
     return this.db
-      .collection<User.FollowingSchema>(`users/${userId}/following`, (ref) =>
-        ref
-          .orderBy("start_following", "desc")
-          .startAfter(startAfter)
-          .limit(chunkSize)
+      .collection<User.FollowingDataSchema>(
+        `users/${userId}/following`,
+        (ref) =>
+          ref
+            .orderBy("start_following", "desc")
+            .startAfter(startAfter)
+            .limit(chunkSize)
       )
       .get()
       .pipe(
         map((snap) => {
           return snap.docs.map((doc) => {
-            return doc.data() as User.FollowingSchema;
+            const data = doc.data() as User.FollowingSchema;
+            return {
+              ...data,
+              uid: doc.id,
+            };
           });
         })
       );

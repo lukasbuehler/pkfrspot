@@ -102,7 +102,7 @@
     </button>
   </mat-card-actions>
   <mat-accordion *ngIf="!isEditing">
-    <mat-expansion-panel [expanded]="true" [class.mat-elevation-z1]="flat">
+    <mat-expansion-panel [expanded]="true" [class.mat-elevation-z0]="flat">
       <mat-expansion-panel-header>
         <mat-panel-title> Details </mat-panel-title>
         <mat-panel-description> Info and pictures </mat-panel-description>
@@ -110,7 +110,11 @@
       <img src="{{ spot.previewImage }}" class="spot-img" alt="" />
       <div *ngIf="!spot.hasMedia" class="upload-spot-image-box">
         <p>There are no images for this spot</p>
-        <app-upload-media-ui [allowedMimeTypes]="['image/jpeg']" acceptString="image/jpeg" (uploadMedia)="setSpotImage($event)">
+        <app-upload-media-ui
+          [allowedMimeTypes]="['image/jpeg']"
+          acceptString="image/jpeg"
+          (uploadMedia)="setSpotImage($event)"
+        >
         </app-upload-media-ui>
         <button mat-flat-button (click)="uploadImage()" color="accent">
           Upload Spot Image
@@ -139,7 +143,7 @@
       </div>
     </mat-expansion-panel>
     <mat-expansion-panel
-      [class.mat-elevation-z1]="flat"
+      [class.mat-elevation-z0]="flat"
       (opened)="postPanelOpened()"
       (closed)="postPanelClosed()"
     >
@@ -149,7 +153,7 @@
       </mat-expansion-panel-header>
       <app-post-collection [posts]="spotPosts"></app-post-collection>
     </mat-expansion-panel>
-    <mat-expansion-panel [class.mat-elevation-z1]="flat">
+    <mat-expansion-panel [class.mat-elevation-z0]="flat">
       <mat-expansion-panel-header>
         <mat-panel-title> Edit voting </mat-panel-title>
         <mat-panel-description>

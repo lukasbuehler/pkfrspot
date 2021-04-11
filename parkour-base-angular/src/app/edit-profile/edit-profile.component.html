@@ -1,9 +1,14 @@
 <div *ngIf="user" class="d-flex flex-column">
   <div
+    matBadge="&#8288;"
+    matBadgeColor="accent"
+    [matBadgeHidden]="!newProfilePicture"
+    matBadgeSize="small"
     class="rounded border p-3 mt-3 mb-4 d-flex flex-column align-items-center"
   >
-    <div *ngIf="user.profilePicture && !newProfilePicture">
+    <div *ngIf="user.profilePicture && !newProfilePicture" class="text-center">
       <img class="profile-picture" [src]="user.profilePicture" />
+      <h5 class="mat-body mt-3 mb-4">Your current profile picture</h5>
     </div>
     <app-upload-media-ui
       class="w-100"
@@ -18,15 +23,27 @@
       *ngIf="newProfilePicture"
       mat-flat-button
       color="accent"
-      (click)="uploadAndSaveProfilePicture()"
+      (click)="saveNewProfilePicture()"
+      [disabled]="isUpdatingProfilePicture"
     >
       Upload and save
     </button>
   </div>
 
-  <mat-form-field appearance="outline">
+  <mat-form-field
+    appearance="outline"
+    matBadge="&#8288;"
+    matBadgeColor="accent"
+    [matBadgeHidden]="displayName === user.displayName"
+    matBadgeSize="small"
+  >
     <mat-label>Display Name</mat-label>
-    <input matInput type="text" [value]="user.displayName" />
+    <input
+      matInput
+      type="text"
+      [value]="displayName"
+      (input)="displayName = $event.target.value; detectIfChanges()"
+    />
   </mat-form-field>
 
   <mat-form-field appearance="outline">

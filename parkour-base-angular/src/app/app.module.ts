@@ -87,6 +87,7 @@ import {
 } from "./follow-list/follow-list.component";
 import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 import { SettingsPageComponent } from './settings-page/settings-page.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -174,6 +175,7 @@ import { SettingsPageComponent } from './settings-page/settings-page.component';
 
     PlyrModule,
     AngularResizedEventModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   exports: [MatButtonModule],
   providers: [

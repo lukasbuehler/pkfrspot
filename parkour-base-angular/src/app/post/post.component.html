@@ -1,6 +1,6 @@
 <mat-card
   *ngIf="post"
-  class="text-left mat-elevation-z5"
+  class="text-left border rounded mat-elevation-z0"
   ng-class="{mat-elevation-z0: !showCard}"
 >
   <mat-card-header>
@@ -69,7 +69,7 @@
           '&z=19'
     "
   >
-    <div class="spot-container shadow-sm border rounded">
+    <div class="spot-container border rounded">
       <div class="spot-container-image">
         <img [src]="post.spot.image_src" alt="" />
       </div>
