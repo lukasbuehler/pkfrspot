@@ -61,10 +61,10 @@ export class SettingsPageComponent implements OnInit {
     },
     miniButtonColor: "default",
     miniButtons: [
-      //{
-      //  icon: "note_add",
-      //  tooltip: "Import Spots from a KML file",
-      //},
+      {
+        icon: "clear",
+        tooltip: "Discard all changes",
+      },
     ],
   };
 

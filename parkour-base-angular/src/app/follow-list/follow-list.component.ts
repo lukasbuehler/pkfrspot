@@ -24,7 +24,9 @@ export class FollowDurationPipe implements PipeTransform {
     args?: any
   ): string {
     const millis = timestamp.toMillis();
-    return `${moment(millis).fromNow(true)} - ${moment(millis).format("l LT")}`;
+    return `${moment(millis).fromNow(true)} (since ${moment(millis).format(
+      "l LT"
+    )})`;
   }
 }
 

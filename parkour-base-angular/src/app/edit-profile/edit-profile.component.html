@@ -46,9 +46,31 @@
     />
   </mat-form-field>
 
-  <mat-form-field appearance="outline">
+  <mat-form-field
+    appearance="outline"
+    matBadge="&#8288;"
+    matBadgeColor="accent"
+    [matBadgeHidden]="biography === user.biography"
+    matBadgeSize="small"
+  >
+    <mat-label>Biography</mat-label>
+    <textarea matInput placeholder="Bio goes here"></textarea>
+  </mat-form-field>
+
+  <mat-form-field
+    appearance="outline"
+    matBadge="&#8288;"
+    matBadgeColor="accent"
+    [matBadgeHidden]="startDate === user.startDate"
+    matBadgeSize="small"
+  >
     <mat-label>Start Date</mat-label>
-    <input matInput [matDatepicker]="picker" />
+    <input
+      matInput
+      [matDatepicker]="picker"
+      [value]="startDate"
+      (dateChange)="startDate = $event.target.value; detectIfChanges()"
+    />
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
     <mat-hint

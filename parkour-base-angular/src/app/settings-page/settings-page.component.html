@@ -1,78 +1,82 @@
-<div class="container p-4">
-  <div class="row">
-    <div class="col-md-4">
-      <div class="menu d-flex flex-column rounded border mb-5">
-        <button
-          *ngFor="let menuPoint of menuPoints"
-          mat-button
-          (click)="openMenuPoint(menuPoint.id)"
-          class="menuButton"
-          [ngClass]="menuPoint.id === selectedPoint ? 'selected' : ''"
-        >
-          <mat-icon
-            matBadge="&#8288;"
-            [matBadgeHidden]="!menuPoint.hasChanges"
-            matBadgeColor="accent"
-            [matBadgeOverlap]="true"
-            matBadgePosition="before"
-            matBadgeSize="small"
-            >{{ menuPoint.icon }}</mat-icon
+<div class="settings-page-container">
+  <div class="container p-4">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="menu d-flex flex-column rounded border mb-5">
+          <button
+            *ngFor="let menuPoint of menuPoints"
+            mat-button
+            (click)="openMenuPoint(menuPoint.id)"
+            class="menuButton"
+            [ngClass]="menuPoint.id === selectedPoint ? 'selected' : ''"
           >
-          <span>{{ menuPoint.name }}</span>
-        </button>
-      </div>
-    </div>
-    <div [ngSwitch]="selectedPoint" class="col-md-8">
-      <h1 class="mat-h1 mb-2">Settings</h1>
-      <mat-divider class="mb-3"></mat-divider>
-      <div [hidden]="selectedPoint !== 'profile'">
-        <!-- Basic profile properties -->
-        <h2 class="mat-h2">Public profile</h2>
-        <span class="mat-body">
-          You can edit your public profile here. The information on your public
-          profile can be seen by everyone, even unauthenticated visitors.
-        </span>
-
-        <app-edit-profile
-          #editProfileComponent
-          class="mt-4"
-          (changes)="profileHasChanges($event)"
-        ></app-edit-profile>
-      </div>
-      <div *ngSwitchCase="'login'">
-        <h2 class="mat-h2">Login information</h2>
-        <h3 class="mat-body">
-          Your login information. Your E-mail address here is used for your
-          login. You can add the same E-mail address or a different one to your
-          contact information.
-        </h3>
-        <div class="d-flex flex-column my-4">
-          <mat-form-field appearance="outline">
-            <mat-label>E-mail address</mat-label>
-            <input matInput type="text" [value]="authService.email" />
-            <mat-icon matSuffix>verified</mat-icon>
-            <mat-hint
-              >Changing this E-mail will change your login information</mat-hint
+            <mat-icon
+              matBadge="&#8288;"
+              [matBadgeHidden]="!menuPoint.hasChanges"
+              matBadgeColor="accent"
+              [matBadgeOverlap]="true"
+              matBadgePosition="before"
+              matBadgeSize="small"
+              >{{ menuPoint.icon }}</mat-icon
             >
-          </mat-form-field>
-          <button class="my-3" mat-stroked-button color="primary">
-            Change my password
+            <span>{{ menuPoint.name }}</span>
           </button>
         </div>
       </div>
-      <div *ngSwitchCase="'notifications'">
-        <h2 class="mat-h2">Notifications</h2>
+      <div [ngSwitch]="selectedPoint" class="col-md-8">
+        <h1 class="mat-h1 mb-2">Settings</h1>
+        <mat-divider class="mb-3"></mat-divider>
+        <div [hidden]="selectedPoint !== 'profile'">
+          <!-- Basic profile properties -->
+          <h2 class="mat-h2">Public profile</h2>
+          <span class="mat-body">
+            You can edit your public profile here. The information on your
+            public profile can be seen by everyone, even unauthenticated
+            visitors.
+          </span>
+
+          <app-edit-profile
+            #editProfileComponent
+            class="mt-4"
+            (changes)="profileHasChanges($event)"
+          ></app-edit-profile>
+        </div>
+        <div *ngSwitchCase="'login'">
+          <h2 class="mat-h2">Login information</h2>
+          <h3 class="mat-body">
+            Your login information. Your E-mail address here is used for your
+            login. You can add the same E-mail address or a different one to
+            your contact information.
+          </h3>
+          <div class="d-flex flex-column my-4">
+            <mat-form-field appearance="outline">
+              <mat-label>E-mail address</mat-label>
+              <input matInput type="text" [value]="authService.email" />
+              <mat-icon matSuffix>verified</mat-icon>
+              <mat-hint
+                >Changing this E-mail will change your login
+                information</mat-hint
+              >
+            </mat-form-field>
+            <button class="my-3" mat-stroked-button color="primary">
+              Change my password
+            </button>
+          </div>
+        </div>
+        <div *ngSwitchCase="'notifications'">
+          <h2 class="mat-h2">Notifications</h2>
+        </div>
       </div>
     </div>
   </div>
-  <app-speed-dial-fab
-    *ngIf="hasChanges"
-    #saveSpeedDial
-    id="saveSpeedDial"
-    [buttonConfig]="speedDialButtonConfig"
-    [openOnHover]="true"
-    [rotationDegrees]="0"
-    (mainFabClick)="saveAllChanges()"
-    (miniFabClick)="miniFabPressed($event)"
-  ></app-speed-dial-fab>
 </div>
+<app-speed-dial-fab
+  *ngIf="hasChanges"
+  #saveSpeedDial
+  id="saveSpeedDial"
+  [buttonConfig]="speedDialButtonConfig"
+  [openOnHover]="true"
+  [rotationDegrees]="0"
+  (mainFabClick)="saveAllChanges()"
+  (miniFabClick)="miniFabPressed($event)"
+></app-speed-dial-fab>

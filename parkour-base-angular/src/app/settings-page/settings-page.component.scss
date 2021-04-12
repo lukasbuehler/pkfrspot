@@ -1,3 +1,17 @@
+.settings-page-container {
+  @media (max-width: 599px) {
+    height: calc(100% - 56px);
+  }
+  @media (min-width: 600px) {
+    height: calc(100% - 64px);
+    overflow-y: scroll;
+  }
+  @media (max-width: 767px) {
+    overflow: hidden;
+  }
+  padding-bottom: 100px;
+}
+
 div.menu {
   overflow: hidden;
 }
@@ -23,6 +37,6 @@ button.menuButton.selected {
   position: absolute;
   z-index: 2;
 
-  bottom: 30px;
-  right: 30px;
+  bottom: 50px;
+  right: 50px;
 }

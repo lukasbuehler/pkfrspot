@@ -98,6 +98,9 @@ export class MapPageComponent implements OnInit {
   loadedSpots: any = {}; // is a map of tile coords to spot arrays
   visibleDots: any[] = [];
 
+  zoomDotOpacities: number[] = [];
+  zoomDotOpacity: number = 0;
+
   private _northEastTileCoordsZ16: google.maps.Point;
   private _southWestTileCoordsZ16: google.maps.Point;
 
@@ -115,6 +118,7 @@ export class MapPageComponent implements OnInit {
     let zoom = this.route.snapshot.queryParamMap.get("z") || 3; // TODO ?? syntax
 
     this.calculateAllDotRadii();
+    this.calculateAllDotOpcacities();
 
     if (spotId) {
       this._dbService.getSpotById(spotId).subscribe(
@@ -226,6 +230,12 @@ export class MapPageComponent implements OnInit {
     }
   }
 
+  centerChanged(center: google.maps.LatLngLiteral) {
+    this.center_coordinates.lat = center.lat;
+    this.center_coordinates.lng = center.lng;
+    this.upadateMapURL(center, this.zoom);
+  }
+
   calculateAllDotRadii() {
     for (let i = 0; i < 16; i++) {
       this.spotDotZoomRadii[i] = this.calculateDotRadius(i);
@@ -237,8 +247,11 @@ export class MapPageComponent implements OnInit {
     return radius;
   }
 
-  getDotOpacityForZoom(zoom) {
-    return Math.min(Math.max((zoom - 4) / 20, 0.05), 0.8);
+  calculateAllDotOpcacities() {
+    for (let zoom = 0; zoom < 16; zoom++) {
+      const opacity = Math.min(Math.max((zoom - 4) / 20, 0.05), 0.8);
+      this.zoomDotOpacities.push(opacity);
+    }
   }
 
   oldDotRadius(zoom, location) {
@@ -247,14 +260,9 @@ export class MapPageComponent implements OnInit {
     return radius;
   }
 
-  centerChanged(center: google.maps.LatLngLiteral) {
-    this.center_coordinates.lat = center.lat;
-    this.center_coordinates.lng = center.lng;
-    this.upadateMapURL(center, this.zoom);
-  }
-
   zoomChanged(newZoom: number) {
     this.zoom = newZoom;
+    this.zoomDotOpacity = this.zoomDotOpacities[newZoom];
     this.upadateMapURL(this.center_coordinates, newZoom);
   }
 

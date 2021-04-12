@@ -12,6 +12,7 @@ import * as Croppie from "croppie";
 import { DatabaseService } from "../database.service";
 import { StorageFolder, StorageService } from "../storage.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import * as firebase from "firebase";
 
 @Component({
   selector: "app-edit-profile",
@@ -25,7 +26,8 @@ export class EditProfileComponent implements OnInit {
 
   user: User.Class = null;
   // user properties
-  displayName: string;
+  displayName: string = "";
+  startDate: Date = null;
 
   newProfilePicture: File = null;
   newProfilePictureSrc: string = "";
@@ -44,6 +46,7 @@ export class EditProfileComponent implements OnInit {
     this.authService.authState$.subscribe((user) => {
       this.user = user;
       this.displayName = user.displayName;
+      this.startDate = user.startDate;
     });
   }
 
@@ -169,7 +172,11 @@ export class EditProfileComponent implements OnInit {
   }
 
   detectIfChanges() {
-    if (this.displayName !== this.user.displayName || this.newProfilePicture) {
+    if (
+      this.displayName !== this.user.displayName ||
+      this.newProfilePicture ||
+      this.startDate !== this.user.startDate
+    ) {
       this.changes.emit(true);
     } else {
       this.changes.emit(false);
@@ -193,6 +200,14 @@ export class EditProfileComponent implements OnInit {
         this.newProfilePicture
       ) {
         promises.push(this._handleProfilePictureUploadAndSave());
+      }
+
+      // Start date
+      if (this.startDate !== this.user.startDate) {
+        data.start_date = new firebase.default.firestore.Timestamp(
+          this.startDate.getTime() / 1000,
+          0
+        );
       }
 
       // Update user data if changed

@@ -17,14 +17,14 @@
   </ng-container>
 
   <ng-container matColumnDef="duration">
-    <th mat-header-cell *matHeaderCellDef>since</th>
+    <th mat-header-cell *matHeaderCellDef>Duration</th>
     <td mat-cell *matCellDef="let followUser">
       {{ followUser.start_following | followDuration }}
     </td>
   </ng-container>
 
   <ng-container matColumnDef="open">
-    <th mat-header-cell *matHeaderCellDef>since</th>
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
     <td mat-cell *matCellDef="let followUser">
       <button
         [routerLink]="'/u/' + followUser.uid"

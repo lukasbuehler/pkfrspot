@@ -47,7 +47,7 @@
         [dismissable]="true"
         [infoOnly]="false"
         [editable]="true"
-        [(isEditing)]="this.editingBounds"
+        [(isEditing)]="editingBounds"
         (dismiss)="closeSpot()"
         (addBoundsClick)="addBounds()"
         (callGetPathsPromiseFunction)="getPathsFromSpotPolygon()"
@@ -60,7 +60,7 @@
     id="map"
     [latitude]="start_coordinates.lat"
     [longitude]="start_coordinates.lng"
-    [zoom]="this.zoom"
+    [zoom]="zoom"
     [backgroundColor]="'#000a12'"
     [clickableIcons]="false"
     [disableDefaultUI]="true"
@@ -73,18 +73,14 @@
     (centerChange)="centerChanged($event)"
     (zoomChange)="zoomChanged($event)"
   >
-    <agm-circle
+    <agm-marker
       *ngFor="let dot of visibleDots"
-      [fillColor]="'#304ffe'"
+      iconUrl="/assets/icons/favicon-16x16.png"
       [latitude]="dot.location.latitude"
       [longitude]="dot.location.longitude"
-      [circleDraggable]="false"
-      [strokeWeight]="0"
-      [strokeOpacity]="0"
-      [radius]="spotDotZoomRadii[zoom]"
-      [visible]="true"
-      [fillOpacity]="getDotOpacityForZoom(zoom)"
-    ></agm-circle>
+      [markerDraggable]="false"
+      [opacity]="zoomDotOpacity"
+    ></agm-marker>
 
     <agm-circle
       *ngFor="let spot of visibleSpots"

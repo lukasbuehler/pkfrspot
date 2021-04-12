@@ -6,7 +6,9 @@ export module User {
     public uid: string = "";
     public displayName: string = "";
     public profilePicture: string = "";
+    public biography: string = "";
     public startTimeDiffString: string = "";
+    public startDate: Date;
     public followerCount: number = 0;
 
     public data: User.Schema = null;
@@ -35,6 +37,7 @@ export module User {
         this.startTimeDiffString = moment(
           this._data.start_date.toDate()
         ).fromNow(true);
+        this.startDate = this._data.start_date.toDate();
       }
 
       // Followers
