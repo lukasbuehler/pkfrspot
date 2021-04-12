@@ -30,7 +30,6 @@ mat-toolbar {
   padding-top: 5px;
   padding-bottom: 5px;
   img {
-    background: white;
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -39,6 +38,13 @@ mat-toolbar {
 
   .mat-button-wrapper {
     padding: 5px;
+  }
+}
+.profile-icon-button {
+  img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
   }
 }
 ::ng-deep .user-display > span.mat-button-wrapper {

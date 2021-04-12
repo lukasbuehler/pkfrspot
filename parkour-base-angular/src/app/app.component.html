@@ -34,10 +34,25 @@
     </button>
   </mat-menu>
 
+  <button mat-icon-button [matMenuTriggerFor]="navMenu" class="d-md-none">
+    <mat-icon aria-label="Example icon-button with a heart icon">menu</mat-icon>
+  </button>
+
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="navUserMenu"
+    class="d-md-none profile-icon-button"
+  >
+    <img
+      *ngIf="authService.isSignedIn && authService.user?.profilePicture"
+      [src]="authService.user.profilePicture"
+    />
+  </button>
+
   <button
     mat-button
     [matMenuTriggerFor]="navUserMenu"
-    class="user-display text-right"
+    class="d-none d-md-block user-display text-right"
   >
     <img
       *ngIf="authService.isSignedIn && authService.user?.profilePicture"
@@ -49,10 +64,6 @@
         ? authService.user.displayName
         : ""
     }}
-  </button>
-
-  <button mat-icon-button [matMenuTriggerFor]="navMenu" class="d-md-none">
-    <mat-icon aria-label="Example icon-button with a heart icon">menu</mat-icon>
   </button>
 </mat-toolbar>
 

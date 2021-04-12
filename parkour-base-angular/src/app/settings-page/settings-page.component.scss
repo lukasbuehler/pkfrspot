@@ -4,11 +4,8 @@
   }
   @media (min-width: 600px) {
     height: calc(100% - 64px);
-    overflow-y: scroll;
   }
-  @media (max-width: 767px) {
-    overflow: hidden;
-  }
+  overflow-y: scroll;
   padding-bottom: 100px;
 }
 

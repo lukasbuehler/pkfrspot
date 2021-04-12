@@ -1,0 +1,19 @@
+.logo {
+  font-family: "Permanent Marker", cursive;
+}
+
+.link-button {
+  text-decoration: none;
+  width: 80%;
+}
+
+.credit-grid {
+  display: grid;
+  @media (max-width: 767px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  gap: 10px;
+}

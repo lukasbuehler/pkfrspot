@@ -1,69 +1,91 @@
-<div class="container">
+<div class="container text-center">
   <app-page-header title="About"></app-page-header>
-  <div class="row">
-    <div class="md-col-12">
-      <h2>What is "The PKFR Spot"?</h2>
+  <div class="row mb-5">
+    <div class="col-md-12">
+      <h1 class="mat-display-1 logo">The PKFR Spot</h1>
+      <h2 class="mat-h1">A place for Parkour and Freerunning.</h2>
+      <h3 class="mat-h3">Discover, Train, Share.</h3>
+
       <p class="mat-body">
-        We aim to be the spot for all PKFR things. We are integrating lots of
-        different features and capabilities into this website to make it a great
-        tool for freerunners and traceurs. We want to provide a hub to let
-        freerunners share media, scout locations, plan sessions and grow as a
-        community.
+        Here you can discover spots and fellow athletes, plan training sessions
+        with your friends and share achievements and memories with them and the
+        world.
       </p>
     </div>
   </div>
-  <div class="row">
-    <div class="md-col-12">
-      <h4>Is there a catch?</h4>
+  <div class="row mb-5">
+    <div class="col-md-4 mb-4">
+      <h4 class="mat-h2">Our Ad policy</h4>
       <p class="mat-body">
-        Well, we are running ads. But we are planning to collaborate with
-        parkour brands and gyms to only show you relevant PKFR-related ads.
+        We are currently not serving ads. However, this will change in the
+        future. This is reflected in our terms and conditions and privacy
+        policy.
       </p>
       <p class="mat-body">
-        Also, maybe we will be accepting donations in the future for future
-        projects, like an app, for example.
+        The plan is to only have parkour related ads on this platform. To
+        support PKFR brands and be supported by them.
       </p>
     </div>
-  </div>
-  <div class="row">
-    <div class="md-col-12">
-      <h4>Our source code is public</h4>
+    <div class="col-md-4 mb-4">
+      <h4 class="mat-h2">Open-Source</h4>
       <p class="mat-body">
-        All our source code is public and available on GitHub.
+        This project is completely Open-Source! Our code is licensed under the
+        <b>MIT License</b>.
       </p>
-      <a
-        mat-raised-button
-        color="accent"
-        href="https://github.com/lukasbuehler/pkfrspot"
-        class="mb-5"
-      >
-        PKFR Spot on GitHub
-      </a>
+      <div class="d-flex flex-column align-items-center">
+        <a
+          mat-stroked-button
+          color="default"
+          href="https://github.com/lukasbuehler/pkfrspot"
+          class="link-button mb-2"
+        >
+          <mat-icon>code</mat-icon>
+          View Source-Code
+        </a>
+        <a
+          mat-stroked-button
+          color="default"
+          href="https://github.com/lukasbuehler/pkfrspot/blob/main/LICENSE"
+          class="link-button"
+        >
+          <mat-icon>receipt_long</mat-icon>
+          View License
+        </a>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <h4 class="mat-h2">Join our Discord!</h4>
+      <p class="mat-body">
+        We have a Discord for feedback, ideas, bug reports and more! It is also
+        the perfect place to start if you want to become a contributor.
+      </p>
+      <div class="d-flex flex-column align-items-center">
+        <a
+          mat-stroked-button
+          color="default"
+          href="https://discord.gg/6v4mdtbg8m"
+          class="link-button mb-2"
+        >
+          <mat-icon>sports_esports</mat-icon>
+          Join Discord
+        </a>
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="md-col-12">
-      <h2>About <s>the team</s> <b> me</b></h2>
-      <p class="mat-body">
-        At the moment, this platform is developed soley by me.
-      </p>
-      <p class="mat-body">
-        Allow me to introduce myself. I am Lukas Bühler. I'm from Switzerland
-        and I'm a student at ETH Zurich. I am very passionate about parkour and
-        freeruning and have been practising the sport since 2 years. I am
-        working on this project in my free time.
-      </p>
-      <p class="mat-body">
-        If you are a web-developer yourself and want to contribute on this
-        project, please contact me via E-mail.
-      </p>
-      <a
-        mat-raised-button
-        color="primary"
-        class="mb-5"
-        href="mailto:contact@lukasbuehler.ch"
-        >Mail to: contact@lukasbuehler.ch</a
-      >
+  <div class="row mb-5">
+    <div class="col-md-12">
+      <h2 class="mat-display-1 mb-4">Credits</h2>
+      <div class="credit-grid pb-5">
+        <div class="mat-card rounded mat-elevation-z0 border p-3">
+          <div class="mat-card-title">Lukas Bühler</div>
+          <div class="mat-card-content">Lead developer</div>
+        </div>
+        <div class="mat-card rounded mat-elevation-z0 border p-3">
+          <div class="mat-card-content">
+            Become a contributor! Join our Discord.
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
