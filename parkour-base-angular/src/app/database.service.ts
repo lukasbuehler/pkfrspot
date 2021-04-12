@@ -67,13 +67,15 @@ export class DatabaseService {
           .collection<User.FollowingDataSchema>(`users/${userId}/following`)
           .get()
           .subscribe((snap) => {
+            // Gets the followers once, the user will need to refresh to display post of newly following users.
+
             allFollowingsIds = snap.docs.map((val) => {
               return val.id;
             });
+
             // add the currently authenticated user to the Ids
             // We want to see our own posts as well
             allFollowingsIds.unshift(userId);
-            console.log(allFollowingsIds);
 
             if (allFollowingsIds.length === 0) {
               // This user doesn't follow anyone, just complete the observable.

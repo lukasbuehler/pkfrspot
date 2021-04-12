@@ -36,9 +36,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   debugCounterNumber = 0;
 
-  @ViewChild("updateCollection", { static: true })
-  updateCollection: PostCollectionComponent;
-
   ngOnInit() {
     // Load the top posts
     this.getTodaysTopPosts();
@@ -71,8 +68,12 @@ export class HomePageComponent implements OnInit, OnDestroy {
     // get More posts
   }
 
-  public _unsubscribeFromUpdates() {
-    this._updatesSubscription.unsubscribe();
+  private _unsubscribeFromUpdates() {
+    console.log("unsubscribing from post updates");
+    if (!this._updatesSubscription?.closed) {
+      this._updatesSubscription.unsubscribe();
+      this._updatesSubscription = null;
+    }
   }
 
   private _subscribeToUpdates(userId: string) {
@@ -102,6 +103,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
               } else {
                 // create and add new Post
                 this.updatePosts.push(change.post);
+
+                // sort
                 this.updatePosts.sort((a, b) => {
                   return b.timePosted.getTime() - a.timePosted.getTime();
                 });
@@ -110,10 +113,12 @@ export class HomePageComponent implements OnInit, OnDestroy {
           },
           (error) => {
             this.loadingUpdates = false;
+            console.error("Error loading updates");
             console.error(error);
           },
           () => {
             this.loadingUpdates = false;
+            console.log("Post loading complete");
           } // complete
         );
     } else {
@@ -137,14 +142,12 @@ export class HomePageComponent implements OnInit, OnDestroy {
             this.todaysTopPosts.push(new Post.Class(postId, postMap[postId]));
 
             // sort
-            /*
             this.todaysTopPosts.sort((a, b) => {
               return (
                 b.likeCount - a.likeCount ||
                 b.timePosted.getTime() - a.timePosted.getTime()
               );
             });
-            */
           }
         }
         this.loadingTodaysTopPosts = false;
@@ -212,7 +215,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       post.spot = {
         name: spot.name || "",
         spot_location: new firebase.default.firestore.GeoPoint(lat, lng),
-        image_src: spot.media[0]?.src || "",
+        image_src: spot.media && spot.media[0]?.src ? spot.media[0].src : "",
         ref: this._dbService.docRef("spots/" + spot.id),
       };
     }
