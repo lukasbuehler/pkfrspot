@@ -32,7 +32,6 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss",
               "src/theming/parkour.scss",
-              "node_modules/firebaseui/dist/firebaseui.css",
               "node_modules/plyr/dist/plyr.css"
             ],
             "scripts": [],
@@ -112,8 +111,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "src/styles.scss",
-              "node_modules/firebaseui/dist/firebaseui.css"
+              "src/styles.scss"
             ],
             "scripts": [],
             "assets": [

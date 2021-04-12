@@ -20,7 +20,6 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import { AgmCoreModule } from "@agm/core";
-import { FirebaseUIModule, firebase, firebaseui } from "firebaseui-angular";
 
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
@@ -86,8 +85,8 @@ import {
   FollowListComponent,
 } from "./follow-list/follow-list.component";
 import { EditProfileComponent } from "./edit-profile/edit-profile.component";
-import { SettingsPageComponent } from './settings-page/settings-page.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
+import { SettingsPageComponent } from "./settings-page/settings-page.component";
+import { ServiceWorkerModule } from "@angular/service-worker";
 
 @NgModule({
   declarations: [
@@ -141,9 +140,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     AgmCoreModule.forRoot({
       apiKey: keys.google_maps,
     }),
-    FirebaseUIModule.forRoot(
-      environment.firebaseUiAuthConfig as firebaseui.auth.Config
-    ),
 
     BrowserAnimationsModule,
     MatButtonModule,
@@ -175,7 +171,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 
     PlyrModule,
     AngularResizedEventModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register("ngsw-worker.js", {
+      enabled: environment.production,
+    }),
   ],
   exports: [MatButtonModule],
   providers: [
