@@ -21,7 +21,7 @@ import { SettingsPageComponent } from "./settings-page/settings-page.component";
 const routes: Routes = [
   // Home page and posts (displays posts and updates)
   { path: "home", component: HomePageComponent },
-  { path: "", redirectTo: "/home", pathMatch: "full" },
+  { path: "", redirectTo: "home", pathMatch: "full" },
   { path: "p/:postID", component: PostPageComponent },
 
   // Map page
@@ -49,12 +49,12 @@ const routes: Routes = [
 
   // Other
   { path: "about", component: AboutPageComponent },
-  { path: "welcome", component: WelcomePageComponent },
+  { path: "welcome", redirectTo: "home", pathMatch: "full" }, //component: WelcomePageComponent },
   // { path: "landing", component: LandingPageComponent },
   { path: "terms_of_service", component: TermsOfServiceComponent },
-  { path: "tos", redirectTo: "/terms_of_service", pathMatch: "full" },
+  { path: "tos", redirectTo: "terms_of_service", pathMatch: "full" },
   { path: "privacy_policy", component: PrivacyPolicyComponent },
-  { path: "pp", redirectTo: "/privacy_policy", pathMatch: "full" },
+  { path: "pp", redirectTo: "privacy_policy", pathMatch: "full" },
   { path: "**", component: NotFoundPageComponent },
 ];
 

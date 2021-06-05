@@ -70,7 +70,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   private _unsubscribeFromUpdates() {
     console.log("unsubscribing from post updates");
-    if (!this._updatesSubscription?.closed) {
+    if (this._updatesSubscription && !this._updatesSubscription.closed) {
       this._updatesSubscription.unsubscribe();
       this._updatesSubscription = null;
     }
