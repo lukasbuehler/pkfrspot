@@ -1,5 +1,11 @@
 service cloud.firestore {
   match /databases/{database}/documents {
+    match /invite_codes/{invite_code}
+    {
+      allow get: if true
+      allow list: if false
+      allow write: if false
+    }
     match /posts/{post}
     {
       // every post is publicy available to everyone.

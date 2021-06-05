@@ -9,6 +9,7 @@ import { Router } from "@angular/router";
 import * as firebase from "firebase";
 import { isEmailValid } from "src/scripts/Helpers";
 import { AuthenticationService } from "../authentication.service";
+import { DatabaseService } from "../database.service";
 
 @Component({
   selector: "app-sign-up-page",
@@ -18,9 +19,11 @@ import { AuthenticationService } from "../authentication.service";
 export class SignUpPageComponent implements OnInit {
   createAccountForm: FormGroup;
   signUpError: string = "";
+  isInviteOnly: boolean = true;
 
   constructor(
     private _authService: AuthenticationService,
+    private _databaseService: DatabaseService,
     private _formBuilder: FormBuilder,
     private _router: Router
   ) {}
@@ -31,9 +34,9 @@ export class SignUpPageComponent implements OnInit {
     this.createAccountForm = this._formBuilder.group(
       {
         displayName: ["", [Validators.required]],
-        email: ["", [Validators.email]],
-        password: ["", [Validators.minLength(6)]],
-        repeatPassword: ["", []],
+        email: ["", [Validators.required, Validators.email]],
+        password: ["", [Validators.required, Validators.minLength(6)]],
+        repeatPassword: ["", [Validators.required]],
         agreeCheck: [false, [Validators.required]],
         inviteCode: ["", Validators.required],
       },
@@ -80,6 +83,7 @@ export class SignUpPageComponent implements OnInit {
     const password = createAccountFormValue.password;
     const repeatedPassword = createAccountFormValue.repeatPassword;
     const agreeCheck = !!createAccountFormValue.agreeCheck;
+    const inviteCode = createAccountFormValue.inviteCode;
 
     // trim, lower case and validate email address
     email = String(email).toLowerCase().trim();
@@ -87,27 +91,58 @@ export class SignUpPageComponent implements OnInit {
     // check that the repeated password matches the password
     if (!password || !repeatedPassword || password !== repeatedPassword) {
       console.error("Password and repeated password don't match");
-      this.signUpError = "";
+      this.signUpError = "Password and repeated password don't match";
       return;
     }
 
     // check if the terms of service and legal shebang was accepted
     if (!agreeCheck) {
       console.error("User did not agree!");
+      this.signUpError = "You need to agree to the terms and conditions!";
       return;
     }
 
-    // check that the reCAPTCHA is valid
-    // TODO
+    // check that the invite code (if one is needed)
+    if (this.isInviteOnly && !inviteCode) {
+      this.signUpError = "Invite code cannot be empty!";
+      return;
+    }
 
-    // only then create a new account
+    if (this.isInviteOnly) {
+      // check if the invite only code still has uses
+      this._databaseService.checkInviteCode(inviteCode).then(
+        (isValid) => {
+          if (isValid) {
+            this._createAccount(email, password, displayName, inviteCode);
+          } else {
+            this.signUpError = "Invite code is not valid!";
+          }
+        },
+        (error) => {
+          console.error("Error", error);
+        }
+      );
+    } else {
+      // only then create a new account
+      this._createAccount(email, password, displayName);
+    }
+  }
 
+  private _createAccount(
+    email: string,
+    password: string,
+    displayName: string,
+    inviteCode?: string
+  ) {
     console.log("Creating account:", email, password);
     this._authService
-      .createAccount(email, password, displayName)
+      .createAccount(email, password, displayName, inviteCode)
       .then((val) => {
         this._router.navigateByUrl("/welcome");
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.error("Cannot create account!", err);
+        this.signUpError = "Could not create account!";
+      });
   }
 }

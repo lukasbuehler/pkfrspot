@@ -16,6 +16,7 @@ import { User } from "src/scripts/db/User";
 import { merge } from "rxjs";
 import { map } from "rxjs/operators";
 import * as firebase from "firebase";
+import { InviteCode } from "src/scripts/db/InviteCode";
 
 @Injectable({
   providedIn: "root",
@@ -97,9 +98,8 @@ export class DatabaseService {
             }
 
             // 3) Call all the observables to those batches of 10 users with in queries for posts with pagination.
-            let observables: Observable<
-              DocumentChangeAction<Post.Schema>[]
-            >[] = [];
+            let observables: Observable<DocumentChangeAction<Post.Schema>[]>[] =
+              [];
             chunks.forEach((ids: string[]) => {
               observables.push(
                 this.db
@@ -473,12 +473,20 @@ export class DatabaseService {
 
   // Users --------------------------------------------------------------------
 
-  addUser(userId, display_name): Promise<User.Schema> {
+  addUser(
+    userId: string,
+    display_name: string,
+    data: User.Schema
+  ): Promise<User.Schema> {
     return new Promise<User.Schema>((resolve, reject) => {
-      this.db.collection("users").doc(userId).set({
-        display_name: display_name,
-        verified_email: false,
-      });
+      this.db
+        .collection<User.Schema>("users")
+        .doc(userId)
+        .set({
+          display_name: display_name,
+          verified_email: false,
+          ...data,
+        });
     });
   }
 
@@ -737,5 +745,54 @@ export class DatabaseService {
           });
         })
       );
+  }
+
+  // Other
+
+  checkInviteCode(inviteCode: string): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this.db
+        .doc<InviteCode.Schema>(`invite_codes/${inviteCode}`)
+        .get()
+        .subscribe(
+          (doc) => {
+            const data = doc.data() as InviteCode.Schema;
+
+            if (data.uses_left > 0) {
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          },
+          (error) => {
+            console.log("obs error", error);
+            resolve(false);
+          }
+        );
+    });
+  }
+
+  useInviteCode(inviteCode: string): Promise<InviteCode.Schema> {
+    return new Promise<InviteCode.Schema>((resolve, reject) => {
+      this.db
+        .doc<InviteCode.Schema>(`invite_codes/${inviteCode}`)
+        .get()
+        .subscribe(
+          (doc) => {
+            const data = doc.data() as InviteCode.Schema;
+
+            if (data.uses_left > 0) {
+              resolve(data);
+              // now subtract one use
+            } else {
+              reject("No uses left!");
+            }
+          },
+          (error) => {
+            console.log("obs error", error);
+            reject(error);
+          }
+        );
+    });
   }
 }

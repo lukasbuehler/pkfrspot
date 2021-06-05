@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
   navbarConfig = {
     color: "primary",
     logo: {
-      text: "The PKFR Spot",
+      text: "PkFr Spot",
       class: "logo",
     },
     buttons: [

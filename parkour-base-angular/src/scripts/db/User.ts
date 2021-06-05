@@ -57,6 +57,7 @@ export module User {
     start_date?: firebase.default.firestore.Timestamp;
     nationality?: string;
     verified_email?: boolean;
+    invite_code?: string;
 
     creationDate?: firebase.default.firestore.Timestamp;
   }

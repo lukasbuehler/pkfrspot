@@ -123,7 +123,12 @@ export class AuthenticationService {
     return this.angularFireAuth.signOut();
   }
 
-  public createAccount(email, confirmedPassword, displayName) {
+  public createAccount(
+    email: string,
+    confirmedPassword: string,
+    displayName: string,
+    inviteCode?: string
+  ) {
     return new Promise<firebase.default.auth.UserCredential>(
       (resolve, reject) => {
         this.angularFireAuth
@@ -136,7 +141,9 @@ export class AuthenticationService {
               });
 
               // create a database entry for the user
-              this._databaseService.addUser(res.user.uid, displayName);
+              this._databaseService.addUser(res.user.uid, displayName, {
+                invite_code: inviteCode,
+              });
 
               resolve(res);
             },
