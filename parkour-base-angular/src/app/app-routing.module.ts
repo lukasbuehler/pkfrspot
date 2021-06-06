@@ -20,40 +20,101 @@ import { SettingsPageComponent } from "./settings-page/settings-page.component";
 
 const routes: Routes = [
   // Home page and posts (displays posts and updates)
-  { path: "home", component: HomePageComponent },
+  { path: "home", component: HomePageComponent, data: { routeName: "Home" } },
   { path: "", redirectTo: "home", pathMatch: "full" },
-  { path: "p/:postID", component: PostPageComponent },
+  {
+    path: "p/:postID",
+    component: PostPageComponent,
+    data: { routeName: "Post" },
+  },
 
   // Map page
-  { path: "map", component: MapPageComponent },
-  { path: "map/:spotID", component: MapPageComponent },
-  //{ path: "s/:spotID", component: SpotDetailComponent },
-  { path: "kml-import", component: KmlImportPageComponent },
+  { path: "map", component: MapPageComponent, data: { routeName: "Spot Map" } },
+  {
+    path: "map/:spotID",
+    component: MapPageComponent,
+    data: { routeName: "Spot Map" },
+  },
+  //{ path: "s/:spotID", component: SpotDetailComponent, data: {routeName: "Spot"} },
+  {
+    path: "kml-import",
+    component: KmlImportPageComponent,
+    data: { routeName: "KML Import" },
+  },
 
   // Community, Groups, Teams, Sessions
-  { path: "community", component: CommunityPageComponent },
-  { path: "g/:groupID", component: CommunityPageComponent },
-  { path: "team/:teamID", component: CommunityPageComponent },
+  {
+    path: "community",
+    component: CommunityPageComponent,
+    data: { routeName: "Community" },
+  },
+  {
+    path: "g/:groupID",
+    component: CommunityPageComponent,
+    data: { routeName: "Group" },
+  },
+  {
+    path: "team/:teamID",
+    component: CommunityPageComponent,
+    data: { routeName: "Team" },
+  },
 
   // Wiki page
-  { path: "wiki", component: WikiPageComponent },
+  { path: "wiki", component: WikiPageComponent, data: { routeName: "Wiki" } },
 
   // Profiles and sign-in flow
-  { path: "u/:userID", component: ProfilePageComponent },
-  { path: "sign-in", component: SignInPageComponent },
-  { path: "sign-up", component: SignUpPageComponent },
+  {
+    path: "u/:userID",
+    component: ProfilePageComponent,
+    data: { routeName: "Profile" },
+  },
+  {
+    path: "sign-in",
+    component: SignInPageComponent,
+    data: { routeName: "Sign-in" },
+  },
+  {
+    path: "sign-up",
+    component: SignUpPageComponent,
+    data: { routeName: "Sign-up" },
+  },
 
   // Settings
-  { path: "settings", component: SettingsPageComponent },
-  { path: "settings/:tab", component: SettingsPageComponent },
+  {
+    path: "settings",
+    component: SettingsPageComponent,
+    data: { routeName: "Settings" },
+  },
+  {
+    path: "settings/:tab",
+    component: SettingsPageComponent,
+    data: { routeName: "Settings" },
+  },
 
   // Other
-  { path: "about", component: AboutPageComponent },
-  { path: "welcome", redirectTo: "home", pathMatch: "full" }, //component: WelcomePageComponent },
+  {
+    path: "about",
+    component: AboutPageComponent,
+    data: { routeName: "About" },
+  },
+  {
+    path: "welcome",
+    redirectTo: "home",
+    pathMatch: "full",
+    data: { routeName: "Welcome" },
+  }, //component: WelcomePageComponent },
   // { path: "landing", component: LandingPageComponent },
-  { path: "terms_of_service", component: TermsOfServiceComponent },
+  {
+    path: "terms_of_service",
+    component: TermsOfServiceComponent,
+    data: { routeName: "Terms of Service" },
+  },
   { path: "tos", redirectTo: "terms_of_service", pathMatch: "full" },
-  { path: "privacy_policy", component: PrivacyPolicyComponent },
+  {
+    path: "privacy_policy",
+    component: PrivacyPolicyComponent,
+    data: { routeName: "Privacy Policy" },
+  },
   { path: "pp", redirectTo: "privacy_policy", pathMatch: "full" },
   { path: "**", component: NotFoundPageComponent },
 ];

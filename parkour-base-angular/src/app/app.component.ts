@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { Router, RoutesRecognized } from "@angular/router";
+import { filter, map } from "rxjs/operators";
 import { AuthenticationService } from "./authentication.service";
 
 @Component({
@@ -9,9 +11,12 @@ import { AuthenticationService } from "./authentication.service";
 })
 export class AppComponent implements OnInit {
   constructor(
+    public router: Router,
     public authService: AuthenticationService,
     private _snackbar: MatSnackBar
   ) {}
+
+  currentPageName = "";
 
   hasAds = window["canRunAds"];
   userId: string = "";
@@ -36,6 +41,18 @@ export class AppComponent implements OnInit {
         console.error(error);
       }
     );
+
+    // get the route name
+    this.router.events
+      .pipe(filter((event) => event instanceof RoutesRecognized))
+      .pipe(
+        map((event: RoutesRecognized) => {
+          return event.state.root.firstChild.data?.routeName || "";
+        })
+      )
+      .subscribe((routeName) => {
+        this.currentPageName = routeName;
+      });
   }
 
   navbarConfig = {

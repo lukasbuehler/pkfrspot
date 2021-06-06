@@ -16,22 +16,44 @@ mat-drawer-container {
 mat-drawer {
   border: none;
   background: white;
+}
 
-  padding: 15px;
-  width: 20vw;
-  min-width: 400px;
-  max-width: 600px;
-
-  @media (min-width: 576px) {
-    width: 30vw;
-    min-width: 400px;
-    max-width: 600px;
+#startDrawer {
+  @media (min-width: 1200px) {
+    width: 50vw;
   }
 
-  @media (max-width: 575px) {
+  @media (min-width: 992px) and (max-width: 1199px) {
+    width: 33vw;
+  }
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    width: 50vw;
+  }
+
+  @media (max-width: 767px) {
     width: 100%;
-    max-width: 100%;
-    min-width: auto;
+  }
+}
+
+#endDrawer {
+  padding: 15px;
+  min-width: 350px;
+
+  @media (min-width: 1200px) {
+    width: 25vw;
+  }
+  @media (min-width: 992px) and (max-width: 1199px) {
+    width: 33vw;
+  }
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    width: 50vw;
+    border-left: 1px grey solid !important;
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
   }
 }
 
@@ -47,6 +69,13 @@ mat-drawer {
 
 #searchFormField {
   width: 100%;
+}
+
+.tab-icon {
+  margin-right: 8px;
+}
+::ng-deep .mat-tab-label {
+  min-width: 0 !important;
 }
 
 .editCardContainer {
@@ -119,8 +148,8 @@ mat-card {
   position: absolute;
   z-index: 2;
 
-  right: 20px;
-  top: 20px;
+  left: 20px;
+  bottom: 35px;
 }
 
 #closeStartDrawerFab {

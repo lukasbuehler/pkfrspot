@@ -1,5 +1,17 @@
 <mat-toolbar color="{{ navbarConfig.color }}" class="mat-elevation-z1">
-  <span class="{{ navbarConfig.logo.class }}">{{
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="navMenu"
+    class="d-md-none"
+    style="margin-left: -11px"
+  >
+    <mat-icon aria-label="Example icon-button with a heart icon">menu</mat-icon>
+  </button>
+
+  <span class="d-md-none mat-h2 m-0">{{ currentPageName }}</span>
+  <span class="d-md-none spacer"></span>
+
+  <span class="d-none d-md-block {{ navbarConfig.logo.class }} mr-3">{{
     navbarConfig.logo.text
   }}</span>
 
@@ -34,15 +46,16 @@
     </button>
   </mat-menu>
 
-  <button mat-icon-button [matMenuTriggerFor]="navMenu" class="d-md-none">
-    <mat-icon aria-label="Example icon-button with a heart icon">menu</mat-icon>
-  </button>
-
   <button
     mat-icon-button
     [matMenuTriggerFor]="navUserMenu"
-    class="d-md-none profile-icon-button"
+    class="d-md-none profile-icon-button ml-0"
+    style="margin-right: -6px"
   >
+    <mat-icon
+      *ngIf="!authService.isSignedIn || authService.user?.profilePicture"
+      >person_outline</mat-icon
+    >
     <img
       *ngIf="authService.isSignedIn && authService.user?.profilePicture"
       [src]="authService.user.profilePicture"
@@ -59,11 +72,13 @@
       [src]="authService.user.profilePicture"
     />
     <mat-icon *ngIf="!authService.isSignedIn">person_outline</mat-icon>
-    {{
-      authService.isSignedIn && authService.user?.displayName
-        ? authService.user.displayName
-        : ""
-    }}
+    <span>
+      {{
+        authService.isSignedIn && authService.user?.displayName
+          ? authService.user.displayName
+          : ""
+      }}
+    </span>
   </button>
 </mat-toolbar>
 

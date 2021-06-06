@@ -7,28 +7,100 @@
     position="start"
     [opened]="false"
   >
-    <h2 class="mat-h2">
-      Search
-      <button
-        mat-icon-button
-        #closeStartDrawerFab
-        id="closeStartDrawerFab"
-        (click)="startDrawer.close()"
-      >
-        <mat-icon>navigate_before</mat-icon>
-      </button>
-    </h2>
-    <mat-form-field #searchFormField id="searchFormField">
-      <input matInput placeholder="Search Spots" />
-    </mat-form-field>
-    <div id="searchSpotList">
-      <app-spot-card
-        *ngFor="let spot of searchSpots"
-        [spot]="spot"
-        [clickable]="true"
-        (click)="selectedSpot = spot; startDrawer.close()"
-      ></app-spot-card>
-    </div>
+    <mat-tab-group mat-stretch-tabs>
+      <!-- Discover Spots tab -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">explore</mat-icon>
+          <span class="d-xs-none d-sm-block d-md-none d-lg-none d-xl-block">
+            Discover
+          </span>
+        </ng-template>
+        <div class="p-3">
+          <h2 class="mat-h2 d-flex justify-content-between">
+            Discover Spots
+            <button
+              mat-mini-fab
+              class="mat-elevation-z0"
+              color="white"
+              (click)="startDrawer.close()"
+            >
+              <mat-icon
+                aria-label="Button with magnifying lens to search for spots"
+              >
+                close
+              </mat-icon>
+            </button>
+          </h2>
+        </div>
+      </mat-tab>
+
+      <!-- Spots near me tab -->
+      <mat-tab disabled>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">radar</mat-icon>
+          <span class="d-xs-none d-sm-block d-md-none d-lg-none d-xl-block">
+            Near me
+          </span>
+        </ng-template>
+        <div class="p-3">
+          <h2 class="mat-h2 d-flex justify-content-between">
+            Spots near me
+            <button
+              mat-mini-fab
+              class="mat-elevation-z0"
+              color="white"
+              (click)="startDrawer.close()"
+            >
+              <mat-icon
+                aria-label="Button with magnifying lens to search for spots"
+              >
+                close
+              </mat-icon>
+            </button>
+          </h2>
+        </div>
+      </mat-tab>
+
+      <!-- Spot search tab -->
+      <mat-tab disabled>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">search</mat-icon>
+          <span class="d-xs-none d-sm-block d-md-none d-lg-none d-xl-block">
+            Search
+          </span>
+        </ng-template>
+        <div class="p-3">
+          <h2 class="mat-h2 d-flex justify-content-between">
+            Search spots
+            <button
+              mat-mini-fab
+              class="mat-elevation-z0"
+              color="white"
+              (click)="startDrawer.close()"
+            >
+              <mat-icon
+                aria-label="Button with magnifying lens to search for spots"
+              >
+                close
+              </mat-icon>
+            </button>
+          </h2>
+          <div class="d-flex flex-row align-items-top">
+            <mat-form-field
+              #searchFormField
+              id="searchFormField"
+              appearance="outline"
+            >
+              <mat-label>Search spots</mat-label>
+              <input matInput type="text" />
+            </mat-form-field>
+          </div>
+
+          <div id="searchSpotList"></div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </mat-drawer>
 
   <mat-drawer
@@ -132,10 +204,16 @@
     ></agm-marker>
   </agm-map>
 
-  <button mat-fab #searchFab id="searchFab" (click)="startDrawer.open()">
-    <mat-icon aria-label="Button with magnifying lens to search for spots"
-      >search</mat-icon
-    >
+  <button
+    mat-fab
+    #searchFab
+    id="searchFab"
+    (click)="startDrawer.toggle()"
+    [color]="startDrawer.opened ? 'default' : 'accent'"
+  >
+    <mat-icon aria-label="Button with magnifying lens to search for spots">{{
+      startDrawer.opened ? "navigate_before" : "search"
+    }}</mat-icon>
   </button>
 
   <button
