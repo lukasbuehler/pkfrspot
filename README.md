@@ -1,29 +1,31 @@
 # PKFR Spot ([pkfrspot.com](https://pkfrspot.com))
 
-A platform for parkour and freerunning.
+A place for Parkour and Freerunning
 
-Find, rate and create spots for parkour and freerunning, post pictures and videos for your fans and mates and exchange knowledge with the community and read up on the wiki. The mantra for the platform is "from the community and for the community" and everything is maintained by the community and changes to spots and wiki pages are voted upon.
+Disvover, Train, Share.
 
-User generated content uploaded to the platform is publicly available and can be seen by everyone but belongs to the user. There are no sponsored athletes and every user is considered equal.
+Discover spots and fellow athletes, plan training sessions with your friends 
+and share achievements and memories with them and the world.
 
-## WORK IN PROGRESS 
+## Open-Source 
 
-This platform is still a work in progress and might not be functional at this point. Gives us a little time. Feel free to contact me (the lead developer) for feedback, ideas and bugs or other questions.
+This project is Open-Source! Our code is licensed under the [MIT License](./LICENSE)!
 
-Lukas Bühler [contact@lukasbuehler.ch](mailto:contact.lukasbuehler.ch)
+## Beta Roadmap
 
-#### Technologies
+The project is still in closed-beta. This is our projected roadmap:
 
-### App
+| Version | Release date | Changes                                                                                           |
+| :------ | :----------- | :------------------------------------------------------------------------------------------------ |
+| 0.1     | Soon-ish     | Start of closed-beta testing                                                                      |
+| 0.1.x   | ?            | Behind the scenes improvements: Adding testing, CI/CD, accessibility improvements and PWA support |
+| 0.2     | ?            | Internationalization (Adding language support)                                                    |
+| 0.3     | ?            | Text search                                                                                       |
+| 0.4     | ?            | Collab update (Adding teams, groups and sessions)                                                 |
+| ...     | ...          | ...                                                                                               |
+| 1.0     | ?            | Public release                                                                                    |
 
-We intend to produce an app for iOS and Android for this platform so that it is even easier to use the platform on the go.
 
-Development hasn't started yet.
+## Contributing
 
-## Our Intentions
-
-We intend to be "from the community, for the community". Meaning that our profits will be used for further development of this platform or be brought back to the community in other ways. Ideas would be: Our App, faster servers or even hosting competitions and creating and maintaining spots to be used by the community free of charge.
-
-We also open source all our code, for all our product.
-
-But don't be angry if we run ads. Feel free to use a AdBlocker but the develpment and servers don't pay themselves sadly.
+TODO Add contibuting info... :/

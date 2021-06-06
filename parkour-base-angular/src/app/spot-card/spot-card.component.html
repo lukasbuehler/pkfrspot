@@ -4,7 +4,10 @@
   [class.mat-elevation-z0]="true"
   [class.clickable]="clickable"
   class="mb-2"
+  [class.border]="true"
+  [class.rounded]="true"
 >
+  <img *ngIf="spot.previewImage" mat-card-image src="{{ spot.previewImage }}" />
   <mat-card-header>
     <mat-card-title>
       {{ spot.name }}
@@ -20,8 +23,4 @@
       ></app-rating>
     </mat-card-subtitle>
   </mat-card-header>
-  <img mat-card-image src="{{ spot.previewImage }}" />
-  <mat-card-content>
-    {{ capitalize(spot.type) }} in {{ spot.area }} area
-  </mat-card-content>
 </mat-card>

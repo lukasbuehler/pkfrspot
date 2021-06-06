@@ -12,7 +12,7 @@
       <mat-tab>
         <ng-template mat-tab-label>
           <mat-icon class="tab-icon">explore</mat-icon>
-          <span class="d-xs-none d-sm-block d-md-none d-lg-none d-xl-block">
+          <span class="d-none d-sm-block d-md-none d-lg-none d-xl-block">
             Discover
           </span>
         </ng-template>
@@ -32,6 +32,33 @@
               </mat-icon>
             </button>
           </h2>
+
+          <mat-chip-list
+            aria-label="DiscoverLocationOptions"
+            (change)="discoverDistanceChipSelected($event)"
+          >
+            <mat-chip [selectable]="true">5km</mat-chip>
+            <mat-chip [selectable]="true">10km</mat-chip>
+            <mat-chip [selectable]="true">25km</mat-chip>
+            <mat-chip [selectable]="true">50km</mat-chip>
+            <mat-chip [selectable]="true">100km</mat-chip>
+          </mat-chip-list>
+
+          <h3 class="mat-h3 mt-3 pb-3">Spots around Zürich</h3>
+
+          <button mat-button (click)="loadDiscoverSpots(0, 0)">
+            Load spots
+          </button>
+
+          <div class="discover-grid">
+            <app-spot-card
+              *ngFor="let spot of discoverSpots"
+              class="w-100 h-100"
+              [spot]="spot"
+              [infoOnly]="true"
+              [clickable]="true"
+            ></app-spot-card>
+          </div>
         </div>
       </mat-tab>
 
@@ -39,7 +66,7 @@
       <mat-tab disabled>
         <ng-template mat-tab-label>
           <mat-icon class="tab-icon">radar</mat-icon>
-          <span class="d-xs-none d-sm-block d-md-none d-lg-none d-xl-block">
+          <span class="d-none d-sm-block d-md-none d-lg-none d-xl-block">
             Near me
           </span>
         </ng-template>
@@ -66,7 +93,7 @@
       <mat-tab disabled>
         <ng-template mat-tab-label>
           <mat-icon class="tab-icon">search</mat-icon>
-          <span class="d-xs-none d-sm-block d-md-none d-lg-none d-xl-block">
+          <span class="d-none d-sm-block d-md-none d-lg-none d-xl-block">
             Search
           </span>
         </ng-template>
