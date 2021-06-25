@@ -2,11 +2,11 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { Spot } from "src/scripts/db/Spot";
 
 @Component({
-  selector: "app-spot-card",
-  templateUrl: "./spot-card.component.html",
-  styleUrls: ["./spot-card.component.scss"],
+  selector: "app-spot-preview-card",
+  templateUrl: "./spot-preview-card.component.html",
+  styleUrls: ["./spot-preview-card.component.scss"],
 })
-export class SpotCardComponent implements OnInit {
+export class SpotPreviewCardComponent implements OnInit {
   @Input() spot: Spot.Class;
   @Input() infoOnly: boolean = false;
   @Input() clickable: boolean = false;

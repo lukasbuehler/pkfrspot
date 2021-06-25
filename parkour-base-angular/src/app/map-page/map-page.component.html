@@ -51,13 +51,13 @@
           </button>
 
           <div class="discover-grid">
-            <app-spot-card
+            <app-spot-preview-card
               *ngFor="let spot of discoverSpots"
               class="w-100 h-100"
               [spot]="spot"
               [infoOnly]="true"
               [clickable]="true"
-            ></app-spot-card>
+            ></app-spot-preview-card>
           </div>
         </div>
       </mat-tab>

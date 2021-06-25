@@ -61,7 +61,7 @@ import { WikiPageComponent } from "./wiki-page/wiki-page.component";
 import { PageHeaderComponent } from "./page-header/page-header.component";
 import { PostCollectionComponent } from "./post-collection/post-collection.component";
 import { PostComponent } from "./post/post.component";
-import { SpotCardComponent } from "./spot-card/spot-card.component";
+import { SpotPreviewCardComponent } from "./spot-preview-card/spot-preview-card.component";
 import { SignInPageComponent } from "./sign-in-page/sign-in-page.component";
 import { EditPostDialogComponent } from "./edit-post-dialog/edit-post-dialog.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -98,7 +98,7 @@ import { ServiceWorkerModule } from "@angular/service-worker";
     PageHeaderComponent,
     PostCollectionComponent,
     PostComponent,
-    SpotCardComponent,
+    SpotPreviewCardComponent,
     SignInPageComponent,
     EditPostDialogComponent,
     RatingComponent,
