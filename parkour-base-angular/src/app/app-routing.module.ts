@@ -11,7 +11,7 @@ import { KmlImportPageComponent } from "./kml-import-page/kml-import-page.compon
 import { PostPageComponent } from "./post-page/post-page.component";
 import { ProfilePageComponent } from "./profile-page/profile-page.component";
 import { WelcomePageComponent } from "./welcome-page/welcome-page.component";
-import { SpotDetailComponent } from "./spot-detail/spot-detail.component";
+import { SpotCompactViewComponent } from "./spot-compact-view/spot-compact-view.component";
 import { SignUpPageComponent } from "./sign-up-page/sign-up-page.component";
 import { TermsOfServiceComponent } from "./terms-of-service/terms-of-service.component";
 import { PrivacyPolicyComponent } from "./privacy-policy/privacy-policy.component";

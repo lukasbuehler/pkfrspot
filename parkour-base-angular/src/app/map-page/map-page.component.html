@@ -139,7 +139,7 @@
     [opened]="!!selectedSpot"
   >
     <div *ngIf="selectedSpot">
-      <app-spot-detail
+      <app-spot-compact-view
         #spotDetail
         [spot]="selectedSpot"
         [flat]="true"
@@ -150,7 +150,7 @@
         (dismiss)="closeSpot()"
         (addBoundsClick)="addBounds()"
         (callGetPathsPromiseFunction)="getPathsFromSpotPolygon()"
-      ></app-spot-detail>
+      ></app-spot-compact-view>
     </div>
   </mat-drawer>
 

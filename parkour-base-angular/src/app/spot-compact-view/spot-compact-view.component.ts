@@ -16,11 +16,11 @@ import { AuthenticationService } from "../authentication.service";
 import { MediaType } from "src/scripts/db/Interfaces";
 
 @Component({
-  selector: "app-spot-detail",
-  templateUrl: "./spot-detail.component.html",
-  styleUrls: ["./spot-detail.component.scss"],
+  selector: "app-spot-compact-view",
+  templateUrl: "./spot-compact-view.component.html",
+  styleUrls: ["./spot-compact-view.component.scss"],
 })
-export class SpotDetailComponent implements OnInit {
+export class SpotCompactViewComponent implements OnInit {
   @Input() spot: Spot.Class;
   @Input() infoOnly: boolean = false;
   @Input() dismissable: boolean = false;

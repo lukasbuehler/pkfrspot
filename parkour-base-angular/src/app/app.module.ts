@@ -66,7 +66,7 @@ import { SignInPageComponent } from "./sign-in-page/sign-in-page.component";
 import { EditPostDialogComponent } from "./edit-post-dialog/edit-post-dialog.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RatingComponent } from "./rating/rating.component";
-import { SpotDetailComponent } from "./spot-detail/spot-detail.component";
+import { SpotCompactViewComponent } from "./spot-compact-view/spot-compact-view.component";
 import { UploadMediaUiComponent } from "./upload-media-ui/upload-media-ui.component";
 import { CommunityPageComponent } from "./community-page/community-page.component";
 import { AboutPageComponent } from "./about-page/about-page.component";
@@ -102,7 +102,7 @@ import { ServiceWorkerModule } from "@angular/service-worker";
     SignInPageComponent,
     EditPostDialogComponent,
     RatingComponent,
-    SpotDetailComponent,
+    SpotCompactViewComponent,
     UploadMediaUiComponent,
     CommunityPageComponent,
     AboutPageComponent,

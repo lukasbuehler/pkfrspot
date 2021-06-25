@@ -18,7 +18,7 @@ import { Spot } from "src/scripts/db/Spot";
 import { MapHelper } from "../../scripts/map_helper";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Location } from "@angular/common";
-import { SpotDetailComponent } from "../spot-detail/spot-detail.component";
+import { SpotCompactViewComponent } from "../spot-compact-view/spot-compact-view.component";
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
 
 @Component({
@@ -31,8 +31,8 @@ export class MapPageComponent implements OnInit {
   @ViewChildren("polygon", { read: AgmPolygon })
   polygons: QueryList<AgmPolygon>;
   // SpotDetailComponent is only there if there is a spot selected, so static must be set to false.
-  @ViewChild(SpotDetailComponent)
-  spotDetail: SpotDetailComponent;
+  @ViewChild(SpotCompactViewComponent)
+  spotDetail: SpotCompactViewComponent;
 
   speedDialButtonConfig: SpeedDialFabButtonConfig = {
     mainButton: {
