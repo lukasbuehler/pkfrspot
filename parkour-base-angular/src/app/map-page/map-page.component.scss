@@ -60,6 +60,11 @@ mat-drawer {
 ::ng-deep .mat-drawer-inner-container {
   overflow: visible !important;
   overflow-y: hidden;
+
+  height: 100%;
+  > div {
+    height: 100%;
+  }
 }
 
 #endDrawer {

@@ -1,4 +1,7 @@
 mat-card {
+  height: 100%;
+  overflow-y: scroll;
+
   ::ng-deep .mat-card-header-text {
     width: 100%;
     margin: 0;
@@ -23,20 +26,27 @@ mat-card {
   margin-right: 5px;
 }
 
-mat-expansion-panel {
-  margin-left: -6px;
-  margin-right: -6px;
-  width: calc(100% + 2 * 6px);
+mat-tab-group {
+  height: 100%;
+  margin-left: -16px;
+  margin-right: -16px;
+  margin-top: -16px;
+  margin-bottom: -16px;
 
-  ::ng-deep .mat-expansion-panel-content {
-    max-height: calc(100vh - (56px + 3 * 48px + 170px));
-    overflow-y: scroll;
+  ::ng-deep .mat-tab-body-wrapper {
+    height: 100%;
   }
+}
+
+::ng-deep .mat-tab-body-content {
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 16px;
 }
 
 .spot-button-row {
   margin-left: -10px;
-  margin-right: -10px;
+  //margin-right: -10px;
 }
 
 .spot-button-row button {
@@ -44,12 +54,12 @@ mat-expansion-panel {
 }
 
 div.upload-spot-image-box {
+  background: lightgrey;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
   padding-bottom: 20px;
   margin-bottom: 20px;
-  border: black 1px solid;
-  border-radius: 15px;
 }

@@ -73,6 +73,64 @@
         ></textarea>
       </mat-form-field>
     </form>
+    <mat-tab-group
+      *ngIf="!isEditing"
+      mat-stretch-tabs
+      (selectedTabChange)="selectedTabChanged($event.index)"
+    >
+      <mat-tab label="Details">
+        <img
+          *ngIf="spot.previewImage"
+          src="{{ spot.previewImage }}"
+          class="spot-img"
+          alt=""
+        />
+
+        <!-- No media box  -->
+        <div *ngIf="!spot.hasMedia" class="upload-spot-image-box">
+          <p>There are no images for this spot</p>
+          <app-upload-media-ui
+            [allowedMimeTypes]="['image/jpeg']"
+            acceptString="image/jpeg"
+            (uploadMedia)="setSpotImage($event)"
+          >
+          </app-upload-media-ui>
+          <button mat-flat-button (click)="uploadImage()" color="accent">
+            Upload Spot Image
+          </button>
+        </div>
+        <p *ngIf="spot.description">
+          {{ spot.description }}
+        </p>
+        <p *ngIf="spot.type">Type: {{ capitalize(spot.type) }}</p>
+        <p *ngIf="spot.area">Area: {{ capitalize(spot.area) }}</p>
+
+        <div class="spot-button-row">
+          <button
+            *ngIf="visited"
+            mat-button
+            (click)="rateClick()"
+            color="accent"
+          >
+            Rate
+          </button>
+          <button mat-button>
+            {{ !visited ? "Mark as visited" : "Remove from visited" }}
+          </button>
+          <button mat-button (click)="focusClick()">Focus</button>
+          <button mat-button color="accent" (click)="shareSpot()">Share</button>
+        </div>
+        <div class="spot-button-row">
+          <button *ngIf="editable" mat-button (click)="editButtonClick()">
+            Edit Spot
+          </button>
+        </div>
+      </mat-tab>
+      <mat-tab label="Posts">
+        <app-post-collection [posts]="spotPosts"></app-post-collection>
+      </mat-tab>
+      <mat-tab label="Edit"> ... Coming soon ... </mat-tab>
+    </mat-tab-group>
   </mat-card-content>
   <div class="spot-button-row">
     <button
@@ -101,66 +159,4 @@
       Discard changes
     </button>
   </mat-card-actions>
-  <mat-accordion *ngIf="!isEditing">
-    <mat-expansion-panel [expanded]="true" [class.mat-elevation-z0]="flat">
-      <mat-expansion-panel-header>
-        <mat-panel-title> Details </mat-panel-title>
-        <mat-panel-description> Info and pictures </mat-panel-description>
-      </mat-expansion-panel-header>
-      <img src="{{ spot.previewImage }}" class="spot-img" alt="" />
-      <div *ngIf="!spot.hasMedia" class="upload-spot-image-box">
-        <p>There are no images for this spot</p>
-        <app-upload-media-ui
-          [allowedMimeTypes]="['image/jpeg']"
-          acceptString="image/jpeg"
-          (uploadMedia)="setSpotImage($event)"
-        >
-        </app-upload-media-ui>
-        <button mat-flat-button (click)="uploadImage()" color="accent">
-          Upload Spot Image
-        </button>
-      </div>
-      <p *ngIf="spot.description">
-        {{ spot.description }}
-      </p>
-      <p *ngIf="spot.type">Type: {{ capitalize(spot.type) }}</p>
-      <p *ngIf="spot.area">Area: {{ capitalize(spot.area) }}</p>
-
-      <div class="spot-button-row">
-        <button *ngIf="visited" mat-button (click)="rateClick()" color="accent">
-          Rate
-        </button>
-        <button mat-button>
-          {{ !visited ? "Mark as visited" : "Remove from visited" }}
-        </button>
-        <button mat-button (click)="focusClick()">Focus</button>
-        <button mat-button color="accent" (click)="shareSpot()">Share</button>
-      </div>
-      <div class="spot-button-row">
-        <button *ngIf="editable" mat-button (click)="editButtonClick()">
-          Edit Spot
-        </button>
-      </div>
-    </mat-expansion-panel>
-    <mat-expansion-panel
-      [class.mat-elevation-z0]="flat"
-      (opened)="postPanelOpened()"
-      (closed)="postPanelClosed()"
-    >
-      <mat-expansion-panel-header>
-        <mat-panel-title> Posts </mat-panel-title>
-        <mat-panel-description> Posts from this spot </mat-panel-description>
-      </mat-expansion-panel-header>
-      <app-post-collection [posts]="spotPosts"></app-post-collection>
-    </mat-expansion-panel>
-    <mat-expansion-panel [class.mat-elevation-z0]="flat">
-      <mat-expansion-panel-header>
-        <mat-panel-title> Edit voting </mat-panel-title>
-        <mat-panel-description>
-          Vote for spot details changes
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      ... Coming soon ...
-    </mat-expansion-panel>
-  </mat-accordion>
 </mat-card>

@@ -61,6 +61,15 @@ export class SpotCompactViewComponent implements OnInit {
 
   ngOnInit() {}
 
+  selectedTabChanged(number: number) {
+    if (number === 1) {
+      // Post Tab selected
+      this.loadSpotPosts();
+    } else {
+      this.unsubscribeFromSpotPosts();
+    }
+  }
+
   dismissed() {
     if (this.dismissable) {
       this.isEditing = false;
@@ -198,14 +207,6 @@ export class SpotCompactViewComponent implements OnInit {
 
   capitalize(s: string) {
     return s && s[0].toUpperCase() + s.slice(1);
-  }
-
-  postPanelOpened() {
-    this.loadSpotPosts();
-  }
-
-  postPanelClosed() {
-    this.unsubscribeFromSpotPosts();
   }
 
   loadSpotPosts() {
