@@ -1,23 +1,51 @@
 <div class="home-page-container">
-  <div class="container">
-    <div class="row posts">
-      <div class="col-md-6 text-center px-3">
-        <app-post-collection
-          #updateCollection
-          [posts]="updatePosts"
-          [title]="'Updates'"
-          [loading]="loadingUpdates"
-        ></app-post-collection>
+  <mat-tab-group mat-align-tabs="center" class="home-page-tabs">
+    <mat-tab *ngIf="authService.isSignedIn" label="Updates">
+      <div class="container">
+        <div class="row posts">
+          <div
+            class="
+              col-12 col-md-8
+              offset-md-2
+              col-lg-6
+              offset-lg-3
+              text-center
+              px-3
+            "
+          >
+            <app-post-collection
+              #updateCollection
+              [posts]="updatePosts"
+              [title]="'Updates'"
+              [loading]="loadingUpdates"
+            ></app-post-collection>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6 text-center px-3">
-        <app-post-collection
-          [posts]="todaysTopPosts"
-          [title]="'Top posts'"
-          [loading]="loadingTodaysTopPosts"
-        ></app-post-collection>
+    </mat-tab>
+    <mat-tab label="Top posts">
+      <div class="container">
+        <div class="row posts">
+          <div
+            class="
+              col-12 col-md-8
+              offset-md-2
+              col-lg-6
+              offset-lg-3
+              text-center
+              px-3
+            "
+          >
+            <app-post-collection
+              [posts]="todaysTopPosts"
+              [title]="'Top posts'"
+              [loading]="loadingTodaysTopPosts"
+            ></app-post-collection>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </mat-tab>
+  </mat-tab-group>
 </div>
 
 <button

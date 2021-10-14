@@ -1,11 +1,11 @@
-.home-page-container {
+::ng-deep .home-page-tabs .mat-tab-body-wrapper {
   @media (max-width: 599px) {
-    height: calc(100% - 56px);
+    height: calc(100vh - 56px - 48px - 1px);
   }
   @media (min-width: 600px) {
-    height: calc(100% - 64px);
+    height: calc(100vh - 64px - 48px - 1px);
   }
-  overflow-y: scroll;
+  //overflow-y: scroll;
 }
 
 ::ng-deep mat-dialog-container {
