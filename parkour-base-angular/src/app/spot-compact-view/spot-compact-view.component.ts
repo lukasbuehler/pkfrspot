@@ -34,6 +34,7 @@ export class SpotCompactViewComponent implements OnInit {
   isEditingChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() dismiss: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() addBoundsClick: EventEmitter<void> = new EventEmitter<void>();
+  @Output() focusClick: EventEmitter<void> = new EventEmitter<void>();
 
   @ViewChild(UploadMediaUiComponent) uploadMediaComp;
 
@@ -106,7 +107,10 @@ export class SpotCompactViewComponent implements OnInit {
     this.addBoundsClick.emit();
   }
 
-  focusClick() {}
+  focusButtonClick() {
+    console.log("Focus button clicked");
+    this.focusClick.emit();
+  }
 
   rateClick() {}
 

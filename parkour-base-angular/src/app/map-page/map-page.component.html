@@ -57,6 +57,7 @@
               [spot]="spot"
               [infoOnly]="true"
               [clickable]="true"
+              (click)="openSpot(spot)"
             ></app-spot-preview-card>
           </div>
         </div>
@@ -150,6 +151,7 @@
         (dismiss)="closeSpot()"
         (addBoundsClick)="addBounds()"
         (callGetPathsPromiseFunction)="getPathsFromSpotPolygon()"
+        (focusClick)="focusSpot(selectedSpot)"
       ></app-spot-compact-view>
     </div>
   </mat-drawer>
@@ -259,7 +261,7 @@
 
   <!-- Add / import spots speed dial-->
   <app-speed-dial-fab
-    *ngIf="!editingBounds"
+    *ngIf="authService.isSignedIn && !editingBounds"
     #createSpotSpeedDial
     id="createSpotSpeedDial"
     [buttonConfig]="speedDialButtonConfig"

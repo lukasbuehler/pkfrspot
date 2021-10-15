@@ -27,6 +27,8 @@ export module Spot {
 
     public data: Spot.Schema = null;
 
+    public address: AddressSchema;
+
     constructor(
       private _id: string,
       private _data: Spot.Schema,
@@ -52,6 +54,8 @@ export module Spot {
 
       this.type = this._data.type;
       this.area = this._data.area;
+
+      this.address = this._data.address;
 
       this.data = this._data;
 
@@ -156,6 +160,27 @@ export module Spot {
     }
   }
 
+  export interface AddressSchema {
+    route?: {
+      short: string;
+      long: string;
+    };
+    street_number?: number;
+    neighborhood?: string;
+    city?: string;
+    postal_code?: number;
+    county?: string;
+    state?: {
+      short?: string;
+      long: string;
+    };
+    country: {
+      short: string;
+      long: string;
+    };
+    formatted: string;
+  }
+
   export interface Schema {
     name: LocaleMap;
 
@@ -179,6 +204,8 @@ export module Spot {
 
     type?: string;
     area?: string;
+
+    address?: AddressSchema;
 
     bounds?: firebase.default.firestore.GeoPoint[];
 

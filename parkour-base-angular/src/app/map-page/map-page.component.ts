@@ -5,6 +5,7 @@ import {
   AfterViewInit,
   QueryList,
   ViewChildren,
+  NgZone,
 } from "@angular/core";
 import { map_style } from "./map_style";
 
@@ -20,6 +21,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Location } from "@angular/common";
 import { SpotCompactViewComponent } from "../spot-compact-view/spot-compact-view.component";
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
+import { AuthenticationService } from "../authentication.service";
 
 @Component({
   selector: "app-map-page",
@@ -107,13 +109,17 @@ export class MapPageComponent implements OnInit {
   discoverSpots: Spot.Class[] = [];
 
   constructor(
+    public authService: AuthenticationService,
     private _dbService: DatabaseService,
     private route: ActivatedRoute,
     private location: Location,
-    private router: Router
+    private router: Router,
+    private _zone: NgZone
   ) {}
 
   ngOnInit() {
+    this.map.usePanning = true;
+
     let spotId: string = this.route.snapshot.paramMap.get("spotID") || "";
     let lat = this.route.snapshot.queryParamMap.get("lat") || null;
     let lng = this.route.snapshot.queryParamMap.get("lng") || null;
@@ -131,7 +137,7 @@ export class MapPageComponent implements OnInit {
               lat: spot.location.lat,
               lng: spot.location.lng,
             },
-            20
+            18
           );
         },
         (error) => {
@@ -410,10 +416,22 @@ export class MapPageComponent implements OnInit {
   openSpot(spot: Spot.Class) {
     // Maybe just opened spot
     this.selectedSpot = spot;
-    this.upadateMapURL(this.center_coordinates, this.zoom);
+    this.focusSpot(spot);
   }
 
-  focusSpot(spot: Spot.Class) {}
+  focusSpot(spot: Spot.Class) {
+    this._zone.run(() => {
+      // needs to run in NgZone for change detection
+      // https://github.com/SebastianM/angular-google-maps/issues/627
+      // TODO STILL NOT WORKING THOUGH
+      // Bug: It only works when the selected spot changes. Meaning if a
+      // different spot is/was selected it pans correctly to the new spot
+      // but otherwise it just does nothing.
+
+      this.setStartMap(spot.location, 18);
+      this.upadateMapURL(spot.location, 18);
+    });
+  }
 
   createSpot() {
     //console.log("Create Spot");

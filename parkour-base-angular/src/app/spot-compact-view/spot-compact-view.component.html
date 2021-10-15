@@ -99,11 +99,17 @@
             Upload Spot Image
           </button>
         </div>
-        <p *ngIf="spot.description">
-          {{ spot.description }}
-        </p>
-        <p *ngIf="spot.type">Type: {{ capitalize(spot.type) }}</p>
-        <p *ngIf="spot.area">Area: {{ capitalize(spot.area) }}</p>
+        <div *ngIf="spot.description">
+          <h4 class="mat-body-2">Description</h4>
+          <p>
+            {{ spot.description }}
+          </p>
+        </div>
+
+        <div *ngIf="spot.address">
+          <h4 class="mat-body-2">Address</h4>
+          <p>{{ spot.address.formatted }}</p>
+        </div>
 
         <div class="spot-button-row">
           <button
@@ -117,7 +123,7 @@
           <button mat-button>
             {{ !visited ? "Mark as visited" : "Remove from visited" }}
           </button>
-          <button mat-button (click)="focusClick()">Focus</button>
+          <button mat-button (click)="focusButtonClick()">Focus</button>
           <button mat-button color="accent" (click)="shareSpot()">Share</button>
         </div>
         <div class="spot-button-row">
