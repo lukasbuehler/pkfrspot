@@ -11,9 +11,18 @@ import { DatabaseService } from "../database.service";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
 import { StorageService, StorageFolder } from "../storage.service";
 import { Post } from "src/scripts/db/Post";
-import { Subscription } from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { AuthenticationService } from "../authentication.service";
 import { MediaType } from "src/scripts/db/Interfaces";
+//import { MatTooltipModule } from "@angular/material/tooltip";
+
+import {
+  isoCountryCodeToFlagEmoji,
+  getCountryNameInLanguage,
+  getCountriesList,
+} from "../../scripts/Helpers";
+import { FormControl } from "@angular/forms";
+import { map, startWith } from "rxjs/operators";
 
 @Component({
   selector: "app-spot-compact-view",
@@ -38,9 +47,10 @@ export class SpotCompactViewComponent implements OnInit {
 
   @ViewChild(UploadMediaUiComponent) uploadMediaComp;
 
-  backupSpot: Spot.Class;
+  backupSpot: Spot.Class = null;
 
   visited: boolean = false;
+  bookmarked: boolean = false;
 
   spotTypes = Object.values(Spot.Types);
   spotAreas = Object.values(Spot.Areas);
@@ -50,17 +60,38 @@ export class SpotCompactViewComponent implements OnInit {
   spotPosts: Post.Class[] = [];
   postSubscription: Subscription;
 
+  countries: any[] = [];
+  filteredCountries: Observable<any[]>;
+  stateCtrl = new FormControl();
+
   constructor(
     private _dbService: DatabaseService,
     private _storageService: StorageService,
     private _authenticationService: AuthenticationService
   ) {
     if (this.spot) {
-      this.backupSpot = this.spot;
+      this.backupSpot = JSON.parse(JSON.stringify(this.spot));
     }
+
+    this.filteredCountries = this.stateCtrl.valueChanges.pipe(
+      startWith(""),
+      map((country) =>
+        country ? this._filterCountries(country) : this.countries.slice()
+      )
+    );
   }
 
-  ngOnInit() {}
+  private _filterCountries(value: string): any[] {
+    const filterValue = value.toLowerCase();
+
+    return this.countries.filter(
+      (country) => country.name.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+
+  ngOnInit() {
+    this.countries = getCountriesList("de");
+  }
 
   selectedTabChanged(number: number) {
     if (number === 1) {
@@ -68,6 +99,29 @@ export class SpotCompactViewComponent implements OnInit {
       this.loadSpotPosts();
     } else {
       this.unsubscribeFromSpotPosts();
+    }
+  }
+
+  countryOptionSelected(event) {
+    let selectedCountryLong = event.option.value;
+
+    let index = this.countries.findIndex(
+      (val) => val.name === selectedCountryLong
+    );
+
+    if (!this.spot.address) {
+      this.spot.setAddress({
+        country: {
+          long: selectedCountryLong,
+          short: this.countries[index].code,
+        },
+        formatted: "",
+      });
+    } else {
+      this.spot.address.country.long = selectedCountryLong;
+      this.spot.address.country.short = this.countries[index].code;
+
+      this.spot.setAddress(this.spot.address);
     }
   }
 
@@ -89,9 +143,8 @@ export class SpotCompactViewComponent implements OnInit {
   }
   saveButtonClick() {
     this.updatePaths();
-    //this.isEditing = false;
-    //this.save();
-    //this.isEditingChange.emit(false);
+    this.save();
+    this.isEditingChange.emit(false);
   }
   discardButtonClick() {
     this.isEditing = false;
@@ -112,7 +165,21 @@ export class SpotCompactViewComponent implements OnInit {
     this.focusClick.emit();
   }
 
-  rateClick() {}
+  rateClick() {
+    // TODO
+  }
+
+  bookmarkClick() {
+    this.bookmarked = !this.bookmarked;
+  }
+
+  visitedClick() {
+    this.visited = !this.visited;
+  }
+
+  addressChanged(newAddress) {
+    this.spot.address.formatted = newAddress;
+  }
 
   setSpotImage(file: File) {
     console.log("setting image");
@@ -185,12 +252,16 @@ export class SpotCompactViewComponent implements OnInit {
   }
 
   public save() {
+    console.log("saving the spot");
+    console.log(this.spot.data);
     // If the spot does not have an ID, it does not exist in the database yet.
     if (this.spot.id) {
       // this is an old spot that is edited
       this._dbService.setSpot(this.spot.id, this.spot.data).subscribe(
         () => {
           // Successfully updated
+          this.isEditing = false;
+          // TODO Snackbar or something
         },
         (error) => {
           console.error("Error on spot save", error);
@@ -201,6 +272,8 @@ export class SpotCompactViewComponent implements OnInit {
       this._dbService.createSpot(this.spot.data).subscribe(
         (id) => {
           // Successfully created
+          this.isEditing = false;
+          // TODO snackbar or something
         },
         (error) => {
           console.error("There was an error creating this spot!", error);
@@ -233,5 +306,13 @@ export class SpotCompactViewComponent implements OnInit {
   unsubscribeFromSpotPosts() {
     console.log("Unsubscribing...");
     this.postSubscription.unsubscribe();
+  }
+
+  getCountryNameFromShortCode(shortCountryCode) {
+    return getCountryNameInLanguage(shortCountryCode);
+  }
+
+  getCountryEmojiFromAlpha2(countryAlpha2Code) {
+    return isoCountryCodeToFlagEmoji(countryAlpha2Code);
   }
 }

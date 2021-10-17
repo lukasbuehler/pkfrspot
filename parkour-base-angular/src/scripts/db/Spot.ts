@@ -93,9 +93,14 @@ export module Spot {
       this._data.area = newArea;
     }
 
-    setPpaths(paths) {
+    setPaths(paths) {
       this.paths = paths;
       this._data.bounds = this._makeBoundsFromPaths(paths);
+    }
+
+    setAddress(addressObj) {
+      this.address = addressObj;
+      this._data.address = addressObj;
     }
 
     get location(): google.maps.LatLngLiteral {
@@ -175,7 +180,7 @@ export module Spot {
       long: string;
     };
     country: {
-      short: string;
+      short: string; // alpha 2
       long: string;
     };
     formatted: string;

@@ -30,7 +30,7 @@
         </mat-form-field>
       </form>
       <mat-icon *ngIf="visited && !isEditing" style="float: right"
-        >check</mat-icon
+        >flag</mat-icon
       >
     </mat-card-title>
     <mat-card-subtitle>
@@ -46,6 +46,126 @@
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
+    <mat-tab-group
+      *ngIf="!isEditing"
+      mat-stretch-tabs
+      (selectedTabChange)="selectedTabChanged($event.index)"
+    >
+      <mat-tab label="Details">
+        <!-- spot preview image  -->
+        <img
+          *ngIf="spot.previewImage"
+          src="{{ spot.previewImage }}"
+          class="spot-img"
+          alt=""
+        />
+
+        <!-- Icon button row -->
+        <div class="spot-button-row mb-3 mt-3">
+          <button
+            mat-icon-button
+            matTooltip="Focus on map"
+            aria-label="Example icon button with a heart icon"
+            (click)="focusButtonClick()"
+          >
+            <mat-icon>center_focus_strong</mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
+            color="accent"
+            matTooltip="Save this spot"
+            aria-label="Example icon button with a bookmark icon"
+            (click)="bookmarkClick()"
+          >
+            <mat-icon>{{
+              bookmarked ? "bookmark" : "bookmark_border"
+            }}</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="accent"
+            matTooltip="Mark as visited"
+            aria-label="Example icon button with a flag icon"
+            (click)="visitedClick()"
+          >
+            <mat-icon>{{ visited ? "flag" : "outlined_flag" }}</mat-icon>
+          </button>
+          <button
+            [disabled]="!visited"
+            mat-icon-button
+            color="accent"
+            [matTooltip]="
+              visited
+                ? 'Rate this spot'
+                : 'To rate this spot you need to mark it as visited'
+            "
+            aria-label="Example icon button with a half-star icon"
+            (click)="rateClick()"
+          >
+            <mat-icon>star</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            matTooltip="Share this spot"
+            aria-label="Example icon button with a share icon"
+            (click)="shareSpot()"
+          >
+            <mat-icon>share</mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
+            matTooltip="Edit this spot"
+            aria-label="Example icon button with a pencil icon"
+            (click)="editButtonClick()"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+
+        <div *ngIf="spot.description">
+          <h4 class="mat-body-2">Description</h4>
+          <p>
+            {{ spot.description }}
+          </p>
+        </div>
+
+        <div *ngIf="spot.address">
+          <h4 *ngIf="spot.address?.formatted" class="mat-body-2">Address</h4>
+          <p>{{ spot.address.formatted }}</p>
+          <h4 class="mat-body-2">Country</h4>
+          <p>
+            {{ getCountryEmojiFromAlpha2(spot.address.country.short) }}
+            {{ getCountryNameFromShortCode(spot.address.country.short) }}
+          </p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Posts">
+        <app-post-collection [posts]="spotPosts"></app-post-collection>
+      </mat-tab>
+      <mat-tab label="Edit"> ... Coming soon ... </mat-tab>
+    </mat-tab-group>
+
+    <!-- No media box  -->
+    <div *ngIf="isEditing" class="upload-spot-image-box">
+      <app-upload-media-ui
+        [allowedMimeTypes]="['image/jpeg']"
+        acceptString="image/jpeg"
+        (uploadMedia)="setSpotImage($event)"
+      >
+      </app-upload-media-ui>
+      <button
+        mat-flat-button
+        (click)="uploadImage()"
+        class="mt-2"
+        color="accent"
+      >
+        Upload Spot Image
+      </button>
+    </div>
+
+    <!-- Edit spot form -->
     <form *ngIf="isEditing">
       <mat-form-field style="width: 100%">
         <mat-label>Spot type</mat-label>
@@ -72,81 +192,62 @@
           (change)="spot.description = $event.target.value"
         ></textarea>
       </mat-form-field>
-    </form>
-    <mat-tab-group
-      *ngIf="!isEditing"
-      mat-stretch-tabs
-      (selectedTabChange)="selectedTabChanged($event.index)"
-    >
-      <mat-tab label="Details">
-        <img
-          *ngIf="spot.previewImage"
-          src="{{ spot.previewImage }}"
-          class="spot-img"
-          alt=""
+
+      <!-- Country -->
+      <mat-form-field style="width: 100%">
+        <mat-label>Country</mat-label>
+        <input
+          matInput
+          placeholder="Country"
+          aria-label="Country"
+          [formControl]="stateCtrl"
+          [matAutocomplete]="countryAuto"
         />
-
-        <!-- No media box  -->
-        <div *ngIf="!spot.hasMedia" class="upload-spot-image-box">
-          <p>There are no images for this spot</p>
-          <app-upload-media-ui
-            [allowedMimeTypes]="['image/jpeg']"
-            acceptString="image/jpeg"
-            (uploadMedia)="setSpotImage($event)"
+        <mat-autocomplete
+          #countryAuto="matAutocomplete"
+          (optionSelected)="countryOptionSelected($event)"
+        >
+          <mat-option
+            [id]="country.code"
+            *ngFor="let country of filteredCountries | async"
+            [value]="country.name"
           >
-          </app-upload-media-ui>
-          <button mat-flat-button (click)="uploadImage()" color="accent">
-            Upload Spot Image
-          </button>
-        </div>
-        <div *ngIf="spot.description">
-          <h4 class="mat-body-2">Description</h4>
-          <p>
-            {{ spot.description }}
-          </p>
-        </div>
+            {{ country.emoji }} {{ country.name }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-hint>{{
+          spot.address
+            ? getCountryEmojiFromAlpha2(spot.address.country.short) +
+              " " +
+              spot.address.country.short
+            : ""
+        }}</mat-hint>
+      </mat-form-field>
 
-        <div *ngIf="spot.address">
-          <h4 class="mat-body-2">Address</h4>
-          <p>{{ spot.address.formatted }}</p>
-        </div>
+      <!-- Address -->
+      <mat-form-field
+        *ngIf="spot.address && spot.address.country"
+        style="width: 100%"
+      >
+        <mat-label>Address</mat-label>
+        <input
+          matInput
+          [value]="spot.address?.formatted || ''"
+          (change)="addressChanged($event.target.value)"
+        />
+      </mat-form-field>
+    </form>
 
-        <div class="spot-button-row">
-          <button
-            *ngIf="visited"
-            mat-button
-            (click)="rateClick()"
-            color="accent"
-          >
-            Rate
-          </button>
-          <button mat-button>
-            {{ !visited ? "Mark as visited" : "Remove from visited" }}
-          </button>
-          <button mat-button (click)="focusButtonClick()">Focus</button>
-          <button mat-button color="accent" (click)="shareSpot()">Share</button>
-        </div>
-        <div class="spot-button-row">
-          <button *ngIf="editable" mat-button (click)="editButtonClick()">
-            Edit Spot
-          </button>
-        </div>
-      </mat-tab>
-      <mat-tab label="Posts">
-        <app-post-collection [posts]="spotPosts"></app-post-collection>
-      </mat-tab>
-      <mat-tab label="Edit"> ... Coming soon ... </mat-tab>
-    </mat-tab-group>
+    <div class="spot-button-row">
+      <button
+        *ngIf="editable && isEditing && !hasBounds()"
+        mat-button
+        (click)="addBoundsClicked()"
+      >
+        Add bounds
+      </button>
+    </div>
   </mat-card-content>
-  <div class="spot-button-row">
-    <button
-      *ngIf="editable && isEditing && !hasBounds()"
-      mat-button
-      (click)="addBoundsClicked()"
-    >
-      Add bounds
-    </button>
-  </div>
   <mat-card-actions *ngIf="isEditing">
     <button
       color="accent"

@@ -12,11 +12,14 @@ mat-card {
   cursor: pointer;
 }
 
+.spacer {
+  flex-grow: 1;
+}
+
 .spot-img {
-  margin-bottom: 20px;
-  margin-left: -24px;
-  margin-right: -24px;
-  width: calc(100% + 2 * 24px);
+  margin-left: -16px;
+  margin-right: -16px;
+  width: calc(100% + 2 * 16px);
   height: auto;
 }
 
@@ -38,6 +41,12 @@ mat-tab-group {
   }
 }
 
+form {
+  > mat-form-field {
+    margin-bottom: 5px;
+  }
+}
+
 ::ng-deep .mat-tab-body-content {
   padding-left: 16px;
   padding-right: 16px;
@@ -45,8 +54,9 @@ mat-tab-group {
 }
 
 .spot-button-row {
-  margin-left: -10px;
-  //margin-right: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .spot-button-row button {
@@ -54,8 +64,6 @@ mat-tab-group {
 }
 
 div.upload-spot-image-box {
-  background: lightgrey;
-
   display: flex;
   flex-direction: column;
   align-items: center;
