@@ -120,9 +120,15 @@ export class SpotCompactViewComponent implements OnInit {
         formatted: "",
       });
     } else {
-      this.spot.address.country.long = selectedCountryLong;
-      this.spot.address.country.short = this.countries[index].code;
-
+      if (!this.spot.address.country) {
+        this.spot.address.country = {
+          long: selectedCountryLong,
+          short: this.countries[index].code,
+        };
+      } else {
+        this.spot.address.country.long = selectedCountryLong;
+        this.spot.address.country.short = this.countries[index].code;
+      }
       this.spot.setAddress(this.spot.address);
     }
   }

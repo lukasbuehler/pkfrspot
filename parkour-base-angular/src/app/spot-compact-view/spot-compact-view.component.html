@@ -131,7 +131,7 @@
           </p>
         </div>
 
-        <div *ngIf="spot.address">
+        <div *ngIf="spot.address?.country">
           <h4 *ngIf="spot.address?.formatted" class="mat-body-2">Address</h4>
           <p>{{ spot.address.formatted }}</p>
           <h4 class="mat-body-2">Country</h4>
@@ -229,14 +229,14 @@
         <mat-hint
           >Selected:
           {{
-            spot.address
+            spot.address?.country
               ? getCountryEmojiFromAlpha2(spot.address.country.short) +
                 " " +
                 spot.address.country.long +
                 " (" +
                 spot.address.country.short +
                 ")"
-              : ""
+              : "No country selected"
           }}</mat-hint
         >
       </mat-form-field>

@@ -88,6 +88,7 @@ import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 import { SettingsPageComponent } from "./settings-page/settings-page.component";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { ForgotPasswordPageComponent } from "./forgot-password-page/forgot-password-page.component";
+import { DiscoverSpotsViewComponent } from './discover-spots-view/discover-spots-view.component';
 
 @NgModule({
   declarations: [
@@ -122,6 +123,7 @@ import { ForgotPasswordPageComponent } from "./forgot-password-page/forgot-passw
     FollowDurationPipe,
     SettingsPageComponent,
     ForgotPasswordPageComponent,
+    DiscoverSpotsViewComponent,
   ],
   imports: [
     BrowserModule,

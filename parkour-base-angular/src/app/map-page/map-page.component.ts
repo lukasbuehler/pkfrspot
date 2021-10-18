@@ -106,8 +106,6 @@ export class MapPageComponent implements OnInit {
   private _northEastTileCoordsZ16: google.maps.Point;
   private _southWestTileCoordsZ16: google.maps.Point;
 
-  discoverSpots: Spot.Class[] = [];
-
   constructor(
     public authService: AuthenticationService,
     private _dbService: DatabaseService,
@@ -600,17 +598,5 @@ export class MapPageComponent implements OnInit {
         "The newly saved spot doesn't have an ID attached to it. Something is wrong"
       );
     }
-  }
-
-  // Discover
-
-  discoverDistanceChipSelected(event) {
-    console.log(event);
-  }
-
-  loadDiscoverSpots(location, radius) {
-    return this._dbService.getTestSpots(true).subscribe((spots) => {
-      this.discoverSpots = spots;
-    });
   }
 }
