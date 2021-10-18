@@ -11,6 +11,7 @@
         [formGroup]="signInForm"
         class="d-flex flex-column"
         (ngSubmit)="trySignIn(signInForm.value)"
+        (submit)="trySignIn(signInForm.value)"
       >
         <mat-form-field appearance="outline">
           <mat-label>E-Mail</mat-label>
@@ -31,8 +32,7 @@
           {{ signInError }}
         </div>
 
-        <div class="mt-3 d-flex flex-row justify-content-between">
-          <button mat-stroked-button>Forgot password</button>
+        <div class="mt-3 d-flex flex-row-reverse justify-content-between">
           <button
             mat-raised-button
             type="submit"
@@ -40,6 +40,9 @@
             (click)="trySignIn(signInForm.value)"
           >
             Sign in
+          </button>
+          <button mat-stroked-button routerLink="/forgot-password">
+            Forgot password
           </button>
         </div>
       </form>

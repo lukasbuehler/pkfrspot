@@ -17,6 +17,7 @@ import { TermsOfServiceComponent } from "./terms-of-service/terms-of-service.com
 import { PrivacyPolicyComponent } from "./privacy-policy/privacy-policy.component";
 import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 import { SettingsPageComponent } from "./settings-page/settings-page.component";
+import { ForgotPasswordPageComponent } from "./forgot-password-page/forgot-password-page.component";
 
 const routes: Routes = [
   // Home page and posts (displays posts and updates)
@@ -77,6 +78,11 @@ const routes: Routes = [
     path: "sign-up",
     component: SignUpPageComponent,
     data: { routeName: "Sign-up" },
+  },
+  {
+    path: "forgot-password",
+    component: ForgotPasswordPageComponent,
+    data: { routeName: "Forgot password" },
   },
 
   // Settings

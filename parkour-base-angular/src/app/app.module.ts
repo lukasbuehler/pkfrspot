@@ -87,6 +87,7 @@ import {
 import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 import { SettingsPageComponent } from "./settings-page/settings-page.component";
 import { ServiceWorkerModule } from "@angular/service-worker";
+import { ForgotPasswordPageComponent } from "./forgot-password-page/forgot-password-page.component";
 
 @NgModule({
   declarations: [
@@ -118,10 +119,9 @@ import { ServiceWorkerModule } from "@angular/service-worker";
     PrivacyPolicyComponent,
     FollowListComponent,
     EditProfileComponent,
-
     FollowDurationPipe,
-
     SettingsPageComponent,
+    ForgotPasswordPageComponent,
   ],
   imports: [
     BrowserModule,
