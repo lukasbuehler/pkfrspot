@@ -13,10 +13,50 @@
 }
 
 .profileButtonRow {
+  width: 100%;
   margin-right: -5px;
   button {
     flex-grow: 1;
     flex-basis: 0;
     margin-right: 5px;
+  }
+
+  @media (min-width: 576px) {
+    flex-direction: row;
+  }
+  @media (max-width: 575px) {
+    flex-direction: column;
+    button {
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.profileCardContainer {
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+
+    .profile-pic {
+      margin-bottom: 24px;
+    }
+
+    .profileInfoContainer {
+      align-items: center;
+    }
+  }
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: left;
+
+    .profile-pic {
+      margin-right: 48px;
+    }
+
+    .profileInfoContainer {
+      align-items: left;
+    }
   }
 }

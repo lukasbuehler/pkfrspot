@@ -8,21 +8,28 @@
     <div class="col-lg-8 pt-4">
       <mat-card class="mat-elevation-z0 border rounded text-left">
         <mat-card-content class="p-4">
-          <div class="d-flex flex-row justify-content-left align-items-center">
+          <div class="profileCardContainer">
             <img
               *ngIf="profilePicture"
-              class="profile-pic mr-5"
+              class="profile-pic"
               [src]="profilePicture"
               alt=""
             />
             <div
-              class="d-flex flex-column justify-content-center align-items-left flex-grow-1"
+              class="
+                profileInfoContainer
+                d-flex
+                flex-column
+                justify-content-center
+                flex-grow-1
+                w-100
+              "
             >
               <div class="d-flex justify-content-between">
                 <h1 class="mat-display-1 mb-2 flex-full">
                   {{ user.displayName }}
                 </h1>
-                <mat-chip-list class="d-flex pb-2">
+                <mat-chip-list class="d-flex pb-2 ml-3">
                   <mat-chip
                     color="accent"
                     *ngIf="isMyProfile"
@@ -48,14 +55,15 @@
                 ></b>
                 Follower{{ user.followerCount === 1 ? "" : "s" }}
               </h3>
-              <div
-                *ngIf="!isMyProfile"
-                class="profileButtonRow d-flex flex-row"
-              >
+              <div *ngIf="!isMyProfile" class="profileButtonRow d-flex">
                 <button
                   mat-flat-button
                   [color]="isFollowing ? 'primary' : 'accent'"
-                  class="d-flex justify-content-center align-items-center align-middle"
+                  class="
+                    d-flex
+                    justify-content-center
+                    align-items-center align-middle
+                  "
                   (click)="followButtonClick()"
                 >
                   <mat-spinner
@@ -70,7 +78,7 @@
                   Block / Report
                 </button>
               </div>
-              <div *ngIf="isMyProfile" class="profileButtonRow d-flex flex-row">
+              <div *ngIf="isMyProfile" class="profileButtonRow d-flex">
                 <button
                   mat-flat-button
                   color="primary"
