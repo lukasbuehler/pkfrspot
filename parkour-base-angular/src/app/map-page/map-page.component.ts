@@ -176,6 +176,12 @@ export class MapPageComponent implements OnInit {
     //console.log(MapHelper.getTileCoordinates(coords.coords, this.zoom));
   }
 
+  endDrawerOpenedChanged(isOpen) {
+    if (!isOpen && this.selectedSpot) {
+      this.closeSpot();
+    }
+  }
+
   boundsChanged(bounds: google.maps.LatLngBounds) {
     let zoomLevel = this.zoom;
 
@@ -416,6 +422,7 @@ export class MapPageComponent implements OnInit {
   openSpot(spot: Spot.Class) {
     // Maybe just opened spot
     this.selectedSpot = spot;
+
     this.focusSpot(spot);
   }
 

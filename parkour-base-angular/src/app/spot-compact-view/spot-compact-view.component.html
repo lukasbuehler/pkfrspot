@@ -193,8 +193,19 @@
         ></textarea>
       </mat-form-field>
 
+      <!-- Country and address toggle -->
+      <mat-slide-toggle
+        color="accent"
+        [checked]="true"
+        (change)="automaticallyDetermineCountryAndAddressToggleChanged($event)"
+        >Automatically determine address</mat-slide-toggle
+      >
+
       <!-- Country -->
-      <mat-form-field style="width: 100%">
+      <mat-form-field
+        *ngIf="!automaticallyDetermineAddress"
+        style="width: 100%"
+      >
         <mat-label>Country</mat-label>
         <input
           matInput
@@ -215,18 +226,26 @@
             {{ country.emoji }} {{ country.name }}
           </mat-option>
         </mat-autocomplete>
-        <mat-hint>{{
-          spot.address
-            ? getCountryEmojiFromAlpha2(spot.address.country.short) +
-              " " +
-              spot.address.country.short
-            : ""
-        }}</mat-hint>
+        <mat-hint
+          >Selected:
+          {{
+            spot.address
+              ? getCountryEmojiFromAlpha2(spot.address.country.short) +
+                " " +
+                spot.address.country.long +
+                " (" +
+                spot.address.country.short +
+                ")"
+              : ""
+          }}</mat-hint
+        >
       </mat-form-field>
 
       <!-- Address -->
       <mat-form-field
-        *ngIf="spot.address && spot.address.country"
+        *ngIf="
+          !automaticallyDetermineAddress && spot.address && spot.address.country
+        "
         style="width: 100%"
       >
         <mat-label>Address</mat-label>

@@ -64,6 +64,8 @@ export class SpotCompactViewComponent implements OnInit {
   filteredCountries: Observable<any[]>;
   stateCtrl = new FormControl();
 
+  automaticallyDetermineAddress: boolean = true;
+
   constructor(
     private _dbService: DatabaseService,
     private _storageService: StorageService,
@@ -314,5 +316,9 @@ export class SpotCompactViewComponent implements OnInit {
 
   getCountryEmojiFromAlpha2(countryAlpha2Code) {
     return isoCountryCodeToFlagEmoji(countryAlpha2Code);
+  }
+
+  automaticallyDetermineCountryAndAddressToggleChanged(change) {
+    this.automaticallyDetermineAddress = change.checked;
   }
 }

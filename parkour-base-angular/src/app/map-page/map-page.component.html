@@ -138,6 +138,7 @@
     mode="side"
     position="end"
     [opened]="!!selectedSpot"
+    (openedChange)="endDrawerOpenedChanged($event)"
   >
     <div *ngIf="selectedSpot">
       <app-spot-compact-view
