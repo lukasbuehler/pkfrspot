@@ -31,4 +31,32 @@ export class MapsApiService {
       );
     });
   }
+
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.showPosition);
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }
+
+  watchLocation(
+    successCallback: PositionCallback,
+    errorCallback: PositionErrorCallback,
+    options?: PositionOptions
+  ) {
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(
+        successCallback,
+        errorCallback,
+        options
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }
+
+  showPosition(position) {
+    console.log(position);
+  }
 }
