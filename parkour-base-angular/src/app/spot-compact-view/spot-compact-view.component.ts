@@ -14,6 +14,8 @@ import { Post } from "src/scripts/db/Post";
 import { Observable, Subscription } from "rxjs";
 import { AuthenticationService } from "../authentication.service";
 import { MediaType } from "src/scripts/db/Interfaces";
+import SwiperCore, { Navigation, Pagination } from "swiper";
+SwiperCore.use([Navigation, Pagination]);
 //import { MatTooltipModule } from "@angular/material/tooltip";
 
 import {

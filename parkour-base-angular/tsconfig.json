@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    
     "baseUrl": "./",
     "downlevelIteration": true,
     "outDir": "./dist/out-tsc",
@@ -12,6 +13,9 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
-    "lib": ["es2018", "dom"]
+    "lib": ["es2018", "dom"],
+    "paths": {
+      //"@angular/*": ["./node_modules/@angular/*"]
+    }
   }
 }

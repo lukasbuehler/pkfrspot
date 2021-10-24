@@ -16,11 +16,15 @@ mat-card {
   flex-grow: 1;
 }
 
-.spot-img {
+.spot-media-swiper {
   margin-left: -16px;
   margin-right: -16px;
   width: calc(100% + 2 * 16px);
   height: auto;
+
+  img {
+    width: 100%;
+  }
 }
 
 #closeSpotFab {
@@ -70,4 +74,8 @@ div.upload-spot-image-box {
   padding-top: 20px;
   padding-bottom: 20px;
   margin-bottom: 20px;
+}
+
+app-upload-media-ui {
+  width: 100%;
 }

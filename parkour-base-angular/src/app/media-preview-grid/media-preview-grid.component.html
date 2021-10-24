@@ -1,0 +1,26 @@
+<div
+  *ngIf="media && media.length > 0"
+  class="media-preview-grid"
+  cdkDropListGroup
+>
+  <div
+    *ngFor="let mediaObj of media; let index = index"
+    class="grid-drop-list"
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    [cdkDropListData]="index"
+    (cdkDropListDropped)="drop($event)"
+  >
+    <div cdkDrag class="drag-element">
+      <img class="tile-image" [src]="mediaObj.src" [alt]="mediaObj.uid || ''" />
+      <button
+        class="br-fab"
+        color="primary"
+        mat-mini-fab
+        aria-label="Example icon button with a bookmark icon"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

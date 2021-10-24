@@ -2,11 +2,10 @@
 
 //@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-@import "~croppie/croppie.css";
-
 :root {
   --primary-color: #000a12;
   --accent-color: #0039cb;
+  --swiper-theme-color: #304ffe !important;
 }
 
 button:focus {

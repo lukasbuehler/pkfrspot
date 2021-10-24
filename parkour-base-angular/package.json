@@ -46,6 +46,7 @@
     "promise-polyfill": "^8.2.0",
     "rxjs": "^6.6.3",
     "stream": "0.0.2",
+    "swiper": "^6.8.4",
     "timers": "^0.1.1",
     "xml2js": "^0.4.23",
     "zone.js": "~0.11.3"

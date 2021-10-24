@@ -50,9 +50,11 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatTableModule } from "@angular/material/table";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
+import { DragDropModule } from "@angular/cdk/drag-drop";
 
 import { PlyrModule } from "ngx-plyr";
 import { AngularResizedEventModule } from "angular-resize-event";
+import { SwiperModule } from "swiper/angular";
 
 import { HomePageComponent } from "./home-page/home-page.component";
 import { MapPageComponent } from "./map-page/map-page.component";
@@ -88,7 +90,8 @@ import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 import { SettingsPageComponent } from "./settings-page/settings-page.component";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { ForgotPasswordPageComponent } from "./forgot-password-page/forgot-password-page.component";
-import { DiscoverSpotsViewComponent } from './discover-spots-view/discover-spots-view.component';
+import { DiscoverSpotsViewComponent } from "./discover-spots-view/discover-spots-view.component";
+import { MediaPreviewGridComponent } from "./media-preview-grid/media-preview-grid.component";
 
 @NgModule({
   declarations: [
@@ -124,6 +127,7 @@ import { DiscoverSpotsViewComponent } from './discover-spots-view/discover-spots
     SettingsPageComponent,
     ForgotPasswordPageComponent,
     DiscoverSpotsViewComponent,
+    MediaPreviewGridComponent,
   ],
   imports: [
     BrowserModule,
@@ -170,12 +174,14 @@ import { DiscoverSpotsViewComponent } from './discover-spots-view/discover-spots
     MatTableModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    DragDropModule,
 
     PlyrModule,
     AngularResizedEventModule,
     ServiceWorkerModule.register("ngsw-worker.js", {
       enabled: environment.production,
     }),
+    SwiperModule,
   ],
   exports: [MatButtonModule],
   providers: [

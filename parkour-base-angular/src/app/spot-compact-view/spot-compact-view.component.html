@@ -52,13 +52,21 @@
       (selectedTabChange)="selectedTabChanged($event.index)"
     >
       <mat-tab label="Details">
-        <!-- spot preview image  -->
-        <img
-          *ngIf="spot.previewImage"
-          src="{{ spot.previewImage }}"
-          class="spot-img"
-          alt=""
-        />
+        <!-- spot media swiper  -->
+        <swiper
+          class="spot-media-swiper"
+          *ngIf="spot.media && spot.media.length > 0"
+          [navigation]="true"
+          [pagination]="{ clickable: true }"
+        >
+          <ng-template *ngFor="let mediaObj of spot.media" swiperSlide
+            ><img
+              *ngIf="mediaObj.type === 'image'"
+              src="{{ mediaObj.src }}"
+              class="spot-img"
+            />
+          </ng-template>
+        </swiper>
 
         <!-- Icon button row -->
         <div
@@ -160,7 +168,13 @@
       <mat-tab label="Edit"> ... Coming soon ... </mat-tab>
     </mat-tab-group>
 
-    <!-- No media box  -->
+    <!-- Media preview grid -->
+    <app-media-preview-grid
+      *ngIf="isEditing"
+      [media]="spot.media"
+    ></app-media-preview-grid>
+
+    <!-- Image upload  -->
     <div *ngIf="isEditing" class="upload-spot-image-box">
       <app-upload-media-ui
         [allowedMimeTypes]="['image/jpeg']"
