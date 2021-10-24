@@ -61,8 +61,12 @@
         />
 
         <!-- Icon button row -->
-        <div class="spot-button-row mb-3 mt-3">
+        <div
+          class="spot-button-row mb-3 mt-3"
+          *ngIf="_authenticationService.isSignedIn"
+        >
           <button
+            *ngIf="false"
             mat-icon-button
             matTooltip="Focus on map"
             aria-label="Example icon button with a heart icon"
@@ -107,20 +111,29 @@
           </button>
           <button
             mat-icon-button
-            matTooltip="Share this spot"
-            aria-label="Example icon button with a share icon"
-            (click)="shareSpot()"
-          >
-            <mat-icon>share</mat-icon>
-          </button>
-
-          <button
-            mat-icon-button
             matTooltip="Edit this spot"
             aria-label="Example icon button with a pencil icon"
             (click)="editButtonClick()"
           >
             <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <div class="spot-button-row mb-3 mt-3">
+          <button
+            mat-stroked-button
+            matTooltip="Share this spot"
+            aria-label="Example icon button with a share icon"
+            (click)="shareSpot()"
+          >
+            Share
+          </button>
+          <button
+            mat-stroked-button
+            matTooltip="Open in maps"
+            aria-label="Example icon button with an open in icon"
+            (click)="openSpotInMaps()"
+          >
+            Open in maps
           </button>
         </div>
 

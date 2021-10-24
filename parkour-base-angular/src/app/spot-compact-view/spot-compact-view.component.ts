@@ -255,6 +255,12 @@ export class SpotCompactViewComponent implements OnInit {
     }
   }
 
+  openSpotInMaps() {
+    window.open(
+      `http://maps.google.com/maps?q=${this.spot.location.lat},${this.spot.location.lng}`
+    );
+  }
+
   hasBounds() {
     return this.spot && this.spot.hasBounds();
   }
