@@ -172,6 +172,7 @@
     <app-media-preview-grid
       *ngIf="isEditing"
       [media]="spot.media"
+      (mediaChanged)="mediaChanged($event)"
     ></app-media-preview-grid>
 
     <!-- Image upload  -->

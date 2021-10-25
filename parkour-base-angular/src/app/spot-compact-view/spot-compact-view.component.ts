@@ -193,8 +193,10 @@ export class SpotCompactViewComponent implements OnInit {
 
   setSpotImage(file: File) {
     console.log("setting image");
-    if (this.uploadMediaComp.isImageSelected()) {
+    if (file && this.uploadMediaComp.isImageSelected()) {
       this.newSpotImage = file;
+    } else {
+      this.newSpotImage = null;
     }
   }
 
@@ -213,6 +215,7 @@ export class SpotCompactViewComponent implements OnInit {
         observable.subscribe(
           (imageLink) => {
             this.spot.addMedia(
+              this._dbService,
               imageLink,
               MediaType.Image,
               this._authenticationService.uid
@@ -226,6 +229,10 @@ export class SpotCompactViewComponent implements OnInit {
     } else {
       console.error("The upload media is not even loaded");
     }
+  }
+
+  mediaChanged(newSpotMedia) {
+    this.spot.setMedia(newSpotMedia, this._dbService, this._storageService);
   }
 
   private updatePaths() {

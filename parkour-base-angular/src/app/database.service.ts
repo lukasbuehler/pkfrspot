@@ -471,6 +471,16 @@ export class DatabaseService {
     });
   }
 
+  updateSpot(
+    spotId: string,
+    spotUpdateData: Partial<Spot.Schema>
+  ): Promise<void> {
+    return this.db
+      .collection<Spot.Schema>("spots")
+      .doc(spotId)
+      .update(spotUpdateData);
+  }
+
   // Users --------------------------------------------------------------------
 
   addUser(

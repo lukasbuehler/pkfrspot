@@ -56,6 +56,10 @@ export class StorageService {
     return this.uploadObs;
   }
 
+  deleteFromStorage(location: StorageFolder, filename: string): Promise<void> {
+    return this.storageRef.child(`${location}/${filename}`).delete();
+  }
+
   upload(): Observable<string> {
     return this.uploadObs;
   }

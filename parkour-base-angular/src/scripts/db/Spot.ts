@@ -9,6 +9,7 @@ import * as firebase from "firebase";
 import { MapHelper } from "../map_helper";
 import { DatabaseService } from "src/app/database.service";
 import { Observable } from "rxjs";
+import { StorageFolder, StorageService } from "src/app/storage.service";
 
 export module Spot {
   export class Class {
@@ -32,7 +33,7 @@ export module Spot {
     constructor(
       private _id: string,
       private _data: Spot.Schema,
-      private _isNotForMap?: boolean
+      private _isNotForMap: boolean = false
     ) {
       this.id = _id;
       this._updateData();
@@ -76,13 +77,73 @@ export module Spot {
       return this._data.media[index];
     }
 
-    public addMedia(src: string, type: MediaType, uid: string) {
+    public addMedia(
+      _dbService: DatabaseService,
+      src: string,
+      type: MediaType,
+      uid: string
+    ) {
       if (!this._data.media) {
         this._data.media = [];
       }
 
       this._data.media.push({ src: src, type: type, uid: uid });
+      this._updateMedia(_dbService);
+    }
+
+    public setMedia(
+      media: ContributedMedia[],
+      _dbService: DatabaseService,
+      _storageService: StorageService
+    ) {
+      for (let mediaObj of this._data.media) {
+        if (
+          media.findIndex((val) => {
+            return val.src === mediaObj.src;
+          }) < 0 &&
+          mediaObj.type === MediaType.Image
+        ) {
+          // this image was deleted
+          let filenameRegex = RegExp(
+            /(?:spot_pictures)(?:\/|%2F)(.+?)(?:\?.*)?$/
+          );
+          let storageFilenameMatch = mediaObj.src.match(filenameRegex);
+          if (storageFilenameMatch[1]) {
+            let storageFilename = storageFilenameMatch[1] || "";
+
+            if (storageFilename) {
+              _storageService
+                .deleteFromStorage(StorageFolder.SpotPictures, storageFilename)
+                .then(
+                  () => {
+                    // deleting successful
+                    console.log(
+                      "successfully deleted file: " + storageFilename
+                    );
+                  },
+                  (error) => {
+                    console.error(error);
+                  }
+                );
+            } else {
+              console.error(
+                "Couldn't resolve storage filename when setting media"
+              );
+            }
+          } else {
+            console.error("Regex Match doesn't resolve a filename");
+            console.log(storageFilenameMatch);
+          }
+        }
+      }
+
+      this._data.media = media;
+      this._updateMedia(_dbService);
+    }
+
+    private _updateMedia(_dbService: DatabaseService) {
       this._updateData();
+      _dbService.updateSpot(this._id, { media: this._data.media });
     }
 
     setType(newType) {
