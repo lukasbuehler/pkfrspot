@@ -95,6 +95,15 @@ export class SettingsPageComponent implements OnInit {
     this.hasChanges = false;
   }
 
+  miniFabPressed(event) {
+    console.log(event);
+    this.discardAllChanges();
+  }
+
+  discardAllChanges() {
+    console.error("TODO Implement discarding");
+  }
+
   saveAllChanges() {
     // Save all changes in components
     this.editProfileComponent

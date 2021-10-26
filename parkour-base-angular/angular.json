@@ -63,6 +63,30 @@
                   "with": "src/environments/keys.test.ts"
                 }
               ],
+              "optimization": false,
+              "outputHashing": "none",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "showCircularDependencies": false,
+              "aot": true,
+              "extractLicenses": false,
+              "statsJson": false,
+              "progress": false,
+              "vendorChunk": true,
+              "buildOptimizer": false
+            },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.test.ts"
+                },
+                {
+                  "replace": "src/environments/keys.ts",
+                  "with": "src/environments/keys.test.ts"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -75,8 +99,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "10mb",
-                  "maximumError": "20mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -130,6 +154,9 @@
           "configurations": {
             "development": {
               "browserTarget": "parkour-base-angular:build:development"
+            },
+            "test": {
+              "browserTarget": "parkour-base-angular:build:test"
             },
             "production": {
               "browserTarget": "parkour-base-angular:build:production"
@@ -189,6 +216,9 @@
           "configurations": {
             "development": {
               "devServerTarget": "parkour-base-angular:serve:development"
+            },
+            "test": {
+              "devServerTarget": "parkour-base-angular:serve:test"
             },
             "production": {
               "devServerTarget": "parkour-base-angular:serve:production"
