@@ -22,6 +22,7 @@ import {
   isoCountryCodeToFlagEmoji,
   getCountryNameInLanguage,
   getCountriesList,
+  isMobileDevice,
 } from "../../scripts/Helpers";
 import { FormControl } from "@angular/forms";
 import { map, startWith } from "rxjs/operators";
@@ -265,9 +266,13 @@ export class SpotCompactViewComponent implements OnInit {
   }
 
   openSpotInMaps() {
-    window.open(
-      `http://maps.google.com/maps?q=${this.spot.location.lat},${this.spot.location.lng}`
-    );
+    if (isMobileDevice()) {
+      window.open(`geo:${this.spot.location.lat},${this.spot.location.lng}`);
+    } else {
+      window.open(
+        `https://maps.google.com/maps?q=${this.spot.location.lat},${this.spot.location.lng}`
+      );
+    }
   }
 
   hasBounds() {

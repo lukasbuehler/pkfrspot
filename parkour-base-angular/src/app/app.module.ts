@@ -5,22 +5,25 @@ import { HttpClientModule } from "@angular/common/http";
 
 import { AppRoutingModule } from "./app-routing.module";
 
-import { AppComponent } from "./app.component";
-
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-
 import { environment } from "src/environments/environment";
 import { keys } from "src/environments/keys";
 
+// Other imports
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+import { AgmCoreModule } from "@agm/core"; // Maps
+import { PlyrModule } from "ngx-plyr"; // video player
+import { AngularResizedEventModule } from "angular-resize-event";
+import { SwiperModule } from "swiper/angular"; // image gallery
+
+// Firebase
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireStorageModule } from "@angular/fire/storage";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 
-import { InfiniteScrollModule } from "ngx-infinite-scroll";
-import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
-import { AgmCoreModule } from "@agm/core";
-
+// Angular material
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatToolbarModule } from "@angular/material/toolbar";
@@ -51,11 +54,10 @@ import { MatTableModule } from "@angular/material/table";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
-import { PlyrModule } from "ngx-plyr";
-import { AngularResizedEventModule } from "angular-resize-event";
-import { SwiperModule } from "swiper/angular";
-
+// Angular components
+import { AppComponent } from "./app.component";
 import { HomePageComponent } from "./home-page/home-page.component";
 import { MapPageComponent } from "./map-page/map-page.component";
 import { NotFoundPageComponent } from "./not-found-page/not-found-page.component";
@@ -147,6 +149,7 @@ import { MediaPreviewGridComponent } from "./media-preview-grid/media-preview-gr
       apiKey: keys.google_maps,
     }),
 
+    // Angular material modules
     BrowserAnimationsModule,
     MatButtonModule,
     MatCheckboxModule,
@@ -175,7 +178,9 @@ import { MediaPreviewGridComponent } from "./media-preview-grid/media-preview-gr
     MatDatepickerModule,
     MatNativeDateModule,
     DragDropModule,
+    MatButtonToggleModule,
 
+    // Other modules
     PlyrModule,
     AngularResizedEventModule,
     ServiceWorkerModule.register("ngsw-worker.js", {

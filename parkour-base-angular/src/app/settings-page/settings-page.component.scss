@@ -13,6 +13,14 @@ div.menu {
   overflow: hidden;
 }
 
+mat-button-toggle-group {
+  display: flex;
+  flex-direction: row;
+  > mat-button-toggle {
+    width: 100%;
+  }
+}
+
 button.menuButton {
   text-align: left;
   height: 48px;

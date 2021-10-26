@@ -30,6 +30,12 @@ export class SettingsPageComponent implements OnInit {
       icon: "vpn_key",
       hasChanges: false,
     },
+    {
+      id: "general",
+      name: "General",
+      icon: "settings",
+      hasChanges: false,
+    },
     /*
     {
       id: "notifications",

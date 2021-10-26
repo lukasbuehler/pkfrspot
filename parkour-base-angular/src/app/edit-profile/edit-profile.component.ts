@@ -43,11 +43,19 @@ export class EditProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.authService.user;
+    this._updateInfoOnView();
+
     this.authService.authState$.subscribe((user) => {
       this.user = user;
-      this.displayName = user.displayName;
-      this.startDate = user.startDate;
+      this._updateInfoOnView();
     });
+  }
+
+  private _updateInfoOnView() {
+    if (this.user) {
+      this.displayName = this.user.displayName;
+      this.startDate = this.user.startDate;
+    }
   }
 
   setNewProfilePicture(file: File) {

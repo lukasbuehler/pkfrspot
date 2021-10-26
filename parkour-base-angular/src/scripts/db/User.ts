@@ -34,10 +34,15 @@ export module User {
 
       // Start date
       if (this._data.start_date) {
-        this.startTimeDiffString = moment(
-          this._data.start_date.toDate()
-        ).fromNow(true);
         this.startDate = this._data.start_date.toDate();
+        let startMoment = moment(this._data.start_date.toDate());
+        let yearsNumber: number = moment().diff(startMoment, "years");
+
+        if (yearsNumber === 1) {
+          this.startTimeDiffString = yearsNumber + " year";
+        } else {
+          this.startTimeDiffString = yearsNumber + " years";
+        }
       }
 
       // Followers
