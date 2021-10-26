@@ -6,7 +6,6 @@ import { HttpClientModule } from "@angular/common/http";
 import { AppRoutingModule } from "./app-routing.module";
 
 import { environment } from "src/environments/environment";
-import { keys } from "src/environments/keys";
 
 // Other imports
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
@@ -139,14 +138,14 @@ import { MediaPreviewGridComponent } from "./media-preview-grid/media-preview-gr
     HttpClientModule,
 
     NgbModule,
-    AngularFireModule.initializeApp(keys.firebaseConfig),
+    AngularFireModule.initializeApp(environment.keys.firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
 
     InfiniteScrollModule,
     AgmCoreModule.forRoot({
-      apiKey: keys.google_maps,
+      apiKey: environment.keys.google_maps,
     }),
 
     // Angular material modules

@@ -3,16 +3,17 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build-test": "ng build",
-    "build-prod": "ng build --prod",
-    "dev": "ng serve --watch",
+    "start": "ng serve --configuration=development",
+    "dev": "ng serve --configuration=development --watch",
+    "build:test": "ng build --configuration=development",
+    "build:prod": "ng build --configuration=production",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "firebase deploy",
-    "deploy-rules": "firebase deploy --only firestore:rules",
-    "prod": "npm run build-prod && npm run deploy"
+    "deploy:test:hosting": "firebase use test && ng build --configuration=development && firebase deploy --only hosting",
+    "deploy:prod:hosting": "firebase use prod && ng build --configuration=production && firebase deploy --only hosting",
+    "deploy:test:rules": "firebase use test && firebase deploy --only firestore:rules",
+    "deploy:prod:rules": "firebase use prod && firebase deploy --only firestore:rules"
   },
   "private": true,
   "dependencies": {
