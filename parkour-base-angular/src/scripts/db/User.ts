@@ -1,7 +1,7 @@
 import * as firebase from "firebase/app";
 import * as moment from "moment";
 
-export module User {
+export namespace User {
   export class Class {
     public uid: string = "";
     public displayName: string = "";
@@ -10,6 +10,7 @@ export module User {
     public startTimeDiffString: string = "";
     public startDate: Date;
     public followerCount: number = 0;
+    public settings: UserSettingsSchema;
 
     public data: User.Schema = null;
 
@@ -31,6 +32,7 @@ export module User {
     private _updateData() {
       this.displayName = this._data.display_name;
       this.profilePicture = this._data.profile_picture;
+      this.settings = this._data.settings;
 
       // Start date
       if (this._data.start_date) {
@@ -63,8 +65,14 @@ export module User {
     nationality?: string;
     verified_email?: boolean;
     invite_code?: string;
+    settings?: UserSettingsSchema;
 
     creationDate?: firebase.default.firestore.Timestamp;
+  }
+
+  export interface UserSettingsSchema {
+    maps?: "googlemaps" | "applemaps" | "openstreetmap";
+    useGeoURI?: boolean;
   }
 
   export interface ReferenceSchema {

@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { ActivatedRoute } from "@angular/router";
+import { Location } from "@angular/common";
 import { AuthenticationService } from "../authentication.service";
 import { EditProfileComponent } from "../edit-profile/edit-profile.component";
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
@@ -14,6 +16,8 @@ export class SettingsPageComponent implements OnInit {
 
   constructor(
     public authService: AuthenticationService,
+    private route: ActivatedRoute,
+    private location: Location,
     private _snackbar: MatSnackBar
   ) {}
 
@@ -74,10 +78,24 @@ export class SettingsPageComponent implements OnInit {
     ],
   };
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    let tab: string = this.route.snapshot.paramMap.get("tab") || "";
+    if(tab) {
+      this.openMenuPoint(tab);
+    }
+  }
 
   openMenuPoint(pointId: string) {
-    this.selectedPoint = pointId;
+    // Check if this point id exists
+    if(this.menuPoints.findIndex((menuPoint) => menuPoint.id === pointId) >= 0) {
+      this.selectedPoint = pointId;
+      this.updateURL(pointId);
+    }
+    // else do nothing
+  }
+
+  updateURL(selectedPoint) {
+    this.location.go(`/settings/${selectedPoint}`);
   }
 
   profileHasChanges(hasChanges) {

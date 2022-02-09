@@ -123,6 +123,10 @@ export class AuthenticationService {
     return this.angularFireAuth.signOut();
   }
 
+  public resendVerificationEmail() {
+    return this._currentFirebaseUser.sendEmailVerification()
+  }
+
   public createAccount(
     email: string,
     confirmedPassword: string,
