@@ -41,7 +41,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     this.getTodaysTopPosts();
 
     if (this.authService.isSignedIn) {
-      this._subscribeToUpdates(this.authService.uid);
+      this._subscribeToUpdates(this.authService.user.uid);
     }
     this.authService.authState$.subscribe(
       (user) => {
@@ -196,9 +196,9 @@ export class HomePageComponent implements OnInit, OnDestroy {
       body: body,
       time_posted: firebase.default.firestore.Timestamp.now(),
       user: {
-        uid: this.authService.uid,
-        display_name: this.authService.user.displayName,
-        ref: this._dbService.docRef("users/" + this.authService.uid),
+        uid: this.authService.user.uid,
+        display_name: this.authService.user.data.displayName,
+        ref: this._dbService.docRef("users/" + this.authService.user.uid),
       },
     };
 

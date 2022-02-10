@@ -219,7 +219,7 @@ export class SpotCompactViewComponent implements OnInit {
               this._dbService,
               imageLink,
               MediaType.Image,
-              this._authenticationService.uid
+              this._authenticationService.user.uid
             );
           },
           (error) => {}

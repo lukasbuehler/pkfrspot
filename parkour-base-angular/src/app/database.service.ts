@@ -768,6 +768,12 @@ export class DatabaseService {
           (doc) => {
             const data = doc.data() as InviteCode.Schema;
 
+            if(!data)
+            {
+              // The invite code is invalid!
+              resolve(false);
+            }
+
             if (data.uses_left > 0) {
               resolve(true);
             } else {

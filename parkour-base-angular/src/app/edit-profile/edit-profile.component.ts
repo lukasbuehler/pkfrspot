@@ -42,11 +42,11 @@ export class EditProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.user = this.authService.user;
+    this.user = this.authService?.user?.data || null;
     this._updateInfoOnView();
 
     this.authService.authState$.subscribe((user) => {
-      this.user = user;
+      this.user = user.data;
       this._updateInfoOnView();
     });
   }

@@ -84,7 +84,7 @@ export class ProfilePageComponent implements OnInit {
 
     if (this.userId) {
       // load stuff
-      this.isMyProfile = this.userId === this._authService.uid;
+      this.isMyProfile = this.userId === this._authService.user.uid;
       this.loadProfile(this.userId);
     }
 
@@ -107,7 +107,7 @@ export class ProfilePageComponent implements OnInit {
 
         // Check if this user follows the authenticated user
 
-        let myUserId = this._authService.uid;
+        let myUserId = this._authService.user.uid;
         if (myUserId) {
           this.loadingFollowing = true;
           this._databaseService
@@ -171,7 +171,7 @@ export class ProfilePageComponent implements OnInit {
       if (this.isFollowing) {
         // Already following this user, unfollow
         this._databaseService
-          .unfollowUser(this._authService.uid, this.userId)
+          .unfollowUser(this._authService.user.uid, this.userId)
           .then(() => {
             this.isFollowing = false;
             this.loadingFollowing = false;
@@ -188,10 +188,25 @@ export class ProfilePageComponent implements OnInit {
             );
           });
       } else {
-        // Not following this user, follow
+        // Not following this user, try to follow
+        if(!this._authService.isSignedIn)
+        {
+          this.loadingFollowing = false;
+          this._snackbar.open(
+            "You need to log in to follow!",
+            "Ok",
+            {
+              verticalPosition: "bottom",
+              horizontalPosition: "center",
+              duration: 5000,
+            }
+          );
+          return;
+        }
+
         this._databaseService
           .followUser(
-            this._authService.uid,
+            this._authService.user.uid,
             this._authService.user.data,
             this.userId,
             this.user.data
@@ -209,6 +224,7 @@ export class ProfilePageComponent implements OnInit {
               {
                 verticalPosition: "bottom",
                 horizontalPosition: "center",
+                duration: 5000
               }
             );
           });

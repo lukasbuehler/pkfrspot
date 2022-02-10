@@ -45,8 +45,8 @@ export class PostComponent implements OnInit {
 
     // Check if posts are liked by the user if a user is authenticated, every time the uid changes
 
-    if (this._authenticationService.uid) {
-      this.currentlyAuthenticatedUserId = this._authenticationService.uid;
+    if (this._authenticationService.user.uid) {
+      this.currentlyAuthenticatedUserId = this._authenticationService.user.uid;
 
       this._databaseService
         .userHasLikedPost(this.post.id, this.currentlyAuthenticatedUserId)
@@ -81,10 +81,10 @@ export class PostComponent implements OnInit {
 
           // save the like
           this._databaseService
-            .addLike(this.post.id, this._authenticationService.uid, {
+            .addLike(this.post.id, this._authenticationService.user.uid, {
               time: firebase.default.firestore.Timestamp.now(),
               user: {
-                uid: this._authenticationService.uid,
+                uid: this._authenticationService.user.uid,
               },
             })
             .then(() => {
@@ -110,7 +110,7 @@ export class PostComponent implements OnInit {
 
           // save the unlike
           this._databaseService
-            .removeLike(this.post.id, this._authenticationService.uid)
+            .removeLike(this.post.id, this._authenticationService.user.uid)
             .then(() => {
               console.log("Your like was removed successfully");
             })

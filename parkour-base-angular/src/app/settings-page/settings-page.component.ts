@@ -59,10 +59,11 @@ export class SettingsPageComponent implements OnInit {
     */
   ];
 
+  
   selectedPoint: string = "profile";
-
+  
   hasChanges: boolean = false;
-
+  
   speedDialButtonConfig: SpeedDialFabButtonConfig = {
     mainButton: {
       icon: "save",
@@ -78,7 +79,14 @@ export class SettingsPageComponent implements OnInit {
     ],
   };
 
+  emailAddress: string;
+
   ngOnInit(): void {
+    this.emailAddress = this.authService?.user?.email || "";
+    this.authService.authState$.subscribe(user => {
+      this.emailAddress = user.email;
+    })
+
     let tab: string = this.route.snapshot.paramMap.get("tab") || "";
     if(tab) {
       this.openMenuPoint(tab);
@@ -96,6 +104,28 @@ export class SettingsPageComponent implements OnInit {
 
   updateURL(selectedPoint) {
     this.location.go(`/settings/${selectedPoint}`);
+  }
+
+  verifyUserEmailAddress() {
+    if(this.authService?.user?.emailVerified === true)
+    {
+      return;
+    }
+
+    this.authService.resendVerificationEmail().then(() => {
+      this._snackbar.open("Verification E-Mail successfully re-sent", "Dismiss", {
+        duration: 3000,
+        horizontalPosition: "center",
+        verticalPosition: "bottom",
+      });
+    }, err => {
+      console.error("There was an error sending the E-mail verification")
+    })
+  }
+
+  changeEmailAddress() {
+    //this.authService.changeEmailAddress()
+    // TODO
   }
 
   profileHasChanges(hasChanges) {

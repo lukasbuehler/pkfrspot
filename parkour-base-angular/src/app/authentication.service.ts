@@ -8,22 +8,26 @@ import { map, filter, tap } from "rxjs/operators";
 import { User } from "src/scripts/db/User";
 import { DatabaseService } from "./database.service";
 
+interface AuthServiceUser {
+  uid?: string;
+  email?: string;
+  emailVerified?: boolean;
+  data?: User.Class
+}
+
 @Injectable({
   providedIn: "root",
 })
 export class AuthenticationService {
   // Public properties
   public isSignedIn: boolean = false;
-  public uid: string = "";
-  public email: string = "";
-  public emailVerified: boolean = false;
-
   /**
    * The user from the database corresponding to the currently authenticated user
    */
-  public user: User.Class = null;
+  public user: AuthServiceUser = {};
 
-  public authState$: Subject<User.Class> = new Subject();
+  
+  public authState$: Subject<AuthServiceUser> = new Subject();
 
   constructor(
     public angularFireAuth: AngularFireAuth,
@@ -45,16 +49,17 @@ export class AuthenticationService {
       // If we have a firebase user, we are signed in.
       this._currentFirebaseUser = firebaseUser;
       this.isSignedIn = true;
-      this.uid = firebaseUser.uid;
-      this.email = firebaseUser.email;
-      this.emailVerified = firebaseUser.emailVerified;
+
+      this.user.uid = firebaseUser.uid;
+      this.user.email = firebaseUser.email;
+      this.user.emailVerified = firebaseUser.emailVerified;
 
       this._fetchUserData(firebaseUser.uid, true);
     } else {
       // We don't have a firebase user, we are not signed in
       this._currentFirebaseUser = null;
       this.isSignedIn = false;
-      this.uid = "";
+      this.user.uid = "";
 
       this.authState$.next(null);
     }
@@ -67,10 +72,10 @@ export class AuthenticationService {
   private _fetchUserData(uid, sendUpdate = true) {
     this._databaseService.getUserById(uid).subscribe(
       (_user) => {
-        this.user = _user;
+        this.user.data = _user;
 
         if (sendUpdate) {
-          this.authState$.next(_user);
+          this.authState$.next(this.user);
         }
       },
       (err) => {
@@ -87,7 +92,7 @@ export class AuthenticationService {
    * Also: Following and Followers are not updated with this function call. Only things like display name, profile picture and so on.
    */
   public refetchUserData() {
-    this._fetchUserData(this.uid, true);
+    this._fetchUserData(this.user.uid, true);
   }
 
   public signInEmailPassword(email, password) {
