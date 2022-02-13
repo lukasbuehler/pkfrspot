@@ -53,8 +53,7 @@
     style="margin-right: -6px"
   >
     <mat-icon
-      class="d-none d-md-block"
-      *ngIf="!authService.isSignedIn || authService.user?.data?.profilePicture"
+      *ngIf="!authService.isSignedIn || !authService.user?.data?.profilePicture"
       >person_outline</mat-icon
     >
     <img
