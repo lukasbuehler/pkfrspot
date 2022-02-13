@@ -41,18 +41,18 @@
               </div>
               <div class="d-md-flex flex-row justify-content-between">
                 <h3 *ngIf="false" class="mat-h3 mb-2">
-                  Member of <b>Team name</b>
+                  Member of <strong>Team name</strong>
                 </h3>
                 <h3 *ngIf="user.startTimeDiffString" class="mat-h3 mb-2">
                   Freerunner since {{ user.startTimeDiffString }}
                 </h3>
               </div>
               <h3 class="mat-h3">
-                <b>
+                <strong>
                   <app-fancy-counter
                     [number]="user.followerCount || 0"
                   ></app-fancy-counter
-                ></b>
+                ></strong>
                 Follower{{ user.followerCount === 1 ? "" : "s" }}
               </h3>
               <div *ngIf="!isMyProfile" class="profileButtonRow d-flex">
@@ -119,7 +119,7 @@
     <div class="col-lg-6 pt-3 p-5 text-left order-lg-last">
       <h3 class="mat-h2">Biography</h3>
       <p class="mat-body">Bio goes here</p>
-      <h3 class="mat-h2">Tags</h3>
+      <h3 class="mat-h2">Badges</h3>
     </div>
     <div class="col-lg-6 pt-3 order-lg-first">
       <app-post-collection

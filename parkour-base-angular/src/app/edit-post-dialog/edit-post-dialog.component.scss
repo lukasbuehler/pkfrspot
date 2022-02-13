@@ -28,7 +28,7 @@ button.mat-flat-button {
   margin-right: 4px;
 }
 
-::ng-deep .mat-tab-body-content {
+::ng-deep app-edit-post-dialog .mat-tab-body-content {
   padding: 20px;
   padding-top: 20px;
   height: 150px;

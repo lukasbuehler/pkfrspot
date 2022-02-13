@@ -17,3 +17,7 @@ ul.checkbox-list {
   vertical-align: top;
   margin-left: 5px;
 }
+
+::ng-deep .mat-step-header {
+  border-radius: 15px;
+}
