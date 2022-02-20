@@ -21,6 +21,7 @@ import { Location } from "@angular/common";
 import { SpotCompactViewComponent } from "../spot-compact-view/spot-compact-view.component";
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
 import { AuthenticationService } from "../authentication.service";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-map-page",
@@ -70,7 +71,7 @@ export class MapPageComponent implements OnInit {
   mapStylesConfig = map_style;
   spotPolygons: AgmPolygon[] = [];
 
-  editingBounds: boolean = false;
+  isEditing: boolean = false;
   selectedSpot: Spot.Class = null;
 
   droppedMarkerLocation = null;
@@ -111,7 +112,8 @@ export class MapPageComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private router: Router,
-    private _zone: NgZone
+    private _zone: NgZone,
+    private _snackbar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -139,15 +141,24 @@ export class MapPageComponent implements OnInit {
         },
         (error) => {
           // the spot wasn't found, just go to the location if there is one
+          console.error(error);
           this.setStartMap(
             { lat: Number(lat), lng: Number(lng) },
             Number(zoom)
+          );
+          this._snackbar.open(
+            error.msg,
+            "Dismiss",
+            {
+              duration: 5000,
+              horizontalPosition: "center",
+              verticalPosition: "bottom",
+            }
           );
         }
       );
       //console.log("Loading spot " + spotId);
       // Show loading spot to open
-      // TODO snackbar
     } else {
       this.setStartMap({ lat: Number(lat), lng: Number(lng) }, Number(zoom));
     }
@@ -315,6 +326,18 @@ export class MapPageComponent implements OnInit {
         }
       }
     }
+
+    // If the selected spot is visible reference the instance from the visible spots
+    if(this.selectedSpot)
+    {
+      const selectedSpotIndexInVisibleSpots: number = this.visibleSpots.findIndex((spot) => {return this.selectedSpot.id === spot.id})
+      if(selectedSpotIndexInVisibleSpots >= 0)
+      {
+        // The selected spot is visible, reference the instance from the visible 
+        // spots instead of the one from the database
+        this.selectedSpot = this.visibleSpots[selectedSpotIndexInVisibleSpots];
+      }
+    }
   }
 
   loadNewSpotOnTiles(
@@ -418,6 +441,7 @@ export class MapPageComponent implements OnInit {
 
   openSpot(spot: Spot.Class) {
     // Maybe just opened spot
+    if(this.loadedSpots)
     this.selectedSpot = spot;
 
     this.focusSpot(spot);
@@ -441,7 +465,7 @@ export class MapPageComponent implements OnInit {
     //console.log("Create Spot");
 
     this.selectedSpot = new Spot.Class(
-      "", // The id needs to be empty for the spot to be recognized and created in the database
+      "", // The id needs to be empty for the spot to be recognized as new
       {
         name: { de_CH: "New Spot" },
         location: new firebase.default.firestore.GeoPoint(
@@ -454,12 +478,52 @@ export class MapPageComponent implements OnInit {
     this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(this.selectedSpot);
 
     // sets the map and the spot to edit mode
-    this.editingBounds = true;
-    this.spotDetail.isEditing = true;
+    this.isEditing = true;
+  }
+
+  saveSpot() {
+    if(!this.selectedSpot) return;
+
+    console.log("saving the spot");
+    console.log(this.selectedSpot.data);
+    // If the spot does not have an ID, it does not exist in the database yet.
+    if (this.selectedSpot.id) {
+      // this is an old spot that is edited
+      this._dbService.setSpot(this.selectedSpot.id, this.selectedSpot.data).subscribe(
+        () => {
+          // Successfully updated
+          this.isEditing = false;
+          // TODO Snackbar or something
+          console.log("Successfully saved spot")
+        },
+        (error) => {
+          this.isEditing = false;
+          console.error("Error on spot save", error);
+        }
+      );
+    } else {
+      // this is a new spot
+      this._dbService.createSpot(this.selectedSpot.data).subscribe(
+        (id) => {
+          // Successfully created
+          this.isEditing = false;
+          this.selectedSpot = new Spot.Class(id, this.selectedSpot.data);
+
+          // TODO snackbar or something
+          console.log("Successfully crated spot");
+        },
+        (error) => {
+          this.isEditing = false;
+          console.error("There was an error creating this spot!", error);
+        }
+      );
+    }
   }
 
   getPathsFromSpotPolygon() {
-    this.polygons.forEach((polygon) => {
+    if(this.spotDetail?.hasBounds())
+    {
+      this.polygons.forEach((polygon) => {
       if (polygon?.editable) {
         polygon
           .getPaths()
@@ -474,18 +538,16 @@ export class MapPageComponent implements OnInit {
             this.selectedSpot.paths = paths;
 
             if (this.spotDetail) {
-              this.spotDetail.save();
+              this.saveSpot(); // update polygons on spot
             }
             // If the sidepanel is not open while editing, it might not be able to save.
           })
           .catch((reason) => {
             console.error(reason);
           });
-      }
-    });
-
-    // If we get here, no editable polygon was found, a spot without bounds was saved
-    this.spotDetail.save();
+        }
+      });
+    }
   }
 
   loadSpotsForTiles(tilesToLoad: { x: number; y: number }[]) {
@@ -504,10 +566,10 @@ export class MapPageComponent implements OnInit {
     );
   }
 
-  spotMarkerMoved(event: google.maps.MouseEvent) {
+  spotMarkerMoved(event: {coords: google.maps.LatLngLiteral}) {
     if (this.selectedSpot) {
-      let latLng = event.latLng;
-      this.selectedSpot.location = { lat: latLng.lat(), lng: latLng.lng() };
+      this.selectedSpot.setLocation(event.coords);
+      this.selectedSpot.location = event.coords; // reflect move on map
     } else {
       console.error(
         "User somehow could change the spot marker position without having a spot selected"

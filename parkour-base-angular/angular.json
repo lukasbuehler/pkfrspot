@@ -237,5 +237,8 @@
       }
     }
   },
-  "defaultProject": "parkour-base-angular"
+  "defaultProject": "parkour-base-angular",
+  "cli": {
+    "analytics": "a5311b13-5fc5-4e67-ac18-01d7f1579646"
+  }
 }

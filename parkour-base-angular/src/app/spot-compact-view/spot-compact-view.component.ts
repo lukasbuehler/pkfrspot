@@ -47,10 +47,12 @@ export class SpotCompactViewComponent implements OnInit {
   @Output() dismiss: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() addBoundsClick: EventEmitter<void> = new EventEmitter<void>();
   @Output() focusClick: EventEmitter<void> = new EventEmitter<void>();
+  @Output() saveClick: EventEmitter<void> = new EventEmitter<void>();
+
 
   @ViewChild(UploadMediaUiComponent) uploadMediaComp;
 
-  backupSpot: Spot.Class = null;
+  editedSpot: Spot.Class = null;
 
   visited: boolean = false;
   bookmarked: boolean = false;
@@ -74,10 +76,6 @@ export class SpotCompactViewComponent implements OnInit {
     private _storageService: StorageService,
     private _authenticationService: AuthenticationService
   ) {
-    if (this.spot) {
-      this.backupSpot = JSON.parse(JSON.stringify(this.spot));
-    }
-
     this.filteredCountries = this.stateCtrl.valueChanges.pipe(
       startWith(""),
       map((country) =>
@@ -86,16 +84,22 @@ export class SpotCompactViewComponent implements OnInit {
     );
   }
 
+  ngOnChanges() {
+    if(this.spot) {
+      this.editedSpot = Spot.clone(this.spot);
+    }
+  }
+
+  ngOnInit() {
+    this.countries = getCountriesList("de");
+  }
+
   private _filterCountries(value: string): any[] {
     const filterValue = value.toLowerCase();
 
     return this.countries.filter(
       (country) => country.name.toLowerCase().indexOf(filterValue) === 0
     );
-  }
-
-  ngOnInit() {
-    this.countries = getCountriesList("de");
   }
 
   selectedTabChanged(number: number) {
@@ -146,7 +150,8 @@ export class SpotCompactViewComponent implements OnInit {
   }
 
   editButtonClick() {
-    this.backupSpot = this.spot;
+    this.editedSpot = Spot.clone(this.spot);
+
     if (this.editable && this._authenticationService.isSignedIn) {
       this.isEditing = true;
       this.isEditingChange.emit(true);
@@ -154,13 +159,12 @@ export class SpotCompactViewComponent implements OnInit {
   }
   saveButtonClick() {
     this.updatePaths();
-    this.save();
+    this.saveClick.emit();
     this.isEditingChange.emit(false);
   }
   discardButtonClick() {
     this.isEditing = false;
     this.isEditingChange.emit(false);
-    this.spot = this.backupSpot;
   }
 
   addBoundsClicked() {
@@ -279,36 +283,6 @@ export class SpotCompactViewComponent implements OnInit {
     return this.spot && this.spot.hasBounds();
   }
 
-  public save() {
-    console.log("saving the spot");
-    console.log(this.spot.data);
-    // If the spot does not have an ID, it does not exist in the database yet.
-    if (this.spot.id) {
-      // this is an old spot that is edited
-      this._dbService.setSpot(this.spot.id, this.spot.data).subscribe(
-        () => {
-          // Successfully updated
-          this.isEditing = false;
-          // TODO Snackbar or something
-        },
-        (error) => {
-          console.error("Error on spot save", error);
-        }
-      );
-    } else {
-      // this is a new spot
-      this._dbService.createSpot(this.spot.data).subscribe(
-        (id) => {
-          // Successfully created
-          this.isEditing = false;
-          // TODO snackbar or something
-        },
-        (error) => {
-          console.error("There was an error creating this spot!", error);
-        }
-      );
-    }
-  }
 
   capitalize(s: string) {
     return s && s[0].toUpperCase() + s.slice(1);
@@ -332,6 +306,11 @@ export class SpotCompactViewComponent implements OnInit {
   }
 
   unsubscribeFromSpotPosts() {
+    if(!this.postSubscription)
+    {
+      return;
+    }
+    
     console.log("Unsubscribing...");
     this.postSubscription.unsubscribe();
   }

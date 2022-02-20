@@ -1,20 +1,18 @@
 import {
   ContributedMedia,
-  DbDate,
-  DbLocation,
   LocaleMap,
   MediaType,
 } from "./Interfaces";
 import * as firebase from "firebase";
 import { MapHelper } from "../map_helper";
 import { DatabaseService } from "src/app/database.service";
-import { Observable } from "rxjs";
 import { StorageFolder, StorageService } from "src/app/storage.service";
 
-export module Spot {
+export namespace Spot {
   export class Class {
     public readonly id: string = "";
     public name: string = "";
+    public location: google.maps.LatLngLiteral = null;
     public isMiniSpot: boolean = false;
     public rating: number = null;
     public description: string = "";
@@ -40,11 +38,12 @@ export module Spot {
     }
 
     private _updateData() {
-      this.name = this._data.name?.de_CH || "Unnamed";
+      this.name = this._data.name?.de_CH || "Unnamed"; // TODO multilang
+      this.location = { lat: this._data.location.latitude, lng: this._data.location.longitude };
       this.isMiniSpot = this._data.isMiniSpot;
       this.rating = this._data.rating;
       this.description =
-        this._data.description?.en_GB || "Description goes here";
+        this._data.description?.en_GB || ""; // TODO multiland
 
       // Media
       this.hasMedia = this._data.media && this._data.media.length > 0;
@@ -146,12 +145,24 @@ export module Spot {
       _dbService.updateSpot(this._id, { media: this._data.media });
     }
 
-    setType(newType) {
+    setType(newType: string) {
       this._data.type = newType;
+      this._updateData();
     }
 
-    setArea(newArea) {
+    setArea(newArea: string) {
       this._data.area = newArea;
+      this._updateData();
+    }
+
+    setDescription(newDescription: string, langCode: string = "en_GB") {
+      if(!this._data.description)
+      {
+        this._data.description = {};
+      }
+
+      this._data.description[langCode] = newDescription;
+      this._updateData();
     }
 
     setPaths(paths) {
@@ -162,19 +173,16 @@ export module Spot {
     setAddress(addressObj) {
       this.address = addressObj;
       this._data.address = addressObj;
+      this._updateData();
     }
 
-    get location(): google.maps.LatLngLiteral {
-      const point = this._data.location;
-      return { lat: point.latitude, lng: point.longitude };
-    }
-    set location(location: google.maps.LatLngLiteral) {
+    setLocation(location: google.maps.LatLngLiteral) {
       this._data.location = new firebase.default.firestore.GeoPoint(
         location.lat,
         location.lng
       );
-      // update tile coords
-      this.setTileCoordinates();
+      this.setTileCoordinates(); // update tile coords
+      this._updateData(); // reflect changes
     }
 
     public hasBounds() {
@@ -245,6 +253,11 @@ export module Spot {
       long: string;
     };
     formatted: string;
+  }
+
+  export function clone(spot: Class) {
+    const dataCopy = JSON.parse(JSON.stringify(spot.data));
+    return new Class(spot.id, dataCopy);
   }
 
   export interface Schema {

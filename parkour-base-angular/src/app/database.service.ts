@@ -351,11 +351,17 @@ export class DatabaseService {
         .get()
         .subscribe(
           (snap) => {
-            let spot = new Spot.Class(snap.id, snap.data() as Spot.Schema);
-            observer.next(spot);
+            if(snap.exists)
+            {
+              let spot = new Spot.Class(snap.id, snap.data() as Spot.Schema);
+              observer.next(spot);
+            }
+            else {
+              observer.error({msg: "Error! This Spot does not exist."})
+            }
           },
           (error) => {
-            observer.error(error);
+            observer.error({msg: "Error! There was a problem loading this spot.", debug: error});
           }
         );
     });

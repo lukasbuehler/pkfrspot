@@ -26,11 +26,13 @@ export class AppComponent implements OnInit {
       (user) => {
         if (user) {
           if (user.uid !== this.userId) {
+            /* 
             this._snackbar.open(`Welcome ${user.data.displayName}!`, "Dismiss", {
               duration: 2000,
               horizontalPosition: "center",
               verticalPosition: "bottom",
             });
+            */
             this.userId = user.uid;
           }
         } else {

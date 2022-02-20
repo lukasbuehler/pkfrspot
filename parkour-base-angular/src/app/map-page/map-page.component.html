@@ -30,11 +30,12 @@
         [dismissable]="true"
         [infoOnly]="false"
         [editable]="true"
-        [(isEditing)]="editingBounds"
+        [(isEditing)]="isEditing"
         (dismiss)="closeSpot()"
         (addBoundsClick)="addBounds()"
         (callGetPathsPromiseFunction)="getPathsFromSpotPolygon()"
         (focusClick)="focusSpot(selectedSpot)"
+        (saveClick)="saveSpot()"
       ></app-spot-compact-view>
     </div>
   </mat-drawer>
@@ -80,13 +81,14 @@
       (circleClick)="openSpot(spot)"
     >
       <agm-polygon
+        *ngIf="selectedSpot?.hasBounds()"
         #polygon
         [paths]="spot.paths"
         [fillColor]="'#304ffe'"
         [strokeColor]="'#304ffe'"
         [fillOpacity]="0.1"
         [editable]="
-          editingBounds && spot && selectedSpot && spot.id === selectedSpot.id
+          isEditing && spot && selectedSpot && spot.id === selectedSpot.id
         "
         (polyClick)="openSpot(spot)"
       ></agm-polygon>
@@ -99,7 +101,7 @@
       [longitude]="selectedSpot.location.lng"
       [title]="selectedSpot.name"
       iconUrl="/assets/icons/marker.png"
-      [markerDraggable]="editingBounds"
+      [markerDraggable]="isEditing"
       [markerClickable]="true"
       (dragEnd)="spotMarkerMoved($event)"
     ></agm-marker>
@@ -144,7 +146,7 @@
 
   <!-- Add / import spots speed dial-->
   <app-speed-dial-fab
-    *ngIf="authService.isSignedIn && !editingBounds"
+    *ngIf="authService.isSignedIn && !isEditing"
     #createSpotSpeedDial
     id="createSpotSpeedDial"
     [buttonConfig]="speedDialButtonConfig"

@@ -24,8 +24,8 @@
           <input
             #spotNameInput
             matInput
-            [value]="spot.name || ''"
-            (change)="spot.name = $event.target.value"
+            [value]="editedSpot?.name || ''"
+            (change)="editedSpot.setName($event.target.value)"
           />
         </mat-form-field>
       </form>
@@ -197,7 +197,7 @@
     <form *ngIf="isEditing">
       <mat-form-field style="width: 100%">
         <mat-label>Spot type</mat-label>
-        <mat-select [(value)]="spot.type">
+        <mat-select [value]="editedSpot?.type" (selectionChange)="editedSpot.setType($event.value)">
           <mat-option *ngFor="let type of spotTypes" [value]="type">
             {{ capitalize(type) }}
           </mat-option>
@@ -205,7 +205,7 @@
       </mat-form-field>
       <mat-form-field style="width: 100%">
         <mat-label>Spot area</mat-label>
-        <mat-select [(value)]="spot.area">
+        <mat-select [value]="editedSpot?.area" (selectionChange)="editedSpot.setArea($event.value)">
           <mat-option *ngFor="let area of spotAreas" [value]="area">
             {{ capitalize(area) }}
           </mat-option>
@@ -216,8 +216,8 @@
         <textarea
           matInput
           placeholder="Description of the spot, its features and more..."
-          [value]="spot.description || ''"
-          (change)="spot.description = $event.target.value"
+          [value]="editedSpot?.description || ''"
+          (change)="editedSpot.setDescription($event.target.value)"
         ></textarea>
       </mat-form-field>
 
