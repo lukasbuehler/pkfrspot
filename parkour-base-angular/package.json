@@ -37,7 +37,7 @@
     "bootstrap": "^4.5.3",
     "croppie": "^2.6.5",
     "firebase": "^8.2.1",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "ngx-infinite-scroll": "^10.0.1",
     "ngx-plyr": "^4.0.0",
     "plyr": "^3.6.3",
