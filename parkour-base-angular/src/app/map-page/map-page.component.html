@@ -36,6 +36,7 @@
         (callGetPathsPromiseFunction)="getPathsFromSpotPolygon()"
         (focusClick)="focusSpot(selectedSpot)"
         (saveClick)="saveSpot()"
+        (discardClick)="discardEdit()"
       ></app-spot-compact-view>
     </div>
   </mat-drawer>
@@ -106,16 +107,6 @@
       (dragEnd)="spotMarkerMoved($event)"
     ></agm-marker>
 
-    <agm-marker
-      *ngIf="droppedMarkerLocation"
-      #droppedMarker
-      id="droppedMarker"
-      [latitude]="droppedMarkerLocation.lat"
-      [longitude]="droppedMarkerLocation.lng"
-      iconUrl="/assets/icons/marker.png"
-      [markerDraggable]="true"
-      [markerClickable]="true"
-    ></agm-marker>
   </agm-map>
 
   <button

@@ -100,6 +100,13 @@ export class MapPageComponent implements OnInit {
   loadedSpots: any = {}; // is a map of tile coords to spot arrays
   visibleDots: any[] = [];
 
+  getAllSpots(): Spot.Class[] {
+    return [].concat.apply(
+      [],
+      Object.values<Spot.Class[]>(this.loadedSpots)
+    );
+  }
+
   zoomDotOpacities: number[] = [];
   zoomDotOpacity: number = 0;
 
@@ -180,7 +187,6 @@ export class MapPageComponent implements OnInit {
 
   clickedMap(coords) {
     //console.log(coords);
-    this.droppedMarkerLocation = coords.coords;
     //console.log(MapHelper.getTileCoordinates(coords.coords, this.zoom));
   }
 
@@ -407,10 +413,7 @@ export class MapPageComponent implements OnInit {
   }
 
   updateVisibleDots() {
-    const allSpots = [].concat.apply(
-      [],
-      Object.values<Spot.Class[]>(this.loadedSpots)
-    );
+    const allSpots: Spot.Class[] = this.getAllSpots()
 
     // temporary: // TODO REMOVE
     this.searchSpots = allSpots;
@@ -518,6 +521,14 @@ export class MapPageComponent implements OnInit {
         }
       );
     }
+  }
+
+  discardEdit() {
+    // reset paths of editing polygon
+    // TODO
+
+    // delete local newly created spots
+    this.removeNewSpotFromLoadedSpotsAndUpdate()
   }
 
   getPathsFromSpotPolygon() {
@@ -641,14 +652,30 @@ export class MapPageComponent implements OnInit {
   }
 
   /**
-   * This function is used if the new spot was deleted, discarded or never saved. It removes the first spot it finds without an id.
+   * This function is used if the new spot was deleted, discarded or never saved. 
+   * It removes the first spot it finds without an id.
    */
   removeNewSpotFromLoadedSpotsAndUpdate() {
-    // TODO
+    const allSpots = this.getAllSpots();
+
+    // find the spot with no id
+    const spotToRemove: Spot.Class = allSpots.find((spot, i) => {
+      return !spot.id
+    })
+
+    if(spotToRemove)
+    {
+      const tile = spotToRemove.data.tile_coordinates.z16;
+      const spotToRemoveIndex: number = this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].indexOf(spotToRemove);
+      this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].splice(spotToRemoveIndex, 1);
+    }
+    else{
+      console.warn("Dev: No spot to remove from loaded spots was found")
+    }
   }
 
   /**
-   * This funciton is used if the new spot was saved and now has an id. It replaces the first spot it finds with no ID with the newSaveSpot
+   * This function is used if the new spot was saved and now has an id. It replaces the first spot it finds with no ID with the newSaveSpot
    * @param newSavedSpot The new spot that replaces the unsaved new spot
    */
   updateNewSpotIdOnLoadedSpotsAndUpdate(newSavedSpot: Spot.Class) {

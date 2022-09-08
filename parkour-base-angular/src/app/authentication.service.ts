@@ -149,12 +149,18 @@ export class AuthenticationService {
                 displayName: displayName,
               });
 
+              // TODO make sure that the user id is the same as the database user 
+              // id in the backend or some freaky stuff might happen
+
               // create a database entry for the user
               this._databaseService.addUser(res.user.uid, displayName, {
                 invite_code: inviteCode,
+              }).then(() => {
+                resolve(res);
+              }).catch(err => {
+                reject(err)
               });
 
-              resolve(res);
             },
             (err) => reject(err)
           );

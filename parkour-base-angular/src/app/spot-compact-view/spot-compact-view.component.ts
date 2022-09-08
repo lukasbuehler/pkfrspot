@@ -48,6 +48,7 @@ export class SpotCompactViewComponent implements OnInit {
   @Output() addBoundsClick: EventEmitter<void> = new EventEmitter<void>();
   @Output() focusClick: EventEmitter<void> = new EventEmitter<void>();
   @Output() saveClick: EventEmitter<void> = new EventEmitter<void>();
+  @Output() discardClick: EventEmitter<void> = new EventEmitter<void>();
 
 
   @ViewChild(UploadMediaUiComponent) uploadMediaComp;
@@ -70,6 +71,10 @@ export class SpotCompactViewComponent implements OnInit {
   stateCtrl = new FormControl();
 
   automaticallyDetermineAddress: boolean = true;
+
+  get isNewSpot() {
+    return this.spot && !this.spot.id
+  }
 
   constructor(
     private _dbService: DatabaseService,
@@ -163,8 +168,16 @@ export class SpotCompactViewComponent implements OnInit {
     this.isEditingChange.emit(false);
   }
   discardButtonClick() {
+    this.discardClick.emit();
     this.isEditing = false;
     this.isEditingChange.emit(false);
+
+    if(this.isNewSpot)
+    {
+      // close the compact view as well
+      this.dismissed()
+    }
+    
   }
 
   addBoundsClicked() {

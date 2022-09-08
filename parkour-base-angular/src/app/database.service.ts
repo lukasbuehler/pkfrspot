@@ -493,16 +493,17 @@ export class DatabaseService {
     userId: string,
     display_name: string,
     data: User.Schema
-  ): Promise<User.Schema> {
-    return new Promise<User.Schema>((resolve, reject) => {
+  ): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      let schema: User.Schema = {
+        display_name: display_name,
+        verified_email: false,
+        ...data,
+      }
       this.db
         .collection<User.Schema>("users")
         .doc(userId)
-        .set({
-          display_name: display_name,
-          verified_email: false,
-          ...data,
-        });
+        .set(schema).then(() => resolve()).catch((err) => reject(err));
     });
   }
 
