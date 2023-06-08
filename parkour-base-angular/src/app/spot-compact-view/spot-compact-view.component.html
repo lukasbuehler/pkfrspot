@@ -1,9 +1,25 @@
+<mat-progress-bar *ngIf="isSaving" color="accent" mode="indeterminate"></mat-progress-bar>
+
+
+<mat-menu #navUserMenu="matMenu">
+  <button mat-menu-item >
+    <span>en_US</span>
+  </button>
+  <button mat-menu-item >
+    <span>de_DE</span>
+  </button>
+  <button mat-menu-item >
+    <span>de_CH</span>
+  </button>
+</mat-menu>
+
 <mat-card
   matRipple
   [matRippleDisabled]="!clickable"
   [class.mat-elevation-z0]="flat"
   [class.clickable]="clickable"
 >
+
   <mat-card-header>
     <mat-card-title>
       <button
@@ -52,6 +68,26 @@
       (selectedTabChange)="selectedTabChanged($event.index)"
     >
       <mat-tab label="Details">
+        <!-- language selection -->
+        <div class="text-center mt-1">
+          Language: 
+          <button
+          mat-button
+          class="p-0 ml-1"
+          [matMenuTriggerFor]="navUserMenu"
+          >
+            <mat-icon
+              >language</mat-icon
+            >
+            <mat-icon
+              >arrow_drop_down</mat-icon
+            >
+          </button>
+
+          Current Language: {{spotLanguage}}
+        </div>
+        
+
         <!-- spot media swiper  -->
         <swiper
           class="spot-media-swiper"

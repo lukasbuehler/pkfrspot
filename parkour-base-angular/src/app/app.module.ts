@@ -42,6 +42,7 @@ import {
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatSelectModule } from "@angular/material/select";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatListModule } from "@angular/material/list";
 import { MatStepperModule } from "@angular/material/stepper";
@@ -166,6 +167,7 @@ import { MediaPreviewGridComponent } from "./media-preview-grid/media-preview-gr
     MatExpansionModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatAutocompleteModule,
     MatListModule,
     MatStepperModule,

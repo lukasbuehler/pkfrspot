@@ -6,6 +6,7 @@ import {
   EventEmitter,
   ViewChild,
 } from "@angular/core";
+import { MatProgressBar } from "@angular/material/progress-bar";
 import { Spot } from "src/scripts/db/Spot";
 import { DatabaseService } from "../database.service";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
@@ -47,13 +48,17 @@ export class SpotCompactViewComponent implements OnInit {
   @Output() dismiss: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() addBoundsClick: EventEmitter<void> = new EventEmitter<void>();
   @Output() focusClick: EventEmitter<void> = new EventEmitter<void>();
-  @Output() saveClick: EventEmitter<void> = new EventEmitter<void>();
+  @Output() saveClick: EventEmitter<Spot.Class> = new EventEmitter<Spot.Class>();
   @Output() discardClick: EventEmitter<void> = new EventEmitter<void>();
 
 
   @ViewChild(UploadMediaUiComponent) uploadMediaComp;
 
   editedSpot: Spot.Class = null;
+
+  spotLanguage: string = "de_CH"
+
+  isSaving: boolean = false;
 
   visited: boolean = false;
   bookmarked: boolean = false;
@@ -90,7 +95,7 @@ export class SpotCompactViewComponent implements OnInit {
   }
 
   ngOnChanges() {
-    if(this.spot) {
+    if(this.spot && !this.editedSpot) {
       this.editedSpot = Spot.clone(this.spot);
     }
   }
@@ -163,8 +168,11 @@ export class SpotCompactViewComponent implements OnInit {
     }
   }
   saveButtonClick() {
+    this.isSaving = true;
+
     this.updatePaths();
-    this.saveClick.emit();
+
+    this.saveClick.emit(this.editedSpot);
     this.isEditingChange.emit(false);
   }
   discardButtonClick() {

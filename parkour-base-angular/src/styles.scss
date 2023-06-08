@@ -1,11 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
-//@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+// @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 :root {
-  --primary-color: #000a12;
-  --accent-color: #0039cb;
-  --swiper-theme-color: #304ffe !important;
+  --primary-color: #3b5fe2;
+  --accent-color: #51cd74;
+  --swiper-theme-color: var(--primary-color) !important;
 }
 
 button:focus {
@@ -22,4 +22,33 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
+}
+
+// Mat Progress
+mat-progress-bar-background {
+  fill: #c5cae9;
+}
+.mat-progress-bar-buffer {
+  background-color: #c5cae9;
+}
+.mat-progress-bar-fill::after {
+  background-color: var(--primary-color);
+}
+.mat-progress-bar.mat-accent .mat-progress-bar-background {
+  fill: var(--accent-color);
+}
+.mat-progress-bar.mat-accent .mat-progress-bar-buffer {
+  background-color: #c5cae9;
+}
+.mat-progress-bar.mat-accent .mat-progress-bar-fill::after {
+  background-color: #c5cae9;
+}
+.mat-progress-bar.mat-warn .mat-progress-bar-background {
+  fill: #ffcdd2;
+}
+.mat-progress-bar.mat-warn .mat-progress-bar-buffer {
+  background-color: #ffcdd2;
+}
+.mat-progress-bar.mat-warn .mat-progress-bar-fill::after {
+  background-color: #f44336;
 }

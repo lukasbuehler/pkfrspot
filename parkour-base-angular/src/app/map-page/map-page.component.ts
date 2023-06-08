@@ -12,6 +12,9 @@ import * as firebase from "firebase";
 
 //import "googlemaps";
 
+interface LoadedSpotReference {spot: Spot.Class, tile: {x: number,y: number}, indexInTileArray: number, indexInTotalArray: number}
+
+
 import { DatabaseService } from "../database.service";
 import { AgmMap, AgmPolygon } from "@agm/core";
 import { Spot } from "src/scripts/db/Spot";
@@ -101,9 +104,16 @@ export class MapPageComponent implements OnInit {
   visibleDots: any[] = [];
 
   getAllSpots(): Spot.Class[] {
+    const values = [];
+    for(const key of Object.keys(this.loadedSpots))
+    {
+      if(!key.includes("z16")) continue;
+      values.push(this.loadedSpots[key]);
+    }
+
     return [].concat.apply(
       [],
-      Object.values<Spot.Class[]>(this.loadedSpots)
+      values
     );
   }
 
@@ -484,20 +494,22 @@ export class MapPageComponent implements OnInit {
     this.isEditing = true;
   }
 
-  saveSpot() {
-    if(!this.selectedSpot) return;
+  saveSpot(spotToSave: Spot.Class) {
+    if(!spotToSave) return;
 
     console.log("saving the spot");
-    console.log(this.selectedSpot.data);
+    console.log("Spot data to save: ", spotToSave.data);
     // If the spot does not have an ID, it does not exist in the database yet.
-    if (this.selectedSpot.id) {
+    if (spotToSave.id) {
       // this is an old spot that is edited
-      this._dbService.setSpot(this.selectedSpot.id, this.selectedSpot.data).subscribe(
+      this._dbService.setSpot(spotToSave.id, spotToSave.data).subscribe(
         () => {
           // Successfully updated
           this.isEditing = false;
           // TODO Snackbar or something
-          console.log("Successfully saved spot")
+          console.log("Successfully saved spot");
+          this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spotToSave);
+          console.log(this.getAllSpots())
         },
         (error) => {
           this.isEditing = false;
@@ -506,14 +518,18 @@ export class MapPageComponent implements OnInit {
       );
     } else {
       // this is a new spot
-      this._dbService.createSpot(this.selectedSpot.data).subscribe(
+      this._dbService.createSpot(spotToSave.data).subscribe(
         (id) => {
           // Successfully created
           this.isEditing = false;
-          this.selectedSpot = new Spot.Class(id, this.selectedSpot.data);
+
+          // TODO add to loaded spots or something? or will it be loaded automatically after that?
+
+          this.selectedSpot = new Spot.Class(id, spotToSave.data);
 
           // TODO snackbar or something
           console.log("Successfully crated spot");
+          this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spotToSave);
         },
         (error) => {
           this.isEditing = false;
@@ -549,7 +565,7 @@ export class MapPageComponent implements OnInit {
             this.selectedSpot.paths = paths;
 
             if (this.spotDetail) {
-              this.saveSpot(); // update polygons on spot
+              this.saveSpot(this.selectedSpot); // update polygons on spot
             }
             // If the sidepanel is not open while editing, it might not be able to save.
           })
@@ -612,36 +628,49 @@ export class MapPageComponent implements OnInit {
     this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(this.selectedSpot);
   }
 
+  getReferenceToLoadedSpotById(spotId: string): LoadedSpotReference {
+    const allSpots = this.getAllSpots();
+
+    // find the spot with no id
+    const spot: Spot.Class = allSpots.find((spot) => {
+      return spot.id === spotId;
+    });
+
+    const tile = spot?.data?.tile_coordinates?.z16;
+    const indexInTileArray = this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].indexOf(spot)
+
+    console.log(JSON.stringify(this.loadedSpots))
+
+    const loadedSpotRef: LoadedSpotReference = {
+      spot: spot,
+      tile: tile,
+      indexInTileArray: indexInTileArray,
+      indexInTotalArray: spot ? allSpots.indexOf(spot) : -1
+    }
+
+    return loadedSpotRef;
+  }
+
   /**
    * Add a newly created spot (before first save) to the loaded spots for nice display. It can be identified by having its ID set to empty string
    * @param newSpot The newly created spot class.
    */
   addOrUpdateNewSpotToLoadedSpotsAndUpdate(newSpot: Spot.Class) {
     // Get the tile coordinates to save in loaded spots
-    let tile = MapHelper.getTileCoordinates(newSpot.location, 16);
+    const ref = this.getReferenceToLoadedSpotById(newSpot.id)
 
-    // Get all the spots on the same z=16 tile
-    let spots: Spot.Class[] =
-      this.loadedSpots[`z${16}_${tile.x}_${tile.y}`] || [];
-
-    // Check if this new spot already exists in the loaded spots.
-    let spot = spots.find((v, i, obj) => {
-      return v.id === "";
-    });
-
-    if (spot) {
+    console.log(ref)
+    if (ref.spot && ref.indexInTileArray >= 0 && ref.tile) {
       // The spot exists and should be updated
-      // get the index in the array
-      let spotIndex = spots.indexOf(spot);
 
       // Update the spot
-      this.loadedSpots[`z${16}_${tile.x}_${tile.y}`][spotIndex] =
-        this.selectedSpot;
+      this.loadedSpots[`z${16}_${ref.tile.x}_${ref.tile.y}`][ref.indexInTileArray] =
+        newSpot;
     } else {
       // the spot does not exist
-      let spots = this.loadedSpots[`z${16}_${tile.x}_${tile.y}`];
+      let spots = this.loadedSpots[`z${16}_${ref.tile.x}_${ref.tile.y}`];
       if (spots) {
-        spots.push(this.selectedSpot);
+        spots.push(newSpot);
       } else {
         console.error("There are no spots loaded for this tile");
       }
@@ -656,18 +685,11 @@ export class MapPageComponent implements OnInit {
    * It removes the first spot it finds without an id.
    */
   removeNewSpotFromLoadedSpotsAndUpdate() {
-    const allSpots = this.getAllSpots();
-
-    // find the spot with no id
-    const spotToRemove: Spot.Class = allSpots.find((spot, i) => {
-      return !spot.id
-    })
-
-    if(spotToRemove)
+    const spotToRemoveRef = this.getReferenceToLoadedSpotById("");
+    
+    if(spotToRemoveRef.spot && spotToRemoveRef.tile && spotToRemoveRef.indexInTileArray >= 0)
     {
-      const tile = spotToRemove.data.tile_coordinates.z16;
-      const spotToRemoveIndex: number = this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].indexOf(spotToRemove);
-      this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].splice(spotToRemoveIndex, 1);
+      this.loadedSpots[`z${16}_${spotToRemoveRef.tile.x}_${spotToRemoveRef.tile.y}`].splice(spotToRemoveRef.indexInTileArray, 1);
     }
     else{
       console.warn("Dev: No spot to remove from loaded spots was found")

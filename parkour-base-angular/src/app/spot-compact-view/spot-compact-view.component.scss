@@ -79,3 +79,8 @@ div.upload-spot-image-box {
 app-upload-media-ui {
   width: 100%;
 }
+
+mat-progress-bar {
+  margin-bottom: -4px;
+  z-index: 1;
+}
