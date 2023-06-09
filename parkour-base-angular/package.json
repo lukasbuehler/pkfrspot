@@ -30,7 +30,6 @@
     "@angular/platform-browser-dynamic": "^13.4.0",
     "@angular/router": "^13.4.0",
     "@angular/service-worker": "^13.4.0",
-    "@types/googlemaps": "3.39.12",
     "algoliasearch": "^4.12.1",
     "angular-resize-event": "^3.2.0",
     "bootstrap": "^4.6.1",
