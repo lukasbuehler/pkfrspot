@@ -8,19 +8,19 @@ import { AppRoutingModule } from "./app-routing.module";
 import { environment } from "src/environments/environment";
 
 // Other imports
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
-import { AgmCoreModule } from "@agm/core"; // Maps
-import { PlyrModule } from "ngx-plyr"; // video player
-import { AngularResizedEventModule } from "angular-resize-event";
 import { SwiperModule } from "swiper/angular"; // image gallery
 
 // Firebase
-import { AngularFireModule } from "@angular/fire/compat";
-import { AngularFirestoreModule } from "@angular/fire/compat/firestore";
-import { AngularFireStorageModule } from "@angular/fire/compat/storage";
-import { AngularFireAuthModule } from "@angular/fire/compat/auth";
+import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
+import {
+  connectFirestoreEmulator,
+  enableIndexedDbPersistence,
+  getFirestore,
+  provideFirestore,
+} from "@angular/fire/firestore";
+import { getStorage, provideStorage } from "@angular/fire/storage";
 
 // Angular material
 import { MatLegacyButtonModule as MatButtonModule } from "@angular/material/legacy-button";
@@ -30,7 +30,7 @@ import { MatBadgeModule } from "@angular/material/badge";
 import { MatLegacyTooltipModule as MatTooltipModule } from "@angular/material/legacy-tooltip";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatLegacyCardModule as MatCardModule } from "@angular/material/legacy-card";
-import { MatLegacyTabsModule as MatTabsModule } from "@angular/material/legacy-tabs";
+import { MatTabsModule } from "@angular/material/tabs";
 import { MatLegacyMenuModule as MatMenuModule } from "@angular/material/legacy-menu";
 import { MatIconModule } from "@angular/material/icon";
 import { MatLegacyInputModule as MatInputModule } from "@angular/material/legacy-input";
@@ -90,10 +90,11 @@ import {
 } from "./follow-list/follow-list.component";
 import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 import { SettingsPageComponent } from "./settings-page/settings-page.component";
-import { ServiceWorkerModule } from "@angular/service-worker";
+//import { ServiceWorkerModule } from "@angular/service-worker";
 import { ForgotPasswordPageComponent } from "./forgot-password-page/forgot-password-page.component";
 import { DiscoverSpotsViewComponent } from "./discover-spots-view/discover-spots-view.component";
 import { MediaPreviewGridComponent } from "./media-preview-grid/media-preview-grid.component";
+import { config } from "rxjs";
 
 @NgModule({
   declarations: [
@@ -138,16 +139,14 @@ import { MediaPreviewGridComponent } from "./media-preview-grid/media-preview-gr
     AppRoutingModule,
     HttpClientModule,
 
-    NgbModule,
-    AngularFireModule.initializeApp(environment.keys.firebaseConfig),
-    AngularFirestoreModule,
-    AngularFireAuthModule,
-    AngularFireStorageModule,
-
-    InfiniteScrollModule,
-    AgmCoreModule.forRoot({
-      apiKey: environment.keys.google_maps,
+    // firestore
+    provideFirebaseApp(() => initializeApp(environment.keys.firebaseConfig)),
+    provideFirestore(() => {
+      const firestore = getFirestore();
+      connectFirestoreEmulator(firestore, "localhost", 8080);
+      return firestore;
     }),
+    provideStorage(() => getStorage()),
 
     // Angular material modules
     BrowserAnimationsModule,
@@ -182,11 +181,9 @@ import { MediaPreviewGridComponent } from "./media-preview-grid/media-preview-gr
     MatButtonToggleModule,
 
     // Other modules
-    PlyrModule,
-    AngularResizedEventModule,
-    ServiceWorkerModule.register("ngsw-worker.js", {
-      enabled: environment.production,
-    }),
+    // ServiceWorkerModule.register("ngsw-worker.js", {
+    //   enabled: environment.production,
+    // }),
     SwiperModule,
   ],
   exports: [MatButtonModule],

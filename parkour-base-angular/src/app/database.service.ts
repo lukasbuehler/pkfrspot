@@ -4,13 +4,23 @@ import { Post } from "src/scripts/db/Post";
 import { Spot } from "src/scripts/db/Spot";
 
 import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-  DocumentChangeAction,
+  Firestore,
+  doc,
+  addDoc,
+  collection,
+  collectionData,
+  onSnapshot,
+  collectionSnapshots,
   DocumentChangeType,
-} from "@angular/fire/compat/firestore";
+  where,
+  query,
+  orderBy,
+  limit,
+  QueryDocumentSnapshot,
+  DocumentData,
+} from "@angular/fire/firestore";
 
-import { Observable } from "rxjs";
+import { Observable, combineLatest } from "rxjs";
 import { Like } from "src/scripts/db/Like";
 import { User } from "src/scripts/db/User";
 import { merge } from "rxjs";
@@ -22,18 +32,18 @@ import { InviteCode } from "src/scripts/db/InviteCode";
   providedIn: "root",
 })
 export class DatabaseService {
-  constructor(private db: AngularFirestore) {}
+  constructor(private firestore: Firestore) {}
 
   docRef(path: string) {
-    return this.db.doc(path).ref;
+    return doc(this.firestore, path);
   }
 
   // Posts --------------------------------------------------------------------
 
   addPost(newPost: Post.Schema) {
-    this.db
-      .collection<Post.Schema>("posts")
-      .add(newPost)
+    let postsCollectionRef = collection(this.firestore, "posts");
+
+    addDoc(postsCollectionRef, newPost)
       .then((docRef) => {
         console.log("Post Document written with ID: " + docRef.id);
       })
@@ -42,6 +52,7 @@ export class DatabaseService {
         console.log(newPost);
 
         // remove the uploaded data after...
+        // TODO
       });
   }
 
@@ -49,94 +60,95 @@ export class DatabaseService {
    *
    * @returns
    */
-  getPostUpdates(
-    userId
-  ): Observable<{ type: DocumentChangeType; post: Post.Class }[]> {
-    /**
-     * 1) Get all followings of the currently authenticated user
-     * 2) Make multiple arrays of size 10 with all the followings
-     * 3) Call all the observables to those batches of 10 users with in queries for posts with pagination.
-     * 4) Construct one giant observable with all those listeners
-     * 5) Return that
-     */
+  //   getPostUpdates(
+  //     userId
+  //   ): Observable<{ type: DocumentChangeType; post: Post.Class }[]> {
+  //     /**
+  //      * 1) Get all followings of the currently authenticated user
+  //      * 2) Make multiple arrays of size 10 with all the followings
+  //      * 3) Call all the observables to those batches of 10 users with in queries for posts with pagination.
+  //      * 4) Construct one giant observable with all those listeners
+  //      * 5) Return that
+  //      */
 
-    return new Observable<{ type: DocumentChangeType; post: Post.Class }[]>(
-      (obs) => {
-        // 1) Get all the followings of the currently authenticated user
-        let allFollowingsIds: string[] = [];
-        this.db
-          .collection<User.FollowingDataSchema>(`users/${userId}/following`)
-          .get()
-          .subscribe((snap) => {
-            // Gets the followers once, the user will need to refresh to display post of newly following users.
+  //     return new Observable<{ type: DocumentChangeType; post: Post.Class }[]>(
+  //       (obs) => {
+  //         // 1) Get all the followings of the currently authenticated user
+  //         let allFollowingsIds: string[] = [];
 
-            allFollowingsIds = snap.docs.map((val) => {
-              return val.id;
-            });
+  //         const followingCollection = collection(
+  //           this.firestore,
+  //           `users/${userId}/following`
+  //         );
+  //         collectionSnapshots(followingCollection).subscribe((snap) => {
+  //           // Gets the followers once, the user will need to refresh to display post of newly following users.
 
-            // add the currently authenticated user to the Ids
-            // We want to see our own posts as well
-            allFollowingsIds.unshift(userId);
+  //           allFollowingsIds = snap.map((val) => {
+  //             return val.id;
+  //           });
 
-            if (allFollowingsIds.length === 0) {
-              // This user doesn't follow anyone, just complete the observable.
-              //
-              obs.complete();
-            }
+  //           // add the currently authenticated user to the Ids
+  //           // We want to see our own posts as well
+  //           allFollowingsIds.unshift(userId);
 
-            // 2) Make multiple arrays of size 10 with all the followings
-            let chunks: string[][] = [];
-            const chunkSize = 10;
-            for (
-              let beginIndex = 0, endIndex = allFollowingsIds.length;
-              beginIndex < endIndex;
-              beginIndex += chunkSize
-            ) {
-              chunks.push(
-                allFollowingsIds.slice(beginIndex, beginIndex + chunkSize)
-              );
-            }
+  //           if (allFollowingsIds.length === 0) {
+  //             // This user doesn't follow anyone, just complete the observable.
+  //             //
+  //             obs.complete();
+  //           }
 
-            // 3) Call all the observables to those batches of 10 users with in queries for posts with pagination.
-            let observables: Observable<DocumentChangeAction<Post.Schema>[]>[] =
-              [];
-            chunks.forEach((ids: string[]) => {
-              observables.push(
-                this.db
-                  .collection<Post.Schema>(
-                    "posts",
-                    (ref) =>
-                      ref
-                        .where("user.uid", "in", ids)
-                        .orderBy("time_posted", "desc")
-                        .limit(10)
-                    // TODO Pagination
-                  )
-                  .snapshotChanges()
-              );
-            });
-            merge(...observables).subscribe(
-              (changeActions) => {
-                let postChanges: {
-                  type: DocumentChangeType;
-                  post: Post.Class;
-                }[] = [];
-                changeActions.forEach((action) => {
-                  const id = action.payload.doc.id;
-                  const data = action.payload.doc.data();
-                  const _post = new Post.Class(id, data);
-                  postChanges.push({ type: action.type, post: _post });
-                });
-                obs.next(postChanges);
-              },
-              (err) => {
-                obs.error(err);
-              }
-            );
-          });
-      }
-    );
-  }
+  //           // 2) Make multiple arrays of size 10 with all the followings
+  //           let chunks: string[][] = [];
+  //           const chunkSize = 10;
+  //           for (
+  //             let beginIndex = 0, endIndex = allFollowingsIds.length;
+  //             beginIndex < endIndex;
+  //             beginIndex += chunkSize
+  //           ) {
+  //             chunks.push(
+  //               allFollowingsIds.slice(beginIndex, beginIndex + chunkSize)
+  //             );
+  //           }
+
+  //           // 3) Call all the observables to those batches of 10 users with in queries for posts with pagination.
+  //           let observables: Observable<QueryDocumentSnapshot<DocumentData>[]>[] =
+  //             [];
+  //           chunks.forEach((ids: string[]) => {
+  //             const q$ = onSnapshot(
+  //               query(
+  //                 collection(this.firestore, "posts"),
+  //                 where("user.uid", "in", ids),
+  //                 orderBy("time_posted", "desc"),
+  //                 limit(10)
+  //                 // TODO Pagination
+  //               ), (snap) => {
+  //                 observables.push(snap.docChanges());
+  //               }
+  //             );
+
+  //           });
+  //           merge(...observables).subscribe(
+  //             (snaps) => {
+  //               let postChanges: {
+  //                 type: DocumentChangeType;
+  //                 post: Post.Class;
+  //               }[] = [];
+  //               snaps.forEach((snap) => {
+  //                 const id = snap.id;
+  //                 const data: Post.Schema = snap.data();
+  //                 const _post = new Post.Class(id, data);
+  //                 postChanges.push({ type: snap, post: _post });
+  //               });
+  //               obs.next(postChanges);
+  //             },
+  //             (err) => {
+  //               obs.error(err);
+  //             }
+  //           );
+  //         });
+  //       }
+  //     );
+  //   }
 
   /**
    * Top posts in the last 24 hours
@@ -351,17 +363,18 @@ export class DatabaseService {
         .get()
         .subscribe(
           (snap) => {
-            if(snap.exists)
-            {
+            if (snap.exists) {
               let spot = new Spot.Class(snap.id, snap.data() as Spot.Schema);
               observer.next(spot);
-            }
-            else {
-              observer.error({msg: "Error! This Spot does not exist."})
+            } else {
+              observer.error({ msg: "Error! This Spot does not exist." });
             }
           },
           (error) => {
-            observer.error({msg: "Error! There was a problem loading this spot.", debug: error});
+            observer.error({
+              msg: "Error! There was a problem loading this spot.",
+              debug: error,
+            });
           }
         );
     });
@@ -499,11 +512,13 @@ export class DatabaseService {
         display_name: display_name,
         verified_email: false,
         ...data,
-      }
+      };
       this.db
         .collection<User.Schema>("users")
         .doc(userId)
-        .set(schema).then(() => resolve()).catch((err) => reject(err));
+        .set(schema)
+        .then(() => resolve())
+        .catch((err) => reject(err));
     });
   }
 
@@ -775,8 +790,7 @@ export class DatabaseService {
           (doc) => {
             const data = doc.data() as InviteCode.Schema;
 
-            if(!data)
-            {
+            if (!data) {
               // The invite code is invalid!
               resolve(false);
             }

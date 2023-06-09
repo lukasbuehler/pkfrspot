@@ -8,15 +8,21 @@ import {
 } from "@angular/core";
 import { map_style } from "./map_style";
 
+import { environment } from "../../environments/environment";
+
 import * as firebase from "firebase/compat";
 
 //import "googlemaps";
 
-interface LoadedSpotReference {spot: Spot.Class, tile: {x: number,y: number}, indexInTileArray: number, indexInTotalArray: number}
-
+interface LoadedSpotReference {
+  spot: Spot.Class;
+  tile: { x: number; y: number };
+  indexInTileArray: number;
+  indexInTotalArray: number;
+}
 
 import { DatabaseService } from "../database.service";
-import { AgmMap, AgmPolygon } from "@agm/core";
+//import { AgmMap, AgmPolygon } from "@agm/core";
 import { Spot } from "src/scripts/db/Spot";
 import { MapHelper } from "../../scripts/map_helper";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -32,7 +38,9 @@ import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack
   styleUrls: ["./map-page.component.scss"],
 })
 export class MapPageComponent implements OnInit {
-  @ViewChild("map", { static: true }) map: AgmMap;
+  GOOGLE_MAPS_API_KEY: string = environment.keys.google_maps;
+
+  //@ViewChild("map", { static: true }) map: AgmMap;
   @ViewChildren("polygon", { read: AgmPolygon })
   polygons: QueryList<AgmPolygon>;
   // SpotDetailComponent is only there if there is a spot selected, so static must be set to false.
@@ -105,16 +113,12 @@ export class MapPageComponent implements OnInit {
 
   getAllSpots(): Spot.Class[] {
     const values = [];
-    for(const key of Object.keys(this.loadedSpots))
-    {
-      if(!key.includes("z16")) continue;
+    for (const key of Object.keys(this.loadedSpots)) {
+      if (!key.includes("z16")) continue;
       values.push(this.loadedSpots[key]);
     }
 
-    return [].concat.apply(
-      [],
-      values
-    );
+    return [].concat.apply([], values);
   }
 
   zoomDotOpacities: number[] = [];
@@ -163,15 +167,11 @@ export class MapPageComponent implements OnInit {
             { lat: Number(lat), lng: Number(lng) },
             Number(zoom)
           );
-          this._snackbar.open(
-            error.msg,
-            "Dismiss",
-            {
-              duration: 5000,
-              horizontalPosition: "center",
-              verticalPosition: "bottom",
-            }
-          );
+          this._snackbar.open(error.msg, "Dismiss", {
+            duration: 5000,
+            horizontalPosition: "center",
+            verticalPosition: "bottom",
+          });
         }
       );
       //console.log("Loading spot " + spotId);
@@ -344,12 +344,13 @@ export class MapPageComponent implements OnInit {
     }
 
     // If the selected spot is visible reference the instance from the visible spots
-    if(this.selectedSpot)
-    {
-      const selectedSpotIndexInVisibleSpots: number = this.visibleSpots.findIndex((spot) => {return this.selectedSpot.id === spot.id})
-      if(selectedSpotIndexInVisibleSpots >= 0)
-      {
-        // The selected spot is visible, reference the instance from the visible 
+    if (this.selectedSpot) {
+      const selectedSpotIndexInVisibleSpots: number =
+        this.visibleSpots.findIndex((spot) => {
+          return this.selectedSpot.id === spot.id;
+        });
+      if (selectedSpotIndexInVisibleSpots >= 0) {
+        // The selected spot is visible, reference the instance from the visible
         // spots instead of the one from the database
         this.selectedSpot = this.visibleSpots[selectedSpotIndexInVisibleSpots];
       }
@@ -423,7 +424,7 @@ export class MapPageComponent implements OnInit {
   }
 
   updateVisibleDots() {
-    const allSpots: Spot.Class[] = this.getAllSpots()
+    const allSpots: Spot.Class[] = this.getAllSpots();
 
     // temporary: // TODO REMOVE
     this.searchSpots = allSpots;
@@ -454,8 +455,7 @@ export class MapPageComponent implements OnInit {
 
   openSpot(spot: Spot.Class) {
     // Maybe just opened spot
-    if(this.loadedSpots)
-    this.selectedSpot = spot;
+    if (this.loadedSpots) this.selectedSpot = spot;
 
     this.focusSpot(spot);
   }
@@ -495,7 +495,7 @@ export class MapPageComponent implements OnInit {
   }
 
   saveSpot(spotToSave: Spot.Class) {
-    if(!spotToSave) return;
+    if (!spotToSave) return;
 
     console.log("saving the spot");
     console.log("Spot data to save: ", spotToSave.data);
@@ -509,7 +509,7 @@ export class MapPageComponent implements OnInit {
           // TODO Snackbar or something
           console.log("Successfully saved spot");
           this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spotToSave);
-          console.log(this.getAllSpots())
+          console.log(this.getAllSpots());
         },
         (error) => {
           this.isEditing = false;
@@ -544,34 +544,33 @@ export class MapPageComponent implements OnInit {
     // TODO
 
     // delete local newly created spots
-    this.removeNewSpotFromLoadedSpotsAndUpdate()
+    this.removeNewSpotFromLoadedSpotsAndUpdate();
   }
 
   getPathsFromSpotPolygon() {
-    if(this.spotDetail?.hasBounds())
-    {
+    if (this.spotDetail?.hasBounds()) {
       this.polygons.forEach((polygon) => {
-      if (polygon?.editable) {
-        polygon
-          .getPaths()
-          .then((val) => {
-            // Convert LatLng[][] to LatLngLiteral[][]
-            let paths: Array<Array<google.maps.LatLngLiteral>> = [];
-            paths[0] = val[0].map((v, i, arr) => {
-              return { lat: v.lat(), lng: v.lng() };
+        if (polygon?.editable) {
+          polygon
+            .getPaths()
+            .then((val) => {
+              // Convert LatLng[][] to LatLngLiteral[][]
+              let paths: Array<Array<google.maps.LatLngLiteral>> = [];
+              paths[0] = val[0].map((v, i, arr) => {
+                return { lat: v.lat(), lng: v.lng() };
+              });
+
+              // this sets the paths for the selected spot and also sets the bounds for the spot data structure.
+              this.selectedSpot.paths = paths;
+
+              if (this.spotDetail) {
+                this.saveSpot(this.selectedSpot); // update polygons on spot
+              }
+              // If the sidepanel is not open while editing, it might not be able to save.
+            })
+            .catch((reason) => {
+              console.error(reason);
             });
-
-            // this sets the paths for the selected spot and also sets the bounds for the spot data structure.
-            this.selectedSpot.paths = paths;
-
-            if (this.spotDetail) {
-              this.saveSpot(this.selectedSpot); // update polygons on spot
-            }
-            // If the sidepanel is not open while editing, it might not be able to save.
-          })
-          .catch((reason) => {
-            console.error(reason);
-          });
         }
       });
     }
@@ -593,7 +592,7 @@ export class MapPageComponent implements OnInit {
     );
   }
 
-  spotMarkerMoved(event: {coords: google.maps.LatLngLiteral}) {
+  spotMarkerMoved(event: { coords: google.maps.LatLngLiteral }) {
     if (this.selectedSpot) {
       this.selectedSpot.setLocation(event.coords);
       this.selectedSpot.location = event.coords; // reflect move on map
@@ -637,16 +636,17 @@ export class MapPageComponent implements OnInit {
     });
 
     const tile = spot?.data?.tile_coordinates?.z16;
-    const indexInTileArray = this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].indexOf(spot)
+    const indexInTileArray =
+      this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].indexOf(spot);
 
-    console.log(JSON.stringify(this.loadedSpots))
+    console.log(JSON.stringify(this.loadedSpots));
 
     const loadedSpotRef: LoadedSpotReference = {
       spot: spot,
       tile: tile,
       indexInTileArray: indexInTileArray,
-      indexInTotalArray: spot ? allSpots.indexOf(spot) : -1
-    }
+      indexInTotalArray: spot ? allSpots.indexOf(spot) : -1,
+    };
 
     return loadedSpotRef;
   }
@@ -657,15 +657,16 @@ export class MapPageComponent implements OnInit {
    */
   addOrUpdateNewSpotToLoadedSpotsAndUpdate(newSpot: Spot.Class) {
     // Get the tile coordinates to save in loaded spots
-    const ref = this.getReferenceToLoadedSpotById(newSpot.id)
+    const ref = this.getReferenceToLoadedSpotById(newSpot.id);
 
-    console.log(ref)
+    console.log(ref);
     if (ref.spot && ref.indexInTileArray >= 0 && ref.tile) {
       // The spot exists and should be updated
 
       // Update the spot
-      this.loadedSpots[`z${16}_${ref.tile.x}_${ref.tile.y}`][ref.indexInTileArray] =
-        newSpot;
+      this.loadedSpots[`z${16}_${ref.tile.x}_${ref.tile.y}`][
+        ref.indexInTileArray
+      ] = newSpot;
     } else {
       // the spot does not exist
       let spots = this.loadedSpots[`z${16}_${ref.tile.x}_${ref.tile.y}`];
@@ -681,18 +682,22 @@ export class MapPageComponent implements OnInit {
   }
 
   /**
-   * This function is used if the new spot was deleted, discarded or never saved. 
+   * This function is used if the new spot was deleted, discarded or never saved.
    * It removes the first spot it finds without an id.
    */
   removeNewSpotFromLoadedSpotsAndUpdate() {
     const spotToRemoveRef = this.getReferenceToLoadedSpotById("");
-    
-    if(spotToRemoveRef.spot && spotToRemoveRef.tile && spotToRemoveRef.indexInTileArray >= 0)
-    {
-      this.loadedSpots[`z${16}_${spotToRemoveRef.tile.x}_${spotToRemoveRef.tile.y}`].splice(spotToRemoveRef.indexInTileArray, 1);
-    }
-    else{
-      console.warn("Dev: No spot to remove from loaded spots was found")
+
+    if (
+      spotToRemoveRef.spot &&
+      spotToRemoveRef.tile &&
+      spotToRemoveRef.indexInTileArray >= 0
+    ) {
+      this.loadedSpots[
+        `z${16}_${spotToRemoveRef.tile.x}_${spotToRemoveRef.tile.y}`
+      ].splice(spotToRemoveRef.indexInTileArray, 1);
+    } else {
+      console.warn("Dev: No spot to remove from loaded spots was found");
     }
   }
 

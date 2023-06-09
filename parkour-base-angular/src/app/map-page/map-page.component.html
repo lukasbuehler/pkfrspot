@@ -1,4 +1,9 @@
 <mat-drawer-container autosize>
+  <!-- include google maps API-->
+  <script src="https://maps.googleapis.com/maps/api/js?key={{
+      GOOGLE_MAPS_API_KEY
+    }}"></script>
+
   <mat-drawer
     #startDrawer
     id="startDrawer"
@@ -106,7 +111,6 @@
       [markerClickable]="true"
       (dragEnd)="spotMarkerMoved($event)"
     ></agm-marker>
-
   </agm-map>
 
   <button

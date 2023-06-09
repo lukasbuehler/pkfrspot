@@ -27,14 +27,14 @@
       src="{{ post.mediaSrc }}"
       [alt]="post.title + ' Image'"
     />
-    <div
+    <!-- <div
       #videoPlayer
       *ngIf="!post.mediaIsImage && post.mediaSrc"
       class="mat-card-video fill"
       plyr
       plyrType="video"
       [plyrSources]="[{ src: post.mediaSrc, type: 'video/mp4' }]"
-    ></div>
+    ></div> -->
     <div *ngIf="false" class="youtube-video-container">
       <iframe
         title="YouTube Embed"

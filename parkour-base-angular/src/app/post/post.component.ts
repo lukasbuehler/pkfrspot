@@ -4,9 +4,8 @@ import { Post } from "src/scripts/db/Post";
 import { DatabaseService } from "../database.service";
 import { AuthenticationService } from "../authentication.service";
 import * as firebase from "firebase/compat/app";
-import { PlyrComponent } from "ngx-plyr";
+//import { PlyrComponent } from "ngx-plyr";
 import { MapHelper } from "../../scripts/map_helper";
-import { ResizedEvent } from "angular-resize-event";
 import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
 import { Router } from "@angular/router";
 
@@ -20,7 +19,7 @@ export class PostComponent implements OnInit {
   @Input() showCard: boolean = true;
 
   @ViewChild("matCardMedia") matCardMedia: ElementRef;
-  @ViewChild(PlyrComponent) plyr: PlyrComponent;
+  //@ViewChild(PlyrComponent) plyr: PlyrComponent;
 
   dateAndTimeString: string;
   timeAgoString: string;
@@ -59,9 +58,9 @@ export class PostComponent implements OnInit {
     }
   }
 
-  onResized(event: ResizedEvent) {
-    this.updateMediaHeight(event.newWidth, event.newHeight);
-  }
+  //   onResized(event: ResizedEvent) {
+  //     this.updateMediaHeight(event.newWidth, event.newHeight);
+  //   }
 
   getTimeAgoString(): string {
     return moment(this.post.timePosted).fromNow();
