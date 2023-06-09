@@ -31,7 +31,6 @@
     "@angular/router": "^15.2.9",
     "@angular/service-worker": "^15.2.9",
     "algoliasearch": "^4.12.1",
-    "angular-resize-event": "^3.2.0",
     "bootstrap": "^4.6.1",
     "croppie": "^2.6.5",
     "firebase": "^9.22.2",
