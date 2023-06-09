@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import {
-  MatDialog,
-  MatDialogConfig,
-  MatDialogRef,
-} from "@angular/material/dialog";
-import { MatSnackBar } from "@angular/material/snack-bar";
+  MatLegacyDialog as MatDialog,
+  MatLegacyDialogConfig as MatDialogConfig,
+  MatLegacyDialogRef as MatDialogRef,
+} from "@angular/material/legacy-dialog";
+import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
 import { ActivatedRoute } from "@angular/router";
 import { Post } from "src/scripts/db/Post";
 import { User } from "src/scripts/db/User";

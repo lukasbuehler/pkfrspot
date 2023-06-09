@@ -24,7 +24,7 @@ import { Location } from "@angular/common";
 import { SpotCompactViewComponent } from "../spot-compact-view/spot-compact-view.component";
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
 import { AuthenticationService } from "../authentication.service";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
 
 @Component({
   selector: "app-map-page",

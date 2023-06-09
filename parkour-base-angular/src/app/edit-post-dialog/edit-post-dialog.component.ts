@@ -6,7 +6,7 @@ import {
   Inject,
   AfterViewInit,
 } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from "@angular/material/legacy-dialog";
 
 import { Post } from "src/scripts/db/Post";
 import { Spot } from "src/scripts/db/Spot";
@@ -15,7 +15,7 @@ import { StorageService, StorageFolder } from "../storage.service";
 import { DatabaseService } from "../database.service";
 
 import { UntypedFormControl } from "@angular/forms";
-import { MatAutocomplete } from "@angular/material/autocomplete";
+import { MatLegacyAutocomplete as MatAutocomplete } from "@angular/material/legacy-autocomplete";
 import { MediaType } from "src/scripts/db/Interfaces";
 import { Observable } from "rxjs";
 

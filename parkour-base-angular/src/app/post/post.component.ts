@@ -7,7 +7,7 @@ import * as firebase from "firebase/compat/app";
 import { PlyrComponent } from "ngx-plyr";
 import { MapHelper } from "../../scripts/map_helper";
 import { ResizedEvent } from "angular-resize-event";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
 import { Router } from "@angular/router";
 
 @Component({
