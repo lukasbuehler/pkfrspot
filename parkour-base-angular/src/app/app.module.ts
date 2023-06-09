@@ -94,7 +94,8 @@ import { SettingsPageComponent } from "./settings-page/settings-page.component";
 import { ForgotPasswordPageComponent } from "./forgot-password-page/forgot-password-page.component";
 import { DiscoverSpotsViewComponent } from "./discover-spots-view/discover-spots-view.component";
 import { MediaPreviewGridComponent } from "./media-preview-grid/media-preview-grid.component";
-import { config } from "rxjs";
+
+import { GoogleMapsModule } from "@angular/google-maps";
 
 @NgModule({
   declarations: [
@@ -185,6 +186,8 @@ import { config } from "rxjs";
     //   enabled: environment.production,
     // }),
     SwiperModule,
+
+    GoogleMapsModule,
   ],
   exports: [MatButtonModule],
   providers: [

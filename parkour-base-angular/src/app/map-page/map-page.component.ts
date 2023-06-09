@@ -22,7 +22,6 @@ interface LoadedSpotReference {
 }
 
 import { DatabaseService } from "../database.service";
-//import { AgmMap, AgmPolygon } from "@agm/core";
 import { Spot } from "src/scripts/db/Spot";
 import { MapHelper } from "../../scripts/map_helper";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -31,6 +30,7 @@ import { SpotCompactViewComponent } from "../spot-compact-view/spot-compact-view
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
 import { AuthenticationService } from "../authentication.service";
 import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
+import { GoogleMap, MapPolygon } from "@angular/google-maps";
 
 @Component({
   selector: "app-map-page",
@@ -40,9 +40,9 @@ import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack
 export class MapPageComponent implements OnInit {
   GOOGLE_MAPS_API_KEY: string = environment.keys.google_maps;
 
-  //@ViewChild("map", { static: true }) map: AgmMap;
-  @ViewChildren("polygon", { read: AgmPolygon })
-  polygons: QueryList<AgmPolygon>;
+  @ViewChild("map", { static: true }) map: GoogleMap;
+  @ViewChildren("polygon", { read: MapPolygon })
+  polygons: QueryList<MapPolygon>;
   // SpotDetailComponent is only there if there is a spot selected, so static must be set to false.
   @ViewChild(SpotCompactViewComponent)
   spotDetail: SpotCompactViewComponent;
@@ -80,7 +80,7 @@ export class MapPageComponent implements OnInit {
   //mapStyle: google.maps.MapTypeId = google.maps.MapTypeId.ROADMAP;
   mapStyle = "roadmap";
   mapStylesConfig = map_style;
-  spotPolygons: AgmPolygon[] = [];
+  spotPolygons: MapPolygon[] = [];
 
   isEditing: boolean = false;
   selectedSpot: Spot.Class = null;
@@ -138,8 +138,6 @@ export class MapPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.map.usePanning = true;
-
     let spotId: string = this.route.snapshot.paramMap.get("spotID") || "";
     let lat = this.route.snapshot.queryParamMap.get("lat") || null;
     let lng = this.route.snapshot.queryParamMap.get("lng") || null;
@@ -550,27 +548,22 @@ export class MapPageComponent implements OnInit {
   getPathsFromSpotPolygon() {
     if (this.spotDetail?.hasBounds()) {
       this.polygons.forEach((polygon) => {
-        if (polygon?.editable) {
-          polygon
-            .getPaths()
-            .then((val) => {
-              // Convert LatLng[][] to LatLngLiteral[][]
-              let paths: Array<Array<google.maps.LatLngLiteral>> = [];
-              paths[0] = val[0].map((v, i, arr) => {
-                return { lat: v.lat(), lng: v.lng() };
-              });
+        if (polygon?.getEditable()) {
+          const val = polygon.getPaths();
 
-              // this sets the paths for the selected spot and also sets the bounds for the spot data structure.
-              this.selectedSpot.paths = paths;
+          // Convert LatLng[][] to LatLngLiteral[][]
+          let paths: Array<Array<google.maps.LatLngLiteral>> = [];
+          paths[0] = val[0].map((v, i, arr) => {
+            return { lat: v.lat(), lng: v.lng() };
+          });
 
-              if (this.spotDetail) {
-                this.saveSpot(this.selectedSpot); // update polygons on spot
-              }
-              // If the sidepanel is not open while editing, it might not be able to save.
-            })
-            .catch((reason) => {
-              console.error(reason);
-            });
+          // this sets the paths for the selected spot and also sets the bounds for the spot data structure.
+          this.selectedSpot.paths = paths;
+
+          if (this.spotDetail) {
+            this.saveSpot(this.selectedSpot); // update polygons on spot
+          }
+          // If the sidepanel is not open while editing, it might not be able to save.
         }
       });
     }

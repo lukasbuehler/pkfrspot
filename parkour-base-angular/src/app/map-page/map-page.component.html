@@ -46,34 +46,28 @@
     </div>
   </mat-drawer>
 
-  <agm-map
+  <google-map
     #map
     id="map"
-    [latitude]="start_coordinates.lat"
-    [longitude]="start_coordinates.lng"
+    [center]="start_coordinates"
     [zoom]="zoom"
-    [backgroundColor]="'#000a12'"
-    [clickableIcons]="false"
-    [disableDefaultUI]="true"
-    [fitBounds]="false"
     gestureHandling="'greedy'"
     [mapTypeId]="mapStyle"
-    [styles]="mapStylesConfig"
     (mapClick)="clickedMap($event)"
     (boundsChange)="boundsChanged($event)"
     (centerChange)="centerChanged($event)"
     (zoomChange)="zoomChanged($event)"
   >
-    <agm-marker
+    <map-marker
       *ngFor="let dot of visibleDots"
       iconUrl="/assets/icons/favicon-16x16.png"
       [latitude]="dot.location.latitude"
       [longitude]="dot.location.longitude"
       [markerDraggable]="false"
       [opacity]="zoomDotOpacity"
-    ></agm-marker>
+    ></map-marker>
 
-    <agm-circle
+    <map-circle
       *ngFor="let spot of visibleSpots"
       [fillColor]="'#304ffe'"
       [latitude]="spot.location.lat"
@@ -86,7 +80,7 @@
       [fillOpacity]="0.75"
       (circleClick)="openSpot(spot)"
     >
-      <agm-polygon
+      <map-polygon
         *ngIf="selectedSpot?.hasBounds()"
         #polygon
         [paths]="spot.paths"
@@ -97,8 +91,8 @@
           isEditing && spot && selectedSpot && spot.id === selectedSpot.id
         "
         (polyClick)="openSpot(spot)"
-      ></agm-polygon>
-    </agm-circle>
+      ></map-polygon>
+    </map-circle>
 
     <agm-marker
       *ngIf="selectedSpot"
@@ -111,7 +105,7 @@
       [markerClickable]="true"
       (dragEnd)="spotMarkerMoved($event)"
     ></agm-marker>
-  </agm-map>
+  </google-map>
 
   <button
     mat-fab
