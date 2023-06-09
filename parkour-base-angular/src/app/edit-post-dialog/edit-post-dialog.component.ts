@@ -14,7 +14,7 @@ import { Spot } from "src/scripts/db/Spot";
 import { StorageService, StorageFolder } from "../storage.service";
 import { DatabaseService } from "../database.service";
 
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { MatAutocomplete } from "@angular/material/autocomplete";
 import { MediaType } from "src/scripts/db/Interfaces";
 import { Observable } from "rxjs";
@@ -61,7 +61,7 @@ export class EditPostDialogComponent implements AfterViewInit {
     id: "",
   };
 
-  linkInputFormControl = new FormControl("");
+  linkInputFormControl = new UntypedFormControl("");
 
   ngAfterViewInit() {
     // TODO Remove in later:

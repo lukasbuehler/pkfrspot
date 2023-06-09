@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { AngularFireStorage } from "@angular/fire/storage";
-import * as firebase from "firebase/app";
+import { AngularFireStorage } from "@angular/fire/compat/storage";
+import * as firebase from "firebase/compat/app";
 import { Observable } from "rxjs";
 import { generateUUID } from "src/scripts/Helpers";
 

@@ -6,11 +6,11 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatDrawer } from "@angular/material/sidenav";
 import { EditPostDialogComponent } from "../edit-post-dialog/edit-post-dialog.component";
 import { StorageService } from "../storage.service";
-import * as firebase from "firebase/app";
+import * as firebase from "firebase/compat/app";
 import { AuthenticationService } from "../authentication.service";
 import { Spot } from "src/scripts/db/Spot";
 import { MediaType } from "src/scripts/db/Interfaces";
-import { DocumentChangeType } from "@angular/fire/firestore";
+import { DocumentChangeType } from "@angular/fire/compat/firestore";
 import { Observable, Subscription } from "rxjs";
 
 @Component({

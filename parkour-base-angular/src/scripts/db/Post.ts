@@ -1,5 +1,5 @@
 import { User } from "./User";
-import * as firebase from "firebase/app";
+import * as firebase from "firebase/compat/app";
 import { Media, MediaType } from "./Interfaces";
 
 export module Post {

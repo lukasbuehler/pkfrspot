@@ -1,12 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import {
   AbstractControl,
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
-import * as firebase from "firebase";
+import * as firebase from "firebase/compat";
 import { isEmailValid } from "src/scripts/Helpers";
 import { AuthenticationService } from "../authentication.service";
 import { DatabaseService } from "../database.service";
@@ -17,14 +17,14 @@ import { DatabaseService } from "../database.service";
   styleUrls: ["./sign-up-page.component.scss"],
 })
 export class SignUpPageComponent implements OnInit {
-  createAccountForm: FormGroup;
+  createAccountForm: UntypedFormGroup;
   signUpError: string = "";
   isInviteOnly: boolean = true;
 
   constructor(
     private _authService: AuthenticationService,
     private _databaseService: DatabaseService,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _router: Router
   ) {}
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import * as firebase from "firebase";
+import * as firebase from "firebase/compat";
 import { AuthenticationService } from "../authentication.service";
 
 @Component({
@@ -10,7 +10,7 @@ import { AuthenticationService } from "../authentication.service";
   styleUrls: ["./forgot-password-page.component.scss"],
 })
 export class ForgotPasswordPageComponent implements OnInit {
-  forgotPasswordForm: FormGroup;
+  forgotPasswordForm: UntypedFormGroup;
   forgotPasswordError: string = "";
 
   private _recaptchaSolved = false;
@@ -19,7 +19,7 @@ export class ForgotPasswordPageComponent implements OnInit {
 
   constructor(
     private _authService: AuthenticationService,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _router: Router
   ) {
     this.forgotPasswordForm = this._formBuilder.group({

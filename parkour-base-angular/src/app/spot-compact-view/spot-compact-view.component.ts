@@ -25,7 +25,7 @@ import {
   getCountriesList,
   isMobileDevice,
 } from "../../scripts/Helpers";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { map, startWith } from "rxjs/operators";
 
 @Component({
@@ -73,7 +73,7 @@ export class SpotCompactViewComponent implements OnInit {
 
   countries: any[] = [];
   filteredCountries: Observable<any[]>;
-  stateCtrl = new FormControl();
+  stateCtrl = new UntypedFormControl();
 
   automaticallyDetermineAddress: boolean = true;
 

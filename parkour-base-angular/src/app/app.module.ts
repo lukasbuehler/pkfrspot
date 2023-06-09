@@ -17,10 +17,10 @@ import { AngularResizedEventModule } from "angular-resize-event";
 import { SwiperModule } from "swiper/angular"; // image gallery
 
 // Firebase
-import { AngularFireModule } from "@angular/fire";
-import { AngularFirestoreModule } from "@angular/fire/firestore";
-import { AngularFireStorageModule } from "@angular/fire/storage";
-import { AngularFireAuthModule } from "@angular/fire/auth";
+import { AngularFireModule } from "@angular/fire/compat";
+import { AngularFirestoreModule } from "@angular/fire/compat/firestore";
+import { AngularFireStorageModule } from "@angular/fire/compat/storage";
+import { AngularFireAuthModule } from "@angular/fire/compat/auth";
 
 // Angular material
 import { MatButtonModule } from "@angular/material/button";

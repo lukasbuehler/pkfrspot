@@ -1,8 +1,8 @@
 import { resolve } from "@angular/compiler-cli/src/ngtsc/file_system";
 import { Injectable } from "@angular/core";
-import { AngularFireAuth } from "@angular/fire/auth";
+import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { rejects } from "assert";
-import * as firebase from "firebase/app";
+import * as firebase from "firebase/compat/app";
 import { Observable, Subject } from "rxjs";
 import { map, filter, tap } from "rxjs/operators";
 import { User } from "src/scripts/db/User";

@@ -2,9 +2,9 @@ import { Optional, Self } from "@angular/core";
 import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
 import {
   ControlValueAccessor,
-  FormControl,
+  UntypedFormControl,
   FormControlName,
-  FormGroup,
+  UntypedFormGroup,
   NgControl,
   Validators,
 } from "@angular/forms";
@@ -27,7 +27,7 @@ export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
   uploadFileName: string = "";
   uploadFileSizeString: string = "";
 
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
 
   hasError: boolean = false;
   private _errorMessage: string = "";
@@ -38,8 +38,8 @@ export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
   constructor() {}
 
   ngOnInit() {
-    this.formGroup = new FormGroup({
-      input: new FormControl("", [Validators.required]),
+    this.formGroup = new UntypedFormGroup({
+      input: new UntypedFormControl("", [Validators.required]),
     });
   }
 

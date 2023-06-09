@@ -8,14 +8,14 @@ import {
   AngularFirestoreCollection,
   DocumentChangeAction,
   DocumentChangeType,
-} from "@angular/fire/firestore";
+} from "@angular/fire/compat/firestore";
 
 import { Observable } from "rxjs";
 import { Like } from "src/scripts/db/Like";
 import { User } from "src/scripts/db/User";
 import { merge } from "rxjs";
 import { map } from "rxjs/operators";
-import * as firebase from "firebase";
+import * as firebase from "firebase/compat";
 import { InviteCode } from "src/scripts/db/InviteCode";
 
 @Injectable({

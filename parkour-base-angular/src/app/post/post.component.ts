@@ -3,7 +3,7 @@ import * as moment from "moment";
 import { Post } from "src/scripts/db/Post";
 import { DatabaseService } from "../database.service";
 import { AuthenticationService } from "../authentication.service";
-import * as firebase from "firebase/app";
+import * as firebase from "firebase/compat/app";
 import { PlyrComponent } from "ngx-plyr";
 import { MapHelper } from "../../scripts/map_helper";
 import { ResizedEvent } from "angular-resize-event";

@@ -15,8 +15,8 @@ import {
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   NgControl,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -118,7 +118,7 @@ export class RegexInputComponent
   // controlType
   controlType = "regex-input";
 
-  parts: FormGroup;
+  parts: UntypedFormGroup;
 
   @Input() get value(): MyRegex | null {
     let parts: {
@@ -223,7 +223,7 @@ export class RegexInputComponent
   }
 
   constructor(
-    fb: FormBuilder,
+    fb: UntypedFormBuilder,
     @Optional() @Self() public ngControl: NgControl,
     private fm: FocusMonitor,
     private _elementRef: ElementRef<HTMLElement>,

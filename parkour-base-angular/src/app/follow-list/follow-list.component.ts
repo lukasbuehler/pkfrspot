@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, Pipe, PipeTransform } from "@angular/core";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { User } from "src/scripts/db/User";
 
-import * as firebase from "firebase/app";
+import * as firebase from "firebase/compat/app";
 import * as moment from "moment";
 import { DatabaseService } from "../database.service";
 import { Observable } from "rxjs";

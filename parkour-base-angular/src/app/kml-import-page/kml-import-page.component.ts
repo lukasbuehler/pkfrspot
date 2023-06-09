@@ -1,6 +1,6 @@
 import { STEPPER_GLOBAL_OPTIONS } from "@angular/cdk/stepper";
 import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { MatHorizontalStepper } from "@angular/material/stepper";
 import { KmlParserService, KMLSetupInfo } from "../kml-parser.service";
 
@@ -18,8 +18,8 @@ import { KmlParserService, KMLSetupInfo } from "../kml-parser.service";
 export class KmlImportPageComponent implements OnInit, AfterViewInit {
   @ViewChild("stepperHorizontal") stepperHorizontal;
 
-  uploadFormGroup: FormGroup;
-  setupFormGroup: FormGroup;
+  uploadFormGroup: UntypedFormGroup;
+  setupFormGroup: UntypedFormGroup;
 
   kmlUploadFile: File = null;
   kmlSetupInfo: KMLSetupInfo;
@@ -31,7 +31,7 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
   ];
 
   constructor(
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _kmlParserService: KmlParserService
   ) {}
 

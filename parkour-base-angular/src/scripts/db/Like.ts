@@ -1,4 +1,4 @@
-import * as firebase from "firebase/app";
+import * as firebase from "firebase/compat/app";
 
 export module Like {
   export class Class {}

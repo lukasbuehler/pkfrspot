@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import * as firebase from "firebase/app";
+import * as firebase from "firebase/compat/app";
 import { AuthenticationService } from "../authentication.service";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 
 @Component({
@@ -10,12 +10,12 @@ import { Router } from "@angular/router";
   styleUrls: ["./sign-in-page.component.scss"],
 })
 export class SignInPageComponent implements OnInit {
-  signInForm: FormGroup;
+  signInForm: UntypedFormGroup;
   signInError: string = "";
 
   constructor(
     private _authService: AuthenticationService,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _router: Router
   ) {}
 

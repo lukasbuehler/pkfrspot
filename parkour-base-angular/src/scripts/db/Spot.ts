@@ -3,7 +3,7 @@ import {
   LocaleMap,
   MediaType,
 } from "./Interfaces";
-import * as firebase from "firebase";
+import * as firebase from "firebase/compat";
 import { MapHelper } from "../map_helper";
 import { DatabaseService } from "src/app/database.service";
 import { StorageFolder, StorageService } from "src/app/storage.service";

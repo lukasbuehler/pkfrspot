@@ -8,7 +8,7 @@ import {
 } from "@angular/core";
 import { map_style } from "./map_style";
 
-import * as firebase from "firebase";
+import * as firebase from "firebase/compat";
 
 //import "googlemaps";
 
