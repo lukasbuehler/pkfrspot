@@ -6,7 +6,7 @@ import {
 } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AuthenticationService } from "../authentication.service";
-import { RecaptchaVerifier } from "firebase/auth";
+import { RecaptchaVerifier, sendPasswordResetEmail } from "firebase/auth";
 
 @Component({
   selector: "app-forgot-password-page",
@@ -84,6 +84,6 @@ export class ForgotPasswordPageComponent implements OnInit {
         }
       );
     }
-    this._authService.angularFireAuth.sendPasswordResetEmail(email);
+    sendPasswordResetEmail(this._authService.auth, email);
   }
 }

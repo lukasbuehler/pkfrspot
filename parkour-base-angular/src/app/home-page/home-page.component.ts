@@ -6,12 +6,12 @@ import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
 import { MatDrawer } from "@angular/material/sidenav";
 import { EditPostDialogComponent } from "../edit-post-dialog/edit-post-dialog.component";
 import { StorageService } from "../storage.service";
-import * as firebase from "firebase/compat/app";
 import { AuthenticationService } from "../authentication.service";
 import { Spot } from "src/scripts/db/Spot";
 import { MediaType } from "src/scripts/db/Interfaces";
 import { DocumentChangeType } from "@angular/fire/compat/firestore";
 import { Observable, Subscription } from "rxjs";
+import { GeoPoint, Timestamp } from "firebase/firestore";
 
 @Component({
   selector: "app-home-page",
@@ -194,7 +194,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     let post: Post.Schema = {
       title: title,
       body: body,
-      time_posted: firebase.default.firestore.Timestamp.now(),
+      time_posted: Timestamp.now(),
       user: {
         uid: this.authService.user.uid,
         display_name: this.authService.user.data.displayName,
@@ -203,10 +203,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     };
 
     if (location) {
-      post.location = new firebase.default.firestore.GeoPoint(
-        location.lat,
-        location.lng
-      );
+      post.location = new GeoPoint(location.lat, location.lng);
     }
 
     if (spot) {
@@ -214,7 +211,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       const lng = spot.location.lng;
       post.spot = {
         name: spot.name || "",
-        spot_location: new firebase.default.firestore.GeoPoint(lat, lng),
+        spot_location: new GeoPoint(lat, lng),
         image_src: spot.media && spot.media[0]?.src ? spot.media[0].src : "",
         ref: this._dbService.docRef("spots/" + spot.id),
       };

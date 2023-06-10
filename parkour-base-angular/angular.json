@@ -29,9 +29,9 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss",
-              "src/theming/parkour.scss",
+              //"src/theming/pkfrspot_theme.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/plyr/dist/plyr.css",
               "node_modules/croppie/croppie.css",
               "node_modules/swiper/swiper-bundle.css"

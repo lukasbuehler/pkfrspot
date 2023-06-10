@@ -1,4 +1,4 @@
-import * as firebase from "firebase/compat/app";
+import { DocumentReference, Timestamp } from "firebase/firestore";
 import * as moment from "moment";
 
 export namespace User {
@@ -79,7 +79,7 @@ export namespace User {
     uid?: string;
     display_name?: string;
     profile_picture?: string;
-    ref?: firebase.default.firestore.DocumentReference;
+    ref?: DocumentReference;
   }
 
   export interface FollowingDataSchema {
@@ -87,7 +87,7 @@ export namespace User {
     display_name?: string;
     profile_picture?: string;
 
-    start_following?: firebase.default.firestore.Timestamp;
+    start_following?: Timestamp;
   }
 
   export interface FollowingSchema extends FollowingDataSchema {

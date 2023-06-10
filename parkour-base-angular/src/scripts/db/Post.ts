@@ -1,6 +1,6 @@
 import { User } from "./User";
-import * as firebase from "firebase/compat/app";
 import { Media, MediaType } from "./Interfaces";
+import { DocumentReference, GeoPoint, Timestamp } from "firebase/firestore";
 
 export module Post {
   export class Class {
@@ -67,16 +67,16 @@ export module Post {
     user: User.ReferenceSchema;
     body: string;
     media?: Media;
-    location?: firebase.default.firestore.GeoPoint; // where the media was taken or the post was made
+    location?: GeoPoint; // where the media was taken or the post was made
     spot?: {
       name: string;
-      spot_location: firebase.default.firestore.GeoPoint;
+      spot_location: GeoPoint;
       image_src: string;
-      ref: firebase.default.firestore.DocumentReference;
+      ref: DocumentReference;
     };
 
     like_count?: number;
 
-    time_posted: firebase.default.firestore.Timestamp;
+    time_posted: Timestamp;
   }
 }

@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
-import { AngularFireStorage } from "@angular/fire/compat/storage";
-import * as firebase from "firebase/compat/app";
 import { Observable } from "rxjs";
 import { generateUUID } from "src/scripts/Helpers";
+
+import { getStorage } from "@angular/fire/storage";
+import { deleteObject, ref, uploadBytes } from "firebase/storage";
 
 export enum StorageFolder {
   PostMedia = "post_media",
@@ -16,7 +17,7 @@ export enum StorageFolder {
 export class StorageService {
   constructor() {}
 
-  storageRef = firebase.default.storage().ref();
+  storage = getStorage();
   uploadObs: Observable<string> = null;
 
   getStoredContent() {}
@@ -32,32 +33,17 @@ export class StorageService {
     blob: Blob,
     location: StorageFolder,
     filename?: string
-  ): Observable<string> {
-    this.uploadObs = new Observable<string>((subscriber) => {
-      let uploadFileName = filename || generateUUID();
-      let uploadRef = this.storageRef.child(`${location}/${uploadFileName}`);
+  ): Promise<string> {
+    let uploadFileName = filename || generateUUID();
+    let uploadRef = ref(this.storage, `${location}/${uploadFileName}`);
 
-      let uploadTask = uploadRef.put(blob);
-
-      uploadTask.on(
-        firebase.default.storage.TaskEvent.STATE_CHANGED,
-        (snapshot) => {},
-        (error) => {
-          subscriber.error(error);
-        },
-        () => {
-          uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-            console.log("File available at", downloadURL);
-            subscriber.next(downloadURL);
-          });
-        }
-      );
+    return uploadBytes(uploadRef, blob).then((snapshot) => {
+      return snapshot.ref.toString();
     });
-    return this.uploadObs;
   }
 
   deleteFromStorage(location: StorageFolder, filename: string): Promise<void> {
-    return this.storageRef.child(`${location}/${filename}`).delete();
+    return deleteObject(ref(this.storage, `${location}/${filename}`));
   }
 
   upload(): Observable<string> {

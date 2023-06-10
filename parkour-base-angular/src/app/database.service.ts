@@ -29,7 +29,7 @@ import { User } from "src/scripts/db/User";
 import { merge } from "rxjs";
 import { map } from "rxjs/operators";
 import { InviteCode } from "src/scripts/db/InviteCode";
-import { Timestamp, updateDoc } from "firebase/firestore";
+import { DocumentReference, Timestamp, updateDoc } from "firebase/firestore";
 
 @Injectable({
   providedIn: "root",
@@ -37,7 +37,7 @@ import { Timestamp, updateDoc } from "firebase/firestore";
 export class DatabaseService {
   constructor(private firestore: Firestore) {}
 
-  docRef(path: string) {
+  docRef(path: string): DocumentReference {
     return doc(this.firestore, path);
   }
 

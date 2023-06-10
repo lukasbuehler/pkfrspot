@@ -1,7 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import * as firebase from "firebase/compat/app";
 import { AuthenticationService } from "../authentication.service";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 import { Router } from "@angular/router";
 
 @Component({

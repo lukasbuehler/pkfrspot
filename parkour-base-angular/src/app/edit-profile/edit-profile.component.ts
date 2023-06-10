@@ -136,16 +136,12 @@ export class EditProfileComponent implements OnInit {
           .then((blob) => {
             this._storageService
               .setUploadToStorage(blob, StorageFolder.ProfilePictures, userId)
-              .subscribe(
+              .then(
                 (url) => {
                   this._databaseService
-                    .updateUser(
-                      userId,
-                      {
-                        profile_picture: url,
-                      },
-                      true
-                    )
+                    .updateUser(userId, {
+                      profile_picture: url,
+                    })
                     .then(() => {
                       this.isUpdatingProfilePicture = false;
                       this.newProfilePicture = null;
@@ -217,9 +213,7 @@ export class EditProfileComponent implements OnInit {
 
       // Update user data if changed
       if (Object.keys(data).length > 0) {
-        promises.push(
-          this._databaseService.updateUser(this.user.uid, data, true)
-        );
+        promises.push(this._databaseService.updateUser(this.user.uid, data));
       }
 
       return Promise.all(promises);

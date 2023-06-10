@@ -10,7 +10,8 @@ import { environment } from "src/environments/environment";
 // Other imports
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
-import { SwiperModule } from "swiper/angular"; // image gallery
+import { register as registerSwiper } from "swiper/element/bundle"; // image gallery
+registerSwiper();
 
 // Firebase
 import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
@@ -151,6 +152,7 @@ import { GoogleMapsModule } from "@angular/google-maps";
 
     // Angular material modules
     BrowserAnimationsModule,
+    InfiniteScrollModule,
     MatButtonModule,
     MatCheckboxModule,
     MatToolbarModule,
@@ -185,7 +187,6 @@ import { GoogleMapsModule } from "@angular/google-maps";
     // ServiceWorkerModule.register("ngsw-worker.js", {
     //   enabled: environment.production,
     // }),
-    SwiperModule,
 
     GoogleMapsModule,
   ],

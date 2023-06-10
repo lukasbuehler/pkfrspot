@@ -1,10 +1,10 @@
-import * as firebase from "firebase/compat/app";
+import { Timestamp } from "firebase/firestore";
 
 export module Like {
   export class Class {}
 
   export interface Schema {
-    time: firebase.default.firestore.Timestamp;
+    time: Timestamp;
     user: {
       uid: string;
     };

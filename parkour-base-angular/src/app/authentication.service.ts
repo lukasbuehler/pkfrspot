@@ -1,8 +1,19 @@
 import { resolve } from "@angular/compiler-cli/src/ngtsc/file_system";
 import { Injectable } from "@angular/core";
-import { AngularFireAuth } from "@angular/fire/compat/auth";
+import {
+  Auth,
+  GoogleAuthProvider,
+  UserCredential,
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  User as FirebaseUser,
+  signOut,
+  sendEmailVerification,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "@angular/fire/auth";
 import { rejects } from "assert";
-import * as firebase from "firebase/compat/app";
 import { Observable, Subject } from "rxjs";
 import { map, filter, tap } from "rxjs/operators";
 import { User } from "src/scripts/db/User";
@@ -12,7 +23,7 @@ interface AuthServiceUser {
   uid?: string;
   email?: string;
   emailVerified?: boolean;
-  data?: User.Class
+  data?: User.Class;
 }
 
 @Injectable({
@@ -26,24 +37,20 @@ export class AuthenticationService {
    */
   public user: AuthServiceUser = {};
 
-  
   public authState$: Subject<AuthServiceUser> = new Subject();
 
-  constructor(
-    public angularFireAuth: AngularFireAuth,
-    private _databaseService: DatabaseService
-  ) {
-    this.angularFireAuth.authState.subscribe(
-      this.firebaseAuthChangeListener,
-      this.firebaseAuthChangeError
-    );
+  public auth = getAuth();
+
+  constructor(private _databaseService: DatabaseService) {
+    // this.auth.onAuthStateChanged(
+    //   this.firebaseAuthChangeListener,
+    //   this.firebaseAuthChangeError
+    // );
   }
 
-  private _currentFirebaseUser: firebase.default.User = null;
+  private _currentFirebaseUser: FirebaseUser = null;
 
-  private firebaseAuthChangeListener = (
-    firebaseUser: firebase.default.User
-  ) => {
+  private firebaseAuthChangeListener = (firebaseUser: FirebaseUser) => {
     // Auth state changed
     if (firebaseUser) {
       // If we have a firebase user, we are signed in.
@@ -96,40 +103,23 @@ export class AuthenticationService {
   }
 
   public signInEmailPassword(email, password) {
-    return new Promise<firebase.default.auth.UserCredential>(
-      (resolve, reject) => {
-        this.angularFireAuth.signInWithEmailAndPassword(email, password).then(
-          (res) => {
-            resolve(res);
-          },
-          (err) => reject(err)
-        );
-      }
-    );
+    return signInWithEmailAndPassword(this.auth, email, password);
   }
 
-  public signInGoogle() {
-    return new Promise<any>((resolve, reject) => {
-      let provider = new firebase.default.auth.GoogleAuthProvider();
-      provider.addScope("email");
-      provider.addScope("profile");
-      this.angularFireAuth.signInWithPopup(provider).then(
-        (res) => {
-          resolve(res);
-        },
-        (err) => {
-          reject(err);
-        }
-      );
-    });
+  public signInGoogle(): Promise<UserCredential> {
+    let provider = new GoogleAuthProvider();
+    provider.addScope("email");
+    provider.addScope("profile");
+
+    return signInWithPopup(this.auth, provider);
   }
 
   public logUserOut(): Promise<void> {
-    return this.angularFireAuth.signOut();
+    return signOut(this.auth);
   }
 
-  public resendVerificationEmail() {
-    return this._currentFirebaseUser.sendEmailVerification()
+  public resendVerificationEmail(): Promise<void> {
+    return sendEmailVerification(this._currentFirebaseUser);
   }
 
   public createAccount(
@@ -138,33 +128,23 @@ export class AuthenticationService {
     displayName: string,
     inviteCode?: string
   ) {
-    return new Promise<firebase.default.auth.UserCredential>(
-      (resolve, reject) => {
-        this.angularFireAuth
-          .createUserWithEmailAndPassword(email, confirmedPassword)
-          .then(
-            (res) => {
-              // Set the user chose Display name
-              res.user.updateProfile({
-                displayName: displayName,
-              });
+    return createUserWithEmailAndPassword(
+      this.auth,
+      email,
+      confirmedPassword
+    ).then((res) => {
+      // Set the user chose Display name
+      updateProfile(this._currentFirebaseUser, {
+        displayName: displayName,
+      });
 
-              // TODO make sure that the user id is the same as the database user 
-              // id in the backend or some freaky stuff might happen
+      // TODO make sure that the user id is the same as the database user
+      // id in the backend or some freaky stuff might happen
 
-              // create a database entry for the user
-              this._databaseService.addUser(res.user.uid, displayName, {
-                invite_code: inviteCode,
-              }).then(() => {
-                resolve(res);
-              }).catch(err => {
-                reject(err)
-              });
-
-            },
-            (err) => reject(err)
-          );
-      }
-    );
+      // create a database entry for the user
+      this._databaseService.addUser(res.user.uid, displayName, {
+        invite_code: inviteCode,
+      });
+    });
   }
 }

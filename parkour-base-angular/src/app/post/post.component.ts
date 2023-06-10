@@ -3,11 +3,11 @@ import * as moment from "moment";
 import { Post } from "src/scripts/db/Post";
 import { DatabaseService } from "../database.service";
 import { AuthenticationService } from "../authentication.service";
-import * as firebase from "firebase/compat/app";
 //import { PlyrComponent } from "ngx-plyr";
 import { MapHelper } from "../../scripts/map_helper";
 import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
 import { Router } from "@angular/router";
+import { Timestamp } from "firebase/firestore";
 
 @Component({
   selector: "app-post",
@@ -81,7 +81,7 @@ export class PostComponent implements OnInit {
           // save the like
           this._databaseService
             .addLike(this.post.id, this._authenticationService.user.uid, {
-              time: firebase.default.firestore.Timestamp.now(),
+              time: Timestamp.now(),
               user: {
                 uid: this._authenticationService.user.uid,
               },

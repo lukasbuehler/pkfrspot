@@ -2,7 +2,6 @@ import { Component, Inject, OnInit, Pipe, PipeTransform } from "@angular/core";
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from "@angular/material/legacy-dialog";
 import { User } from "src/scripts/db/User";
 
-import * as firebase from "firebase/compat/app";
 import * as moment from "moment";
 import { DatabaseService } from "../database.service";
 import { Observable } from "rxjs";
@@ -63,14 +62,12 @@ export class FollowListComponent implements OnInit {
     if (this.data.type === "followers") {
       obs = this._databaseService.getFollowersOfUser(
         this.data.userId,
-        chunkSize,
-        this.lastLoadedFollowing
+        chunkSize
       );
     } else {
       obs = this._databaseService.getFollowingsOfUser(
         this.data.userId,
-        chunkSize,
-        this.lastLoadedFollowing
+        chunkSize
       );
     }
 
