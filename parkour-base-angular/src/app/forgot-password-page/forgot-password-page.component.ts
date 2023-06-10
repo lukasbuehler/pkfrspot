@@ -1,8 +1,12 @@
 import { Component, OnInit } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 import { Router } from "@angular/router";
-import * as firebase from "firebase/compat";
 import { AuthenticationService } from "../authentication.service";
+import { RecaptchaVerifier } from "firebase/auth";
 
 @Component({
   selector: "app-forgot-password-page",
@@ -40,7 +44,7 @@ export class ForgotPasswordPageComponent implements OnInit {
   }
 
   setupForgetPasswordReCaptcha() {
-    this.recaptcha = new firebase.default.auth.RecaptchaVerifier(
+    this.recaptcha = new RecaptchaVerifier(
       "reCaptchaDiv",
       {
         size: "invisible",
@@ -54,7 +58,8 @@ export class ForgotPasswordPageComponent implements OnInit {
           // Response expired. Ask user to solve reCAPTCHA again.
           console.error("Response expired");
         },
-      }
+      },
+      null // TODO maybe pass app instead of null
     );
     this.recaptcha.render();
   }

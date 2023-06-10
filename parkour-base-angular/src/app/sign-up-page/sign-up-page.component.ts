@@ -6,10 +6,9 @@ import {
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
-import * as firebase from "firebase/compat";
-import { isEmailValid } from "src/scripts/Helpers";
 import { AuthenticationService } from "../authentication.service";
 import { DatabaseService } from "../database.service";
+import { RecaptchaVerifier } from "firebase/auth";
 
 @Component({
   selector: "app-sign-up-page",
@@ -58,7 +57,7 @@ export class SignUpPageComponent implements OnInit {
   }
 
   setupSignUpReCaptcha() {
-    let recaptcha = new firebase.default.auth.RecaptchaVerifier(
+    let recaptcha = new RecaptchaVerifier(
       "reCaptchaDiv",
       {
         size: "invisible",
@@ -72,7 +71,8 @@ export class SignUpPageComponent implements OnInit {
           // Response expired. Ask user to solve reCAPTCHA again.
           console.error("Response expired");
         },
-      }
+      },
+      null
     );
     recaptcha.render();
   }
@@ -110,18 +110,19 @@ export class SignUpPageComponent implements OnInit {
 
     if (this.isInviteOnly) {
       // check if the invite only code still has uses
-      this._databaseService.checkInviteCode(inviteCode).then(
-        (isValid) => {
-          if (isValid) {
-            this._createAccount(email, password, displayName, inviteCode);
-          } else {
-            this.signUpError = "Invite code is not valid!";
-          }
-        },
-        (error) => {
-          console.error("Error", error);
-        }
-      );
+      // TODO:
+      //   this._databaseService.checkInviteCode(inviteCode).then(
+      //     (isValid) => {
+      //       if (isValid) {
+      //         this._createAccount(email, password, displayName, inviteCode);
+      //       } else {
+      //         this.signUpError = "Invite code is not valid!";
+      //       }
+      //     },
+      //     (error) => {
+      //       console.error("Error", error);
+      //     }
+      //   );
     } else {
       // only then create a new account
       this._createAccount(email, password, displayName);

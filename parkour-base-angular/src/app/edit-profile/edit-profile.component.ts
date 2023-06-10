@@ -12,7 +12,7 @@ import * as Croppie from "croppie";
 import { DatabaseService } from "../database.service";
 import { StorageFolder, StorageService } from "../storage.service";
 import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
-import * as firebase from "firebase/compat";
+import { Timestamp } from "firebase/firestore";
 
 @Component({
   selector: "app-edit-profile",
@@ -212,10 +212,7 @@ export class EditProfileComponent implements OnInit {
 
       // Start date
       if (this.startDate !== this.user.startDate) {
-        data.start_date = new firebase.default.firestore.Timestamp(
-          this.startDate.getTime() / 1000,
-          0
-        );
+        data.start_date = new Timestamp(this.startDate.getTime() / 1000, 0);
       }
 
       // Update user data if changed

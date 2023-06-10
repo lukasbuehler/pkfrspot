@@ -10,8 +10,6 @@ import { map_style } from "./map_style";
 
 import { environment } from "../../environments/environment";
 
-import * as firebase from "firebase/compat";
-
 //import "googlemaps";
 
 interface LoadedSpotReference {
@@ -31,6 +29,7 @@ import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.compo
 import { AuthenticationService } from "../authentication.service";
 import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
 import { GoogleMap, MapPolygon } from "@angular/google-maps";
+import { GeoPoint } from "firebase/firestore";
 
 @Component({
   selector: "app-map-page",
@@ -479,7 +478,7 @@ export class MapPageComponent implements OnInit {
       "", // The id needs to be empty for the spot to be recognized as new
       {
         name: { de_CH: "New Spot" },
-        location: new firebase.default.firestore.GeoPoint(
+        location: new GeoPoint(
           this.center_coordinates.lat,
           this.center_coordinates.lng
         ),
@@ -500,24 +499,25 @@ export class MapPageComponent implements OnInit {
     // If the spot does not have an ID, it does not exist in the database yet.
     if (spotToSave.id) {
       // this is an old spot that is edited
-      this._dbService.setSpot(spotToSave.id, spotToSave.data).subscribe(
-        () => {
+      this._dbService
+        .setSpot(spotToSave.id, spotToSave.data)
+        .then(() => {
           // Successfully updated
           this.isEditing = false;
           // TODO Snackbar or something
           console.log("Successfully saved spot");
           this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spotToSave);
           console.log(this.getAllSpots());
-        },
-        (error) => {
+        })
+        .catch((error) => {
           this.isEditing = false;
           console.error("Error on spot save", error);
-        }
-      );
+        });
     } else {
       // this is a new spot
-      this._dbService.createSpot(spotToSave.data).subscribe(
-        (id) => {
+      this._dbService
+        .createSpot(spotToSave.data)
+        .then((id) => {
           // Successfully created
           this.isEditing = false;
 
@@ -528,12 +528,11 @@ export class MapPageComponent implements OnInit {
           // TODO snackbar or something
           console.log("Successfully crated spot");
           this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spotToSave);
-        },
-        (error) => {
+        })
+        .catch((error) => {
           this.isEditing = false;
           console.error("There was an error creating this spot!", error);
-        }
-      );
+        });
     }
   }
 

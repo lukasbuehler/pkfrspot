@@ -1,12 +1,8 @@
-import {
-  ContributedMedia,
-  LocaleMap,
-  MediaType,
-} from "./Interfaces";
-import * as firebase from "firebase/compat";
+import { ContributedMedia, LocaleMap, MediaType } from "./Interfaces";
 import { MapHelper } from "../map_helper";
 import { DatabaseService } from "src/app/database.service";
 import { StorageFolder, StorageService } from "src/app/storage.service";
+import { GeoPoint } from "firebase/firestore";
 
 export namespace Spot {
   export class Class {
@@ -39,11 +35,13 @@ export namespace Spot {
 
     private _updateData() {
       this.name = this._data.name?.de_CH || "Unnamed"; // TODO multilang
-      this.location = { lat: this._data.location.latitude, lng: this._data.location.longitude };
+      this.location = {
+        lat: this._data.location.latitude,
+        lng: this._data.location.longitude,
+      };
       this.isMiniSpot = this._data.isMiniSpot;
       this.rating = this._data.rating;
-      this.description =
-        this._data.description?.en_GB || ""; // TODO multiland
+      this.description = this._data.description?.en_GB || ""; // TODO multiland
 
       // Media
       this.hasMedia = this._data.media && this._data.media.length > 0;
@@ -156,8 +154,7 @@ export namespace Spot {
     }
 
     setDescription(newDescription: string, langCode: string = "en_GB") {
-      if(!this._data.description)
-      {
+      if (!this._data.description) {
         this._data.description = {};
       }
 
@@ -177,10 +174,7 @@ export namespace Spot {
     }
 
     setLocation(location: google.maps.LatLngLiteral) {
-      this._data.location = new firebase.default.firestore.GeoPoint(
-        location.lat,
-        location.lng
-      );
+      this._data.location = new GeoPoint(location.lat, location.lng);
       this.setTileCoordinates(); // update tile coords
       this._updateData(); // reflect changes
     }
@@ -225,9 +219,7 @@ export namespace Spot {
       let bounds: firebase.default.firestore.GeoPoint[] = [];
 
       for (let point of path[0]) {
-        bounds.push(
-          new firebase.default.firestore.GeoPoint(point.lat, point.lng)
-        );
+        bounds.push(new GeoPoint(point.lat, point.lng));
       }
 
       return bounds;
