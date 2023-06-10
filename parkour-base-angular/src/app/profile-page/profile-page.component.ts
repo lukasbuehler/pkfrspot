@@ -110,19 +110,19 @@ export class ProfilePageComponent implements OnInit {
         let myUserId = this._authService.user.uid;
         if (myUserId) {
           this.loadingFollowing = true;
-          this._databaseService
-            .isFollowingUser(myUserId, userId)
-            .then((isFollowing) => {
+          this._databaseService.isFollowingUser(myUserId, userId).subscribe(
+            (isFollowing) => {
               this.loadingFollowing = false;
               this.isFollowing = isFollowing;
-            })
-            .catch((err) => {
+            },
+            (err) => {
               this.loadingFollowing = false;
               console.error(
                 "There was an error checking if you follow this user"
               );
               console.error(err);
-            });
+            }
+          );
         }
 
         // Load the groups of this user
@@ -189,18 +189,13 @@ export class ProfilePageComponent implements OnInit {
           });
       } else {
         // Not following this user, try to follow
-        if(!this._authService.isSignedIn)
-        {
+        if (!this._authService.isSignedIn) {
           this.loadingFollowing = false;
-          this._snackbar.open(
-            "You need to log in to follow!",
-            "Ok",
-            {
-              verticalPosition: "bottom",
-              horizontalPosition: "center",
-              duration: 5000,
-            }
-          );
+          this._snackbar.open("You need to log in to follow!", "Ok", {
+            verticalPosition: "bottom",
+            horizontalPosition: "center",
+            duration: 5000,
+          });
           return;
         }
 
@@ -224,7 +219,7 @@ export class ProfilePageComponent implements OnInit {
               {
                 verticalPosition: "bottom",
                 horizontalPosition: "center",
-                duration: 5000
+                duration: 5000,
               }
             );
           });

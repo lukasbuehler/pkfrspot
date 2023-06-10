@@ -1,7 +1,11 @@
 import { STEPPER_GLOBAL_OPTIONS } from "@angular/cdk/stepper";
 import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
-import { MatHorizontalStepper } from "@angular/material/stepper";
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
+import { MatStepper } from "@angular/material/stepper";
 import { KmlParserService, KMLSetupInfo } from "../kml-parser.service";
 
 @Component({

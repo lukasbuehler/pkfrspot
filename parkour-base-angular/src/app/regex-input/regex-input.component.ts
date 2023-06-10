@@ -3,13 +3,10 @@ import { coerceBooleanProperty } from "@angular/cdk/coercion";
 import {
   Component,
   ElementRef,
-  forwardRef,
   HostBinding,
   Input,
   OnDestroy,
-  OnInit,
   Optional,
-  Renderer2,
   Self,
 } from "@angular/core";
 import {
@@ -18,11 +15,9 @@ import {
   UntypedFormBuilder,
   UntypedFormGroup,
   NgControl,
-  NG_VALUE_ACCESSOR,
   ValidationErrors,
   Validator,
   ValidatorFn,
-  Validators,
 } from "@angular/forms";
 import {
   MatLegacyFormField as MatFormField,
@@ -62,7 +57,6 @@ export function regexValidator(): ValidatorFn {
 
     try {
       let regex = new RegExp(regexStr);
-      regex.compile();
     } catch (e) {
       isValid = false;
     }
@@ -87,7 +81,8 @@ export class RegexInputComponent
     MatFormFieldControl<MyRegex>,
     ControlValueAccessor,
     Validator,
-    OnDestroy {
+    OnDestroy
+{
   // stateChanges
   stateChanges = new Subject<void>();
 

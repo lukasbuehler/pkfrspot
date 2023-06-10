@@ -48,15 +48,15 @@ export class SpotCompactViewComponent implements OnInit {
   @Output() dismiss: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() addBoundsClick: EventEmitter<void> = new EventEmitter<void>();
   @Output() focusClick: EventEmitter<void> = new EventEmitter<void>();
-  @Output() saveClick: EventEmitter<Spot.Class> = new EventEmitter<Spot.Class>();
+  @Output() saveClick: EventEmitter<Spot.Class> =
+    new EventEmitter<Spot.Class>();
   @Output() discardClick: EventEmitter<void> = new EventEmitter<void>();
-
 
   @ViewChild(UploadMediaUiComponent) uploadMediaComp;
 
   editedSpot: Spot.Class = null;
 
-  spotLanguage: string = "de_CH"
+  spotLanguage: string = "de_CH";
 
   isSaving: boolean = false;
 
@@ -78,7 +78,7 @@ export class SpotCompactViewComponent implements OnInit {
   automaticallyDetermineAddress: boolean = true;
 
   get isNewSpot() {
-    return this.spot && !this.spot.id
+    return this.spot && !this.spot.id;
   }
 
   constructor(
@@ -95,7 +95,7 @@ export class SpotCompactViewComponent implements OnInit {
   }
 
   ngOnChanges() {
-    if(this.spot && !this.editedSpot) {
+    if (this.spot && !this.editedSpot) {
       this.editedSpot = Spot.clone(this.spot);
     }
   }
@@ -180,12 +180,10 @@ export class SpotCompactViewComponent implements OnInit {
     this.isEditing = false;
     this.isEditingChange.emit(false);
 
-    if(this.isNewSpot)
-    {
+    if (this.isNewSpot) {
       // close the compact view as well
-      this.dismissed()
+      this.dismissed();
     }
-    
   }
 
   addBoundsClicked() {
@@ -238,7 +236,7 @@ export class SpotCompactViewComponent implements OnInit {
           StorageFolder.SpotPictures
         );
 
-        observable.subscribe(
+        observable.then(
           (imageLink) => {
             this.spot.addMedia(
               this._dbService,
@@ -304,7 +302,6 @@ export class SpotCompactViewComponent implements OnInit {
     return this.spot && this.spot.hasBounds();
   }
 
-
   capitalize(s: string) {
     return s && s[0].toUpperCase() + s.slice(1);
   }
@@ -327,11 +324,10 @@ export class SpotCompactViewComponent implements OnInit {
   }
 
   unsubscribeFromSpotPosts() {
-    if(!this.postSubscription)
-    {
+    if (!this.postSubscription) {
       return;
     }
-    
+
     console.log("Unsubscribing...");
     this.postSubscription.unsubscribe();
   }
