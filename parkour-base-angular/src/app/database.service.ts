@@ -18,6 +18,9 @@ import {
   limit,
   QueryDocumentSnapshot,
   DocumentData,
+  deleteDoc,
+  setDoc,
+  startAfter,
 } from "@angular/fire/firestore";
 
 import { Observable, combineLatest } from "rxjs";
@@ -25,8 +28,8 @@ import { Like } from "src/scripts/db/Like";
 import { User } from "src/scripts/db/User";
 import { merge } from "rxjs";
 import { map } from "rxjs/operators";
-import * as firebase from "firebase/compat";
 import { InviteCode } from "src/scripts/db/InviteCode";
+import { Timestamp, updateDoc } from "firebase/firestore";
 
 @Injectable({
   providedIn: "root",
@@ -60,129 +63,52 @@ export class DatabaseService {
    *
    * @returns
    */
-  //   getPostUpdates(
-  //     userId
-  //   ): Observable<{ type: DocumentChangeType; post: Post.Class }[]> {
-  //     /**
-  //      * 1) Get all followings of the currently authenticated user
-  //      * 2) Make multiple arrays of size 10 with all the followings
-  //      * 3) Call all the observables to those batches of 10 users with in queries for posts with pagination.
-  //      * 4) Construct one giant observable with all those listeners
-  //      * 5) Return that
-  //      */
+  getPostUpdates(
+    userId
+  ): Observable<{ type: DocumentChangeType; post: Post.Class }[]> {
+    /**
+     * 1) Get all followings of the currently authenticated user
+     * 2) Make multiple arrays of fixed size with all the followings
+     * 3) Call all the observables to those batches of 10 users with in queries for posts with pagination.
+     * 4) Construct one giant observable with all those listeners
+     * 5) Return that
+     */
 
-  //     return new Observable<{ type: DocumentChangeType; post: Post.Class }[]>(
-  //       (obs) => {
-  //         // 1) Get all the followings of the currently authenticated user
-  //         let allFollowingsIds: string[] = [];
-
-  //         const followingCollection = collection(
-  //           this.firestore,
-  //           `users/${userId}/following`
-  //         );
-  //         collectionSnapshots(followingCollection).subscribe((snap) => {
-  //           // Gets the followers once, the user will need to refresh to display post of newly following users.
-
-  //           allFollowingsIds = snap.map((val) => {
-  //             return val.id;
-  //           });
-
-  //           // add the currently authenticated user to the Ids
-  //           // We want to see our own posts as well
-  //           allFollowingsIds.unshift(userId);
-
-  //           if (allFollowingsIds.length === 0) {
-  //             // This user doesn't follow anyone, just complete the observable.
-  //             //
-  //             obs.complete();
-  //           }
-
-  //           // 2) Make multiple arrays of size 10 with all the followings
-  //           let chunks: string[][] = [];
-  //           const chunkSize = 10;
-  //           for (
-  //             let beginIndex = 0, endIndex = allFollowingsIds.length;
-  //             beginIndex < endIndex;
-  //             beginIndex += chunkSize
-  //           ) {
-  //             chunks.push(
-  //               allFollowingsIds.slice(beginIndex, beginIndex + chunkSize)
-  //             );
-  //           }
-
-  //           // 3) Call all the observables to those batches of 10 users with in queries for posts with pagination.
-  //           let observables: Observable<QueryDocumentSnapshot<DocumentData>[]>[] =
-  //             [];
-  //           chunks.forEach((ids: string[]) => {
-  //             const q$ = onSnapshot(
-  //               query(
-  //                 collection(this.firestore, "posts"),
-  //                 where("user.uid", "in", ids),
-  //                 orderBy("time_posted", "desc"),
-  //                 limit(10)
-  //                 // TODO Pagination
-  //               ), (snap) => {
-  //                 observables.push(snap.docChanges());
-  //               }
-  //             );
-
-  //           });
-  //           merge(...observables).subscribe(
-  //             (snaps) => {
-  //               let postChanges: {
-  //                 type: DocumentChangeType;
-  //                 post: Post.Class;
-  //               }[] = [];
-  //               snaps.forEach((snap) => {
-  //                 const id = snap.id;
-  //                 const data: Post.Schema = snap.data();
-  //                 const _post = new Post.Class(id, data);
-  //                 postChanges.push({ type: snap, post: _post });
-  //               });
-  //               obs.next(postChanges);
-  //             },
-  //             (err) => {
-  //               obs.error(err);
-  //             }
-  //           );
-  //         });
-  //       }
-  //     );
-  //   }
+    return new Observable<{ type: DocumentChangeType; post: Post.Class }[]>(
+      (obs) => {}
+    );
+  }
 
   /**
    * Top posts in the last 24 hours
    * @returns a map of post schemas with the IDs as the keys and the data as the values
    */
   getTodaysTopPosts(): Observable<any> {
+    const twentyFourHoursInMilliSeconds = 24 * 60 * 60 * 1000;
+    const yesterday = new Date(Date.now() - twentyFourHoursInMilliSeconds);
+
     return new Observable<any>((observer) => {
-      const twentyFourHoursInMilliSeconds = 24 * 60 * 60 * 1000;
-      const yesterday = new Date(Date.now() - twentyFourHoursInMilliSeconds);
-      this.db
-        .collection<Post.Schema>(
-          "posts",
-          (ref) =>
-            ref
-              //.where("time_posted", ">", yesterday)
-              .orderBy("like_count", "desc")
-              .orderBy("time_posted", "desc")
-              .limit(10)
+      return onSnapshot(
+        query(
+          collection(this.firestore, "posts"),
+          //.where("time_posted", ">", yesterday)
+          orderBy("like_count", "desc"),
+          orderBy("time_posted", "desc"),
+          limit(10)
           // TODO Pagination
-        )
-        .snapshotChanges()
-        .subscribe(
-          (changeActions) => {
-            const postSchemasMap: any = {};
-            changeActions.forEach((action) => {
-              const id = action.payload.doc.id;
-              postSchemasMap[id] = action.payload.doc.data();
-            });
-            observer.next(postSchemasMap);
-          },
-          (err) => {
-            observer.error(err);
-          }
-        );
+        ),
+        (querySnapshot) => {
+          const postSchemasMap: any = {};
+          querySnapshot.forEach((doc) => {
+            const id = doc.id;
+            postSchemasMap[id] = doc.data();
+          });
+          observer.next(postSchemasMap);
+        },
+        (err) => {
+          observer.error(err);
+        }
+      );
     });
   }
 
@@ -193,18 +119,17 @@ export class DatabaseService {
    */
   getPostsFromSpot(spot: Spot.Class): Observable<Post.Schema> {
     return new Observable<Post.Schema>((observer) => {
-      let snapshotChanges = this.db
-        .collection<Post.Schema>("posts", (ref) =>
-          ref.where("spot.ref", "==", this.docRef("spots/" + spot.id)).limit(10)
-        )
-        .snapshotChanges();
-
-      snapshotChanges.subscribe(
-        (changeActions) => {
+      return onSnapshot(
+        query(
+          collection(this.firestore, "posts"),
+          where("spot.ref", "==", this.docRef("spots/" + spot.id)),
+          limit(10)
+        ),
+        (querySnapshot) => {
           let postSchemasMap: any = {};
-          changeActions.forEach((action) => {
-            const id = action.payload.doc.id;
-            postSchemasMap[id] = action.payload.doc.data();
+          querySnapshot.forEach((doc) => {
+            const id = doc.id;
+            postSchemasMap[id] = doc.data();
           });
 
           observer.next(postSchemasMap);
@@ -217,20 +142,18 @@ export class DatabaseService {
   }
 
   getPostsFromUser(userId: string): Observable<Post.Schema> {
-    // currently loading all posts, add pagination // TODO
     return new Observable<Post.Schema>((observer) => {
-      let snapshotChanges = this.db
-        .collection<Post.Schema>("posts", (ref) =>
-          ref.where("user.uid", "==", userId)
-        )
-        .snapshotChanges();
-
-      snapshotChanges.subscribe(
-        (changeActions) => {
+      return onSnapshot(
+        query(
+          collection(this.firestore, "posts"),
+          where("user.uid", "==", userId),
+          limit(10) // TODO Pagination
+        ),
+        (querySnapshot) => {
           let postSchemasMap: any = {};
-          changeActions.forEach((action) => {
-            const id = action.payload.doc.id;
-            postSchemasMap[id] = action.payload.doc.data();
+          querySnapshot.forEach((doc) => {
+            const id = doc.id;
+            postSchemasMap[id] = doc.data();
           });
 
           observer.next(postSchemasMap);
@@ -243,44 +166,30 @@ export class DatabaseService {
   }
 
   deletePost(postId): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      if (!postId) {
-        reject("The post ID is invalid");
-      }
+    if (!postId) {
+      return Promise.reject("The post ID is empty");
+    }
 
-      this.db
-        .collection<Post.Schema>("posts")
-        .doc(postId)
-        .delete()
-        .then(() => {
-          resolve();
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
+    return deleteDoc(doc(this.firestore, "posts", postId));
   }
 
   // Post Likes
 
   userHasLikedPost(postId: string, userId: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      this.db
-        .collection<Like.Schema>(`posts/${postId}/likes`)
-        .doc(userId)
-        .get()
-        .subscribe(
-          (snap) => {
-            if (snap.exists) {
-              resolve(true);
-            } else {
-              resolve(false);
-            }
-          },
-          (error) => {
-            reject(error);
+      return onSnapshot(
+        doc(this.firestore, `posts/${postId}/likes/${userId}`),
+        (snap) => {
+          if (snap.exists()) {
+            resolve(true);
+          } else {
+            resolve(false);
           }
-        );
+        },
+        (error) => {
+          reject(error);
+        }
+      );
     });
   }
 
@@ -289,143 +198,148 @@ export class DatabaseService {
     userUID: string,
     newLike: Like.Schema
   ): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      if (userUID !== newLike.user.uid) {
-        reject("The User ID and User ID on the like don't match!");
-      }
+    if (userUID !== newLike.user.uid) {
+      return Promise.reject("The User ID and User ID on the like don't match!");
+    }
 
-      this.db
-        .collection<Like.Schema>(`posts/${postId}/likes`)
-        .doc(userUID)
-        .set(newLike)
-        .then(() => {
-          resolve();
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
+    return setDoc(
+      doc(this.firestore, `posts/${postId}/likes/${userUID}`),
+      newLike
+    );
   }
 
   removeLike(postId: string, userUID: string): Promise<void> {
-    return this.db
-      .collection<Like.Schema>(`posts/${postId}/likes`)
-      .doc(userUID)
-      .delete();
+    return deleteDoc(doc(this.firestore, `posts/${postId}/likes/${userUID}`));
   }
 
   // Spots --------------------------------------------------------------------
 
   getTestSpots(isNotForMap?: boolean): Observable<Spot.Class[]> {
     return new Observable<Spot.Class[]>((observer) => {
-      this.db
-        .collection<Spot.Schema>("spots", (ref) =>
-          ref.orderBy("name", "asc").limit(10)
-        )
-        .get()
-        .subscribe(
-          (querySnapshot) => {
-            let spots: Spot.Class[] = [];
+      return onSnapshot(
+        query(
+          collection(this.firestore, "spots"),
+          orderBy("name", "asc"),
+          limit(10)
+        ),
+        (querySnapshot) => {
+          let spots: Spot.Class[] = [];
 
-            querySnapshot.forEach((doc) => {
-              if (doc.data() as Spot.Schema) {
-                let newSpot: Spot.Class = new Spot.Class(
-                  doc.id,
-                  doc.data() as Spot.Schema,
-                  !!isNotForMap
-                );
-                console.log(newSpot);
+          querySnapshot.forEach((doc) => {
+            if (doc.data() as Spot.Schema) {
+              let newSpot: Spot.Class = new Spot.Class(
+                doc.id,
+                doc.data() as Spot.Schema,
+                !!isNotForMap
+              );
+              console.log(newSpot);
 
-                spots.push(newSpot);
-              } else {
-                console.error("Spot could not be cast to Spot.Schema!");
-                observer.complete();
-              }
-            });
+              spots.push(newSpot);
+            } else {
+              console.error("Spot could not be cast to Spot.Schema!");
+              observer.complete();
+            }
+          });
 
-            observer.next(spots);
-            observer.complete();
-          },
-          (error) => {
-            observer.error(error);
-            observer.complete();
-          },
-          () => {}
-        );
+          observer.next(spots);
+          observer.complete();
+        },
+        (error) => {
+          observer.error(error);
+          observer.complete();
+        },
+        () => {}
+      );
     });
   }
 
   getSpotById(spotId: string) {
     return new Observable<Spot.Class>((observer) => {
-      this.db
-        .collection<Spot.Schema>("spots")
-        .doc<Spot.Schema>(spotId)
-        .get()
-        .subscribe(
-          (snap) => {
-            if (snap.exists) {
-              let spot = new Spot.Class(snap.id, snap.data() as Spot.Schema);
-              observer.next(spot);
-            } else {
-              observer.error({ msg: "Error! This Spot does not exist." });
-            }
-          },
-          (error) => {
-            observer.error({
-              msg: "Error! There was a problem loading this spot.",
-              debug: error,
-            });
+      return onSnapshot(
+        doc(this.firestore, "spots", spotId),
+        (snap) => {
+          if (snap.exists) {
+            let spot = new Spot.Class(snap.id, snap.data() as Spot.Schema);
+            observer.next(spot);
+          } else {
+            observer.error({ msg: "Error! This Spot does not exist." });
           }
-        );
+        },
+        (error) => {
+          observer.error({
+            msg: "Error! There was a problem loading this spot.",
+            debug: error,
+          });
+        }
+      );
     });
   }
 
   getSpotsForTiles(tiles: { x: number; y: number }[]) {
     return new Observable<Spot.Class[]>((observer) => {
+      const tileUnsubscribeFunctions: (() => void)[] = [];
+
       for (let tile of tiles) {
-        this.db
-          .collection<Spot.Schema>("spots", (ref) =>
-            ref
-              .where("tile_coordinates.z16.x", "==", tile.x)
-              .where("tile_coordinates.z16.y", "==", tile.y)
-          )
-          .get()
-          .subscribe(
-            (snapshot) => {
-              observer.next(this.parseSpots(snapshot));
+        tileUnsubscribeFunctions.push(
+          onSnapshot(
+            query(
+              collection(this.firestore, "spots"),
+              where("tile_coordinates.z16.x", "==", tile.x),
+              where("tile_coordinates.z16.y", "==", tile.y),
+              limit(10)
+            ),
+            (snap) => {
+              observer.next(this.parseSpots_(snap));
             },
             (error) => {
               observer.error(error);
             }
-          );
+          )
+        );
       }
+
+      return () => {
+        // unsubscribe from all onSnapshots for each tile
+        tileUnsubscribeFunctions.forEach((unsubscribe) => {
+          unsubscribe();
+        });
+      };
     });
   }
 
   getPreviewSpotsForTiles(zoom: number, tiles: { x: number; y: number }[]) {
     return new Observable<Spot.Class[]>((observer) => {
+      const tileUnsubscribeFunctions: (() => void)[] = [];
+
       for (let tile of tiles) {
-        this.db
-          .collection<Spot.Schema>("spots", (ref) =>
-            ref
-              .where(`tile_coordinates.z${zoom}.x`, "==", tile.x)
-              .where(`tile_coordinates.z${zoom}.y`, "==", tile.y)
-              .limit(10)
-          )
-          .get()
-          .subscribe(
-            (snapshot) => {
-              observer.next(this.parseSpots(snapshot));
+        tileUnsubscribeFunctions.push(
+          onSnapshot(
+            query(
+              collection(this.firestore, "spots"),
+              where(`tile_coordinates.z${zoom}.x`, "==", tile.x),
+              where(`tile_coordinates.z${zoom}.y`, "==", tile.y),
+              limit(10)
+            ),
+            (snap) => {
+              observer.next(this.parseSpots_(snap));
             },
             (error) => {
               observer.error(error);
             }
-          );
+          )
+        );
       }
+
+      return () => {
+        // unsubscribe from all onSnapshots for each tile
+        tileUnsubscribeFunctions.forEach((unsubscribe) => {
+          unsubscribe();
+        });
+      };
     });
   }
 
-  private parseSpots(snapshot): Spot.Class[] {
+  private parseSpots_(snapshot): Spot.Class[] {
     let newSpots: Spot.Class[] = [];
 
     snapshot.forEach((doc) => {
@@ -445,59 +359,23 @@ export class DatabaseService {
 
   getSpotSearch(searchString: string): Observable<Spot.Class[]> {
     return new Observable<any[]>((observer) => {
-      this.db.collection<Spot.Schema>("spots").get();
+      // TODO
     });
   }
 
-  createSpot(spotData: Spot.Schema): Observable<any> {
-    return new Observable<any>((observer) => {
-      this.db
-        .collection<Spot.Schema>("spots")
-        .add(spotData)
-        .then(
-          /* fulfilled */ (value) => {
-            observer.next(value);
-            observer.complete();
-          },
-          /* rejected */ (reason) => {
-            observer.error(reason);
-          }
-        )
-        .catch((error) => {
-          observer.error(error);
-        });
-    });
+  createSpot(spotData: Spot.Schema): Promise<any> {
+    return addDoc(collection(this.firestore, "spots"), spotData);
   }
 
-  setSpot(spotId: string, spotData: Spot.Schema): Observable<any> {
-    return new Observable<any>((observer) => {
-      this.db
-        .collection<Spot.Schema>("spots")
-        .doc(spotId)
-        .set(spotData)
-        .then(
-          /* fulfilled */ (value) => {
-            observer.next(value);
-            observer.complete();
-          },
-          /* rejected */ (reason) => {
-            observer.error(reason);
-          }
-        )
-        .catch((error) => {
-          observer.error(error);
-        });
-    });
+  setSpot(spotId: string, spotData: Spot.Schema): Promise<any> {
+    return setDoc(doc(this.firestore, "spots", spotId), spotData);
   }
 
   updateSpot(
     spotId: string,
     spotUpdateData: Partial<Spot.Schema>
   ): Promise<void> {
-    return this.db
-      .collection<Spot.Schema>("spots")
-      .doc(spotId)
-      .update(spotUpdateData);
+    return updateDoc(doc(this.firestore, "spots", spotId), spotUpdateData);
   }
 
   // Users --------------------------------------------------------------------
@@ -507,48 +385,32 @@ export class DatabaseService {
     display_name: string,
     data: User.Schema
   ): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      let schema: User.Schema = {
-        display_name: display_name,
-        verified_email: false,
-        ...data,
-      };
-      this.db
-        .collection<User.Schema>("users")
-        .doc(userId)
-        .set(schema)
-        .then(() => resolve())
-        .catch((err) => reject(err));
-    });
+    let schema: User.Schema = {
+      display_name: display_name,
+      verified_email: false,
+      ...data,
+    };
+
+    return setDoc(doc(this.firestore, "users", userId), schema);
   }
 
   getUserById(userId) {
     return new Observable<User.Class>((observer) => {
-      this.db
-        .collection<User.Schema>("users")
-        .doc<User.Schema>(userId)
-        .get()
-        .subscribe(
-          (snap) => {
-            let user = new User.Class(snap.id, snap.data() as User.Schema);
-            observer.next(user);
-          },
-          (err) => {
-            observer.error(err);
-          }
-        );
+      return onSnapshot(
+        doc(this.firestore, "users", userId),
+        (snap) => {
+          let user = new User.Class(snap.id, snap.data() as User.Schema);
+          observer.next(user);
+        },
+        (err) => {
+          observer.error(err);
+        }
+      );
     });
   }
 
-  updateUser(userId: string, _data: User.Schema, _merge: boolean = false) {
-    return new Promise<void>((resolve, reject) => {
-      this.db
-        .collection<User.Schema>("users")
-        .doc(userId)
-        .set(_data, { merge: _merge })
-        .then(() => resolve())
-        .catch((err) => reject(err));
-    });
+  updateUser(userId: string, _data: Partial<User.Schema>) {
+    return updateDoc(doc(this.firestore, "users", userId), _data);
   }
 
   deleteUser() {
@@ -557,45 +419,42 @@ export class DatabaseService {
 
   // Following
 
-  isFollowingUser(myUserId: string, otherUserId: string): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      this.db
-        .collection<User.FollowingDataSchema>(`users/${myUserId}/following`)
-        .doc(otherUserId)
-        .get()
-        .subscribe(
-          (snap) => {
-            if (snap.exists) {
-              resolve(true);
-            } else {
-              resolve(false);
-            }
-          },
-          (err) => {
-            reject(err);
+  isFollowingUser(myUserId: string, otherUserId: string): Observable<boolean> {
+    return new Observable<boolean>((obs) => {
+      return onSnapshot(
+        doc(this.firestore, "users", myUserId, "following", otherUserId),
+        (snap) => {
+          if (snap.exists) {
+            obs.next(true);
+          } else {
+            obs.next(false);
           }
-        );
+        },
+        (err) => {
+          obs.error(err);
+        }
+      );
     });
   }
 
-  userIsFollowingYou(myUserId: string, otherUserId: string): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      this.db
-        .collection<User.FollowingDataSchema>(`users/${myUserId}/followers`)
-        .doc(otherUserId)
-        .get()
-        .subscribe(
-          (snap) => {
-            if (snap.exists) {
-              resolve(true);
-            } else {
-              resolve(false);
-            }
-          },
-          (err) => {
-            reject(err);
+  userIsFollowingYou(
+    myUserId: string,
+    otherUserId: string
+  ): Observable<boolean> {
+    return new Observable<boolean>((obs) => {
+      return onSnapshot(
+        doc(this.firestore, "users", myUserId, "followers", otherUserId),
+        (snap) => {
+          if (snap.exists) {
+            obs.next(true);
+          } else {
+            obs.next(false);
           }
-        );
+        },
+        (err) => {
+          obs.error(err);
+        }
+      );
     });
   }
 
@@ -612,92 +471,50 @@ export class DatabaseService {
     otherUserId: string,
     otherUserData: User.Schema
   ): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      if (!myUserId) {
-        reject("Your User ID is empty");
-      }
-      if (!otherUserId) {
-        reject("The User ID of the user you want to follow is empty");
-      }
-      if (!otherUserData || !otherUserData.display_name) {
-        reject("The User data of the user you want to follow is not valid");
-      }
+    if (!myUserId) {
+      return Promise.reject("Your User ID is empty");
+    }
+    if (!otherUserId) {
+      return Promise.reject(
+        "The User ID of the user you want to follow is empty"
+      );
+    }
+    if (!otherUserData || !otherUserData.display_name) {
+      return Promise.reject(
+        "The User data of the user you want to follow is not valid"
+      );
+    }
 
-      let followingData: User.FollowingDataSchema = {
-        display_name: otherUserData.display_name,
-        profile_picture: otherUserData.profile_picture || "",
-        start_following: new firebase.default.firestore.Timestamp(
-          Date.now() / 1000,
-          0
-        ),
-      };
-      let followerData: User.FollowingDataSchema = {
-        display_name: myUserData.display_name,
-        profile_picture: myUserData.profile_picture,
-        start_following: new firebase.default.firestore.Timestamp(
-          Date.now() / 1000,
-          0
-        ),
-      };
-      this.db
-        .collection<User.FollowingDataSchema>(`users/${myUserId}/following`)
-        .doc(otherUserId)
-        .set(followingData)
-        .then(() => {
-          // TODO Eventually this part should be handled by a cloud function
-          this.db
-            .collection<User.FollowingDataSchema>(
-              `users/${otherUserId}/followers`
-            )
-            .doc(myUserId)
-            .set(followerData)
-            .then(() => {
-              // Now we can resolve it
-              resolve();
-            })
-            .catch((err) => {
-              console.error(
-                "Error on setting the following data on the other user"
-              );
-              reject(err);
-            });
-        })
-        .catch((err) => {
-          console.error("Error while setting the following data on my User");
-          reject(err);
-        });
+    let followingData: User.FollowingDataSchema = {
+      display_name: otherUserData.display_name,
+      profile_picture: otherUserData.profile_picture || "",
+      start_following: new Timestamp(Date.now() / 1000, 0),
+    };
+    let followerData: User.FollowingDataSchema = {
+      display_name: myUserData.display_name,
+      profile_picture: myUserData.profile_picture,
+      start_following: new Timestamp(Date.now() / 1000, 0),
+    };
+    return setDoc(
+      doc(this.firestore, "users", myUserId, "following", otherUserId),
+      followingData
+    ).then(() => {
+      // TODO Eventually this part should be handled by a cloud function
+      return setDoc(
+        doc(this.firestore, "users", otherUserId, "followers", myUserId),
+        followerData
+      );
     });
   }
 
   unfollowUser(myUserId: string, otherUserId: string) {
-    return new Promise<void>((resolve, reject) => {
-      this.db
-        .collection<User.FollowingDataSchema>(`users/${myUserId}/following`)
-        .doc(otherUserId)
-        .delete()
-        .then(() => {
-          // Now delete it from the follower list as well
-          this.db
-            .collection<User.FollowingDataSchema>(
-              `users/${otherUserId}/followers`
-            )
-            .doc(myUserId)
-            .delete()
-            .then(() => {
-              // Now we can resolve it
-              resolve();
-            })
-            .catch((err) => {
-              console.error(
-                "Error deleting my user from the other users followers list"
-              );
-              reject(err);
-            });
-        })
-        .catch((err) => {
-          console.error("Error deleting the other user from my following list");
-          reject(err);
-        });
+    return deleteDoc(
+      doc(this.firestore, "users", myUserId, "following", otherUserId)
+    ).then(() => {
+      // Now delete it from the follower list as well
+      return deleteDoc(
+        doc(this.firestore, "users", otherUserId, "followers", myUserId)
+      );
     });
   }
 
@@ -708,36 +525,31 @@ export class DatabaseService {
    */
   getFollowersOfUser(
     userId: string,
-    chunkSize: number = 20,
-    startAfter?: firebase.default.firestore.Timestamp
-  ) {
-    if (!startAfter)
-      startAfter = new firebase.default.firestore.Timestamp(
-        Date.now() / 1000,
-        0
-      );
-
-    return this.db
-      .collection<User.FollowingDataSchema>(
-        `users/${userId}/followers`,
-        (ref) =>
-          ref
-            .orderBy("start_following", "desc")
-            .startAfter(startAfter)
-            .limit(chunkSize)
-      )
-      .get()
-      .pipe(
-        map((snap) => {
-          return snap.docs.map((doc) => {
+    chunkSize: number = 20
+  ): Observable<User.FollowingSchema[]> {
+    return new Observable<User.FollowingSchema[]>((obs) => {
+      return onSnapshot(
+        query(
+          collection(this.firestore, `users/${userId}/followers`),
+          orderBy("start_following", "desc"),
+          // TODO pagination
+          limit(chunkSize)
+        ),
+        (snap) => {
+          const followers = snap.docs.map((doc) => {
             const data = doc.data() as User.FollowingSchema;
             return {
               ...data,
               uid: doc.id,
             };
           });
-        })
+          obs.next(followers);
+        },
+        (err) => {
+          obs.error(err);
+        }
       );
+    });
   }
 
   /**
@@ -747,89 +559,84 @@ export class DatabaseService {
    */
   getFollowingsOfUser(
     userId: string,
-    chunkSize: number = 20,
-    startAfter?: firebase.default.firestore.Timestamp
+    chunkSize: number = 20
   ): Observable<User.FollowingSchema[]> {
-    if (!startAfter)
-      startAfter = new firebase.default.firestore.Timestamp(
-        Date.now() / 1000,
-        0
-      );
-
-    return this.db
-      .collection<User.FollowingDataSchema>(
-        `users/${userId}/following`,
-        (ref) =>
-          ref
-            .orderBy("start_following", "desc")
-            .startAfter(startAfter)
-            .limit(chunkSize)
-      )
-      .get()
-      .pipe(
-        map((snap) => {
-          return snap.docs.map((doc) => {
+    return new Observable<User.FollowingSchema[]>((obs) => {
+      return onSnapshot(
+        query(
+          collection(this.firestore, `users/${userId}/following`),
+          orderBy("start_following", "desc"),
+          // TODO pagination
+          limit(chunkSize)
+        ),
+        (snap) => {
+          const followers = snap.docs.map((doc) => {
             const data = doc.data() as User.FollowingSchema;
             return {
               ...data,
               uid: doc.id,
             };
           });
-        })
+          obs.next(followers);
+        },
+        (err) => {
+          obs.error(err);
+        }
       );
+    });
   }
 
   // Other
 
-  checkInviteCode(inviteCode: string): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      this.db
-        .doc<InviteCode.Schema>(`invite_codes/${inviteCode}`)
-        .get()
-        .subscribe(
-          (doc) => {
-            const data = doc.data() as InviteCode.Schema;
+  //   checkInviteCode(inviteCode: string): Promise<boolean> {
+  //     return new Promise<boolean>((resolve, reject) => {
+  //       this.db
+  //         .doc<InviteCode.Schema>(`invite_codes/${inviteCode}`)
+  //         .get()
+  //         .subscribe(
+  //           (doc) => {
+  //             const data = doc.data() as InviteCode.Schema;
 
-            if (!data) {
-              // The invite code is invalid!
-              resolve(false);
-            }
+  //             if (!data) {
+  //               // The invite code is invalid!
+  //               resolve(false);
+  //             }
 
-            if (data.uses_left > 0) {
-              resolve(true);
-            } else {
-              resolve(false);
-            }
-          },
-          (error) => {
-            console.log("obs error", error);
-            resolve(false);
-          }
-        );
-    });
-  }
+  //             if (data.uses_left > 0) {
+  //               resolve(true);
+  //             } else {
+  //               resolve(false);
+  //             }
+  //           },
+  //           (error) => {
+  //             console.log("obs error", error);
+  //             resolve(false);
+  //           }
+  //         );
+  //     });
+  //   }
 
-  useInviteCode(inviteCode: string): Promise<InviteCode.Schema> {
-    return new Promise<InviteCode.Schema>((resolve, reject) => {
-      this.db
-        .doc<InviteCode.Schema>(`invite_codes/${inviteCode}`)
-        .get()
-        .subscribe(
-          (doc) => {
-            const data = doc.data() as InviteCode.Schema;
+  //   useInviteCode(inviteCode: string): Promise<InviteCode.Schema> {
+  //     return new Promise<InviteCode.Schema>((resolve, reject) => {
+  //       this.db
+  //         .doc<InviteCode.Schema>(`invite_codes/${inviteCode}`)
+  //         .get()
+  //         .subscribe(
+  //           (doc) => {
+  //             const data = doc.data() as InviteCode.Schema;
 
-            if (data.uses_left > 0) {
-              resolve(data);
-              // now subtract one use
-            } else {
-              reject("No uses left!");
-            }
-          },
-          (error) => {
-            console.log("obs error", error);
-            reject(error);
-          }
-        );
-    });
-  }
+  //             if (data.uses_left > 0) {
+  //               resolve(data);
+  //               // now subtract one use
+  //             } else {
+  //               reject("No uses left!");
+  //             }
+  //           },
+  //           (error) => {
+  //             console.log("obs error", error);
+  //             reject(error);
+  //           }
+  //         );
+  //     });
+  //   }
 }
