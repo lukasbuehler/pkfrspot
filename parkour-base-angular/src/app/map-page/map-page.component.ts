@@ -8,10 +8,6 @@ import {
 } from "@angular/core";
 import { map_style } from "./map_style";
 
-import { environment } from "../../environments/environment";
-
-//import "googlemaps";
-
 interface LoadedSpotReference {
   spot: Spot.Class;
   tile: { x: number; y: number };
@@ -30,8 +26,6 @@ import { AuthenticationService } from "../authentication.service";
 import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
 import { GoogleMap, MapPolygon } from "@angular/google-maps";
 import { GeoPoint } from "firebase/firestore";
-import { Observable, catchError, map, of } from "rxjs";
-import { HttpClient } from "@angular/common/http";
 import { MapsApiService } from "../maps-api.service";
 
 @Component({
@@ -90,6 +84,7 @@ export class MapPageComponent implements OnInit {
     disableDefaultUI: true,
     styles: this.mapStylesConfig,
   };
+  mapTypeId: string = "roadmap";
 
   isEditing: boolean = false;
   selectedSpot: Spot.Class = null;
@@ -159,7 +154,7 @@ export class MapPageComponent implements OnInit {
     if (spotId) {
       this._dbService.getSpotById(spotId).subscribe(
         (spot) => {
-          this.openSpot(spot); // Opens the spot in the drawer
+          this.openSpot(spot);
           this.setStartMap(
             {
               lat: spot.location.lat,
@@ -206,12 +201,6 @@ export class MapPageComponent implements OnInit {
   clickedMap(event: google.maps.MapMouseEvent) {
     //console.log(event.latLng.toJSON());
     //console.log(MapHelper.getTileCoordinates(event.latLng.toJSON(), this.zoom));
-  }
-
-  endDrawerOpenedChanged(isOpen) {
-    if (!isOpen && this.selectedSpot) {
-      this.closeSpot();
-    }
   }
 
   boundsChanged() {
@@ -450,14 +439,14 @@ export class MapPageComponent implements OnInit {
 
   toggleMapStyle() {
     if (
-      this.map.mapTypeId.toLowerCase() ===
+      this.mapTypeId.toLowerCase() ===
       google.maps.MapTypeId.ROADMAP.toLowerCase()
     ) {
       // if it is equal to roadmap, toggle to satellite
-      this.mapStyle = google.maps.MapTypeId.SATELLITE;
+      this.mapTypeId = google.maps.MapTypeId.SATELLITE;
     } else {
       // otherwise toggle back to roadmap
-      this.mapStyle = google.maps.MapTypeId.ROADMAP;
+      this.mapTypeId = google.maps.MapTypeId.ROADMAP;
     }
   }
 

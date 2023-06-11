@@ -1,79 +1,6 @@
-::ng-deep app-map-page {
+::ng-deep app-map-page,
+div.map-container {
   height: 100%;
-}
-
-mat-drawer-container {
-  background-color: black;
-
-  @media (max-width: 599px) {
-    height: calc(100% - 56px);
-  }
-  @media (min-width: 600px) {
-    height: 100%;
-  }
-}
-
-mat-drawer {
-  border: none;
-  background: white;
-}
-
-#startDrawer {
-  @media (min-width: 1200px) {
-    width: 50vw;
-  }
-
-  @media (min-width: 992px) and (max-width: 1199px) {
-    width: 33vw;
-  }
-
-  @media (min-width: 768px) and (max-width: 991px) {
-    width: 50vw;
-  }
-
-  @media (max-width: 767px) {
-    width: 100%;
-  }
-}
-
-#endDrawer {
-  padding: 15px;
-  min-width: 350px;
-
-  @media (min-width: 1200px) {
-    width: 25vw;
-  }
-  @media (min-width: 992px) and (max-width: 1199px) {
-    width: 33vw;
-  }
-
-  @media (min-width: 768px) and (max-width: 991px) {
-    width: 50vw;
-    border-left: 1px grey solid !important;
-  }
-
-  @media (max-width: 767px) {
-    width: 100%;
-  }
-}
-
-::ng-deep .mat-drawer-inner-container {
-  overflow: visible !important;
-  overflow-y: hidden;
-
-  height: 100%;
-  > div {
-    height: 100%;
-  }
-}
-
-#endDrawer {
-  padding: 0px;
-  border: none;
-}
-
-#searchFormField {
-  width: 100%;
 }
 
 .tab-icon {
@@ -153,12 +80,8 @@ mat-card {
   position: absolute;
   z-index: 2;
 
-  left: 20px;
+  right: 20px;
   bottom: 35px;
-}
-
-#closeStartDrawerFab {
-  float: right;
 }
 
 #map {

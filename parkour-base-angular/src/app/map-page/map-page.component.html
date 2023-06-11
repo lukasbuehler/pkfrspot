@@ -1,52 +1,11 @@
-<mat-drawer-container autosize *ngIf="mapsService.isApiLoaded$ | async">
-  <mat-drawer
-    #startDrawer
-    id="startDrawer"
-    class="mat-elevation-z0"
-    mode="side"
-    position="start"
-    [opened]="false"
-  >
-    <app-discover-spots-view
-      (close)="startDrawer.close()"
-      (spotClick)="openSpot($event)"
-    ></app-discover-spots-view>
-  </mat-drawer>
-
-  <mat-drawer
-    #endDrawer
-    id="endDrawer"
-    class="mat-elevation-z0"
-    mode="side"
-    position="end"
-    [opened]="!!selectedSpot"
-    (openedChange)="endDrawerOpenedChanged($event)"
-  >
-    <div *ngIf="selectedSpot">
-      <app-spot-compact-view
-        #spotDetail
-        [spot]="selectedSpot"
-        [flat]="true"
-        [dismissable]="true"
-        [infoOnly]="false"
-        [editable]="true"
-        [(isEditing)]="isEditing"
-        (dismiss)="closeSpot()"
-        (addBoundsClick)="addBounds()"
-        (callGetPathsPromiseFunction)="getPathsFromSpotPolygon()"
-        (focusClick)="focusSpot(selectedSpot)"
-        (saveClick)="saveSpot($event)"
-        (discardClick)="discardEdit()"
-      ></app-spot-compact-view>
-    </div>
-  </mat-drawer>
-
+<div class="map-container" *ngIf="mapsService.isApiLoaded$ | async">
   <google-map
     #map
     id="map"
     [center]="start_coordinates"
-    [zoom]="zoom"
+    [zoom]="start_zoom"
     [options]="mapOptions"
+    [mapTypeId]="mapTypeId"
     (mapClick)="clickedMap($event)"
     (boundsChanged)="boundsChanged()"
     (centerChanged)="centerChanged()"
@@ -104,18 +63,6 @@
   </google-map>
 
   <button
-    mat-fab
-    #searchFab
-    id="searchFab"
-    (click)="startDrawer.toggle()"
-    [color]="startDrawer.opened ? 'default' : 'accent'"
-  >
-    <mat-icon aria-label="Button with magnifying lens to search for spots">{{
-      startDrawer.opened ? "navigate_before" : "search"
-    }}</mat-icon>
-  </button>
-
-  <button
     mat-mini-fab
     #mapStyleFab
     color="white"
@@ -123,9 +70,7 @@
     (click)="toggleMapStyle()"
   >
     <mat-icon aria-label="Button with magnifying lens to search for spots">
-      {{
-        mapStyle.toLowerCase() === "ROADMAP".toLowerCase() ? "terrain" : "map"
-      }}
+      {{ mapOptions.mapTypeId === "ROADMAP" ? "terrain" : "map" }}
     </mat-icon>
   </button>
 
@@ -140,4 +85,4 @@
     (mainFabClick)="mainFabClicked()"
     (miniFabClick)="miniFabPressed($event)"
   ></app-speed-dial-fab>
-</mat-drawer-container>
+</div>
