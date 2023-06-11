@@ -1,20 +1,17 @@
 <app-nav-rail-container>
   <app-nav-rail class="mat-elevation-z1 d-none d-md-block">
-    <button color="primary">
-      <mat-icon>home</mat-icon>
-      Home
-    </button>
-    <button color="secondary">
-      <mat-icon>map</mat-icon>
-      Map
-    </button>
-    <button>
-      <mat-icon>settings</mat-icon>
-      Settings
+    <button
+      *ngFor="let button of navbarConfig.buttons"
+      routerLink="{{ button.link }}"
+    >
+      <mat-icon>
+        {{ button.icon }}
+      </mat-icon>
+      {{ button.name }}
     </button>
   </app-nav-rail>
   <app-nav-rail-content>
-    <mat-toolbar class="mat-elevation-z1">
+    <mat-toolbar class="d-md-none mat-elevation-z1">
       <button
         mat-icon-button
         [matMenuTriggerFor]="navMenu"
@@ -105,6 +102,20 @@
         </span>
       </button>
     </mat-toolbar>
+
+    <!-- User FAB -->
+    <button
+      mat-fab
+      color="primary"
+      class="login-fab d-none d-md-block"
+      [matMenuTriggerFor]="navUserMenu"
+    >
+      <mat-icon *ngIf="!authService.isSignedIn">person_outline</mat-icon>
+      <img
+        *ngIf="authService.isSignedIn && authService.user?.data?.profilePicture"
+        [src]="authService.user.data.profilePicture"
+      />
+    </button>
 
     <mat-menu #navUserMenu="matMenu">
       <a routerLink="/sign-in" *ngIf="!authService.isSignedIn" mat-menu-item>

@@ -70,6 +70,7 @@ export class AppComponent implements OnInit {
       {
         name: "Home",
         link: "/",
+        icon: "home",
         badge: {
           number: 0,
           color: "accent",
@@ -79,6 +80,7 @@ export class AppComponent implements OnInit {
       {
         name: "Spot map",
         link: "/map",
+        icon: "map",
         badge: {
           number: 0,
           color: "accent",
@@ -106,6 +108,7 @@ export class AppComponent implements OnInit {
       {
         name: "About",
         link: "/about",
+        icon: "info",
         badge: {
           number: 0,
           color: "accent",
