@@ -40,7 +40,7 @@ import { MapsApiService } from "../maps-api.service";
   styleUrls: ["./map-page.component.scss"],
 })
 export class MapPageComponent implements OnInit {
-  @ViewChild("map", { static: true }) map: GoogleMap;
+  @ViewChild("map") map: GoogleMap;
   @ViewChildren("polygon", { read: MapPolygon })
   polygons: QueryList<MapPolygon>;
   // SpotDetailComponent is only there if there is a spot selected, so static must be set to false.
@@ -82,6 +82,15 @@ export class MapPageComponent implements OnInit {
   mapStylesConfig = map_style;
   spotPolygons: MapPolygon[] = [];
 
+  mapOptions: google.maps.MapOptions = {
+    backgroundColor: "#000000",
+    clickableIcons: false,
+    gestureHandling: "greedy",
+    mapTypeId: this.mapStyle,
+    disableDefaultUI: true,
+    styles: this.mapStylesConfig,
+  };
+
   isEditing: boolean = false;
   selectedSpot: Spot.Class = null;
 
@@ -97,12 +106,12 @@ export class MapPageComponent implements OnInit {
   };
 
   // these are updated from user input
-  center_coordinates: google.maps.LatLngLiteral = {
-    lat: this.start_coordinates.lat,
-    lng: this.start_coordinates.lng,
-  };
+  //   center_coordinates: google.maps.LatLngLiteral = {
+  //     lat: this.start_coordinates.lat,
+  //     lng: this.start_coordinates.lng,
+  //   };
 
-  zoom: number = 3;
+  start_zoom: number = 3;
   private readonly _loadAllSpotsZoomLevel: number = 16; // This is fixed for the platform and should not be changed
   // TODO ensure this is is constant with storing it somewhere else
 
@@ -184,19 +193,19 @@ export class MapPageComponent implements OnInit {
     if (coords && coords.lat && coords.lng) {
       this.start_coordinates.lat = coords.lat;
       this.start_coordinates.lng = coords.lng;
-      this.zoom = Number(zoom || 16);
+      this.start_zoom = Number(zoom || 16);
 
-      this.center_coordinates = {
-        lat: this.start_coordinates.lat,
-        lng: this.start_coordinates.lng,
-      };
+      //   this.center_coordinates = {
+      //     lat: this.start_coordinates.lat,
+      //     lng: this.start_coordinates.lng,
+      //   };
     }
-    this.zoom = zoom || this.zoom || 16;
+    this.start_zoom = zoom || this.start_zoom || 16;
   }
 
-  clickedMap(coords) {
-    //console.log(coords);
-    //console.log(MapHelper.getTileCoordinates(coords.coords, this.zoom));
+  clickedMap(event: google.maps.MapMouseEvent) {
+    //console.log(event.latLng.toJSON());
+    //console.log(MapHelper.getTileCoordinates(event.latLng.toJSON(), this.zoom));
   }
 
   endDrawerOpenedChanged(isOpen) {
@@ -205,8 +214,9 @@ export class MapPageComponent implements OnInit {
     }
   }
 
-  boundsChanged(bounds: google.maps.LatLngBounds) {
-    let zoomLevel = this.zoom;
+  boundsChanged() {
+    let zoomLevel = this.map.getZoom();
+    let bounds = this.map.getBounds();
 
     let northEastLiteral: google.maps.LatLngLiteral = {
       lat: bounds.getNorthEast().lat(),
@@ -267,10 +277,9 @@ export class MapPageComponent implements OnInit {
     }
   }
 
-  centerChanged(center: google.maps.LatLngLiteral) {
-    this.center_coordinates.lat = center.lat;
-    this.center_coordinates.lng = center.lng;
-    this.upadateMapURL(center, this.zoom);
+  centerChanged() {
+    let center: google.maps.LatLngLiteral = this.map.getCenter().toJSON();
+    //this.upadateMapURL(center, this.start_zoom);
   }
 
   calculateAllDotRadii() {
@@ -297,10 +306,10 @@ export class MapPageComponent implements OnInit {
     return radius;
   }
 
-  zoomChanged(newZoom: number) {
-    this.zoom = newZoom;
+  zoomChanged() {
+    let newZoom = this.map.getZoom();
     this.zoomDotOpacity = this.zoomDotOpacities[newZoom];
-    this.upadateMapURL(this.center_coordinates, newZoom);
+    //this.upadateMapURL(this.center_coordinates, newZoom);
   }
 
   upadateMapURL(center: google.maps.LatLngLiteral, zoom: number) {
@@ -469,21 +478,21 @@ export class MapPageComponent implements OnInit {
       // but otherwise it just does nothing.
 
       this.setStartMap(spot.location, 18);
-      this.upadateMapURL(spot.location, 18);
+      //this.upadateMapURL(spot.location, 18);
     });
   }
 
   createSpot() {
     //console.log("Create Spot");
+    let center_coordinates: google.maps.LatLngLiteral = this.map
+      .getCenter()
+      .toJSON();
 
     this.selectedSpot = new Spot.Class(
       "", // The id needs to be empty for the spot to be recognized as new
       {
-        name: { de_CH: "New Spot" },
-        location: new GeoPoint(
-          this.center_coordinates.lat,
-          this.center_coordinates.lng
-        ),
+        name: { de_CH: "New Spot" }, // TODO change to user lang
+        location: new GeoPoint(center_coordinates.lat, center_coordinates.lng),
       }
     );
 
@@ -571,19 +580,20 @@ export class MapPageComponent implements OnInit {
   }
 
   loadSpotsForTiles(tilesToLoad: { x: number; y: number }[]) {
-    this._dbService.getSpotsForTiles(tilesToLoad).subscribe(
-      (spots) => {
-        if (spots.length > 0) {
-          let tile = spots[0].data.tile_coordinates.z16;
-          this.loadedSpots[`z${16}_${tile.x}_${tile.y}`] = spots;
-          this.updateVisibleSpots();
-        }
-      },
-      (error) => {
-        console.error(error);
-      },
-      () => {} // complete
-    );
+    console.log("loading spots for tiles..." + tilesToLoad.toString());
+    // this._dbService.getSpotsForTiles(tilesToLoad).subscribe(
+    //   (spots) => {
+    //     if (spots.length > 0) {
+    //       let tile = spots[0].data.tile_coordinates.z16;
+    //       this.loadedSpots[`z${16}_${tile.x}_${tile.y}`] = spots;
+    //       this.updateVisibleSpots();
+    //     }
+    //   },
+    //   (error) => {
+    //     console.error(error);
+    //   },
+    //   () => {} // complete
+    //);
   }
 
   spotMarkerMoved(event: { coords: google.maps.LatLngLiteral }) {
@@ -598,7 +608,7 @@ export class MapPageComponent implements OnInit {
   }
   closeSpot() {
     this.selectedSpot = null;
-    this.upadateMapURL(this.center_coordinates, this.zoom);
+    //this.upadateMapURL(this.center_coordinates, this.start_zoom);
   }
 
   /**
