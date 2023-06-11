@@ -3,16 +3,7 @@
     <mat-tab *ngIf="authService.isSignedIn" label="Updates">
       <div class="container p-0">
         <div class="row posts">
-          <div
-            class="
-              col-12 col-md-8
-              offset-md-2
-              col-lg-6
-              offset-lg-3
-              text-center
-              p-0
-            "
-          >
+          <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3 p-0">
             <app-post-collection
               #updateCollection
               [posts]="updatePosts"
@@ -26,16 +17,7 @@
     <mat-tab label="Top posts">
       <div class="container p-0">
         <div class="row posts">
-          <div
-            class="
-              col-12 col-md-8
-              offset-md-2
-              col-lg-6
-              offset-lg-3
-              text-center
-              p-0
-            "
-          >
+          <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3 p-0">
             <app-post-collection
               [posts]="todaysTopPosts"
               [title]="'Top posts'"

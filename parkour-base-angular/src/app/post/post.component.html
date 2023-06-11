@@ -88,13 +88,11 @@
     </div>
   </a>
 
-  <mat-card-content>{{ post.body }}</mat-card-content>
+  <mat-card-content class="text-left">{{ post.body }}</mat-card-content>
   <mat-card-actions>
     <div class="mr-2">
-      <button color="accent" mat-icon-button (click)="likeButtonPress(post)">
-        <mat-icon [color]="likedByUser ? 'accent' : 'primary'">
-          thumb_up
-        </mat-icon>
+      <button mat-icon-button (click)="likeButtonPress(post)">
+        <mat-icon [color]="likedByUser ? 'accent' : ''"> thumb_up </mat-icon>
       </button>
       <strong class="mat-b"
         ><app-fancy-counter [number]="post.likeCount || 0"></app-fancy-counter
