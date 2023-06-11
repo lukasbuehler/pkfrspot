@@ -1,0 +1,10 @@
+div.nav-rail-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  justify-content: stretch;
+
+  ::ng-deep app-nav-rail-content {
+    width: 100%;
+  }
+}

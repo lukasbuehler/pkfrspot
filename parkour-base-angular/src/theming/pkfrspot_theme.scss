@@ -1,7 +1,7 @@
 @use "@angular/material" as mat;
 
 @include mat.core();
-@include mat.legacy-core();
+@include mat.legacy-core(); // TODO remove after removing legacy components
 
 $md-primary: (
   50: #e7ecfc,
@@ -108,7 +108,7 @@ $my-accent: mat.define-palette($md-secondary);
 // The "warn" palette is optional and defaults to red if not specified.
 $my-warn: mat.define-palette($md-warn);
 
-$my-theme: mat.define-dark-theme(
+$pkfrspot-dark-theme: mat.define-dark-theme(
   (
     color: (
       primary: $my-primary,
@@ -119,6 +119,25 @@ $my-theme: mat.define-dark-theme(
     density: 0,
   )
 );
+$pkfrspot-light-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $my-primary,
+      accent: $my-accent,
+      warn: $my-warn,
+    ),
+    typography:
+      mat.define-typography-config(
+        $font-family: 'Roboto, "Helvetica Neue", sans-serif',
+      ),
+    density: 0,
+  )
+);
 
-@include mat.all-component-themes($my-theme);
-@include mat.all-legacy-component-themes($my-theme);
+$my-typography: mat.define-typography-config();
+@include mat.typography-hierarchy($my-typography);
+
+@include mat.all-component-themes($pkfrspot-dark-theme);
+@include mat.all-legacy-component-themes(
+  $pkfrspot-dark-theme
+); // TODO remove after removing legacy components

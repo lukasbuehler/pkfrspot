@@ -97,6 +97,9 @@ import { DiscoverSpotsViewComponent } from "./discover-spots-view/discover-spots
 import { MediaPreviewGridComponent } from "./media-preview-grid/media-preview-grid.component";
 
 import { GoogleMapsModule } from "@angular/google-maps";
+import { NavRailComponent } from './nav-rail/nav-rail.component';
+import { NavRailContainerComponent } from './nav-rail-container/nav-rail-container.component';
+import { NavRailContentComponent } from './nav-rail-content/nav-rail-content.component';
 
 @NgModule({
   declarations: [
@@ -133,6 +136,9 @@ import { GoogleMapsModule } from "@angular/google-maps";
     ForgotPasswordPageComponent,
     DiscoverSpotsViewComponent,
     MediaPreviewGridComponent,
+    NavRailComponent,
+    NavRailContainerComponent,
+    NavRailContentComponent,
   ],
   imports: [
     BrowserModule,
