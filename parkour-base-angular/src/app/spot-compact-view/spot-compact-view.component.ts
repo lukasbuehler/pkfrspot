@@ -6,7 +6,7 @@ import {
   EventEmitter,
   ViewChild,
 } from "@angular/core";
-import { MatLegacyProgressBar as MatProgressBar } from "@angular/material/legacy-progress-bar";
+import { MatProgressBar } from "@angular/material/progress-bar";
 import { Spot } from "src/scripts/db/Spot";
 import { DatabaseService } from "../database.service";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";

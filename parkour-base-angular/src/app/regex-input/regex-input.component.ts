@@ -20,9 +20,9 @@ import {
   ValidatorFn,
 } from "@angular/forms";
 import {
-  MatLegacyFormField as MatFormField,
-  MatLegacyFormFieldControl as MatFormFieldControl,
-} from "@angular/material/legacy-form-field";
+  MatFormField,
+  MatFormFieldControl,
+} from "@angular/material/form-field";
 import { Subject } from "rxjs";
 
 interface ExpressionFlags {

@@ -5,7 +5,7 @@ import { DatabaseService } from "../database.service";
 import { AuthenticationService } from "../authentication.service";
 //import { PlyrComponent } from "ngx-plyr";
 import { MapHelper } from "../../scripts/map_helper";
-import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { Timestamp } from "firebase/firestore";
 

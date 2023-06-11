@@ -6,7 +6,7 @@ import {
   Inject,
   AfterViewInit,
 } from "@angular/core";
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from "@angular/material/legacy-dialog";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 import { Post } from "src/scripts/db/Post";
 import { Spot } from "src/scripts/db/Spot";
@@ -15,7 +15,7 @@ import { StorageService, StorageFolder } from "../storage.service";
 import { DatabaseService } from "../database.service";
 
 import { UntypedFormControl } from "@angular/forms";
-import { MatLegacyAutocomplete as MatAutocomplete } from "@angular/material/legacy-autocomplete";
+import { MatAutocomplete } from "@angular/material/autocomplete";
 import { MediaType } from "src/scripts/db/Interfaces";
 import { Observable } from "rxjs";
 
@@ -99,7 +99,8 @@ export class EditPostDialogComponent implements AfterViewInit {
         this.mediaLink.platform = "YouTube";
 
         // get the youtube video id
-        let videoIdRegEx = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/gi;
+        let videoIdRegEx =
+          /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/gi;
         let videoIdMatch = videoIdRegEx.exec(str);
         if (videoIdMatch) {
           let id = videoIdMatch[1];

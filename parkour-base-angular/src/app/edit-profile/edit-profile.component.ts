@@ -11,7 +11,7 @@ import { AuthenticationService } from "../authentication.service";
 import * as Croppie from "croppie";
 import { DatabaseService } from "../database.service";
 import { StorageFolder, StorageService } from "../storage.service";
-import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Timestamp } from "firebase/firestore";
 
 @Component({

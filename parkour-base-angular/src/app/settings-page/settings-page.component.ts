@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute } from "@angular/router";
 import { Location } from "@angular/common";
 import { AuthenticationService } from "../authentication.service";
@@ -59,11 +59,10 @@ export class SettingsPageComponent implements OnInit {
     */
   ];
 
-  
   selectedPoint: string = "profile";
-  
+
   hasChanges: boolean = false;
-  
+
   speedDialButtonConfig: SpeedDialFabButtonConfig = {
     mainButton: {
       icon: "save",
@@ -83,19 +82,21 @@ export class SettingsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.emailAddress = this.authService?.user?.email || "";
-    this.authService.authState$.subscribe(user => {
+    this.authService.authState$.subscribe((user) => {
       this.emailAddress = user.email;
-    })
+    });
 
     let tab: string = this.route.snapshot.paramMap.get("tab") || "";
-    if(tab) {
+    if (tab) {
       this.openMenuPoint(tab);
     }
   }
 
   openMenuPoint(pointId: string) {
     // Check if this point id exists
-    if(this.menuPoints.findIndex((menuPoint) => menuPoint.id === pointId) >= 0) {
+    if (
+      this.menuPoints.findIndex((menuPoint) => menuPoint.id === pointId) >= 0
+    ) {
       this.selectedPoint = pointId;
       this.updateURL(pointId);
     }
@@ -107,20 +108,26 @@ export class SettingsPageComponent implements OnInit {
   }
 
   verifyUserEmailAddress() {
-    if(this.authService?.user?.emailVerified === true)
-    {
+    if (this.authService?.user?.emailVerified === true) {
       return;
     }
 
-    this.authService.resendVerificationEmail().then(() => {
-      this._snackbar.open("Verification E-Mail successfully re-sent", "Dismiss", {
-        duration: 3000,
-        horizontalPosition: "center",
-        verticalPosition: "bottom",
-      });
-    }, err => {
-      console.error("There was an error sending the E-mail verification")
-    })
+    this.authService.resendVerificationEmail().then(
+      () => {
+        this._snackbar.open(
+          "Verification E-Mail successfully re-sent",
+          "Dismiss",
+          {
+            duration: 3000,
+            horizontalPosition: "center",
+            verticalPosition: "bottom",
+          }
+        );
+      },
+      (err) => {
+        console.error("There was an error sending the E-mail verification");
+      }
+    );
   }
 
   changeEmailAddress() {
