@@ -240,6 +240,8 @@ export class MapPageComponent implements OnInit {
         }
         this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].push(spot);
       }
+      this.updateVisibleDots();
+      this.updateVisibleSpots();
     });
   }
 

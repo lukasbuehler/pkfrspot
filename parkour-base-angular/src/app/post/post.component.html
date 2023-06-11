@@ -92,7 +92,7 @@
   <mat-card-actions>
     <div class="mr-2">
       <button mat-icon-button (click)="likeButtonPress(post)">
-        <mat-icon [color]="likedByUser ? 'accent' : ''"> thumb_up </mat-icon>
+        <mat-icon [color]="likedByUser ? 'primary' : ''"> thumb_up </mat-icon>
       </button>
       <strong class="mat-b"
         ><app-fancy-counter [number]="post.likeCount || 0"></app-fancy-counter
@@ -101,19 +101,19 @@
 
     <div *ngIf="false" class="mr-2">
       <button mat-icon-button>
-        <mat-icon color="primary">comment</mat-icon>
+        <mat-icon>comment</mat-icon>
       </button>
       <span>{{ post.commentCount || 0 }}</span>
     </div>
 
     <button *ngIf="false" mat-icon-button>
-      <mat-icon color="primary">share</mat-icon>
+      <mat-icon>share</mat-icon>
     </button>
 
     <div class="spacer"></div>
 
     <button mat-icon-button [matMenuTriggerFor]="postMenu">
-      <mat-icon color="primary">more_horiz</mat-icon>
+      <mat-icon>more_horiz</mat-icon>
     </button>
   </mat-card-actions>
 </mat-card>

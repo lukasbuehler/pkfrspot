@@ -42,10 +42,10 @@ export class AuthenticationService {
   public auth = getAuth();
 
   constructor(private _databaseService: DatabaseService) {
-    // this.auth.onAuthStateChanged(
-    //   this.firebaseAuthChangeListener,
-    //   this.firebaseAuthChangeError
-    // );
+    this.auth.onAuthStateChanged(
+      this.firebaseAuthChangeListener,
+      this.firebaseAuthChangeError
+    );
   }
 
   private _currentFirebaseUser: FirebaseUser = null;

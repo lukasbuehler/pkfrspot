@@ -50,7 +50,7 @@ div.map-container {
   z-index: 2;
 
   bottom: 30px;
-  right: 30px;
+  right: 20px;
 }
 
 #exitBoundsEditFab {
@@ -80,8 +80,8 @@ mat-card {
   position: absolute;
   z-index: 2;
 
-  right: 20px;
-  bottom: 35px;
+  right: 28px;
+  top: 100px;
 }
 
 #map {
@@ -90,6 +90,7 @@ mat-card {
 }
 
 div.search-group {
+  pointer-events: none;
   position: absolute;
   top: 0px;
   z-index: 2;
@@ -113,6 +114,7 @@ div.search-group {
   padding-right: 20px;
 
   > * {
+    pointer-events: visible;
     background-color: #2a2a2d;
     border-radius: 28px;
     width: 100%;

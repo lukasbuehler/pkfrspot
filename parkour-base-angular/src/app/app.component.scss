@@ -43,9 +43,11 @@ mat-toolbar {
 }
 .profile-icon-button {
   img {
-    width: 32px;
-    height: 32px;
+    width: 75%;
+    height: 75%;
     border-radius: 50%;
+    margin-top: -17px;
+    margin-bottom: -16px;
   }
 }
 ::ng-deep .user-display > span.mat-button-wrapper {

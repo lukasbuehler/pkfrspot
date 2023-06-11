@@ -1,16 +1,16 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/environment";
-import { Observable, catchError, map, of } from "rxjs";
+import { Observable, ReplaySubject, catchError, map, of, take } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
 export class MapsApiService {
-  isApiLoaded$: Observable<boolean>;
+  isApiLoaded$: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
   constructor(private http: HttpClient) {
-    this.isApiLoaded$ = http
+    http
       .jsonp(
         "https://maps.googleapis.com/maps/api/js?key=" +
           environment.keys.google_maps,
@@ -22,7 +22,9 @@ export class MapsApiService {
           console.error("error loading google maps API", err);
           return of(false);
         })
-      );
+      )
+      .pipe(take(1))
+      .subscribe(this.isApiLoaded$);
   }
 
   reverseGeocoding(location: google.maps.LatLngLiteral): Observable<any> {
