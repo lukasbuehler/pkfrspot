@@ -15,37 +15,23 @@
   >
     <map-marker
       *ngFor="let dot of visibleDots"
-      iconUrl="/assets/icons/favicon-16x16.png"
-      [latitude]="dot.location.latitude"
-      [longitude]="dot.location.longitude"
-      [markerDraggable]="false"
-      [opacity]="zoomDotOpacity"
+      [position]="dot"
+      [options]="spotDotMarkerOptions"
     ></map-marker>
 
     <map-circle
       *ngFor="let spot of visibleSpots"
-      [fillColor]="'#304ffe'"
-      [latitude]="spot.location.lat"
-      [longitude]="spot.location.lng"
-      [circleDraggable]="false"
-      [strokeWeight]="0"
-      [strokeOpacity]="0"
-      [radius]="5"
-      [visible]="true"
-      [fillOpacity]="0.75"
+      [center]="spot.location"
+      [radius]="10"
+      [options]="spotCircleOptions"
       (circleClick)="openSpot(spot)"
     >
       <map-polygon
-        *ngIf="selectedSpot?.hasBounds()"
+        *ngIf="spot?.hasBounds()"
         #polygon
+        [options]="spotPolygonOptions"
         [paths]="spot.paths"
-        [fillColor]="'#304ffe'"
-        [strokeColor]="'#304ffe'"
-        [fillOpacity]="0.1"
-        [editable]="
-          isEditing && spot && selectedSpot && spot.id === selectedSpot.id
-        "
-        (polyClick)="openSpot(spot)"
+        (polygonClick)="openSpot(spot)"
       ></map-polygon>
     </map-circle>
 

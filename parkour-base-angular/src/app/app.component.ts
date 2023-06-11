@@ -68,9 +68,9 @@ export class AppComponent implements OnInit {
     },
     buttons: [
       {
-        name: "Home",
+        name: "Posts",
         link: "/",
-        icon: "home",
+        icon: "question_answer",
         badge: {
           number: 0,
           color: "accent",

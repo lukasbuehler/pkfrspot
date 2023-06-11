@@ -24,9 +24,10 @@ import { SpotCompactViewComponent } from "../spot-compact-view/spot-compact-view
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
 import { AuthenticationService } from "../authentication.service";
 import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
-import { GoogleMap, MapPolygon } from "@angular/google-maps";
+import { GoogleMap, MapPolygon, MapAnchorPoint } from "@angular/google-maps";
 import { GeoPoint } from "firebase/firestore";
 import { MapsApiService } from "../maps-api.service";
+import { take } from "rxjs";
 
 @Component({
   selector: "app-map-page",
@@ -92,6 +93,37 @@ export class MapPageComponent implements OnInit {
       url: "/assets/icons/marker.png",
     },
   };
+  spotDotMarkerOptions: google.maps.MarkerOptions = {
+    draggable: false, // TODO needs to be true if isEditing is true
+    clickable: false,
+    icon: {
+      url: "/assets/icons/favicon-16x16.png",
+    },
+    opacity: 0.5,
+  };
+  spotCircleOptions: google.maps.CircleOptions = {
+    fillColor: "#b8c4ff",
+    fillOpacity: 0.75,
+    draggable: false,
+    clickable: true,
+    strokeWeight: 0,
+  };
+  /*
+  [fillColor]="'#304ffe'"
+        [strokeColor]="'#304ffe'"
+        [fillOpacity]="0.1"
+        [editable]="
+          isEditing && spot && selectedSpot && spot.id === selectedSpot.id
+        "
+  */
+  spotPolygonOptions: google.maps.PolygonOptions = {
+    fillColor: "#304ffe",
+    strokeColor: "#304ffe",
+    fillOpacity: 0.1,
+    editable: false,
+    draggable: false,
+    clickable: true,
+  };
 
   isEditing: boolean = false;
   selectedSpot: Spot.Class = null;
@@ -147,7 +179,14 @@ export class MapPageComponent implements OnInit {
     private router: Router,
     private _zone: NgZone,
     private _snackbar: MatSnackBar
-  ) {}
+  ) {
+    // wait for google maps to initialize
+    // this.mapsService.isApiLoaded$.pipe(take(1)).subscribe((success) => {
+    //   if (success) {
+    //     this.spotDotMarkerOptions.anchorPoint = new google.maps.Point(0.5, 0.5);
+    //   }
+    // });
+  }
 
   ngOnInit() {
     let spotId: string = this.route.snapshot.paramMap.get("spotID") || "";
@@ -189,6 +228,19 @@ export class MapPageComponent implements OnInit {
     } else {
       this.setStartMap({ lat: Number(lat), lng: Number(lng) }, Number(zoom));
     }
+
+    // TODO remove
+    this._dbService.getTestSpots().subscribe((spots) => {
+      // add all these loaded spots to the loaded spots array
+      for (let spot of spots) {
+        let tile = spot.data.tile_coordinates.z16;
+        if (!this.loadedSpots[`z${16}_${tile.x}_${tile.y}`]) {
+          // the tile was not loaded before
+          this.loadedSpots[`z${16}_${tile.x}_${tile.y}`] = [];
+        }
+        this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].push(spot);
+      }
+    });
   }
 
   setStartMap(coords: google.maps.LatLngLiteral, zoom: number) {
@@ -211,6 +263,7 @@ export class MapPageComponent implements OnInit {
   }
 
   boundsChanged() {
+    //console.log("bounds changed");
     let zoomLevel = this.map.getZoom();
     let bounds = this.map.getBounds();
 
@@ -239,43 +292,42 @@ export class MapPageComponent implements OnInit {
       this.visibleDots = [];
       // inside this zoom level we are constantly loading spots if new tiles become visible
 
-      this.loadNewSpotOnTiles(northEastTileCoords, southWestTileCoords);
+      //this.loadNewSpotOnTiles(northEastTileCoords, southWestTileCoords);
       this.updateVisibleSpots();
     } else {
       // hide the spots and show the dots
       this.visibleSpots = [];
-      if (zoomLevel <= 2) {
-        zoomLevel = 2;
-        this._northEastTileCoordsZ16.x = 0;
-        this._northEastTileCoordsZ16.y = 0;
-        this._southWestTileCoordsZ16.x = (1 << 16) - 1;
-        this._southWestTileCoordsZ16.y = (1 << 16) - 1;
-      }
-      if (zoomLevel <= this._loadAllSpotsZoomLevel - 2) {
-        if (zoomLevel % 2 !== 0) {
-          zoomLevel--;
-        }
-        const tileCoords: { ne: google.maps.Point; sw: google.maps.Point } = {
-          ne: new google.maps.Point(
-            this._northEastTileCoordsZ16.x >> (16 - zoomLevel),
-            this._northEastTileCoordsZ16.y >> (16 - zoomLevel)
-          ),
-          sw: new google.maps.Point(
-            this._southWestTileCoordsZ16.x >> (16 - zoomLevel),
-            this._southWestTileCoordsZ16.y >> (16 - zoomLevel)
-          ),
-        };
-
-        this.loadNewSpotDotsOnTiles(zoomLevel, tileCoords.ne, tileCoords.sw);
-      }
-
       this.updateVisibleDots();
+      //   if (zoomLevel <= 2) {
+      //     zoomLevel = 2;
+      //     this._northEastTileCoordsZ16.x = 0;
+      //     this._northEastTileCoordsZ16.y = 0;
+      //     this._southWestTileCoordsZ16.x = (1 << 16) - 1;
+      //     this._southWestTileCoordsZ16.y = (1 << 16) - 1;
+      //   }
+      //   if (zoomLevel <= this._loadAllSpotsZoomLevel - 2) {
+      //     if (zoomLevel % 2 !== 0) {
+      //       zoomLevel--;
+      //     }
+      //     const tileCoords: { ne: google.maps.Point; sw: google.maps.Point } = {
+      //       ne: new google.maps.Point(
+      //         this._northEastTileCoordsZ16.x >> (16 - zoomLevel),
+      //         this._northEastTileCoordsZ16.y >> (16 - zoomLevel)
+      //       ),
+      //       sw: new google.maps.Point(
+      //         this._southWestTileCoordsZ16.x >> (16 - zoomLevel),
+      //         this._southWestTileCoordsZ16.y >> (16 - zoomLevel)
+      //       ),
+      //     };
+
+      // this.loadNewSpotDotsOnTiles(zoomLevel, tileCoords.ne, tileCoords.sw);
+      //}
     }
   }
 
   centerChanged() {
     let center: google.maps.LatLngLiteral = this.map.getCenter().toJSON();
-    //this.upadateMapURL(center, this.start_zoom);
+    this.upadateMapURL(center, this.map.getZoom());
   }
 
   calculateAllDotRadii() {
@@ -304,8 +356,7 @@ export class MapPageComponent implements OnInit {
 
   zoomChanged() {
     let newZoom = this.map.getZoom();
-    this.zoomDotOpacity = this.zoomDotOpacities[newZoom];
-    //this.upadateMapURL(this.center_coordinates, newZoom);
+    this.upadateMapURL(this.map.getCenter().toJSON(), newZoom);
   }
 
   upadateMapURL(center: google.maps.LatLngLiteral, zoom: number) {
@@ -359,6 +410,8 @@ export class MapPageComponent implements OnInit {
         this.selectedSpot = this.visibleSpots[selectedSpotIndexInVisibleSpots];
       }
     }
+
+    console.log(this.visibleSpots);
   }
 
   loadNewSpotOnTiles(
@@ -410,21 +463,20 @@ export class MapPageComponent implements OnInit {
       }
     }
 
-    this._dbService.getPreviewSpotsForTiles(zoom, tilesToLoad).subscribe(
-      (spots) => {
-        if (spots.length > 0) {
-          let tile = spots[0].data.tile_coordinates.z16;
-          this.loadedSpots[`z${zoom}_${tile.x}_${tile.y}`] = spots;
-          //console.log("new sposts laoded:");
-          //console.log(spots);
-          this.updateVisibleDots();
-        }
-      },
-      (error) => {
-        console.error(error);
-      },
-      () => {} // complete
-    );
+    // this._dbService.getPreviewSpotsForTiles(zoom, tilesToLoad).subscribe(
+    //   (spots) => {
+    //     if (spots.length > 0) {
+    //       let tile = spots[0].data.tile_coordinates.z16;
+    //       this.loadedSpots[`z${zoom}_${tile.x}_${tile.y}`] = spots;
+    //       //console.log("new sposts laoded:");
+    //       //console.log(spots);
+    //       this.updateVisibleDots();
+    //     }
+    //   },
+    //   (error) => {
+    //     console.error(error);
+    //   }
+    // );
   }
 
   updateVisibleDots() {
@@ -434,13 +486,7 @@ export class MapPageComponent implements OnInit {
     this.searchSpots = allSpots;
 
     this.visibleDots = allSpots.map((spot) => {
-      return {
-        location: {
-          latitude: spot.location.lat,
-          longitude: spot.location.lng,
-        },
-        value: 1,
-      };
+      return spot.location;
     });
   }
 

@@ -232,8 +232,6 @@ export class DatabaseService {
                 doc.data() as Spot.Schema,
                 !!isNotForMap
               );
-              console.log(newSpot);
-
               spots.push(newSpot);
             } else {
               console.error("Spot could not be cast to Spot.Schema!");
