@@ -85,6 +85,13 @@ export class MapPageComponent implements OnInit {
     styles: this.mapStylesConfig,
   };
   mapTypeId: string = "roadmap";
+  selectedSpotMarkerOptions: google.maps.MarkerOptions = {
+    draggable: false, // TODO needs to be true if isEditing is true
+    clickable: false,
+    icon: {
+      url: "/assets/icons/marker.png",
+    },
+  };
 
   isEditing: boolean = false;
   selectedSpot: Spot.Class = null;

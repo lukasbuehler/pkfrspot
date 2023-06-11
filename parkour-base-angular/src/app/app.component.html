@@ -1,5 +1,11 @@
 <app-nav-rail-container>
   <app-nav-rail class="mat-elevation-z1 d-none d-md-block">
+    <span
+      class="d-none d-md-block text-center text-light text-wrap p-2 mb-3 {{
+        navbarConfig.logo.class
+      }}"
+      >{{ navbarConfig.logo.text }}</span
+    >
     <button
       *ngFor="let button of navbarConfig.buttons"
       routerLink="{{ button.link }}"

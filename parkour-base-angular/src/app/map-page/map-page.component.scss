@@ -88,3 +88,67 @@ mat-card {
   height: 100%;
   width: 100%;
 }
+
+div.search-group {
+  position: absolute;
+  top: 0px;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 599px) {
+    // small screen
+    left: 0px;
+    width: 100%;
+    top: 56px;
+  }
+  @media (min-width: 600px) {
+    // desktop (large screen)
+    background: transparent;
+    left: 80px;
+    width: 420px;
+  }
+  padding-left: 20px;
+  padding-right: 20px;
+
+  > * {
+    background-color: #2a2a2d;
+    border-radius: 28px;
+    width: 100%;
+    margin-top: 20px;
+
+    ::ng-deep mat-card {
+      border-radius: 28px;
+    }
+  }
+
+  > .spot-search-field {
+    height: 56px;
+    overflow: hidden;
+    border: none;
+
+    ::ng-deep .mat-form-field-underline {
+      display: none;
+    }
+    ::ng-deep .mat-form-field-infix {
+      padding-bottom: 1em;
+    }
+    ::ng-deep .mat-form-field-wrapper {
+      height: 100%;
+      padding-bottom: 0px;
+    }
+    ::ng-deep .mat-form-field-flex {
+      align-items: center;
+      height: 100%;
+      padding-top: 0px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+
+  > .search-results {
+    flex-grow: 1;
+    border-radius: 28px 28px 0px 0px;
+  }
+}

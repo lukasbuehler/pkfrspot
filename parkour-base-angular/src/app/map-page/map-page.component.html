@@ -49,18 +49,39 @@
       ></map-polygon>
     </map-circle>
 
-    <agm-marker
+    <map-marker
       *ngIf="selectedSpot"
-      [agmFitBounds]="true"
-      [latitude]="selectedSpot.location.lat"
-      [longitude]="selectedSpot.location.lng"
+      [options]="selectedSpotMarkerOptions"
+      [position]="selectedSpot.location"
       [title]="selectedSpot.name"
-      iconUrl="/assets/icons/marker.png"
-      [markerDraggable]="isEditing"
-      [markerClickable]="true"
-      (dragEnd)="spotMarkerMoved($event)"
-    ></agm-marker>
+    ></map-marker>
   </google-map>
+
+  <div class="search-group">
+    <mat-form-field class="spot-search-field" appearance="fill">
+      <input matInput placeholder="Find spots" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <app-spot-compact-view
+      *ngIf="selectedSpot"
+      #spotDetail
+      [spot]="selectedSpot"
+      [flat]="true"
+      [dismissable]="true"
+      [infoOnly]="false"
+      [editable]="true"
+      [(isEditing)]="isEditing"
+      (dismiss)="closeSpot()"
+      (addBoundsClick)="addBounds()"
+      (callGetPathsPromiseFunction)="getPathsFromSpotPolygon()"
+      (focusClick)="focusSpot(selectedSpot)"
+      (saveClick)="saveSpot($event)"
+      (discardClick)="discardEdit()"
+    ></app-spot-compact-view>
+
+    <div *ngIf="false" class="search-results"></div>
+  </div>
 
   <button
     mat-mini-fab
