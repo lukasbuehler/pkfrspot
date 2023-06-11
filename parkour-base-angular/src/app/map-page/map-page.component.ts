@@ -30,6 +30,9 @@ import { AuthenticationService } from "../authentication.service";
 import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
 import { GoogleMap, MapPolygon } from "@angular/google-maps";
 import { GeoPoint } from "firebase/firestore";
+import { Observable, catchError, map, of } from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { MapsApiService } from "../maps-api.service";
 
 @Component({
   selector: "app-map-page",
@@ -37,8 +40,6 @@ import { GeoPoint } from "firebase/firestore";
   styleUrls: ["./map-page.component.scss"],
 })
 export class MapPageComponent implements OnInit {
-  GOOGLE_MAPS_API_KEY: string = environment.keys.google_maps;
-
   @ViewChild("map", { static: true }) map: GoogleMap;
   @ViewChildren("polygon", { read: MapPolygon })
   polygons: QueryList<MapPolygon>;
@@ -128,6 +129,7 @@ export class MapPageComponent implements OnInit {
 
   constructor(
     public authService: AuthenticationService,
+    public mapsService: MapsApiService,
     private _dbService: DatabaseService,
     private route: ActivatedRoute,
     private location: Location,

@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientJsonpModule, HttpClientModule } from "@angular/common/http";
 
 import { AppRoutingModule } from "./app-routing.module";
 
@@ -140,13 +140,15 @@ import { GoogleMapsModule } from "@angular/google-maps";
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
+    HttpClientJsonpModule,
 
     // firestore
     provideFirebaseApp(() => initializeApp(environment.keys.firebaseConfig)),
     provideFirestore(() => {
-      const firestore = getFirestore();
-      connectFirestoreEmulator(firestore, "localhost", 8080);
-      return firestore;
+      //   const firestore = getFirestore();
+      //   connectFirestoreEmulator(firestore, "localhost", 8080);
+      //   return firestore;
+      return getFirestore();
     }),
     provideStorage(() => getStorage()),
 

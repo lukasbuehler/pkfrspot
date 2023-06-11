@@ -3,6 +3,7 @@ import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack
 import { Router, RoutesRecognized } from "@angular/router";
 import { filter, map } from "rxjs/operators";
 import { AuthenticationService } from "./authentication.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-root",
@@ -14,7 +15,9 @@ export class AppComponent implements OnInit {
     public router: Router,
     public authService: AuthenticationService,
     private _snackbar: MatSnackBar
-  ) {}
+  ) {
+    // initialize google maps
+  }
 
   currentPageName = "";
 
