@@ -4,8 +4,11 @@
   [class.is-open]="isOpen"
   (cdkDropListDropped)="onDrop($event)"
 >
-  <div *ngIf="!isOpen" class="spacer" cdkDrag></div>
+  <div [style.order]="isOpen ? 2 : 1" class="spacer" cdkDrag></div>
   <div
+    #bottomSheet
+    id="bottomSheet"
+    [style.order]="isOpen ? 1 : 2"
     class="sheet mat-elevation-z3"
     cdkDragBoundary=".sheet-region"
     cdkDrag
@@ -21,5 +24,4 @@
       <ng-content></ng-content>
     </div>
   </div>
-  <div *ngIf="isOpen" class="spacer" cdkDrag></div>
 </div>

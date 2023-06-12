@@ -14,6 +14,8 @@ div.sheet-region {
   position: absolute;
   background-color: transparent;
   height: calc(200% - $sheet-header-height);
+  display: flex;
+  flex-direction: column;
 
   top: 0;
   left: 0;
@@ -21,6 +23,7 @@ div.sheet-region {
   bottom: calc(-100% + $sheet-header-height);
 
   > div.spacer {
+    //background-color: #ffffff4b;
     position: relative;
     height: calc(50% - $sheet-header-height / 2);
   }

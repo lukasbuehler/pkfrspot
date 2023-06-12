@@ -70,7 +70,7 @@
     ></app-spot-compact-view>
 
     <app-bottom-sheet
-      [isOpen]="false"
+      [isOpen]="visibleSpots.length > 0"
       title="{{ visibleSpots.length }} spot{{
         visibleSpots.length === 1 ? '' : 's'
       }} in this area"

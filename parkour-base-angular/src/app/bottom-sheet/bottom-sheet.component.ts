@@ -1,5 +1,12 @@
+import {
+  trigger,
+  transition,
+  style,
+  animate,
+  state,
+} from "@angular/animations";
 import { CdkDragDrop } from "@angular/cdk/drag-drop/index.js";
-import { Component, Input } from "@angular/core";
+import { Component, Input, ViewChild } from "@angular/core";
 
 @Component({
   selector: "app-bottom-sheet",
@@ -7,8 +14,20 @@ import { Component, Input } from "@angular/core";
   styleUrls: ["./bottom-sheet.component.scss"],
 })
 export class BottomSheetComponent {
-  @Input() isOpen: boolean = false;
+  _isOpen: boolean = false;
+  @Input() set isOpen(value: boolean) {
+    this._isOpen = value;
+
+    // do something
+    console.log(this.bottomSheet.nativeElement.offsetTop);
+  }
+  get isOpen(): boolean {
+    return this._isOpen;
+  }
+
   @Input() title: string = "";
+
+  @ViewChild("bottomSheet", { static: true }) bottomSheet: any;
 
   onDrop(event: CdkDragDrop<string[]>) {
     if (event.previousIndex > event.currentIndex) {
