@@ -1,0 +1,43 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+@import "../../theming/pkfrspot_theme.scss";
+
+$color-config: mat.get-color-config($pkfrspot-dark-theme);
+$typography-config: mat.get-typography-config($pkfrspot-dark-theme);
+$primary-palette: map.get($color-config, "primary");
+$accent-palette: map.get($color-config, "accent");
+
+button {
+  font-family: mat.font-family($typography-config);
+  font-weight: mat.font-weight($typography-config, button);
+  font-size: mat.font-size($typography-config, button);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  background: transparent;
+  border: none;
+  margin-bottom: 14px;
+
+  > mat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+    width: 80%;
+    height: 32px;
+    border-radius: 16px;
+  }
+}
+button:hover {
+  > mat-icon {
+    background-color: #424242;
+  }
+}
+button:active {
+  > mat-icon {
+    //color: mat.get-color-from-palette($accent-palette, 500);
+    background-color: mat.get-color-from-palette($accent-palette, 900);
+  }
+}

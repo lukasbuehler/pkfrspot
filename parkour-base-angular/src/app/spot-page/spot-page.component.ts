@@ -29,11 +29,11 @@ import { UntypedFormControl } from "@angular/forms";
 import { map, startWith } from "rxjs/operators";
 
 @Component({
-  selector: "app-spot-compact-view",
-  templateUrl: "./spot-compact-view.component.html",
-  styleUrls: ["./spot-compact-view.component.scss"],
+  selector: "app-spot-page",
+  templateUrl: "./spot-page.component.html",
+  styleUrls: ["./spot-page.component.scss"],
 })
-export class SpotCompactViewComponent implements OnInit {
+export class SpotPageComponent implements OnInit {
   @Input() spot: Spot.Class;
   @Input() infoOnly: boolean = false;
   @Input() dismissable: boolean = false;
@@ -82,9 +82,9 @@ export class SpotCompactViewComponent implements OnInit {
   }
 
   constructor(
-    public authenticationService: AuthenticationService,
     private _dbService: DatabaseService,
-    private _storageService: StorageService
+    private _storageService: StorageService,
+    private _authenticationService: AuthenticationService
   ) {
     this.filteredCountries = this.stateCtrl.valueChanges.pipe(
       startWith(""),
@@ -162,7 +162,7 @@ export class SpotCompactViewComponent implements OnInit {
   editButtonClick() {
     this.editedSpot = Spot.clone(this.spot);
 
-    if (this.editable && this.authenticationService.isSignedIn) {
+    if (this.editable && this._authenticationService.isSignedIn) {
       this.isEditing = true;
       this.isEditingChange.emit(true);
     }
@@ -242,7 +242,7 @@ export class SpotCompactViewComponent implements OnInit {
               this._dbService,
               imageLink,
               MediaType.Image,
-              this.authenticationService.user.uid
+              this._authenticationService.user.uid
             );
           },
           (error) => {}

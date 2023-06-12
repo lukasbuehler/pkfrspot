@@ -6,15 +6,12 @@
       }}"
       >{{ navbarConfig.logo.text }}</span
     >
-    <button
+    <app-mat3-nav-button
       *ngFor="let button of navbarConfig.buttons"
-      routerLink="{{ button.link }}"
-    >
-      <mat-icon>
-        {{ button.icon }}
-      </mat-icon>
-      {{ button.name }}
-    </button>
+      [icon]="button.icon"
+      [label]="button.name"
+      [routerLink]="button.link"
+    ></app-mat3-nav-button>
   </app-nav-rail>
   <app-nav-rail-content>
     <mat-toolbar class="d-md-none mat-elevation-z1">

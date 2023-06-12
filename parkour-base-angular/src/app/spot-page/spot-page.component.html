@@ -64,113 +64,138 @@
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <!-- spot media swiper  -->
-    <swiper
-      class="spot-media-swiper"
-      *ngIf="spot.media && spot.media.length > 0"
-      [navigation]="true"
-      [pagination]="{ clickable: true }"
+    <mat-tab-group
+      *ngIf="!isEditing"
+      mat-stretch-tabs
+      (selectedTabChange)="selectedTabChanged($event.index)"
     >
-      <ng-template *ngFor="let mediaObj of spot.media" swiperSlide
-        ><img
-          *ngIf="mediaObj.type === 'image'"
-          src="{{ mediaObj.src }}"
-          class="spot-img"
-        />
-      </ng-template>
-    </swiper>
+      <mat-tab label="Details">
+        <!-- language selection -->
+        <div class="text-center mt-1">
+          Language:
+          <button mat-button class="p-0 ml-1" [matMenuTriggerFor]="navUserMenu">
+            <mat-icon>language</mat-icon>
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
 
-    <!-- Icon button row -->
-    <div
-      class="spot-button-row mb-3 mt-3"
-      *ngIf="authenticationService.isSignedIn"
-    >
-      <button
-        *ngIf="false"
-        mat-icon-button
-        matTooltip="Focus on map"
-        aria-label="Example icon button with a heart icon"
-        (click)="focusButtonClick()"
-      >
-        <mat-icon>center_focus_strong</mat-icon>
-      </button>
+          Current Language: {{ spotLanguage }}
+        </div>
 
-      <button
-        mat-icon-button
-        color="accent"
-        matTooltip="Save this spot"
-        aria-label="Example icon button with a bookmark icon"
-        (click)="bookmarkClick()"
-      >
-        <mat-icon>{{ bookmarked ? "bookmark" : "bookmark_border" }}</mat-icon>
-      </button>
-      <button
-        mat-icon-button
-        color="accent"
-        matTooltip="Mark as visited"
-        aria-label="Example icon button with a flag icon"
-        (click)="visitedClick()"
-      >
-        <mat-icon>{{ visited ? "flag" : "outlined_flag" }}</mat-icon>
-      </button>
-      <button
-        [disabled]="!visited"
-        mat-icon-button
-        color="accent"
-        [matTooltip]="
-          visited
-            ? 'Rate this spot'
-            : 'To rate this spot you need to mark it as visited'
-        "
-        aria-label="Example icon button with a half-star icon"
-        (click)="rateClick()"
-      >
-        <mat-icon>star</mat-icon>
-      </button>
-      <button
-        mat-icon-button
-        matTooltip="Edit this spot"
-        aria-label="Example icon button with a pencil icon"
-        (click)="editButtonClick()"
-      >
-        <mat-icon>edit</mat-icon>
-      </button>
-    </div>
-    <div class="spot-button-row mb-3 mt-3">
-      <button
-        mat-stroked-button
-        matTooltip="Share this spot"
-        aria-label="Example icon button with a share icon"
-        (click)="shareSpot()"
-      >
-        Share
-      </button>
-      <button
-        mat-stroked-button
-        matTooltip="Open in maps"
-        aria-label="Example icon button with an open in icon"
-        (click)="openSpotInMaps()"
-      >
-        Open in maps
-      </button>
-    </div>
+        <!-- spot media swiper  -->
+        <swiper
+          class="spot-media-swiper"
+          *ngIf="spot.media && spot.media.length > 0"
+          [navigation]="true"
+          [pagination]="{ clickable: true }"
+        >
+          <ng-template *ngFor="let mediaObj of spot.media" swiperSlide
+            ><img
+              *ngIf="mediaObj.type === 'image'"
+              src="{{ mediaObj.src }}"
+              class="spot-img"
+            />
+          </ng-template>
+        </swiper>
 
-    <div *ngIf="spot.description">
-      <h4 class="mat-body-2">Description</h4>
-      <p>
-        {{ spot.description }}
-      </p>
-    </div>
+        <!-- Icon button row -->
+        <div
+          class="spot-button-row mb-3 mt-3"
+          *ngIf="_authenticationService.isSignedIn"
+        >
+          <button
+            *ngIf="false"
+            mat-icon-button
+            matTooltip="Focus on map"
+            aria-label="Example icon button with a heart icon"
+            (click)="focusButtonClick()"
+          >
+            <mat-icon>center_focus_strong</mat-icon>
+          </button>
 
-    <div *ngIf="spot.address?.country">
-      <h4 *ngIf="spot.address?.formatted" class="mat-body-2">Address</h4>
-      <p>{{ spot.address.formatted }}</p>
-      <h4 class="mat-body-2">Country</h4>
-      <p>
-        {{ getCountryEmojiFromAlpha2(spot.address.country.short) }}
-        {{ getCountryNameFromShortCode(spot.address.country.short) }}
-      </p>
-    </div>
+          <button
+            mat-icon-button
+            color="accent"
+            matTooltip="Save this spot"
+            aria-label="Example icon button with a bookmark icon"
+            (click)="bookmarkClick()"
+          >
+            <mat-icon>{{
+              bookmarked ? "bookmark" : "bookmark_border"
+            }}</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="accent"
+            matTooltip="Mark as visited"
+            aria-label="Example icon button with a flag icon"
+            (click)="visitedClick()"
+          >
+            <mat-icon>{{ visited ? "flag" : "outlined_flag" }}</mat-icon>
+          </button>
+          <button
+            [disabled]="!visited"
+            mat-icon-button
+            color="accent"
+            [matTooltip]="
+              visited
+                ? 'Rate this spot'
+                : 'To rate this spot you need to mark it as visited'
+            "
+            aria-label="Example icon button with a half-star icon"
+            (click)="rateClick()"
+          >
+            <mat-icon>star</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            matTooltip="Edit this spot"
+            aria-label="Example icon button with a pencil icon"
+            (click)="editButtonClick()"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <div class="spot-button-row mb-3 mt-3">
+          <button
+            mat-stroked-button
+            matTooltip="Share this spot"
+            aria-label="Example icon button with a share icon"
+            (click)="shareSpot()"
+          >
+            Share
+          </button>
+          <button
+            mat-stroked-button
+            matTooltip="Open in maps"
+            aria-label="Example icon button with an open in icon"
+            (click)="openSpotInMaps()"
+          >
+            Open in maps
+          </button>
+        </div>
+
+        <div *ngIf="spot.description">
+          <h4 class="mat-body-2">Description</h4>
+          <p>
+            {{ spot.description }}
+          </p>
+        </div>
+
+        <div *ngIf="spot.address?.country">
+          <h4 *ngIf="spot.address?.formatted" class="mat-body-2">Address</h4>
+          <p>{{ spot.address.formatted }}</p>
+          <h4 class="mat-body-2">Country</h4>
+          <p>
+            {{ getCountryEmojiFromAlpha2(spot.address.country.short) }}
+            {{ getCountryNameFromShortCode(spot.address.country.short) }}
+          </p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Posts">
+        <app-post-collection [posts]="spotPosts"></app-post-collection>
+      </mat-tab>
+      <mat-tab label="History"> ... Coming soon ... </mat-tab>
+    </mat-tab-group>
 
     <!-- Media preview grid -->
     <app-media-preview-grid
