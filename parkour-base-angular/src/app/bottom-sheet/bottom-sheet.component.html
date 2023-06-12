@@ -1,4 +1,10 @@
-<div class="sheet-region">
+<div
+  class="sheet-region"
+  cdkDropList
+  [class.is-open]="isOpen"
+  (cdkDropListDropped)="onDrop($event)"
+>
+  <div *ngIf="!isOpen" class="spacer" cdkDrag></div>
   <div
     class="sheet mat-elevation-z3"
     cdkDragBoundary=".sheet-region"
@@ -9,13 +15,11 @@
       <div class="handle-region" cdkDragHandle>
         <div class="handle"></div>
       </div>
-      <h3 class="mat-h3">X spots in this area</h3>
+      <h3 class="mat-h3">{{ title }}</h3>
     </div>
     <div class="content">
-      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore
-      veritatis quaerat architecto modi velit magni, at porro qui debitis
-      praesentium, incidunt laboriosam asperiores minus officia facilis ullam
-      nostrum, cum illum!
+      <ng-content></ng-content>
     </div>
   </div>
+  <div *ngIf="isOpen" class="spacer" cdkDrag></div>
 </div>

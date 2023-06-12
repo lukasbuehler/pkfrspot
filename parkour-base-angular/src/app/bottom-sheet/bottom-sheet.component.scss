@@ -2,44 +2,57 @@
   flex-grow: 1;
   background-color: transparent !important;
   pointer-events: none !important;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0px !important;
 }
 
 $sheet-header-height: 90px;
+$handle-region-height: 40px;
 
 div.sheet-region {
-  position: relative;
+  position: absolute;
   background-color: transparent;
   height: calc(200% - $sheet-header-height);
 
-  > div.sheet {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: calc(-100% + $sheet-header-height);
 
-    height: calc(50% + $sheet-header-height / 2);
+  > div.spacer {
+    position: relative;
+    height: calc(50% - $sheet-header-height / 2);
+  }
+}
 
-    pointer-events: visible;
-    background-color: #2a2a2d;
-    border-radius: 28px 28px 0px 0px;
+div.sheet,
+.cdk-drag-preview {
+  border-radius: 28px 28px 0px 0px !important;
+  position: relative;
 
-    > div {
-      position: relative;
-    }
+  height: calc(50% + $sheet-header-height / 2);
 
-    > div.header {
-      padding: 20px;
-      padding-top: 0px;
-      height: $sheet-header-height;
-    }
-    > div.content {
-      padding: 20px;
-    }
+  pointer-events: visible;
+  background-color: #2a2a2d;
+  //border-radius: 28px 28px 0px 0px;
+
+  > div {
+    position: relative;
+  }
+
+  > div.header {
+    padding: 20px;
+    padding-top: 0px;
+    height: $sheet-header-height;
+  }
+  > div.content {
+    padding: 20px;
   }
 }
 
 div.handle-region {
-  height: 40px;
+  height: $handle-region-height;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -54,4 +67,19 @@ div.handle-region:hover {
   > div.handle {
     outline: white solid 1px;
   }
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+  height: $handle-region-height !important; /* this is a hack to allow the 
+  sheet to close again, since a full-size placeholder would prevent dropping 
+  onto a spacer */
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.sheet-region.cdk-drop-list-dragging .sheet:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }

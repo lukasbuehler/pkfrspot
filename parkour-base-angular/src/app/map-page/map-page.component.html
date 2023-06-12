@@ -69,7 +69,14 @@
       (discardClick)="discardEdit()"
     ></app-spot-compact-view>
 
-    <app-bottom-sheet></app-bottom-sheet>
+    <app-bottom-sheet
+      [isOpen]="false"
+      title="{{ visibleSpots.length }} spot{{
+        visibleSpots.length === 1 ? '' : 's'
+      }} in this area"
+    >
+      Spots go here...
+    </app-bottom-sheet>
   </div>
 
   <button
