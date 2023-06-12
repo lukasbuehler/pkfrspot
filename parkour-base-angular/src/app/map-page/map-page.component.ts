@@ -108,17 +108,9 @@ export class MapPageComponent implements OnInit {
     clickable: true,
     strokeWeight: 0,
   };
-  /*
-  [fillColor]="'#304ffe'"
-        [strokeColor]="'#304ffe'"
-        [fillOpacity]="0.1"
-        [editable]="
-          isEditing && spot && selectedSpot && spot.id === selectedSpot.id
-        "
-  */
   spotPolygonOptions: google.maps.PolygonOptions = {
-    fillColor: "#304ffe",
-    strokeColor: "#304ffe",
+    fillColor: "#b8c4ff",
+    strokeColor: "#b8c4ff",
     fillOpacity: 0.1,
     editable: false,
     draggable: false,
@@ -240,8 +232,10 @@ export class MapPageComponent implements OnInit {
         }
         this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].push(spot);
       }
-      this.updateVisibleDots();
-      this.updateVisibleSpots();
+
+      // TOOD change depending on zoom
+      //this.updateVisibleDots();
+      //this.updateVisibleSpots();
     });
   }
 

@@ -44,7 +44,10 @@
   </google-map>
 
   <div class="search-group">
-    <mat-form-field class="spot-search-field" appearance="fill">
+    <mat-form-field
+      class="spot-search-field mat-elevation-z3"
+      appearance="fill"
+    >
       <input matInput placeholder="Find spots" />
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
@@ -66,7 +69,7 @@
       (discardClick)="discardEdit()"
     ></app-spot-compact-view>
 
-    <div *ngIf="false" class="search-results"></div>
+    <app-bottom-sheet></app-bottom-sheet>
   </div>
 
   <button
@@ -77,7 +80,7 @@
     (click)="toggleMapStyle()"
   >
     <mat-icon aria-label="Button with magnifying lens to search for spots">
-      {{ mapOptions.mapTypeId === "ROADMAP" ? "terrain" : "map" }}
+      {{ mapOptions.mapTypeId.toLowerCase() === "roadmap" ? "terrain" : "map" }}
     </mat-icon>
   </button>
 

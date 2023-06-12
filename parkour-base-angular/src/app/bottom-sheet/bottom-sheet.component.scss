@@ -1,0 +1,57 @@
+:host {
+  flex-grow: 1;
+  background-color: transparent !important;
+  pointer-events: none !important;
+}
+
+$sheet-header-height: 90px;
+
+div.sheet-region {
+  position: relative;
+  background-color: transparent;
+  height: calc(200% - $sheet-header-height);
+
+  > div.sheet {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: calc(50% + $sheet-header-height / 2);
+
+    pointer-events: visible;
+    background-color: #2a2a2d;
+    border-radius: 28px 28px 0px 0px;
+
+    > div {
+      position: relative;
+    }
+
+    > div.header {
+      padding: 20px;
+      padding-top: 0px;
+      height: $sheet-header-height;
+    }
+    > div.content {
+      padding: 20px;
+    }
+  }
+}
+
+div.handle-region {
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  > div.handle {
+    height: 6px;
+    width: 50px;
+    background-color: #4a4a4f;
+    border-radius: 3px;
+  }
+}
+div.handle-region:hover {
+  > div.handle {
+    outline: white solid 1px;
+  }
+}
