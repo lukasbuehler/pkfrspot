@@ -261,7 +261,9 @@ export class MapPageComponent implements OnInit {
       this.start_coordinates.lng = coords.lng;
       this.start_zoom = Number(zoom || 16);
 
-      this.map.panTo(this.start_coordinates);
+      if (this.map) {
+        this.map.panTo(this.start_coordinates);
+      }
     }
     this.start_zoom = zoom || this.start_zoom || 16;
   }
@@ -420,7 +422,7 @@ export class MapPageComponent implements OnInit {
       }
     }
 
-    console.log(this.visibleSpots);
+    //console.log(this.visibleSpots);
   }
 
   loadNewSpotOnTiles(
@@ -694,7 +696,7 @@ export class MapPageComponent implements OnInit {
     const indexInTileArray =
       this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].indexOf(spot);
 
-    console.log(JSON.stringify(this.loadedSpots));
+    //console.log(JSON.stringify(this.loadedSpots));
 
     const loadedSpotRef: LoadedSpotReference = {
       spot: spot,

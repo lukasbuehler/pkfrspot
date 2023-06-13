@@ -15,99 +15,18 @@
   </app-nav-rail>
   <app-nav-rail-content>
     <!-- This is where the pages content gets displayed -->
-    <router-outlet></router-outlet>
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
 
     <!-- Bottom navigation bar -->
     <mat-toolbar class="d-md-none mat-elevation-z1">
-      <button
-        mat-icon-button
-        [matMenuTriggerFor]="navMenu"
-        class="d-md-none"
-        style="margin-left: -11px"
-      >
-        <mat-icon aria-label="Example icon-button with a heart icon"
-          >menu</mat-icon
-        >
-      </button>
-
-      <span class="d-md-none mat-h2 m-0">{{ currentPageName }}</span>
-      <span class="d-md-none spacer"></span>
-
-      <span class="d-none d-md-block {{ navbarConfig.logo.class }} mr-3">{{
-        navbarConfig.logo.text
-      }}</span>
-
-      <div class="d-none d-md-block">
-        <button
-          [ngClass]="button.badge?.number ? 'mat-stroked-button' : 'mat-button'"
-          *ngFor="let button of navbarConfig.buttons"
-          routerLink="{{ button.link }}"
-          matBadge="{{ button.badge.number }}"
-          matBadgeColor="{{ button.badge.color }}"
-          [matBadgeHidden]="button.badge.number === 0"
-          matTooltip="{{ button.tooltip }}"
-          matTooltipPosition="below"
-          [matTooltipShowDelay]="1500"
-        >
-          {{ button.name }}
-        </button>
-      </div>
-
-      <span class="spacer"></span>
-
-      <mat-menu #navMenu="matMenu">
-        <button
-          mat-menu-item
-          *ngFor="let button of navbarConfig.buttons"
-          routerLink="{{ button.link }}"
-          matBadge="{{ button.badge.number }}"
-          matBadgeColor="{{ button.badge.color }}"
-          [matBadgeHidden]="button.badge.number === 0"
-        >
-          {{ button.name }}
-        </button>
-      </mat-menu>
-
-      <button
-        mat-icon-button
-        [matMenuTriggerFor]="navUserMenu"
-        class="d-md-none profile-icon-button ml-0"
-        style="margin-right: -6px"
-      >
-        <mat-icon
-          *ngIf="
-            !authService.isSignedIn || !authService.user?.data?.profilePicture
-          "
-          >person_outline</mat-icon
-        >
-        <img
-          *ngIf="
-            authService.isSignedIn && authService.user?.data?.profilePicture
-          "
-          [src]="authService.user.data.profilePicture"
-        />
-      </button>
-
-      <button
-        mat-button
-        [matMenuTriggerFor]="navUserMenu"
-        class="d-none d-md-block user-display text-right"
-      >
-        <img
-          *ngIf="
-            authService.isSignedIn && authService.user?.data?.profilePicture
-          "
-          [src]="authService.user.data.profilePicture"
-        />
-        <mat-icon *ngIf="!authService.isSignedIn">person_outline</mat-icon>
-        <span>
-          {{
-            authService.isSignedIn && authService.user?.data?.displayName
-              ? authService.user?.data?.displayName
-              : ""
-          }}
-        </span>
-      </button>
+      <app-mat3-nav-button
+        *ngFor="let button of navbarConfig.buttons"
+        [icon]="button.icon"
+        [label]="button.name"
+        [routerLink]="button.link"
+      ></app-mat3-nav-button>
     </mat-toolbar>
 
     <!-- User FAB -->

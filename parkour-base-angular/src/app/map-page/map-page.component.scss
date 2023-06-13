@@ -1,6 +1,7 @@
 ::ng-deep app-map-page,
 div.map-container {
   height: 100%;
+  position: relative;
 }
 
 .tab-icon {
@@ -47,17 +48,25 @@ div.map-container {
 #saveBoundsEditFab,
 #createSpotSpeedDial {
   position: absolute;
-  z-index: 2;
+  z-index: 1;
 
-  bottom: 30px;
-  right: 20px;
+  @media (max-width: 599px) {
+    // small screen
+    bottom: 110px;
+    right: 20px;
+  }
+  @media (min-width: 600px) {
+    // desktop (large screen)
+    bottom: 30px;
+    right: 20px;
+  }
 }
 
 #exitBoundsEditFab {
   position: absolute;
   z-index: 2;
   right: 38px;
-  bottom: 95px;
+  bottom: 95px; // TODO fix
 }
 
 #searchSpotList {
@@ -104,7 +113,7 @@ div.search-group {
     // small screen
     left: 0px;
     width: 100%;
-    top: 56px;
+    top: 0px;
   }
   @media (min-width: 600px) {
     // desktop (large screen)
@@ -139,5 +148,14 @@ div.search-group {
     ::ng-deep .mat-mdc-text-field-wrapper {
       background-color: inherit;
     }
+  }
+}
+
+app-bottom-sheet {
+  @media (max-width: 599px) {
+    // small screen
+    margin-left: -20px;
+    margin-right: -20px;
+    width: calc(100% + 40px) !important;
   }
 }

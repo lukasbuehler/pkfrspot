@@ -31,6 +31,7 @@ div.sheet-region {
 
 div.sheet,
 .cdk-drag-preview {
+  z-index: 3;
   border-radius: 28px 28px 0px 0px !important;
   position: relative;
 
