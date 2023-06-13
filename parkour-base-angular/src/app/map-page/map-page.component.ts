@@ -190,31 +190,34 @@ export class MapPageComponent implements OnInit {
     this.calculateAllDotOpcacities();
 
     if (spotId) {
-      this._dbService.getSpotById(spotId).subscribe(
-        (spot) => {
-          this.openSpot(spot);
-          this.setStartMap(
-            {
-              lat: spot.location.lat,
-              lng: spot.location.lng,
-            },
-            18
-          );
-        },
-        (error) => {
-          // the spot wasn't found, just go to the location if there is one
-          console.error(error);
-          this.setStartMap(
-            { lat: Number(lat), lng: Number(lng) },
-            Number(zoom)
-          );
-          this._snackbar.open(error.msg, "Dismiss", {
-            duration: 5000,
-            horizontalPosition: "center",
-            verticalPosition: "bottom",
-          });
-        }
-      );
+      this._dbService
+        .getSpotById(spotId)
+        .pipe(take(1))
+        .subscribe(
+          (spot) => {
+            this.openSpot(spot);
+            this.setStartMap(
+              {
+                lat: spot.location.lat,
+                lng: spot.location.lng,
+              },
+              18
+            );
+          },
+          (error) => {
+            // the spot wasn't found, just go to the location if there is one
+            console.error(error);
+            this.setStartMap(
+              { lat: Number(lat), lng: Number(lng) },
+              Number(zoom)
+            );
+            this._snackbar.open(error.msg, "Dismiss", {
+              duration: 5000,
+              horizontalPosition: "center",
+              verticalPosition: "bottom",
+            });
+          }
+        );
       //console.log("Loading spot " + spotId);
       // Show loading spot to open
     } else {
@@ -245,10 +248,7 @@ export class MapPageComponent implements OnInit {
       this.start_coordinates.lng = coords.lng;
       this.start_zoom = Number(zoom || 16);
 
-      //   this.center_coordinates = {
-      //     lat: this.start_coordinates.lat,
-      //     lng: this.start_coordinates.lng,
-      //   };
+      this.map.panTo(this.start_coordinates);
     }
     this.start_zoom = zoom || this.start_zoom || 16;
   }

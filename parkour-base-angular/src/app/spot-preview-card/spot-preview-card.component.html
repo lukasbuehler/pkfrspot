@@ -7,7 +7,6 @@
   [class.border]="true"
   [class.rounded]="true"
 >
-  <img *ngIf="spot.previewImage" mat-card-image src="{{ spot.previewImage }}" />
   <mat-card-header>
     <mat-card-title>
       {{ spot.name }}
@@ -23,4 +22,9 @@
       ></app-rating>
     </mat-card-subtitle>
   </mat-card-header>
+  <img
+    mat-card-sm-image
+    *ngIf="spot.previewImage"
+    src="{{ spot.previewImage }}"
+  />
 </mat-card>

@@ -50,7 +50,9 @@ div.sheet,
     height: $sheet-header-height;
   }
   > div.content {
+    height: calc(100% - $sheet-header-height);
     padding: 20px;
+    overflow-y: scroll;
   }
 }
 
