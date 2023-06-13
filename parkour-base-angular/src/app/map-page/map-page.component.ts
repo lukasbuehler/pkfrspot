@@ -28,11 +28,24 @@ import { GoogleMap, MapPolygon, MapAnchorPoint } from "@angular/google-maps";
 import { GeoPoint } from "firebase/firestore";
 import { MapsApiService } from "../maps-api.service";
 import { take } from "rxjs";
+import { animate, style, transition, trigger } from "@angular/animations";
 
 @Component({
   selector: "app-map-page",
   templateUrl: "./map-page.component.html",
   styleUrls: ["./map-page.component.scss"],
+  animations: [
+    trigger("inOutAnimation", [
+      transition(":enter", [
+        style({ height: 0, opacity: 0, scale: 0.8 }),
+        animate("0.3s ease-out", style({ height: "*", opacity: 1, scale: 1 })),
+      ]),
+      transition(":leave", [
+        style({ height: "*", opacity: 1, scale: 1 }),
+        animate("0.3s ease-in", style({ height: 0, opacity: 0, scale: 0.8 })),
+      ]),
+    ]),
+  ],
 })
 export class MapPageComponent implements OnInit {
   @ViewChild("map") map: GoogleMap;

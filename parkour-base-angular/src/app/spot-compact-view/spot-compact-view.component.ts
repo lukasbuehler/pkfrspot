@@ -5,6 +5,9 @@ import {
   Output,
   EventEmitter,
   ViewChild,
+  OnChanges,
+  ElementRef,
+  HostBinding,
 } from "@angular/core";
 import { MatProgressBar } from "@angular/material/progress-bar";
 import { Spot } from "src/scripts/db/Spot";
@@ -27,13 +30,24 @@ import {
 } from "../../scripts/Helpers";
 import { UntypedFormControl } from "@angular/forms";
 import { map, startWith } from "rxjs/operators";
+import { trigger, transition, style, animate } from "@angular/animations";
 
 @Component({
   selector: "app-spot-compact-view",
   templateUrl: "./spot-compact-view.component.html",
   styleUrls: ["./spot-compact-view.component.scss"],
+  animations: [
+    trigger("grow", [
+      transition("void <=> *", []),
+      transition(
+        "* <=> *",
+        [style({ height: "{{startHeight}}px" }), animate(".3s ease")],
+        { params: { startHeight: 0 } }
+      ),
+    ]),
+  ],
 })
-export class SpotCompactViewComponent implements OnInit {
+export class SpotCompactViewComponent implements OnInit, OnChanges {
   @Input() spot: Spot.Class;
   @Input() infoOnly: boolean = false;
   @Input() dismissable: boolean = false;
@@ -81,8 +95,15 @@ export class SpotCompactViewComponent implements OnInit {
     return this.spot && !this.spot.id;
   }
 
+  startHeight: number = 0;
+
+  @HostBinding("@grow") get grow() {
+    return { value: this.spot, params: { startHeight: this.startHeight } };
+  }
+
   constructor(
     public authenticationService: AuthenticationService,
+    private _element: ElementRef,
     private _dbService: DatabaseService,
     private _storageService: StorageService
   ) {
@@ -95,6 +116,10 @@ export class SpotCompactViewComponent implements OnInit {
   }
 
   ngOnChanges() {
+    console.log(this._element.nativeElement.clientHeight);
+
+    this.startHeight = this._element.nativeElement.clientHeight;
+
     if (this.spot && !this.editedSpot) {
       this.editedSpot = Spot.clone(this.spot);
     }

@@ -1,3 +1,4 @@
+import { trigger, transition, style, animate } from "@angular/animations";
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { Router } from "@angular/router";
 import { Spot } from "src/scripts/db/Spot";
@@ -17,9 +18,8 @@ export class SpotPreviewCardComponent implements OnInit {
 
   constructor(private _router: Router) {}
 
-  ngOnInit() {
-    this._router.routeReuseStrategy;
-  }
+  ngOnInit() {}
+
   capitalize(s: string) {
     return s && s[0].toUpperCase() + s.slice(1);
   }

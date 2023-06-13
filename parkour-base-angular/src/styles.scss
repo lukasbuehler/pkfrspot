@@ -18,6 +18,10 @@ html {
   color: white;
 }
 
+mat-card.mat-mdc-card {
+  background-color: inherit;
+}
+
 // Mat Progress
 mat-progress-bar-background {
   fill: #c5cae9;

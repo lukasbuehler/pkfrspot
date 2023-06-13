@@ -53,6 +53,7 @@
     </mat-form-field>
 
     <app-spot-compact-view
+      [@inOutAnimation]
       *ngIf="selectedSpot"
       #spotDetail
       [spot]="selectedSpot"
