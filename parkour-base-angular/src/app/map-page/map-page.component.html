@@ -50,11 +50,26 @@
     >
       <input matInput placeholder="Find spots" />
       <mat-icon matSuffix>search</mat-icon>
+      <button
+        mat-icon-button
+        matSuffix
+        color="primary"
+        class="profile-icon-button login-fab d-md-none"
+        [matMenuTriggerFor]="navUserMenu"
+      >
+        <mat-icon *ngIf="!authService.isSignedIn">person_outline</mat-icon>
+        <img
+          *ngIf="
+            authService.isSignedIn && authService.user?.data?.profilePicture
+          "
+          [src]="authService.user.data.profilePicture"
+        />
+      </button>
     </mat-form-field>
 
     <app-spot-compact-view
       [@inOutAnimation]
-      *ngIf="selectedSpot"
+      *ngIf="false && selectedSpot"
       #spotDetail
       [spot]="selectedSpot"
       [flat]="true"
@@ -75,6 +90,25 @@
         visibleSpots.length === 1 ? '' : 's'
       }} in this area"
     >
+      <div class="spot-preview-container">
+        <app-spot-compact-view
+          [@inOutAnimation]
+          *ngIf="selectedSpot"
+          #spotDetail
+          [spot]="selectedSpot"
+          [flat]="true"
+          [dismissable]="true"
+          [infoOnly]="false"
+          [editable]="true"
+          [(isEditing)]="isEditing"
+          (dismiss)="closeSpot()"
+          (addBoundsClick)="addBounds()"
+          (callGetPathsPromiseFunction)="getPathsFromSpotPolygon()"
+          (focusClick)="focusSpot(selectedSpot)"
+          (saveClick)="saveSpot($event)"
+          (discardClick)="discardEdit()"
+        ></app-spot-compact-view>
+      </div>
       <div class="spots-container">
         <app-spot-preview-card
           *ngFor="let spot of visibleSpots"

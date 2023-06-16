@@ -27,9 +27,16 @@ export class BottomSheetComponent {
 
   @Input() title: string = "";
 
+  @Input() hasMiddleState: boolean = true;
+
   @ViewChild("bottomSheet", { static: true }) bottomSheet: any;
 
   onDrop(event: CdkDragDrop<string[]>) {
+    console.log(event);
+    switch (event.currentIndex) {
+      case 0:
+        this._isOpen = false;
+    }
     if (event.previousIndex > event.currentIndex) {
       // panel was opened (moved up)
       this.isOpen = true;

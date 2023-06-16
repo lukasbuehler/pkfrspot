@@ -4,18 +4,29 @@
   [class.is-open]="isOpen"
   (cdkDropListDropped)="onDrop($event)"
 >
-  <div [style.order]="isOpen ? 2 : 1" class="spacer" cdkDrag></div>
+  <div
+    [style.order]="isOpen ? 2 : 1"
+    class="spacer"
+    [class.half-spacer]="hasMiddleState"
+    cdkDrag
+  ></div>
+  <div
+    [style.order]="isOpen ? 3 : 2"
+    class="spacer"
+    [class.half-spacer]="hasMiddleState"
+    cdkDrag
+  ></div>
   <div
     #bottomSheet
     id="bottomSheet"
-    [style.order]="isOpen ? 1 : 2"
+    [style.order]="isOpen ? 1 : 3"
     class="sheet mat-elevation-z3"
     cdkDragBoundary=".sheet-region"
     cdkDrag
     cdkDragLockAxis="y"
   >
     <div class="header">
-      <div class="handle-region" cdkDragHandle>
+      <div class="handle-region">
         <div class="handle"></div>
       </div>
       <h3 class="mat-h3">{{ title }}</h3>

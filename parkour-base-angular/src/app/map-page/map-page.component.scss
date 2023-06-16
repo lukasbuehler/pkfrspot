@@ -158,3 +158,19 @@ app-bottom-sheet {
     width: calc(100% + 40px) !important;
   }
 }
+
+.profile-icon-button {
+  padding: 0px;
+  margin-right: 5px;
+
+  img {
+    width: 75%;
+    height: 75%;
+    border-radius: 50%;
+  }
+}
+
+::ng-deep .mat-mdc-form-field-icon-suffix {
+  display: flex;
+  flex-direction: row;
+}

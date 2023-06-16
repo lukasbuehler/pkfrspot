@@ -25,7 +25,12 @@ div.sheet-region {
   > div.spacer {
     //background-color: #ffffff4b;
     position: relative;
+  }
+  > div.spacer:not(.half-spacer) {
     height: calc(50% - $sheet-header-height / 2);
+  }
+  > div.half-spacer {
+    height: calc(25% - $sheet-header-height / 2);
   }
 }
 

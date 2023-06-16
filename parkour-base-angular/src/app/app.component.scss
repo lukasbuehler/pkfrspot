@@ -24,22 +24,6 @@ mat-toolbar {
   flex: 1 1 auto;
 }
 
-.user-display {
-  display: flex;
-  flex-direction: row;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  img {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    margin-right: 5px;
-  }
-
-  .mat-button-wrapper {
-    padding: 5px;
-  }
-}
 .profile-icon-button {
   img {
     width: 75%;
