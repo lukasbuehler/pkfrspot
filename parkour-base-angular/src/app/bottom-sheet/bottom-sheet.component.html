@@ -1,25 +1,19 @@
-<div
-  class="sheet-region"
-  cdkDropList
-  [class.is-open]="isOpen"
-  (cdkDropListDropped)="onDrop($event)"
->
+<div class="sheet-region" cdkDropList (cdkDropListDropped)="onDrop($event)">
   <div
-    [style.order]="isOpen ? 2 : 1"
-    class="spacer"
+    *ngIf="!isFullyOpen"
+    class="spacer-large"
     [class.half-spacer]="hasMiddleState"
     cdkDrag
   ></div>
   <div
-    [style.order]="isOpen ? 3 : 2"
-    class="spacer"
+    *ngIf="hasMiddleState && !isHalfOpen && !isFullyOpen"
+    class="spacer-small"
     [class.half-spacer]="hasMiddleState"
     cdkDrag
   ></div>
   <div
     #bottomSheet
     id="bottomSheet"
-    [style.order]="isOpen ? 1 : 3"
     class="sheet mat-elevation-z3"
     cdkDragBoundary=".sheet-region"
     cdkDrag
@@ -35,4 +29,16 @@
       <ng-content></ng-content>
     </div>
   </div>
+  <div
+    *ngIf="isFullyOpen"
+    class="spacer-large"
+    [class.half-spacer]="hasMiddleState"
+    cdkDrag
+  ></div>
+  <div
+    *ngIf="isHalfOpen || isFullyOpen"
+    class="spacer-small"
+    [class.half-spacer]="hasMiddleState"
+    cdkDrag
+  ></div>
 </div>

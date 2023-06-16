@@ -55,7 +55,7 @@
         matSuffix
         color="primary"
         class="profile-icon-button login-fab d-md-none"
-        [matMenuTriggerFor]="navUserMenu"
+        [matMenuTriggerFor]="searchUserMatMenu"
       >
         <mat-icon *ngIf="!authService.isSignedIn">person_outline</mat-icon>
         <img
@@ -145,4 +145,8 @@
     (mainFabClick)="mainFabClicked()"
     (miniFabClick)="miniFabPressed($event)"
   ></app-speed-dial-fab>
+
+  <mat-menu #searchUserMatMenu="matMenu">
+    <app-user-menu-content></app-user-menu-content>
+  </mat-menu>
 </div>

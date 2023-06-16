@@ -102,6 +102,7 @@ import { NavRailContentComponent } from "./nav-rail-content/nav-rail-content.com
 import { Mat3NavButtonComponent } from './mat3-nav-button/mat3-nav-button.component';
 import { SpotPageComponent } from './spot-page/spot-page.component';
 import { BottomSheetComponent } from './bottom-sheet/bottom-sheet.component';
+import { UserMenuContentComponent } from './user-menu-content/user-menu-content.component';
 
 @NgModule({
   declarations: [
@@ -144,6 +145,7 @@ import { BottomSheetComponent } from './bottom-sheet/bottom-sheet.component';
     Mat3NavButtonComponent,
     SpotPageComponent,
     BottomSheetComponent,
+    UserMenuContentComponent,
   ],
   imports: [
     BrowserModule,

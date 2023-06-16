@@ -1,12 +1,11 @@
-import {
-  trigger,
-  transition,
-  style,
-  animate,
-  state,
-} from "@angular/animations";
 import { CdkDragDrop } from "@angular/cdk/drag-drop/index.js";
 import { Component, Input, ViewChild } from "@angular/core";
+
+enum BottomSheetOpenState {
+  Closed = 1,
+  HalfOpen = 2,
+  FullyOpen = 3,
+}
 
 @Component({
   selector: "app-bottom-sheet",
@@ -14,16 +13,7 @@ import { Component, Input, ViewChild } from "@angular/core";
   styleUrls: ["./bottom-sheet.component.scss"],
 })
 export class BottomSheetComponent {
-  _isOpen: boolean = false;
-  @Input() set isOpen(value: boolean) {
-    this._isOpen = value;
-
-    // do something
-    console.log(this.bottomSheet.nativeElement.offsetTop);
-  }
-  get isOpen(): boolean {
-    return this._isOpen;
-  }
+  _bottomSheetSate: BottomSheetOpenState = BottomSheetOpenState.Closed;
 
   @Input() title: string = "";
 
@@ -35,14 +25,24 @@ export class BottomSheetComponent {
     console.log(event);
     switch (event.currentIndex) {
       case 0:
-        this._isOpen = false;
+        this._bottomSheetSate = BottomSheetOpenState.FullyOpen;
+        break;
+      case 1:
+        this._bottomSheetSate = BottomSheetOpenState.HalfOpen;
+        break;
+      default:
+        this._bottomSheetSate = BottomSheetOpenState.Closed;
+        break;
     }
-    if (event.previousIndex > event.currentIndex) {
-      // panel was opened (moved up)
-      this.isOpen = true;
-    } else if (event.previousIndex < event.currentIndex) {
-      // panel was closed (moved down)
-      this.isOpen = false;
-    }
+  }
+
+  get isFullyOpen(): boolean {
+    return this._bottomSheetSate === BottomSheetOpenState.FullyOpen;
+  }
+  get isHalfOpen(): boolean {
+    return this._bottomSheetSate === BottomSheetOpenState.HalfOpen;
+  }
+  get isClosed(): boolean {
+    return this._bottomSheetSate === BottomSheetOpenState.Closed;
   }
 }
