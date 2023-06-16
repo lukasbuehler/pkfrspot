@@ -19,11 +19,11 @@
     cdkDrag
     cdkDragLockAxis="y"
   >
-    <div class="header">
+    <div class="header" [class.headless]="!hasHeader">
       <div class="handle-region">
         <div class="handle"></div>
       </div>
-      <h3 class="mat-h3">{{ title }}</h3>
+      <h3 *ngIf="hasHeader" class="mat-h3">{{ title }}</h3>
     </div>
     <div class="content">
       <ng-content></ng-content>

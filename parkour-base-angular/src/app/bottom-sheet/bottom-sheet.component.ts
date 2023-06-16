@@ -17,6 +17,8 @@ export class BottomSheetComponent {
 
   @Input() title: string = "";
 
+  @Input() hasHeader: boolean = true;
+
   @Input() hasMiddleState: boolean = true;
 
   @ViewChild("bottomSheet", { static: true }) bottomSheet: any;

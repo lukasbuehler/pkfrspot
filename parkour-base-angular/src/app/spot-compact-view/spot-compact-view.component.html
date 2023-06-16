@@ -66,7 +66,7 @@
   <mat-card-content>
     <!-- spot media swiper  -->
     <swiper-container
-      class="spot-media-swiper"
+      class="mt-2 spot-media-swiper"
       *ngIf="spot.media && spot.media.length > 0"
       [navigation]="true"
       [pagination]="{ clickable: true }"
@@ -136,7 +136,7 @@
         <mat-icon>edit</mat-icon>
       </button>
     </div>
-    <div class="spot-button-row mb-3 mt-3">
+    <!-- <div class="spot-button-row mb-3 mt-3">
       <button
         mat-stroked-button
         matTooltip="Share this spot"
@@ -153,16 +153,16 @@
       >
         Open in maps
       </button>
-    </div>
+    </div> -->
 
-    <div *ngIf="spot.description">
+    <!-- <div *ngIf="spot.description">
       <h4 class="mat-body-2">Description</h4>
       <p>
         {{ spot.description }}
       </p>
-    </div>
+    </div> -->
 
-    <div *ngIf="spot.address?.country">
+    <!-- <div *ngIf="spot.address?.country">
       <h4 *ngIf="spot.address?.formatted" class="mat-body-2">Address</h4>
       <p>{{ spot.address.formatted }}</p>
       <h4 class="mat-body-2">Country</h4>
@@ -170,7 +170,7 @@
         {{ getCountryEmojiFromAlpha2(spot.address.country.short) }}
         {{ getCountryNameFromShortCode(spot.address.country.short) }}
       </p>
-    </div>
+    </div> -->
 
     <!-- Media preview grid -->
     <app-media-preview-grid

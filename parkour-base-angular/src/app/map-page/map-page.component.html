@@ -89,15 +89,16 @@
       title="{{ visibleSpots.length }} spot{{
         visibleSpots.length === 1 ? '' : 's'
       }} in this area"
+      [hasHeader]="!selectedSpot"
     >
       <div class="spot-preview-container">
         <app-spot-compact-view
           [@inOutAnimation]
-          *ngIf="selectedSpot"
           #spotDetail
+          *ngIf="selectedSpot"
           [spot]="selectedSpot"
           [flat]="true"
-          [dismissable]="true"
+          [dismissable]="false"
           [infoOnly]="false"
           [editable]="true"
           [(isEditing)]="isEditing"
@@ -109,7 +110,7 @@
           (discardClick)="discardEdit()"
         ></app-spot-compact-view>
       </div>
-      <div class="spots-container">
+      <div *ngIf="!selectedSpot" class="spots-container">
         <app-spot-preview-card
           *ngFor="let spot of visibleSpots"
           [spot]="spot"

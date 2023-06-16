@@ -87,7 +87,7 @@ mat-card {
 
 #mapStyleFab {
   position: absolute;
-  z-index: 2;
+  z-index: 1;
 
   right: 28px;
   top: 100px;
@@ -173,4 +173,16 @@ app-bottom-sheet {
 ::ng-deep .mat-mdc-form-field-icon-suffix {
   display: flex;
   flex-direction: row;
+}
+
+::ng-deep mat-card.mat-mdc-card.mdc-card {
+  box-shadow: none;
+
+  > mat-card-header {
+    padding-top: 0px;
+  }
+}
+
+.spots-container {
+  padding: 20px;
 }
