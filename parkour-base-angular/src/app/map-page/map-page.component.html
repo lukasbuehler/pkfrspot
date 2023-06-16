@@ -29,7 +29,12 @@
       <map-polygon
         *ngIf="spot?.hasBounds()"
         #polygon
-        [options]="spotPolygonOptions"
+        [id]="spot.id"
+        [options]="
+          spot === selectedSpot && isEditing
+            ? spotPolygonEditingOptions
+            : spotPolygonOptions
+        "
         [paths]="spot.paths"
         (polygonClick)="openSpot(spot)"
       ></map-polygon>
@@ -37,7 +42,9 @@
 
     <map-marker
       *ngIf="selectedSpot"
-      [options]="selectedSpotMarkerOptions"
+      [options]="
+        isEditing ? selectedSpotMarkerEditingOptions : selectedSpotMarkerOptions
+      "
       [position]="selectedSpot.location"
       [title]="selectedSpot.name"
     ></map-marker>

@@ -36,17 +36,6 @@
       <span *ngIf="!isEditing">
         {{ spot.name }}
       </span>
-      <form *ngIf="isEditing">
-        <mat-form-field style="width: calc(100% - 35px)">
-          <mat-label>Spot name</mat-label>
-          <input
-            #spotNameInput
-            matInput
-            [value]="editedSpot?.name || ''"
-            (change)="editedSpot.setName($event.target.value)"
-          />
-        </mat-form-field>
-      </form>
       <mat-icon *ngIf="visited && !isEditing" style="float: right"
         >flag</mat-icon
       >
@@ -64,10 +53,23 @@
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
+    <!-- Spot title editing field -->
+    <form *ngIf="isEditing">
+      <mat-form-field style="width: 100%">
+        <mat-label>Spot name</mat-label>
+        <input
+          #spotNameInput
+          matInput
+          [value]="editedSpot?.name || ''"
+          (change)="editedSpot.setName($event.target.value)"
+        />
+      </mat-form-field>
+    </form>
+
     <!-- spot media swiper  -->
     <swiper-container
       class="mt-2 spot-media-swiper"
-      *ngIf="spot.media && spot.media.length > 0"
+      *ngIf="!isEditing && spot.media && spot.media.length > 0"
       [navigation]="true"
       [pagination]="{ clickable: true }"
     >
@@ -83,7 +85,7 @@
     <!-- Icon button row -->
     <div
       class="spot-button-row mb-3 mt-3"
-      *ngIf="authenticationService.isSignedIn"
+      *ngIf="authenticationService.isSignedIn && !isEditing"
     >
       <button
         *ngIf="false"

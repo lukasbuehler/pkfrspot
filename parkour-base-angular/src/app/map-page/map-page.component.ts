@@ -5,6 +5,7 @@ import {
   QueryList,
   ViewChildren,
   NgZone,
+  ElementRef,
 } from "@angular/core";
 import { map_style } from "./map_style";
 
@@ -49,8 +50,12 @@ import { animate, style, transition, trigger } from "@angular/animations";
 })
 export class MapPageComponent implements OnInit {
   @ViewChild("map") map: GoogleMap;
-  @ViewChildren("polygon", { read: MapPolygon })
+
+  @ViewChildren("polygon")
+  polygonElementRefs: QueryList<ElementRef>;
+  @ViewChildren("polygon")
   polygons: QueryList<MapPolygon>;
+
   // SpotDetailComponent is only there if there is a spot selected, so static must be set to false.
   @ViewChild(SpotCompactViewComponent)
   spotDetail: SpotCompactViewComponent;
@@ -85,10 +90,11 @@ export class MapPageComponent implements OnInit {
     }
   }
 
+  isEditing: boolean = false;
+
   //mapStyle: google.maps.MapTypeId = google.maps.MapTypeId.ROADMAP;
   mapStyle = "roadmap";
   mapStylesConfig = map_style;
-  spotPolygons: MapPolygon[] = [];
 
   mapOptions: google.maps.MapOptions = {
     backgroundColor: "#000000",
@@ -100,14 +106,22 @@ export class MapPageComponent implements OnInit {
   };
   mapTypeId: string = "roadmap";
   selectedSpotMarkerOptions: google.maps.MarkerOptions = {
-    draggable: false, // TODO needs to be true if isEditing is true
+    draggable: false,
     clickable: false,
     icon: {
       url: "/assets/icons/marker.png",
     },
   };
+  selectedSpotMarkerEditingOptions: google.maps.MarkerOptions = {
+    draggable: true,
+    clickable: false,
+    crossOnDrag: true,
+    icon: {
+      url: "/assets/icons/marker.png",
+    },
+  };
   spotDotMarkerOptions: google.maps.MarkerOptions = {
-    draggable: false, // TODO needs to be true if isEditing is true
+    draggable: false,
     clickable: false,
     icon: {
       url: "/assets/icons/favicon-16x16.png",
@@ -129,8 +143,15 @@ export class MapPageComponent implements OnInit {
     draggable: false,
     clickable: true,
   };
+  spotPolygonEditingOptions: google.maps.PolygonOptions = {
+    fillColor: "#b8c4ff",
+    strokeColor: "#b8c4ff",
+    fillOpacity: 0.1,
+    editable: true,
+    draggable: false,
+    clickable: true,
+  };
 
-  isEditing: boolean = false;
   selectedSpot: Spot.Class = null;
 
   droppedMarkerLocation = null;
@@ -555,22 +576,22 @@ export class MapPageComponent implements OnInit {
     this.isEditing = true;
   }
 
-  saveSpot(spotToSave: Spot.Class) {
-    if (!spotToSave) return;
+  saveSpot(spot: Spot.Class) {
+    if (!spot) return;
 
     console.log("saving the spot");
-    console.log("Spot data to save: ", spotToSave.data);
+    console.log("Spot data to save: ", spot.data);
     // If the spot does not have an ID, it does not exist in the database yet.
-    if (spotToSave.id) {
+    if (spot.id) {
       // this is an old spot that is edited
       this._dbService
-        .setSpot(spotToSave.id, spotToSave.data)
+        .setSpot(spot.id, spot.data)
         .then(() => {
           // Successfully updated
           this.isEditing = false;
           // TODO Snackbar or something
           console.log("Successfully saved spot");
-          this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spotToSave);
+          this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spot);
           console.log(this.getAllSpots());
         })
         .catch((error) => {
@@ -580,18 +601,18 @@ export class MapPageComponent implements OnInit {
     } else {
       // this is a new spot
       this._dbService
-        .createSpot(spotToSave.data)
+        .createSpot(spot.data)
         .then((id) => {
           // Successfully created
           this.isEditing = false;
 
           // TODO add to loaded spots or something? or will it be loaded automatically after that?
 
-          this.selectedSpot = new Spot.Class(id, spotToSave.data);
+          this.selectedSpot = new Spot.Class(id, spot.data);
 
           // TODO snackbar or something
           console.log("Successfully crated spot");
-          this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spotToSave);
+          this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spot);
         })
         .catch((error) => {
           this.isEditing = false;
@@ -609,27 +630,25 @@ export class MapPageComponent implements OnInit {
   }
 
   getPathsFromSpotPolygon() {
-    if (this.spotDetail?.hasBounds()) {
-      this.polygons.forEach((polygon) => {
-        if (polygon?.getEditable()) {
-          const val = polygon.getPaths();
+    this.polygons.forEach((polygon) => {
+      if (polygon?.getEditable()) {
+        const val = polygon.getPaths();
 
-          // Convert LatLng[][] to LatLngLiteral[][]
-          let paths: Array<Array<google.maps.LatLngLiteral>> = [];
-          paths[0] = val[0].map((v, i, arr) => {
-            return { lat: v.lat(), lng: v.lng() };
-          });
+        // Convert LatLng[][] to LatLngLiteral[][]
+        let paths: Array<Array<google.maps.LatLngLiteral>> = [];
+        paths[0] = val[0].map((v, i, arr) => {
+          return { lat: v.lat(), lng: v.lng() };
+        });
 
-          // this sets the paths for the selected spot and also sets the bounds for the spot data structure.
-          this.selectedSpot.paths = paths;
+        // this sets the paths for the selected spot and also sets the bounds for the spot data structure.
+        this.selectedSpot.paths = paths;
 
-          if (this.spotDetail) {
-            this.saveSpot(this.selectedSpot); // update polygons on spot
-          }
-          // If the sidepanel is not open while editing, it might not be able to save.
+        if (this.spotDetail) {
+          this.saveSpot(this.selectedSpot); // update polygons on spot
         }
-      });
-    }
+        // If the sidepanel is not open while editing, it might not be able to save.
+      }
+    });
   }
 
   loadSpotsForTiles(tilesToLoad: { x: number; y: number }[]) {

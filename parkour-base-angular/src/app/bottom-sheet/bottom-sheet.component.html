@@ -25,7 +25,7 @@
       </div>
       <h3 *ngIf="hasHeader" class="mat-h3">{{ title }}</h3>
     </div>
-    <div class="content">
+    <div class="content" [class.headless]="!hasHeader">
       <ng-content></ng-content>
     </div>
   </div>

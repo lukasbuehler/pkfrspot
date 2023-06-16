@@ -61,8 +61,13 @@ div.sheet,
     height: $sheet-header-height;
   }
   > div.content {
-    height: calc(100% - $sheet-header-height);
     overflow-y: scroll;
+  }
+  > div.content:not(.headless) {
+    height: calc(100% - $sheet-header-height);
+  }
+  > div.content.headless {
+    height: calc(100% - $handle-region-height);
   }
 }
 
