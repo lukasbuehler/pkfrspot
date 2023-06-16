@@ -3,7 +3,6 @@ import * as moment from "moment";
 import { Post } from "src/scripts/db/Post";
 import { DatabaseService } from "../database.service";
 import { AuthenticationService } from "../authentication.service";
-//import { PlyrComponent } from "ngx-plyr";
 import { MapHelper } from "../../scripts/map_helper";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
@@ -19,7 +18,6 @@ export class PostComponent implements OnInit {
   @Input() showCard: boolean = true;
 
   @ViewChild("matCardMedia") matCardMedia: ElementRef;
-  //@ViewChild(PlyrComponent) plyr: PlyrComponent;
 
   dateAndTimeString: string;
   timeAgoString: string;

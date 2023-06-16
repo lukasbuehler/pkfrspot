@@ -37,36 +37,22 @@ mat-card {
   flex: 1 1 auto;
 }
 
-div.mat-card-video {
-  --plyr-color-main: var(--accent-color);
-}
-
-::ng-deep div.mat-card-video > div {
-  //max-height: 40vh;
-}
-
-::ng-deep div.mat-card-video.fill {
-  .plyr:not(:fullscreen) video {
+::ng-deep .mat-card-video.fill:not(.native-fullscreen) {
+  video {
     object-fit: cover;
   }
 }
 
-div.mat-card-media {
-  width: calc(100% + 32px);
-  margin: 0 -16px 16px -16px;
-  overflow: hidden;
-}
-
-::ng-deep div.mat-card-media > div {
-  height: 100%;
-
-  .plyr {
+::ng-deep div.mat-card-media {
+  height: 400px;
+  > * {
     height: 100%;
   }
 }
 
 div.mat-card-media > img {
-  width: 100%;
+  //width: 100%;
+  object-fit: cover;
 }
 
 div.mat-card-video,

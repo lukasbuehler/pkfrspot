@@ -99,10 +99,15 @@ import { GoogleMapsModule } from "@angular/google-maps";
 import { NavRailComponent } from "./nav-rail/nav-rail.component";
 import { NavRailContainerComponent } from "./nav-rail-container/nav-rail-container.component";
 import { NavRailContentComponent } from "./nav-rail-content/nav-rail-content.component";
-import { Mat3NavButtonComponent } from './mat3-nav-button/mat3-nav-button.component';
-import { SpotPageComponent } from './spot-page/spot-page.component';
-import { BottomSheetComponent } from './bottom-sheet/bottom-sheet.component';
-import { UserMenuContentComponent } from './user-menu-content/user-menu-content.component';
+import { Mat3NavButtonComponent } from "./mat3-nav-button/mat3-nav-button.component";
+import { SpotPageComponent } from "./spot-page/spot-page.component";
+import { BottomSheetComponent } from "./bottom-sheet/bottom-sheet.component";
+import { UserMenuContentComponent } from "./user-menu-content/user-menu-content.component";
+
+import { VgCoreModule } from "@videogular/ngx-videogular/core";
+import { VgControlsModule } from "@videogular/ngx-videogular/controls";
+import { VgOverlayPlayModule } from "@videogular/ngx-videogular/overlay-play";
+import { VgBufferingModule } from "@videogular/ngx-videogular/buffering";
 
 @NgModule({
   declarations: [
@@ -202,6 +207,11 @@ import { UserMenuContentComponent } from './user-menu-content/user-menu-content.
     // ServiceWorkerModule.register("ngsw-worker.js", {
     //   enabled: environment.production,
     // }),
+
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule,
 
     GoogleMapsModule,
   ],
