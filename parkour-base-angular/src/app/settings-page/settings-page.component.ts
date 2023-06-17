@@ -151,7 +151,6 @@ export class SettingsPageComponent implements OnInit {
   }
 
   miniFabPressed(event) {
-    console.log(event);
     this.discardAllChanges();
   }
 

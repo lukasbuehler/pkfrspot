@@ -8,14 +8,6 @@ import {
   ElementRef,
 } from "@angular/core";
 import { map_style } from "./map_style";
-
-interface LoadedSpotReference {
-  spot: Spot.Class;
-  tile: { x: number; y: number };
-  indexInTileArray: number;
-  indexInTotalArray: number;
-}
-
 import { DatabaseService } from "../database.service";
 import { Spot } from "src/scripts/db/Spot";
 import { MapHelper } from "../../scripts/map_helper";
@@ -25,11 +17,26 @@ import { SpotCompactViewComponent } from "../spot-compact-view/spot-compact-view
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
 import { AuthenticationService } from "../authentication.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { GoogleMap, MapPolygon, MapAnchorPoint } from "@angular/google-maps";
+import {
+  GoogleMap,
+  MapPolygon,
+  MapAnchorPoint,
+  MapMarker,
+} from "@angular/google-maps";
 import { GeoPoint } from "firebase/firestore";
 import { MapsApiService } from "../maps-api.service";
 import { take } from "rxjs";
 import { animate, style, transition, trigger } from "@angular/animations";
+
+/**
+ * This interface is used to reference a spot in the loaded spots array.
+ */
+interface LoadedSpotReference {
+  spot: Spot.Class;
+  tile: { x: number; y: number };
+  indexInTileArray: number;
+  indexInTotalArray: number;
+}
 
 @Component({
   selector: "app-map-page",
@@ -50,47 +57,52 @@ import { animate, style, transition, trigger } from "@angular/animations";
 })
 export class MapPageComponent implements OnInit {
   @ViewChild("map") map: GoogleMap;
-
-  @ViewChildren("polygon")
-  polygonElementRefs: QueryList<ElementRef>;
-  @ViewChildren("polygon")
+  @ViewChildren("polygon", { read: MapPolygon })
   polygons: QueryList<MapPolygon>;
+  @ViewChild("selectedSpotMarker", { read: MapMarker })
+  selectedSpotMarker: MapMarker;
 
-  // SpotDetailComponent is only there if there is a spot selected, so static must be set to false.
-  @ViewChild(SpotCompactViewComponent)
-  spotDetail: SpotCompactViewComponent;
-
-  speedDialButtonConfig: SpeedDialFabButtonConfig = {
-    mainButton: {
-      icon: "add_location",
-      tooltip: "Create a new spot",
-      color: "accent",
-    },
-    miniButtonColor: "secondary",
-    miniButtons: [
-      {
-        icon: "note_add",
-        tooltip: "Import Spots from a KML file",
-      },
-    ],
-  };
-
-  mainFabClicked() {
-    this.createSpot();
-  }
-
-  miniFabPressed(index: number) {
-    switch (index) {
-      case 0:
-        this.router.navigateByUrl("/kml-import");
-        break;
-      default:
-        console.error("Uncaught fab click registered");
-        break;
-    }
-  }
+  selectedSpot: Spot.Class = null;
+  uneditedSpot: Spot.Class = null;
 
   isEditing: boolean = false;
+
+  start_zoom: number = 4;
+
+  visibleSpots: Spot.Class[] = [];
+  searchSpots: Spot.Class[] = [];
+  loadedSpots: any = {}; // is a map of tile coords to spot arrays
+  visibleDots: any[] = [];
+
+  private _northEastTileCoordsZ16: google.maps.Point;
+  private _southWestTileCoordsZ16: google.maps.Point;
+
+  /**
+   * The zoom level at which all spots are loaded with bounds.
+   */
+  private readonly _loadAllSpotsZoomLevel: number = 16; // DO NOT CHANGE
+
+  // Map config ///////////////////////////////////////////////////////////////
+
+  //spotDotZoomRadii: number[] = Array<number>(16);
+
+  // The default coordinates are Paris, the origin of parkour.
+  // modiying this resets the map
+  readonly start_coordinates: google.maps.LatLngLiteral = {
+    lat: 48.8517386,
+    lng: 2.298386,
+  };
+
+  constructor(
+    public authService: AuthenticationService,
+    public mapsService: MapsApiService,
+    private _dbService: DatabaseService,
+    private route: ActivatedRoute,
+    private location: Location,
+    private router: Router,
+    private _zone: NgZone,
+    private _snackbar: MatSnackBar
+  ) {}
 
   //mapStyle: google.maps.MapTypeId = google.maps.MapTypeId.ROADMAP;
   mapStyle = "roadmap";
@@ -152,67 +164,35 @@ export class MapPageComponent implements OnInit {
     clickable: true,
   };
 
-  selectedSpot: Spot.Class = null;
+  // Speed dial FAB //////////////////////////////////////////////////////////
 
-  droppedMarkerLocation = null;
-
-  spotDotZoomRadii: number[] = Array<number>(16);
-
-  // The default coordinates are Paris, the origin of parkour.
-  // modiying this resets the map
-  readonly start_coordinates: google.maps.LatLngLiteral = {
-    lat: 48.8517386,
-    lng: 2.298386,
+  speedDialButtonConfig: SpeedDialFabButtonConfig = {
+    mainButton: {
+      icon: "add_location",
+      tooltip: "Create a new spot",
+      color: "accent",
+    },
+    miniButtonColor: "secondary",
+    miniButtons: [
+      {
+        icon: "note_add",
+        tooltip: "Import Spots from a KML file",
+      },
+    ],
   };
 
-  // these are updated from user input
-  //   center_coordinates: google.maps.LatLngLiteral = {
-  //     lat: this.start_coordinates.lat,
-  //     lng: this.start_coordinates.lng,
-  //   };
-
-  start_zoom: number = 3;
-  private readonly _loadAllSpotsZoomLevel: number = 16; // This is fixed for the platform and should not be changed
-  // TODO ensure this is is constant with storing it somewhere else
-
-  visibleSpots: Spot.Class[] = [];
-  searchSpots: Spot.Class[] = [];
-  loadedSpots: any = {}; // is a map of tile coords to spot arrays
-  visibleDots: any[] = [];
-
-  getAllSpots(): Spot.Class[] {
-    const values = [];
-    for (const key of Object.keys(this.loadedSpots)) {
-      if (!key.includes("z16")) continue;
-      values.push(this.loadedSpots[key]);
+  speedDialMiniFabClick(index: number) {
+    switch (index) {
+      case 0:
+        this.router.navigateByUrl("/kml-import");
+        break;
+      default:
+        console.error("Uncaught fab click registered");
+        break;
     }
-
-    return [].concat.apply([], values);
   }
 
-  zoomDotOpacities: number[] = [];
-  zoomDotOpacity: number = 0;
-
-  private _northEastTileCoordsZ16: google.maps.Point;
-  private _southWestTileCoordsZ16: google.maps.Point;
-
-  constructor(
-    public authService: AuthenticationService,
-    public mapsService: MapsApiService,
-    private _dbService: DatabaseService,
-    private route: ActivatedRoute,
-    private location: Location,
-    private router: Router,
-    private _zone: NgZone,
-    private _snackbar: MatSnackBar
-  ) {
-    // wait for google maps to initialize
-    // this.mapsService.isApiLoaded$.pipe(take(1)).subscribe((success) => {
-    //   if (success) {
-    //     this.spotDotMarkerOptions.anchorPoint = new google.maps.Point(0.5, 0.5);
-    //   }
-    // });
-  }
+  // Initialization ///////////////////////////////////////////////////////////
 
   ngOnInit() {
     let spotId: string = this.route.snapshot.paramMap.get("spotID") || "";
@@ -220,8 +200,8 @@ export class MapPageComponent implements OnInit {
     let lng = this.route.snapshot.queryParamMap.get("lng") || null;
     let zoom = this.route.snapshot.queryParamMap.get("z") || 3; // TODO ?? syntax
 
-    this.calculateAllDotRadii();
-    this.calculateAllDotOpcacities();
+    //this.calculateAllDotRadii();
+    //this.calculateAllDotOpcacities();
 
     if (spotId) {
       this._dbService
@@ -230,13 +210,7 @@ export class MapPageComponent implements OnInit {
         .subscribe(
           (spot) => {
             this.openSpot(spot);
-            this.setStartMap(
-              {
-                lat: spot.location.lat,
-                lng: spot.location.lng,
-              },
-              18
-            );
+            this.setStartMap(spot.location, 18);
           },
           (error) => {
             // the spot wasn't found, just go to the location if there is one
@@ -262,7 +236,7 @@ export class MapPageComponent implements OnInit {
     this._dbService.getTestSpots().subscribe((spots) => {
       // add all these loaded spots to the loaded spots array
       for (let spot of spots) {
-        let tile = spot.data.tile_coordinates.z16;
+        let tile = spot.tileCoordinates.z16;
         if (!this.loadedSpots[`z${16}_${tile.x}_${tile.y}`]) {
           // the tile was not loaded before
           this.loadedSpots[`z${16}_${tile.x}_${tile.y}`] = [];
@@ -288,6 +262,8 @@ export class MapPageComponent implements OnInit {
     }
     this.start_zoom = zoom || this.start_zoom || 16;
   }
+
+  // Map events ///////////////////////////////////////////////////////////////
 
   clickedMap(event: google.maps.MapMouseEvent) {
     //console.log(event.latLng.toJSON());
@@ -362,88 +338,21 @@ export class MapPageComponent implements OnInit {
     this.upadateMapURL(center, this.map.getZoom());
   }
 
-  calculateAllDotRadii() {
-    for (let i = 0; i < 16; i++) {
-      this.spotDotZoomRadii[i] = this.calculateDotRadius(i);
-    }
-  }
-
-  calculateDotRadius(zoom: number) {
-    let radius = 10 * (1 << (16 - zoom));
-    return radius;
-  }
-
-  calculateAllDotOpcacities() {
-    for (let zoom = 0; zoom < 16; zoom++) {
-      const opacity = Math.min(Math.max((zoom - 4) / 20, 0.05), 0.8);
-      this.zoomDotOpacities.push(opacity);
-    }
-  }
-
-  oldDotRadius(zoom, location) {
-    let mercator = Math.cos((location.latitude * Math.PI) / 180);
-    let radius = 5 * (1 << (16 - zoom)) * (1 / mercator);
-    return radius;
-  }
-
   zoomChanged() {
     let newZoom = this.map.getZoom();
     this.upadateMapURL(this.map.getCenter().toJSON(), newZoom);
   }
 
-  upadateMapURL(center: google.maps.LatLngLiteral, zoom: number) {
-    if (this.selectedSpot) {
-      this.location.go(
-        `/map/${this.selectedSpot.id}?lat=${center.lat}&lng=${center.lng}&z=${zoom}`
-      );
-    } else {
-      this.location.go(`/map?lat=${center.lat}&lng=${center.lng}&z=${zoom}`);
-    }
-  }
+  // Spot loading /////////////////////////////////////////////////////////////
 
-  /**
-   * This function takes in the new corners of the visible area and hides and shows spots as necessairy
-   * @param northEastLiteral
-   * @param southWestLiteral
-   */
-  updateVisibleSpots() {
-    // clear visible spots
-    this.visibleSpots = [];
-
-    for (
-      let x = this._southWestTileCoordsZ16.x;
-      x <= this._northEastTileCoordsZ16.x;
-      x++
-    ) {
-      for (
-        let y = this._northEastTileCoordsZ16.y;
-        y <= this._southWestTileCoordsZ16.y;
-        y++
-      ) {
-        // here we go through all the x,y pairs for every visible tile on screen right now.
-
-        if (this.loadedSpots[`z${16}_${x}_${y}`]) {
-          this.visibleSpots = this.visibleSpots.concat(
-            this.loadedSpots[`z${16}_${x}_${y}`]
-          );
-        }
-      }
+  getAllSpots(): Spot.Class[] {
+    const values = [];
+    for (const key of Object.keys(this.loadedSpots)) {
+      if (!key.includes("z16")) continue;
+      values.push(this.loadedSpots[key]);
     }
 
-    // If the selected spot is visible reference the instance from the visible spots
-    if (this.selectedSpot) {
-      const selectedSpotIndexInVisibleSpots: number =
-        this.visibleSpots.findIndex((spot) => {
-          return this.selectedSpot.id === spot.id;
-        });
-      if (selectedSpotIndexInVisibleSpots >= 0) {
-        // The selected spot is visible, reference the instance from the visible
-        // spots instead of the one from the database
-        this.selectedSpot = this.visibleSpots[selectedSpotIndexInVisibleSpots];
-      }
-    }
-
-    //console.log(this.visibleSpots);
+    return [].concat.apply([], values);
   }
 
   loadNewSpotOnTiles(
@@ -509,6 +418,75 @@ export class MapPageComponent implements OnInit {
     //     console.error(error);
     //   }
     // );
+  }
+
+  // Public Map helper functions
+
+  upadateMapURL(center: google.maps.LatLngLiteral, zoom: number) {
+    if (this.selectedSpot) {
+      this.location.go(
+        `/map/${this.selectedSpot.id}?lat=${center.lat}&lng=${center.lng}&z=${zoom}`
+      );
+    } else {
+      this.location.go(`/map?lat=${center.lat}&lng=${center.lng}&z=${zoom}`);
+    }
+  }
+
+  /**
+   * This function takes in the new corners of the visible area and hides and shows spots as necessairy
+   * @param northEastLiteral
+   * @param southWestLiteral
+   */
+  updateVisibleSpots() {
+    // clear visible spots
+    this.visibleSpots = [];
+
+    for (
+      let x = this._southWestTileCoordsZ16.x;
+      x <= this._northEastTileCoordsZ16.x;
+      x++
+    ) {
+      for (
+        let y = this._northEastTileCoordsZ16.y;
+        y <= this._southWestTileCoordsZ16.y;
+        y++
+      ) {
+        // here we go through all the x,y pairs for every visible tile on screen right now.
+
+        if (this.loadedSpots[`z${16}_${x}_${y}`]) {
+          this.visibleSpots = this.visibleSpots.concat(
+            this.loadedSpots[`z${16}_${x}_${y}`]
+          );
+        }
+      }
+    }
+
+    // If the selected spot is visible reference the instance from the visible spots
+    if (this.selectedSpot) {
+      const selectedSpotIndexInVisibleSpots: number =
+        this.visibleSpots.findIndex((spot) => {
+          return this.selectedSpot.id === spot.id;
+        });
+      if (selectedSpotIndexInVisibleSpots >= 0) {
+        // The selected spot is visible, reference the instance from the visible
+        // spots instead of the one from the database
+        this.selectedSpot = this.visibleSpots[selectedSpotIndexInVisibleSpots];
+      }
+    }
+
+    //console.log(this.visibleSpots);
+  }
+
+  updateSpotInLoadedSpots(spot: Spot.Class) {
+    this.loadedSpots[
+      `z${16}_${spot.tileCoordinates.z16.x}_${spot.tileCoordinates.z16.y}`
+    ].forEach((loadedSpot: Spot.Class, index: number) => {
+      if (loadedSpot.id === spot.id) {
+        this.loadedSpots[
+          `z${16}_${spot.tileCoordinates.z16.x}_${spot.tileCoordinates.z16.y}`
+        ][index] = spot;
+      }
+    });
   }
 
   updateVisibleDots() {
@@ -580,75 +558,86 @@ export class MapPageComponent implements OnInit {
     if (!spot) return;
 
     console.log("saving the spot");
-    console.log("Spot data to save: ", spot.data);
+    console.log("Spot data to save: ");
+    console.log(spot);
     // If the spot does not have an ID, it does not exist in the database yet.
+
+    let saveSpotPromise: Promise<void>;
     if (spot.id) {
       // this is an old spot that is edited
-      this._dbService
-        .setSpot(spot.id, spot.data)
-        .then(() => {
-          // Successfully updated
-          this.isEditing = false;
-          // TODO Snackbar or something
-          console.log("Successfully saved spot");
-          this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spot);
-          console.log(this.getAllSpots());
-        })
-        .catch((error) => {
-          this.isEditing = false;
-          console.error("Error on spot save", error);
-        });
+      saveSpotPromise = this._dbService.setSpot(spot.id, spot.data);
     } else {
       // this is a new spot
-      this._dbService
-        .createSpot(spot.data)
-        .then((id) => {
-          // Successfully created
-          this.isEditing = false;
-
-          // TODO add to loaded spots or something? or will it be loaded automatically after that?
-
-          this.selectedSpot = new Spot.Class(id, spot.data);
-
-          // TODO snackbar or something
-          console.log("Successfully crated spot");
-          this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spot);
-        })
-        .catch((error) => {
-          this.isEditing = false;
-          console.error("There was an error creating this spot!", error);
-        });
+      saveSpotPromise = this._dbService.createSpot(spot.data);
     }
+
+    saveSpotPromise
+      .then(() => {
+        // Successfully updated
+        this.isEditing = false;
+        // TODO Snackbar or something
+        console.log("Successfully saved spot");
+        this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spot);
+        console.log("all spots", JSON.stringify(this.getAllSpots()));
+      })
+      .catch((error) => {
+        this.isEditing = false;
+        console.error("Error on spot save", error);
+      });
+  }
+
+  startEdit() {
+    this.isEditing = true;
+
+    this.uneditedSpot = this.selectedSpot.clone();
   }
 
   discardEdit() {
     // reset paths of editing polygon
-    // TODO
+    this.isEditing = false;
 
-    // delete local newly created spots
-    this.removeNewSpotFromLoadedSpotsAndUpdate();
+    if (!this.uneditedSpot) {
+      // this is a new spot
+      // delete local newly created spots
+      //this.removeNewSpotFromLoadedSpotsAndUpdate();
+      this.selectedSpot = null;
+    } else {
+      this.selectedSpot = this.uneditedSpot;
+      this.selectedSpot.paths = this.uneditedSpot.paths;
+
+      delete this.uneditedSpot;
+      this.uneditedSpot = null; // TODO is this needed?
+    }
+
+    this.updateSpotInLoadedSpots(this.selectedSpot);
+    this.updateVisibleSpots();
   }
 
-  getPathsFromSpotPolygon() {
+  updateSpotPreSave() {
     this.polygons.forEach((polygon) => {
-      if (polygon?.getEditable()) {
-        const val = polygon.getPaths();
+      if (polygon.getEditable()) {
+        const newPaths: google.maps.MVCArray<
+          google.maps.MVCArray<google.maps.LatLng>
+        > = polygon.getPaths();
+        console.log("new paths", newPaths);
 
         // Convert LatLng[][] to LatLngLiteral[][]
-        let paths: Array<Array<google.maps.LatLngLiteral>> = [];
-        paths[0] = val[0].map((v, i, arr) => {
-          return { lat: v.lat(), lng: v.lng() };
-        });
+        let literalNewPaths: Array<Array<google.maps.LatLngLiteral>> = [];
+        literalNewPaths[0] = newPaths
+          .getAt(0)
+          .getArray()
+          .map((v, i, arr) => {
+            return { lat: v.lat(), lng: v.lng() };
+          });
 
         // this sets the paths for the selected spot and also sets the bounds for the spot data structure.
-        this.selectedSpot.paths = paths;
+        this.selectedSpot.paths = literalNewPaths;
 
-        if (this.spotDetail) {
-          this.saveSpot(this.selectedSpot); // update polygons on spot
-        }
-        // If the sidepanel is not open while editing, it might not be able to save.
+        //this.saveSpot(this.selectedSpot); // update polygons on spot
       }
     });
+
+    this.selectedSpot.location = this.selectedSpotMarker.getPosition().toJSON();
   }
 
   loadSpotsForTiles(tilesToLoad: { x: number; y: number }[]) {
@@ -670,7 +659,7 @@ export class MapPageComponent implements OnInit {
 
   spotMarkerMoved(event: { coords: google.maps.LatLngLiteral }) {
     if (this.selectedSpot) {
-      this.selectedSpot.setLocation(event.coords);
+      this.selectedSpot.location = event.coords;
       this.selectedSpot.location = event.coords; // reflect move on map
     } else {
       console.error(
@@ -703,7 +692,7 @@ export class MapPageComponent implements OnInit {
     this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(this.selectedSpot);
   }
 
-  getReferenceToLoadedSpotById(spotId: string): LoadedSpotReference {
+  getReferenceToLoadedSpotById(spotId: string): LoadedSpotReference | null {
     const allSpots = this.getAllSpots();
 
     // find the spot with no id
@@ -711,20 +700,24 @@ export class MapPageComponent implements OnInit {
       return spot.id === spotId;
     });
 
-    const tile = spot?.data?.tile_coordinates?.z16;
-    const indexInTileArray =
-      this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].indexOf(spot);
+    if (spot) {
+      const tile = spot?.tileCoordinates?.z16;
+      const indexInTileArray =
+        this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].indexOf(spot);
 
-    //console.log(JSON.stringify(this.loadedSpots));
+      //console.log(JSON.stringify(this.loadedSpots));
 
-    const loadedSpotRef: LoadedSpotReference = {
-      spot: spot,
-      tile: tile,
-      indexInTileArray: indexInTileArray,
-      indexInTotalArray: spot ? allSpots.indexOf(spot) : -1,
-    };
+      const loadedSpotRef: LoadedSpotReference = {
+        spot: spot,
+        tile: tile,
+        indexInTileArray: indexInTileArray,
+        indexInTotalArray: spot ? allSpots.indexOf(spot) : -1,
+      };
 
-    return loadedSpotRef;
+      return loadedSpotRef;
+    } else {
+      return null;
+    }
   }
 
   /**
@@ -735,7 +728,7 @@ export class MapPageComponent implements OnInit {
     // Get the tile coordinates to save in loaded spots
     const ref = this.getReferenceToLoadedSpotById(newSpot.id);
 
-    console.log(ref);
+    console.log("ref", ref);
     if (ref.spot && ref.indexInTileArray >= 0 && ref.tile) {
       // The spot exists and should be updated
 
@@ -765,6 +758,7 @@ export class MapPageComponent implements OnInit {
     const spotToRemoveRef = this.getReferenceToLoadedSpotById("");
 
     if (
+      spotToRemoveRef &&
       spotToRemoveRef.spot &&
       spotToRemoveRef.tile &&
       spotToRemoveRef.indexInTileArray >= 0
@@ -790,4 +784,30 @@ export class MapPageComponent implements OnInit {
       );
     }
   }
+
+  // Other public functions ///////////////////////////////////////////////////
+
+  // calculateAllDotRadii() {
+  //   for (let i = 0; i < 16; i++) {
+  //     this.spotDotZoomRadii[i] = this.calculateDotRadius(i);
+  //   }
+  // }
+
+  // calculateDotRadius(zoom: number) {
+  //   let radius = 10 * (1 << (16 - zoom));
+  //   return radius;
+  // }
+
+  // calculateAllDotOpcacities() {
+  //   for (let zoom = 0; zoom < 16; zoom++) {
+  //     const opacity = Math.min(Math.max((zoom - 4) / 20, 0.05), 0.8);
+  //     this.zoomDotOpacities.push(opacity);
+  //   }
+  // }
+
+  // oldDotRadius(zoom, location) {
+  //   let mercator = Math.cos((location.latitude * Math.PI) / 180);
+  //   let radius = 5 * (1 << (16 - zoom)) * (1 / mercator);
+  //   return radius;
+  // }
 }

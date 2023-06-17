@@ -29,7 +29,6 @@
       <map-polygon
         *ngIf="spot?.hasBounds()"
         #polygon
-        [id]="spot.id"
         [options]="
           spot === selectedSpot && isEditing
             ? spotPolygonEditingOptions
@@ -42,6 +41,7 @@
 
     <map-marker
       *ngIf="selectedSpot"
+      #selectedSpotMarker
       [options]="
         isEditing ? selectedSpotMarkerEditingOptions : selectedSpotMarkerOptions
       "
@@ -86,10 +86,9 @@
       [(isEditing)]="isEditing"
       (dismiss)="closeSpot()"
       (addBoundsClick)="addBounds()"
-      (callGetPathsPromiseFunction)="getPathsFromSpotPolygon()"
+      (updateSpotEvent)="getPathsFromSpotPolygon()"
       (focusClick)="focusSpot(selectedSpot)"
       (saveClick)="saveSpot($event)"
-      (discardClick)="discardEdit()"
     ></app-spot-compact-view>
 
     <app-bottom-sheet
@@ -108,13 +107,13 @@
           [dismissable]="false"
           [infoOnly]="false"
           [editable]="true"
-          [(isEditing)]="isEditing"
+          [isEditing]="isEditing"
+          (isEditingChange)="$event ? startEdit() : discardEdit()"
           (dismiss)="closeSpot()"
           (addBoundsClick)="addBounds()"
-          (callGetPathsPromiseFunction)="getPathsFromSpotPolygon()"
+          (updateSpotEvent)="updateSpotPreSave()"
           (focusClick)="focusSpot(selectedSpot)"
           (saveClick)="saveSpot($event)"
-          (discardClick)="discardEdit()"
         ></app-spot-compact-view>
       </div>
       <div *ngIf="!selectedSpot" class="spots-container">
@@ -150,8 +149,8 @@
     [buttonConfig]="speedDialButtonConfig"
     [openOnHover]="true"
     [rotationDegrees]="0"
-    (mainFabClick)="mainFabClicked()"
-    (miniFabClick)="miniFabPressed($event)"
+    (mainFabClick)="createSpot()"
+    (miniFabClick)="speedDialMiniFabClick($event)"
   ></app-speed-dial-fab>
 
   <mat-menu #searchUserMatMenu="matMenu">

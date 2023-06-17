@@ -24,7 +24,6 @@ export class BottomSheetComponent {
   @ViewChild("bottomSheet", { static: true }) bottomSheet: any;
 
   onDrop(event: CdkDragDrop<string[]>) {
-    console.log(event);
     switch (event.currentIndex) {
       case 0:
         this._bottomSheetSate = BottomSheetOpenState.FullyOpen;

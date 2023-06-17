@@ -64,8 +64,7 @@ export class SignUpPageComponent implements OnInit {
         callback: (response) => {
           // reCAPTCHA solved, allow sign in
           this._recaptchaSolved = true;
-          console.log("recaptcha solved");
-          console.log(response);
+          console.log("recaptcha solved", response);
         },
         "expired-callback": () => {
           // Response expired. Ask user to solve reCAPTCHA again.

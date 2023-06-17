@@ -80,7 +80,7 @@ export class SignInPageComponent implements OnInit {
     this._authService
       .signInGoogle()
       .then((res) => {
-        console.log(res);
+        console.log("google sign in response:", res);
       })
       .catch((err) => {
         console.error(err);

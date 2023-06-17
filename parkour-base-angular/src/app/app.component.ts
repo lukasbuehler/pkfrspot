@@ -13,8 +13,7 @@ import { environment } from "src/environments/environment";
 export class AppComponent implements OnInit {
   constructor(
     public router: Router,
-    public authService: AuthenticationService,
-    private _snackbar: MatSnackBar
+    public authService: AuthenticationService
   ) {
     // initialize google maps
   }
@@ -117,29 +116,4 @@ export class AppComponent implements OnInit {
       },
     ],
   };
-
-  logUserOut() {
-    this.authService
-      .logUserOut()
-      .then(() => {
-        // Successfully logged out
-        this._snackbar.open("You were successfully signed out!", "OK", {
-          duration: 2000,
-          horizontalPosition: "center",
-          verticalPosition: "bottom",
-        });
-      })
-      .catch((err) => {
-        // There was an error logging out.
-        this._snackbar.open(
-          "Error, there was a problem signing out!",
-          "Dismiss",
-          {
-            duration: 5000,
-            horizontalPosition: "center",
-            verticalPosition: "bottom",
-          }
-        );
-      });
-  }
 }

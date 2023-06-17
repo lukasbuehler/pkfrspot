@@ -229,8 +229,7 @@ export class DatabaseService {
             if (doc.data() as Spot.Schema) {
               let newSpot: Spot.Class = new Spot.Class(
                 doc.id,
-                doc.data() as Spot.Schema,
-                !!isNotForMap
+                doc.data() as Spot.Schema
               );
               spots.push(newSpot);
             } else {

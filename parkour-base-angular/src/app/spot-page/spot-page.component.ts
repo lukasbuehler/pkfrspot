@@ -41,7 +41,7 @@ export class SpotPageComponent implements OnInit {
   @Input() clickable: boolean = false;
   @Input() editable: boolean = false;
   @Input() isEditing: boolean = false;
-  @Output() callGetPathsPromiseFunction = new EventEmitter<void>();
+  @Output() updateSpotEvent = new EventEmitter<void>();
 
   @Output()
   isEditingChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -50,7 +50,6 @@ export class SpotPageComponent implements OnInit {
   @Output() focusClick: EventEmitter<void> = new EventEmitter<void>();
   @Output() saveClick: EventEmitter<Spot.Class> =
     new EventEmitter<Spot.Class>();
-  @Output() discardClick: EventEmitter<void> = new EventEmitter<void>();
 
   @ViewChild(UploadMediaUiComponent) uploadMediaComp;
 
@@ -94,12 +93,6 @@ export class SpotPageComponent implements OnInit {
     );
   }
 
-  ngOnChanges() {
-    if (this.spot && !this.editedSpot) {
-      this.editedSpot = Spot.clone(this.spot);
-    }
-  }
-
   ngOnInit() {
     this.countries = getCountriesList("de");
   }
@@ -129,13 +122,13 @@ export class SpotPageComponent implements OnInit {
     );
 
     if (!this.spot.address) {
-      this.spot.setAddress({
+      this.spot.address = {
         country: {
           long: selectedCountryLong,
           short: this.countries[index].code,
         },
         formatted: "",
-      });
+      };
     } else {
       if (!this.spot.address.country) {
         this.spot.address.country = {
@@ -146,7 +139,6 @@ export class SpotPageComponent implements OnInit {
         this.spot.address.country.long = selectedCountryLong;
         this.spot.address.country.short = this.countries[index].code;
       }
-      this.spot.setAddress(this.spot.address);
     }
   }
 
@@ -160,8 +152,6 @@ export class SpotPageComponent implements OnInit {
   }
 
   editButtonClick() {
-    this.editedSpot = Spot.clone(this.spot);
-
     if (this.editable && this._authenticationService.isSignedIn) {
       this.isEditing = true;
       this.isEditingChange.emit(true);
@@ -170,13 +160,12 @@ export class SpotPageComponent implements OnInit {
   saveButtonClick() {
     this.isSaving = true;
 
-    this.updatePaths();
+    this.updateSpot();
 
     this.saveClick.emit(this.editedSpot);
     this.isEditingChange.emit(false);
   }
   discardButtonClick() {
-    this.discardClick.emit();
     this.isEditing = false;
     this.isEditingChange.emit(false);
 
@@ -259,8 +248,8 @@ export class SpotPageComponent implements OnInit {
     this.spot.setMedia(newSpotMedia, this._dbService, this._storageService);
   }
 
-  private updatePaths() {
-    this.callGetPathsPromiseFunction.emit();
+  private updateSpot() {
+    this.updateSpotEvent.emit();
   }
 
   async shareSpot() {
@@ -312,7 +301,7 @@ export class SpotPageComponent implements OnInit {
       .getPostsFromSpot(this.spot)
       .subscribe(
         (postsSchemaMap) => {
-          console.log(postsSchemaMap);
+          console.log("postsSchemaMap", postsSchemaMap);
           this.spotPosts = [];
           for (let id in postsSchemaMap) {
             this.spotPosts.push(new Post.Class(id, postsSchemaMap[id]));

@@ -55,7 +55,7 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
   @Input() clickable: boolean = false;
   @Input() editable: boolean = false;
   @Input() isEditing: boolean = false;
-  @Output() callGetPathsPromiseFunction = new EventEmitter<void>();
+  @Output() updateSpotEvent = new EventEmitter<void>();
 
   @Output()
   isEditingChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -67,8 +67,6 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
   @Output() discardClick: EventEmitter<void> = new EventEmitter<void>();
 
   @ViewChild(UploadMediaUiComponent) uploadMediaComp;
-
-  editedSpot: Spot.Class = null;
 
   spotLanguage: string = "de_CH";
 
@@ -116,13 +114,9 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log(this._element.nativeElement.clientHeight);
+    //console.log(this._element.nativeElement.clientHeight);
 
     this.startHeight = this._element.nativeElement.clientHeight;
-
-    if (this.spot && !this.editedSpot) {
-      this.editedSpot = Spot.clone(this.spot);
-    }
   }
 
   ngOnInit() {
@@ -154,13 +148,13 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
     );
 
     if (!this.spot.address) {
-      this.spot.setAddress({
+      this.spot.address = {
         country: {
           long: selectedCountryLong,
           short: this.countries[index].code,
         },
         formatted: "",
-      });
+      };
     } else {
       if (!this.spot.address.country) {
         this.spot.address.country = {
@@ -171,7 +165,7 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
         this.spot.address.country.long = selectedCountryLong;
         this.spot.address.country.short = this.countries[index].code;
       }
-      this.spot.setAddress(this.spot.address);
+      this.spot.address = this.spot.address;
     }
   }
 
@@ -185,8 +179,6 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
   }
 
   editButtonClick() {
-    this.editedSpot = Spot.clone(this.spot);
-
     if (this.editable && this.authenticationService.isSignedIn) {
       this.isEditing = true;
       this.isEditingChange.emit(true);
@@ -195,9 +187,9 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
   saveButtonClick() {
     this.isSaving = true;
 
-    this.updatePaths();
+    this.updateSpot();
 
-    this.saveClick.emit(this.editedSpot);
+    this.saveClick.emit(this.spot);
     this.isEditingChange.emit(false);
   }
   discardButtonClick() {
@@ -284,8 +276,8 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
     this.spot.setMedia(newSpotMedia, this._dbService, this._storageService);
   }
 
-  private updatePaths() {
-    this.callGetPathsPromiseFunction.emit();
+  private updateSpot() {
+    this.updateSpotEvent.emit();
   }
 
   async shareSpot() {

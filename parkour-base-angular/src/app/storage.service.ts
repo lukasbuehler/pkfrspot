@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { generateUUID } from "src/scripts/Helpers";
 
-import { getStorage } from "@angular/fire/storage";
+import { getDownloadURL, getStorage } from "@angular/fire/storage";
 import { deleteObject, ref, uploadBytes } from "firebase/storage";
 
 export enum StorageFolder {
@@ -38,7 +38,7 @@ export class StorageService {
     let uploadRef = ref(this.storage, `${location}/${uploadFileName}`);
 
     return uploadBytes(uploadRef, blob).then((snapshot) => {
-      return snapshot.ref.toString();
+      return getDownloadURL(snapshot.ref);
     });
   }
 

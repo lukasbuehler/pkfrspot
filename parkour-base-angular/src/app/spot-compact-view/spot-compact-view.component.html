@@ -1,8 +1,8 @@
-<mat-progress-bar
+<!-- <mat-progress-bar
   *ngIf="isSaving"
   color="accent"
   mode="indeterminate"
-></mat-progress-bar>
+></mat-progress-bar> -->
 
 <mat-menu #navUserMenu="matMenu">
   <button mat-menu-item>
@@ -60,8 +60,8 @@
         <input
           #spotNameInput
           matInput
-          [value]="editedSpot?.name || ''"
-          (change)="editedSpot.setName($event.target.value)"
+          [value]="spot?.name || ''"
+          (change)="spot.name = $event.target.value"
         />
       </mat-form-field>
     </form>
@@ -204,8 +204,8 @@
       <mat-form-field style="width: 100%">
         <mat-label>Spot type</mat-label>
         <mat-select
-          [value]="editedSpot?.type"
-          (selectionChange)="editedSpot.setType($event.value)"
+          [value]="spot?.type"
+          (selectionChange)="spot.type = $event.value"
         >
           <mat-option *ngFor="let type of spotTypes" [value]="type">
             {{ capitalize(type) }}
@@ -215,8 +215,8 @@
       <mat-form-field style="width: 100%">
         <mat-label>Spot area</mat-label>
         <mat-select
-          [value]="editedSpot?.area"
-          (selectionChange)="editedSpot.setArea($event.value)"
+          [value]="spot?.area"
+          (selectionChange)="spot.area = $event.value"
         >
           <mat-option *ngFor="let area of spotAreas" [value]="area">
             {{ capitalize(area) }}
@@ -228,8 +228,8 @@
         <textarea
           matInput
           placeholder="Description of the spot, its features and more..."
-          [value]="editedSpot?.description || ''"
-          (change)="editedSpot.setDescription($event.target.value)"
+          [value]="spot?.description || ''"
+          (change)="spot.description = $event.target.value"
         ></textarea>
       </mat-form-field>
 

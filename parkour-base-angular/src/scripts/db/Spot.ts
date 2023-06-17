@@ -6,68 +6,116 @@ import { GeoPoint } from "firebase/firestore";
 
 export namespace Spot {
   export class Class {
-    public readonly id: string = "";
-    public name: string = "";
-    public location: google.maps.LatLngLiteral = null;
-    public isMiniSpot: boolean = false;
-    public rating: number = null;
-    public description: string = "";
-    public hasMedia: boolean = false;
-    public previewImage: string = "";
-    public media: ContributedMedia[] = null;
-    public type: string = "";
-    public area: string = "";
+    private _locale: string = "de_CH"; // TODO: don't fix
 
-    public paths = [];
-
-    public data: Spot.Schema = null;
-
-    public address: AddressSchema;
-
-    constructor(
-      private _id: string,
-      private _data: Spot.Schema,
-      private _isNotForMap: boolean = false
-    ) {
-      this.id = _id;
-      this._updateData();
+    public get id(): string {
+      return this._id;
     }
 
-    private _updateData() {
-      this.name = this._data.name?.de_CH || "Unnamed"; // TODO multilang
-      this.location = {
+    public get name(): string {
+      if (this._data.name) {
+        return this._data.name[this._locale] || "";
+      }
+      return ""; // TODO add default names for all locales;
+    }
+    public set name(newName: string) {
+      if (!this._data.name) {
+        this._data.name = {};
+      }
+      this._data.name[this._locale] = newName;
+    }
+
+    private _location: google.maps.LatLngLiteral;
+    public get location(): google.maps.LatLngLiteral {
+      return this._location;
+    }
+    public set location(newLocation: google.maps.LatLngLiteral) {
+      console.log("setting location");
+      this._location = newLocation;
+      this._data.location = new GeoPoint(newLocation.lat, newLocation.lng);
+      this.setTileCoordinates(); // update tile coords
+    }
+
+    public get isMiniSpot(): boolean {
+      return this._data.isMiniSpot;
+    }
+
+    public get rating(): number {
+      return this._data.rating;
+    }
+
+    public get description(): string {
+      if (this._data.description) {
+        return this._data.description[this._locale];
+      }
+      return "";
+    }
+    public set description(newDescription: string) {
+      if (!this._data.description) {
+        this._data.description = {};
+      }
+      this._data.description[this._locale] = newDescription;
+    }
+
+    public get hasMedia(): boolean {
+      return this._data.media && this._data.media.length > 0;
+    }
+
+    public get previewImage(): string {
+      if (this.hasMedia && this._data.media[0].type === MediaType.Image) {
+        return this.getMediaByIndex(0).src;
+      }
+      return "";
+    }
+
+    public get media(): ContributedMedia[] {
+      return this._data.media;
+    }
+
+    public get type(): string {
+      return this._data.type;
+    }
+    public set type(type: string) {
+      this._data.type = type;
+    }
+
+    public get area(): string {
+      return this._data.area;
+    }
+    public set area(area: string) {
+      this._data.area = area;
+    }
+
+    private _paths: google.maps.LatLngLiteral[][];
+    public get paths(): google.maps.LatLngLiteral[][] {
+      return this._paths;
+    }
+    public set paths(paths: google.maps.LatLngLiteral[][]) {
+      this._paths = paths;
+      this._data.bounds = this._makeBoundsFromPaths(paths);
+    }
+
+    public get address(): AddressSchema {
+      return this._data.address;
+    }
+    public set address(address: AddressSchema) {
+      this._data.address = address;
+    }
+
+    public get tileCoordinates() {
+      return this._data.tile_coordinates;
+    }
+
+    public get data(): Schema {
+      return this._data;
+    }
+
+    constructor(private _id: string, private _data: Spot.Schema) {
+      this._paths = this._makePathsFromBounds(this._data.bounds);
+      this._location = {
         lat: this._data.location.latitude,
         lng: this._data.location.longitude,
       };
-      this.isMiniSpot = this._data.isMiniSpot;
-      this.rating = this._data.rating;
-      this.description = this._data.description?.en_GB || ""; // TODO multiland
-
-      // Media
-      this.hasMedia = this._data.media && this._data.media.length > 0;
-      if (this.hasMedia && this._data.media[0].type === MediaType.Image) {
-        this.previewImage = this.getMediaByIndex(0).src;
-      }
-      this.media = this._data.media;
-
-      this.type = this._data.type;
-      this.area = this._data.area;
-
-      this.address = this._data.address;
-
-      this.data = this._data;
-
-      if (this.hasBounds()) {
-        this.paths = this._makePathsFromBounds(this._data.bounds);
-      }
-      if (this._data.location && !this._isNotForMap) {
-        this.setTileCoordinates();
-      }
-    }
-
-    public setName(newName: string) {
-      this._data.name.de_CH = newName;
-      this._updateData();
     }
 
     public getMediaByIndex(index: number) {
@@ -139,44 +187,7 @@ export namespace Spot {
     }
 
     private _updateMedia(_dbService: DatabaseService) {
-      this._updateData();
       _dbService.updateSpot(this._id, { media: this._data.media });
-    }
-
-    setType(newType: string) {
-      this._data.type = newType;
-      this._updateData();
-    }
-
-    setArea(newArea: string) {
-      this._data.area = newArea;
-      this._updateData();
-    }
-
-    setDescription(newDescription: string, langCode: string = "en_GB") {
-      if (!this._data.description) {
-        this._data.description = {};
-      }
-
-      this._data.description[langCode] = newDescription;
-      this._updateData();
-    }
-
-    setPaths(paths) {
-      this.paths = paths;
-      this._data.bounds = this._makeBoundsFromPaths(paths);
-    }
-
-    setAddress(addressObj) {
-      this.address = addressObj;
-      this._data.address = addressObj;
-      this._updateData();
-    }
-
-    setLocation(location: google.maps.LatLngLiteral) {
-      this._data.location = new GeoPoint(location.lat, location.lng);
-      this.setTileCoordinates(); // update tile coords
-      this._updateData(); // reflect changes
     }
 
     public hasBounds() {
@@ -202,27 +213,31 @@ export namespace Spot {
     private _makePathsFromBounds(
       bounds: firebase.default.firestore.GeoPoint[]
     ): Array<Array<google.maps.LatLngLiteral>> {
-      let path: Array<Array<google.maps.LatLngLiteral>> = [[]];
+      if (!bounds) return [];
 
-      for (let point of bounds) {
-        path[0].push({
-          lat: point.latitude || point["_lat"],
-          lng: point.longitude || point["_long"],
-        });
-      }
-      return path;
+      return [
+        bounds.map((point) => {
+          return {
+            lat: point.latitude || point.latitude,
+            lng: point.longitude || point.longitude,
+          };
+        }),
+      ];
     }
 
     private _makeBoundsFromPaths(
-      path: Array<Array<google.maps.LatLngLiteral>>
+      paths: Array<Array<google.maps.LatLngLiteral>>
     ): firebase.default.firestore.GeoPoint[] {
-      let bounds: firebase.default.firestore.GeoPoint[] = [];
+      if (!paths || paths.length === 0) return [];
 
-      for (let point of path[0]) {
-        bounds.push(new GeoPoint(point.lat, point.lng));
-      }
+      return paths[0].map((point) => {
+        return new GeoPoint(point.lat, point.lng);
+      });
+    }
 
-      return bounds;
+    public clone() {
+      const dataCopy = JSON.parse(JSON.stringify(this._data));
+      return new Class(this.id, dataCopy);
     }
   }
 
@@ -245,11 +260,6 @@ export namespace Spot {
       long: string;
     };
     formatted: string;
-  }
-
-  export function clone(spot: Class) {
-    const dataCopy = JSON.parse(JSON.stringify(spot.data));
-    return new Class(spot.id, dataCopy);
   }
 
   export interface Schema {
