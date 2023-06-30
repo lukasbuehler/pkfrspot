@@ -7,7 +7,6 @@ import {
   NgZone,
   ElementRef,
 } from "@angular/core";
-import { map_style } from "./map_style";
 import { DatabaseService } from "../database.service";
 import { Spot } from "src/scripts/db/Spot";
 import { MapHelper } from "../../scripts/map_helper";
@@ -56,7 +55,6 @@ interface LoadedSpotReference {
   ],
 })
 export class MapPageComponent implements OnInit {
-  @ViewChild("map") map: GoogleMap;
   @ViewChildren("polygon", { read: MapPolygon })
   polygons: QueryList<MapPolygon>;
   @ViewChild("selectedSpotMarker", { read: MapMarker })
@@ -68,6 +66,11 @@ export class MapPageComponent implements OnInit {
   isEditing: boolean = false;
 
   start_zoom: number = 4;
+  mapZoom: number = this.start_zoom;
+  mapCenter: google.maps.LatLngLiteral = {
+    lat: 48.8517386,
+    lng: 2.298386,
+  };
 
   visibleSpots: Spot.Class[] = [];
   searchSpots: Spot.Class[] = [];
@@ -82,17 +85,6 @@ export class MapPageComponent implements OnInit {
    */
   private readonly _loadAllSpotsZoomLevel: number = 16; // DO NOT CHANGE
 
-  // Map config ///////////////////////////////////////////////////////////////
-
-  //spotDotZoomRadii: number[] = Array<number>(16);
-
-  // The default coordinates are Paris, the origin of parkour.
-  // modiying this resets the map
-  readonly start_coordinates: google.maps.LatLngLiteral = {
-    lat: 48.8517386,
-    lng: 2.298386,
-  };
-
   constructor(
     public authService: AuthenticationService,
     public mapsService: MapsApiService,
@@ -103,66 +95,6 @@ export class MapPageComponent implements OnInit {
     private _zone: NgZone,
     private _snackbar: MatSnackBar
   ) {}
-
-  //mapStyle: google.maps.MapTypeId = google.maps.MapTypeId.ROADMAP;
-  mapStyle = "roadmap";
-  mapStylesConfig = map_style;
-
-  mapOptions: google.maps.MapOptions = {
-    backgroundColor: "#000000",
-    clickableIcons: false,
-    gestureHandling: "greedy",
-    mapTypeId: this.mapStyle,
-    disableDefaultUI: true,
-    styles: this.mapStylesConfig,
-  };
-  mapTypeId: string = "roadmap";
-  selectedSpotMarkerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    clickable: false,
-    icon: {
-      url: "/assets/icons/marker.png",
-    },
-  };
-  selectedSpotMarkerEditingOptions: google.maps.MarkerOptions = {
-    draggable: true,
-    clickable: false,
-    crossOnDrag: true,
-    icon: {
-      url: "/assets/icons/marker.png",
-    },
-  };
-  spotDotMarkerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    clickable: false,
-    icon: {
-      url: "/assets/icons/favicon-16x16.png",
-    },
-    opacity: 0.5,
-  };
-  spotCircleOptions: google.maps.CircleOptions = {
-    fillColor: "#b8c4ff",
-    fillOpacity: 0.75,
-    draggable: false,
-    clickable: true,
-    strokeWeight: 0,
-  };
-  spotPolygonOptions: google.maps.PolygonOptions = {
-    fillColor: "#b8c4ff",
-    strokeColor: "#b8c4ff",
-    fillOpacity: 0.1,
-    editable: false,
-    draggable: false,
-    clickable: true,
-  };
-  spotPolygonEditingOptions: google.maps.PolygonOptions = {
-    fillColor: "#b8c4ff",
-    strokeColor: "#b8c4ff",
-    fillOpacity: 0.1,
-    editable: true,
-    draggable: false,
-    clickable: true,
-  };
 
   // Speed dial FAB //////////////////////////////////////////////////////////
 
@@ -198,7 +130,7 @@ export class MapPageComponent implements OnInit {
     let spotId: string = this.route.snapshot.paramMap.get("spotID") || "";
     let lat = this.route.snapshot.queryParamMap.get("lat") || null;
     let lng = this.route.snapshot.queryParamMap.get("lng") || null;
-    let zoom = this.route.snapshot.queryParamMap.get("z") || 3; // TODO ?? syntax
+    let zoom = this.route.snapshot.queryParamMap.get("z") || this.start_zoom; // TODO ?? syntax
 
     //this.calculateAllDotRadii();
     //this.calculateAllDotOpcacities();
@@ -210,15 +142,12 @@ export class MapPageComponent implements OnInit {
         .subscribe(
           (spot) => {
             this.openSpot(spot);
-            this.setStartMap(spot.location, 18);
           },
           (error) => {
-            // the spot wasn't found, just go to the location if there is one
+            // the spot wasn't found, just go to the location ifsetStartMap there is one
             console.error(error);
-            this.setStartMap(
-              { lat: Number(lat), lng: Number(lng) },
-              Number(zoom)
-            );
+            this.mapCenter = { lat: Number(lat), lng: Number(lng) };
+            this.mapZoom = Number(zoom);
             this._snackbar.open(error.msg, "Dismiss", {
               duration: 5000,
               horizontalPosition: "center",
@@ -229,7 +158,8 @@ export class MapPageComponent implements OnInit {
       //console.log("Loading spot " + spotId);
       // Show loading spot to open
     } else {
-      this.setStartMap({ lat: Number(lat), lng: Number(lng) }, Number(zoom));
+      this.mapCenter = { lat: Number(lat), lng: Number(lng) };
+      this.mapZoom = Number(zoom);
     }
 
     // TODO remove
@@ -250,19 +180,6 @@ export class MapPageComponent implements OnInit {
     });
   }
 
-  setStartMap(coords: google.maps.LatLngLiteral, zoom: number) {
-    if (coords && coords.lat && coords.lng) {
-      this.start_coordinates.lat = coords.lat;
-      this.start_coordinates.lng = coords.lng;
-      this.start_zoom = Number(zoom || 16);
-
-      if (this.map) {
-        this.map.panTo(this.start_coordinates);
-      }
-    }
-    this.start_zoom = zoom || this.start_zoom || 16;
-  }
-
   // Map events ///////////////////////////////////////////////////////////////
 
   clickedMap(event: google.maps.MapMouseEvent) {
@@ -270,78 +187,68 @@ export class MapPageComponent implements OnInit {
     //console.log(MapHelper.getTileCoordinates(event.latLng.toJSON(), this.zoom));
   }
 
-  boundsChanged() {
-    //console.log("bounds changed");
-    let zoomLevel = this.map.getZoom();
-    let bounds = this.map.getBounds();
+  //   boundsChanged() {
+  //     //console.log("bounds changed");
+  //     let zoomLevel = this.map.getZoom();
+  //     let bounds = this.map.getBounds();
 
-    let northEastLiteral: google.maps.LatLngLiteral = {
-      lat: bounds.getNorthEast().lat(),
-      lng: bounds.getNorthEast().lng(),
-    };
-    let southWestLiteral: google.maps.LatLngLiteral = {
-      lat: bounds.getSouthWest().lat(),
-      lng: bounds.getSouthWest().lng(),
-    };
+  //     let northEastLiteral: google.maps.LatLngLiteral = {
+  //       lat: bounds.getNorthEast().lat(),
+  //       lng: bounds.getNorthEast().lng(),
+  //     };
+  //     let southWestLiteral: google.maps.LatLngLiteral = {
+  //       lat: bounds.getSouthWest().lat(),
+  //       lng: bounds.getSouthWest().lng(),
+  //     };
 
-    let northEastTileCoords = MapHelper.getTileCoordinates(
-      northEastLiteral,
-      this._loadAllSpotsZoomLevel
-    );
-    let southWestTileCoords = MapHelper.getTileCoordinates(
-      southWestLiteral,
-      this._loadAllSpotsZoomLevel
-    );
+  //     let northEastTileCoords = MapHelper.getTileCoordinates(
+  //       northEastLiteral,
+  //       this._loadAllSpotsZoomLevel
+  //     );
+  //     let southWestTileCoords = MapHelper.getTileCoordinates(
+  //       southWestLiteral,
+  //       this._loadAllSpotsZoomLevel
+  //     );
 
-    this._northEastTileCoordsZ16 = northEastTileCoords;
-    this._southWestTileCoordsZ16 = southWestTileCoords;
+  //     this._northEastTileCoordsZ16 = northEastTileCoords;
+  //     this._southWestTileCoordsZ16 = southWestTileCoords;
 
-    if (zoomLevel >= this._loadAllSpotsZoomLevel) {
-      this.visibleDots = [];
-      // inside this zoom level we are constantly loading spots if new tiles become visible
+  //     if (zoomLevel >= this._loadAllSpotsZoomLevel) {
+  //       this.visibleDots = [];
+  //       // inside this zoom level we are constantly loading spots if new tiles become visible
 
-      //this.loadNewSpotOnTiles(northEastTileCoords, southWestTileCoords);
-      this.updateVisibleSpots();
-    } else {
-      // hide the spots and show the dots
-      this.visibleSpots = [];
-      this.updateVisibleDots();
-      //   if (zoomLevel <= 2) {
-      //     zoomLevel = 2;
-      //     this._northEastTileCoordsZ16.x = 0;
-      //     this._northEastTileCoordsZ16.y = 0;
-      //     this._southWestTileCoordsZ16.x = (1 << 16) - 1;
-      //     this._southWestTileCoordsZ16.y = (1 << 16) - 1;
-      //   }
-      //   if (zoomLevel <= this._loadAllSpotsZoomLevel - 2) {
-      //     if (zoomLevel % 2 !== 0) {
-      //       zoomLevel--;
-      //     }
-      //     const tileCoords: { ne: google.maps.Point; sw: google.maps.Point } = {
-      //       ne: new google.maps.Point(
-      //         this._northEastTileCoordsZ16.x >> (16 - zoomLevel),
-      //         this._northEastTileCoordsZ16.y >> (16 - zoomLevel)
-      //       ),
-      //       sw: new google.maps.Point(
-      //         this._southWestTileCoordsZ16.x >> (16 - zoomLevel),
-      //         this._southWestTileCoordsZ16.y >> (16 - zoomLevel)
-      //       ),
-      //     };
+  //       //this.loadNewSpotOnTiles(northEastTileCoords, southWestTileCoords);
+  //       this.updateVisibleSpots();
+  //     } else {
+  //       // hide the spots and show the dots
+  //       this.visibleSpots = [];
+  //       this.updateVisibleDots();
+  //       //   if (zoomLevel <= 2) {
+  //       //     zoomLevel = 2;
+  //       //     this._northEastTileCoordsZ16.x = 0;
+  //       //     this._northEastTileCoordsZ16.y = 0;
+  //       //     this._southWestTileCoordsZ16.x = (1 << 16) - 1;
+  //       //     this._southWestTileCoordsZ16.y = (1 << 16) - 1;
+  //       //   }
+  //       //   if (zoomLevel <= this._loadAllSpotsZoomLevel - 2) {
+  //       //     if (zoomLevel % 2 !== 0) {
+  //       //       zoomLevel--;
+  //       //     }
+  //       //     const tileCoords: { ne: google.maps.Point; sw: google.maps.Point } = {
+  //       //       ne: new google.maps.Point(
+  //       //         this._northEastTileCoordsZ16.x >> (16 - zoomLevel),
+  //       //         this._northEastTileCoordsZ16.y >> (16 - zoomLevel)
+  //       //       ),
+  //       //       sw: new google.maps.Point(
+  //       //         this._southWestTileCoordsZ16.x >> (16 - zoomLevel),
+  //       //         this._southWestTileCoordsZ16.y >> (16 - zoomLevel)
+  //       //       ),
+  //       //     };
 
-      // this.loadNewSpotDotsOnTiles(zoomLevel, tileCoords.ne, tileCoords.sw);
-      //}
-    }
-  }
-
-  centerChanged() {
-    let center: google.maps.LatLngLiteral = this.map.getCenter().toJSON();
-    this.upadateMapURL(center, this.map.getZoom());
-  }
-
-  zoomChanged() {
-    let newZoom = this.map.getZoom();
-    this.upadateMapURL(this.map.getCenter().toJSON(), newZoom);
-  }
+  //       // this.loadNewSpotDotsOnTiles(zoomLevel, tileCoords.ne, tileCoords.sw);
+  //       //}
+  //     }
+  //   }
 
   // Spot loading /////////////////////////////////////////////////////////////
 
@@ -500,19 +407,6 @@ export class MapPageComponent implements OnInit {
     });
   }
 
-  toggleMapStyle() {
-    if (
-      this.mapTypeId.toLowerCase() ===
-      google.maps.MapTypeId.ROADMAP.toLowerCase()
-    ) {
-      // if it is equal to roadmap, toggle to satellite
-      this.mapTypeId = google.maps.MapTypeId.SATELLITE;
-    } else {
-      // otherwise toggle back to roadmap
-      this.mapTypeId = google.maps.MapTypeId.ROADMAP;
-    }
-  }
-
   openSpot(spot: Spot.Class) {
     // Maybe just opened spot
     if (this.loadedSpots) this.selectedSpot = spot;
@@ -521,24 +415,13 @@ export class MapPageComponent implements OnInit {
   }
 
   focusSpot(spot: Spot.Class) {
-    this._zone.run(() => {
-      // needs to run in NgZone for change detection
-      // https://github.com/SebastianM/angular-google-maps/issues/627
-      // TODO STILL NOT WORKING THOUGH
-      // Bug: It only works when the selected spot changes. Meaning if a
-      // different spot is/was selected it pans correctly to the new spot
-      // but otherwise it just does nothing.
-
-      this.setStartMap(spot.location, 18);
-      //this.upadateMapURL(spot.location, 18);
-    });
+    this.mapCenter = spot.location;
+    this.mapZoom = 18;
   }
 
   createSpot() {
     //console.log("Create Spot");
-    let center_coordinates: google.maps.LatLngLiteral = this.map
-      .getCenter()
-      .toJSON();
+    let center_coordinates: google.maps.LatLngLiteral = this.mapCenter;
 
     this.selectedSpot = new Spot.Class(
       "", // The id needs to be empty for the spot to be recognized as new
@@ -669,7 +552,6 @@ export class MapPageComponent implements OnInit {
   }
   closeSpot() {
     this.selectedSpot = null;
-    //this.upadateMapURL(this.center_coordinates, this.start_zoom);
   }
 
   /**

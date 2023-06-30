@@ -18,8 +18,10 @@
     cdkDragBoundary=".sheet-region"
     cdkDrag
     cdkDragLockAxis="y"
+    (panup)="openSheet()"
+    (pandown)="closeSheet()"
   >
-    <div class="header" [class.headless]="!hasHeader" cdkDragHandle>
+    <div class="header" [class.headless]="!hasHeader">
       <div class="handle-region">
         <div class="handle"></div>
       </div>

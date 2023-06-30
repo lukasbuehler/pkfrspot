@@ -1,54 +1,5 @@
 <div class="map-container" *ngIf="mapsService.isApiLoaded$ | async">
-  <google-map
-    #map
-    id="map"
-    [center]="start_coordinates"
-    [zoom]="start_zoom"
-    [options]="mapOptions"
-    [mapTypeId]="mapTypeId"
-    (mapClick)="clickedMap($event)"
-    (boundsChanged)="boundsChanged()"
-    (centerChanged)="centerChanged()"
-    (zoomChanged)="zoomChanged()"
-    width="100%"
-    height="100%"
-  >
-    <map-marker
-      *ngFor="let dot of visibleDots"
-      [position]="dot"
-      [options]="spotDotMarkerOptions"
-    ></map-marker>
-
-    <map-circle
-      *ngFor="let spot of visibleSpots"
-      [center]="spot.location"
-      [radius]="10"
-      [options]="spotCircleOptions"
-      (circleClick)="openSpot(spot)"
-    >
-      <map-polygon
-        *ngIf="spot?.hasBounds()"
-        #polygon
-        [options]="
-          spot === selectedSpot && isEditing
-            ? spotPolygonEditingOptions
-            : spotPolygonOptions
-        "
-        [paths]="spot.paths"
-        (polygonClick)="openSpot(spot)"
-      ></map-polygon>
-    </map-circle>
-
-    <map-marker
-      *ngIf="selectedSpot"
-      #selectedSpotMarker
-      [options]="
-        isEditing ? selectedSpotMarkerEditingOptions : selectedSpotMarkerOptions
-      "
-      [position]="selectedSpot.location"
-      [title]="selectedSpot.name"
-    ></map-marker>
-  </google-map>
+  <app-map [(zoom)]="mapZoom" [(center)]="mapCenter"></app-map>
 
   <div class="search-group">
     <mat-form-field
@@ -63,6 +14,7 @@
         color="primary"
         class="profile-icon-button login-fab d-md-none"
         [matMenuTriggerFor]="searchUserMatMenu"
+        (click)="$event.stopPropagation()"
       >
         <mat-icon *ngIf="!authService.isSignedIn">person_outline</mat-icon>
         <img
@@ -76,13 +28,13 @@
 
     <app-spot-compact-view
       [@inOutAnimation]
-      *ngIf="false && selectedSpot"
+      *ngIf="selectedSpot"
       #spotDetail
       [spot]="selectedSpot"
       [flat]="true"
       [dismissable]="true"
       [infoOnly]="false"
-      [editable]="true"
+      [editable]="false"
       [(isEditing)]="isEditing"
       (dismiss)="closeSpot()"
       (addBoundsClick)="addBounds()"
@@ -128,18 +80,6 @@
       </div>
     </app-bottom-sheet>
   </div>
-
-  <button
-    mat-mini-fab
-    #mapStyleFab
-    color="white"
-    id="mapStyleFab"
-    (click)="toggleMapStyle()"
-  >
-    <mat-icon aria-label="Button with magnifying lens to search for spots">
-      {{ mapOptions.mapTypeId.toLowerCase() === "roadmap" ? "terrain" : "map" }}
-    </mat-icon>
-  </button>
 
   <!-- Add / import spots speed dial-->
   <app-speed-dial-fab

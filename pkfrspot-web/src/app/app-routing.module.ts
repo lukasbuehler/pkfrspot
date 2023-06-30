@@ -21,8 +21,8 @@ import { ForgotPasswordPageComponent } from "./forgot-password-page/forgot-passw
 
 const routes: Routes = [
   // Home page and posts (displays posts and updates)
-  { path: "home", component: HomePageComponent, data: { routeName: "Home" } },
-  { path: "", redirectTo: "home", pathMatch: "full" },
+  { path: "posts", component: HomePageComponent, data: { routeName: "Posts" } },
+  { path: "", redirectTo: "map", pathMatch: "full" },
   {
     path: "p/:postID",
     component: PostPageComponent,
@@ -30,11 +30,11 @@ const routes: Routes = [
   },
 
   // Map page
-  { path: "map", component: MapPageComponent, data: { routeName: "Spot Map" } },
+  { path: "map", component: MapPageComponent, data: { routeName: "Spot map" } },
   {
     path: "map/:spotID",
     component: MapPageComponent,
-    data: { routeName: "Spot Map" },
+    data: { routeName: "Spot map" },
   },
   //{ path: "s/:spotID", component: SpotDetailComponent, data: {routeName: "Spot"} },
   {
@@ -44,24 +44,24 @@ const routes: Routes = [
   },
 
   // Community, Groups, Teams, Sessions
-  {
-    path: "community",
-    component: CommunityPageComponent,
-    data: { routeName: "Community" },
-  },
-  {
-    path: "g/:groupID",
-    component: CommunityPageComponent,
-    data: { routeName: "Group" },
-  },
-  {
-    path: "team/:teamID",
-    component: CommunityPageComponent,
-    data: { routeName: "Team" },
-  },
+  //   {
+  //     path: "community",
+  //     component: CommunityPageComponent,
+  //     data: { routeName: "Community" },
+  //   },
+  //   {
+  //     path: "g/:groupID",
+  //     component: CommunityPageComponent,
+  //     data: { routeName: "Group" },
+  //   },
+  //   {
+  //     path: "team/:teamID",
+  //     component: CommunityPageComponent,
+  //     data: { routeName: "Team" },
+  //   },
 
   // Wiki page
-  { path: "wiki", component: WikiPageComponent, data: { routeName: "Wiki" } },
+  //   { path: "wiki", component: WikiPageComponent, data: { routeName: "Wiki" } },
 
   // Profiles and sign-in flow
   {

@@ -1,0 +1,56 @@
+<google-map
+  #googleMap
+  id="googleMap"
+  [center]="start_coordinates"
+  [zoom]="zoom"
+  [options]="mapOptions"
+  [mapTypeId]="mapTypeId"
+  (mapClick)="mapClick.emit($event)"
+  (boundsChanged)="boundsChanged.emit($event)"
+  (centerChanged)="centerChanged.emit($event)"
+  (zoomChanged)="zoomChanged.emit($event)"
+  width="100%"
+  height="100%"
+>
+  <map-marker
+    *ngFor="let dot of dots"
+    [position]="dot"
+    [options]="spotDotMarkerOptions"
+  ></map-marker>
+
+  <map-circle
+    *ngFor="let spot of spots"
+    [center]="spot.location"
+    [radius]="10"
+    [options]="spotCircleOptions"
+    (circleClick)="openSpot(spot)"
+  >
+    <map-polygon
+      *ngIf="spot?.hasBounds()"
+      #polygon
+      [options]="
+        spot === selectedSpot && isEditing
+          ? spotPolygonEditingOptions
+          : spotPolygonOptions
+      "
+      [paths]="spot.paths"
+      (polygonClick)="openSpot(spot)"
+    ></map-polygon>
+  </map-circle>
+
+  <map-marker
+    *ngIf="selectedSpot"
+    #selectedSpotMarker
+    [options]="
+      isEditing ? selectedSpotMarkerEditingOptions : selectedSpotMarkerOptions
+    "
+    [position]="selectedSpot.location"
+    [title]="selectedSpot.name"
+  ></map-marker>
+</google-map>
+
+<button mat-mini-fab #mapStyleFab id="mapStyleFab" (click)="toggleMapStyle()">
+  <mat-icon aria-label="Button with magnifying lens to search for spots">
+    {{ mapOptions.mapTypeId.toLowerCase() === "roadmap" ? "terrain" : "map" }}
+  </mat-icon>
+</button>

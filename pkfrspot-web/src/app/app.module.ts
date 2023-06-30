@@ -108,6 +108,8 @@ import { VgCoreModule } from "@videogular/ngx-videogular/core";
 import { VgControlsModule } from "@videogular/ngx-videogular/controls";
 import { VgOverlayPlayModule } from "@videogular/ngx-videogular/overlay-play";
 import { VgBufferingModule } from "@videogular/ngx-videogular/buffering";
+import { HammerModule } from "@angular/platform-browser";
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
@@ -151,6 +153,7 @@ import { VgBufferingModule } from "@videogular/ngx-videogular/buffering";
     SpotPageComponent,
     BottomSheetComponent,
     UserMenuContentComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,
@@ -172,6 +175,7 @@ import { VgBufferingModule } from "@videogular/ngx-videogular/buffering";
 
     // Angular material modules
     BrowserAnimationsModule,
+    HammerModule,
     InfiniteScrollModule,
     MatButtonModule,
     MatCheckboxModule,
