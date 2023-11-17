@@ -13,8 +13,21 @@
       class="spot-search-field mat-elevation-z3"
       appearance="fill"
     >
-      <input matInput placeholder="Find spots" />
-      <mat-icon matSuffix>search</mat-icon>
+      <button
+        *ngIf="selectedSpot"
+        mat-icon-button
+        matSuffix
+        [matMenuTriggerFor]="searchUserMatMenu"
+        (click)="$event.stopPropagation(); closeSpot()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-icon *ngIf="!selectedSpot" matSuffix>search</mat-icon>
+
+      <input
+        matInput
+        [placeholder]="selectedSpot ? selectedSpot.name : 'Find spots'"
+      />
       <button
         mat-icon-button
         matSuffix
@@ -33,7 +46,7 @@
       </button>
     </mat-form-field>
 
-    <app-spot-compact-view
+    <!-- <app-spot-compact-view
       [@inOutAnimation]
       *ngIf="selectedSpot"
       #spotDetail
@@ -48,7 +61,7 @@
       (updateSpotEvent)="getPathsFromSpotPolygon()"
       (focusClick)="focusSpot(selectedSpot)"
       (saveClick)="saveSpot($event)"
-    ></app-spot-compact-view>
+    ></app-spot-compact-view> -->
 
     <app-bottom-sheet
       title="{{ visibleSpots.length }} spot{{

@@ -29,6 +29,7 @@ import {
   isMobileDevice,
 } from "../../scripts/Helpers";
 import { UntypedFormControl } from "@angular/forms";
+import { Renderer2, AfterViewInit } from "@angular/core";
 import { map, startWith } from "rxjs/operators";
 import { trigger, transition, style, animate } from "@angular/animations";
 
@@ -47,7 +48,9 @@ import { trigger, transition, style, animate } from "@angular/animations";
     ]),
   ],
 })
-export class SpotCompactViewComponent implements OnInit, OnChanges {
+export class SpotCompactViewComponent
+  implements OnInit, OnChanges, AfterViewInit
+{
   @Input() spot: Spot.Class;
   @Input() infoOnly: boolean = false;
   @Input() dismissable: boolean = false;
@@ -100,6 +103,7 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
   }
 
   constructor(
+    private renderer: Renderer2,
     public authenticationService: AuthenticationService,
     private _element: ElementRef,
     private _dbService: DatabaseService,
@@ -121,6 +125,18 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.countries = getCountriesList("de");
+  }
+
+  ngAfterViewInit() {
+    const swiperContainer = document.querySelector("swiper-container");
+    if (swiperContainer) {
+      this.renderer.listen(swiperContainer, "touchstart", (event) => {
+        event.stopPropagation();
+      });
+      this.renderer.listen(swiperContainer, "touchmove", (event) => {
+        event.stopPropagation();
+      });
+    }
   }
 
   private _filterCountries(value: string): any[] {

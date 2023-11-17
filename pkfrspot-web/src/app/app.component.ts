@@ -66,16 +66,16 @@ export class AppComponent implements OnInit {
       class: "logo",
     },
     buttons: [
-      {
-        name: "Posts",
-        link: "/posts",
-        icon: "question_answer",
-        badge: {
-          number: 0,
-          color: "accent",
-        },
-        tooltip: "",
-      },
+      //   {
+      //     name: "Posts",
+      //     link: "/posts",
+      //     icon: "question_answer",
+      //     badge: {
+      //       number: 0,
+      //       color: "accent",
+      //     },
+      //     tooltip: "",
+      //   },
       {
         name: "Spot map",
         link: "/map",

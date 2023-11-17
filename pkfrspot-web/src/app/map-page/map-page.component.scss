@@ -110,15 +110,15 @@ div.search-group {
     background: transparent;
     width: 420px;
   }
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
 
   > * {
     pointer-events: visible;
     background-color: #2a2a2d;
     border-radius: 28px;
     width: 100%;
-    margin-top: 20px;
+    margin-top: 10px;
 
     ::ng-deep mat-card {
       border-radius: 28px;
@@ -143,9 +143,9 @@ div.search-group {
 app-bottom-sheet {
   @media (max-width: 599px) {
     // small screen
-    margin-left: -20px;
-    margin-right: -20px;
-    width: calc(100% + 40px) !important;
+    margin-left: -10px;
+    margin-right: -10px;
+    width: calc(100% + 20px) !important;
   }
 }
 
