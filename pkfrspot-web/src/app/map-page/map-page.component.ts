@@ -187,68 +187,64 @@ export class MapPageComponent implements OnInit {
     //console.log(MapHelper.getTileCoordinates(event.latLng.toJSON(), this.zoom));
   }
 
-  //   boundsChanged() {
-  //     //console.log("bounds changed");
-  //     let zoomLevel = this.map.getZoom();
-  //     let bounds = this.map.getBounds();
+  boundsChanged(bounds: google.maps.LatLngBounds) {
+    let northEastLiteral: google.maps.LatLngLiteral = {
+      lat: bounds.getNorthEast().lat(),
+      lng: bounds.getNorthEast().lng(),
+    };
+    let southWestLiteral: google.maps.LatLngLiteral = {
+      lat: bounds.getSouthWest().lat(),
+      lng: bounds.getSouthWest().lng(),
+    };
 
-  //     let northEastLiteral: google.maps.LatLngLiteral = {
-  //       lat: bounds.getNorthEast().lat(),
-  //       lng: bounds.getNorthEast().lng(),
-  //     };
-  //     let southWestLiteral: google.maps.LatLngLiteral = {
-  //       lat: bounds.getSouthWest().lat(),
-  //       lng: bounds.getSouthWest().lng(),
-  //     };
+    let northEastTileCoords = MapHelper.getTileCoordinates(
+      northEastLiteral,
+      this._loadAllSpotsZoomLevel
+    );
+    let southWestTileCoords = MapHelper.getTileCoordinates(
+      southWestLiteral,
+      this._loadAllSpotsZoomLevel
+    );
 
-  //     let northEastTileCoords = MapHelper.getTileCoordinates(
-  //       northEastLiteral,
-  //       this._loadAllSpotsZoomLevel
-  //     );
-  //     let southWestTileCoords = MapHelper.getTileCoordinates(
-  //       southWestLiteral,
-  //       this._loadAllSpotsZoomLevel
-  //     );
+    this._northEastTileCoordsZ16 = northEastTileCoords;
+    this._southWestTileCoordsZ16 = southWestTileCoords;
 
-  //     this._northEastTileCoordsZ16 = northEastTileCoords;
-  //     this._southWestTileCoordsZ16 = southWestTileCoords;
+    if (this.mapZoom >= this._loadAllSpotsZoomLevel) {
+      this.visibleDots = [];
+      // inside this zoom level we are constantly loading spots if new tiles become visible
 
-  //     if (zoomLevel >= this._loadAllSpotsZoomLevel) {
-  //       this.visibleDots = [];
-  //       // inside this zoom level we are constantly loading spots if new tiles become visible
+      //this.loadNewSpotOnTiles(northEastTileCoords, southWestTileCoords);
+      this.updateVisibleSpots();
+    } else {
+      // hide the spots and show the dots
+      this.visibleSpots = [];
+      this.updateVisibleDots();
+      //   if (zoomLevel <= 2) {
+      //     zoomLevel = 2;
+      //     this._northEastTileCoordsZ16.x = 0;
+      //     this._northEastTileCoordsZ16.y = 0;
+      //     this._southWestTileCoordsZ16.x = (1 << 16) - 1;
+      //     this._southWestTileCoordsZ16.y = (1 << 16) - 1;
+      //   }
+      //   if (zoomLevel <= this._loadAllSpotsZoomLevel - 2) {
+      //     if (zoomLevel % 2 !== 0) {
+      //       zoomLevel--;
+      //     }
+      //     const tileCoords: { ne: google.maps.Point; sw: google.maps.Point } = {
+      //       ne: new google.maps.Point(
+      //         this._northEastTileCoordsZ16.x >> (16 - zoomLevel),
+      //         this._northEastTileCoordsZ16.y >> (16 - zoomLevel)
+      //       ),
+      //       sw: new google.maps.Point(
+      //         this._southWestTileCoordsZ16.x >> (16 - zoomLevel),
+      //         this._southWestTileCoordsZ16.y >> (16 - zoomLevel)
+      //       ),
+      //     };
 
-  //       //this.loadNewSpotOnTiles(northEastTileCoords, southWestTileCoords);
-  //       this.updateVisibleSpots();
-  //     } else {
-  //       // hide the spots and show the dots
-  //       this.visibleSpots = [];
-  //       this.updateVisibleDots();
-  //       //   if (zoomLevel <= 2) {
-  //       //     zoomLevel = 2;
-  //       //     this._northEastTileCoordsZ16.x = 0;
-  //       //     this._northEastTileCoordsZ16.y = 0;
-  //       //     this._southWestTileCoordsZ16.x = (1 << 16) - 1;
-  //       //     this._southWestTileCoordsZ16.y = (1 << 16) - 1;
-  //       //   }
-  //       //   if (zoomLevel <= this._loadAllSpotsZoomLevel - 2) {
-  //       //     if (zoomLevel % 2 !== 0) {
-  //       //       zoomLevel--;
-  //       //     }
-  //       //     const tileCoords: { ne: google.maps.Point; sw: google.maps.Point } = {
-  //       //       ne: new google.maps.Point(
-  //       //         this._northEastTileCoordsZ16.x >> (16 - zoomLevel),
-  //       //         this._northEastTileCoordsZ16.y >> (16 - zoomLevel)
-  //       //       ),
-  //       //       sw: new google.maps.Point(
-  //       //         this._southWestTileCoordsZ16.x >> (16 - zoomLevel),
-  //       //         this._southWestTileCoordsZ16.y >> (16 - zoomLevel)
-  //       //       ),
-  //       //     };
-
-  //       // this.loadNewSpotDotsOnTiles(zoomLevel, tileCoords.ne, tileCoords.sw);
-  //       //}
-  //     }
-  //   }
+      // this.loadNewSpotDotsOnTiles(zoomLevel, tileCoords.ne, tileCoords.sw);
+      //}
+    }
+  }
 
   // Spot loading /////////////////////////////////////////////////////////////
 

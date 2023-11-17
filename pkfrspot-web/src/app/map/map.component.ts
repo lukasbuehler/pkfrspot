@@ -17,15 +17,32 @@ import { GoogleMap } from "@angular/google-maps";
 export class MapComponent {
   @ViewChild("googleMap") googleMap: GoogleMap;
 
+  // The default coordinates are Paris, the origin of parkour.
+  // modiying this resets the map
+  readonly start_coordinates: google.maps.LatLngLiteral = {
+    lat: 48.8517386,
+    lng: 2.298386,
+  };
+
+  private _center: google.maps.LatLngLiteral = this.start_coordinates;
   @Input() set center(coords: google.maps.LatLngLiteral) {
-    this.googleMap.panTo(coords);
+    this._center = coords;
+    if (this.googleMap) {
+      this.googleMap.panTo(this._center);
+    }
   }
   @Output() centerChanged = new EventEmitter<google.maps.LatLngLiteral>();
 
-  @Input() zoom: number = 4;
+  private _zoom: number = 4;
+  @Input() set zoom(newZoom: number) {
+    this._zoom = newZoom;
+    if (this.googleMap) {
+      this.googleMap.zoom = newZoom;
+    }
+  }
   @Output() zoomChanged = new EventEmitter<number>();
 
-  @Output() boundsChanged = new EventEmitter<google.maps.LatLngBoundsLiteral>();
+  @Output() boundsChanged = new EventEmitter<google.maps.LatLngBounds>();
   @Output() mapClick = new EventEmitter<google.maps.LatLngLiteral>();
 
   @Input() spots: Spot.Class[] = [];
@@ -33,13 +50,6 @@ export class MapComponent {
   @Input() selectedSpot: Spot.Class | null = null;
 
   //spotDotZoomRadii: number[] = Array<number>(16);
-
-  // The default coordinates are Paris, the origin of parkour.
-  // modiying this resets the map
-  readonly start_coordinates: google.maps.LatLngLiteral = {
-    lat: 48.8517386,
-    lng: 2.298386,
-  };
 
   //mapStyle: google.maps.MapTypeId = google.maps.MapTypeId.ROADMAP;
   mapStyle = "roadmap";
@@ -112,5 +122,10 @@ export class MapComponent {
       // otherwise toggle back to roadmap
       this.mapTypeId = google.maps.MapTypeId.ROADMAP;
     }
+  }
+
+  emitBoundsChanged() {
+    const bounds = this.googleMap.getBounds();
+    this.boundsChanged.emit(bounds);
   }
 }

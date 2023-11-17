@@ -1,5 +1,12 @@
 <div class="map-container" *ngIf="mapsService.isApiLoaded$ | async">
-  <app-map [(zoom)]="mapZoom" [(center)]="mapCenter"></app-map>
+  <app-map
+    [(zoom)]="mapZoom"
+    [(center)]="mapCenter"
+    [spots]="visibleSpots"
+    [dots]="visibleDots"
+    [selectedSpot]="selectedSpot"
+    (boundsChanged)="boundsChanged($event)"
+  ></app-map>
 
   <div class="search-group">
     <mat-form-field

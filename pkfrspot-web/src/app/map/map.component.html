@@ -6,7 +6,7 @@
   [options]="mapOptions"
   [mapTypeId]="mapTypeId"
   (mapClick)="mapClick.emit($event)"
-  (boundsChanged)="boundsChanged.emit($event)"
+  (boundsChanged)="emitBoundsChanged()"
   (centerChanged)="centerChanged.emit($event)"
   (zoomChanged)="zoomChanged.emit($event)"
   width="100%"
