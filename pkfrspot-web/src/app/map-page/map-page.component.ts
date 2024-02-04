@@ -75,6 +75,7 @@ export class MapPageComponent implements AfterViewInit {
     lng: 2.298386,
   };
   mapCenter: google.maps.LatLngLiteral;
+  bounds: google.maps.LatLngBounds;
 
   visibleSpots: Spot.Class[] = [];
   searchSpots: Spot.Class[] = [];
@@ -173,13 +174,7 @@ export class MapPageComponent implements AfterViewInit {
         }
         this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].push(spot);
       }
-
-      // update the map
-      if (this.mapZoom < this._loadAllSpotsZoomLevel) {
-        this.updateVisibleDots();
-      } else {
-        //this.updateVisibleSpots();
-      }
+      //if (this.bounds) this.boundsChanged(this.bounds, this.mapZoom);
     });
   }
 
@@ -187,7 +182,6 @@ export class MapPageComponent implements AfterViewInit {
 
   zoomChanged(zoom: number) {
     this.mapZoom = zoom;
-    this.updateMapURL();
   }
 
   mapClick(event: google.maps.MapMouseEvent) {
@@ -200,31 +194,33 @@ export class MapPageComponent implements AfterViewInit {
     }
   }
 
-  boundsChanged(bounds: google.maps.LatLngBounds) {
-    let northEastLiteral: google.maps.LatLngLiteral = {
-      lat: bounds.getNorthEast().lat(),
-      lng: bounds.getNorthEast().lng(),
-    };
-    let southWestLiteral: google.maps.LatLngLiteral = {
-      lat: bounds.getSouthWest().lat(),
-      lng: bounds.getSouthWest().lng(),
-    };
+  boundsChanged(bounds: google.maps.LatLngBounds, zoom: number) {
+    this.bounds = bounds;
 
-    let northEastTileCoords = MapHelper.getTileCoordinatesForLocationAndZoom(
-      northEastLiteral,
-      this._loadAllSpotsZoomLevel
-    );
-    let southWestTileCoords = MapHelper.getTileCoordinatesForLocationAndZoom(
-      southWestLiteral,
-      this._loadAllSpotsZoomLevel
-    );
-
-    this._northEastTileCoordsZ16 = northEastTileCoords;
-    this._southWestTileCoordsZ16 = southWestTileCoords;
-
-    if (this.mapZoom >= this._loadAllSpotsZoomLevel) {
+    if (zoom >= this._loadAllSpotsZoomLevel) {
       this.visibleDots = [];
       // inside this zoom level we are constantly loading spots if new tiles become visible
+
+      let northEastLiteral: google.maps.LatLngLiteral = {
+        lat: bounds.getNorthEast().lat(),
+        lng: bounds.getNorthEast().lng(),
+      };
+      let southWestLiteral: google.maps.LatLngLiteral = {
+        lat: bounds.getSouthWest().lat(),
+        lng: bounds.getSouthWest().lng(),
+      };
+
+      let northEastTileCoords = MapHelper.getTileCoordinatesForLocationAndZoom(
+        northEastLiteral,
+        this._loadAllSpotsZoomLevel
+      );
+      let southWestTileCoords = MapHelper.getTileCoordinatesForLocationAndZoom(
+        southWestLiteral,
+        this._loadAllSpotsZoomLevel
+      );
+
+      this._northEastTileCoordsZ16 = northEastTileCoords;
+      this._southWestTileCoordsZ16 = southWestTileCoords;
 
       //this.loadNewSpotOnTiles(northEastTileCoords, southWestTileCoords);
       this.updateVisibleSpots();
@@ -257,9 +253,6 @@ export class MapPageComponent implements AfterViewInit {
       // this.loadNewSpotDotsOnTiles(zoomLevel, tileCoords.ne, tileCoords.sw);
       //}
     }
-
-    // update the map URL
-    this.updateMapURL();
   }
 
   // Spot loading /////////////////////////////////////////////////////////////
@@ -342,15 +335,10 @@ export class MapPageComponent implements AfterViewInit {
   // Public Map helper functions
 
   updateMapURL() {
-    let center = this.mapCenter ?? this.mapCenterStart;
-    let zoom = this.mapZoom;
-
     if (this.selectedSpot) {
-      this.location.go(
-        `/map/${this.selectedSpot.id}?lat=${center.lat}&lng=${center.lng}&z=${zoom}`
-      );
+      this.location.go(`/map/${this.selectedSpot.id}`);
     } else {
-      this.location.go(`/map?lat=${center.lat}&lng=${center.lng}&z=${zoom}`);
+      this.location.go(`/map`);
     }
   }
 
@@ -363,6 +351,17 @@ export class MapPageComponent implements AfterViewInit {
     // clear visible spots
     this.visibleSpots = [];
 
+    console.log("south west", this._southWestTileCoordsZ16);
+    console.log("north east", this._northEastTileCoordsZ16);
+    console.log(
+      "dx",
+      this._northEastTileCoordsZ16.x - this._southWestTileCoordsZ16.x
+    );
+    console.log(
+      "dy",
+      this._southWestTileCoordsZ16.y - this._northEastTileCoordsZ16.y
+    );
+
     for (
       let x = this._southWestTileCoordsZ16.x;
       x <= this._northEastTileCoordsZ16.x;
@@ -374,7 +373,6 @@ export class MapPageComponent implements AfterViewInit {
         y++
       ) {
         // here we go through all the x,y pairs for every visible tile on screen right now.
-
         if (this.loadedSpots[`z${16}_${x}_${y}`]) {
           this.visibleSpots = this.visibleSpots.concat(
             this.loadedSpots[`z${16}_${x}_${y}`]
@@ -573,6 +571,7 @@ export class MapPageComponent implements AfterViewInit {
   closeSpot() {
     // unselect
     this.selectedSpot = null;
+    if (this.isEditing) this.discardEdit();
 
     // close bottom panel
     if (this.bottomSheet) this.bottomSheet.closeSheetMore();
@@ -634,48 +633,48 @@ export class MapPageComponent implements AfterViewInit {
    * @param newSpot The newly created spot class.
    */
   addOrUpdateNewSpotToLoadedSpotsAndUpdate(newSpot: Spot.Class) {
-    // Get the tile coordinates to save in loaded spots
-    // const ref = this.getReferenceToLoadedSpotById(newSpot.id);
-    // console.log("ref", ref);
-    // if (ref?.spot && ref.indexInTileArray >= 0 && ref.tile) {
-    //   // The spot exists and should be updated
-    //   // Update the spot
-    //   this.loadedSpots[`z${16}_${ref.tile.x}_${ref.tile.y}`][
-    //     ref.indexInTileArray
-    //   ] = newSpot;
-    // } else {
-    //   // the spot does not exist
-    //   let spots = this.loadedSpots[`z${16}_${ref.tile.x}_${ref.tile.y}`];
-    //   if (spots) {
-    //     spots.push(newSpot);
-    //   } else {
-    //     console.error("There are no spots loaded for this tile");
-    //   }
-    // }
-    // // update the map to show the new spot on the loaded spots array.
-    // this.updateVisibleSpots();
+    //Get the tile coordinates to save in loaded spots
+    const ref = this.getReferenceToLoadedSpotById(newSpot.id);
+    console.log("ref", ref);
+    if (ref?.spot && ref.indexInTileArray >= 0 && ref.tile) {
+      // The spot exists and should be updated
+      // Update the spot
+      this.loadedSpots[`z${16}_${ref.tile.x}_${ref.tile.y}`][
+        ref.indexInTileArray
+      ] = newSpot;
+    } else {
+      // the spot does not exist
+      let spots = this.loadedSpots[`z${16}_${ref.tile.x}_${ref.tile.y}`];
+      if (spots) {
+        spots.push(newSpot);
+      } else {
+        console.error("There are no spots loaded for this tile");
+      }
+    }
+    // update the map to show the new spot on the loaded spots array.
+    this.updateVisibleSpots();
   }
 
   /**
    * This function is used if the new spot was deleted, discarded or never saved.
    * It removes the first spot it finds without an id.
    */
-  removeNewSpotFromLoadedSpotsAndUpdate() {
-    const spotToRemoveRef = this.getReferenceToLoadedSpotById("");
+  //   removeNewSpotFromLoadedSpotsAndUpdate() {
+  //     const spotToRemoveRef = this.getReferenceToLoadedSpotById("");
 
-    if (
-      spotToRemoveRef &&
-      spotToRemoveRef.spot &&
-      spotToRemoveRef.tile &&
-      spotToRemoveRef.indexInTileArray >= 0
-    ) {
-      this.loadedSpots[
-        `z${16}_${spotToRemoveRef.tile.x}_${spotToRemoveRef.tile.y}`
-      ].splice(spotToRemoveRef.indexInTileArray, 1);
-    } else {
-      console.warn("Dev: No spot to remove from loaded spots was found");
-    }
-  }
+  //     if (
+  //       spotToRemoveRef &&
+  //       spotToRemoveRef.spot &&
+  //       spotToRemoveRef.tile &&
+  //       spotToRemoveRef.indexInTileArray >= 0
+  //     ) {
+  //       this.loadedSpots[
+  //         `z${16}_${spotToRemoveRef.tile.x}_${spotToRemoveRef.tile.y}`
+  //       ].splice(spotToRemoveRef.indexInTileArray, 1);
+  //     } else {
+  //       console.warn("Dev: No spot to remove from loaded spots was found");
+  //     }
+  //   }
 
   /**
    * This function is used if the new spot was saved and now has an id. It replaces the first spot it finds with no ID with the newSaveSpot
