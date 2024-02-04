@@ -47,17 +47,29 @@ export class BottomSheetComponent {
     return this._bottomSheetSate === BottomSheetOpenState.Closed;
   }
 
-  openSheet() {
+  openSheetMore() {
     console.log("openSheet");
     if (this.isClosed) this._bottomSheetSate = BottomSheetOpenState.HalfOpen;
     else if (this.isHalfOpen)
       this._bottomSheetSate = BottomSheetOpenState.FullyOpen;
   }
 
-  closeSheet() {
+  closeSheetMore() {
     console.log("closeSheet");
     if (this.isFullyOpen) this._bottomSheetSate = BottomSheetOpenState.HalfOpen;
     else if (this.isHalfOpen)
       this._bottomSheetSate = BottomSheetOpenState.Closed;
+  }
+
+  fullyOpenSheet() {
+    this._bottomSheetSate = BottomSheetOpenState.FullyOpen;
+  }
+
+  halfOpenSheet() {
+    this._bottomSheetSate = BottomSheetOpenState.HalfOpen;
+  }
+
+  closeSheet() {
+    this._bottomSheetSate = BottomSheetOpenState.Closed;
   }
 }

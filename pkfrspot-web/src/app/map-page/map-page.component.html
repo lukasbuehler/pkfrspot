@@ -6,6 +6,9 @@
     [dots]="visibleDots"
     [selectedSpot]="selectedSpot"
     (boundsChanged)="boundsChanged($event)"
+    (zoomChanged)="zoomChanged($event)"
+    (mapClick)="mapClick($event)"
+    (spotClick)="openSpot($event)"
   ></app-map>
 
   <div class="search-group">
@@ -64,6 +67,8 @@
     ></app-spot-compact-view> -->
 
     <app-bottom-sheet
+      #bottomSheet
+      *ngIf="mapZoom >= 16"
       title="{{ visibleSpots.length }} spot{{
         visibleSpots.length === 1 ? '' : 's'
       }} in this area"

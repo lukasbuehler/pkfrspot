@@ -26,6 +26,7 @@ import { GeoPoint } from "firebase/firestore";
 import { MapsApiService } from "../maps-api.service";
 import { take } from "rxjs";
 import { animate, style, transition, trigger } from "@angular/animations";
+import { BottomSheetComponent } from "../bottom-sheet/bottom-sheet.component";
 
 /**
  * This interface is used to reference a spot in the loaded spots array.
@@ -59,6 +60,7 @@ export class MapPageComponent implements OnInit {
   polygons: QueryList<MapPolygon>;
   @ViewChild("selectedSpotMarker", { read: MapMarker })
   selectedSpotMarker: MapMarker;
+  @ViewChild("bottomSheet") bottomSheet: BottomSheetComponent;
 
   selectedSpot: Spot.Class = null;
   uneditedSpot: Spot.Class = null;
@@ -127,13 +129,10 @@ export class MapPageComponent implements OnInit {
   // Initialization ///////////////////////////////////////////////////////////
 
   ngOnInit() {
-    let spotId: string = this.route.snapshot.paramMap.get("spotID") || "";
-    let lat = this.route.snapshot.queryParamMap.get("lat") || null;
-    let lng = this.route.snapshot.queryParamMap.get("lng") || null;
-    let zoom = this.route.snapshot.queryParamMap.get("z") || this.start_zoom; // TODO ?? syntax
-
-    //this.calculateAllDotRadii();
-    //this.calculateAllDotOpcacities();
+    let spotId: string = this.route.snapshot.paramMap.get("spotID") ?? "";
+    let lat = this.route.snapshot.queryParamMap.get("lat") ?? null;
+    let lng = this.route.snapshot.queryParamMap.get("lng") ?? null;
+    let zoom = this.route.snapshot.queryParamMap.get("z") ?? this.start_zoom;
 
     if (spotId) {
       this._dbService
@@ -174,9 +173,12 @@ export class MapPageComponent implements OnInit {
         this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].push(spot);
       }
 
-      // TOOD change depending on zoom
-      //this.updateVisibleDots();
-      //this.updateVisibleSpots();
+      // update the map
+      if (this.mapZoom < this._loadAllSpotsZoomLevel) {
+        this.updateVisibleDots();
+      } else {
+        this.updateVisibleSpots();
+      }
     });
   }
 
@@ -185,6 +187,22 @@ export class MapPageComponent implements OnInit {
   clickedMap(event: google.maps.MapMouseEvent) {
     //console.log(event.latLng.toJSON());
     //console.log(MapHelper.getTileCoordinates(event.latLng.toJSON(), this.zoom));
+  }
+
+  zoomChanged(zoom: number) {
+    this.mapZoom = zoom;
+    //this.upadateMapURL(this.mapCenter, zoom);
+  }
+
+  mapClick(event: google.maps.MapMouseEvent) {
+    /**
+     * When the map is clicked with a spot open, the spot is
+     * closed and the bottom panel cloes as well.
+     */
+    console.log(event);
+    if (this.selectedSpot) {
+      this.closeSpot();
+    }
   }
 
   boundsChanged(bounds: google.maps.LatLngBounds) {
@@ -408,6 +426,8 @@ export class MapPageComponent implements OnInit {
     if (this.loadedSpots) this.selectedSpot = spot;
 
     this.focusSpot(spot);
+
+    this.bottomSheet.halfOpenSheet();
   }
 
   focusSpot(spot: Spot.Class) {
@@ -546,8 +566,16 @@ export class MapPageComponent implements OnInit {
       );
     }
   }
+
+  /**
+   * Unselect the spot and close the bottom panel
+   */
   closeSpot() {
+    // unselect
     this.selectedSpot = null;
+
+    // close bottom panel
+    this.bottomSheet.closeSheetMore();
   }
 
   /**

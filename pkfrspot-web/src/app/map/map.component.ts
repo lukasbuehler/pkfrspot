@@ -33,7 +33,7 @@ export class MapComponent {
   }
   @Output() centerChanged = new EventEmitter<google.maps.LatLngLiteral>();
 
-  private _zoom: number = 4;
+  _zoom: number = 4;
   @Input() set zoom(newZoom: number) {
     this._zoom = newZoom;
     if (this.googleMap) {
@@ -41,9 +41,25 @@ export class MapComponent {
     }
   }
   @Output() zoomChanged = new EventEmitter<number>();
+  get zoom() {
+    return this._zoom;
+  }
+  setZoom(newZoom: number) {
+    this._zoom = newZoom;
+    if (this.googleMap) {
+      this.googleMap.zoom = newZoom;
+    }
+    this.zoomChanged.emit(this._zoom);
+  }
+
+  getAndEmitChangedZoom() {
+    this._zoom = this.googleMap.getZoom();
+    this.zoomChanged.emit(this._zoom);
+  }
 
   @Output() boundsChanged = new EventEmitter<google.maps.LatLngBounds>();
   @Output() mapClick = new EventEmitter<google.maps.LatLngLiteral>();
+  @Output() spotClick = new EventEmitter<Spot.Class>();
 
   @Input() spots: Spot.Class[] = [];
   @Input() dots: any[] = [];
@@ -79,20 +95,22 @@ export class MapComponent {
       url: "/assets/icons/marker.png",
     },
   };
-  spotDotMarkerOptions: google.maps.MarkerOptions = {
+  dotCircleOptions: google.maps.CircleOptions = {
+    fillColor: "#b8c4ff",
+    fillOpacity: 0.5,
+    strokeColor: "#b8c4ff",
     draggable: false,
     clickable: false,
-    icon: {
-      url: "/assets/icons/favicon-16x16.png",
-    },
-    opacity: 0.5,
+    strokeWeight: 10,
+    strokeOpacity: 0.5,
   };
   spotCircleOptions: google.maps.CircleOptions = {
     fillColor: "#b8c4ff",
     fillOpacity: 0.75,
+    strokeColor: "#b8c4ff",
     draggable: false,
     clickable: true,
-    strokeWeight: 0,
+    strokeWeight: 1,
   };
   spotPolygonOptions: google.maps.PolygonOptions = {
     fillColor: "#b8c4ff",

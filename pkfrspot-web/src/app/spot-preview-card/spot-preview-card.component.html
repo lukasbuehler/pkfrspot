@@ -14,12 +14,12 @@
     <mat-card-subtitle>
       {{ capitalize(spot.type) }}
       {{ spot.isMiniSpot ? "| Mini-Spot" : "" }}
-      <app-rating
+      <!-- <app-rating
         class="float-right"
         *ngIf="spot?.rating"
         [rating]="spot.rating"
         color="accent"
-      ></app-rating>
+      ></app-rating> -->
     </mat-card-subtitle>
   </mat-card-header>
   <img

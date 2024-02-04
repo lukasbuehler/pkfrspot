@@ -8,22 +8,23 @@
   (mapClick)="mapClick.emit($event)"
   (boundsChanged)="emitBoundsChanged()"
   (centerChanged)="centerChanged.emit($event)"
-  (zoomChanged)="zoomChanged.emit($event)"
+  (zoomChanged)="getAndEmitChangedZoom()"
   width="100%"
   height="100%"
 >
-  <map-marker
+  <map-circle
     *ngFor="let dot of dots"
-    [position]="dot"
-    [options]="spotDotMarkerOptions"
-  ></map-marker>
+    [center]="dot"
+    [radius]="20"
+    [options]="dotCircleOptions"
+  ></map-circle>
 
   <map-circle
     *ngFor="let spot of spots"
     [center]="spot.location"
     [radius]="10"
     [options]="spotCircleOptions"
-    (circleClick)="openSpot(spot)"
+    (circleClick)="spotClick.emit(spot)"
   >
     <map-polygon
       *ngIf="spot?.hasBounds()"
@@ -34,7 +35,7 @@
           : spotPolygonOptions
       "
       [paths]="spot.paths"
-      (polygonClick)="openSpot(spot)"
+      (polygonClick)="spotClick.emit(spot)"
     ></map-polygon>
   </map-circle>
 

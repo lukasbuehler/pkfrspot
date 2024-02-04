@@ -43,12 +43,12 @@
     <mat-card-subtitle>
       <span *ngIf="!isEditing">
         {{ capitalize(spot.type) }}
-        <app-rating
+        <!-- <app-rating
           class="float-right"
           *ngIf="spot?.rating"
           [rating]="spot.rating"
           color="accent"
-        ></app-rating>
+        ></app-rating> -->
       </span>
     </mat-card-subtitle>
   </mat-card-header>
