@@ -207,8 +207,7 @@
     <!-- Image upload  -->
     <div *ngIf="isEditing" class="upload-spot-image-box">
       <app-upload-media-ui
-        [allowedMimeTypes]="['image/jpeg']"
-        acceptString="image/jpeg"
+        [allowedMimeTypes]="['image/jpg', 'image/jpeg', 'image/png']"
         (uploadMedia)="setSpotImage($event)"
       >
       </app-upload-media-ui>

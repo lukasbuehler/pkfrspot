@@ -31,7 +31,7 @@ export class MapComponent {
       this.googleMap.panTo(this._center);
     }
   }
-  @Output() centerChanged = new EventEmitter<google.maps.LatLngLiteral>();
+  @Output() centerChange = new EventEmitter<google.maps.LatLngLiteral>();
 
   _zoom: number = 4;
   @Input() set zoom(newZoom: number) {
@@ -40,7 +40,7 @@ export class MapComponent {
       this.googleMap.zoom = newZoom;
     }
   }
-  @Output() zoomChanged = new EventEmitter<number>();
+  @Output() zoomChange = new EventEmitter<number>();
   get zoom() {
     return this._zoom;
   }
@@ -49,15 +49,15 @@ export class MapComponent {
     if (this.googleMap) {
       this.googleMap.zoom = newZoom;
     }
-    this.zoomChanged.emit(this._zoom);
+    this.zoomChange.emit(this._zoom);
   }
 
   getAndEmitChangedZoom() {
     this._zoom = this.googleMap.getZoom();
-    this.zoomChanged.emit(this._zoom);
+    this.zoomChange.emit(this._zoom);
   }
 
-  @Output() boundsChanged = new EventEmitter<google.maps.LatLngBounds>();
+  @Output() boundsChange = new EventEmitter<google.maps.LatLngBounds>();
   @Output() mapClick = new EventEmitter<google.maps.LatLngLiteral>();
   @Output() spotClick = new EventEmitter<Spot.Class>();
 
@@ -144,6 +144,11 @@ export class MapComponent {
 
   emitBoundsChanged() {
     const bounds = this.googleMap.getBounds();
-    this.boundsChanged.emit(bounds);
+    this.boundsChange.emit(bounds);
+  }
+
+  emitCenterChanged() {
+    const center = this.googleMap.getCenter();
+    this.centerChange.emit(center.toJSON());
   }
 }

@@ -11,7 +11,7 @@
     #fileInput
     hidden="true"
     type="file"
-    [accept]="acceptString"
+    [accept]="acceptString ?? allowedMimeTypes.join(',')"
     onclick="this.value=null"
     (change)="onSelectFile($event.target.files)"
     formControlName="input"

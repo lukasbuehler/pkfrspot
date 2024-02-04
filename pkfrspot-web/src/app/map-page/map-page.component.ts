@@ -6,6 +6,7 @@ import {
   ViewChildren,
   NgZone,
   ElementRef,
+  AfterViewInit,
 } from "@angular/core";
 import { DatabaseService } from "../database.service";
 import { Spot } from "src/scripts/db/Spot";
@@ -55,7 +56,7 @@ interface LoadedSpotReference {
     ]),
   ],
 })
-export class MapPageComponent implements OnInit {
+export class MapPageComponent implements AfterViewInit {
   @ViewChildren("polygon", { read: MapPolygon })
   polygons: QueryList<MapPolygon>;
   @ViewChild("selectedSpotMarker", { read: MapMarker })
@@ -73,6 +74,7 @@ export class MapPageComponent implements OnInit {
     lat: 48.8517386,
     lng: 2.298386,
   };
+  mapCenterStart: google.maps.LatLngLiteral;
 
   visibleSpots: Spot.Class[] = [];
   searchSpots: Spot.Class[] = [];
@@ -128,7 +130,7 @@ export class MapPageComponent implements OnInit {
 
   // Initialization ///////////////////////////////////////////////////////////
 
-  ngOnInit() {
+  ngAfterViewInit() {
     let spotId: string = this.route.snapshot.paramMap.get("spotID") ?? "";
     let lat = this.route.snapshot.queryParamMap.get("lat") ?? null;
     let lng = this.route.snapshot.queryParamMap.get("lng") ?? null;
@@ -177,9 +179,15 @@ export class MapPageComponent implements OnInit {
       if (this.mapZoom < this._loadAllSpotsZoomLevel) {
         this.updateVisibleDots();
       } else {
-        this.updateVisibleSpots();
+        //this.updateVisibleSpots();
       }
     });
+
+    // set the map
+    this.mapCenterStart = this.mapCenter;
+
+    // update URL
+    this.upadateMapURL();
   }
 
   // Map events ///////////////////////////////////////////////////////////////
@@ -191,7 +199,7 @@ export class MapPageComponent implements OnInit {
 
   zoomChanged(zoom: number) {
     this.mapZoom = zoom;
-    //this.upadateMapURL(this.mapCenter, zoom);
+    this.upadateMapURL();
   }
 
   mapClick(event: google.maps.MapMouseEvent) {
@@ -262,6 +270,9 @@ export class MapPageComponent implements OnInit {
       // this.loadNewSpotDotsOnTiles(zoomLevel, tileCoords.ne, tileCoords.sw);
       //}
     }
+
+    // update the map URL
+    this.upadateMapURL();
   }
 
   // Spot loading /////////////////////////////////////////////////////////////
@@ -343,7 +354,10 @@ export class MapPageComponent implements OnInit {
 
   // Public Map helper functions
 
-  upadateMapURL(center: google.maps.LatLngLiteral, zoom: number) {
+  upadateMapURL() {
+    let center = this.mapCenter;
+    let zoom = this.mapZoom;
+
     if (this.selectedSpot) {
       this.location.go(
         `/map/${this.selectedSpot.id}?lat=${center.lat}&lng=${center.lng}&z=${zoom}`
@@ -422,16 +436,17 @@ export class MapPageComponent implements OnInit {
   }
 
   openSpot(spot: Spot.Class) {
-    // Maybe just opened spot
-    if (this.loadedSpots) this.selectedSpot = spot;
+    this.selectedSpot = spot;
 
+    if (this.bottomSheet) this.bottomSheet.halfOpenSheet();
     this.focusSpot(spot);
 
-    this.bottomSheet.halfOpenSheet();
+    // update the map URL
+    this.upadateMapURL();
   }
 
   focusSpot(spot: Spot.Class) {
-    this.mapCenter = spot.location;
+    this.mapCenterStart = spot.location;
     this.mapZoom = 18;
   }
 
@@ -535,8 +550,6 @@ export class MapPageComponent implements OnInit {
         //this.saveSpot(this.selectedSpot); // update polygons on spot
       }
     });
-
-    this.selectedSpot.location = this.selectedSpotMarker.getPosition().toJSON();
   }
 
   loadSpotsForTiles(tilesToLoad: { x: number; y: number }[]) {
@@ -576,6 +589,9 @@ export class MapPageComponent implements OnInit {
 
     // close bottom panel
     this.bottomSheet.closeSheetMore();
+
+    // update the map URL
+    this.upadateMapURL();
   }
 
   /**

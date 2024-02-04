@@ -1,14 +1,15 @@
 <div class="map-container" *ngIf="mapsService.isApiLoaded$ | async">
   <app-map
     [(zoom)]="mapZoom"
-    [(center)]="mapCenter"
+    [center]="mapCenterStart"
     [spots]="visibleSpots"
     [dots]="visibleDots"
     [selectedSpot]="selectedSpot"
-    (boundsChanged)="boundsChanged($event)"
-    (zoomChanged)="zoomChanged($event)"
+    (boundsChange)="boundsChanged($event)"
+    (zoomChange)="zoomChanged($event)"
     (mapClick)="mapClick($event)"
     (spotClick)="openSpot($event)"
+    (centerChange)="mapCenter = $event"
   ></app-map>
 
   <div class="search-group">

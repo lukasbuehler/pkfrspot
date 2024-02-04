@@ -1,17 +1,13 @@
 {
   "hosting": {
-    "public": "./parkour-base-angular/dist/parkour-base-angular/",
+    "public": "./pkfrspot-web/dist/parkour-base-angular/",
     "rewrites": [
       {
         "source": "**",
         "destination": "/index.html"
       }
     ],
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
   },
   "firestore": {
     "rules": "firestore.rules",

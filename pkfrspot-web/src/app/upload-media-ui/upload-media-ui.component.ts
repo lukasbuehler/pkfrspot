@@ -19,7 +19,7 @@ export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
   @Input() required: boolean = false;
   @Input() maximumSizeInBytes: number = null;
   @Input() allowedMimeTypes: string[] = null;
-  @Input() acceptString: string = "";
+  @Input() acceptString: string = null;
   @Output() changed = new EventEmitter<void>();
   @Output() uploadMedia = new EventEmitter<File>();
 
@@ -78,7 +78,12 @@ export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
       }
     } else {
       console.log(
-        "A file was selected, but its mime type is not allowed. Please select a different file"
+        "A file was selected, but its mime type is not allowed. Please select a different file.\n" +
+          "Mime type of selected file is '" +
+          type +
+          "', allowed mime types are: " +
+          this.allowedMimeTypes.join(", ") +
+          "\n"
       );
       this._errorMessage = "The type of this file is not allowed";
       this.hasError = true;

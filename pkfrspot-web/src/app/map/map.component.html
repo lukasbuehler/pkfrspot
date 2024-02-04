@@ -7,7 +7,7 @@
   [mapTypeId]="mapTypeId"
   (mapClick)="mapClick.emit($event)"
   (boundsChanged)="emitBoundsChanged()"
-  (centerChanged)="centerChanged.emit($event)"
+  (centerChanged)="emitCenterChanged()"
   (zoomChanged)="getAndEmitChangedZoom()"
   width="100%"
   height="100%"

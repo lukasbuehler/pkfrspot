@@ -12,8 +12,7 @@
     </div>
     <app-upload-media-ui
       class="w-100"
-      acceptString="image/png,image/jpeg"
-      [allowedMimeTypes]="['image/png', 'image/jpeg']"
+      [allowedMimeTypes]="['image/png', 'image/jpeg', 'image/jpg']"
       (uploadMedia)="setNewProfilePicture($event)"
     ></app-upload-media-ui>
     <div class="pt-3">
