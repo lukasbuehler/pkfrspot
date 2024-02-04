@@ -70,11 +70,11 @@ export class MapPageComponent implements AfterViewInit {
 
   start_zoom: number = 4;
   mapZoom: number = this.start_zoom;
-  mapCenter: google.maps.LatLngLiteral = {
+  mapCenterStart: google.maps.LatLngLiteral = {
     lat: 48.8517386,
     lng: 2.298386,
   };
-  mapCenterStart: google.maps.LatLngLiteral;
+  mapCenter: google.maps.LatLngLiteral;
 
   visibleSpots: Spot.Class[] = [];
   searchSpots: Spot.Class[] = [];
@@ -140,27 +140,26 @@ export class MapPageComponent implements AfterViewInit {
       this._dbService
         .getSpotById(spotId)
         .pipe(take(1))
-        .subscribe(
-          (spot) => {
-            this.openSpot(spot);
-          },
-          (error) => {
-            // the spot wasn't found, just go to the location ifsetStartMap there is one
-            console.error(error);
-            this.mapCenter = { lat: Number(lat), lng: Number(lng) };
-            this.mapZoom = Number(zoom);
-            this._snackbar.open(error.msg, "Dismiss", {
-              duration: 5000,
-              horizontalPosition: "center",
-              verticalPosition: "bottom",
-            });
-          }
-        );
-      //console.log("Loading spot " + spotId);
-      // Show loading spot to open
+        .subscribe((spot) => {
+          this.mapCenter = spot.location;
+          this.openSpot(spot);
+
+          this.mapCenterStart = this.mapCenter;
+
+          // update URL
+          this.updateMapURL();
+        });
     } else {
-      this.mapCenter = { lat: Number(lat), lng: Number(lng) };
+      this.mapCenter = {
+        lat: Number(lat ?? this.mapCenterStart.lat),
+        lng: Number(lng ?? this.mapCenterStart.lng),
+      };
       this.mapZoom = Number(zoom);
+
+      this.mapCenterStart = this.mapCenter;
+
+      // update URL
+      this.updateMapURL();
     }
 
     // TODO remove
@@ -182,24 +181,13 @@ export class MapPageComponent implements AfterViewInit {
         //this.updateVisibleSpots();
       }
     });
-
-    // set the map
-    this.mapCenterStart = this.mapCenter;
-
-    // update URL
-    this.upadateMapURL();
   }
 
   // Map events ///////////////////////////////////////////////////////////////
 
-  clickedMap(event: google.maps.MapMouseEvent) {
-    //console.log(event.latLng.toJSON());
-    //console.log(MapHelper.getTileCoordinates(event.latLng.toJSON(), this.zoom));
-  }
-
   zoomChanged(zoom: number) {
     this.mapZoom = zoom;
-    this.upadateMapURL();
+    this.updateMapURL();
   }
 
   mapClick(event: google.maps.MapMouseEvent) {
@@ -207,7 +195,6 @@ export class MapPageComponent implements AfterViewInit {
      * When the map is clicked with a spot open, the spot is
      * closed and the bottom panel cloes as well.
      */
-    console.log(event);
     if (this.selectedSpot) {
       this.closeSpot();
     }
@@ -223,11 +210,11 @@ export class MapPageComponent implements AfterViewInit {
       lng: bounds.getSouthWest().lng(),
     };
 
-    let northEastTileCoords = MapHelper.getTileCoordinates(
+    let northEastTileCoords = MapHelper.getTileCoordinatesForLocationAndZoom(
       northEastLiteral,
       this._loadAllSpotsZoomLevel
     );
-    let southWestTileCoords = MapHelper.getTileCoordinates(
+    let southWestTileCoords = MapHelper.getTileCoordinatesForLocationAndZoom(
       southWestLiteral,
       this._loadAllSpotsZoomLevel
     );
@@ -272,7 +259,7 @@ export class MapPageComponent implements AfterViewInit {
     }
 
     // update the map URL
-    this.upadateMapURL();
+    this.updateMapURL();
   }
 
   // Spot loading /////////////////////////////////////////////////////////////
@@ -354,8 +341,8 @@ export class MapPageComponent implements AfterViewInit {
 
   // Public Map helper functions
 
-  upadateMapURL() {
-    let center = this.mapCenter;
+  updateMapURL() {
+    let center = this.mapCenter ?? this.mapCenterStart;
     let zoom = this.mapZoom;
 
     if (this.selectedSpot) {
@@ -442,7 +429,7 @@ export class MapPageComponent implements AfterViewInit {
     this.focusSpot(spot);
 
     // update the map URL
-    this.upadateMapURL();
+    this.updateMapURL();
   }
 
   focusSpot(spot: Spot.Class) {
@@ -588,10 +575,10 @@ export class MapPageComponent implements AfterViewInit {
     this.selectedSpot = null;
 
     // close bottom panel
-    this.bottomSheet.closeSheetMore();
+    if (this.bottomSheet) this.bottomSheet.closeSheetMore();
 
     // update the map URL
-    this.upadateMapURL();
+    this.updateMapURL();
   }
 
   /**
@@ -648,28 +635,25 @@ export class MapPageComponent implements AfterViewInit {
    */
   addOrUpdateNewSpotToLoadedSpotsAndUpdate(newSpot: Spot.Class) {
     // Get the tile coordinates to save in loaded spots
-    const ref = this.getReferenceToLoadedSpotById(newSpot.id);
-
-    console.log("ref", ref);
-    if (ref.spot && ref.indexInTileArray >= 0 && ref.tile) {
-      // The spot exists and should be updated
-
-      // Update the spot
-      this.loadedSpots[`z${16}_${ref.tile.x}_${ref.tile.y}`][
-        ref.indexInTileArray
-      ] = newSpot;
-    } else {
-      // the spot does not exist
-      let spots = this.loadedSpots[`z${16}_${ref.tile.x}_${ref.tile.y}`];
-      if (spots) {
-        spots.push(newSpot);
-      } else {
-        console.error("There are no spots loaded for this tile");
-      }
-    }
-
-    // update the map to show the new spot on the loaded spots array.
-    this.updateVisibleSpots();
+    // const ref = this.getReferenceToLoadedSpotById(newSpot.id);
+    // console.log("ref", ref);
+    // if (ref?.spot && ref.indexInTileArray >= 0 && ref.tile) {
+    //   // The spot exists and should be updated
+    //   // Update the spot
+    //   this.loadedSpots[`z${16}_${ref.tile.x}_${ref.tile.y}`][
+    //     ref.indexInTileArray
+    //   ] = newSpot;
+    // } else {
+    //   // the spot does not exist
+    //   let spots = this.loadedSpots[`z${16}_${ref.tile.x}_${ref.tile.y}`];
+    //   if (spots) {
+    //     spots.push(newSpot);
+    //   } else {
+    //     console.error("There are no spots loaded for this tile");
+    //   }
+    // }
+    // // update the map to show the new spot on the loaded spots array.
+    // this.updateVisibleSpots();
   }
 
   /**

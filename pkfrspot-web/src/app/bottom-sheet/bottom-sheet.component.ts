@@ -48,14 +48,12 @@ export class BottomSheetComponent {
   }
 
   openSheetMore() {
-    console.log("openSheet");
     if (this.isClosed) this._bottomSheetSate = BottomSheetOpenState.HalfOpen;
     else if (this.isHalfOpen)
       this._bottomSheetSate = BottomSheetOpenState.FullyOpen;
   }
 
   closeSheetMore() {
-    console.log("closeSheet");
     if (this.isFullyOpen) this._bottomSheetSate = BottomSheetOpenState.HalfOpen;
     else if (this.isHalfOpen)
       this._bottomSheetSate = BottomSheetOpenState.Closed;

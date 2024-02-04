@@ -16,7 +16,7 @@ export module MapHelper {
     );
   }
 
-  export function getTileCoordinates(
+  export function getTileCoordinatesForLocationAndZoom(
     latLng: google.maps.LatLngLiteral,
     zoom: number
   ): google.maps.Point {

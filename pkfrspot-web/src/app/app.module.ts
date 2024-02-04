@@ -8,7 +8,6 @@ import { AppRoutingModule } from "./app-routing.module";
 import { environment } from "src/environments/environment";
 
 // Other imports
-import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { register as registerSwiper } from "swiper/element/bundle"; // image gallery
 registerSwiper();
 
@@ -109,7 +108,7 @@ import { VgControlsModule } from "@videogular/ngx-videogular/controls";
 import { VgOverlayPlayModule } from "@videogular/ngx-videogular/overlay-play";
 import { VgBufferingModule } from "@videogular/ngx-videogular/buffering";
 import { HammerModule } from "@angular/platform-browser";
-import { MapComponent } from './map/map.component';
+import { MapComponent } from "./map/map.component";
 
 @NgModule({
   declarations: [
@@ -176,7 +175,6 @@ import { MapComponent } from './map/map.component';
     // Angular material modules
     BrowserAnimationsModule,
     HammerModule,
-    InfiniteScrollModule,
     MatButtonModule,
     MatCheckboxModule,
     MatToolbarModule,

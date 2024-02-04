@@ -78,8 +78,8 @@ export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
       }
     } else {
       console.log(
-        "A file was selected, but its mime type is not allowed. Please select a different file.\n" +
-          "Mime type of selected file is '" +
+        "A file was selected, but its mimetype is not allowed. Please select a different file.\n" +
+          "Mimetype of selected file is '" +
           type +
           "', allowed mime types are: " +
           this.allowedMimeTypes.join(", ") +

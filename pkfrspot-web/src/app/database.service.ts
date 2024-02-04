@@ -220,7 +220,7 @@ export class DatabaseService {
         query(
           collection(this.firestore, "spots"),
           orderBy("name", "asc"),
-          limit(10)
+          limit(50)
         ),
         (querySnapshot) => {
           let spots: Spot.Class[] = [];

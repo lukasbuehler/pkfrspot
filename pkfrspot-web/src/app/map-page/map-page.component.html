@@ -10,6 +10,7 @@
     (mapClick)="mapClick($event)"
     (spotClick)="openSpot($event)"
     (centerChange)="mapCenter = $event"
+    [isEditing]="isEditing"
   ></app-map>
 
   <div class="search-group">
@@ -30,7 +31,8 @@
 
       <input
         matInput
-        [placeholder]="selectedSpot ? selectedSpot.name : 'Find spots'"
+        placeholder="Find spots"
+        [value]="selectedSpot ? selectedSpot.name : ''"
       />
       <button
         mat-icon-button

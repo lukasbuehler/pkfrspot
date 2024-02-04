@@ -1,11 +1,4 @@
-<div
-  [@postCollectionAnimation]
-  class="collection-container pt-3"
-  infiniteScroll
-  [infiniteScrollDistance]="2"
-  [infiniteScrollUpDistance]="1.5"
-  [infiniteScrollThrottle]="50"
->
+<div [@postCollectionAnimation] class="collection-container pt-3">
   <h2 *ngIf="title" class="mat-h2 mb-0 mt-3 text-center">
     {{ title }}
   </h2>

@@ -33,7 +33,9 @@ export namespace Spot {
       console.log("setting location");
       this._location = newLocation;
       this._data.location = new GeoPoint(newLocation.lat, newLocation.lng);
-      this.setTileCoordinates(); // update tile coords
+      this._data.tile_coordinates = this._generateTileCoordinates(
+        this._location
+      ); // update tile coords
     }
 
     public get isMiniSpot(): boolean {
@@ -116,6 +118,9 @@ export namespace Spot {
         lat: this._data.location.latitude,
         lng: this._data.location.longitude,
       };
+      this._data.tile_coordinates = this._generateTileCoordinates(
+        this._location
+      );
     }
 
     public getMediaByIndex(index: number) {
@@ -194,20 +199,21 @@ export namespace Spot {
       return !!this._data.bounds;
     }
 
-    public setTileCoordinates() {
-      if (!this._data.tile_coordinates) {
-        this._data.tile_coordinates = {};
-      }
-      this._data.tile_coordinates.z16 = MapHelper.getTileCoordinates(
-        this.location,
-        16
-      );
+    private _generateTileCoordinates(
+      location: google.maps.LatLngLiteral
+    ): Schema["tile_coordinates"] {
+      let tile_coordinates: Schema["tile_coordinates"] = {
+        z16: MapHelper.getTileCoordinatesForLocationAndZoom(location, 16),
+      };
+
       for (let zoom = 16; zoom >= 2; zoom -= 2) {
-        this._data.tile_coordinates[`z${zoom}`] = {
-          x: this._data.tile_coordinates.z16.x >> (16 - zoom),
-          y: this._data.tile_coordinates.z16.y >> (16 - zoom),
+        tile_coordinates[`z${zoom}`] = {
+          x: tile_coordinates.z16.x >> (16 - zoom),
+          y: tile_coordinates.z16.y >> (16 - zoom),
         };
       }
+
+      return tile_coordinates;
     }
 
     private _makePathsFromBounds(
@@ -276,7 +282,6 @@ export namespace Spot {
       z14?: { x: number; y: number };
       z16?: { x: number; y: number };
     };
-    occupied_z16_tiles?: { x: number; y: number }[];
 
     isMiniSpot?: boolean;
     rating?: number;

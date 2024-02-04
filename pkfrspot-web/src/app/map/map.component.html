@@ -1,7 +1,7 @@
 <google-map
   #googleMap
   id="googleMap"
-  [center]="start_coordinates"
+  [center]="center"
   [zoom]="zoom"
   [options]="mapOptions"
   [mapTypeId]="mapTypeId"
@@ -42,10 +42,12 @@
   <map-marker
     *ngIf="selectedSpot"
     #selectedSpotMarker
+    id="selectedSpotMarker"
     [options]="
       isEditing ? selectedSpotMarkerEditingOptions : selectedSpotMarkerOptions
     "
     [position]="selectedSpot.location"
+    (mapDragend)="editingSpotPositionChanged($event.latLng)"
     [title]="selectedSpot.name"
   ></map-marker>
 </google-map>

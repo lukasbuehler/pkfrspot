@@ -19,12 +19,12 @@ export class MapComponent {
 
   // The default coordinates are Paris, the origin of parkour.
   // modiying this resets the map
-  readonly start_coordinates: google.maps.LatLngLiteral = {
-    lat: 48.8517386,
-    lng: 2.298386,
-  };
+  //   readonly start_coordinates: google.maps.LatLngLiteral = {
+  //     lat: 48.8517386,
+  //     lng: 2.298386,
+  //   };
 
-  private _center: google.maps.LatLngLiteral = this.start_coordinates;
+  private _center: google.maps.LatLngLiteral;
   @Input() set center(coords: google.maps.LatLngLiteral) {
     this._center = coords;
     if (this.googleMap) {
@@ -32,6 +32,9 @@ export class MapComponent {
     }
   }
   @Output() centerChange = new EventEmitter<google.maps.LatLngLiteral>();
+  get center() {
+    return this._center;
+  }
 
   _zoom: number = 4;
   @Input() set zoom(newZoom: number) {
@@ -64,6 +67,7 @@ export class MapComponent {
   @Input() spots: Spot.Class[] = [];
   @Input() dots: any[] = [];
   @Input() selectedSpot: Spot.Class | null = null;
+  @Input() isEditing: boolean = false;
 
   //spotDotZoomRadii: number[] = Array<number>(16);
 
@@ -86,6 +90,7 @@ export class MapComponent {
     icon: {
       url: "/assets/icons/marker.png",
     },
+    opacity: 1,
   };
   selectedSpotMarkerEditingOptions: google.maps.MarkerOptions = {
     draggable: true,
@@ -94,6 +99,15 @@ export class MapComponent {
     icon: {
       url: "/assets/icons/marker.png",
     },
+    opacity: 1,
+  };
+  noSelectedSpotMarkerOptions: google.maps.MarkerOptions = {
+    draggable: false,
+    clickable: false,
+    icon: {
+      url: "/assets/icons/marker.png",
+    },
+    opacity: 0,
   };
   dotCircleOptions: google.maps.CircleOptions = {
     fillColor: "#b8c4ff",
@@ -150,5 +164,9 @@ export class MapComponent {
   emitCenterChanged() {
     const center = this.googleMap.getCenter();
     this.centerChange.emit(center.toJSON());
+  }
+
+  editingSpotPositionChanged(position: google.maps.LatLng) {
+    this.selectedSpot.location = position.toJSON();
   }
 }
