@@ -28,6 +28,8 @@ import { take } from "rxjs";
 import { animate, style, transition, trigger } from "@angular/animations";
 import { BottomSheetComponent } from "../bottom-sheet/bottom-sheet.component";
 import { MapComponent } from "../map/map.component";
+import { FormControl } from "@angular/forms";
+import { SearchService } from "../search.service";
 
 /**
  * This interface is used to reference a spot in the loaded spots array.
@@ -79,6 +81,8 @@ export class MapPageComponent implements AfterViewInit {
   loadedSpots: any = {}; // is a map of tile coords to spot arrays
   visibleDots: any[] = [];
 
+  spotSearchControl = new FormControl();
+
   private _northEastTileCoordsZ16: google.maps.Point;
   private _southWestTileCoordsZ16: google.maps.Point;
 
@@ -90,6 +94,7 @@ export class MapPageComponent implements AfterViewInit {
   constructor(
     public authService: AuthenticationService,
     public mapsService: MapsApiService,
+    private _searchService: SearchService,
     private _dbService: DatabaseService,
     private route: ActivatedRoute,
     private location: Location,
@@ -133,6 +138,15 @@ export class MapPageComponent implements AfterViewInit {
     let lat = this.route.snapshot.queryParamMap.get("lat") ?? null;
     let lng = this.route.snapshot.queryParamMap.get("lng") ?? null;
     let zoom = this.route.snapshot.queryParamMap.get("z") ?? this.start_zoom;
+
+    this.spotSearchControl.valueChanges.subscribe((query) => {
+        if(query) {
+      console.log("q",query);
+
+      this._searchService.searchSpots(query).then((results) => {
+        console.log("results",results);
+        });
+    }});
 
     if (spotId) {
       this._dbService

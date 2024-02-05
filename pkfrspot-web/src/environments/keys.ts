@@ -6,6 +6,10 @@
 
 export const keys = {
   google_maps: "... Maps JavaScript API (Server key)",
+  typesense: {
+    host: "",
+    api_key: "",
+  },
   firebaseConfig: {
     apiKey: "",
     authDomain: "",
