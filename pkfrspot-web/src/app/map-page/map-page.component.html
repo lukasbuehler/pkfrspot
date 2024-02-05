@@ -1,11 +1,13 @@
 <div class="map-container" *ngIf="mapsService.isApiLoaded$ | async">
   <app-map
+    #map
+    id="map"
     [zoom]="mapZoom"
     [center]="mapCenterStart"
     [spots]="visibleSpots"
     [dots]="visibleDots"
     [selectedSpot]="selectedSpot"
-    (boundsChange)="boundsChanged($event, mapZoom)"
+    (boundsChange)="mapBoundsChanged($event, mapZoom)"
     (zoomChange)="zoomChanged($event)"
     (mapClick)="mapClick($event)"
     (spotClick)="openSpot($event)"
@@ -91,7 +93,6 @@
           (isEditingChange)="$event ? startEdit() : discardEdit()"
           (dismiss)="closeSpot()"
           (addBoundsClick)="addBounds()"
-          (updateSpotEvent)="updateSpotPreSave()"
           (focusClick)="focusSpot(selectedSpot)"
           (saveClick)="saveSpot($event)"
         ></app-spot-compact-view>

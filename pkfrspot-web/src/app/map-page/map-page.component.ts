@@ -13,7 +13,6 @@ import { Spot } from "src/scripts/db/Spot";
 import { MapHelper } from "../../scripts/map_helper";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Location } from "@angular/common";
-import { SpotCompactViewComponent } from "../spot-compact-view/spot-compact-view.component";
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
 import { AuthenticationService } from "../authentication.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -25,9 +24,10 @@ import {
 } from "@angular/google-maps";
 import { GeoPoint } from "firebase/firestore";
 import { MapsApiService } from "../maps-api.service";
-import { Observable, take } from "rxjs";
+import { take } from "rxjs";
 import { animate, style, transition, trigger } from "@angular/animations";
 import { BottomSheetComponent } from "../bottom-sheet/bottom-sheet.component";
+import { MapComponent } from "../map/map.component";
 
 /**
  * This interface is used to reference a spot in the loaded spots array.
@@ -57,10 +57,7 @@ interface LoadedSpotReference {
   ],
 })
 export class MapPageComponent implements AfterViewInit {
-  @ViewChildren("polygon", { read: MapPolygon })
-  polygons: QueryList<MapPolygon>;
-  @ViewChild("selectedSpotMarker", { read: MapMarker })
-  selectedSpotMarker: MapMarker;
+  @ViewChild("map") map: MapComponent;
   @ViewChild("bottomSheet") bottomSheet: BottomSheetComponent;
 
   selectedSpot: Spot.Class = null;
@@ -174,7 +171,6 @@ export class MapPageComponent implements AfterViewInit {
         }
         this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].push(spot);
       }
-      //if (this.bounds) this.boundsChanged(this.bounds, this.mapZoom);
     });
   }
 
@@ -194,7 +190,7 @@ export class MapPageComponent implements AfterViewInit {
     }
   }
 
-  boundsChanged(bounds: google.maps.LatLngBounds, zoom: number) {
+  mapBoundsChanged(bounds: google.maps.LatLngBounds, zoom: number) {
     this.bounds = bounds;
 
     if (zoom >= this._loadAllSpotsZoomLevel) {
@@ -450,7 +446,14 @@ export class MapPageComponent implements AfterViewInit {
   saveSpot(spot: Spot.Class) {
     if (!spot) return;
 
-    console.log("saving the spot");
+    if (true) {
+      let editedPaths = this.map.getPolygonPathForSpot(spot.id);
+      console.log("editedPaths", editedPaths);
+      if (editedPaths) {
+        spot.paths = editedPaths;
+      }
+    }
+
     console.log("Spot data to save: ");
     console.log(spot);
     // If the spot does not have an ID, it does not exist in the database yet.
@@ -490,45 +493,20 @@ export class MapPageComponent implements AfterViewInit {
     this.isEditing = false;
 
     if (!this.uneditedSpot) {
-      // this is a new spot
+      // there is no backup unedited spot of the selected spot, therefore this is a newly created spot
       // delete local newly created spots
       //this.removeNewSpotFromLoadedSpotsAndUpdate();
       this.selectedSpot = null;
     } else {
+      // set the selected spot to be the backup unedited spot
       this.selectedSpot = this.uneditedSpot;
-      this.selectedSpot.paths = this.uneditedSpot.paths;
+      this.selectedSpot.paths = this.uneditedSpot.paths; // ?
 
       delete this.uneditedSpot;
-      this.uneditedSpot = null; // TODO is this needed?
     }
 
     this.updateSpotInLoadedSpots(this.selectedSpot);
     this.updateVisibleSpots();
-  }
-
-  updateSpotPreSave() {
-    this.polygons.forEach((polygon) => {
-      if (polygon.getEditable()) {
-        const newPaths: google.maps.MVCArray<
-          google.maps.MVCArray<google.maps.LatLng>
-        > = polygon.getPaths();
-        console.log("new paths", newPaths);
-
-        // Convert LatLng[][] to LatLngLiteral[][]
-        let literalNewPaths: Array<Array<google.maps.LatLngLiteral>> = [];
-        literalNewPaths[0] = newPaths
-          .getAt(0)
-          .getArray()
-          .map((v, i, arr) => {
-            return { lat: v.lat(), lng: v.lng() };
-          });
-
-        // this sets the paths for the selected spot and also sets the bounds for the spot data structure.
-        this.selectedSpot.paths = literalNewPaths;
-
-        //this.saveSpot(this.selectedSpot); // update polygons on spot
-      }
-    });
   }
 
   loadSpotsForTiles(tilesToLoad: { x: number; y: number }[]) {

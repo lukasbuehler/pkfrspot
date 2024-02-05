@@ -27,7 +27,7 @@
   >
     <map-polygon
       *ngIf="spot?.hasBounds()"
-      #polygon
+      [id]="'polygon-' + spot.id"
       [options]="
         spot === selectedSpot && isEditing
           ? spotPolygonEditingOptions

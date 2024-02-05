@@ -1,14 +1,17 @@
 import {
   AfterViewInit,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   Output,
+  QueryList,
   ViewChild,
+  ViewChildren,
 } from "@angular/core";
 import { map_style } from "./map_style";
 import { Spot } from "src/scripts/db/Spot";
-import { GoogleMap } from "@angular/google-maps";
+import { GoogleMap, MapPolygon } from "@angular/google-maps";
 import { BehaviorSubject, Observable, take } from "rxjs";
 
 @Component({
@@ -18,13 +21,9 @@ import { BehaviorSubject, Observable, take } from "rxjs";
 })
 export class MapComponent implements AfterViewInit {
   @ViewChild("googleMap") googleMap: GoogleMap;
-
-  // The default coordinates are Paris, the origin of parkour.
-  // modiying this resets the map
-  //   readonly start_coordinates: google.maps.LatLngLiteral = {
-  //     lat: 48.8517386,
-  //     lng: 2.298386,
-  //   };
+  @ViewChildren(MapPolygon) polygons: QueryList<MapPolygon>;
+  @ViewChildren(MapPolygon, { read: ElementRef })
+  polygonElements: QueryList<ElementRef>;
 
   private _center: google.maps.LatLngLiteral;
   @Input() set center(coords: google.maps.LatLngLiteral) {
@@ -65,6 +64,10 @@ export class MapComponent implements AfterViewInit {
   @Output() boundsChange = new EventEmitter<google.maps.LatLngBounds>();
   @Output() mapClick = new EventEmitter<google.maps.LatLngLiteral>();
   @Output() spotClick = new EventEmitter<Spot.Class>();
+  @Output() polygonChanged = new EventEmitter<{
+    spotId: string;
+    path: google.maps.LatLngLiteral[][];
+  }>();
 
   @Input() spots: Spot.Class[] = [];
   @Input() dots: any[] = [];
@@ -163,7 +166,7 @@ export class MapComponent implements AfterViewInit {
   };
   spotCircleOptions: google.maps.CircleOptions = {
     fillColor: "#b8c4ff",
-    fillOpacity: 0.75,
+    fillOpacity: 0.3,
     strokeColor: "#b8c4ff",
     draggable: false,
     clickable: true,
@@ -179,7 +182,7 @@ export class MapComponent implements AfterViewInit {
   spotPolygonOptions: google.maps.PolygonOptions = {
     fillColor: "#b8c4ff",
     strokeColor: "#b8c4ff",
-    fillOpacity: 0.1,
+    fillOpacity: 0.2,
     editable: false,
     draggable: false,
     clickable: true,
@@ -227,6 +230,47 @@ export class MapComponent implements AfterViewInit {
       this.setZoom(17);
     } else {
       // TODO maybe ask again for geolocation in the future
+    }
+  }
+
+  private _getPolygonBySpotId(spotId: string): MapPolygon | undefined {
+    console.log(this.polygonElements.toArray());
+    console.log(this.polygons.toArray());
+
+    const elementRef = this.polygonElements.find(
+      (element) => element.nativeElement.id === "polygon-" + spotId
+    );
+    if (elementRef) {
+      const index = this.polygonElements.toArray().indexOf(elementRef);
+      return this.polygons.toArray()[index];
+    }
+    return undefined;
+  }
+
+  public getPolygonPathForSpot(
+    spotId: string
+  ): google.maps.LatLngLiteral[][] | undefined {
+    let polygon = this._getPolygonBySpotId(spotId);
+
+    if (polygon) {
+      const newPaths: google.maps.MVCArray<
+        google.maps.MVCArray<google.maps.LatLng>
+      > = polygon.getPaths();
+      console.log("new paths", newPaths);
+
+      // Convert LatLng[][] to LatLngLiteral[][]
+      let literalNewPaths: Array<Array<google.maps.LatLngLiteral>> = [];
+      literalNewPaths[0] = newPaths
+        .getAt(0)
+        .getArray()
+        .map((v, i, arr) => {
+          return { lat: v.lat(), lng: v.lng() };
+        });
+
+      return literalNewPaths;
+    } else {
+      console.error("No polygon found for spot with id: " + spotId);
+      return;
     }
   }
 }

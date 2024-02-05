@@ -58,7 +58,6 @@ export class SpotCompactViewComponent
   @Input() clickable: boolean = false;
   @Input() editable: boolean = false;
   @Input() isEditing: boolean = false;
-  @Output() updateSpotEvent = new EventEmitter<void>();
 
   @Output()
   isEditingChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -203,10 +202,7 @@ export class SpotCompactViewComponent
   saveButtonClick() {
     this.isSaving = true;
 
-    this.updateSpot();
-
     this.saveClick.emit(this.spot);
-    this.isEditingChange.emit(false);
   }
   discardButtonClick() {
     this.discardClick.emit();
@@ -290,10 +286,6 @@ export class SpotCompactViewComponent
 
   mediaChanged(newSpotMedia) {
     this.spot.setMedia(newSpotMedia, this._dbService, this._storageService);
-  }
-
-  private updateSpot() {
-    this.updateSpotEvent.emit();
   }
 
   async shareSpot() {
