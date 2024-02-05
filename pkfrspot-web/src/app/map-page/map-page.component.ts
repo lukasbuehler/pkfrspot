@@ -24,12 +24,13 @@ import {
 } from "@angular/google-maps";
 import { GeoPoint } from "firebase/firestore";
 import { MapsApiService } from "../maps-api.service";
-import { take } from "rxjs";
+import { BehaviorSubject, take } from "rxjs";
 import { animate, style, transition, trigger } from "@angular/animations";
 import { BottomSheetComponent } from "../bottom-sheet/bottom-sheet.component";
 import { MapComponent } from "../map/map.component";
 import { FormControl } from "@angular/forms";
 import { SearchService } from "../search.service";
+import { SearchResponse } from "typesense/lib/Typesense/Documents";
 
 /**
  * This interface is used to reference a spot in the loaded spots array.
@@ -77,7 +78,8 @@ export class MapPageComponent implements AfterViewInit {
   bounds: google.maps.LatLngBounds;
 
   visibleSpots: Spot.Class[] = [];
-  searchSpots: Spot.Class[] = [];
+  spotSearchResults$: BehaviorSubject<SearchResponse<any> | null> =
+    new BehaviorSubject(null);
   loadedSpots: any = {}; // is a map of tile coords to spot arrays
   visibleDots: any[] = [];
 
@@ -139,28 +141,20 @@ export class MapPageComponent implements AfterViewInit {
     let lng = this.route.snapshot.queryParamMap.get("lng") ?? null;
     let zoom = this.route.snapshot.queryParamMap.get("z") ?? this.start_zoom;
 
+    // subscribe to the spot search control and update the search results
     this.spotSearchControl.valueChanges.subscribe((query) => {
-        if(query) {
-      console.log("q",query);
-
-      this._searchService.searchSpots(query).then((results) => {
-        console.log("results",results);
+      if (query) {
+        this._searchService.searchSpots(query).then((results) => {
+          this.spotSearchResults$.next(results);
         });
-    }});
+      }
+      {
+        this.spotSearchResults$.next(null);
+      }
+    });
 
     if (spotId) {
-      this._dbService
-        .getSpotById(spotId)
-        .pipe(take(1))
-        .subscribe((spot) => {
-          this.mapCenter = spot.location;
-          this.openSpot(spot);
-
-          this.mapCenterStart = this.mapCenter;
-
-          // update URL
-          this.updateMapURL();
-        });
+      this.openSpotById(spotId);
     } else {
       this.mapCenter = {
         lat: Number(lat ?? this.mapCenterStart.lat),
@@ -409,12 +403,18 @@ export class MapPageComponent implements AfterViewInit {
   updateVisibleDots() {
     const allSpots: Spot.Class[] = this.getAllSpots();
 
-    // temporary: // TODO REMOVE
-    this.searchSpots = allSpots;
-
     this.visibleDots = allSpots.map((spot) => {
       return spot.location;
     });
+  }
+
+  openSpotById(spotId: string) {
+    this._dbService
+      .getSpotById(spotId)
+      .pipe(take(1))
+      .subscribe((spot) => {
+        this.openSpot(spot);
+      });
   }
 
   openSpot(spot: Spot.Class) {

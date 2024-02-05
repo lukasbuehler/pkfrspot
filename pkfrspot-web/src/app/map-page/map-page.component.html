@@ -36,7 +36,29 @@
         placeholder="Find spots"
         [value]="selectedSpot ? selectedSpot.name : ''"
         [formControl]="spotSearchControl"
+        [matAutocomplete]="spotAutocomplete"
       />
+      <mat-autocomplete
+        #spotAutocomplete="matAutocomplete"
+        (optionSelected)="
+          openSpotById($event.option.value);
+          spotSearchControl.setValue('');
+          ($event.stopPropagation)
+        "
+        [displayWith]="getSpotNameFromId"
+      >
+        <mat-option
+          class="spotAutocompleteOption"
+          *ngFor="let hit of (spotSearchResults$ | async)?.hits"
+          [value]="hit.document.id"
+        >
+          <!-- <img *ngIf="spot.previewImage" [src]="spot.previewImage" alt="Img" /> -->
+          <span>{{ hit.document.name.de_CH ?? "" }}</span>
+          <!-- <small
+            >Location: {{ spot.location.lat }}, {{ spot.location.lng }}</small
+          > -->
+        </mat-option>
+      </mat-autocomplete>
       <button
         mat-icon-button
         matSuffix
