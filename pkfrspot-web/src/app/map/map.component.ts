@@ -9,7 +9,7 @@ import {
 import { map_style } from "./map_style";
 import { Spot } from "src/scripts/db/Spot";
 import { GoogleMap } from "@angular/google-maps";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, take } from "rxjs";
 
 @Component({
   selector: "app-map",
@@ -72,7 +72,7 @@ export class MapComponent implements AfterViewInit {
   @Input() isEditing: boolean = false;
 
   ngAfterViewInit(): void {
-    navigator.geolocation.watchPosition(
+    let geolocationWatchId = navigator.geolocation.watchPosition(
       (_location) => {
         let locObj = {
           location: {
@@ -85,7 +85,8 @@ export class MapComponent implements AfterViewInit {
       },
       (error) => {
         console.error(error);
-        this.geolocation$.error(error);
+        navigator.geolocation.clearWatch(geolocationWatchId);
+        this.geolocation$.complete();
       },
       {
         enableHighAccuracy: true,
@@ -217,5 +218,15 @@ export class MapComponent implements AfterViewInit {
 
   editingSpotPositionChanged(position: google.maps.LatLng) {
     this.selectedSpot.location = position.toJSON();
+  }
+
+  focusOnGeolocation() {
+    let geolocation = this.geolocation$.value;
+    if (geolocation) {
+      this.googleMap.panTo(geolocation.location);
+      this.setZoom(17);
+    } else {
+      // TODO maybe ask again for geolocation in the future
+    }
   }
 }

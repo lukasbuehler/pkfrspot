@@ -52,12 +52,12 @@ div.map-container {
 
   @media (max-width: 599px) {
     // small screen
-    bottom: 110px;
+    bottom: calc(110px + 56px + 2 * 10px);
     right: 20px;
   }
   @media (min-width: 600px) {
     // desktop (large screen)
-    bottom: 30px;
+    bottom: calc(30px + 56px + 2 * 10px);
     right: 20px;
   }
 }

@@ -8,3 +8,18 @@
   background-color: #2a2a2d;
   color: white;
 }
+
+#geolocationFab {
+  position: absolute;
+  z-index: 1;
+  @media (max-width: 599px) {
+    // small screen
+    bottom: 110px;
+    right: 20px;
+  }
+  @media (min-width: 600px) {
+    // desktop (large screen)
+    bottom: 30px;
+    right: 20px;
+  }
+}

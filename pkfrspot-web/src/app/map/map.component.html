@@ -70,3 +70,16 @@
     {{ mapOptions.mapTypeId.toLowerCase() === "roadmap" ? "terrain" : "map" }}
   </mat-icon>
 </button>
+
+<button
+  #geolocationFab
+  id="geolocationFab"
+  mat-fab
+  color="primary"
+  (click)="focusOnGeolocation()"
+>
+  <!-- empty location icon is: "location_searching" -->
+  <mat-icon>{{
+    geolocation$.value ? "my_location" : "location_disabled"
+  }}</mat-icon>
+</button>
