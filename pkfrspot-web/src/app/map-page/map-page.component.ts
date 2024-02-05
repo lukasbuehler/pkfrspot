@@ -68,8 +68,8 @@ export class MapPageComponent implements AfterViewInit {
   start_zoom: number = 4;
   mapZoom: number = this.start_zoom;
   mapCenterStart: google.maps.LatLngLiteral = {
-    lat: 48.8517386,
-    lng: 2.298386,
+    lat: 48.6270939,
+    lng: 2.4305363,
   };
   mapCenter: google.maps.LatLngLiteral;
   bounds: google.maps.LatLngBounds;
@@ -378,8 +378,6 @@ export class MapPageComponent implements AfterViewInit {
         this.selectedSpot = this.visibleSpots[selectedSpotIndexInVisibleSpots];
       }
     }
-
-    //console.log(this.visibleSpots);
   }
 
   updateSpotInLoadedSpots(spot: Spot.Class) {
@@ -437,25 +435,22 @@ export class MapPageComponent implements AfterViewInit {
       }
     );
 
-    this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(this.selectedSpot);
-
     // sets the map and the spot to edit mode
     this.isEditing = true;
+
+    if (this.bottomSheet?.isClosed) this.bottomSheet.halfOpenSheet();
   }
 
   saveSpot(spot: Spot.Class) {
     if (!spot) return;
 
-    if (true) {
+    if (spot.hasBounds()) {
       let editedPaths = this.map.getPolygonPathForSpot(spot.id);
-      console.log("editedPaths", editedPaths);
       if (editedPaths) {
         spot.paths = editedPaths;
       }
     }
 
-    console.log("Spot data to save: ");
-    console.log(spot);
     // If the spot does not have an ID, it does not exist in the database yet.
 
     let saveSpotPromise: Promise<void>;
@@ -472,9 +467,7 @@ export class MapPageComponent implements AfterViewInit {
         // Successfully updated
         this.isEditing = false;
         // TODO Snackbar or something
-        console.log("Successfully saved spot");
         this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spot);
-        console.log("all spots", JSON.stringify(this.getAllSpots()));
       })
       .catch((error) => {
         this.isEditing = false;
@@ -503,10 +496,11 @@ export class MapPageComponent implements AfterViewInit {
       this.selectedSpot.paths = this.uneditedSpot.paths; // ?
 
       delete this.uneditedSpot;
-    }
 
-    this.updateSpotInLoadedSpots(this.selectedSpot);
-    this.updateVisibleSpots();
+      // reset the map to show the unedited spot
+      // this.updateSpotInLoadedSpots(this.selectedSpot);
+      // this.updateVisibleSpots();
+    }
   }
 
   loadSpotsForTiles(tilesToLoad: { x: number; y: number }[]) {
@@ -541,9 +535,17 @@ export class MapPageComponent implements AfterViewInit {
    * Unselect the spot and close the bottom panel
    */
   closeSpot() {
+    if (this.isEditing) {
+      // TODO show dialog
+      alert(
+        "You are currently editing a spot. Please save or discard your changes before closing the spot."
+      );
+      return;
+      //this.discardEdit();
+    }
+
     // unselect
     this.selectedSpot = null;
-    if (this.isEditing) this.discardEdit();
 
     // close bottom panel
     if (this.bottomSheet) this.bottomSheet.closeSheetMore();
@@ -556,7 +558,15 @@ export class MapPageComponent implements AfterViewInit {
    * Add the first bounds to a spot. This can be used if the spot has no bounds attached to it.
    */
   addBounds() {
-    const dist = 0.0001; //
+    if (!this.selectedSpot.id) {
+      console.error(
+        "The spot has no ID. It needs to be saved before bounds can be added to it."
+      );
+      return;
+    }
+
+    // TODO fix with mercator projection (this brakes at the poles)
+    const dist = 0.0001;
     const location: google.maps.LatLngLiteral = this.selectedSpot.location;
     let _paths: Array<Array<google.maps.LatLngLiteral>> = [
       [
@@ -568,8 +578,6 @@ export class MapPageComponent implements AfterViewInit {
     ];
     //console.log("made inital bounds");
     this.selectedSpot.paths = _paths;
-
-    this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(this.selectedSpot);
   }
 
   getReferenceToLoadedSpotById(spotId: string): LoadedSpotReference | null {
@@ -616,11 +624,19 @@ export class MapPageComponent implements AfterViewInit {
       ] = newSpot;
     } else {
       // the spot does not exist
-      let spots = this.loadedSpots[`z${16}_${ref.tile.x}_${ref.tile.y}`];
+
+      // get the tile coordinates for the location of the new spot
+      let tile = MapHelper.getTileCoordinatesForLocationAndZoom(
+        newSpot.location,
+        16
+      );
+      let spots = this.loadedSpots[`z${16}_${tile.x}_${tile.y}`];
+
       if (spots) {
         spots.push(newSpot);
       } else {
-        console.error("There are no spots loaded for this tile");
+        // There are no spots loaded for this tile, add it to the loaded spots
+        this.loadedSpots[`z${16}_${tile.x}_${tile.y}`] = [newSpot];
       }
     }
     // update the map to show the new spot on the loaded spots array.

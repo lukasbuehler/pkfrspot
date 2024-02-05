@@ -216,6 +216,9 @@ export class SpotCompactViewComponent
   }
 
   addBoundsClicked() {
+    if (!this.spot.id) {
+      console.error("the spot needs to be saved first before adding bounds");
+    }
     if (!this.isEditing) {
       this.isEditing = true;
       this.isEditingChange.emit(true);
