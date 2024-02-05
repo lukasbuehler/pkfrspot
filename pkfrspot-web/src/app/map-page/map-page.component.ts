@@ -436,7 +436,12 @@ export class MapPageComponent implements AfterViewInit {
   }
 
   createSpot() {
-    //console.log("Create Spot");
+    if (!this.authService.isSignedIn) {
+      // TODO show sign in dialog
+      alert("Please sign in to create a spot"); // TODO
+      return;
+    }
+
     let center_coordinates: google.maps.LatLngLiteral = this.mapCenter;
 
     this.selectedSpot = new Spot.Class(

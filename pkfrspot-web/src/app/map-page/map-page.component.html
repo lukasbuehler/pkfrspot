@@ -111,7 +111,7 @@
 
   <!-- Add / import spots speed dial-->
   <app-speed-dial-fab
-    *ngIf="authService.isSignedIn && !isEditing"
+    *ngIf="!isEditing"
     #createSpotSpeedDial
     id="createSpotSpeedDial"
     [buttonConfig]="speedDialButtonConfig"
