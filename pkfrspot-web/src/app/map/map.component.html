@@ -12,12 +12,11 @@
   width="100%"
   height="100%"
 >
-  <map-circle
+  <map-marker
     *ngFor="let dot of dots"
-    [center]="dot"
-    [radius]="20"
-    [options]="dotCircleOptions"
-  ></map-circle>
+    [position]="dot"
+    [options]="dotMarkerOptions"
+  ></map-marker>
 
   <map-circle
     *ngFor="let spot of spots"
@@ -50,6 +49,20 @@
     (mapDragend)="editingSpotPositionChanged($event.latLng)"
     [title]="selectedSpot.name"
   ></map-marker>
+
+  <!-- Geolocation -->
+  <map-marker
+    *ngIf="geolocation$ | async"
+    [position]="(geolocation$ | async).location"
+    [options]="geolocationMarkerOptions"
+  >
+  </map-marker>
+  <map-circle
+    *ngIf="geolocation$ | async"
+    [center]="(geolocation$ | async).location"
+    [radius]="(geolocation$ | async).accuracy"
+    [options]="geolocationCircleOptions"
+  ></map-circle>
 </google-map>
 
 <button mat-mini-fab #mapStyleFab id="mapStyleFab" (click)="toggleMapStyle()">

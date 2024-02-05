@@ -25,7 +25,7 @@ import {
 } from "@angular/google-maps";
 import { GeoPoint } from "firebase/firestore";
 import { MapsApiService } from "../maps-api.service";
-import { take } from "rxjs";
+import { Observable, take } from "rxjs";
 import { animate, style, transition, trigger } from "@angular/animations";
 import { BottomSheetComponent } from "../bottom-sheet/bottom-sheet.component";
 
@@ -350,17 +350,6 @@ export class MapPageComponent implements AfterViewInit {
   updateVisibleSpots() {
     // clear visible spots
     this.visibleSpots = [];
-
-    console.log("south west", this._southWestTileCoordsZ16);
-    console.log("north east", this._northEastTileCoordsZ16);
-    console.log(
-      "dx",
-      this._northEastTileCoordsZ16.x - this._southWestTileCoordsZ16.x
-    );
-    console.log(
-      "dy",
-      this._southWestTileCoordsZ16.y - this._northEastTileCoordsZ16.y
-    );
 
     for (
       let x = this._southWestTileCoordsZ16.x;

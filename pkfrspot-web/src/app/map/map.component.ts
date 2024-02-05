@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
@@ -8,13 +9,14 @@ import {
 import { map_style } from "./map_style";
 import { Spot } from "src/scripts/db/Spot";
 import { GoogleMap } from "@angular/google-maps";
+import { BehaviorSubject, Observable } from "rxjs";
 
 @Component({
   selector: "app-map",
   templateUrl: "./map.component.html",
   styleUrls: ["./map.component.scss"],
 })
-export class MapComponent {
+export class MapComponent implements AfterViewInit {
   @ViewChild("googleMap") googleMap: GoogleMap;
 
   // The default coordinates are Paris, the origin of parkour.
@@ -69,6 +71,36 @@ export class MapComponent {
   @Input() selectedSpot: Spot.Class | null = null;
   @Input() isEditing: boolean = false;
 
+  ngAfterViewInit(): void {
+    navigator.geolocation.watchPosition(
+      (_location) => {
+        let locObj = {
+          location: {
+            lat: _location.coords.latitude,
+            lng: _location.coords.longitude,
+          },
+          accuracy: _location.coords.accuracy,
+        };
+        this.geolocation$.next(locObj);
+      },
+      (error) => {
+        console.error(error);
+        this.geolocation$.error(error);
+      },
+      {
+        enableHighAccuracy: true,
+      }
+    );
+  }
+
+  geolocation$: BehaviorSubject<{
+    location: google.maps.LatLngLiteral;
+    accuracy: number;
+  } | null> = new BehaviorSubject<{
+    location: google.maps.LatLngLiteral;
+    accuracy: number;
+  }>(null);
+
   //spotDotZoomRadii: number[] = Array<number>(16);
 
   //mapStyle: google.maps.MapTypeId = google.maps.MapTypeId.ROADMAP;
@@ -109,14 +141,24 @@ export class MapComponent {
     },
     opacity: 0,
   };
-  dotCircleOptions: google.maps.CircleOptions = {
-    fillColor: "#b8c4ff",
-    fillOpacity: 0.5,
-    strokeColor: "#b8c4ff",
+  geolocationMarkerOptions: google.maps.MarkerOptions = {
     draggable: false,
     clickable: false,
-    strokeWeight: 10,
-    strokeOpacity: 0.5,
+    opacity: 1,
+    icon: {
+      url: "/assets/icons/geolocation-16x16.png",
+      anchor: new google.maps.Point(8, 8),
+    },
+    zIndex: 1000,
+  };
+  dotMarkerOptions: google.maps.MarkerOptions = {
+    draggable: false,
+    clickable: false,
+    opacity: 0.5,
+    icon: {
+      url: "/assets/icons/circle-16x16.png",
+      anchor: new google.maps.Point(8, 8),
+    },
   };
   spotCircleOptions: google.maps.CircleOptions = {
     fillColor: "#b8c4ff",
@@ -125,6 +167,13 @@ export class MapComponent {
     draggable: false,
     clickable: true,
     strokeWeight: 1,
+  };
+  geolocationCircleOptions: google.maps.CircleOptions = {
+    fillColor: "#0000ff",
+    fillOpacity: 0.2,
+    draggable: false,
+    clickable: false,
+    strokeWeight: 0,
   };
   spotPolygonOptions: google.maps.PolygonOptions = {
     fillColor: "#b8c4ff",
