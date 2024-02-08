@@ -391,13 +391,22 @@ export class DatabaseService {
     return setDoc(doc(this.firestore, "users", userId), schema);
   }
 
-  getUserById(userId) {
-    return new Observable<User.Class>((observer) => {
+  /**
+   * Retrieves a user from firestore by their user ID.
+   * @param userId
+   * @returns Returns the user class if found an null if not found.
+   */
+  getUserById(userId): Observable<User.Class | null> {
+    return new Observable<User.Class | null>((observer) => {
       return onSnapshot(
         doc(this.firestore, "users", userId),
         (snap) => {
-          let user = new User.Class(snap.id, snap.data() as User.Schema);
-          observer.next(user);
+          if (snap.exists()) {
+            let user = new User.Class(snap.id, snap.data() as User.Schema);
+            observer.next(user);
+          } else {
+            observer.next(null);
+          }
         },
         (err) => {
           observer.error(err);

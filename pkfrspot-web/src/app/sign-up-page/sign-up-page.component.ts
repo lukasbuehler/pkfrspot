@@ -101,44 +101,16 @@ export class SignUpPageComponent implements OnInit {
       return;
     }
 
-    // check that the invite code (if one is needed)
-    if (this.isInviteOnly && !inviteCode) {
-      this.signUpError = "Invite code cannot be empty!";
-      return;
-    }
-
-    if (this.isInviteOnly) {
-      // check if the invite only code still has uses
-      // TODO:
-      //   this._databaseService.checkInviteCode(inviteCode).then(
-      //     (isValid) => {
-      //       if (isValid) {
-      //         this._createAccount(email, password, displayName, inviteCode);
-      //       } else {
-      //         this.signUpError = "Invite code is not valid!";
-      //       }
-      //     },
-      //     (error) => {
-      //       console.error("Error", error);
-      //     }
-      //   );
-    } else {
-      // only then create a new account
-      this._createAccount(email, password, displayName);
-    }
+    // only then create a new account
+    this._createAccount(email, password, displayName);
   }
 
-  private _createAccount(
-    email: string,
-    password: string,
-    displayName: string,
-    inviteCode?: string
-  ) {
-    console.log("Creating account:", email, password);
+  private _createAccount(email: string, password: string, displayName: string) {
     this._authService
-      .createAccount(email, password, displayName, inviteCode)
-      .then((val) => {
-        this._router.navigateByUrl("/welcome");
+      .createAccount(email, password, displayName)
+      .then(() => {
+        console.log("Created account!");
+        this._router.navigateByUrl("/");
       })
       .catch((err) => {
         console.error("Cannot create account!", err);

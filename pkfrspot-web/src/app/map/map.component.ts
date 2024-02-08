@@ -158,7 +158,7 @@ export class MapComponent implements AfterViewInit {
   dotMarkerOptions: google.maps.MarkerOptions = {
     draggable: false,
     clickable: false,
-    opacity: 0.5,
+    opacity: 0.8,
     icon: {
       url: "/assets/icons/circle-16x16.png",
       anchor: new google.maps.Point(8, 8),
@@ -166,11 +166,11 @@ export class MapComponent implements AfterViewInit {
   };
   spotCircleOptions: google.maps.CircleOptions = {
     fillColor: "#b8c4ff",
-    fillOpacity: 0.3,
+    fillOpacity: 0.7,
     strokeColor: "#b8c4ff",
     draggable: false,
     clickable: true,
-    strokeWeight: 1,
+    strokeWeight: 0,
   };
   geolocationCircleOptions: google.maps.CircleOptions = {
     fillColor: "#0000ff",
@@ -182,7 +182,7 @@ export class MapComponent implements AfterViewInit {
   spotPolygonOptions: google.maps.PolygonOptions = {
     fillColor: "#b8c4ff",
     strokeColor: "#b8c4ff",
-    fillOpacity: 0.2,
+    fillOpacity: 0.5,
     editable: false,
     draggable: false,
     clickable: true,
@@ -190,7 +190,7 @@ export class MapComponent implements AfterViewInit {
   spotPolygonEditingOptions: google.maps.PolygonOptions = {
     fillColor: "#b8c4ff",
     strokeColor: "#b8c4ff",
-    fillOpacity: 0.1,
+    fillOpacity: 0.2,
     editable: true,
     draggable: false,
     clickable: true,

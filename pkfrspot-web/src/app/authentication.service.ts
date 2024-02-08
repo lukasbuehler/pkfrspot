@@ -14,7 +14,7 @@ import {
   updateProfile,
 } from "@angular/fire/auth";
 import { rejects } from "assert";
-import { Observable, Subject } from "rxjs";
+import { Observable, Subject, firstValueFrom } from "rxjs";
 import { map, filter, tap } from "rxjs/operators";
 import { User } from "src/scripts/db/User";
 import { DatabaseService } from "./database.service";
@@ -50,6 +50,10 @@ export class AuthenticationService {
 
   private _currentFirebaseUser: FirebaseUser = null;
 
+  private _defaultUserSettings: User.Schema["settings"] = {
+    maps: "googlemaps",
+  };
+
   private firebaseAuthChangeListener = (firebaseUser: FirebaseUser) => {
     // Auth state changed
     if (firebaseUser) {
@@ -79,10 +83,14 @@ export class AuthenticationService {
   private _fetchUserData(uid, sendUpdate = true) {
     this._databaseService.getUserById(uid).subscribe(
       (_user) => {
-        this.user.data = _user;
+        if (_user) {
+          this.user.data = _user;
 
-        if (sendUpdate) {
-          this.authState$.next(this.user);
+          if (sendUpdate) {
+            this.authState$.next(this.user);
+          }
+        } else {
+          console.error("User data not found for uid", uid);
         }
       },
       (err) => {
@@ -106,12 +114,33 @@ export class AuthenticationService {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
-  public signInGoogle(): Promise<UserCredential> {
+  public async signInGoogle(): Promise<void> {
     let provider = new GoogleAuthProvider();
     provider.addScope("email");
     provider.addScope("profile");
 
-    return signInWithPopup(this.auth, provider);
+    let googleSignInResponse = await signInWithPopup(this.auth, provider);
+
+    // check if the user exists in the database
+    try {
+      let user: User.Class | null = await firstValueFrom(
+        this._databaseService.getUserById(googleSignInResponse.user.uid)
+      );
+      if (!user) {
+        // create a database entry for the user
+        this._databaseService.addUser(
+          googleSignInResponse.user.uid,
+          googleSignInResponse.user.displayName,
+          {
+            verified_email: googleSignInResponse.user.emailVerified, // TODO check
+            settings: this._defaultUserSettings,
+          }
+        );
+      }
+    } catch (error) {
+      // user does not exist
+      console.error(error);
+    }
   }
 
   public logUserOut(): Promise<void> {
@@ -122,29 +151,29 @@ export class AuthenticationService {
     return sendEmailVerification(this._currentFirebaseUser);
   }
 
-  public createAccount(
+  public async createAccount(
     email: string,
     confirmedPassword: string,
-    displayName: string,
-    inviteCode?: string
-  ) {
-    return createUserWithEmailAndPassword(
+    displayName: string
+  ): Promise<void> {
+    let firebaseAuthResponse = await createUserWithEmailAndPassword(
       this.auth,
       email,
       confirmedPassword
-    ).then((res) => {
-      // Set the user chose Display name
-      updateProfile(this._currentFirebaseUser, {
-        displayName: displayName,
-      });
+    );
 
-      // TODO make sure that the user id is the same as the database user
-      // id in the backend or some freaky stuff might happen
-
-      // create a database entry for the user
-      this._databaseService.addUser(res.user.uid, displayName, {
-        invite_code: inviteCode,
-      });
+    // Set the user chose Display name
+    updateProfile(this._currentFirebaseUser, {
+      displayName: displayName,
     });
+
+    // create a database entry for the user
+    this._databaseService.addUser(firebaseAuthResponse.user.uid, displayName, {
+      verified_email: false,
+      settings: this._defaultUserSettings,
+    });
+
+    // Send verification email
+    sendEmailVerification(firebaseAuthResponse.user);
   }
 }

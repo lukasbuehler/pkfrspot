@@ -79,8 +79,8 @@ export class SignInPageComponent implements OnInit {
   trySignInGoogle() {
     this._authService
       .signInGoogle()
-      .then((res) => {
-        console.log("google sign in response:", res);
+      .then(() => {
+        console.log("Successfully signed in with google :)");
       })
       .catch((err) => {
         console.error(err);
