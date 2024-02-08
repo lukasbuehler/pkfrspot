@@ -1,4 +1,4 @@
-<div class="container text-center">
+<div class="container">
   <div class="row">
     <div *ngIf="isLoading" class="p-5 col-md-12 d-flex justify-content-center">
       <mat-spinner></mat-spinner>
@@ -16,7 +16,7 @@
               alt=""
             />
             <div
-              class="profileInfoContainer d-flex flex-column justify-content-center flex-grow-1 w-100"
+              class="profileInfoContainer d-flex flex-column justify-content-center flex-grow-1 w-100 text-center"
             >
               <div class="d-flex justify-content-between">
                 <h1 class="mat-h1 mb-2 flex-full text-left">
@@ -63,9 +63,7 @@
                   {{ isFollowing ? "Unfollow" : "Follow" }}
                 </button>
                 <button mat-stroked-button color="default">Contact</button>
-                <button mat-stroked-button color="default">
-                  Block / Report
-                </button>
+                <button mat-stroked-button color="default">Block</button>
               </div>
               <div *ngIf="isMyProfile" class="profileButtonRow d-flex">
                 <button
@@ -95,27 +93,29 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="col-lg-4 pt-4">
+    <div class="col-lg-4 pt-4 text-left">
       <mat-card class="mat-elevation-z0 border h-100">
         <mat-card-header>
-          <mat-card-title>Groups</mat-card-title>
+          <mat-card-title>Biography</mat-card-title>
         </mat-card-header>
-        <mat-card-content> Coming soon... </mat-card-content>
+        <mat-card-content sytle="text-align: left;">{{
+          user.biography
+        }}</mat-card-content>
       </mat-card>
     </div>
   </div>
-  <div class="row" *ngIf="user && !isLoading">
+  <!-- <div class="row" *ngIf="user && !isLoading">
     <div class="col-lg-6 pt-3 p-5 text-left order-lg-last">
       <h3 class="mat-h2">Biography</h3>
-      <p class="mat-body">Bio goes here</p>
+      <p class="mat-body">...</p>
       <h3 class="mat-h2">Badges</h3>
     </div>
-    <div class="col-lg-6 pt-3 order-lg-first">
+     <div class="col-lg-6 pt-3 order-lg-first">
       <app-post-collection
         [title]="'Posts from ' + user.displayName"
         [loading]="postsFromUserLoading"
         [posts]="postsFromUser"
       ></app-post-collection>
-    </div>
-  </div>
+    </div> 
+  </div> -->
 </div>

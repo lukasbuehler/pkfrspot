@@ -14,21 +14,22 @@
 
 .profileButtonRow {
   width: 100%;
-  margin-right: -5px;
+  gap: 5px;
+
   button {
-    flex-grow: 1;
-    flex-basis: 0;
     margin-right: 5px;
   }
 
   @media (min-width: 576px) {
     flex-direction: row;
+
+    button {
+      flex-grow: 1;
+      flex-basis: 0;
+    }
   }
   @media (max-width: 575px) {
     flex-direction: column;
-    button {
-      margin-bottom: 5px;
-    }
   }
 }
 

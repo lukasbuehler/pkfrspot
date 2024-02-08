@@ -5,8 +5,8 @@ export namespace User {
   export class Class {
     public uid: string = "";
     public displayName: string = "";
-    public profilePicture: string = "";
     public biography: string = "";
+    public profilePicture: string = "";
     public startTimeDiffString: string = "";
     public startDate: Date;
     public followerCount: number = 0;
@@ -31,6 +31,7 @@ export namespace User {
 
     private _updateData() {
       this.displayName = this._data.display_name;
+      this.biography = this._data.biography;
       this.profilePicture = this._data.profile_picture;
       this.settings = this._data.settings;
 
@@ -59,6 +60,7 @@ export namespace User {
 
   export interface Schema {
     display_name?: string;
+    biography?: string;
     profile_picture?: string;
     follower_count?: number;
     start_date?: firebase.default.firestore.Timestamp;

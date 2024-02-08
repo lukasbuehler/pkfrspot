@@ -53,7 +53,12 @@
     matBadgeSize="small"
   >
     <mat-label>Biography</mat-label>
-    <textarea matInput placeholder="Bio goes here"></textarea>
+    <textarea
+      matInput
+      placeholder="Write your Bio here..."
+      [value]="biography"
+      (input)="biography = $event.target.value; detectIfChanges()"
+    ></textarea>
   </mat-form-field>
 
   <mat-form-field

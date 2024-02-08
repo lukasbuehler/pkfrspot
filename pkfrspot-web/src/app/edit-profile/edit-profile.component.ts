@@ -26,8 +26,9 @@ export class EditProfileComponent implements OnInit {
 
   user: User.Class = null;
   // user properties
-  displayName: string = "";
-  startDate: Date = null;
+  displayName: string;
+  biography: string;
+  startDate: Date | null;
 
   newProfilePicture: File = null;
   newProfilePictureSrc: string = "";
@@ -53,8 +54,9 @@ export class EditProfileComponent implements OnInit {
 
   private _updateInfoOnView() {
     if (this.user) {
-      this.displayName = this.user.displayName;
-      this.startDate = this.user.startDate;
+      this.displayName = this.user.displayName ?? "";
+      this.startDate = this.user.startDate ?? null;
+      this.biography = this.user.biography ?? "";
     }
   }
 
@@ -179,7 +181,8 @@ export class EditProfileComponent implements OnInit {
     if (
       this.displayName !== this.user.displayName ||
       this.newProfilePicture ||
-      this.startDate !== this.user.startDate
+      this.startDate !== this.user.startDate ||
+      this.biography !== this.user.biography
     ) {
       this.changes.emit(true);
     } else {
@@ -195,6 +198,10 @@ export class EditProfileComponent implements OnInit {
       // Update display name if changed
       if (this.displayName !== this.user.displayName) {
         data.display_name = this.displayName;
+      }
+
+      if (this.biography !== this.user.biography) {
+        data.biography = this.biography;
       }
 
       // Update profile picture if changed
