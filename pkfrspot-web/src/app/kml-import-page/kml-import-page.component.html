@@ -210,9 +210,50 @@
             <ng-template matStepLabel
               ><span class="d-none d-md-block">Verify</span></ng-template
             >
-            <div>
+            <div class="row">
+              <div class="col-md-5 verify-acc-col">
+                <mat-accordion>
+                  <mat-expansion-panel class="mat-elevation-z0">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title> Spots to be imported </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div>
+                      <div>Spot 1</div>
+                      <div>Spot 2</div>
+                    </div>
+                  </mat-expansion-panel>
+                  <mat-divider></mat-divider>
+                  <mat-expansion-panel class="mat-elevation-z0">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>Will not be imported</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div>
+                      <div>Spot 1</div>
+                      <div>Spot 2</div>
+                    </div>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </div>
+              <div class="col-md-7">
+                <div class="p-2">
+                  <h3 class="mat-h2">Spot name</h3>
+                  <p>Folder: Folder name</p>
+                  <div class="map-container">
+                    <app-map></app-map>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="pt-3 d-flex flex-row justify-content-between">
               <button mat-button matStepperPrevious>Back</button>
-              <button mat-button matStepperNext>Next</button>
+              <button
+                mat-button
+                matStepperNext
+                color="primary"
+                [disabled]="true"
+              >
+                Save
+              </button>
             </div>
           </mat-step>
           <mat-step [editable]="false" state="save">
