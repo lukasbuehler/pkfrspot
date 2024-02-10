@@ -1,5 +1,11 @@
 import { STEPPER_GLOBAL_OPTIONS } from "@angular/cdk/stepper";
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -36,7 +42,8 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
 
   constructor(
     private _formBuilder: UntypedFormBuilder,
-    private _kmlParserService: KmlParserService
+    private _kmlParserService: KmlParserService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -66,30 +73,22 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
       console.error("The KML file was not set properly or is invalid!");
       return;
     }
-    this.kmlUploadFile.text().then(
-      (data) => {
-        this._kmlParserService.parseKMLString$(data).subscribe(
-          () => {
-            // parsing was successful
-            this.stepperHorizontal.next();
+    this.kmlUploadFile.text().then((data) => {
+      this._kmlParserService.parseKMLFromString$(data).then(
+        () => {
+          // parsing was successful
+          this.stepperHorizontal.selected.completed = true;
+          this.stepperHorizontal.next();
+          //this.cdr.detectChanges();
 
-            this._kmlParserService.getKMLPreviewInfo().subscribe(
-              (kmlSetupInfo: KMLSetupInfo) => {
-                this.kmlSetupInfo = kmlSetupInfo;
-              },
-              (error) => {
-                console.error(error);
-              }
-            );
-          },
-          (error) => {
-            // parsing was not successful
-            console.error(error);
-          }
-        );
-      },
-      (reason) => {}
-    );
+          this.kmlSetupInfo = this._kmlParserService.info;
+        },
+        (error) => {
+          // parsing was not successful
+          console.error(error);
+        }
+      );
+    });
   }
 
   startImport() {}

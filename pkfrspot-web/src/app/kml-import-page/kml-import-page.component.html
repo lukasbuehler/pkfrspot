@@ -50,9 +50,12 @@
               <h3 class="mat-h3">Please select a KML file.</h3>
               <app-upload-media-ui
                 (uploadMedia)="onUploadMediaSelect($event)"
-                [allowedMimeTypes]="['application/xml', 'text/xml']"
+                [allowedMimeTypes]="[
+                  'application/xml',
+                  'text/xml',
+                  'application/vnd.google-earth.kml+xml'
+                ]"
                 acceptString=".kml, .xml"
-                formControlName="uploadCtrl"
                 required
               ></app-upload-media-ui>
               <div class="mt-5">
@@ -76,13 +79,13 @@
             state="setup"
           >
             <ng-template matStepLabel
-              ><span class="d-none d-md-block">Setup</span></ng-template
+              ><span class="d-none d-md-block">Import Setup</span></ng-template
             >
             <form class="px-3" [formGroup]="setupFormGroup">
               <div class="container d-lg-block mt-3">
                 <div class="row">
                   <div class="col-md-6">
-                    <div class="kmlPreview" *ngIf="kmlSetupInfo">
+                    <div class="kml-preview" *ngIf="kmlSetupInfo">
                       <h2 class="mat-h2">Preview</h2>
                       <div class="px-3">
                         <h3 class="mat-h3">
@@ -121,19 +124,8 @@
                         >help_outline</mat-icon
                       >
                     </mat-form-field>
-                    <div>
-                      <mat-slide-toggle color="accent" [checked]="true"
-                        >Trim name</mat-slide-toggle
-                      >
-                      <mat-icon
-                        matSuffix
-                        class="helpIcon"
-                        matTooltip="Removes whitespaces around all the spot names. It is recommended to have this option enabled."
-                        >help_outline</mat-icon
-                      >
-                    </div>
 
-                    <div>
+                    <div class="mt-2">
                       <mat-slide-toggle
                         #regexToggle
                         color="accent"
@@ -141,7 +133,7 @@
                         >RegEx for Spot name</mat-slide-toggle
                       >
 
-                      <mat-form-field class="w-100" appearance="outline">
+                      <mat-form-field class="w-100 py-3" appearance="outline">
                         <mat-label>Name RegEx</mat-label>
                         <app-regex-input
                           #regex
@@ -149,6 +141,10 @@
                           flagsString="gim"
                           [disabledFlags]="true"
                           [disabled]="!regexToggle.checked"
+                          [value]="{
+                            regularExpression: '([^-]*)$',
+                            expressionFlags: 'gim'
+                          }"
                         ></app-regex-input>
                         <mat-icon
                           matSuffix
@@ -193,12 +189,12 @@
                 </div>
               </div>
 
-              <div class="mt-3">
-                <button mat-raised-button class="float-left" matStepperPrevious>
+              <div class="mt-3 d-flex flex-row justify-content-between">
+                <button mat-flat-button class="float-left" matStepperPrevious>
                   Back
                 </button>
                 <button
-                  mat-raised-button
+                  mat-flat-button
                   class="float-right"
                   color="accent"
                   matStepperNext
@@ -210,46 +206,6 @@
             </form>
           </mat-step>
 
-          <!-- Import step -->
-          <mat-step [editable]="false" state="import">
-            <!-- 
-              What needs to be done:
-              1) Generate spots from locations in KML file
-              2) Query the database for spots that are close to some spot. Returns an observable but we are able to continue to the next step and start verifying the first results.
-            -->
-            <ng-template matStepLabel
-              ><span class="d-none d-md-block">Import</span></ng-template
-            >
-            <div class="text-center">
-              <h2 class="mat-h2">
-                {{ true ? "Generating new Spots" : "Checking for duplicates" }}
-              </h2>
-              <mat-progress-spinner
-                *ngIf="true"
-                color="accent"
-                [mode]="true ? 'indeterminate' : 'determinate'"
-                [value]="10"
-              ></mat-progress-spinner>
-            </div>
-            <div>
-              <button
-                mat-raised-button
-                color="warn"
-                (click)="abortImportAndGoToSetup()"
-                class="float-left"
-              >
-                Abort Import and go to Setup
-              </button>
-              <button
-                mat-raised-button
-                color="accent"
-                class="float-right"
-                matStepperNext
-              >
-                Start verifying Spots
-              </button>
-            </div>
-          </mat-step>
           <mat-step [editable]="false" state="verify">
             <ng-template matStepLabel
               ><span class="d-none d-md-block">Verify</span></ng-template

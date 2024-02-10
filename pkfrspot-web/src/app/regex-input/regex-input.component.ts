@@ -43,11 +43,9 @@ const expressionFlagsChars = {
   y: "sticky",
 };
 
-class MyRegex {
-  constructor(
-    public regularExpression: RegExp,
-    public expressionFlags: ExpressionFlags
-  ) {}
+export interface MyRegex {
+  regularExpression: RegExp;
+  expressionFlags: ExpressionFlags;
 }
 
 export function regexValidator(): ValidatorFn {
@@ -88,7 +86,7 @@ export class RegexInputComponent
 
   // id
   static nextId = 0;
-  @HostBinding() id = `example-tel-input-${RegexInputComponent.nextId++}`;
+  @HostBinding() id = `regex-input-${RegexInputComponent.nextId++}`;
 
   // focused
   focused = false;
@@ -124,13 +122,18 @@ export class RegexInputComponent
       let regex = new RegExp(parts.regularExpression);
       let flags = this._makeExpressionFlags(parts.expressionFlags);
 
-      return new MyRegex(regex, flags);
+      return { regularExpression: regex, expressionFlags: flags };
     }
     return null;
   }
   set value(regex: MyRegex | null) {
-    // TODO
-    this.stateChanges.next();
+    if (regex) {
+      this.parts.setValue({
+        regularExpression: regex.regularExpression,
+        expressionFlags: regex.expressionFlags,
+      });
+      this.stateChanges.next();
+    }
   }
 
   @Input() get flags(): ExpressionFlags {
@@ -197,10 +200,9 @@ export class RegexInputComponent
 
   @Input("aria-describedby") userAriaDescribedBy: string;
   setDescribedByIds(ids: string[]) {
-    const controlElement = this._elementRef.nativeElement.querySelector(
-      ".example-tel-input-container"
-    )!;
-    controlElement.setAttribute("aria-describedby", ids.join(" "));
+    // const controlElement =
+    //   this._elementRef.nativeElement.querySelector("regularExpression")!;
+    // controlElement.setAttribute("aria-describedby", ids.join(" "));
   }
 
   get empty() {
@@ -263,7 +265,7 @@ export class RegexInputComponent
     let expressionFlags: ExpressionFlags = {};
 
     for (let char in expressionFlagsChars) {
-      if (flagString.includes(char)) {
+      if (flagString?.includes(char)) {
         // set the matching expression flag to true
         expressionFlags[expressionFlagsChars[char]] = true;
       }
