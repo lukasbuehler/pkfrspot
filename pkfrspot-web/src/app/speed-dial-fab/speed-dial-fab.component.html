@@ -32,7 +32,7 @@
       *ngFor="let miniBtn of buttonConfig.miniButtons; let i = index"
       mat-mini-fab
       class="mini-fab"
-      [color]="buttonConfig?.miniButtonColor || 'secondary'"
+      [color]="buttonConfig?.miniButtonColor || 'accent'"
       [matTooltip]="miniBtn.tooltip"
       [matTooltipPosition]="buttonConfig?.tooltipPosition || 'left'"
       (click)="miniButtonClick(i)"

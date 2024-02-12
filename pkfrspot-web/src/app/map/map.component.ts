@@ -1,5 +1,6 @@
 import {
-  AfterViewInit,
+  OnInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -12,14 +13,16 @@ import {
 import { map_style } from "./map_style";
 import { Spot } from "src/scripts/db/Spot";
 import { GoogleMap, MapPolygon } from "@angular/google-maps";
-import { BehaviorSubject, Observable, take } from "rxjs";
+import { BehaviorSubject } from "rxjs";
+import { environment } from "src/environments/environment";
+import { MapsApiService } from "../maps-api.service";
 
 @Component({
   selector: "app-map",
   templateUrl: "./map.component.html",
   styleUrls: ["./map.component.scss"],
 })
-export class MapComponent implements AfterViewInit {
+export class MapComponent implements OnInit {
   @ViewChild("googleMap") googleMap: GoogleMap;
   @ViewChildren(MapPolygon) polygons: QueryList<MapPolygon>;
   @ViewChildren(MapPolygon, { read: ElementRef })
@@ -46,7 +49,7 @@ export class MapComponent implements AfterViewInit {
   }
   @Output() zoomChange = new EventEmitter<number>();
   get zoom() {
-    return this._zoom;
+    return this._zoom ?? 4;
   }
   setZoom(newZoom: number) {
     this._zoom = newZoom;
@@ -73,28 +76,69 @@ export class MapComponent implements AfterViewInit {
   @Input() dots: any[] = [];
   @Input() selectedSpot: Spot.Class | null = null;
   @Input() isEditing: boolean = false;
+  @Input() showGeolocation: boolean = false;
 
-  ngAfterViewInit(): void {
-    let geolocationWatchId = navigator.geolocation.watchPosition(
-      (_location) => {
-        let locObj = {
-          location: {
-            lat: _location.coords.latitude,
-            lng: _location.coords.longitude,
-          },
-          accuracy: _location.coords.accuracy,
-        };
-        this.geolocation$.next(locObj);
-      },
-      (error) => {
-        console.error(error);
-        navigator.geolocation.clearWatch(geolocationWatchId);
-        this.geolocation$.complete();
-      },
-      {
-        enableHighAccuracy: true,
+  constructor(
+    private cdr: ChangeDetectorRef,
+    public mapsApiService: MapsApiService
+  ) {}
+
+  ngOnInit() {
+    this.mapsApiService.isApiLoaded$.subscribe((isLoaded) => {
+      if (isLoaded) {
+        this.initGeolocation();
+        this.initMap();
       }
-    );
+    });
+  }
+
+  initMap(): void {
+    this.geolocationMarkerOptions = {
+      draggable: false,
+      clickable: false,
+      opacity: 1,
+      icon: {
+        url: "/assets/icons/geolocation-16x16.png",
+        anchor: new google.maps.Point(8, 8),
+      },
+      zIndex: 1000,
+    };
+    this.dotMarkerOptions = {
+      draggable: false,
+      clickable: false,
+      opacity: 0.8,
+      icon: {
+        url: "/assets/icons/circle-16x16.png",
+        anchor: new google.maps.Point(8, 8),
+      },
+    };
+  }
+
+  initGeolocation() {
+    if (this.showGeolocation) {
+      let geolocationWatchId = navigator.geolocation.watchPosition(
+        (_location) => {
+          let locObj = {
+            location: {
+              lat: _location.coords.latitude,
+              lng: _location.coords.longitude,
+            },
+            accuracy: _location.coords.accuracy,
+          };
+          this.geolocation$.next(locObj);
+        },
+        (error) => {
+          console.error(error);
+          navigator.geolocation.clearWatch(geolocationWatchId);
+          this.geolocation$.complete();
+        },
+        {
+          enableHighAccuracy: true,
+        }
+      );
+    }
+
+    this.cdr.detectChanges();
   }
 
   geolocation$: BehaviorSubject<{
@@ -145,25 +189,8 @@ export class MapComponent implements AfterViewInit {
     },
     opacity: 0,
   };
-  geolocationMarkerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    clickable: false,
-    opacity: 1,
-    icon: {
-      url: "/assets/icons/geolocation-16x16.png",
-      anchor: new google.maps.Point(8, 8),
-    },
-    zIndex: 1000,
-  };
-  dotMarkerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    clickable: false,
-    opacity: 0.8,
-    icon: {
-      url: "/assets/icons/circle-16x16.png",
-      anchor: new google.maps.Point(8, 8),
-    },
-  };
+  geolocationMarkerOptions: google.maps.MarkerOptions;
+  dotMarkerOptions: google.maps.MarkerOptions;
   spotCircleOptions: google.maps.CircleOptions = {
     fillColor: "#b8c4ff",
     fillOpacity: 0.7,

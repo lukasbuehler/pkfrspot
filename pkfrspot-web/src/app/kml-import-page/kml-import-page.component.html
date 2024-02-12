@@ -85,24 +85,36 @@
               <div class="container d-lg-block mt-3">
                 <div class="row">
                   <div class="col-md-6">
-                    <div class="kml-preview" *ngIf="kmlSetupInfo">
+                    <div class="kml-preview" *ngIf="kmlParserService.setupInfo">
                       <h2 class="mat-h2">Preview</h2>
                       <div class="px-3">
                         <h3 class="mat-h3">
-                          <b>{{ kmlSetupInfo.name }}</b>
+                          <b>{{ kmlParserService.setupInfo.name }}</b>
                         </h3>
                         <p class="mat-body">
-                          {{ kmlSetupInfo.description }}
+                          {{ kmlParserService.setupInfo.description }}
                         </p>
                         <p class="mat-body">
-                          <b>{{ kmlSetupInfo.spotCount }} Spots</b> accross
-                          <b>{{ kmlSetupInfo.folders.length }} folders</b>.
+                          <b
+                            >{{ kmlParserService.setupInfo.spotCount }} Spots</b
+                          >
+                          accross
+                          <b
+                            >{{
+                              kmlParserService.setupInfo.folders.length
+                            }}
+                            folders</b
+                          >.
                         </p>
                       </div>
                     </div>
 
                     <h2 class="mat-h2">Import Settings</h2>
-                    <mat-form-field class="w-100" appearance="outline">
+                    <mat-form-field
+                      class="w-100"
+                      appearance="outline"
+                      *ngIf="kmlParserService.setupInfo"
+                    >
                       <mat-label>Language</mat-label>
                       <input
                         type="text"
@@ -114,6 +126,9 @@
                         <mat-option
                           *ngFor="let lang of languages"
                           [value]="lang"
+                          (onSelectionChange)="
+                            kmlParserService.setupInfo.lang = lang
+                          "
                         >
                           {{ lang }}
                         </mat-option>
@@ -164,15 +179,20 @@
                   <div class="col-md-6">
                     <h2 class="mat-h2">Folders to import</h2>
                     <span
-                      *ngIf="kmlSetupInfo && kmlSetupInfo.folders"
+                      *ngIf="kmlParserService.setupInfo?.folders"
                       class="example-list-section"
                     >
                       <ul class="checkbox-list">
-                        <li *ngFor="let folder of kmlSetupInfo.folders">
+                        <li
+                          *ngFor="
+                            let folder of kmlParserService.setupInfo.folders
+                          "
+                        >
                           <mat-checkbox
                             *ngIf="folder"
                             color="accent"
-                            [checked]="true"
+                            [checked]="folder.import"
+                            (change)="folder.import = $event.checked"
                           >
                             {{ folder.name }} ({{ folder.spotCount }} Spots)
                           </mat-checkbox>
@@ -180,7 +200,7 @@
                       </ul>
                     </span>
                     <p
-                      *ngIf="!kmlSetupInfo || !kmlSetupInfo.folders"
+                      *ngIf="!(kmlParserService.setupInfo?.folders?.length > 0)"
                       class="mat-body"
                     >
                       No folders in KML file.
@@ -197,8 +217,8 @@
                   mat-flat-button
                   class="float-right"
                   color="accent"
-                  matStepperNext
                   [disabled]="setupFormGroup.invalid || regex.errorState"
+                  (click)="continueToVerification()"
                 >
                   Import Spots
                 </button>
@@ -210,50 +230,78 @@
             <ng-template matStepLabel
               ><span class="d-none d-md-block">Verify</span></ng-template
             >
-            <div class="row">
-              <div class="col-md-5 verify-acc-col">
-                <mat-accordion>
-                  <mat-expansion-panel class="mat-elevation-z0">
-                    <mat-expansion-panel-header>
-                      <mat-panel-title> Spots to be imported </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <div>
-                      <div>Spot 1</div>
-                      <div>Spot 2</div>
+            <div class="container">
+              <div class="row">
+                <div class="col-md-5 verify-acc-col">
+                  <mat-accordion>
+                    <mat-expansion-panel class="mat-elevation-z0">
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          Spots to be imported
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <div>
+                        <button
+                          mat-flat-button
+                          class="text-truncate"
+                          *ngFor="
+                            let spot of kmlParserService.spotsToImport$ | async
+                          "
+                          (click)="selectedVerificationSpot = spot"
+                        >
+                          {{ spot.spot.name }}
+                        </button>
+                      </div>
+                    </mat-expansion-panel>
+                    <mat-divider></mat-divider>
+                    <mat-expansion-panel class="mat-elevation-z0">
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>Will not be imported</mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <div>
+                        <button
+                          mat-flat-button
+                          class="text-truncate"
+                          *ngFor="
+                            let spot of kmlParserService.spotsNotToImport$
+                              | async
+                          "
+                          (click)="selectedVerificationSpot = spot"
+                        >
+                          {{ spot.spot.name }}
+                        </button>
+                      </div>
+                    </mat-expansion-panel>
+                  </mat-accordion>
+                </div>
+                <div class="col-md-7">
+                  <div *ngIf="selectedVerificationSpot" class="p-2">
+                    <h3 class="mat-h2">
+                      {{ selectedVerificationSpot.spot.name }}
+                    </h3>
+                    <p>Folder: {{ selectedVerificationSpot.folder }}</p>
+                    <div class="map-container">
+                      <app-map
+                        [center]="selectedVerificationSpot.spot.location"
+                        [spots]="visibleSpots"
+                        [zoom]="16"
+                        [selectedSpot]="null"
+                      ></app-map>
                     </div>
-                  </mat-expansion-panel>
-                  <mat-divider></mat-divider>
-                  <mat-expansion-panel class="mat-elevation-z0">
-                    <mat-expansion-panel-header>
-                      <mat-panel-title>Will not be imported</mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <div>
-                      <div>Spot 1</div>
-                      <div>Spot 2</div>
-                    </div>
-                  </mat-expansion-panel>
-                </mat-accordion>
-              </div>
-              <div class="col-md-7">
-                <div class="p-2">
-                  <h3 class="mat-h2">Spot name</h3>
-                  <p>Folder: Folder name</p>
-                  <div class="map-container">
-                    <app-map></app-map>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="pt-3 d-flex flex-row justify-content-between">
-              <button mat-button matStepperPrevious>Back</button>
-              <button
-                mat-button
-                matStepperNext
-                color="primary"
-                [disabled]="true"
-              >
-                Save
-              </button>
+              <div class="pt-3 d-flex flex-row justify-content-between">
+                <button mat-button matStepperPrevious>Back</button>
+                <button
+                  mat-button
+                  matStepperNext
+                  color="primary"
+                  [disabled]="true"
+                >
+                  Save
+                </button>
+              </div>
             </div>
           </mat-step>
           <mat-step [editable]="false" state="save">

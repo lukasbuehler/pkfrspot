@@ -81,7 +81,7 @@ export class MapPageComponent implements AfterViewInit {
   spotSearchResults$: BehaviorSubject<SearchResponse<any> | null> =
     new BehaviorSubject(null);
   loadedSpots: any = {}; // is a map of tile coords to spot arrays
-  visibleDots: any[] = [];
+  dots: any[] = [];
 
   spotSearchControl = new FormControl();
 
@@ -113,7 +113,7 @@ export class MapPageComponent implements AfterViewInit {
       tooltip: "Create a new spot",
       color: "accent",
     },
-    miniButtonColor: "secondary",
+    miniButtonColor: "primary",
     miniButtons: [
       {
         icon: "note_add",
@@ -202,7 +202,7 @@ export class MapPageComponent implements AfterViewInit {
     this.bounds = bounds;
 
     if (zoom >= this._loadAllSpotsZoomLevel) {
-      this.visibleDots = [];
+      this.dots = [];
       // inside this zoom level we are constantly loading spots if new tiles become visible
 
       let northEastLiteral: google.maps.LatLngLiteral = {
@@ -231,7 +231,7 @@ export class MapPageComponent implements AfterViewInit {
     } else {
       // hide the spots and show the dots
       this.visibleSpots = [];
-      this.updateVisibleDots();
+      this.updateDots();
       //   if (zoomLevel <= 2) {
       //     zoomLevel = 2;
       //     this._northEastTileCoordsZ16.x = 0;
@@ -327,7 +327,7 @@ export class MapPageComponent implements AfterViewInit {
     //       this.loadedSpots[`z${zoom}_${tile.x}_${tile.y}`] = spots;
     //       //console.log("new sposts laoded:");
     //       //console.log(spots);
-    //       this.updateVisibleDots();
+    //       this.updateDots();
     //     }
     //   },
     //   (error) => {
@@ -400,10 +400,10 @@ export class MapPageComponent implements AfterViewInit {
     });
   }
 
-  updateVisibleDots() {
+  updateDots() {
     const allSpots: Spot.Class[] = this.getAllSpots();
 
-    this.visibleDots = allSpots.map((spot) => {
+    this.dots = allSpots.map((spot) => {
       return spot.location;
     });
   }

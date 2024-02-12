@@ -1,4 +1,5 @@
 <google-map
+  *ngIf="mapsApiService.isApiLoaded$ | async"
   #googleMap
   id="googleMap"
   [center]="center"
@@ -72,6 +73,7 @@
 </button>
 
 <button
+  *ngIf="showGeolocation"
   #geolocationFab
   id="geolocationFab"
   mat-fab

@@ -1,30 +1,32 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/environment";
-import { Observable, ReplaySubject, catchError, map, of, take } from "rxjs";
+import { Observable, BehaviorSubject, catchError, map, of, take } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
 export class MapsApiService {
-  isApiLoaded$: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
+  private _isApiLoaded$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  public isApiLoaded$: Observable<boolean> = this._isApiLoaded$;
 
   constructor(private http: HttpClient) {
-    http
-      .jsonp(
-        "https://maps.googleapis.com/maps/api/js?key=" +
-          environment.keys.google_maps,
-        "callback"
-      )
-      .pipe(
-        map(() => true),
-        catchError((err) => {
-          console.error("error loading google maps API", err);
-          return of(false);
-        })
-      )
-      .pipe(take(1))
-      .subscribe(this.isApiLoaded$);
+    this.loadGoogleMapsApi();
+  }
+
+  loadGoogleMapsApi() {
+    // Load the Google Maps API if it is not already loaded
+    if (this._isApiLoaded$.value) return;
+
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.keys.google_maps}`;
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+    script.onload = () => {
+      this._isApiLoaded$.next(true);
+    };
   }
 
   reverseGeocoding(location: google.maps.LatLngLiteral): Observable<any> {
@@ -47,33 +49,5 @@ export class MapsApiService {
         }
       );
     });
-  }
-
-  getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.showPosition);
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  }
-
-  watchLocation(
-    successCallback: PositionCallback,
-    errorCallback: PositionErrorCallback,
-    options?: PositionOptions
-  ) {
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(
-        successCallback,
-        errorCallback,
-        options
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  }
-
-  showPosition(position) {
-    console.log(position);
   }
 }

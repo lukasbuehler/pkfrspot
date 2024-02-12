@@ -12,7 +12,8 @@ import {
   Validators,
 } from "@angular/forms";
 import { MatStepper } from "@angular/material/stepper";
-import { KmlParserService, KMLSetupInfo } from "../kml-parser.service";
+import { KmlParserService, KMLSetupInfo, KMLSpot } from "../kml-parser.service";
+import { filter, first, firstValueFrom } from "rxjs";
 
 @Component({
   selector: "app-kml-import-page",
@@ -32,7 +33,10 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
   setupFormGroup: UntypedFormGroup;
 
   kmlUploadFile: File = null;
-  kmlSetupInfo: KMLSetupInfo;
+
+  selectedVerificationSpot: KMLSpot | null = null;
+  spotsToImport: KMLSpot[] = [];
+  spotsNotToImport: KMLSpot[] = [];
 
   languages: string[] = [
     "English (en)",
@@ -42,7 +46,7 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
 
   constructor(
     private _formBuilder: UntypedFormBuilder,
-    private _kmlParserService: KmlParserService,
+    public kmlParserService: KmlParserService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -56,12 +60,7 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
-    // set a step for debug stuff:
-    //this.stepperHorizontal.selectedIndex = 2; // go to the step directly
-  }
+  ngAfterViewInit(): void {}
 
   onUploadMediaSelect(file) {
     this.kmlUploadFile = file;
@@ -74,14 +73,12 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
       return;
     }
     this.kmlUploadFile.text().then((data) => {
-      this._kmlParserService.parseKMLFromString$(data).then(
+      this.kmlParserService.parseKMLFromString(data).then(
         () => {
           // parsing was successful
           this.stepperHorizontal.selected.completed = true;
           this.stepperHorizontal.next();
           //this.cdr.detectChanges();
-
-          this.kmlSetupInfo = this._kmlParserService.info;
         },
         (error) => {
           // parsing was not successful
@@ -91,7 +88,24 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  startImport() {}
+  continueToVerification() {
+    this.kmlParserService.confirmSetup();
 
-  abortImportAndGoToSetup() {}
+    this.stepperHorizontal.selected.completed = true; // TODO move
+    this.stepperHorizontal.next();
+
+    firstValueFrom(
+      this.kmlParserService.spotsToImport$.pipe(
+        filter((spots) => spots && spots.length > 0), // Ignore null, undefined, or empty arrays
+        first() // Take only the first non-null and non-empty array
+      )
+    ).then((spots) => {
+      if (spots.length > 0 && !this.selectedVerificationSpot) {
+        this.selectedVerificationSpot = spots[0];
+        console.log("Selected spot: ", this.selectedVerificationSpot);
+      }
+    });
+
+    this.cdr.detectChanges();
+  }
 }

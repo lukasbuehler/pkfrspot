@@ -1,11 +1,11 @@
-<div class="map-container" *ngIf="mapsService.isApiLoaded$ | async">
+<div class="map-container">
   <app-map
     #map
     id="map"
     [zoom]="mapZoom"
     [center]="mapCenterStart"
     [spots]="visibleSpots"
-    [dots]="visibleDots"
+    [dots]="dots"
     [selectedSpot]="selectedSpot"
     (boundsChange)="mapBoundsChanged($event, mapZoom)"
     (zoomChange)="zoomChanged($event)"
@@ -13,6 +13,7 @@
     (spotClick)="openSpot($event)"
     (centerChange)="mapCenter = $event"
     [isEditing]="isEditing"
+    [showGeolocation]="true"
   ></app-map>
 
   <div class="search-group">
@@ -45,7 +46,6 @@
           spotSearchControl.setValue('');
           ($event.stopPropagation)
         "
-        [displayWith]="getSpotNameFromId"
       >
         <mat-option
           class="spotAutocompleteOption"

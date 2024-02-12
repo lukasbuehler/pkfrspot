@@ -1,15 +1,16 @@
 import { Injectable } from "@angular/core";
 import firebase from "firebase/compat";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { Spot } from "src/scripts/db/Spot";
 
 import { parseString } from "xml2js";
 
 export interface KMLSetupInfo {
   name?: string;
+  lang?: string;
   description?: string;
   spotCount: number;
-  folders: { name: string; spotCount: number }[];
+  folders: { name: string; spotCount: number; import: boolean }[];
 }
 
 export interface KMLSpot {
@@ -17,7 +18,7 @@ export interface KMLSpot {
     name: string;
     location: google.maps.LatLngLiteral;
   };
-  kmlFolder?: string;
+  folder?: string;
   language: string;
   possibleDuplicateOf: Spot.Class[];
 }
@@ -33,16 +34,21 @@ export class KmlParserService {
     return this._parsingWasSuccessful;
   }
 
-  private _info: KMLSetupInfo | null;
-  get info(): KMLSetupInfo | null {
-    return this._info;
-  }
+  public setupInfo: KMLSetupInfo | null;
+
+  public foldersToImport: number[] = [];
 
   private _spotFolders: { [key: number]: KMLSpot[] } | null = null;
 
+  private _spotsToImport$ = new BehaviorSubject<KMLSpot[]>([]);
+  public spotsToImport$: Observable<KMLSpot[]> = this._spotsToImport$;
+
+  private _spotsNotToImport$ = new BehaviorSubject<KMLSpot[]>([]);
+  public spotsNotToImport$: Observable<KMLSpot[]> = this._spotsNotToImport$;
+
   private _parsedKml: any | null = null;
 
-  parseKMLFromString$(kmlString: string): Promise<void> {
+  parseKMLFromString(kmlString: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       this._parseKMLStringAsXML$(kmlString).then(
         (xmlObj) => {
@@ -52,10 +58,11 @@ export class KmlParserService {
             return;
           }
 
-          this._info = {
+          this.setupInfo = {
             name: "Unnamed KML",
             description: "",
             spotCount: 0,
+            lang: "",
             folders: [],
           };
 
@@ -69,8 +76,8 @@ export class KmlParserService {
           }
 
           // name
-          this._info.name = doc.name[0] || "Unnamed KML";
-          this._info.description = doc.description[0] || "";
+          this.setupInfo.name = doc.name[0] || "Unnamed KML";
+          this.setupInfo.description = doc.description[0] || "";
 
           // set spot count
           if (!doc.Folder) {
@@ -78,12 +85,13 @@ export class KmlParserService {
           }
           doc.Folder.forEach((folder, folderIndex) => {
             let numberOfSpotsinFolder: number = folder?.Placemark?.length ?? 0;
-            this._info.spotCount += numberOfSpotsinFolder;
+            this.setupInfo.spotCount += numberOfSpotsinFolder;
 
             // add the folder name to the folders.
-            this._info.folders.push({
+            this.setupInfo.folders.push({
               name: folder.name[0] || "Unnamed folder",
               spotCount: numberOfSpotsinFolder,
+              import: true,
             });
 
             // load the spots from the folder.
@@ -94,14 +102,14 @@ export class KmlParserService {
               const spot: KMLSpot["spot"] = {
                 name: placemark.name[0] || "Unnamed spot",
                 location: {
-                  lat: matches[1],
-                  lng: matches[2],
+                  lat: parseFloat(matches[2]),
+                  lng: parseFloat(matches[1]),
                 },
               };
 
               let kmlSpot: KMLSpot = {
                 spot: spot,
-                kmlFolder: folder.name[0] || "Unnamed folder",
+                folder: folder.name[0] || "Unnamed folder",
                 language: "en",
                 possibleDuplicateOf: [], // TOOD: find duplicates
               };
@@ -110,8 +118,6 @@ export class KmlParserService {
             });
             this._spotFolders[folderIndex] = kmlSpots;
           });
-
-          console.log(this._spotFolders);
 
           // parsing was successful
           this._parsingWasSuccessful = true;
@@ -123,6 +129,31 @@ export class KmlParserService {
         }
       );
     });
+  }
+
+  confirmSetup() {
+    // set the spots to import and not to import using the folders to import
+    let spotsToImport: KMLSpot[] = [];
+    let spotsNotToImport: KMLSpot[] = [];
+
+    console.log(this.setupInfo.folders);
+
+    this.setupInfo.folders.forEach((folder, folderIndex) => {
+      let spotsInFolder = this._spotFolders[folderIndex];
+      if (folder.import) {
+        // apply the name regex to all spots in the folder
+        // TODO
+
+        spotsToImport = spotsToImport.concat(spotsInFolder);
+      } else {
+        spotsNotToImport = spotsNotToImport.concat(spotsInFolder);
+      }
+    });
+
+    this._spotsToImport$.next(spotsToImport);
+    this._spotsNotToImport$.next(spotsNotToImport);
+
+    console.log(this._spotsToImport$.value);
   }
 
   /**
