@@ -1,0 +1,17 @@
+<app-map
+  #map
+  id="map"
+  [zoom]="mapZoom"
+  [center]="mapCenterStart"
+  [spots]="visibleSpots"
+  [dots]="dots"
+  [selectedSpot]="selectedSpot"
+  (boundsChange)="mapBoundsChanged($event, mapZoom)"
+  (zoomChange)="zoomChanged($event)"
+  (mapClick)="mapClick($event)"
+  (spotClick)="openSpot($event)"
+  (centerChange)="mapCenter = $event"
+  [isEditing]="isEditing"
+  [showGeolocation]="true"
+  (hasGeolocationChange)="hasGeolocationChange.emit($event)"
+></app-map>

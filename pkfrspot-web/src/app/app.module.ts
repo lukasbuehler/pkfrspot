@@ -109,6 +109,7 @@ import { VgOverlayPlayModule } from "@videogular/ngx-videogular/overlay-play";
 import { VgBufferingModule } from "@videogular/ngx-videogular/buffering";
 import { HammerModule } from "@angular/platform-browser";
 import { MapComponent } from "./map/map.component";
+import { SpotMapComponent } from './spot-map/spot-map.component';
 
 @NgModule({
   declarations: [
@@ -153,6 +154,7 @@ import { MapComponent } from "./map/map.component";
     BottomSheetComponent,
     UserMenuContentComponent,
     MapComponent,
+    SpotMapComponent,
   ],
   imports: [
     BrowserModule,

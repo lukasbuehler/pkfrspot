@@ -71,6 +71,7 @@ export class MapComponent implements OnInit {
     spotId: string;
     path: google.maps.LatLngLiteral[][];
   }>();
+  @Output() hasGeolocationChange = new EventEmitter<boolean>();
 
   @Input() spots: Spot.Class[] = [];
   @Input() dots: any[] = [];
@@ -126,11 +127,13 @@ export class MapComponent implements OnInit {
             accuracy: _location.coords.accuracy,
           };
           this.geolocation$.next(locObj);
+          this.hasGeolocationChange.emit(true);
         },
         (error) => {
           console.error(error);
           navigator.geolocation.clearWatch(geolocationWatchId);
           this.geolocation$.complete();
+          this.hasGeolocationChange.emit(false);
         },
         {
           enableHighAccuracy: true,

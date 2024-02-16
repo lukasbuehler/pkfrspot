@@ -281,12 +281,7 @@
                     </h3>
                     <p>Folder: {{ selectedVerificationSpot.folder }}</p>
                     <div class="map-container">
-                      <app-map
-                        [center]="selectedVerificationSpot.spot.location"
-                        [spots]="visibleSpots"
-                        [zoom]="16"
-                        [selectedSpot]="null"
-                      ></app-map>
+                      <app-spot-map></app-spot-map>
                     </div>
                   </div>
                 </div>

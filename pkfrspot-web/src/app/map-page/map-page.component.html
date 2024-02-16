@@ -1,20 +1,13 @@
 <div class="map-container">
-  <app-map
-    #map
-    id="map"
-    [zoom]="mapZoom"
-    [center]="mapCenterStart"
-    [spots]="visibleSpots"
-    [dots]="dots"
-    [selectedSpot]="selectedSpot"
-    (boundsChange)="mapBoundsChanged($event, mapZoom)"
-    (zoomChange)="zoomChanged($event)"
-    (mapClick)="mapClick($event)"
-    (spotClick)="openSpot($event)"
-    (centerChange)="mapCenter = $event"
-    [isEditing]="isEditing"
-    [showGeolocation]="true"
-  ></app-map>
+  <app-spot-map
+    #spotMap
+    id="spotMap"
+    [(selectedSpot)]="selectedSpot"
+    [(isEditing)]="isEditing"
+    [(mapStyle)]="mapStyle"
+    (visibleSpotsChange)="visibleSpots = $event"
+    (hasGeolocationChange)="hasGeolocation = $event"
+  ></app-spot-map>
 
   <div class="search-group">
     <mat-form-field
@@ -26,7 +19,7 @@
         mat-icon-button
         matSuffix
         [matMenuTriggerFor]="searchUserMatMenu"
-        (click)="$event.stopPropagation(); closeSpot()"
+        (click)="$event.stopPropagation(); spotMap.closeSpot()"
       >
         <mat-icon>close</mat-icon>
       </button>
@@ -96,7 +89,6 @@
 
     <app-bottom-sheet
       #bottomSheet
-      *ngIf="mapZoom >= 16"
       title="{{ visibleSpots.length }} spot{{
         visibleSpots.length === 1 ? '' : 's'
       }} in this area"
@@ -113,11 +105,13 @@
           [infoOnly]="false"
           [editable]="true"
           [isEditing]="isEditing"
-          (isEditingChange)="$event ? startEdit() : discardEdit()"
-          (dismiss)="closeSpot()"
-          (addBoundsClick)="addBounds()"
-          (focusClick)="focusSpot(selectedSpot)"
-          (saveClick)="saveSpot($event)"
+          (isEditingChange)="
+            $event ? spotMap.startEdit() : spotMap.discardEdit()
+          "
+          (dismiss)="spotMap.closeSpot()"
+          (addBoundsClick)="spotMap.addBounds()"
+          (focusClick)="spotMap.focusSpot(selectedSpot)"
+          (saveClick)="spotMap.saveSpot($event)"
         ></app-spot-compact-view>
       </div>
       <div *ngIf="!selectedSpot" class="spots-container">
@@ -126,7 +120,7 @@
           [spot]="spot"
           [infoOnly]="true"
           [clickable]="true"
-          (click)="openSpot(spot)"
+          (click)="spotMap.openSpot(spot)"
         >
         </app-spot-preview-card>
       </div>
@@ -141,9 +135,33 @@
     [buttonConfig]="speedDialButtonConfig"
     [openOnHover]="true"
     [rotationDegrees]="0"
-    (mainFabClick)="createSpot()"
+    (mainFabClick)="spotMap.createSpot()"
     (miniFabClick)="speedDialMiniFabClick($event)"
   ></app-speed-dial-fab>
+
+  <button
+    mat-mini-fab
+    #mapStyleFab
+    id="mapStyleFab"
+    (click)="spotMap.toggleMapStyle()"
+  >
+    <mat-icon aria-label="Button with magnifying lens to search for spots">
+      {{ mapStyle === "roadmap" ? "terrain" : "map" }}
+    </mat-icon>
+  </button>
+
+  <button
+    #geolocationFab
+    id="geolocationFab"
+    mat-fab
+    color="primary"
+    (click)="spotMap.focusOnGeolocation()"
+  >
+    <!-- empty location icon is: "location_searching" -->
+    <mat-icon>{{
+      hasGeolocation ? "my_location" : "location_disabled"
+    }}</mat-icon>
+  </button>
 
   <mat-menu #searchUserMatMenu="matMenu">
     <app-user-menu-content></app-user-menu-content>
