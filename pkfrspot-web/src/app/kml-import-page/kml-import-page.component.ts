@@ -28,15 +28,22 @@ import { filter, first, firstValueFrom } from "rxjs";
 })
 export class KmlImportPageComponent implements OnInit, AfterViewInit {
   @ViewChild("stepperHorizontal") stepperHorizontal;
+  @ViewChild("spotMap") spotMap;
 
   uploadFormGroup: UntypedFormGroup;
   setupFormGroup: UntypedFormGroup;
 
   kmlUploadFile: File = null;
 
-  selectedVerificationSpot: KMLSpot | null = null;
-  spotsToImport: KMLSpot[] = [];
-  spotsNotToImport: KMLSpot[] = [];
+  private _selectedVerificationSpot: KMLSpot | null = null;
+  get selectedVerificationSpot(): KMLSpot | null {
+    return this._selectedVerificationSpot;
+  }
+  set selectedVerificationSpot(value: KMLSpot | null) {
+    this._selectedVerificationSpot = value;
+    if (this.spotMap)
+      this.spotMap.focusPoint(this._selectedVerificationSpot.spot.location);
+  }
 
   languages: string[] = [
     "English (en)",
@@ -64,6 +71,10 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
 
   onUploadMediaSelect(file) {
     this.kmlUploadFile = file;
+  }
+
+  getSpotLocations(spots: KMLSpot[]): google.maps.LatLngLiteral[] {
+    return spots.map((spot) => spot.spot.location);
   }
 
   continueToSetup() {

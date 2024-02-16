@@ -281,7 +281,18 @@
                     </h3>
                     <p>Folder: {{ selectedVerificationSpot.folder }}</p>
                     <div class="map-container">
-                      <app-spot-map></app-spot-map>
+                      <app-spot-map
+                        #spotMap
+                        id="spotMap"
+                        [markers]="
+                          getSpotLocations(
+                            kmlParserService.spotsToImport$ | async
+                          )
+                        "
+                        [selectedMarker]="
+                          selectedVerificationSpot.spot.location
+                        "
+                      ></app-spot-map>
                     </div>
                   </div>
                 </div>

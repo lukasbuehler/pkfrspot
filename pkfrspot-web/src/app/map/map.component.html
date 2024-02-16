@@ -16,7 +16,7 @@
   <map-marker
     *ngFor="let dot of dots"
     [position]="dot"
-    [options]="dotMarkerOptions"
+    [options]="primaryDotMarkerOptions"
   ></map-marker>
 
   <map-circle
@@ -64,4 +64,16 @@
     [radius]="(geolocation$ | async).accuracy"
     [options]="geolocationCircleOptions"
   ></map-circle>
+
+  <!-- Markers -->
+  <map-marker
+    *ngFor="let marker of markers"
+    [position]="marker"
+    [options]="teriaryDotMarkerOptions"
+  ></map-marker>
+  <map-marker
+    *ngIf="selectedMarker"
+    [position]="selectedMarker"
+    [options]="tertiaryMarkerOptions"
+  ></map-marker>
 </google-map>

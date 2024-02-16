@@ -62,6 +62,9 @@ export class SpotMapComponent implements AfterViewInit {
   visibleSpots: Spot.Class[] = [];
   @Output() visibleSpotsChange = new EventEmitter<Spot.Class[]>();
 
+  @Input() markers: google.maps.LatLngLiteral[] = [];
+  @Input() selectedMarker: google.maps.LatLngLiteral | null = null;
+
   uneditedSpot: Spot.Class = null;
 
   start_zoom: number = 4;
@@ -372,8 +375,12 @@ export class SpotMapComponent implements AfterViewInit {
   }
 
   focusSpot(spot: Spot.Class) {
-    this.mapCenterStart = spot.location;
-    this.mapZoom = 18;
+    this.focusPoint(spot.location);
+  }
+
+  focusPoint(point: google.maps.LatLngLiteral) {
+    this.mapCenterStart = point;
+    this.mapZoom = 17;
   }
 
   toggleMapStyle() {

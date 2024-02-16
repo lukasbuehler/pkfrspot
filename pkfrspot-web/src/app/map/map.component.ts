@@ -78,6 +78,8 @@ export class MapComponent implements OnInit {
   @Input() selectedSpot: Spot.Class | null = null;
   @Input() isEditing: boolean = false;
   @Input() showGeolocation: boolean = false;
+  @Input() markers: google.maps.LatLngLiteral[] = [];
+  @Input() selectedMarker: google.maps.LatLngLiteral | null = null;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -100,16 +102,28 @@ export class MapComponent implements OnInit {
       opacity: 1,
       icon: {
         url: "/assets/icons/geolocation-16x16.png",
+        scaledSize: new google.maps.Size(16, 16),
         anchor: new google.maps.Point(8, 8),
       },
       zIndex: 1000,
     };
-    this.dotMarkerOptions = {
+    this.primaryDotMarkerOptions = {
       draggable: false,
       clickable: false,
       opacity: 0.8,
       icon: {
-        url: "/assets/icons/circle-16x16.png",
+        url: "/assets/icons/circle-primary-16x16.png",
+        scaledSize: new google.maps.Size(16, 16),
+        anchor: new google.maps.Point(8, 8),
+      },
+    };
+    this.teriaryDotMarkerOptions = {
+      draggable: false,
+      clickable: false,
+      opacity: 0.8,
+      icon: {
+        url: "/assets/icons/circle-tertiary-16x16.png",
+        scaledSize: new google.maps.Size(16, 16),
         anchor: new google.maps.Point(8, 8),
       },
     };
@@ -171,7 +185,7 @@ export class MapComponent implements OnInit {
     draggable: false,
     clickable: false,
     icon: {
-      url: "/assets/icons/marker.png",
+      url: "/assets/icons/marker-primary.png",
     },
     opacity: 1,
   };
@@ -180,20 +194,28 @@ export class MapComponent implements OnInit {
     clickable: false,
     crossOnDrag: true,
     icon: {
-      url: "/assets/icons/marker.png",
+      url: "/assets/icons/marker-primary.png",
     },
     opacity: 1,
   };
+  tertiaryMarkerOptions: google.maps.MarkerOptions = {
+    draggable: false,
+    clickable: false,
+    icon: {
+      url: "/assets/icons/marker-tertiary.png",
+    },
+  };
+  teriaryDotMarkerOptions: google.maps.MarkerOptions;
   noSelectedSpotMarkerOptions: google.maps.MarkerOptions = {
     draggable: false,
     clickable: false,
     icon: {
-      url: "/assets/icons/marker.png",
+      url: "/assets/icons/marker-primary.png",
     },
     opacity: 0,
   };
   geolocationMarkerOptions: google.maps.MarkerOptions;
-  dotMarkerOptions: google.maps.MarkerOptions;
+  primaryDotMarkerOptions: google.maps.MarkerOptions;
   spotCircleOptions: google.maps.CircleOptions = {
     fillColor: "#b8c4ff",
     fillOpacity: 0.7,
