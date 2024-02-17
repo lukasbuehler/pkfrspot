@@ -8,27 +8,21 @@ import {
   doc,
   addDoc,
   collection,
-  collectionData,
   onSnapshot,
-  collectionSnapshots,
   DocumentChangeType,
   where,
   query,
   orderBy,
   limit,
-  QueryDocumentSnapshot,
-  DocumentData,
   deleteDoc,
   setDoc,
   startAfter,
 } from "@angular/fire/firestore";
 
-import { Observable, combineLatest } from "rxjs";
+import { Observable, forkJoin } from "rxjs";
 import { Like } from "src/scripts/db/Like";
 import { User } from "src/scripts/db/User";
-import { merge } from "rxjs";
-import { map } from "rxjs/operators";
-import { InviteCode } from "src/scripts/db/InviteCode";
+import { map, take } from "rxjs/operators";
 import { DocumentReference, Timestamp, updateDoc } from "firebase/firestore";
 
 @Injectable({
@@ -272,36 +266,44 @@ export class DatabaseService {
     });
   }
 
-  getSpotsForTiles(tiles: { x: number; y: number }[]) {
-    return new Observable<Spot.Class[]>((observer) => {
-      const tileUnsubscribeFunctions: (() => void)[] = [];
-
-      for (let tile of tiles) {
-        tileUnsubscribeFunctions.push(
-          onSnapshot(
-            query(
-              collection(this.firestore, "spots"),
-              where("tile_coordinates.z16.x", "==", tile.x),
-              where("tile_coordinates.z16.y", "==", tile.y),
-              limit(10)
-            ),
-            (snap) => {
-              observer.next(this.parseSpots_(snap));
-            },
-            (error) => {
-              observer.error(error);
-            }
-          )
+  getSpotsForTiles(
+    tiles: { x: number; y: number }[]
+  ): Observable<Spot.Class[]> {
+    const observables = tiles.map((tile) => {
+      return new Observable<Spot.Class[]>((observer) => {
+        const unsubscribe = onSnapshot(
+          query(
+            collection(this.firestore, "spots"),
+            where("tile_coordinates.z16.x", "==", tile.x),
+            where("tile_coordinates.z16.y", "==", tile.y)
+          ),
+          (snap) => {
+            observer.next(this.parseSpots_(snap));
+          },
+          (error) => {
+            observer.error(error);
+          }
         );
-      }
 
-      return () => {
-        // unsubscribe from all onSnapshots for each tile
-        tileUnsubscribeFunctions.forEach((unsubscribe) => {
+        return () => {
           unsubscribe();
-        });
-      };
+        };
+      }).pipe(take(1));
     });
+
+    return forkJoin(observables).pipe(
+      map((arrays: Spot.Class[][]) => {
+        let allSpots = new Map<string, Spot.Class>();
+
+        arrays.forEach((spots: Spot.Class[]) => {
+          spots.forEach((spot: Spot.Class) => {
+            allSpots.set(spot.id, spot);
+          });
+        });
+
+        return Array.from(allSpots.values());
+      })
+    );
   }
 
   getPreviewSpotsForTiles(zoom: number, tiles: { x: number; y: number }[]) {

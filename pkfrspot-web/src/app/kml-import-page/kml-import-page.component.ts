@@ -100,23 +100,23 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
   }
 
   continueToVerification() {
-    this.kmlParserService.confirmSetup();
+    this.kmlParserService.confirmSetup().then(() => {
+      this.stepperHorizontal.selected.completed = true; // TODO move
+      this.stepperHorizontal.next();
 
-    this.stepperHorizontal.selected.completed = true; // TODO move
-    this.stepperHorizontal.next();
+      firstValueFrom(
+        this.kmlParserService.spotsToImport$.pipe(
+          filter((spots) => spots && spots.length > 0), // Ignore null, undefined, or empty arrays
+          first() // Take only the first non-null and non-empty array
+        )
+      ).then((spots) => {
+        if (spots.length > 0 && !this.selectedVerificationSpot) {
+          this.selectedVerificationSpot = spots[0];
+          console.log("Selected spot: ", this.selectedVerificationSpot);
+        }
+      });
 
-    firstValueFrom(
-      this.kmlParserService.spotsToImport$.pipe(
-        filter((spots) => spots && spots.length > 0), // Ignore null, undefined, or empty arrays
-        first() // Take only the first non-null and non-empty array
-      )
-    ).then((spots) => {
-      if (spots.length > 0 && !this.selectedVerificationSpot) {
-        this.selectedVerificationSpot = spots[0];
-        console.log("Selected spot: ", this.selectedVerificationSpot);
-      }
+      this.cdr.detectChanges();
     });
-
-    this.cdr.detectChanges();
   }
 }

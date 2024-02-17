@@ -1,9 +1,12 @@
 import { Injectable } from "@angular/core";
 import firebase from "firebase/compat";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, firstValueFrom } from "rxjs";
 import { Spot } from "src/scripts/db/Spot";
+import { MapHelper } from "src/scripts/map_helper";
 
 import { parseString } from "xml2js";
+import { DatabaseService } from "./database.service";
+import { MapsApiService } from "./maps-api.service";
 
 export interface KMLSetupInfo {
   name?: string;
@@ -27,7 +30,10 @@ export interface KMLSpot {
   providedIn: "root",
 })
 export class KmlParserService {
-  constructor() {}
+  constructor(
+    private dbService: DatabaseService,
+    private mapAPIService: MapsApiService
+  ) {}
 
   private _parsingWasSuccessful: boolean = false;
   get parsingWasSuccessful() {
@@ -51,7 +57,7 @@ export class KmlParserService {
   parseKMLFromString(kmlString: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       this._parseKMLStringAsXML$(kmlString).then(
-        (xmlObj) => {
+        async (xmlObj) => {
           this._parsedKml = xmlObj;
           if (!this._parsedKml) {
             reject("The parsed KML object is null. This should not happen.");
@@ -111,7 +117,7 @@ export class KmlParserService {
                 spot: spot,
                 folder: folder.name[0] || "Unnamed folder",
                 language: "en",
-                possibleDuplicateOf: [], // TOOD: find duplicates
+                possibleDuplicateOf: [],
               };
 
               return kmlSpot;
@@ -131,29 +137,79 @@ export class KmlParserService {
     });
   }
 
-  confirmSetup() {
+  async confirmSetup() {
     // set the spots to import and not to import using the folders to import
     let spotsToImport: KMLSpot[] = [];
     let spotsNotToImport: KMLSpot[] = [];
+    let tilesToLoad: google.maps.Point[] = [];
 
-    console.log(this.setupInfo.folders);
+    this.setupInfo.folders.forEach((folder, folderIndex) => {
+      let spotsInFolder = this._spotFolders[folderIndex];
+
+      if (folder.import) {
+        spotsInFolder.forEach((spot) => {
+          // add the tiles which are close to this spot to the list to load
+          // spots for to check for duplicates
+          let tile = MapHelper.getTileCoordinatesForLocationAndZoom(
+            spot.spot.location,
+            16
+          );
+
+          if (
+            !tilesToLoad.some(
+              (someTile) => someTile.x === tile.x && someTile.y === tile.y
+            )
+          ) {
+            tilesToLoad.push(tile);
+          }
+        });
+      }
+    });
+
+    // load all the spots for the tiles to check for possible spot duplicates
+    let spotsToCheckForDuplicates: Spot.Class[] = await firstValueFrom(
+      this.dbService.getSpotsForTiles(tilesToLoad)
+    );
+
+    // check for duplicates for each spot
+    let latLngDist: number = 0.0005;
+    Object.values(this._spotFolders).forEach((folder, folderIndex) => {
+      folder.forEach((kmlSpot, spotIndex) => {
+        let minlat = kmlSpot.spot.location.lat - latLngDist;
+        let maxLat = kmlSpot.spot.location.lat + latLngDist;
+        let minLng = kmlSpot.spot.location.lng - latLngDist;
+        let maxLng = kmlSpot.spot.location.lng + latLngDist;
+
+        this._spotFolders[folderIndex][spotIndex].possibleDuplicateOf =
+          spotsToCheckForDuplicates.filter((spot) => {
+            if (spot.location.lat > minlat && spot.location.lat < maxLat) {
+              if (spot.location.lng > minLng && spot.location.lng < maxLng) {
+                return true;
+              }
+            }
+          });
+      });
+    });
 
     this.setupInfo.folders.forEach((folder, folderIndex) => {
       let spotsInFolder = this._spotFolders[folderIndex];
       if (folder.import) {
-        // apply the name regex to all spots in the folder
-        // TODO
+        spotsInFolder.forEach((spot) => {
+          // apply the name regex to all spots in the folder
+          // TODO
 
-        spotsToImport = spotsToImport.concat(spotsInFolder);
-      } else {
-        spotsNotToImport = spotsNotToImport.concat(spotsInFolder);
+          if (spot.possibleDuplicateOf.length > 0) {
+            console.log("Spot is a duplicate", spot.spot.name);
+            spotsNotToImport.push(spot);
+          } else {
+            spotsToImport.push(spot);
+          }
+        });
       }
     });
 
     this._spotsToImport$.next(spotsToImport);
     this._spotsNotToImport$.next(spotsNotToImport);
-
-    console.log(this._spotsToImport$.value);
   }
 
   /**
@@ -173,10 +229,5 @@ export class KmlParserService {
     });
   }
 
-  //private nameReplaceRegex(nameString: string, regex: RegExp): string {}
-
-  /*
-  private findPossibleDuplicatesForSpotSchema$(
-    spotSchema: Spot.Schema
-  ): Observable<Spot.Class[]> {}*/
+  findPossibleDuplicatesForSpot(spot: KMLSpot) {}
 }
