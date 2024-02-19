@@ -39,14 +39,15 @@
       <button mat-button (click)="loadDiscoverSpots(0, 0)">Load spots</button>
 
       <div class="discover-grid">
+        @for(spot of discoverSpots; track spot) {
         <app-spot-preview-card
-          *ngFor="let spot of discoverSpots"
           class="w-100 h-100"
           [spot]="spot"
           [infoOnly]="true"
           [clickable]="true"
           (click)="spotClicked(spot)"
         ></app-spot-preview-card>
+        }
       </div>
     </div>
   </mat-tab>

@@ -123,8 +123,8 @@
                         [matAutocomplete]="auto"
                         required
                       /><mat-autocomplete #auto="matAutocomplete">
+                        @for(lang of languages; track lang) {
                         <mat-option
-                          *ngFor="let lang of languages"
                           [value]="lang"
                           (onSelectionChange)="
                             kmlParserService.setupInfo.lang = lang
@@ -132,6 +132,7 @@
                         >
                           {{ lang }}
                         </mat-option>
+                        }
                       </mat-autocomplete>
                       <mat-icon
                         matSuffix
@@ -183,11 +184,9 @@
                       class="example-list-section"
                     >
                       <ul class="checkbox-list">
-                        <li
-                          *ngFor="
-                            let folder of kmlParserService.setupInfo.folders
-                          "
-                        >
+                        @for(folder of kmlParserService.setupInfo.folders; track
+                        folder) {
+                        <li>
                           <mat-checkbox
                             *ngIf="folder"
                             color="accent"
@@ -197,6 +196,7 @@
                             {{ folder.name }} ({{ folder.spotCount }} Spots)
                           </mat-checkbox>
                         </li>
+                        }
                       </ul>
                     </span>
                     <p
@@ -241,16 +241,16 @@
                         </mat-panel-title>
                       </mat-expansion-panel-header>
                       <div>
+                        @for(spot of kmlParserService.spotsToImport$ | async;
+                        track spot) {
                         <button
                           mat-flat-button
                           class="text-truncate"
-                          *ngFor="
-                            let spot of kmlParserService.spotsToImport$ | async
-                          "
                           (click)="selectedVerificationSpot = spot"
                         >
                           {{ spot.spot.name }}
                         </button>
+                        }
                       </div>
                     </mat-expansion-panel>
                     <mat-divider></mat-divider>
@@ -259,17 +259,16 @@
                         <mat-panel-title>Will not be imported</mat-panel-title>
                       </mat-expansion-panel-header>
                       <div>
+                        @for(spot of kmlParserService.spotsNotToImport$ | async;
+                        track spot) {
                         <button
                           mat-flat-button
                           class="text-truncate"
-                          *ngFor="
-                            let spot of kmlParserService.spotsNotToImport$
-                              | async
-                          "
                           (click)="selectedVerificationSpot = spot"
                         >
                           {{ spot.spot.name }}
                         </button>
+                        }
                       </div>
                     </mat-expansion-panel>
                   </mat-accordion>

@@ -27,6 +27,7 @@ export class CommunityPageComponent implements OnInit {
     {
       name: "Group 1",
       member_count: 34,
+      picture_src: "",
     },
   ];
 }

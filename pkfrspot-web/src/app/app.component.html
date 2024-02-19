@@ -6,12 +6,13 @@
       }}"
       >{{ navbarConfig.logo.text }}</span
     >
+    @for (button of navbarConfig.buttons; track button) {
     <app-mat3-nav-button
-      *ngFor="let button of navbarConfig.buttons"
       [icon]="button.icon"
       [label]="button.name"
       [routerLink]="button.link"
     ></app-mat3-nav-button>
+    }
   </app-nav-rail>
   <app-nav-rail-content>
     <!-- This is where the pages content gets displayed -->
@@ -21,12 +22,13 @@
 
     <!-- Bottom navigation bar -->
     <mat-toolbar class="d-md-none mat-elevation-z1">
+      @for (button of navbarConfig.buttons; track button){
       <app-mat3-nav-button
-        *ngFor="let button of navbarConfig.buttons"
         [icon]="button.icon"
         [label]="button.name"
         [routerLink]="button.link"
       ></app-mat3-nav-button>
+      }
     </mat-toolbar>
 
     <!-- User FAB -->
@@ -36,7 +38,9 @@
       class="profile-icon-button login-fab d-none d-md-block"
       [matMenuTriggerFor]="navUserMenu"
     >
-      <mat-icon *ngIf="!authService.isSignedIn">person_outline</mat-icon>
+      @if (!authService.isSignedIn) {
+      <mat-icon>person_outline</mat-icon>
+      }
       <img
         *ngIf="authService.isSignedIn && authService.user?.data?.profilePicture"
         [src]="authService.user.data.profilePicture"

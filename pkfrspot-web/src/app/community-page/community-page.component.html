@@ -7,7 +7,9 @@
   >
     <mat-selection-list [multiple]="false">
       <div mat-subheader>My teams</div>
-      <mat-list-option *ngFor="let team of teams">
+      @for (team of teams; track team) {
+      <mat-list-option>
+        @if (team.picture_src) {
         <img
           mat-list-icon
           *ngIf="team.picture_src"
@@ -15,24 +17,31 @@
           class="group-picture"
           alt=""
         />
-        <mat-icon *ngIf="!team.picture_src" mat-list-icon>group</mat-icon>
+        } @else {
+        <mat-icon mat-list-icon>group</mat-icon>
+        }
         <div mat-line>{{ team.name }}</div>
         <div mat-line>{{ team.member_count }} members</div>
       </mat-list-option>
+      }
       <mat-divider></mat-divider>
       <div mat-subheader>My groups</div>
-      <mat-list-option *ngFor="let group of groups">
+      @for(group of groups; track group) {
+      <mat-list-option>
+        @if(group.picture_src) {
         <img
           mat-list-icon
-          *ngIf="group.picture_src"
           [src]="group.picture_src"
           class="group-picture"
           alt=""
         />
-        <mat-icon *ngIf="!group.picture_src" mat-list-icon>groups</mat-icon>
+        } @else {
+        <mat-icon mat-list-icon>groups</mat-icon>
+        }
         <div mat-line>{{ group.name }}</div>
         <div mat-line>{{ group.member_count }} members</div>
       </mat-list-option>
+      }
     </mat-selection-list>
   </mat-drawer>
 
