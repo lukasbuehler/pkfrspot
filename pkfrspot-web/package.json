@@ -47,7 +47,7 @@
     "timers": "^0.1.1",
     "typesense": "^1.7.2",
     "xml2js": "^0.6.0",
-    "zone.js": "^0.13.0"
+    "zone.js": "^0.14.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.0.5",
