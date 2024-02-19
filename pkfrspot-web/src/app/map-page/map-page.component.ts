@@ -12,6 +12,7 @@ import { FormControl } from "@angular/forms";
 import { SearchService } from "../search.service";
 import { SearchResponse } from "typesense/lib/Typesense/Documents";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
+import { Location } from "@angular/common";
 
 @Component({
   selector: "app-map-page",
@@ -50,6 +51,7 @@ export class MapPageComponent implements AfterViewInit {
     public mapsService: MapsApiService,
     private _searchService: SearchService,
     private router: Router,
+    private location: Location,
     private _snackbar: MatSnackBar
   ) {}
 
@@ -99,5 +101,13 @@ export class MapPageComponent implements AfterViewInit {
 
   openSpotById(id: string) {
     this.spotMap.openSpotById(id);
+  }
+
+  updateMapURL() {
+    if (this.selectedSpot) {
+      this.location.go(`/map/${this.selectedSpot.id}`);
+    } else {
+      this.location.go(`/map`);
+    }
   }
 }

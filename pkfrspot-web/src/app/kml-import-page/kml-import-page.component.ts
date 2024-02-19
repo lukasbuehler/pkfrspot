@@ -14,6 +14,7 @@ import {
 import { MatStepper } from "@angular/material/stepper";
 import { KmlParserService, KMLSetupInfo, KMLSpot } from "../kml-parser.service";
 import { filter, first, firstValueFrom } from "rxjs";
+import { MyRegex } from "../regex-input/regex-input.component.js";
 
 @Component({
   selector: "app-kml-import-page",
@@ -65,6 +66,24 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
       setupLangCtrl: ["", Validators.required],
       setupRegexCtrl: ["", []],
     });
+  }
+
+  regexEnabled: boolean = false;
+  regexValue: RegExp;
+
+  setRegexEnabled(enabled: boolean) {
+    this.regexEnabled = enabled;
+    if (!enabled) {
+      this.kmlParserService.setupInfo.regex = null;
+    } else {
+      this.kmlParserService.setupInfo.regex = this.regexValue;
+    }
+  }
+
+  updateRegex(regex: MyRegex) {
+    this.regexValue = new RegExp(regex.regularExpression);
+    if (this.regexEnabled)
+      this.kmlParserService.setupInfo.regex = this.regexValue;
   }
 
   ngAfterViewInit(): void {}
@@ -119,4 +138,13 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
       this.cdr.detectChanges();
     });
   }
+
+  goBack() {
+    this.stepperHorizontal.previous();
+  }
+
+  /**
+   * Import the spots into the database
+   */
+  importSpots() {}
 }

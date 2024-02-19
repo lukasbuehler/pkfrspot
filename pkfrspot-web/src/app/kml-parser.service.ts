@@ -14,6 +14,7 @@ export interface KMLSetupInfo {
   description?: string;
   spotCount: number;
   folders: { name: string; spotCount: number; import: boolean }[];
+  regex: RegExp | null;
 }
 
 export interface KMLSpot {
@@ -40,9 +41,14 @@ export class KmlParserService {
     return this._parsingWasSuccessful;
   }
 
-  public setupInfo: KMLSetupInfo | null;
-
-  public foldersToImport: number[] = [];
+  public setupInfo: KMLSetupInfo | null = {
+    name: "Unnamed KML",
+    description: "",
+    spotCount: 0,
+    lang: "",
+    folders: [],
+    regex: null,
+  };
 
   private _spotFolders: { [key: number]: KMLSpot[] } | null = null;
 
@@ -64,15 +70,15 @@ export class KmlParserService {
             return;
           }
 
+          this._spotFolders = {};
           this.setupInfo = {
             name: "Unnamed KML",
             description: "",
             spotCount: 0,
             lang: "",
             folders: [],
+            regex: null,
           };
-
-          this._spotFolders = {};
 
           let doc = this._parsedKml.kml?.Document[0];
 
@@ -196,10 +202,11 @@ export class KmlParserService {
       if (folder.import) {
         spotsInFolder.forEach((spot) => {
           // apply the name regex to all spots in the folder
-          // TODO
+          if (this.setupInfo.regex) {
+            spot.spot.name = this.setupInfo.regex.exec(spot.spot.name)[0];
+          }
 
           if (spot.possibleDuplicateOf.length > 0) {
-            console.log("Spot is a duplicate", spot.spot.name);
             spotsNotToImport.push(spot);
           } else {
             spotsToImport.push(spot);

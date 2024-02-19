@@ -12,7 +12,6 @@ import { ActivatedRoute } from "@angular/router";
 import { GeoPoint } from "firebase/firestore";
 import { take } from "rxjs";
 import { MapHelper } from "src/scripts/map_helper";
-import { Location } from "@angular/common";
 import { AuthenticationService } from "../authentication.service";
 import { MapComponent } from "../map/map.component";
 
@@ -65,6 +64,8 @@ export class SpotMapComponent implements AfterViewInit {
   @Input() markers: google.maps.LatLngLiteral[] = [];
   @Input() selectedMarker: google.maps.LatLngLiteral | null = null;
 
+  @Input() isClickable: boolean = true;
+
   uneditedSpot: Spot.Class = null;
 
   start_zoom: number = 4;
@@ -85,7 +86,6 @@ export class SpotMapComponent implements AfterViewInit {
   constructor(
     private route: ActivatedRoute,
     private _dbService: DatabaseService,
-    private location: Location,
     private authService: AuthenticationService
   ) {}
 
@@ -105,9 +105,6 @@ export class SpotMapComponent implements AfterViewInit {
       this.mapZoom = Number(zoom);
 
       this.mapCenterStart = this.mapCenter;
-
-      // update URL
-      this.updateMapURL();
     }
 
     // TODO remove
@@ -284,14 +281,6 @@ export class SpotMapComponent implements AfterViewInit {
 
   // Public Map helper functions
 
-  updateMapURL() {
-    if (this.selectedSpot) {
-      this.location.go(`/map/${this.selectedSpot.id}`);
-    } else {
-      this.location.go(`/map`);
-    }
-  }
-
   /**
    * This function takes in the new corners of the visible area and hides and shows spots as necessairy
    * @param northEastLiteral
@@ -369,9 +358,6 @@ export class SpotMapComponent implements AfterViewInit {
   openSpot(spot: Spot.Class) {
     this.setSelectedSpot(spot);
     this.focusSpot(spot);
-
-    // update the map URL
-    this.updateMapURL();
   }
 
   focusSpot(spot: Spot.Class) {
@@ -518,9 +504,6 @@ export class SpotMapComponent implements AfterViewInit {
 
     // unselect
     this.setSelectedSpot(null);
-
-    // update the map URL
-    this.updateMapURL();
   }
 
   /**

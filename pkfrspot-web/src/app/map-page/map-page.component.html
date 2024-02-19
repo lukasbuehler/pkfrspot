@@ -2,7 +2,8 @@
   <app-spot-map
     #spotMap
     id="spotMap"
-    [(selectedSpot)]="selectedSpot"
+    [selectedSpot]="selectedSpot"
+    (selectedSpotChange)="selectedSpot = $event; updateMapURL()"
     [(isEditing)]="isEditing"
     [(mapStyle)]="mapStyle"
     (visibleSpotsChange)="visibleSpots = $event"

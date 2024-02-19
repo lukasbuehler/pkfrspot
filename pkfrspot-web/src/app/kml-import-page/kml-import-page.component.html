@@ -38,11 +38,7 @@
 
           <!-- Steps -->
           <!-- Select step -->
-          <mat-step
-            [stepControl]="uploadFormGroup"
-            [editable]="false"
-            state="select"
-          >
+          <mat-step [stepControl]="uploadFormGroup" state="select">
             <ng-template matStepLabel
               ><span class="d-none d-md-block">Select</span></ng-template
             >
@@ -73,11 +69,7 @@
           </mat-step>
 
           <!-- Setup step -->
-          <mat-step
-            [stepControl]="setupFormGroup"
-            [editable]="false"
-            state="setup"
-          >
+          <mat-step [stepControl]="setupFormGroup" state="setup">
             <ng-template matStepLabel
               ><span class="d-none d-md-block">Import Setup</span></ng-template
             >
@@ -146,6 +138,7 @@
                         #regexToggle
                         color="accent"
                         [checked]="false"
+                        (change)="setRegexEnabled($event.checked)"
                         >RegEx for Spot name</mat-slide-toggle
                       >
 
@@ -161,6 +154,7 @@
                             regularExpression: '([^-]*)$',
                             expressionFlags: 'gim'
                           }"
+                          (valueChange)="updateRegex($event)"
                         ></app-regex-input>
                         <mat-icon
                           matSuffix
@@ -210,8 +204,8 @@
               </div>
 
               <div class="mt-3 d-flex flex-row justify-content-between">
-                <button mat-flat-button class="float-left" matStepperPrevious>
-                  Back
+                <button mat-flat-button class="float-left" (click)="goBack()">
+                  Return to File Selection
                 </button>
                 <button
                   mat-flat-button
@@ -226,7 +220,7 @@
             </form>
           </mat-step>
 
-          <mat-step [editable]="false" state="verify">
+          <mat-step state="verify">
             <ng-template matStepLabel
               ><span class="d-none d-md-block">Verify</span></ng-template
             >
@@ -291,20 +285,21 @@
                         [selectedMarker]="
                           selectedVerificationSpot.spot.location
                         "
+                        [isClickable]="false"
                       ></app-spot-map>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="pt-3 d-flex flex-row justify-content-between">
-                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button (click)="goBack()">Return to Setup</button>
                 <button
-                  mat-button
+                  mat-flat-button
                   matStepperNext
-                  color="primary"
-                  [disabled]="true"
+                  color="warn"
+                  (click)="importSpots()"
                 >
-                  Save
+                  Import Spots
                 </button>
               </div>
             </div>
@@ -313,10 +308,6 @@
             <ng-template matStepLabel
               ><span class="d-none d-md-block">Save</span></ng-template
             >
-            <div>
-              <button mat-button matStepperPrevious>Back</button>
-              <button mat-button matStepperNext>Next</button>
-            </div>
           </mat-step>
           <mat-step [editable]="false" state="done">
             <ng-template matStepLabel

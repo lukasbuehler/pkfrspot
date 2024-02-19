@@ -3,10 +3,12 @@ import { coerceBooleanProperty } from "@angular/cdk/coercion";
 import {
   Component,
   ElementRef,
+  EventEmitter,
   HostBinding,
   Input,
   OnDestroy,
   Optional,
+  Output,
   Self,
 } from "@angular/core";
 import {
@@ -132,9 +134,12 @@ export class RegexInputComponent
         regularExpression: regex.regularExpression,
         expressionFlags: regex.expressionFlags,
       });
+      this.valueChange.emit(regex);
       this.stateChanges.next();
     }
   }
+
+  @Output() valueChange = new EventEmitter<MyRegex>();
 
   @Input() get flags(): ExpressionFlags {
     return this.value.expressionFlags;
@@ -256,7 +261,7 @@ export class RegexInputComponent
   registerOnChange(fn: (_: any) => void): void {
     this._onChange = fn;
   }
-  private _onChange: (_: any) => void;
+  private _onChange: (_: any) => void = () => {};
 
   registerOnTouched(fn: any): void {}
   setDisabledState?(isDisabled: boolean): void {}
