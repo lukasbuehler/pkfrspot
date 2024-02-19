@@ -145,24 +145,24 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "parkour-base-angular:build"
+            "buildTarget": "parkour-base-angular:build"
           },
           "configurations": {
             "development": {
-              "browserTarget": "parkour-base-angular:build:development"
+              "buildTarget": "parkour-base-angular:build:development"
             },
             "test": {
-              "browserTarget": "parkour-base-angular:build:test"
+              "buildTarget": "parkour-base-angular:build:test"
             },
             "production": {
-              "browserTarget": "parkour-base-angular:build:production"
+              "buildTarget": "parkour-base-angular:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "parkour-base-angular:build"
+            "buildTarget": "parkour-base-angular:build"
           }
         },
         "test": {

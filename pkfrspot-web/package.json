@@ -17,20 +17,20 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^16.0.5",
+    "@angular/animations": "^17.2.1",
     "@angular/cdk": "^16.0.4",
-    "@angular/common": "^16.0.5",
-    "@angular/compiler": "^16.0.5",
-    "@angular/core": "^16.0.5",
+    "@angular/common": "^17.2.1",
+    "@angular/compiler": "^17.2.1",
+    "@angular/core": "^17.2.1",
     "@angular/fire": "^7.4.1",
-    "@angular/forms": "^16.0.5",
+    "@angular/forms": "^17.2.1",
     "@angular/google-maps": "^16.0.4",
-    "@angular/localize": "^16.0.5",
+    "@angular/localize": "^17.2.1",
     "@angular/material": "^16.0.4",
-    "@angular/platform-browser": "^16.0.5",
-    "@angular/platform-browser-dynamic": "^16.0.5",
-    "@angular/router": "^16.0.5",
-    "@angular/service-worker": "^16.0.5",
+    "@angular/platform-browser": "^17.2.1",
+    "@angular/platform-browser-dynamic": "^17.2.1",
+    "@angular/router": "^17.2.1",
+    "@angular/service-worker": "^17.2.1",
     "@videogular/ngx-videogular": "^8.0.0",
     "algoliasearch": "^4.12.1",
     "bootstrap": "^5.3.0",
@@ -50,10 +50,10 @@
     "zone.js": "^0.14.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^16.0.5",
-    "@angular/cli": "^16.0.5",
-    "@angular/compiler-cli": "^16.0.5",
-    "@angular/language-service": "^16.0.5",
+    "@angular-devkit/build-angular": "^17.2.0",
+    "@angular/cli": "^17.2.0",
+    "@angular/compiler-cli": "^17.2.1",
+    "@angular/language-service": "^17.2.1",
     "@types/core-js": "^2.5.5",
     "@types/croppie": "^2.6.1",
     "@types/jasmine": "^4.3.2",
@@ -73,6 +73,6 @@
     "ts-node": "^10.9.1",
     "tslib": "^2.3.1",
     "tslint": "~6.1.3",
-    "typescript": "^4.9.3"
+    "typescript": "^5.3.3"
   }
 }
