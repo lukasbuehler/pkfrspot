@@ -13,6 +13,7 @@ registerSwiper();
 
 // Firebase
 import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
+import { getAnalytics, provideAnalytics } from "@angular/fire/analytics";
 import {
   connectFirestoreEmulator,
   enableIndexedDbPersistence,
@@ -109,7 +110,7 @@ import { VgOverlayPlayModule } from "@videogular/ngx-videogular/overlay-play";
 import { VgBufferingModule } from "@videogular/ngx-videogular/buffering";
 import { HammerModule } from "@angular/platform-browser";
 import { MapComponent } from "./map/map.component";
-import { SpotMapComponent } from './spot-map/spot-map.component';
+import { SpotMapComponent } from "./spot-map/spot-map.component";
 
 @NgModule({
   declarations: [
@@ -173,6 +174,7 @@ import { SpotMapComponent } from './spot-map/spot-map.component';
       return getFirestore();
     }),
     provideStorage(() => getStorage()),
+    provideAnalytics(() => getAnalytics()),
 
     // Angular material modules
     BrowserAnimationsModule,
