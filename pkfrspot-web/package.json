@@ -13,7 +13,9 @@
     "deploy:test:hosting": "firebase use test && ng build --configuration=test && firebase deploy --only hosting",
     "deploy:prod:hosting": "firebase use prod && ng build --configuration=production && firebase deploy --only hosting",
     "deploy:test:rules": "firebase use test && firebase deploy --only firestore:rules",
-    "deploy:prod:rules": "firebase use prod && firebase deploy --only firestore:rules"
+    "deploy:prod:rules": "firebase use prod && firebase deploy --only firestore:rules",
+    "deploy:test:functions": "firebase use test && firebase deploy --only functions",
+    "deploy:prod:functions": "firebase use prod && firebase deploy --only functions"
   },
   "private": true,
   "dependencies": {
