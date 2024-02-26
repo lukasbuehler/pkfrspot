@@ -1,6 +1,7 @@
 {
   "projects": {
     "test": "parkour-base-project",
-    "prod": "pkfrspot"
+    "prod": "pkfrspot",
+    "default": "parkour-base-project"
   }
 }

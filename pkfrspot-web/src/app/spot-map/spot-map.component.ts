@@ -262,21 +262,6 @@ export class SpotMapComponent implements AfterViewInit {
         }
       }
     }
-
-    // this._dbService.getPreviewSpotsForTiles(zoom, tilesToLoad).subscribe(
-    //   (spots) => {
-    //     if (spots.length > 0) {
-    //       let tile = spots[0].data.tile_coordinates.z16;
-    //       this.loadedSpots[`z${zoom}_${tile.x}_${tile.y}`] = spots;
-    //       //console.log("new sposts laoded:");
-    //       //console.log(spots);
-    //       this.updateDots();
-    //     }
-    //   },
-    //   (error) => {
-    //     console.error(error);
-    //   }
-    // );
   }
 
   // Public Map helper functions

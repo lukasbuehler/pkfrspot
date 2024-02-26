@@ -1,5 +1,9 @@
-import * as functions from "firebase-functions"; // TODO update to v2
+import * as functions from "firebase-functions/v1"; // TODO update to v2
 import * as admin from "firebase-admin";
+import { MapHelper } from "../../pkfrspot-web/src/scripts/map_helper";
+import { SpotClusterTile } from "../../pkfrspot-web/src/scripts/db/SpotClusterTile";
+import { Spot } from "../../pkfrspot-web/src/scripts/db/Spot";
+
 admin.initializeApp(functions.config().firebase);
 
 /**
@@ -64,211 +68,122 @@ export const countFollowingOnWrite = functions.firestore
       });
   });
 
-/**
- * This function clusters spots and puts them in a document for overviewing the spot map.
- * It runs every hour at 0 minutes.
- */
-/*
-//export const clusterSpots = functions.pubsub.schedule("'0 * * * *'").onRun((context) => {
-export const clusterSpots = functions.https.onCall((data, context) => {
-  // TODO implement rating opacity or something like that
-  // 1) Get all the spots that changed location since last run
-  // 2) Start on the first spot and cluster it and all the spots with it on the same tile z16
-  //3) remove all the spots from the list that changed that are on this tile (not necessairy at the moment)
+export const clusterAllSpots = functions.pubsub
+  .schedule("30 15 26 2 *")
+  .onRun(async (context) => {
+    // 1. load all spots
+    // for each spot, add a point to the corresponding cluster tile for zoom 14
 
-  const promise = new Promise<string>((resolve, reject) => {
-    // 1) getting all the spots that changed
-    //const currentDate = new Date();
-    const loadedTiles: string[] = [];
-    const spots: any[] = [];
-    admin
-      .firestore()
-      .collection("spots")
-      // TODO Enable partial clustering instead of all spots
-      //.where("last_updated", ">=", currentDate.setHours(currentDate.getHours() - 1))
-      .get()
-      .then((spotsSnapshot) => {
-        let spotDocNbr = 1;
-        console.log(`Found ${spotsSnapshot.size} spots to cluster`);
-        spotsSnapshot.forEach((spotDoc) => {
-          // we now need to laod all the spots on this tile and mark the tile as loaded
-          const tile = spotDoc.data().tile_coordinates.z16;
-          if (!loadedTiles.includes(`${tile.x}_${tile.y}`)) {
-            // the tile wasn't loaded
-            loadedTiles.push(`${tile.x}_${tile.y}`);
+    // 2. for the zoom levels z = 14, 12, 10, 8, 6:
+    // for each quartet of corresponding clusters, cluster the points into a single weighted point
+    // and add them to the correspond cluster tile for zoom z-2 (12, 10, 8, 6, 4)
+    /*
+        Example: 16 tiles (A, B, ...) at a given zoom (e.g zoom 14) making up 4 tiles at one lower zoom (e.g zoom 13)
+        Now for each quartet of tiles at zoom 14, which make up one tile at zoom 13, we cluster the points into a single weighted point.
+        Resulting in a maximum number of 4 weighted points for each tile at zoom 12.
 
-            // load all the spots from the tile and push them to the spots array
-            admin
-              .firestore()
-              .collection("spots")
-              .where("tile_coordinates.z16.x", "==", tile.x)
-              .where("tile_coordinates.z16.y", "==", tile.y)
-              .get()
-              .then((tileSnapshot) => {
-                tileSnapshot.forEach((tileDoc) => {
-                  spots.push(tileDoc.data());
-                });
+        --------------------
+        || A | B || C | D ||
+        ||----------------||
+        || E | F || G | H ||
+        ||================||
+        || I | J || K | L ||
+        ||----------------||
+        || M | N || O | P ||
+        --------------------
+    */
 
-                // 2) cluster all the spots
-                const startZoom = 2;
-                const zoomTilesLength = 1 << startZoom;
-                for (let y = 0; y < zoomTilesLength; y++) {
-                  for (let x = 0; x < zoomTilesLength; x++) {
-                    clusterRecursion({ x: x, y: y }, startZoom, spots);
-                  }
-                }
+    /////////////////////////////////////////////////////////////////
 
-                if (spotDocNbr === spotsSnapshot.size) {
-                  // this is the last spot.
-                  resolve("Done: Clustered " + spotDocNbr + " spots.");
-                  return;
-                }
-                spotDocNbr++;
-              })
-              .catch((error) => {
-                console.error(`Error fetching all the spots for the tile ${tile.x},${tile.y}`);
-                reject("ERRRROROROROORRORO");
-              });
-          }
+    /**
+     * A map that stores cluster tiles for each zoom level with which existing
+     * child cluster tiles exist in which quadrant.
+     */
+    const higherTilesMap = {
+      12: new Map<string, { [key in "TR" | "TL" | "BR" | "BL"]: string[] }>(),
+      10: new Map<string, { [key in "TR" | "TL" | "BR" | "BL"]: string[] }>(),
+      8: new Map<string, { [key in "TR" | "TL" | "BR" | "BL"]: string[] }>(),
+      6: new Map<string, { [key in "TR" | "TL" | "BR" | "BL"]: string[] }>(),
+      4: new Map<string, { [key in "TR" | "TL" | "BR" | "BL"]: string[] }>(),
+    };
+
+    // 1. load all spots
+    const spots = await admin.firestore().collection("spots").get();
+
+    // for each spot, add a point to the corresponding cluster tile for zoom 14
+    const clusterTiles = new Map<string, SpotClusterTile>();
+    spots.forEach((spot) => {
+      const spotData: Spot.Schema = spot.data() as Spot.Schema;
+
+      // get the tile for this zoom
+      const tile14 =
+        spotData.tile_coordinates[
+          `z${14}` as keyof Spot.Schema["tile_coordinates"]
+        ];
+
+      const tileKey14 = `z${14}_${tile14.x}_${tile14.y}`;
+
+      if (!clusterTiles.has(tileKey14)) {
+        // if no tile exists for this spot,
+        // create a new cluster tile object to add the point to
+        clusterTiles.set(tileKey14, {
+          zoom: 14,
+          x: tile14.x,
+          y: tile14.y,
+          points: [],
         });
-      })
-      .catch((error) => {
-        console.error("Error loading the spots that changed since last run", error);
-      });
-  });
-  return promise
-    .then((text: string) => {
-      return { msg: "The function successfully finished", text: text };
-    })
-    .catch((error) => {
-      return { text: "There was an error during the execution", error: error };
+      }
+
+      const clusterTile = clusterTiles.get(tileKey14);
+      if (clusterTile) {
+        clusterTile.points.push({
+          location: spotData.location,
+          weight: 1,
+        });
+      }
+
+      // add this tile to the higherTilesMap
+      const tile12 =
+        spotData.tile_coordinates[
+          `z${12}` as keyof Spot.Schema["tile_coordinates"]
+        ];
+
+      const getQuadrant = (tile: { x: number; y: number }) => {
+        if ((tile.x >> 1) << 1 == tile.x) {
+          if ((tile.y >> 1) << 1 == tile.y) {
+            return "TL";
+          } else {
+            return "BL";
+          }
+        } else {
+          if ((tile.y >> 1) << 1 == tile.y) {
+            return "TR";
+          } else {
+            return "BR";
+          }
+        }
+      };
+
+      const quadrant = getQuadrant(tile14);
+
+      if (!higherTilesMap[12].get(`z${12}_${tile12.x}_${tile12.y}`)) {
+        higherTilesMap[12].set(`z${12}_${tile12.x}_${tile12.y}`, {
+          TR: [],
+          TL: [],
+          BR: [],
+          BL: [],
+        });
+      }
+
+      const higherTile12 = higherTilesMap[12].get(
+        `z${12}_${tile12.x}_${tile12.y}`
+      );
+
+      if (!higherTile12![quadrant].includes(tileKey14)) {
+        higherTile12![quadrant].push(tileKey14);
+      }
     });
-});
 
-const clusterRecursion = function (
-  tile: { x: number; y: number },
-  zoom: number,
-  spots: any[]
-): { location: { latitude: number; longitude: number }; value: number }[] {
-  console.log(`Entered recurision. tile ${tile.x},${tile.y}, zoom: ${zoom}, spots: ${spots.length}`);
-  // base case
-  if (zoom <= 16) {
-    // make points for all the spots in the tile
-    // and return those
-    const points = [];
-    for (const spot of spots) {
-      points.push({ location: spot.location, value: 1 });
-    }
-    return points;
-  }
-
-  const nextZoom = zoom + 1;
-  const nextTiles = {
-    tl: { x: tile.x * 2, y: tile.y * 2 },
-    tr: { x: tile.x * 2 + 1, y: tile.y * 2 },
-    bl: { x: tile.x * 2, y: tile.y * 2 + 1 },
-    br: { x: tile.x * 2 + 1, y: tile.y * 2 + 1 },
-  };
-
-  const filteredSpots = filterSpots(spots, tile, nextTiles, zoom);
-
-  const tlPoints = clusterRecursion(nextTiles.tl, nextZoom, filteredSpots.tl);
-  const trPoints = clusterRecursion(nextTiles.tr, nextZoom, filteredSpots.tr);
-  const blPoints = clusterRecursion(nextTiles.bl, nextZoom, filteredSpots.bl);
-  const brPoints = clusterRecursion(nextTiles.br, nextZoom, filteredSpots.br);
-
-  if (zoom % 2 === 0) {
-    // this is an even zoom and we want to cluster, save and return the clusted points
-    clusterPoints(tlPoints);
-    const allClusteredPoints = clusterPoints(tlPoints).concat(
-      clusterPoints(trPoints),
-      clusterPoints(blPoints),
-      clusterPoints(brPoints)
-    );
-
-    // save the clustered points to the db
-    console.info(
-      "Is saving spot_clusters/by_zoom/" +
-        tile.x +
-        "_" +
-        tile.y +
-        " with data: " +
-        JSON.stringify({ points: allClusteredPoints, time_updated: new Date() })
-    );
-    
-    admin
-      .firestore()
-      .collection("spot_clusters")
-      .doc("by_zoom")
-      .collection("z" + zoom)
-      .doc(tile.x + "_" + tile.y)
-      .set({ points: allClusteredPoints, time_updated: new Date() })
-      .then(() => {
-        // saving successful
-        // Not necessairy to remove something from a db or stuff like that
-        console.log("Updated spot cluster on tile: " + tile.x + "," + tile.y);
-      })
-      .catch((error) => {
-        // error saving
-        console.error("Error saving the cluster points on tile: " + tile.x + "," + tile.y, error);
-      });
-
-    return allClusteredPoints;
-  } else {
-    // this is an uneven zoom and we want to simply return all the points
-    const allPoints = tlPoints.concat(trPoints, blPoints, brPoints);
-    return allPoints;
-  }
-};
-
-const filterSpots = function (spots: any[], tile: { x: number; y: number }, nextTiles: any, zoom: number) {
-  const tlSpots = [];
-  const trSpots = [];
-  const blSpots = [];
-  const brSpots = [];
-  for (const spot of spots) {
-    const spotTileCoords = spot.tile_coordinates["z" + zoom];
-    if (spotTileCoords === nextTiles.tl) {
-      tlSpots.push(spot);
-    } else if (spotTileCoords === nextTiles.tr) {
-      trSpots.push(spot);
-    } else if (spotTileCoords === nextTiles.bl) {
-      blSpots.push(spot);
-    } else if (spotTileCoords === nextTiles.br) {
-      brSpots.push(spot);
-    }
-  }
-
-  return {
-    tl: tlSpots,
-    tr: trSpots,
-    bl: blSpots,
-    br: brSpots,
-  };
-};
-
-const clusterPoints = function (
-  points: { location: { latitude: number; longitude: number }; value: number }[]
-): { location: { latitude: number; longitude: number }; value: number }[] {
-  // calculte lat average
-  let xAvg = 0;
-  let yAvg = 0;
-  let valSum = 0;
-
-  for (const point of points) {
-    xAvg += point.location.latitude * point.value;
-    yAvg += point.location.longitude * point.value;
-    valSum += point.value;
-  }
-
-  const newValue = valSum / 4;
-  if (newValue < 0.25) {
-    // the point is too small, just get rid of it.
-    return [];
-  }
-
-  const returnPoint = { location: { latitude: xAvg / valSum, longitude: yAvg / valSum }, value: 1 };
-
-  return [returnPoint];
-};
-*/
+    // 2.
+    /// TODO
+  });

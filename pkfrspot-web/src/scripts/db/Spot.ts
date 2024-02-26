@@ -112,7 +112,9 @@ export namespace Spot {
       return this._data;
     }
 
-    constructor(private _id: string, private _data: Spot.Schema) {
+    private _data: Schema;
+
+    constructor(private _id: string, _data: Partial<Schema>) {
       this._paths = this._makePathsFromBounds(this._data.bounds);
       this._location = {
         lat: this._data.location.latitude,
@@ -202,18 +204,18 @@ export namespace Spot {
     private _generateTileCoordinates(
       location: google.maps.LatLngLiteral
     ): Schema["tile_coordinates"] {
-      let tile_coordinates: Schema["tile_coordinates"] = {
+      let tile_coordinates: Partial<Schema["tile_coordinates"]> = {
         z16: MapHelper.getTileCoordinatesForLocationAndZoom(location, 16),
       };
 
       for (let zoom = 16; zoom >= 2; zoom -= 2) {
-        tile_coordinates[`z${zoom}`] = {
+        tile_coordinates[`z${zoom}` as keyof Schema["tile_coordinates"]] = {
           x: tile_coordinates.z16.x >> (16 - zoom),
           y: tile_coordinates.z16.y >> (16 - zoom),
         };
       }
 
-      return tile_coordinates;
+      return tile_coordinates as Schema["tile_coordinates"];
     }
 
     private _makePathsFromBounds(
@@ -272,15 +274,15 @@ export namespace Spot {
     name: LocaleMap;
 
     location: firebase.default.firestore.GeoPoint;
-    tile_coordinates?: {
-      z2?: { x: number; y: number };
-      z4?: { x: number; y: number };
-      z6?: { x: number; y: number };
-      z8?: { x: number; y: number };
-      z10?: { x: number; y: number };
-      z12?: { x: number; y: number };
-      z14?: { x: number; y: number };
-      z16?: { x: number; y: number };
+    tile_coordinates: {
+      z2: { x: number; y: number };
+      z4: { x: number; y: number };
+      z6: { x: number; y: number };
+      z8: { x: number; y: number };
+      z10: { x: number; y: number };
+      z12: { x: number; y: number };
+      z14: { x: number; y: number };
+      z16: { x: number; y: number };
     };
 
     isMiniSpot?: boolean;
