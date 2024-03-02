@@ -65,19 +65,19 @@ export class EditPostDialogComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     // TODO Remove in later:
-    this._databaseService.getTestSpots(true).subscribe(
-      (spots) => {
-        spots.forEach((spot) => {
-          this.filteredSpots.push(spot);
-        });
-        console.log(
-          "Added " + spots.length + " spots to the autocomplete array"
-        );
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+    // this._databaseService.getTestSpots(true).subscribe(
+    //   (spots) => {
+    //     spots.forEach((spot) => {
+    //       this.filteredSpots.push(spot);
+    //     });
+    //     console.log(
+    //       "Added " + spots.length + " spots to the autocomplete array"
+    //     );
+    //   },
+    //   (error) => {
+    //     console.error(error);
+    //   }
+    // );
   }
 
   tabChanged(index: number) {

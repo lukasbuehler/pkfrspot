@@ -23,7 +23,14 @@ import { Observable, forkJoin } from "rxjs";
 import { Like } from "src/scripts/db/Like";
 import { User } from "src/scripts/db/User";
 import { map, take } from "rxjs/operators";
-import { DocumentReference, Timestamp, updateDoc } from "firebase/firestore";
+import {
+  DocumentData,
+  DocumentReference,
+  QuerySnapshot,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { SpotClusterTile } from "src/scripts/db/SpotClusterTile.js";
 
 @Injectable({
   providedIn: "root",
@@ -208,42 +215,6 @@ export class DatabaseService {
 
   // Spots --------------------------------------------------------------------
 
-  getTestSpots(isNotForMap?: boolean): Observable<Spot.Class[]> {
-    return new Observable<Spot.Class[]>((observer) => {
-      return onSnapshot(
-        query(
-          collection(this.firestore, "spots"),
-          orderBy("name", "asc"),
-          limit(50)
-        ),
-        (querySnapshot) => {
-          let spots: Spot.Class[] = [];
-
-          querySnapshot.forEach((doc) => {
-            if (doc.data() as Spot.Schema) {
-              let newSpot: Spot.Class = new Spot.Class(
-                doc.id,
-                doc.data() as Spot.Schema
-              );
-              spots.push(newSpot);
-            } else {
-              console.error("Spot could not be cast to Spot.Schema!");
-              observer.complete();
-            }
-          });
-
-          observer.next(spots);
-          observer.complete();
-        },
-        (error) => {
-          observer.error(error);
-          observer.complete();
-        },
-        () => {}
-      );
-    });
-  }
-
   getSpotById(spotId: string) {
     return new Observable<Spot.Class>((observer) => {
       return onSnapshot(
@@ -306,47 +277,69 @@ export class DatabaseService {
     );
   }
 
-  getPreviewSpotsForTiles(zoom: number, tiles: { x: number; y: number }[]) {
-    return new Observable<Spot.Class[]>((observer) => {
-      const tileUnsubscribeFunctions: (() => void)[] = [];
+  getSpotClusterTiles(
+    zoom: number,
+    northEastTile: google.maps.Point,
+    southWestTile: google.maps.Point
+  ) {
+    return new Observable<SpotClusterTile[]>((observer) => {
+      /**
+       * This is the zoom level that represents the sizes of the cluster tiles.
+       * Since each cluster tiles represents a 4x4 grid of tiles,
+       * we need to load the cluster tiles at a zoom level that is 2 levels higher than the current zoom level.
+       * Meaning at zoom level 2, all cluster points are in 1 cluster tile,
+       * at level 4 there are 16 cluster tiles, and so on.
+       */
+      const sizeZoom = zoom - 2;
 
-      for (let tile of tiles) {
-        tileUnsubscribeFunctions.push(
-          onSnapshot(
-            query(
-              collection(this.firestore, "spots"),
-              where(`tile_coordinates.z${zoom}.x`, "==", tile.x),
-              where(`tile_coordinates.z${zoom}.y`, "==", tile.y),
-              limit(10)
-            ),
-            (snap) => {
-              observer.next(this.parseSpots_(snap));
-            },
-            (error) => {
-              observer.error(error);
-            }
-          )
-        );
-      }
+      const northEastTileToLoad = {
+        x: northEastTile.x >> 2,
+        y: northEastTile.y >> 2,
+      };
+      const southWestTileToLoad = {
+        x: southWestTile.x >> 2,
+        y: southWestTile.y >> 2,
+      };
 
+      console.log(
+        `Loading cluster tiles at zoom ${zoom}, from ${southWestTileToLoad.x},${southWestTileToLoad.y} to ${northEastTileToLoad.x},${northEastTileToLoad.y}`
+      );
+
+      const unsubscribe = onSnapshot(
+        query(
+          collection(this.firestore, "spot_clusters"),
+          where("zoom", "==", zoom),
+          where("sizeZoom", "==", sizeZoom),
+          where("x", ">=", southWestTileToLoad.x),
+          where("x", "<=", northEastTileToLoad.x),
+          where("y", ">=", southWestTileToLoad.y),
+          where("y", "<=", northEastTileToLoad.y)
+        ),
+        (snap) => {
+          observer.next(
+            snap.docs.map(
+              (clusterTile) => clusterTile.data() as SpotClusterTile
+            )
+          );
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
       return () => {
-        // unsubscribe from all onSnapshots for each tile
-        tileUnsubscribeFunctions.forEach((unsubscribe) => {
-          unsubscribe();
-        });
+        unsubscribe();
       };
     });
   }
 
-  private parseSpots_(snapshot): Spot.Class[] {
+  private parseSpots_(snapshot: QuerySnapshot<DocumentData>): Spot.Class[] {
     let newSpots: Spot.Class[] = [];
 
     snapshot.forEach((doc) => {
-      if (doc.data() as Spot.Schema) {
-        let newSpot: Spot.Class = new Spot.Class(
-          doc.id,
-          doc.data() as Spot.Schema
-        );
+      const spotData = doc.data() as Spot.Schema;
+      if (spotData) {
+        console.log("Spot Data", spotData);
+        let newSpot: Spot.Class = new Spot.Class(doc.id, spotData);
         newSpots.push(newSpot);
       } else {
         console.error("Spot could not be cast to Spot.Schema!");
@@ -354,12 +347,6 @@ export class DatabaseService {
     });
 
     return newSpots;
-  }
-
-  getSpotSearch(searchString: string): Observable<Spot.Class[]> {
-    return new Observable<any[]>((observer) => {
-      // TODO
-    });
   }
 
   createSpot(spotData: Spot.Schema): Promise<any> {

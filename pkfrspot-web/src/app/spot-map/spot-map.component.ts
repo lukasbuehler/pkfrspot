@@ -68,8 +68,8 @@ export class SpotMapComponent implements AfterViewInit {
 
   uneditedSpot: Spot.Class = null;
 
-  start_zoom: number = 4;
-  mapZoom: number = this.start_zoom;
+  startZoom: number = 4;
+  mapZoom: number = this.startZoom;
   mapCenterStart: google.maps.LatLngLiteral = {
     lat: 48.6270939,
     lng: 2.4305363,
@@ -91,34 +91,13 @@ export class SpotMapComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     let spotId: string = this.route.snapshot.paramMap.get("spotID") ?? "";
-    let lat = this.route.snapshot.queryParamMap.get("lat") ?? null;
-    let lng = this.route.snapshot.queryParamMap.get("lng") ?? null;
-    let zoom = this.route.snapshot.queryParamMap.get("z") ?? this.start_zoom;
 
     if (spotId) {
       this.openSpotById(spotId);
     } else {
-      this.mapCenter = {
-        lat: Number(lat ?? this.mapCenterStart.lat),
-        lng: Number(lng ?? this.mapCenterStart.lng),
-      };
-      this.mapZoom = Number(zoom);
-
-      this.mapCenterStart = this.mapCenter;
+      this.mapCenter = this.mapCenterStart;
+      this.mapZoom = this.startZoom;
     }
-
-    // TODO remove
-    this._dbService.getTestSpots().subscribe((spots) => {
-      // add all these loaded spots to the loaded spots array
-      for (let spot of spots) {
-        let tile = spot.tileCoordinates.z16;
-        if (!this.loadedSpots[`z${16}_${tile.x}_${tile.y}`]) {
-          // the tile was not loaded before
-          this.loadedSpots[`z${16}_${tile.x}_${tile.y}`] = [];
-        }
-        this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].push(spot);
-      }
-    });
   }
 
   // Map events ///////////////////////////////////////////////////////////////
@@ -157,19 +136,15 @@ export class SpotMapComponent implements AfterViewInit {
         lng: bounds.getSouthWest().lng(),
       };
 
-      let northEastTileCoords = MapHelper.getTileCoordinatesForLocationAndZoom(
-        northEastLiteral,
-        16
-      );
-      let southWestTileCoords = MapHelper.getTileCoordinatesForLocationAndZoom(
-        southWestLiteral,
-        16
-      );
+      let northEastTileCoords: google.maps.Point =
+        MapHelper.getTileCoordinatesForLocationAndZoom(northEastLiteral, 16);
+      let southWestTileCoords: google.maps.Point =
+        MapHelper.getTileCoordinatesForLocationAndZoom(southWestLiteral, 16);
 
       this._northEastTileCoordsZ16 = northEastTileCoords;
       this._southWestTileCoordsZ16 = southWestTileCoords;
 
-      //this.loadNewSpotOnTiles(northEastTileCoords, southWestTileCoords);
+      this.loadNewSpotOnTiles(northEastTileCoords, southWestTileCoords);
       this.updateVisibleSpots();
     } else {
       // hide the spots and show the dots
@@ -324,11 +299,7 @@ export class SpotMapComponent implements AfterViewInit {
   }
 
   updateDots() {
-    const allSpots: Spot.Class[] = this.getAllSpots();
-
-    this.dots = allSpots.map((spot) => {
-      return spot.location;
-    });
+    // TODO show clusters
   }
 
   openSpotById(spotId: string) {
@@ -447,20 +418,20 @@ export class SpotMapComponent implements AfterViewInit {
   }
 
   loadSpotsForTiles(tilesToLoad: { x: number; y: number }[]) {
-    console.log("loading spots for tiles..." + tilesToLoad.toString());
-    // this._dbService.getSpotsForTiles(tilesToLoad).subscribe(
-    //   (spots) => {
-    //     if (spots.length > 0) {
-    //       let tile = spots[0].data.tile_coordinates.z16;
-    //       this.loadedSpots[`z${16}_${tile.x}_${tile.y}`] = spots;
-    //       this.updateVisibleSpots();
-    //     }
-    //   },
-    //   (error) => {
-    //     console.error(error);
-    //   },
-    //   () => {} // complete
-    //);
+    if (tilesToLoad.length === 0) return;
+
+    this._dbService.getSpotsForTiles(tilesToLoad).subscribe({
+      next: (spots) => {
+        if (spots.length > 0) {
+          let tile = spots[0].data.tile_coordinates.z16;
+          this.loadedSpots[`z${16}_${tile.x}_${tile.y}`] = spots;
+          this.updateVisibleSpots();
+        }
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
   }
 
   spotMarkerMoved(event: { coords: google.maps.LatLngLiteral }) {

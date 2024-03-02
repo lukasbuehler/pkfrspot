@@ -31,8 +31,8 @@ export class DiscoverSpotsViewComponent implements OnInit {
   }
 
   loadDiscoverSpots(location, radius) {
-    return this._dbService.getTestSpots(true).subscribe((spots) => {
-      this.discoverSpots = spots;
-    });
+    //     return this._dbService.getTestSpots(true).subscribe((spots) => {
+    //       this.discoverSpots = spots;
+    //     });
   }
 }
