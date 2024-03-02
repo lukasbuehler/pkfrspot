@@ -15,7 +15,7 @@
 >
   <map-marker
     *ngFor="let dot of dots"
-    [position]="dot"
+    [position]="{ lat: dot.location._lat, lng: dot.location._long }"
     [options]="primaryDotMarkerOptions"
   ></map-marker>
 

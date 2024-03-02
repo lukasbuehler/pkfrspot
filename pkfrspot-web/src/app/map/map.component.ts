@@ -16,6 +16,7 @@ import { GoogleMap, MapPolygon } from "@angular/google-maps";
 import { BehaviorSubject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { MapsApiService } from "../maps-api.service";
+import { SpotClusterTile } from "src/scripts/db/SpotClusterTile.js";
 
 @Component({
   selector: "app-map",
@@ -74,7 +75,7 @@ export class MapComponent implements OnInit {
   @Output() hasGeolocationChange = new EventEmitter<boolean>();
 
   @Input() spots: Spot.Class[] = [];
-  @Input() dots: any[] = [];
+  @Input() dots: SpotClusterTile["points"][] = [];
   @Input() selectedSpot: Spot.Class | null = null;
   @Input() isEditing: boolean = false;
   @Input() showGeolocation: boolean = false;

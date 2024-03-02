@@ -14,6 +14,7 @@ import { take } from "rxjs";
 import { MapHelper } from "src/scripts/map_helper";
 import { AuthenticationService } from "../authentication.service";
 import { MapComponent } from "../map/map.component";
+import { SpotClusterTile } from "src/scripts/db/SpotClusterTile.js";
 
 /**
  * This interface is used to reference a spot in the loaded spots array.
@@ -59,6 +60,7 @@ export class SpotMapComponent implements AfterViewInit {
   @Output() hasGeolocationChange = new EventEmitter<boolean>();
 
   visibleSpots: Spot.Class[] = [];
+  loadedSpots: Map<string, Spot.Class[]> = new Map<string, Spot.Class[]>(); // is a map of tile coords to spot arrays
   @Output() visibleSpotsChange = new EventEmitter<Spot.Class[]>();
 
   @Input() markers: google.maps.LatLngLiteral[] = [];
@@ -77,8 +79,18 @@ export class SpotMapComponent implements AfterViewInit {
   mapCenter: google.maps.LatLngLiteral;
   bounds: google.maps.LatLngBounds;
 
-  loadedSpots: any = {}; // is a map of tile coords to spot arrays
-  dots: any[] = [];
+  visibleDots: Array<SpotClusterTile["points"]> = new Array<
+    SpotClusterTile["points"]
+  >();
+  loadedDots = {
+    2: new Map<string, SpotClusterTile["points"]>(),
+    4: new Map<string, SpotClusterTile["points"]>(),
+    6: new Map<string, SpotClusterTile["points"]>(),
+    8: new Map<string, SpotClusterTile["points"]>(),
+    10: new Map<string, SpotClusterTile["points"]>(),
+    12: new Map<string, SpotClusterTile["points"]>(),
+    14: new Map<string, SpotClusterTile["points"]>(),
+  };
 
   private _northEastTileCoordsZ16: google.maps.Point;
   private _southWestTileCoordsZ16: google.maps.Point;
@@ -123,57 +135,71 @@ export class SpotMapComponent implements AfterViewInit {
   mapBoundsChanged(bounds: google.maps.LatLngBounds, zoom: number) {
     this.bounds = bounds;
 
+    let northEastLiteral: google.maps.LatLngLiteral = {
+      lat: bounds.getNorthEast().lat(),
+      lng: bounds.getNorthEast().lng(),
+    };
+    let southWestLiteral: google.maps.LatLngLiteral = {
+      lat: bounds.getSouthWest().lat(),
+      lng: bounds.getSouthWest().lng(),
+    };
+
+    let northEastTileCoords: google.maps.Point =
+      MapHelper.getTileCoordinatesForLocationAndZoom(northEastLiteral, 16);
+    let southWestTileCoords: google.maps.Point =
+      MapHelper.getTileCoordinatesForLocationAndZoom(southWestLiteral, 16);
+
+    this._northEastTileCoordsZ16 = northEastTileCoords;
+    this._southWestTileCoordsZ16 = southWestTileCoords;
+
     if (zoom >= 16) {
-      this.dots = [];
+      this.visibleDots = [];
       // inside this zoom level we are constantly loading spots if new tiles become visible
 
-      let northEastLiteral: google.maps.LatLngLiteral = {
-        lat: bounds.getNorthEast().lat(),
-        lng: bounds.getNorthEast().lng(),
-      };
-      let southWestLiteral: google.maps.LatLngLiteral = {
-        lat: bounds.getSouthWest().lat(),
-        lng: bounds.getSouthWest().lng(),
-      };
-
-      let northEastTileCoords: google.maps.Point =
-        MapHelper.getTileCoordinatesForLocationAndZoom(northEastLiteral, 16);
-      let southWestTileCoords: google.maps.Point =
-        MapHelper.getTileCoordinatesForLocationAndZoom(southWestLiteral, 16);
-
-      this._northEastTileCoordsZ16 = northEastTileCoords;
-      this._southWestTileCoordsZ16 = southWestTileCoords;
-
-      this.loadNewSpotOnTiles(northEastTileCoords, southWestTileCoords);
+      const tilesToLoad = this.getNewTilesToLoad(
+        16,
+        northEastTileCoords,
+        southWestTileCoords,
+        this.loadedSpots
+      );
+      this.loadSpotsForTiles(tilesToLoad);
       this.updateVisibleSpots();
     } else {
       // hide the spots and show the dots
       this.visibleSpots = [];
-      this.updateDots();
-      //   if (zoomLevel <= 2) {
-      //     zoomLevel = 2;
-      //     this._northEastTileCoordsZ16.x = 0;
-      //     this._northEastTileCoordsZ16.y = 0;
-      //     this._southWestTileCoordsZ16.x = (1 << 16) - 1;
-      //     this._southWestTileCoordsZ16.y = (1 << 16) - 1;
-      //   }
-      //   if (zoomLevel <= 16 - 2) {
-      //     if (zoomLevel % 2 !== 0) {
-      //       zoomLevel--;
-      //     }
-      //     const tileCoords: { ne: google.maps.Point; sw: google.maps.Point } = {
-      //       ne: new google.maps.Point(
-      //         this._northEastTileCoordsZ16.x >> (16 - zoomLevel),
-      //         this._northEastTileCoordsZ16.y >> (16 - zoomLevel)
-      //       ),
-      //       sw: new google.maps.Point(
-      //         this._southWestTileCoordsZ16.x >> (16 - zoomLevel),
-      //         this._southWestTileCoordsZ16.y >> (16 - zoomLevel)
-      //       ),
-      //     };
 
-      // this.loadNewSpotDotsOnTiles(zoomLevel, tileCoords.ne, tileCoords.sw);
-      //}
+      let zoomLevel = zoom;
+
+      if (zoomLevel <= 2) {
+        zoomLevel = 2;
+        this._northEastTileCoordsZ16.x = 0;
+        this._northEastTileCoordsZ16.y = 0;
+        this._southWestTileCoordsZ16.x = (1 << 16) - 1;
+        this._southWestTileCoordsZ16.y = (1 << 16) - 1;
+      } else if (zoomLevel % 2 !== 0) {
+        zoomLevel--;
+      }
+
+      const tileCoords: { ne: google.maps.Point; sw: google.maps.Point } = {
+        ne: new google.maps.Point(
+          this._northEastTileCoordsZ16.x >> (16 - zoomLevel + 2),
+          this._northEastTileCoordsZ16.y >> (16 - zoomLevel + 2)
+        ),
+        sw: new google.maps.Point(
+          this._southWestTileCoordsZ16.x >> (16 - zoomLevel + 2),
+          this._southWestTileCoordsZ16.y >> (16 - zoomLevel + 2)
+        ),
+      };
+
+      const tilesToLoad = this.getNewTilesToLoad(
+        zoom,
+        tileCoords.ne,
+        tileCoords.sw,
+        this.loadedDots[zoomLevel]
+      );
+
+      this.loadNewDotsOnTiles(zoomLevel, tilesToLoad);
+      this.updateVisibleDots();
     }
   }
 
@@ -189,35 +215,11 @@ export class SpotMapComponent implements AfterViewInit {
     return [].concat.apply([], values);
   }
 
-  loadNewSpotOnTiles(
-    northEastTileCoords: google.maps.Point,
-    southWestTileCoords: google.maps.Point
-  ) {
-    let tilesToLoad: { x: number; y: number }[] = [];
-
-    // make a list of coordinate pairs that we need to fetch from this.
-    for (let x = southWestTileCoords.x; x <= northEastTileCoords.x; x++) {
-      for (let y = northEastTileCoords.y; y <= southWestTileCoords.y; y++) {
-        // here we go through all the x,y pairs for every visible tile on screen right now.
-        if (!this.loadedSpots[`z${16}_${x}_${y}`]) {
-          // the tile was not loaded before
-
-          // mark this tile as loaded, will be filled after the data was
-          // fetched. This prevents multiple fetches for the same tile
-          // !([]) is false, !(undefined) is true
-          // this way it wont be loaded twice
-          this.loadedSpots[`z${16}_${x}_${y}`] = [];
-          tilesToLoad.push({ x: x, y: y });
-        }
-      }
-    }
-    this.loadSpotsForTiles(tilesToLoad);
-  }
-
-  loadNewSpotDotsOnTiles(
+  getNewTilesToLoad(
     zoom: number,
     northEastTileCoords: google.maps.Point,
-    southWestTileCoords: google.maps.Point
+    southWestTileCoords: google.maps.Point,
+    loadedSpots: Map<string, any>
   ) {
     let tilesToLoad: { x: number; y: number }[] = [];
 
@@ -225,18 +227,38 @@ export class SpotMapComponent implements AfterViewInit {
     for (let x = southWestTileCoords.x; x <= northEastTileCoords.x; x++) {
       for (let y = northEastTileCoords.y; y <= southWestTileCoords.y; y++) {
         // here we go through all the x,y pairs for every visible tile on screen right now.
-        if (!this.loadedSpots[`z${zoom}_${x}_${y}`]) {
+        if (!loadedSpots[`z${zoom}_${x}_${y}`]) {
           // the tile was not loaded before
 
-          // mark this tile as loaded, will be filled after the data was
+          // mark this tile as loaded, it will be filled after the data was
           // fetched. This prevents multiple fetches for the same tile
           // !([]) is false, !(undefined) is true
           // this way it wont be loaded twice
-          this.loadedSpots[`z${zoom}_${x}_${y}`] = [];
+          loadedSpots[`z${zoom}_${x}_${y}`] = [];
           tilesToLoad.push({ x: x, y: y });
         }
       }
     }
+
+    return tilesToLoad;
+  }
+
+  loadNewDotsOnTiles(zoom: number, tiles: { x: number; y: number }[]) {
+    this._dbService.getSpotClusterTiles(zoom, tiles).subscribe({
+      next: (clusterTiles) => {
+        if (clusterTiles.length > 0) {
+          clusterTiles.forEach((tile) => {
+            if (this.loadedDots[zoom]) {
+              const key = `z${zoom}_${tile.x}_${tile.y}`;
+              this.loadedDots[zoom].set(key, tile.points);
+            }
+          });
+        }
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
   }
 
   // Public Map helper functions
@@ -298,8 +320,13 @@ export class SpotMapComponent implements AfterViewInit {
     });
   }
 
-  updateDots() {
-    // TODO show clusters
+  updateVisibleDots() {
+    let zoom = 2;
+    if (this.mapZoom > 2) {
+      zoom = this.mapZoom % 2 === 0 ? this.mapZoom : this.mapZoom - 1;
+    }
+
+    this.visibleDots = [].concat(...Array.from(this.loadedDots[zoom].values()));
   }
 
   openSpotById(spotId: string) {
@@ -484,7 +511,6 @@ export class SpotMapComponent implements AfterViewInit {
         { lat: location.lat + dist, lng: location.lng - dist },
       ],
     ];
-    //console.log("made inital bounds");
     this.selectedSpot.paths = _paths;
   }
 

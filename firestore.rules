@@ -1,10 +1,18 @@
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /invite_codes/{invite_code}
+    match /spot_clusters/{cluster}
     {
-      allow get: if true
-      allow list: if false
-      allow write: if false
+        allow read: if true;
+        allow write: if false;
+    }
+    match /spots/{spot}
+    {
+      // all the spots are visible to everyone, authenticated or not
+      allow read: if true;
+
+      // TODO: In the future there should be a voting feature for changes on spots.
+      // for now every authenticated user can write for every spot.
+      allow write: if request.auth.uid != null;
     }
     match /posts/{post}
     {
@@ -29,15 +37,7 @@ service cloud.firestore {
           && request.auth.uid == resource.data.user.uid;
       }
     }
-    match /spots/{spot}
-    {
-      // all the spots are visible to everyone, authenticated or not
-      allow read: if true;
-
-      // TODO: In the future there should be a voting feature for changes on spots.
-      // for now every authenticated user can write for every spot.
-      allow write: if request.auth.uid != null;
-    }
+    
     match /users/{userId} 
     {
       // all users and their profiles are currently public

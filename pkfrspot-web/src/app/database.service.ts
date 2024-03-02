@@ -279,57 +279,60 @@ export class DatabaseService {
 
   getSpotClusterTiles(
     zoom: number,
-    northEastTile: google.maps.Point,
-    southWestTile: google.maps.Point
-  ) {
-    return new Observable<SpotClusterTile[]>((observer) => {
-      /**
-       * This is the zoom level that represents the sizes of the cluster tiles.
-       * Since each cluster tiles represents a 4x4 grid of tiles,
-       * we need to load the cluster tiles at a zoom level that is 2 levels higher than the current zoom level.
-       * Meaning at zoom level 2, all cluster points are in 1 cluster tile,
-       * at level 4 there are 16 cluster tiles, and so on.
-       */
-      const sizeZoom = zoom - 2;
+    tiles: { x: number; y: number }[]
+  ): Observable<SpotClusterTile[]> {
+    /**
+     * This is the zoom level that represents the sizes of the cluster tiles.
+     * Since each cluster tiles represents a 4x4 grid of tiles,
+     * we need to load the cluster tiles at a zoom level that is 2 levels higher than the current zoom level.
+     * Meaning at zoom level 2, all cluster points are in 1 cluster tile,
+     * at level 4 there are 16 cluster tiles, and so on.
+     */
+    const sizeZoom = zoom - 2;
 
-      const northEastTileToLoad = {
-        x: northEastTile.x >> 2,
-        y: northEastTile.y >> 2,
-      };
-      const southWestTileToLoad = {
-        x: southWestTile.x >> 2,
-        y: southWestTile.y >> 2,
-      };
-
+    const observables = tiles.map((tile) => {
       console.log(
-        `Loading cluster tiles at zoom ${zoom}, from ${southWestTileToLoad.x},${southWestTileToLoad.y} to ${northEastTileToLoad.x},${northEastTileToLoad.y}`
+        `loading spot cluster tile: z${sizeZoom}_${tile.x}_${tile.y}`
       );
 
-      const unsubscribe = onSnapshot(
-        query(
-          collection(this.firestore, "spot_clusters"),
-          where("zoom", "==", zoom),
-          where("sizeZoom", "==", sizeZoom),
-          where("x", ">=", southWestTileToLoad.x),
-          where("x", "<=", northEastTileToLoad.x),
-          where("y", ">=", southWestTileToLoad.y),
-          where("y", "<=", northEastTileToLoad.y)
-        ),
-        (snap) => {
-          observer.next(
-            snap.docs.map(
-              (clusterTile) => clusterTile.data() as SpotClusterTile
-            )
-          );
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-      return () => {
-        unsubscribe();
-      };
+      return new Observable<SpotClusterTile[]>((observer) => {
+        const unsubscribe = onSnapshot(
+          query(
+            collection(this.firestore, "spot_clusters"),
+            where("zoom", "==", zoom),
+            where("x", "==", tile.x),
+            where("y", "==", tile.y)
+          ),
+          (snap) => {
+            observer.next(
+              snap.docs.map(
+                (clusterTile) => clusterTile.data() as SpotClusterTile
+              )
+            );
+          },
+          (error) => {
+            console.error(error);
+          }
+        );
+        return () => {
+          unsubscribe();
+        };
+      }).pipe(take(1));
     });
+
+    return forkJoin(observables).pipe(
+      map((arrays: SpotClusterTile[][]) => {
+        let allTiles = new Array<SpotClusterTile>();
+
+        arrays.forEach((tiles: SpotClusterTile[]) => {
+          tiles.forEach((tile: SpotClusterTile) => {
+            allTiles.push(tile);
+          });
+        });
+
+        return allTiles;
+      })
+    );
   }
 
   private parseSpots_(snapshot: QuerySnapshot<DocumentData>): Spot.Class[] {
