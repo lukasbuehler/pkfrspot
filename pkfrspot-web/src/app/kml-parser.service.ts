@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import firebase from "firebase/compat";
 import { BehaviorSubject, Observable, firstValueFrom } from "rxjs";
 import { Spot } from "src/scripts/db/Spot";
-import { MapHelper } from "src/scripts/map_helper";
+import { MapHelpers } from "src/scripts/MapHelpers";
 
 import { parseString } from "xml2js";
 import { DatabaseService } from "./database.service";
@@ -156,7 +156,7 @@ export class KmlParserService {
         spotsInFolder.forEach((spot) => {
           // add the tiles which are close to this spot to the list to load
           // spots for to check for duplicates
-          let tile = MapHelper.getTileCoordinatesForLocationAndZoom(
+          let tile = MapHelpers.getTileCoordinatesForLocationAndZoom(
             spot.spot.location,
             16
           );

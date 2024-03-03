@@ -3,7 +3,7 @@ import * as moment from "moment";
 import { Post } from "src/scripts/db/Post";
 import { DatabaseService } from "../database.service";
 import { AuthenticationService } from "../authentication.service";
-import { MapHelper } from "../../scripts/map_helper";
+import { MapHelpers } from "../../scripts/MapHelpers";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { Timestamp } from "firebase/firestore";
@@ -141,7 +141,7 @@ export class PostComponent implements OnInit {
 
   getLocationDisplayCoordinates(coords: google.maps.LatLngLiteral) {
     if (coords) {
-      return MapHelper.getDisplayCoordinates(coords);
+      return MapHelpers.getDisplayCoordinates(coords);
     }
     return "";
   }

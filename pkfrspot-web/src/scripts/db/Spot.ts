@@ -1,5 +1,5 @@
 import { ContributedMedia, LocaleMap, MediaType } from "./Interfaces";
-import { MapHelper } from "../map_helper";
+import { MapHelpers } from "../MapHelpers";
 import { DatabaseService } from "src/app/database.service";
 import { StorageFolder, StorageService } from "src/app/storage.service";
 import { GeoPoint } from "firebase/firestore";
@@ -210,7 +210,7 @@ export namespace Spot {
       location: google.maps.LatLngLiteral
     ): Schema["tile_coordinates"] {
       let tile_coordinates: Partial<Schema["tile_coordinates"]> = {
-        z16: MapHelper.getTileCoordinatesForLocationAndZoom(location, 16),
+        z16: MapHelpers.getTileCoordinatesForLocationAndZoom(location, 16),
       };
 
       for (let zoom = 16; zoom >= 2; zoom -= 2) {
@@ -224,7 +224,7 @@ export namespace Spot {
     }
 
     private _makePathsFromBounds(
-      bounds: firebase.default.firestore.GeoPoint[]
+      bounds: GeoPoint[]
     ): Array<Array<google.maps.LatLngLiteral>> {
       if (!bounds) return [];
 
@@ -240,7 +240,7 @@ export namespace Spot {
 
     private _makeBoundsFromPaths(
       paths: Array<Array<google.maps.LatLngLiteral>>
-    ): firebase.default.firestore.GeoPoint[] {
+    ): GeoPoint[] {
       if (!paths || paths.length === 0) return [];
 
       return paths[0].map((point) => {
@@ -278,7 +278,7 @@ export namespace Spot {
   export interface Schema {
     name: LocaleMap;
 
-    location: firebase.default.firestore.GeoPoint;
+    location: GeoPoint;
     tile_coordinates: {
       z2: { x: number; y: number };
       z4: { x: number; y: number };
@@ -300,7 +300,7 @@ export namespace Spot {
 
     address?: AddressSchema;
 
-    bounds?: firebase.default.firestore.GeoPoint[];
+    bounds?: GeoPoint[];
 
     time_created?: firebase.default.firestore.Timestamp;
     time_updated?: { seconds: number; nanoseconds: number };

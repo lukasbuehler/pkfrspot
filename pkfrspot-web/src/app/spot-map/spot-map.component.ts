@@ -11,7 +11,7 @@ import { DatabaseService } from "../database.service";
 import { ActivatedRoute } from "@angular/router";
 import { GeoPoint } from "firebase/firestore";
 import { take } from "rxjs";
-import { MapHelper } from "src/scripts/map_helper";
+import { MapHelpers } from "src/scripts/MapHelpers";
 import { AuthenticationService } from "../authentication.service";
 import { MapComponent } from "../map/map.component";
 import { SpotClusterTile } from "src/scripts/db/SpotClusterTile.js";
@@ -145,9 +145,9 @@ export class SpotMapComponent implements AfterViewInit {
     };
 
     let northEastTileCoords: google.maps.Point =
-      MapHelper.getTileCoordinatesForLocationAndZoom(northEastLiteral, 16);
+      MapHelpers.getTileCoordinatesForLocationAndZoom(northEastLiteral, 16);
     let southWestTileCoords: google.maps.Point =
-      MapHelper.getTileCoordinatesForLocationAndZoom(southWestLiteral, 16);
+      MapHelpers.getTileCoordinatesForLocationAndZoom(southWestLiteral, 16);
 
     this._northEastTileCoordsZ16 = northEastTileCoords;
     this._southWestTileCoordsZ16 = southWestTileCoords;
@@ -306,6 +306,9 @@ export class SpotMapComponent implements AfterViewInit {
         );
       }
     }
+
+    const clusters = MapHelpers.getClusterTilesForAllSpots(this.getAllSpots());
+    console.log("clusters", clusters);
   }
 
   updateSpotInLoadedSpots(spot: Spot.Class) {
@@ -560,7 +563,7 @@ export class SpotMapComponent implements AfterViewInit {
       // the spot does not exist
 
       // get the tile coordinates for the location of the new spot
-      let tile = MapHelper.getTileCoordinatesForLocationAndZoom(
+      let tile = MapHelpers.getTileCoordinatesForLocationAndZoom(
         newSpot.location,
         16
       );

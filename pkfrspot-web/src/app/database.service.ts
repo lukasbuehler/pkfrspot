@@ -341,7 +341,6 @@ export class DatabaseService {
     snapshot.forEach((doc) => {
       const spotData = doc.data() as Spot.Schema;
       if (spotData) {
-        console.log("Spot Data", spotData);
         let newSpot: Spot.Class = new Spot.Class(doc.id, spotData);
         newSpots.push(newSpot);
       } else {

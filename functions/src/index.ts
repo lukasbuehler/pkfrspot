@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions/v1"; // TODO update to v2
 import * as admin from "firebase-admin";
-import { MapHelper } from "../../pkfrspot-web/src/scripts/map_helper";
+import { MapHelpers } from "../../pkfrspot-web/src/scripts/MapHelpers";
 import { SpotClusterTile } from "../../pkfrspot-web/src/scripts/db/SpotClusterTile";
 import { Spot } from "../../pkfrspot-web/src/scripts/db/Spot";
 
@@ -68,39 +68,39 @@ export const countFollowingOnWrite = functions.firestore
       });
   });
 
-export const clusterAllSpots = functions.pubsub
-  .schedule("30 15 26 2 *")
-  .onRun(async (context) => {
-    // 1. load all spots
-    const spots = await admin.firestore().collection("spots").get();
+// export const clusterAllSpots = functions.pubsub
+//   .schedule("30 15 26 2 *")
+//   .onRun(async (context) => {
+//     // 1. load all spots
+//     const spots = await admin.firestore().collection("spots").get();
 
-    spots.forEach((spot: Spot.Schema) => {
-      // for each spot, adda a point of weight 1 to a cluster tile of zoom 14
-    });
-  });
+//     spots.forEach((spot: Spot.Schema) => {
+//       // for each spot, adda a point of weight 1 to a cluster tile of zoom 14
+//     });
+//   });
 
-export const clusterSpotsOnWrite = functions.firestore
-  .document("spots/{spotId}")
-  .onWrite(async (change, context) => {
-    const spotData: Spot.Schema = change.after.data() as Spot.Schema;
+// export const clusterSpotsOnWrite = functions.firestore
+//   .document("spots/{spotId}")
+//   .onWrite(async (change, context) => {
+//     const spotData: Spot.Schema = change.after.data() as Spot.Schema;
 
-    const tileCoordinates = spotData.tile_coordinates;
+//     const tileCoordinates = spotData.tile_coordinates;
 
-    for (let zoom = 12; zoom >= 2; zoom += 2) {
-      const tile =
-        tileCoordinates[`z${zoom}` as keyof Spot.Schema["tile_coordinates"]];
+//     for (let zoom = 12; zoom >= 2; zoom += 2) {
+//       const tile =
+//         tileCoordinates[`z${zoom}` as keyof Spot.Schema["tile_coordinates"]];
 
-      const updatedSpotClusterTile: SpotClusterTile = {
-        zoom: zoom,
-        x: tile.x,
-        y: tile.y,
-        points: [],
-      };
+//       const updatedSpotClusterTile: SpotClusterTile = {
+//         zoom: zoom,
+//         x: tile.x,
+//         y: tile.y,
+//         points: [],
+//       };
 
-      await admin
-        .firestore()
-        .collection("spot_clusters")
-        .doc(`z${zoom}_${tile.x}_${tile.y}`)
-        .set(updatedSpotClusterTile, { merge: false });
-    }
-  });
+//       await admin
+//         .firestore()
+//         .collection("spot_clusters")
+//         .doc(`z${zoom}_${tile.x}_${tile.y}`)
+//         .set(updatedSpotClusterTile, { merge: false });
+//     }
+//   });
