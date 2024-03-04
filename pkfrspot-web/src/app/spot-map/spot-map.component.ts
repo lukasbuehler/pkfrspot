@@ -306,9 +306,6 @@ export class SpotMapComponent implements AfterViewInit {
         );
       }
     }
-
-    const clusters = MapHelpers.getClusterTilesForAllSpots(this.getAllSpots());
-    console.log("clusters", clusters);
   }
 
   updateSpotInLoadedSpots(spot: Spot.Class) {

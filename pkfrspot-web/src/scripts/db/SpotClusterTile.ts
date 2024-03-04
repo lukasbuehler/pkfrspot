@@ -1,3 +1,5 @@
+import { GeoPoint } from "firebase/firestore";
+
 export interface SpotClusterTile {
   // the zoom level the tile should be loaded and displayed at.
   zoom: number;
@@ -6,7 +8,7 @@ export interface SpotClusterTile {
 
   // the array of cluster points with their corresponding weights.
   points: {
-    location: firebase.default.firestore.GeoPoint;
+    location: GeoPoint;
     weight: number;
   }[];
 }

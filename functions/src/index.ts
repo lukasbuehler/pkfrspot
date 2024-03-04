@@ -1,8 +1,9 @@
 import * as functions from "firebase-functions/v1"; // TODO update to v2
 import * as admin from "firebase-admin";
-import { MapHelpers } from "../../pkfrspot-web/src/scripts/MapHelpers";
-import { SpotClusterTile } from "../../pkfrspot-web/src/scripts/db/SpotClusterTile";
-import { Spot } from "../../pkfrspot-web/src/scripts/db/Spot";
+import {
+  ClusterHelpers,
+  PartialSpotSchema,
+} from "../../pkfrspot-web/src/scripts/ClusterHelpers";
 
 admin.initializeApp(functions.config().firebase);
 
@@ -68,16 +69,42 @@ export const countFollowingOnWrite = functions.firestore
       });
   });
 
-// export const clusterAllSpots = functions.pubsub
-//   .schedule("30 15 26 2 *")
-//   .onRun(async (context) => {
-//     // 1. load all spots
-//     const spots = await admin.firestore().collection("spots").get();
+export const clusterAllSpots = functions.pubsub
+  .schedule("0 13 4 3 *")
+  .onRun(async (context) => {
+    // 1. load ALL spots
+    const spotsSnap = await admin.firestore().collection("spots").get();
+    const spots: PartialSpotSchema[] = spotsSnap.docs.map((doc) => {
+      return doc.data() as PartialSpotSchema;
+    });
 
-//     spots.forEach((spot: Spot.Schema) => {
-//       // for each spot, adda a point of weight 1 to a cluster tile of zoom 14
-//     });
-//   });
+    const clusters = ClusterHelpers.getClusterTilesForAllSpots(spots);
+
+    console.log(clusters);
+
+    // delete all existing clusters with a batch write
+    const deleteBatch = admin.firestore().batch();
+    const clustersSnap = await admin
+      .firestore()
+      .collection("spot_clusters")
+      .get();
+    clustersSnap.forEach((doc) => {
+      deleteBatch.delete(doc.ref);
+    });
+    await deleteBatch.commit();
+
+    // add newly created clusters with a batch write
+    const addBatch = admin.firestore().batch();
+    clusters.forEach((cluster) => {
+      const newClusterRef = admin
+        .firestore()
+        .collection("spot_clusters")
+        .doc(`z${cluster.zoom}_${cluster.x}_${cluster.y}`);
+      addBatch.set(newClusterRef, cluster);
+    });
+
+    await addBatch.commit();
+  });
 
 // export const clusterSpotsOnWrite = functions.firestore
 //   .document("spots/{spotId}")
