@@ -20,7 +20,7 @@ export class MapsApiService {
     if (this._isApiLoaded$.value) return;
 
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.keys.google_maps}`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.keys.google_maps}&libraries=visualization`;
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);

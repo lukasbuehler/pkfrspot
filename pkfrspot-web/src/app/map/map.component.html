@@ -13,11 +13,13 @@
   width="100%"
   height="100%"
 >
-  <map-marker
+  <map-heatmap-layer [data]="heatmapData" [options]="heatmapOptions" />
+
+  <!-- <map-marker
     *ngFor="let dot of dots"
     [position]="{ lat: dot.location._lat, lng: dot.location._long }"
     [options]="primaryDotMarkerOptions"
-  ></map-marker>
+  ></map-marker> -->
 
   <map-circle
     *ngFor="let spot of spots"

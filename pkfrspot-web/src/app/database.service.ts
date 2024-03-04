@@ -291,7 +291,7 @@ export class DatabaseService {
     const sizeZoom = zoom - 2;
 
     const observables = tiles.map((tile) => {
-      console.log(`loading spot cluster tile: z${zoom}_${tile.x}_${tile.y}`);
+      //console.log(`loading spot cluster tile: z${zoom}_${tile.x}_${tile.y}`);
 
       return new Observable<SpotClusterTile[]>((observer) => {
         const unsubscribe = onSnapshot(

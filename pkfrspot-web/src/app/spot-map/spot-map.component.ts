@@ -253,6 +253,7 @@ export class SpotMapComponent implements AfterViewInit {
               this.loadedDots[zoom].set(key, tile.points);
             }
           });
+          this.updateVisibleDots();
         }
       },
       error: (error) => {

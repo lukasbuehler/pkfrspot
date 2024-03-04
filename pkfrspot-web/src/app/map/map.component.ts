@@ -75,7 +75,17 @@ export class MapComponent implements OnInit {
   @Output() hasGeolocationChange = new EventEmitter<boolean>();
 
   @Input() spots: Spot.Class[] = [];
-  @Input() dots: SpotClusterTile["points"][] = [];
+
+  heatmapData: google.maps.visualization.WeightedLocation[] = [];
+  _dots: SpotClusterTile["points"] = [];
+  @Input() set dots(newDots: SpotClusterTile["points"]) {
+    this._dots = newDots;
+    this.heatmapData = this.heatmapDataFromDots(newDots);
+  }
+  get dots() {
+    return this._dots;
+  }
+
   @Input() selectedSpot: Spot.Class | null = null;
   @Input() isEditing: boolean = false;
   @Input() showGeolocation: boolean = false;
@@ -130,6 +140,20 @@ export class MapComponent implements OnInit {
     };
   }
 
+  heatmapDataFromDots(
+    dots: SpotClusterTile["points"]
+  ): google.maps.visualization.WeightedLocation[] {
+    return dots.map((dot) => {
+      return {
+        location: new google.maps.LatLng(
+          dot.location.latitude,
+          dot.location.longitude
+        ),
+        weight: dot.weight,
+      };
+    });
+  }
+
   initGeolocation() {
     if (this.showGeolocation) {
       let geolocationWatchId = navigator.geolocation.watchPosition(
@@ -182,6 +206,15 @@ export class MapComponent implements OnInit {
     styles: this.mapStylesConfig,
   };
   mapTypeId: string = "roadmap";
+
+  heatmapOptions: google.maps.visualization.HeatmapLayerOptions = {
+    radius: 30,
+    gradient: ["rgba(184,196,255,0)", "rgba(184,196,255,1)"],
+    dissipating: true,
+    maxIntensity: 1,
+    opacity: 0.9,
+  };
+
   selectedSpotMarkerOptions: google.maps.MarkerOptions = {
     draggable: false,
     clickable: false,
