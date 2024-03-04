@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions/v1"; // TODO update to v2
 import * as admin from "firebase-admin";
-import { GeoPoint } from "firebase/firestore";
+import { GeoPoint } from "firebase-admin/firestore";
 
 admin.initializeApp(functions.config().firebase);
 
@@ -93,117 +93,118 @@ interface SpotClusterTile {
   }[];
 }
 
-function getClusterTilesForAllSpots(
-  allSpots: PartialSpotSchema[]
-): Map<string, SpotClusterTile> {
-  const clusterTiles = new Map<string, SpotClusterTile>();
-
-  const clusterTilesMap = {
-    12: new Map<string, string[]>(),
-    10: new Map<string, string[]>(),
-    8: new Map<string, string[]>(),
-    6: new Map<string, string[]>(),
-    4: new Map<string, string[]>(),
-    2: new Map<string, string[]>(),
-  };
-
-  console.log("debug: starting clustrering");
-
-  allSpots.forEach((spot) => {
-    // for each spot, add a point of weight 1 to a cluster tile of zoom 14
-
-    // get the tile coordinates for the spot at zoom 14
-    const tile = spot.tile_coordinates.z12; // the coords are for tiles at zoom 12
-
-    const clusterTilePoint = {
-      location: spot.location,
-      weight: 1,
-    };
-
-    // check if the tile exists in the clusterTilesMap for zoom 14
-    if (clusterTiles.has(`z14_${tile.x}_${tile.y}`)) {
-      // if the tile exists, add the spot to the array of spots in the cluster tile
-      clusterTiles
-        .get(`z14_${tile.x}_${tile.y}`)!
-        .points.push(clusterTilePoint);
-    } else {
-      // if the tile does not exist, create a new array with the spot and add it to the clusterTilesMap for zoom 14
-      clusterTiles.set(`z14_${tile.x}_${tile.y}`, {
-        zoom: 14,
-        x: tile.x,
-        y: tile.y,
-        points: [clusterTilePoint],
-      });
-
-      // also add the 14 tile to the cluster tiles map for zoom 12
-      const key12 = `z12_${tile.x >> 2}_${tile.y >> 2}`;
-      console.log(key12);
-      if (!clusterTilesMap[12].has(key12)) {
-        clusterTilesMap[12].set(key12, [`z14_${tile.x}_${tile.y}`]);
-      } else {
-        clusterTilesMap[12].get(key12)!.push(`z14_${tile.x}_${tile.y}`);
-      }
-    }
-  });
-
-  for (let zoom = 12; zoom >= 2; zoom -= 2) {
-    // for each z cluster tile to compute in the map
-    for (let [tileKey, smallerTileKeys] of clusterTilesMap[
-      zoom as 12 | 10 | 8 | 6 | 4 | 2
-    ].entries()) {
-      const firstSmallerTile = clusterTiles.get(smallerTileKeys[0])!;
-
-      clusterTiles.set(tileKey, {
-        zoom: zoom,
-        x: firstSmallerTile.x >> 2,
-        y: firstSmallerTile.y >> 2,
-        points: smallerTileKeys.map((key) => {
-          let totalWeight = 0;
-          let totalLat = 0;
-          let totalLng = 0;
-
-          for (let point of (clusterTiles.get(key) as SpotClusterTile).points) {
-            totalWeight += point.weight;
-            totalLat += point.location.latitude * point.weight;
-            totalLng += point.location.longitude * point.weight;
-          }
-
-          return {
-            location: new GeoPoint(
-              totalLat / totalWeight,
-              totalLng / totalWeight
-            ),
-            weight: totalWeight,
-          };
-        }),
-      });
-
-      // also add the zoom tile to the cluster tiles map for the next zoom level
-      if (zoom > 2) {
-        const tile = clusterTiles.get(tileKey)!;
-        const key = `z${zoom - 2}_${tile.x >> 2}_${tile.y >> 2}`;
-        if (!clusterTilesMap[(zoom - 2) as 12 | 10 | 8 | 6 | 4 | 2].has(key)) {
-          clusterTilesMap[(zoom - 2) as 12 | 10 | 8 | 6 | 4 | 2].set(key, [
-            tileKey,
-          ]);
-        } else {
-          clusterTilesMap[(zoom - 2) as 12 | 10 | 8 | 6 | 4 | 2]
-            .get(key)!
-            .push(tileKey);
-        }
-      }
-    }
-  }
-
-  return clusterTiles;
-}
-
 /*
  * Cluster all spots
  */
 export const clusterAllSpots = functions.firestore
   .document("spot_clusters/run")
   .onCreate((snap, context) => {
+    // define clustering function
+    const getClusterTilesForAllSpots = (
+      allSpots: PartialSpotSchema[]
+    ): Map<string, SpotClusterTile> => {
+      const clusterTiles = new Map<string, SpotClusterTile>();
+
+      const clusterTilesMap = {
+        12: new Map<string, string[]>(),
+        10: new Map<string, string[]>(),
+        8: new Map<string, string[]>(),
+        6: new Map<string, string[]>(),
+        4: new Map<string, string[]>(),
+        2: new Map<string, string[]>(),
+      };
+
+      allSpots.forEach((spot) => {
+        // for each spot, add a point of weight 1 to a cluster tile of zoom 14
+
+        // get the tile coordinates for the spot at zoom 14
+        const tile = spot.tile_coordinates.z12; // the coords are for tiles at zoom 12
+
+        const clusterTilePoint = {
+          location: spot.location,
+          weight: 1,
+        };
+
+        // check if the tile exists in the clusterTilesMap for zoom 14
+        if (clusterTiles.has(`z14_${tile.x}_${tile.y}`)) {
+          // if the tile exists, add the spot to the array of spots in the cluster tile
+          clusterTiles
+            .get(`z14_${tile.x}_${tile.y}`)!
+            .points.push(clusterTilePoint);
+        } else {
+          // if the tile does not exist, create a new array with the spot and add it to the clusterTilesMap for zoom 14
+          clusterTiles.set(`z14_${tile.x}_${tile.y}`, {
+            zoom: 14,
+            x: tile.x,
+            y: tile.y,
+            points: [clusterTilePoint],
+          });
+
+          // also add the 14 tile to the cluster tiles map for zoom 12
+          const key12 = `z12_${tile.x >> 2}_${tile.y >> 2}`;
+          if (!clusterTilesMap[12].has(key12)) {
+            clusterTilesMap[12].set(key12, [`z14_${tile.x}_${tile.y}`]);
+          } else {
+            clusterTilesMap[12].get(key12)!.push(`z14_${tile.x}_${tile.y}`);
+          }
+        }
+      });
+
+      for (let zoom = 12; zoom >= 2; zoom -= 2) {
+        // for each z cluster tile to compute in the map
+        for (let [tileKey, smallerTileKeys] of clusterTilesMap[
+          zoom as 12 | 10 | 8 | 6 | 4 | 2
+        ].entries()) {
+          const firstSmallerTile = clusterTiles.get(smallerTileKeys[0])!;
+
+          clusterTiles.set(tileKey, {
+            zoom: zoom,
+            x: firstSmallerTile.x >> 2,
+            y: firstSmallerTile.y >> 2,
+            points: smallerTileKeys.map((key) => {
+              let totalWeight = 0;
+              let totalLat = 0;
+              let totalLng = 0;
+
+              for (let point of (clusterTiles.get(key) as SpotClusterTile)
+                .points) {
+                totalWeight += point.weight;
+                totalLat += point.location.latitude * point.weight;
+                totalLng += point.location.longitude * point.weight;
+              }
+
+              return {
+                location: new GeoPoint(
+                  totalLat / totalWeight,
+                  totalLng / totalWeight
+                ),
+                weight: totalWeight,
+              };
+            }),
+          });
+
+          // also add the zoom tile to the cluster tiles map for the next zoom level
+          if (zoom > 2) {
+            const tile = clusterTiles.get(tileKey)!;
+            const key = `z${zoom - 2}_${tile.x >> 2}_${tile.y >> 2}`;
+            if (
+              !clusterTilesMap[(zoom - 2) as 12 | 10 | 8 | 6 | 4 | 2].has(key)
+            ) {
+              clusterTilesMap[(zoom - 2) as 12 | 10 | 8 | 6 | 4 | 2].set(key, [
+                tileKey,
+              ]);
+            } else {
+              clusterTilesMap[(zoom - 2) as 12 | 10 | 8 | 6 | 4 | 2]
+                .get(key)!
+                .push(tileKey);
+            }
+          }
+        }
+      }
+
+      return clusterTiles;
+    };
+
     // 1. load ALL spots
     return admin
       .firestore()
@@ -216,11 +217,9 @@ export const clusterAllSpots = functions.firestore
 
         const clusters = getClusterTilesForAllSpots(spots);
 
-        console.log("clusters", JSON.stringify(clusters));
-
         // delete all existing clusters with a batch write
         const deleteBatch = admin.firestore().batch();
-        admin
+        return admin
           .firestore()
           .collection("spot_clusters")
           .get()
@@ -228,21 +227,37 @@ export const clusterAllSpots = functions.firestore
             clustersSnap.forEach((doc) => {
               deleteBatch.delete(doc.ref);
             });
-            deleteBatch.commit().then(() => {
-              // add newly created clusters with a batch write
-              const addBatch = admin.firestore().batch();
-              clusters.forEach((cluster) => {
-                const newClusterRef = admin
-                  .firestore()
-                  .collection("spot_clusters")
-                  .doc(`z${cluster.zoom}_${cluster.x}_${cluster.y}`);
-                addBatch.set(newClusterRef, cluster);
-              });
+            return deleteBatch
+              .commit()
+              .then(() => {
+                console.log("deleted all old clusters");
 
-              addBatch.commit().then(() => {
-                console.log("done :)");
+                // add newly created clusters with a batch write
+                if (clusters.size === 0) return;
+
+                console.log("adding " + clusters.size + " new clusters");
+
+                const addBatch = admin.firestore().batch();
+                clusters.forEach((cluster, key) => {
+                  const newClusterRef = admin
+                    .firestore()
+                    .collection("spot_clusters")
+                    .doc(key);
+                  addBatch.set(newClusterRef, cluster);
+                });
+
+                return addBatch
+                  .commit()
+                  .then(() => {
+                    console.log("done :)");
+                  })
+                  .catch((err) => {
+                    console.error("Error adding new clusters: ", err);
+                  });
+              })
+              .catch((err) => {
+                console.error("Error deleting clusters: ", err);
               });
-            });
           });
       });
   });

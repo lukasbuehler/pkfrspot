@@ -192,7 +192,7 @@ export class SpotMapComponent implements AfterViewInit {
       };
 
       const tilesToLoad = this.getNewTilesToLoad(
-        zoom,
+        zoomLevel,
         tileCoords.ne,
         tileCoords.sw,
         this.loadedDots[zoomLevel]
