@@ -116,7 +116,7 @@ export namespace Spot {
 
     constructor(private _id: string, _data: Partial<Schema>) {
       this._data = _data as Schema; // I don't think this is safe... // TODO: make safe
-      this._data.bounds = _data.bounds;
+      this._data.bounds = _data.bounds ?? [];
       this._data.location = _data.location;
 
       this._paths = this._makePathsFromBounds(this._data.bounds);

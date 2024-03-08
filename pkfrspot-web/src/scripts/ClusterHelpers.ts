@@ -16,6 +16,16 @@ export interface PartialSpotSchema {
 }
 
 export module ClusterHelpers {
+  function _clusterPoints(
+    zoom: number,
+    arrayOfPoints: { location: GeoPoint; weight: number }[][]
+  ): { location: GeoPoint; weight: number }[] {
+    // flatten the array of points
+    return arrayOfPoints.flat();
+
+    // TODO actually cluster maybe?
+  }
+
   export function getClusterTilesForAllSpots(
     allSpots: PartialSpotSchema[]
   ): Map<string, SpotClusterTile> {
@@ -80,26 +90,12 @@ export module ClusterHelpers {
           zoom: zoom,
           x: firstSmallerTile.x >> 2,
           y: firstSmallerTile.y >> 2,
-          points: smallerTileKeys.map((key) => {
-            let totalWeight = 0;
-            let totalLat = 0;
-            let totalLng = 0;
-
-            for (let point of (clusterTiles.get(key) as SpotClusterTile)
-              .points) {
-              totalWeight += point.weight;
-              totalLat += point.location.latitude * point.weight;
-              totalLng += point.location.longitude * point.weight;
-            }
-
-            return {
-              location: new GeoPoint(
-                totalLat / totalWeight,
-                totalLng / totalWeight
-              ),
-              weight: totalWeight,
-            };
-          }),
+          points: _clusterPoints(
+            zoom,
+            smallerTileKeys.map((key) => {
+              return (clusterTiles.get(key) as SpotClusterTile).points;
+            })
+          ),
         });
 
         // also add the zoom tile to the cluster tiles map for the next zoom level

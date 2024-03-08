@@ -208,11 +208,11 @@ export class MapComponent implements OnInit {
   mapTypeId: string = "roadmap";
 
   heatmapOptions: google.maps.visualization.HeatmapLayerOptions = {
-    radius: 30,
+    radius: 20,
     gradient: ["rgba(184,196,255,0)", "rgba(184,196,255,1)"],
     dissipating: true,
     maxIntensity: 1,
-    opacity: 0.9,
+    opacity: 0.7,
   };
 
   selectedSpotMarkerOptions: google.maps.MarkerOptions = {

@@ -207,9 +207,9 @@ export class SpotMapComponent implements AfterViewInit {
 
   getAllSpots(): Spot.Class[] {
     const values = [];
-    for (const key of Object.keys(this.loadedSpots)) {
+    for (const key of this.loadedSpots.keys()) {
       if (!key.includes("z16")) continue;
-      values.push(this.loadedSpots[key]);
+      values.push(this.loadedSpots.get(key));
     }
 
     return [].concat.apply([], values);
@@ -244,6 +244,8 @@ export class SpotMapComponent implements AfterViewInit {
   }
 
   loadNewDotsOnTiles(zoom: number, tiles: { x: number; y: number }[]) {
+    if (zoom % 2 === 1) return;
+
     this._dbService.getSpotClusterTiles(zoom, tiles).subscribe({
       next: (clusterTiles) => {
         if (clusterTiles.length > 0) {
@@ -284,9 +286,9 @@ export class SpotMapComponent implements AfterViewInit {
         y++
       ) {
         // here we go through all the x,y pairs for every visible tile on screen right now.
-        if (this.loadedSpots[`z${16}_${x}_${y}`]) {
+        if (this.loadedSpots.has(`z${16}_${x}_${y}`)) {
           this.visibleSpots = this.visibleSpots.concat(
-            this.loadedSpots[`z${16}_${x}_${y}`]
+            this.loadedSpots.get(`z${16}_${x}_${y}`) ?? []
           );
         }
       }
@@ -307,18 +309,22 @@ export class SpotMapComponent implements AfterViewInit {
         );
       }
     }
+
+    console.log("visibleSpots for zoom", this.mapZoom, ":", this.visibleSpots);
+    console.log("northEastTile", this._northEastTileCoordsZ16);
+    console.log("southWestTile", this._southWestTileCoordsZ16);
   }
 
   updateSpotInLoadedSpots(spot: Spot.Class) {
-    this.loadedSpots[
-      `z${16}_${spot.tileCoordinates.z16.x}_${spot.tileCoordinates.z16.y}`
-    ].forEach((loadedSpot: Spot.Class, index: number) => {
-      if (loadedSpot.id === spot.id) {
-        this.loadedSpots[
-          `z${16}_${spot.tileCoordinates.z16.x}_${spot.tileCoordinates.z16.y}`
-        ][index] = spot;
-      }
-    });
+    this.loadedSpots
+      .get(`z${16}_${spot.tileCoordinates.z16.x}_${spot.tileCoordinates.z16.y}`)
+      .forEach((loadedSpot: Spot.Class, index: number) => {
+        if (loadedSpot.id === spot.id) {
+          this.loadedSpots.get(
+            `z${16}_${spot.tileCoordinates.z16.x}_${spot.tileCoordinates.z16.y}`
+          )[index] = spot;
+        }
+      });
   }
 
   updateVisibleDots() {
@@ -452,7 +458,7 @@ export class SpotMapComponent implements AfterViewInit {
       next: (spots) => {
         if (spots.length > 0) {
           let tile = spots[0].data.tile_coordinates.z16;
-          this.loadedSpots[`z${16}_${tile.x}_${tile.y}`] = spots;
+          this.loadedSpots.set(`z${16}_${tile.x}_${tile.y}`, spots);
           this.updateVisibleSpots();
         }
       },
@@ -525,10 +531,9 @@ export class SpotMapComponent implements AfterViewInit {
 
     if (spot) {
       const tile = spot?.tileCoordinates?.z16;
-      const indexInTileArray =
-        this.loadedSpots[`z${16}_${tile.x}_${tile.y}`].indexOf(spot);
-
-      //console.log(JSON.stringify(this.loadedSpots));
+      const indexInTileArray = this.loadedSpots
+        .get(`z${16}_${tile.x}_${tile.y}`)
+        .indexOf(spot);
 
       const loadedSpotRef: LoadedSpotReference = {
         spot: spot,
@@ -554,7 +559,7 @@ export class SpotMapComponent implements AfterViewInit {
     if (ref?.spot && ref.indexInTileArray >= 0 && ref.tile) {
       // The spot exists and should be updated
       // Update the spot
-      this.loadedSpots[`z${16}_${ref.tile.x}_${ref.tile.y}`][
+      this.loadedSpots.get(`z${16}_${ref.tile.x}_${ref.tile.y}`)[
         ref.indexInTileArray
       ] = newSpot;
     } else {
@@ -565,13 +570,13 @@ export class SpotMapComponent implements AfterViewInit {
         newSpot.location,
         16
       );
-      let spots = this.loadedSpots[`z${16}_${tile.x}_${tile.y}`];
+      let spots = this.loadedSpots.get(`z${16}_${tile.x}_${tile.y}`);
 
       if (spots) {
         spots.push(newSpot);
       } else {
         // There are no spots loaded for this tile, add it to the loaded spots
-        this.loadedSpots[`z${16}_${tile.x}_${tile.y}`] = [newSpot];
+        this.loadedSpots.set(`z${16}_${tile.x}_${tile.y}`, [newSpot]);
       }
     }
     // update the map to show the new spot on the loaded spots array.

@@ -29,6 +29,7 @@ import {
   QuerySnapshot,
   Timestamp,
   updateDoc,
+  writeBatch,
 } from "firebase/firestore";
 import { SpotClusterTile } from "src/scripts/db/SpotClusterTile.js";
 
@@ -362,6 +363,19 @@ export class DatabaseService {
     spotUpdateData: Partial<Spot.Schema>
   ): Promise<void> {
     return updateDoc(doc(this.firestore, "spots", spotId), spotUpdateData);
+  }
+
+  createMultipleSpots(spotData: Spot.Schema[]): Promise<void> {
+    const batch = writeBatch(this.firestore);
+
+    spotData.forEach((spot) => {
+      const newSpotRef = doc(collection(this.firestore, "spots"));
+      console.log(newSpotRef);
+      console.log(spot);
+      batch.set(newSpotRef, spot);
+    });
+
+    return batch.commit();
   }
 
   // Users --------------------------------------------------------------------

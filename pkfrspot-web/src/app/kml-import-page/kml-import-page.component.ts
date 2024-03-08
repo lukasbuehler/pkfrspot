@@ -14,7 +14,10 @@ import {
 import { MatStepper } from "@angular/material/stepper";
 import { KmlParserService, KMLSetupInfo, KMLSpot } from "../kml-parser.service";
 import { filter, first, firstValueFrom } from "rxjs";
-import { MyRegex } from "../regex-input/regex-input.component.js";
+import { MyRegex } from "../regex-input/regex-input.component";
+import { DatabaseService } from "../database.service";
+import { Spot } from "src/scripts/db/Spot";
+import { GeoPoint } from "firebase/firestore";
 
 @Component({
   selector: "app-kml-import-page",
@@ -28,7 +31,7 @@ import { MyRegex } from "../regex-input/regex-input.component.js";
   ],
 })
 export class KmlImportPageComponent implements OnInit, AfterViewInit {
-  @ViewChild("stepperHorizontal") stepperHorizontal;
+  @ViewChild("stepperHorizontal") stepperHorizontal: MatStepper;
   @ViewChild("spotMap") spotMap;
 
   uploadFormGroup: UntypedFormGroup;
@@ -55,6 +58,7 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
   constructor(
     private _formBuilder: UntypedFormBuilder,
     public kmlParserService: KmlParserService,
+    private _dbService: DatabaseService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -146,5 +150,42 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
   /**
    * Import the spots into the database
    */
-  importSpots() {}
+  importSpots() {
+    this.stepperHorizontal.selected.completed = true;
+    this.stepperHorizontal.next();
+
+    firstValueFrom(this.kmlParserService.spotsToImport$).then((kmlSpots) => {
+      const spotsData: Spot.Schema[] = kmlSpots.map((kmlSpot: KMLSpot) => {
+        const spot = new Spot.Class("", {
+          name: { de_CH: kmlSpot.spot.name.trim() },
+          location: new GeoPoint(
+            kmlSpot.spot.location.lat,
+            kmlSpot.spot.location.lng
+          ),
+        });
+        return spot.data;
+      });
+
+      this._dbService.createMultipleSpots(spotsData).then(
+        () => {
+          // saving successful
+          this._spotImportSuccessful();
+        },
+        (error) => {
+          // saving failed
+          this._spotImportFailed();
+        }
+      );
+    });
+  }
+
+  private _spotImportSuccessful() {
+    this.stepperHorizontal.selected.completed = true;
+    this.stepperHorizontal.next();
+  }
+
+  private _spotImportFailed() {
+    this.stepperHorizontal.selected.completed = false;
+    this.stepperHorizontal.previous();
+  }
 }
