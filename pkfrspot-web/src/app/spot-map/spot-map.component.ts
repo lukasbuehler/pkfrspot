@@ -287,9 +287,8 @@ export class SpotMapComponent implements AfterViewInit {
       ) {
         // here we go through all the x,y pairs for every visible tile on screen right now.
         if (this.loadedSpots.has(`z${16}_${x}_${y}`)) {
-          this.visibleSpots = this.visibleSpots.concat(
-            this.loadedSpots.get(`z${16}_${x}_${y}`)
-          );
+          const spotsOnThisTile = this.loadedSpots.get(`z${16}_${x}_${y}`);
+          this.visibleSpots = this.visibleSpots.concat(spotsOnThisTile);
         }
       }
     }
@@ -329,7 +328,11 @@ export class SpotMapComponent implements AfterViewInit {
       zoom = this.mapZoom % 2 === 0 ? this.mapZoom : this.mapZoom - 1;
     }
 
-    this.visibleDots = [].concat(...Array.from(this.loadedDots[zoom].values()));
+    if (this.loadedDots[zoom]) {
+      this.visibleDots = [].concat(
+        ...Array.from(this.loadedDots[zoom].values())
+      );
+    }
   }
 
   openSpotById(spotId: string) {
@@ -453,8 +456,14 @@ export class SpotMapComponent implements AfterViewInit {
     this._dbService.getSpotsForTiles(tilesToLoad).subscribe({
       next: (spots) => {
         if (spots.length > 0) {
-          let tile = spots[0].data.tile_coordinates.z16;
-          this.loadedSpots.set(`z${16}_${tile.x}_${tile.y}`, spots);
+          spots.forEach((spot) => {
+            const tile = spot.data.tile_coordinates.z16;
+            if (this.loadedSpots.has(`z${16}_${tile.x}_${tile.y}`)) {
+              this.loadedSpots.get(`z${16}_${tile.x}_${tile.y}`).push(spot);
+            } else {
+              this.loadedSpots.set(`z${16}_${tile.x}_${tile.y}`, [spot]);
+            }
+          });
           this.updateVisibleSpots();
         }
       },
