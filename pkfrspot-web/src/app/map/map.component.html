@@ -18,8 +18,8 @@
 
   <!-- Cluster Marker -->
   <map-marker
-    *ngFor="let dot of dots"
-    [position]="{ lat: dot.location._lat, lng: dot.location._long }"
+    *ngFor="let point of dotPoints"
+    [position]="point"
     [options]="primaryDotMarkerOptions"
   ></map-marker>
 

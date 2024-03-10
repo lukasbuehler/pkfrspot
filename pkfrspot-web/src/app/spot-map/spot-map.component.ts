@@ -227,14 +227,14 @@ export class SpotMapComponent implements AfterViewInit {
     for (let x = southWestTileCoords.x; x <= northEastTileCoords.x; x++) {
       for (let y = northEastTileCoords.y; y <= southWestTileCoords.y; y++) {
         // here we go through all the x,y pairs for every visible tile on screen right now.
-        if (!loadedSpots[`z${zoom}_${x}_${y}`]) {
+        if (!loadedSpots.has(`z${zoom}_${x}_${y}`)) {
           // the tile was not loaded before
 
           // mark this tile as loaded, it will be filled after the data was
           // fetched. This prevents multiple fetches for the same tile
           // !([]) is false, !(undefined) is true
           // this way it wont be loaded twice
-          loadedSpots[`z${zoom}_${x}_${y}`] = [];
+          //loadedSpots.set(`z${zoom}_${x}_${y}`, []);
           tilesToLoad.push({ x: x, y: y });
         }
       }
@@ -288,7 +288,7 @@ export class SpotMapComponent implements AfterViewInit {
         // here we go through all the x,y pairs for every visible tile on screen right now.
         if (this.loadedSpots.has(`z${16}_${x}_${y}`)) {
           this.visibleSpots = this.visibleSpots.concat(
-            this.loadedSpots.get(`z${16}_${x}_${y}`) ?? []
+            this.loadedSpots.get(`z${16}_${x}_${y}`)
           );
         }
       }
@@ -309,10 +309,6 @@ export class SpotMapComponent implements AfterViewInit {
         );
       }
     }
-
-    console.log("visibleSpots for zoom", this.mapZoom, ":", this.visibleSpots);
-    console.log("northEastTile", this._northEastTileCoordsZ16);
-    console.log("southWestTile", this._southWestTileCoordsZ16);
   }
 
   updateSpotInLoadedSpots(spot: Spot.Class) {
@@ -555,7 +551,7 @@ export class SpotMapComponent implements AfterViewInit {
   addOrUpdateNewSpotToLoadedSpotsAndUpdate(newSpot: Spot.Class) {
     //Get the tile coordinates to save in loaded spots
     const ref = this.getReferenceToLoadedSpotById(newSpot.id);
-    console.log("ref", ref);
+    console.log("spot to update ref", ref);
     if (ref?.spot && ref.indexInTileArray >= 0 && ref.tile) {
       // The spot exists and should be updated
       // Update the spot
@@ -582,27 +578,6 @@ export class SpotMapComponent implements AfterViewInit {
     // update the map to show the new spot on the loaded spots array.
     this.updateVisibleSpots();
   }
-
-  /**
-   * This function is used if the new spot was deleted, discarded or never saved.
-   * It removes the first spot it finds without an id.
-   */
-  //   removeNewSpotFromLoadedSpotsAndUpdate() {
-  //     const spotToRemoveRef = this.getReferenceToLoadedSpotById("");
-
-  //     if (
-  //       spotToRemoveRef &&
-  //       spotToRemoveRef.spot &&
-  //       spotToRemoveRef.tile &&
-  //       spotToRemoveRef.indexInTileArray >= 0
-  //     ) {
-  //       this.loadedSpots[
-  //         `z${16}_${spotToRemoveRef.tile.x}_${spotToRemoveRef.tile.y}`
-  //       ].splice(spotToRemoveRef.indexInTileArray, 1);
-  //     } else {
-  //       console.warn("Dev: No spot to remove from loaded spots was found");
-  //     }
-  //   }
 
   /**
    * This function is used if the new spot was saved and now has an id. It replaces the first spot it finds with no ID with the newSaveSpot

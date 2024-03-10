@@ -17,6 +17,7 @@ import { BehaviorSubject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { MapsApiService } from "../maps-api.service";
 import { SpotClusterTile } from "src/scripts/db/SpotClusterTile.js";
+import { GeoPoint } from "firebase/firestore";
 
 @Component({
   selector: "app-map",
@@ -78,9 +79,13 @@ export class MapComponent implements OnInit {
 
   heatmapData: google.maps.visualization.WeightedLocation[] = [];
   _dots: SpotClusterTile["points"] = [];
+  dotPoints: google.maps.LatLng[] = [];
   @Input() set dots(newDots: SpotClusterTile["points"]) {
     this._dots = newDots;
     this.heatmapData = this.heatmapDataFromDots(newDots);
+    this.dotPoints = newDots.map((dot) => {
+      return this._geoPointToLatLng(dot.location);
+    });
   }
   get dots() {
     return this._dots;
@@ -140,15 +145,16 @@ export class MapComponent implements OnInit {
     };
   }
 
+  private _geoPointToLatLng(geoPoint: GeoPoint): google.maps.LatLng {
+    return new google.maps.LatLng(geoPoint.latitude, geoPoint.longitude);
+  }
+
   heatmapDataFromDots(
     dots: SpotClusterTile["points"]
   ): google.maps.visualization.WeightedLocation[] {
     return dots.map((dot) => {
       return {
-        location: new google.maps.LatLng(
-          dot.location.latitude,
-          dot.location.longitude
-        ),
+        location: this._geoPointToLatLng(dot.location),
         weight: dot.weight,
       };
     });
