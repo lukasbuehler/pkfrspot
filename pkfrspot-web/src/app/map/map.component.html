@@ -17,11 +17,13 @@
   <!-- <map-heatmap-layer [data]="heatmapData" [options]="heatmapOptions" /> -->
 
   <!-- Cluster Marker -->
+  @if (zoom < 16) {
   <map-marker
     *ngFor="let point of dotPoints"
     [position]="point"
     [options]="primaryDotMarkerOptions"
   ></map-marker>
+  }
 
   <map-circle
     *ngFor="let spot of spots"
