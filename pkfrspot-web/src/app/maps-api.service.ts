@@ -29,6 +29,10 @@ export class MapsApiService {
     };
   }
 
+  openInGoogleMapsInNewTab(location: google.maps.LatLngLiteral) {
+    window.open(`https://maps.google.com/?q=${location.lat},${location.lng}`);
+  }
+
   reverseGeocoding(location: google.maps.LatLngLiteral): Observable<any> {
     return this.http.get("https://maps.googleapis.com/maps/api/geocode/json", {
       params: {

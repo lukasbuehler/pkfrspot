@@ -88,3 +88,11 @@ mat-progress-bar {
   margin-bottom: -4px;
   z-index: 1;
 }
+
+mat-card-header {
+  justify-content: space-between;
+}
+
+::ng-deep mat-icon {
+  vertical-align: top;
+}

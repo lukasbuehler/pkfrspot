@@ -27,6 +27,7 @@ import {
 } from "../../scripts/Helpers";
 import { UntypedFormControl } from "@angular/forms";
 import { map, startWith } from "rxjs/operators";
+import { MapsApiService } from "../maps-api.service";
 
 @Component({
   selector: "app-spot-page",
@@ -83,7 +84,8 @@ export class SpotPageComponent implements OnInit {
   constructor(
     private _dbService: DatabaseService,
     private _storageService: StorageService,
-    private _authenticationService: AuthenticationService
+    private _authenticationService: AuthenticationService,
+    private _mapsApiService: MapsApiService
   ) {
     this.filteredCountries = this.stateCtrl.valueChanges.pipe(
       startWith(""),
@@ -278,13 +280,7 @@ export class SpotPageComponent implements OnInit {
   }
 
   openSpotInMaps() {
-    if (isMobileDevice()) {
-      window.open(`geo:${this.spot.location.lat},${this.spot.location.lng}`);
-    } else {
-      window.open(
-        `https://maps.google.com/maps?q=${this.spot.location.lat},${this.spot.location.lng}`
-      );
-    }
+    this._mapsApiService.openInGoogleMapsInNewTab(this.spot.location);
   }
 
   hasBounds() {

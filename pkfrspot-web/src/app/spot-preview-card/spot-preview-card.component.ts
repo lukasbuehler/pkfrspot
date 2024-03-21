@@ -16,6 +16,9 @@ export class SpotPreviewCardComponent implements OnInit {
   @Output() dismiss: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() edit: EventEmitter<any> = new EventEmitter<any>();
 
+  bookmarked = false;
+  visited = false;
+
   constructor(private _router: Router) {}
 
   ngOnInit() {}
@@ -29,5 +32,9 @@ export class SpotPreviewCardComponent implements OnInit {
       // open the spot in the spot map
       this._router.navigateByUrl(`/map/${this.spot.id}`);
     }
+  }
+
+  shareSpot() {
+    // TODO
   }
 }

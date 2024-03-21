@@ -32,6 +32,8 @@ import { UntypedFormControl } from "@angular/forms";
 import { Renderer2, AfterViewInit } from "@angular/core";
 import { map, startWith } from "rxjs/operators";
 import { trigger, transition, style, animate } from "@angular/animations";
+import { MapsApiService } from "../maps-api.service";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-spot-compact-view",
@@ -106,7 +108,9 @@ export class SpotCompactViewComponent
     public authenticationService: AuthenticationService,
     private _element: ElementRef,
     private _dbService: DatabaseService,
-    private _storageService: StorageService
+    private _storageService: StorageService,
+    private _mapsApiService: MapsApiService,
+    private _snackbar: MatSnackBar
   ) {
     this.filteredCountries = this.stateCtrl.valueChanges.pipe(
       startWith(""),
@@ -311,19 +315,16 @@ export class SpotCompactViewComponent
       }
     } else {
       navigator.clipboard.writeText(link);
-      console.log("copied to clipboard");
-      // TODO Snackbar
+      this._snackbar.open("Link to spot copied to clipboard", "Dismiss", {
+        duration: 3000,
+        horizontalPosition: "center",
+        verticalPosition: "top",
+      });
     }
   }
 
   openSpotInMaps() {
-    if (isMobileDevice()) {
-      window.open(`geo:${this.spot.location.lat},${this.spot.location.lng}`);
-    } else {
-      window.open(
-        `https://maps.google.com/maps?q=${this.spot.location.lat},${this.spot.location.lng}`
-      );
-    }
+    this._mapsApiService.openInGoogleMapsInNewTab(this.spot.location);
   }
 
   hasBounds() {

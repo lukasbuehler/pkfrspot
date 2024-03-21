@@ -36,9 +36,6 @@
       <span *ngIf="!isEditing">
         {{ spot.name }}
       </span>
-      <mat-icon *ngIf="visited && !isEditing" style="float: right"
-        >flag</mat-icon
-      >
     </mat-card-title>
     <mat-card-subtitle>
       <span *ngIf="!isEditing">
@@ -51,6 +48,42 @@
         ></app-rating> -->
       </span>
     </mat-card-subtitle>
+
+    <!-- Icon button row -->
+    <div class="spot-button-row" *ngIf="!isEditing">
+      @if(authenticationService.isSignedIn) { @if (!visited) {
+      <button
+        mat-icon-button
+        color="accent"
+        matTooltip="Bookmark this spot"
+        aria-label="Icon button with a bookmark icon"
+        (click)="bookmarked = !bookmarked; $event.stopPropagation()"
+      >
+        <mat-icon>{{ bookmarked ? "bookmark" : "bookmark_border" }}</mat-icon>
+      </button>
+
+      }
+      <button
+        mat-icon-button
+        color="primary"
+        matTooltip="Mark this spot as visisted"
+        aria-label="Icon button with a flag icon"
+        (click)="
+          visited = !visited; bookmarked = false; $event.stopPropagation()
+        "
+      >
+        <mat-icon>{{ visited ? "flag" : "outlined_flag" }}</mat-icon>
+      </button>
+      }
+      <button
+        mat-icon-button
+        matTooltip="Share this spot"
+        aria-label="Icon button with a share icon"
+        (click)="shareSpot(); $event.stopPropagation()"
+      >
+        <mat-icon>share</mat-icon>
+      </button>
+    </div>
   </mat-card-header>
   <mat-card-content>
     <!-- Spot title editing field -->
@@ -82,80 +115,40 @@
       </swiper-slide>
     </swiper-container>
 
-    <!-- Icon button row -->
-    <div
-      class="spot-button-row mb-3 mt-3"
-      *ngIf="authenticationService.isSignedIn && !isEditing"
-    >
-      <button
-        *ngIf="false"
-        mat-icon-button
-        matTooltip="Focus on map"
-        aria-label="Example icon button with a heart icon"
-        (click)="focusButtonClick()"
-      >
-        <mat-icon>center_focus_strong</mat-icon>
-      </button>
-
-      <button
-        mat-icon-button
-        color="accent"
-        matTooltip="Save this spot"
-        aria-label="Example icon button with a bookmark icon"
-        (click)="bookmarkClick()"
-      >
-        <mat-icon>{{ bookmarked ? "bookmark" : "bookmark_border" }}</mat-icon>
-      </button>
-      <button
-        mat-icon-button
-        color="accent"
-        matTooltip="Mark as visited"
-        aria-label="Example icon button with a flag icon"
-        (click)="visitedClick()"
-      >
-        <mat-icon>{{ visited ? "flag" : "outlined_flag" }}</mat-icon>
-      </button>
-      <button
-        [disabled]="!visited"
-        mat-icon-button
-        color="accent"
-        [matTooltip]="
-          visited
-            ? 'Rate this spot'
-            : 'To rate this spot you need to mark it as visited'
-        "
-        aria-label="Example icon button with a half-star icon"
-        (click)="rateClick()"
-      >
-        <mat-icon>star</mat-icon>
-      </button>
-      <button
-        mat-icon-button
-        matTooltip="Edit this spot"
-        aria-label="Example icon button with a pencil icon"
-        (click)="editButtonClick()"
-      >
-        <mat-icon>edit</mat-icon>
-      </button>
-    </div>
-    <!-- <div class="spot-button-row mb-3 mt-3">
+    @if(!isEditing) {
+    <div class="d-flex justify-start mb-3 mt-3">
       <button
         mat-stroked-button
-        matTooltip="Share this spot"
-        aria-label="Example icon button with a share icon"
-        (click)="shareSpot()"
-      >
-        Share
-      </button>
-      <button
-        mat-stroked-button
+        color="primary"
         matTooltip="Open in maps"
         aria-label="Example icon button with an open in icon"
         (click)="openSpotInMaps()"
       >
         Open in maps
       </button>
-    </div> -->
+    </div>
+
+    <div class="d-flex mb-3 mt-3">
+      <button
+        mat-stroked-button
+        matTooltip="Share this spot"
+        aria-label="Example icon button with a share icon"
+        (click)="editButtonClick()"
+        class="flex-grow-1 me-1"
+      >
+        Edit
+      </button>
+      <button
+        mat-stroked-button
+        color="warn"
+        matTooltip="Report this spot"
+        aria-label="Example icon button with a share icon"
+        class="flex-grow-1 ms-1"
+      >
+        Report
+      </button>
+    </div>
+    }
 
     <!-- <div *ngIf="spot.description">
       <h4 class="mat-body-2">Description</h4>

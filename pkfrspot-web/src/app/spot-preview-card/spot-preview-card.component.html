@@ -22,6 +22,37 @@
       ></app-rating> -->
     </mat-card-subtitle>
   </mat-card-header>
+  <!-- <div class="button-row d-flex">
+    @if (!visited) {
+    <button
+      mat-icon-button
+      color="accent"
+      matTooltip="Bookmark this spot"
+      aria-label="Icon button with a bookmark icon"
+      (click)="bookmarked = !bookmarked; $event.stopPropagation()"
+    >
+      <mat-icon>{{ bookmarked ? "bookmark" : "bookmark_border" }}</mat-icon>
+    </button>
+
+    }
+    <button
+      mat-icon-button
+      color="primary"
+      matTooltip="Mark this spot as visisted"
+      aria-label="Icon button with a flag icon"
+      (click)="visited = !visited; bookmarked = false; $event.stopPropagation()"
+    >
+      <mat-icon>{{ visited ? "flag" : "outlined_flag" }}</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      matTooltip="Share this spot"
+      aria-label="Icon button with a share icon"
+      (click)="shareSpot(); $event.stopPropagation()"
+    >
+      <mat-icon>share</mat-icon>
+    </button>
+  </div> -->
   <img
     mat-card-sm-image
     *ngIf="spot.previewImage"
