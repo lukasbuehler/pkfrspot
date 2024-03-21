@@ -420,17 +420,21 @@ export class SpotMapComponent implements AfterViewInit {
   loadSpotsForTiles(tilesToLoad: { x: number; y: number }[]) {
     if (tilesToLoad.length === 0) return;
 
+    // add the tiles to load to the map
+    tilesToLoad.forEach((tile) => {
+      const key = `z${16}_${tile.x}_${tile.y}`;
+      if (!this.loadedSpots.has(key)) {
+        this.loadedSpots.set(key, []);
+      }
+    });
+
     this._dbService.getSpotsForTiles(tilesToLoad).subscribe({
       next: (spots) => {
         if (spots.length > 0) {
           spots.forEach((spot) => {
             const tile = spot.data.tile_coordinates.z16;
             const key = `z${16}_${tile.x}_${tile.y}`;
-            if (this.loadedSpots.has(key)) {
-              this.loadedSpots.get(key).push(spot);
-            } else {
-              this.loadedSpots.set(key, [spot]);
-            }
+            this.loadedSpots.get(key).push(spot);
           });
           this.updateVisibleSpots();
         }
@@ -443,6 +447,13 @@ export class SpotMapComponent implements AfterViewInit {
 
   loadNewDotsOnTiles(zoom: number, tilesToLoad: { x: number; y: number }[]) {
     if (zoom % 2 === 1) return;
+
+    // tilesToLoad.forEach((tile) => {
+    //     const key = `z${zoom}_${tile.x}_${tile.y}`;
+    //     if (!this.loadedDots[zoom].has(key)) {
+    //         this.loadedDots[zoom].set(key, []);
+    //     }
+    // });
 
     this._dbService.getSpotClusterTiles(zoom, tilesToLoad).subscribe({
       next: (clusterTiles) => {

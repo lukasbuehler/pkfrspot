@@ -299,22 +299,24 @@
       </button>
     </div>
   </mat-card-content>
-  <mat-card-actions *ngIf="isEditing">
+  <mat-card-actions *ngIf="isEditing" class="mt-3">
     <button
-      color="accent"
+      mat-stroked-button
+      color="warn"
       *ngIf="editable"
-      mat-button
-      (click)="saveButtonClick()"
-    >
-      Save changes
-    </button>
-    <button
-      color="primary"
-      *ngIf="editable"
-      mat-button
       (click)="discardButtonClick()"
+      class="flex-grow-1 me-1"
     >
       Discard changes
+    </button>
+    <button
+      mat-stroked-button
+      color="primary"
+      *ngIf="editable"
+      (click)="saveButtonClick()"
+      class="flex-grow-1 ms-1"
+    >
+      Save changes
     </button>
   </mat-card-actions>
 </mat-card>
