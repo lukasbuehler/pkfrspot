@@ -1,0 +1,5 @@
+<div class="carousel">
+  @for (mediaObj of media; track $index) { @if (mediaObj.type === "image") {
+  <img [src]="mediaObj.src" class="spot-img" />
+  } }
+</div>

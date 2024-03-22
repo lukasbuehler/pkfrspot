@@ -111,6 +111,7 @@ import { VgBufferingModule } from "@videogular/ngx-videogular/buffering";
 import { HammerModule } from "@angular/platform-browser";
 import { MapComponent } from "./map/map.component";
 import { SpotMapComponent } from "./spot-map/spot-map.component";
+import { ImgCarouselComponent } from "./img-carousel/img-carousel.component";
 
 @NgModule({
   declarations: [
@@ -220,6 +221,8 @@ import { SpotMapComponent } from "./spot-map/spot-map.component";
     VgBufferingModule,
 
     GoogleMapsModule,
+
+    ImgCarouselComponent,
   ],
   exports: [MatButtonModule],
   providers: [

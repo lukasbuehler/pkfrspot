@@ -1,0 +1,17 @@
+::ng-deep .carousel {
+  position: relative;
+  height: 100%;
+  overflow-x: scroll;
+  display: flex;
+  flex-direction: row;
+  padding-left: 16px;
+  padding-right: 16px;
+
+  img {
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-right: 10px;
+  }
+}
