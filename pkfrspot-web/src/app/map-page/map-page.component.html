@@ -128,9 +128,17 @@
     </app-bottom-sheet>
   </div>
 
+  <!-- Search option chips -->
+  @if(authService.isSignedIn && !isEditing) {
+  <mat-chip-listbox class="search-option-chips">
+    <mat-chip-option color="">Unvisited</mat-chip-option>
+    <mat-chip-option color="primary" leadingIcon="flag"
+      >Visited</mat-chip-option
+    >
+  </mat-chip-listbox>
+
   <!-- Add / import spots speed dial-->
   <app-speed-dial-fab
-    *ngIf="!isEditing"
     #createSpotSpeedDial
     id="createSpotSpeedDial"
     [buttonConfig]="speedDialButtonConfig"
@@ -139,6 +147,7 @@
     (mainFabClick)="spotMap.createSpot()"
     (miniFabClick)="speedDialMiniFabClick($event)"
   ></app-speed-dial-fab>
+  }
 
   <button
     mat-mini-fab

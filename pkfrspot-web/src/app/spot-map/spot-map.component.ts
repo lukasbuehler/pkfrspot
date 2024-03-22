@@ -168,7 +168,7 @@ export class SpotMapComponent implements AfterViewInit {
       this.updateVisibleSpots();
     } else {
       // hide the spots and show the dots
-      this.visibleSpots = [];
+      this.clearVisibleSpots();
 
       let zoomLevel = zoom;
 
@@ -245,6 +245,11 @@ export class SpotMapComponent implements AfterViewInit {
   }
 
   // Public Map helper functions
+
+  clearVisibleSpots() {
+    this.visibleSpots = [];
+    this.visibleSpotsChange.emit([]);
+  }
 
   /**
    * This function takes in the new corners of the visible area and hides and shows spots as necessairy

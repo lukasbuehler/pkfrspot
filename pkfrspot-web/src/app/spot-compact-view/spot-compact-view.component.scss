@@ -93,6 +93,19 @@ mat-card-header {
   justify-content: space-between;
 }
 
+mat-card-header {
+  ::ng-deep div.mat-mdc-card-header-text {
+    flex-shrink: 1;
+    min-width: 0;
+
+    * {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  }
+}
+
 ::ng-deep mat-icon {
   vertical-align: top;
 }
