@@ -7,8 +7,8 @@
   border-radius: 0px !important;
 }
 
-$sheet-header-height: 90px;
 $handle-region-height: 30px;
+$sheet-header-height: calc(72px + $handle-region-height);
 
 div.sheet-region {
   position: absolute;

@@ -22,34 +22,22 @@
   [class.mat-elevation-z0]="flat"
   [class.clickable]="clickable"
 >
-  <mat-card-header>
+  @if(!isEditing) {
+  <mat-card-header class="pb-2">
     <mat-card-title>
-      <button
-        *ngIf="dismissable"
-        mat-icon-button
-        #closeSpotFab
-        id="closeSpotFab"
-        (click)="dismissed()"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
-      <span *ngIf="!isEditing">
-        {{ spot.name }}
-      </span>
+      {{ spot.name }}
     </mat-card-title>
     <mat-card-subtitle>
-      <span *ngIf="!isEditing">
-        {{ capitalize(spot.type) }}
-        <!-- <app-rating
-          class="float-right"
-          *ngIf="spot?.rating"
-          [rating]="spot.rating"
-          color="accent"
-        ></app-rating> -->
-      </span>
+      @if(spot.type && spot.type !== "other") {
+      <mat-chip class="me-1">{{ capitalize(spot.type) }}</mat-chip>
+      } @if(spot.area && spot.area !== "other") {
+      <mat-chip [color]="spot.area === 'private' ? 'warn' : ''">{{
+        capitalize(spot.area)
+      }}</mat-chip>
+      }
     </mat-card-subtitle>
 
-    <!-- Icon button row -->
+    <!-- Icon buttons in header -->
     <div class="spot-button-row" *ngIf="!isEditing">
       @if(authenticationService.isSignedIn) { @if (!visited) {
       <button
@@ -85,23 +73,12 @@
       </button>
     </div>
   </mat-card-header>
+  }
   <mat-card-content>
-    <!-- Spot title editing field -->
-    <form *ngIf="isEditing">
-      <mat-form-field style="width: 100%">
-        <mat-label>Spot name</mat-label>
-        <input
-          #spotNameInput
-          matInput
-          [value]="spot?.name || ''"
-          (change)="spot.name = $event.target.value"
-        />
-      </mat-form-field>
-    </form>
-
+    @if(!isEditing) {
     <!-- spot media swiper  -->
     <swiper-container
-      class="mt-2 spot-media-swiper"
+      class="spot-media-swiper"
       *ngIf="!isEditing && spot.media && spot.media.length > 0"
       [navigation]="true"
       [pagination]="{ clickable: true }"
@@ -115,8 +92,34 @@
       </swiper-slide>
     </swiper-container>
 
-    @if(!isEditing) {
-    <div class="d-flex justify-start mb-3 mt-3">
+    <!-- Spot Description -->
+    <div *ngIf="spot.description">
+      <h4 class="mat-body-2">Description</h4>
+      <p>
+        {{ spot.description }}
+      </p>
+    </div>
+
+    <!-- Location -->
+    <div class="pb-2">
+      <h4 class="mat-body-2">Location</h4>
+      <p>
+        {{ spot.getReadableLocation() }}
+      </p>
+    </div>
+
+    <!-- Spot Address -->
+    <div *ngIf="spot.address?.country">
+      <h4 *ngIf="spot.address?.formatted" class="mat-body-2">Address</h4>
+      <p>{{ spot.address.formatted }}</p>
+      <h4 class="mat-body-2">Country</h4>
+      <p>
+        {{ getCountryEmojiFromAlpha2(spot.address.country.short) }}
+        {{ getCountryNameFromShortCode(spot.address.country.short) }}
+      </p>
+    </div>
+
+    <div class="d-flex justify-start pb-2">
       <button
         mat-stroked-button
         color="primary"
@@ -128,6 +131,7 @@
       </button>
     </div>
 
+    <!-- Action buttons -->
     <div class="d-flex mb-3 mt-3">
       <button
         mat-stroked-button
@@ -148,34 +152,29 @@
         Report
       </button>
     </div>
-    }
 
-    <!-- <div *ngIf="spot.description">
-      <h4 class="mat-body-2">Description</h4>
-      <p>
-        {{ spot.description }}
-      </p>
-    </div> -->
-
-    <!-- <div *ngIf="spot.address?.country">
-      <h4 *ngIf="spot.address?.formatted" class="mat-body-2">Address</h4>
-      <p>{{ spot.address.formatted }}</p>
-      <h4 class="mat-body-2">Country</h4>
-      <p>
-        {{ getCountryEmojiFromAlpha2(spot.address.country.short) }}
-        {{ getCountryNameFromShortCode(spot.address.country.short) }}
-      </p>
-    </div> -->
+    } @else {
+    <!-- Spot title editing field -->
+    <form>
+      <mat-form-field style="width: 100%">
+        <mat-label>Spot name</mat-label>
+        <input
+          #spotNameInput
+          matInput
+          [value]="spot?.name || ''"
+          (change)="spot.name = $event.target.value"
+        />
+      </mat-form-field>
+    </form>
 
     <!-- Media preview grid -->
     <app-media-preview-grid
-      *ngIf="isEditing"
       [media]="spot.media"
       (mediaChanged)="mediaChanged($event)"
     ></app-media-preview-grid>
 
     <!-- Image upload  -->
-    <div *ngIf="isEditing" class="upload-spot-image-box">
+    <div class="upload-spot-image-box">
       <app-upload-media-ui
         [allowedMimeTypes]="['image/jpg', 'image/jpeg', 'image/png']"
         (uploadMedia)="setSpotImage($event)"
@@ -192,7 +191,7 @@
     </div>
 
     <!-- Edit spot form -->
-    <form *ngIf="isEditing">
+    <form>
       <mat-form-field style="width: 100%">
         <mat-label>Spot type</mat-label>
         <mat-select
@@ -291,15 +290,17 @@
 
     <div class="spot-button-row">
       <button
-        *ngIf="spot.id && this.editable && isEditing && !hasBounds()"
+        *ngIf="spot.id && !hasBounds()"
         mat-button
         (click)="addBoundsClicked()"
       >
         Add bounds
       </button>
     </div>
+    }
   </mat-card-content>
-  <mat-card-actions *ngIf="isEditing" class="mt-3">
+  @if(isEditing) {
+  <mat-card-actions class="mt-3">
     <button
       mat-stroked-button
       color="warn"
@@ -319,4 +320,5 @@
       Save changes
     </button>
   </mat-card-actions>
+  }
 </mat-card>

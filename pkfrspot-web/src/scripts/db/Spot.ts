@@ -134,6 +134,22 @@ export namespace Spot {
       return this._data.media[index];
     }
 
+    public getReadableLocation(): string {
+      const lat = Math.abs(this._location.lat);
+      const lng = Math.abs(this._location.lng);
+      const latDegrees = Math.floor(lat);
+      const latMinutes = Math.floor((lat - latDegrees) * 60);
+      const latSeconds =
+        Math.round((lat - latDegrees - latMinutes / 60) * 36000) / 10;
+      const lngDegrees = Math.floor(lng);
+      const lngMinutes = Math.floor((lng - lngDegrees) * 60);
+      const lngSeconds =
+        Math.round((lng - lngDegrees - lngMinutes / 60) * 36000) / 10;
+      return `${latDegrees}° ${latMinutes}' ${latSeconds}'' ${
+        lat >= 0 ? "N" : "S"
+      }, ${lngDegrees}° ${lngMinutes}' ${lngSeconds}'' ${lng >= 0 ? "E" : "W"}`;
+    }
+
     public addMedia(
       _dbService: DatabaseService,
       src: string,
