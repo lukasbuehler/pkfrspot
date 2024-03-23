@@ -293,10 +293,10 @@
       </mat-form-field>
     </form>
 
-    <div class="spot-button-row">
+    <div class="my-3 d-flex justify-start">
       <button
+        mat-stroked-button
         *ngIf="spot.id && !hasBounds()"
-        mat-button
         (click)="addBoundsClicked()"
       >
         Add bounds

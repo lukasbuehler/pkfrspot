@@ -18,8 +18,7 @@ import { Post } from "src/scripts/db/Post";
 import { Observable, Subscription } from "rxjs";
 import { AuthenticationService } from "../authentication.service";
 import { MediaType } from "src/scripts/db/Interfaces";
-import SwiperCore, { Navigation, Pagination } from "swiper";
-SwiperCore.use([Navigation, Pagination]);
+
 //import { MatTooltipModule } from "@angular/material/tooltip";
 
 import {
@@ -29,7 +28,6 @@ import {
   isMobileDevice,
 } from "../../scripts/Helpers";
 import { UntypedFormControl } from "@angular/forms";
-import { Renderer2, AfterViewInit } from "@angular/core";
 import { map, startWith } from "rxjs/operators";
 import { trigger, transition, style, animate } from "@angular/animations";
 import { MapsApiService } from "../maps-api.service";
@@ -50,9 +48,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
     ]),
   ],
 })
-export class SpotCompactViewComponent
-  implements OnInit, OnChanges, AfterViewInit
-{
+export class SpotCompactViewComponent implements OnInit, OnChanges {
   @Input() spot: Spot.Class;
   @Input() infoOnly: boolean = false;
   @Input() dismissable: boolean = false;
@@ -104,7 +100,6 @@ export class SpotCompactViewComponent
   }
 
   constructor(
-    private renderer: Renderer2,
     public authenticationService: AuthenticationService,
     private _element: ElementRef,
     private _dbService: DatabaseService,
@@ -128,18 +123,6 @@ export class SpotCompactViewComponent
 
   ngOnInit() {
     this.countries = getCountriesList("de");
-  }
-
-  ngAfterViewInit() {
-    const swiperContainer = document.querySelector("swiper-container");
-    if (swiperContainer) {
-      this.renderer.listen(swiperContainer, "touchstart", (event) => {
-        event.stopPropagation();
-      });
-      this.renderer.listen(swiperContainer, "touchmove", (event) => {
-        event.stopPropagation();
-      });
-    }
   }
 
   private _filterCountries(value: string): any[] {
@@ -328,7 +311,7 @@ export class SpotCompactViewComponent
   }
 
   hasBounds() {
-    return this.spot && this.spot.hasBounds();
+    return this.spot?.hasBounds();
   }
 
   capitalize(s: string) {

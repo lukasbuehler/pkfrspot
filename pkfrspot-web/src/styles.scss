@@ -2,8 +2,9 @@
 
 :root {
   --primary-color: #3b5fe2;
+  --primary-color-dark: #b8c4ff;
   --accent-color: #51cd74;
-  --swiper-theme-color: var(--primary-color) !important;
+  --swiper-theme-color: var(--primary-color-dark) !important;
 }
 
 button:focus {

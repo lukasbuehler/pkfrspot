@@ -1,5 +1,7 @@
 <div class="carousel">
   @for (mediaObj of media; track $index) { @if (mediaObj.type === "image") {
-  <img [src]="mediaObj.src" class="spot-img" />
+  <div matRipple class="spot-img">
+    <img [src]="mediaObj.src" (click)="imageClick($index)" />
+  </div>
   } }
 </div>
