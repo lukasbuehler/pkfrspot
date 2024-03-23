@@ -103,7 +103,7 @@ export class SpotMapComponent implements AfterViewInit {
     private meta: Meta,
     private titleService: Title
   ) {
-    this.titleService.setTitle(`PKFR Spot`);
+    this.titleService.setTitle(`PKFR Spot map`);
   }
 
   ngAfterViewInit(): void {
@@ -325,7 +325,7 @@ export class SpotMapComponent implements AfterViewInit {
     this.setSelectedSpot(spot);
     this.focusSpot(spot);
 
-    this.titleService.setTitle(`PKFR Spot: ${spot.name}`);
+    this.titleService.setTitle(`PKFR Spot map: ${spot.name}`);
 
     this.meta.updateTag(
       { name: "og:title", content: spot.name },
@@ -530,7 +530,7 @@ export class SpotMapComponent implements AfterViewInit {
     // unselect
     this.setSelectedSpot(null);
 
-    this.titleService.setTitle(`PKFR Spot`);
+    this.titleService.setTitle(`PKFR Spot map`);
   }
 
   /**

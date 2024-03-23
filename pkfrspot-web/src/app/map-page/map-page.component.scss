@@ -4,6 +4,26 @@ div.map-container {
   position: relative;
 }
 
+app-spot-map {
+  display: block;
+  @media (min-width: 768px) {
+    // desktop (large screen)
+    width: calc(100% + 400px);
+    height: 100%;
+  }
+  @media (max-width: 767px) {
+    // mobile
+    margin-top: -100px;
+    width: 100%;
+    height: calc(100% + 100px);
+  }
+}
+
+.map-container {
+  overflow: hidden;
+  height: 100%;
+}
+
 .tab-icon {
   margin-right: 8px;
 }
