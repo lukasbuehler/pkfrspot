@@ -60,6 +60,8 @@ export class ImgCarouselComponent {
   template: `
     <swiper-container
       #swiperRef
+      zoom-max-ratio="3"
+      zoom-min-ratio="1"
       [navigation]="true"
       [pagination]="{ clickable: true }"
     >
@@ -76,7 +78,7 @@ export class ImgCarouselComponent {
         display: flex;
       }
       swiper-container {
-        max-height: 70vh;
+        max-height: 95vh;
         max-width: 95vw;
       }
       swiper-slide {

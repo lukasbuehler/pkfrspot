@@ -137,13 +137,13 @@
     </div>
 
     <!-- Action buttons -->
-    <div class="d-flex mb-3 mt-3">
+    <div class="d-flex mb-3 mt-3 gap-2">
       <button
         mat-stroked-button
         matTooltip="Share this spot"
         aria-label="Example icon button with a share icon"
         (click)="editButtonClick()"
-        class="flex-grow-1 me-1"
+        class="flex-grow-1 flex-basis-0"
       >
         Edit
       </button>
@@ -152,7 +152,7 @@
         color="warn"
         matTooltip="Report this spot"
         aria-label="Example icon button with a share icon"
-        class="flex-grow-1 ms-1"
+        class="flex-grow-1 flex-basis-0"
       >
         Report
       </button>
@@ -305,13 +305,13 @@
     }
   </mat-card-content>
   @if(isEditing) {
-  <mat-card-actions class="mt-3">
+  <mat-card-actions class="mt-3 gap-2">
     <button
       mat-stroked-button
       color="warn"
       *ngIf="editable"
       (click)="discardButtonClick()"
-      class="flex-grow-1 me-1"
+      class="flex-grow-1 flex-basis-0"
     >
       Discard changes
     </button>
@@ -320,7 +320,7 @@
       color="primary"
       *ngIf="editable"
       (click)="saveButtonClick()"
-      class="flex-grow-1 ms-1"
+      class="flex-grow-1 flex-basis-0"
     >
       Save changes
     </button>
