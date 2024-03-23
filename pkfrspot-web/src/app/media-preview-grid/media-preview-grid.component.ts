@@ -42,4 +42,8 @@ export class MediaPreviewGridComponent implements OnInit {
     mediaCopy.splice(index, 1);
     this.mediaChanged.emit(mediaCopy);
   }
+
+  editMedia(index: number) {
+    console.log("edit media", index);
+  }
 }

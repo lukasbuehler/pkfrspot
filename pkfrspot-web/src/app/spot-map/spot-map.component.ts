@@ -14,7 +14,8 @@ import { take } from "rxjs";
 import { MapHelpers } from "src/scripts/MapHelpers";
 import { AuthenticationService } from "../authentication.service";
 import { MapComponent } from "../map/map.component";
-import { SpotClusterTile } from "src/scripts/db/SpotClusterTile.js";
+import { SpotClusterTile } from "src/scripts/db/SpotClusterTile";
+import { Meta, Title } from "@angular/platform-browser";
 
 /**
  * This interface is used to reference a spot in the loaded spots array.
@@ -98,8 +99,12 @@ export class SpotMapComponent implements AfterViewInit {
   constructor(
     private route: ActivatedRoute,
     private _dbService: DatabaseService,
-    private authService: AuthenticationService
-  ) {}
+    private authService: AuthenticationService,
+    private meta: Meta,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle(`PKFR Spot`);
+  }
 
   ngAfterViewInit(): void {
     let spotId: string = this.route.snapshot.paramMap.get("spotID") ?? "";
@@ -319,6 +324,25 @@ export class SpotMapComponent implements AfterViewInit {
   openSpot(spot: Spot.Class) {
     this.setSelectedSpot(spot);
     this.focusSpot(spot);
+
+    this.titleService.setTitle(`PKFR Spot: ${spot.name}`);
+
+    this.meta.updateTag(
+      { name: "og:title", content: spot.name },
+      'name="og:title"'
+    );
+    this.meta.updateTag(
+      { name: "og:description", content: spot.description },
+      'name="og:title"'
+    );
+
+    this.meta.addTags(
+      [
+        { name: "twitter:title", content: spot.name },
+        { name: "twitter::description", content: spot.description },
+      ],
+      true
+    );
   }
 
   focusSpot(spot: Spot.Class) {
@@ -500,12 +524,13 @@ export class SpotMapComponent implements AfterViewInit {
       alert(
         "You are currently editing a spot. Please save or discard your changes before closing the spot."
       );
-      return;
       //this.discardEdit();
     }
 
     // unselect
     this.setSelectedSpot(null);
+
+    this.titleService.setTitle(`PKFR Spot`);
   }
 
   /**

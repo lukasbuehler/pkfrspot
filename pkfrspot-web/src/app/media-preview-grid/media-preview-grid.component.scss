@@ -35,6 +35,11 @@
     min-height: 100%;
     z-index: -1;
   }
+  > .bl-fab {
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+  }
   > .br-fab {
     position: absolute;
     bottom: 2px;

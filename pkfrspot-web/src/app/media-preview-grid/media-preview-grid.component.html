@@ -14,6 +14,14 @@
     <div cdkDrag class="drag-element">
       <img class="tile-image" [src]="mediaObj.src" [alt]="mediaObj.uid || ''" />
       <button
+        class="bl-fab"
+        mat-icon-button
+        aria-label="icon button with a trash icon"
+        (click)="editMedia(index)"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button
         class="br-fab"
         color="warn"
         mat-icon-button

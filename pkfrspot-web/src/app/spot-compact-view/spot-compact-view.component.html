@@ -54,7 +54,7 @@
       <button
         mat-icon-button
         color="primary"
-        matTooltip="Mark this spot as visisted"
+        matTooltip="Mark this spot as visited"
         aria-label="Icon button with a flag icon"
         (click)="
           visited = !visited; bookmarked = false; $event.stopPropagation()
@@ -137,10 +137,11 @@
     </div>
 
     <!-- Action buttons -->
+    @if(authenticationService.isSignedIn) {
     <div class="d-flex mb-3 mt-3 gap-2">
       <button
         mat-stroked-button
-        matTooltip="Share this spot"
+        matTooltip="Edit this spot"
         aria-label="Example icon button with a share icon"
         (click)="editButtonClick()"
         class="flex-grow-1 flex-basis-0"
@@ -157,8 +158,7 @@
         Report
       </button>
     </div>
-
-    } @else {
+    } } @else {
     <!-- Spot title editing field -->
     <form>
       <mat-form-field style="width: 100%">
@@ -188,6 +188,7 @@
       <button
         mat-flat-button
         (click)="uploadImage()"
+        [disabled]="!newSpotImage"
         class="mt-2"
         color="accent"
       >
@@ -196,102 +197,37 @@
     </div>
 
     <!-- Edit spot form -->
-    <form>
-      <mat-form-field style="width: 100%">
-        <mat-label>Spot type</mat-label>
-        <mat-select
-          [value]="spot?.type"
-          (selectionChange)="spot.type = $event.value"
-        >
-          <mat-option *ngFor="let type of spotTypes" [value]="type">
-            {{ capitalize(type) }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field style="width: 100%">
-        <mat-label>Spot area</mat-label>
-        <mat-select
-          [value]="spot?.area"
-          (selectionChange)="spot.area = $event.value"
-        >
-          <mat-option *ngFor="let area of spotAreas" [value]="area">
-            {{ capitalize(area) }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field style="width: 100%">
-        <mat-label>Description</mat-label>
-        <textarea
-          matInput
-          placeholder="Description of the spot, its features and more..."
-          [value]="spot?.description || ''"
-          (change)="spot.description = $event.target.value"
-        ></textarea>
-      </mat-form-field>
-
-      <!-- Country and address toggle -->
-      <mat-slide-toggle
-        color="accent"
-        [checked]="true"
-        (change)="automaticallyDetermineCountryAndAddressToggleChanged($event)"
-        >Automatically determine address</mat-slide-toggle
+    <mat-form-field style="width: 100%">
+      <mat-label>Spot type</mat-label>
+      <mat-select
+        [value]="spot?.type"
+        (selectionChange)="spot.type = $event.value"
       >
-
-      <!-- Country -->
-      <mat-form-field
-        *ngIf="!automaticallyDetermineAddress"
-        style="width: 100%"
+        <mat-option *ngFor="let type of spotTypes" [value]="type">
+          {{ capitalize(type) }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field style="width: 100%">
+      <mat-label>Spot area</mat-label>
+      <mat-select
+        [value]="spot?.area"
+        (selectionChange)="spot.area = $event.value"
       >
-        <mat-label>Country</mat-label>
-        <input
-          matInput
-          placeholder="Country"
-          aria-label="Country"
-          [formControl]="stateCtrl"
-          [matAutocomplete]="countryAuto"
-        />
-        <mat-autocomplete
-          #countryAuto="matAutocomplete"
-          (optionSelected)="countryOptionSelected($event)"
-        >
-          <mat-option
-            [id]="country.code"
-            *ngFor="let country of filteredCountries | async"
-            [value]="country.name"
-          >
-            {{ country.emoji }} {{ country.name }}
-          </mat-option>
-        </mat-autocomplete>
-        <mat-hint
-          >Selected:
-          {{
-            spot.address?.country
-              ? getCountryEmojiFromAlpha2(spot.address.country.short) +
-                " " +
-                spot.address.country.long +
-                " (" +
-                spot.address.country.short +
-                ")"
-              : "No country selected"
-          }}</mat-hint
-        >
-      </mat-form-field>
-
-      <!-- Address -->
-      <mat-form-field
-        *ngIf="
-          !automaticallyDetermineAddress && spot.address && spot.address.country
-        "
-        style="width: 100%"
-      >
-        <mat-label>Address</mat-label>
-        <input
-          matInput
-          [value]="spot.address?.formatted || ''"
-          (change)="addressChanged($event.target.value)"
-        />
-      </mat-form-field>
-    </form>
+        <mat-option *ngFor="let area of spotAreas" [value]="area">
+          {{ capitalize(area) }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field style="width: 100%">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        placeholder="Description of the spot, its features and more..."
+        [value]="spot?.description || ''"
+        (change)="spot.description = $event.target.value"
+      ></textarea>
+    </mat-form-field>
 
     <div class="my-3 d-flex justify-start">
       <button
