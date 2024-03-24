@@ -134,11 +134,12 @@ div.search-group {
   padding-right: 10px;
 
   > * {
+    overflow-y: scroll;
     pointer-events: visible;
     background-color: #2a2a2d;
     border-radius: 28px;
     width: 100%;
-    margin-top: 10px;
+    margin-bottom: 10px;
 
     ::ng-deep mat-card {
       border-radius: 28px;
@@ -149,6 +150,8 @@ div.search-group {
     height: 56px;
     overflow: hidden;
     border: none;
+    flex-shrink: 0;
+    margin-top: 10px;
 
     ::ng-deep .mat-mdc-form-field-subscript-wrapper,
     ::ng-deep .mdc-line-ripple {
@@ -161,6 +164,8 @@ div.search-group {
 }
 
 app-bottom-sheet {
+  margin-bottom: 0px !important;
+
   @media (max-width: 599px) {
     // small screen
     margin-left: -10px;

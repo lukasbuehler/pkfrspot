@@ -79,25 +79,46 @@
       </button>
     </mat-form-field>
 
-    <!-- <app-spot-compact-view
-      [@inOutAnimation]
-      *ngIf="selectedSpot"
-      #spotDetail
-      [spot]="selectedSpot"
-      [flat]="true"
-      [dismissable]="true"
-      [infoOnly]="false"
-      [editable]="false"
-      [(isEditing)]="isEditing"
-      (dismiss)="closeSpot()"
-      (addBoundsClick)="addBounds()"
-      (updateSpotEvent)="getPathsFromSpotPolygon()"
-      (focusClick)="focusSpot(selectedSpot)"
-      (saveClick)="saveSpot($event)"
-    ></app-spot-compact-view> -->
+    @if(selectedSpot) {
+    <div class="d-none d-md-block spot-preview-container pt-3">
+      <app-spot-compact-view
+        [@inOutAnimation]
+        #spotDetail
+        [spot]="selectedSpot"
+        [flat]="true"
+        [dismissable]="false"
+        [infoOnly]="false"
+        [editable]="true"
+        [isEditing]="isEditing"
+        (isEditingChange)="$event ? spotMap.startEdit() : spotMap.discardEdit()"
+        (dismiss)="spotMap.closeSpot()"
+        (addBoundsClick)="spotMap.addBounds()"
+        (focusClick)="spotMap.focusSpot(selectedSpot)"
+        (saveClick)="spotMap.saveSpot($event)"
+      ></app-spot-compact-view>
+    </div>
+    } @else {
+    <div class="d-none d-md-block p-3">
+      <h3 class="mat-h3">
+        {{ visibleSpots.length }} spot{{ visibleSpots.length === 1 ? "" : "s" }}
+        in this area
+      </h3>
+      <div *ngIf="visibleSpots.length > 0" class="spots-container">
+        <app-spot-preview-card
+          *ngFor="let spot of visibleSpots"
+          [spot]="spot"
+          [infoOnly]="true"
+          [clickable]="true"
+          (click)="spotMap.openSpot(spot)"
+        >
+        </app-spot-preview-card>
+      </div>
+    </div>
+    }
 
     <app-bottom-sheet
       #bottomSheet
+      class="d-md-none"
       title="{{ visibleSpots.length }} spot{{
         visibleSpots.length === 1 ? '' : 's'
       }} in this area"
