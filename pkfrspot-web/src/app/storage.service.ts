@@ -49,4 +49,8 @@ export class StorageService {
   upload(): Observable<string> {
     return this.uploadObs;
   }
+
+  makeThumbnailURL(pathUrl: string, size: number): string {
+    return pathUrl.replace(/\?/, `_${size}x${size}?`);
+  }
 }

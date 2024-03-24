@@ -74,7 +74,12 @@
           *ngIf="
             authService.isSignedIn && authService.user?.data?.profilePicture
           "
-          [src]="authService.user.data.profilePicture"
+          [src]="
+            storageService.makeThumbnailURL(
+              authService.user.data.profilePicture,
+              200
+            )
+          "
         />
       </button>
     </mat-form-field>

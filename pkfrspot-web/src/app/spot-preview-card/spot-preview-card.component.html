@@ -56,6 +56,6 @@
   <img
     mat-card-sm-image
     *ngIf="spot.previewImage"
-    src="{{ spot.previewImage }}"
+    [src]="storageService.makeThumbnailURL(spot.previewImage, 200)"
   />
 </mat-card>

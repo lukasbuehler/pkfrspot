@@ -13,6 +13,7 @@ import { SearchService } from "../search.service";
 import { SearchResponse } from "typesense/lib/Typesense/Documents";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
 import { Location } from "@angular/common";
+import { StorageService } from "../storage.service";
 
 @Component({
   selector: "app-map-page",
@@ -51,6 +52,7 @@ export class MapPageComponent implements AfterViewInit {
   constructor(
     public authService: AuthenticationService,
     public mapsService: MapsApiService,
+    public storageService: StorageService,
     private _searchService: SearchService,
     private router: Router,
     private location: Location,

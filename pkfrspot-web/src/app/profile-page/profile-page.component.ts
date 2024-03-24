@@ -11,6 +11,7 @@ import { User } from "src/scripts/db/User";
 import { AuthenticationService } from "../authentication.service";
 import { DatabaseService } from "../database.service";
 import { FollowListComponent } from "../follow-list/follow-list.component";
+import { StorageService } from "../storage.service";
 
 @Component({
   selector: "app-profile-page",
@@ -30,7 +31,8 @@ export class ProfilePageComponent implements OnInit {
     private _authService: AuthenticationService,
     private _databaseService: DatabaseService,
     private _route: ActivatedRoute,
-    private _snackbar: MatSnackBar
+    private _snackbar: MatSnackBar,
+    private _storageService: StorageService
   ) {}
 
   profilePicture: string = "";
@@ -100,7 +102,10 @@ export class ProfilePageComponent implements OnInit {
         this.isLoading = false;
 
         // Load the profile picture of this user
-        this.profilePicture = this.user.profilePicture;
+        this.profilePicture = this._storageService.makeThumbnailURL(
+          this.user.profilePicture,
+          400
+        );
 
         // Load all the posts from this user
         this.loadPostsForUser(userId);

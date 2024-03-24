@@ -2,6 +2,7 @@ import { trigger, transition, style, animate } from "@angular/animations";
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { Router } from "@angular/router";
 import { Spot } from "src/scripts/db/Spot";
+import { StorageService } from "../storage.service";
 
 @Component({
   selector: "app-spot-preview-card",
@@ -19,7 +20,7 @@ export class SpotPreviewCardComponent implements OnInit {
   bookmarked = false;
   visited = false;
 
-  constructor(private _router: Router) {}
+  constructor(private _router: Router, public storageService: StorageService) {}
 
   ngOnInit() {}
 

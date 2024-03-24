@@ -25,6 +25,7 @@ import {
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import SwiperCore, { Navigation, Pagination } from "swiper";
+import { StorageService } from "../storage.service";
 SwiperCore.use([Navigation, Pagination]);
 
 @Component({
@@ -37,7 +38,10 @@ SwiperCore.use([Navigation, Pagination]);
 export class ImgCarouselComponent {
   @Input() media: ContributedMedia[];
 
-  constructor(public dialog: MatDialog) {}
+  constructor(
+    public dialog: MatDialog,
+    public storageService: StorageService
+  ) {}
 
   imageClick(index: number) {
     this.openImageViewer(index);

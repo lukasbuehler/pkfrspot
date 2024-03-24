@@ -4,6 +4,7 @@ import { Router, RoutesRecognized } from "@angular/router";
 import { filter, map } from "rxjs/operators";
 import { AuthenticationService } from "./authentication.service";
 import { environment } from "src/environments/environment";
+import { StorageService } from "./storage.service";
 
 @Component({
   selector: "app-root",
@@ -13,7 +14,8 @@ import { environment } from "src/environments/environment";
 export class AppComponent implements OnInit {
   constructor(
     public router: Router,
-    public authService: AuthenticationService
+    public authService: AuthenticationService,
+    public storageService: StorageService
   ) {
     // initialize google maps
   }

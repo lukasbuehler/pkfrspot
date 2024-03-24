@@ -1,7 +1,10 @@
 <div class="carousel">
   @for (mediaObj of media; track $index) { @if (mediaObj.type === "image") {
   <div matRipple class="spot-img">
-    <img [src]="mediaObj.src" (click)="imageClick($index)" />
+    <img
+      [src]="storageService.makeThumbnailURL(mediaObj.src, 400)"
+      (click)="imageClick($index)"
+    />
   </div>
   } }
 </div>
