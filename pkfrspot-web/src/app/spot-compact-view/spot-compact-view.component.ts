@@ -307,7 +307,7 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
   }
 
   openSpotInMaps() {
-    this._mapsApiService.openInGoogleMapsInNewTab(this.spot.location);
+    this._mapsApiService.openLatLngInGoogleMaps(this.spot.location);
   }
 
   hasBounds() {

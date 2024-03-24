@@ -43,8 +43,10 @@ export class MapPageComponent implements AfterViewInit {
   visibleSpots: Spot.Class[] = [];
 
   spotSearchControl = new FormControl();
-  spotSearchResults$: BehaviorSubject<SearchResponse<any> | null> =
-    new BehaviorSubject(null);
+  spotAndPlaceSearchResults$: BehaviorSubject<{
+    places: google.maps.places.AutocompletePrediction[] | null;
+    spots: SearchResponse<any> | null;
+  }> = new BehaviorSubject(null);
 
   constructor(
     public authService: AuthenticationService,
@@ -88,14 +90,39 @@ export class MapPageComponent implements AfterViewInit {
   ngAfterViewInit() {
     // subscribe to the spot search control and update the search results
     this.spotSearchControl.valueChanges.subscribe((query) => {
-      if (query) {
-        this._searchService.searchSpots(query).then((results) => {
-          this.spotSearchResults$.next(results);
+      //   if (query) {
+      //     this._searchService
+      //       .searchSpots(query)
+      //       .then((results) => {
+      //         this.spotAndPlaceSearchResults$.next(results);
+      //         console.log("results", results);
+      //       });
+      //   } else {
+      //     this.spotAndPlaceSearchResults$.next(null);
+      //   }
+
+      this.mapsService
+        .autocompletePlaceSearch(query, ["geocode"])
+        .then((results) => {
+          this.spotAndPlaceSearchResults$.next({
+            places: results,
+            spots: null,
+          });
         });
-      }
-      {
-        this.spotSearchResults$.next(null);
-      }
+    });
+  }
+
+  openSpotOrPlace(value: { type: "place" | "spot"; id: string }) {
+    if (value.type === "place") {
+      this.openPlaceById(value.id);
+    } else {
+      this.openSpotById(value.id);
+    }
+  }
+
+  openPlaceById(id: string) {
+    this.mapsService.getGooglePlaceById(id).then((place) => {
+      this.spotMap.focusBounds(place.geometry.viewport);
     });
   }
 

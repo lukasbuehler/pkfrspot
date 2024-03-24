@@ -315,6 +315,10 @@ export class MapComponent implements OnInit {
     this.centerChange.emit(center.toJSON());
   }
 
+  fitBounds(bounds: google.maps.LatLngBounds) {
+    this.googleMap.fitBounds(bounds);
+  }
+
   editingSpotPositionChanged(position: google.maps.LatLng) {
     this.selectedSpot.location = position.toJSON();
   }

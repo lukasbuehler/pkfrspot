@@ -280,7 +280,7 @@ export class SpotPageComponent implements OnInit {
   }
 
   openSpotInMaps() {
-    this._mapsApiService.openInGoogleMapsInNewTab(this.spot.location);
+    this._mapsApiService.openLatLngInGoogleMaps(this.spot.location);
   }
 
   hasBounds() {

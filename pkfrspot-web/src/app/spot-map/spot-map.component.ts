@@ -349,9 +349,13 @@ export class SpotMapComponent implements AfterViewInit {
     this.focusPoint(spot.location);
   }
 
-  focusPoint(point: google.maps.LatLngLiteral) {
+  focusPoint(point: google.maps.LatLngLiteral, zoom: number = 17) {
     this.mapCenterStart = point;
-    this.mapZoom = 17;
+    this.mapZoom = zoom;
+  }
+
+  focusBounds(bounds: google.maps.LatLngBounds) {
+    this.map.fitBounds(bounds);
   }
 
   toggleMapStyle() {

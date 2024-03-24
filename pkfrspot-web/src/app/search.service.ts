@@ -2,12 +2,13 @@ import { Injectable } from "@angular/core";
 import { SearchClient } from "typesense";
 import { SearchParams } from "typesense/lib/Typesense/Documents";
 import { environment } from "src/environments/environment";
+import { MapsApiService } from "./maps-api.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class SearchService {
-  constructor() {}
+  constructor(private _mapsService: MapsApiService) {}
 
   private readonly client: SearchClient = new SearchClient({
     nodes: [
@@ -28,13 +29,42 @@ export class SearchService {
     page: 1,
   };
 
-  public async searchSpots(query: string) {
+  public async searchSpotsAndGeocodePlaces(query: string) {
     let searchParams: SearchParams = { ...this.spotSearchParameters, q: query };
 
-    const searchResults = await this.client
+    const typesenseSpotSearchResults = this.client
       .collections("spots")
       .documents()
       .search(searchParams, {});
-    return searchResults;
+
+    const googlePlacesSearchResults = this._mapsService.autocompletePlaceSearch(
+      query,
+      ["geocode"]
+    );
+
+    const bothResults = await Promise.allSettled([
+      typesenseSpotSearchResults,
+      googlePlacesSearchResults,
+    ]);
+
+    console.log("bothResults:", bothResults);
+
+    if (bothResults[0].status === "rejected") {
+      console.error("typesense error:", bothResults[0].reason);
+    }
+
+    if (bothResults[1].status === "rejected") {
+      console.error(
+        "google maps places autocomplete API error:",
+        bothResults[1].reason
+      );
+    }
+
+    return {
+      spots:
+        bothResults[0].status === "fulfilled" ? bothResults[0].value : null,
+      places:
+        bothResults[1].status === "fulfilled" ? bothResults[1].value : null,
+    };
   }
 }

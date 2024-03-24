@@ -1,7 +1,15 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/environment";
-import { Observable, BehaviorSubject, catchError, map, of, take } from "rxjs";
+import {
+  Observable,
+  BehaviorSubject,
+  catchError,
+  map,
+  of,
+  take,
+  firstValueFrom,
+} from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -20,7 +28,7 @@ export class MapsApiService {
     if (this._isApiLoaded$.value) return;
 
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.keys.google_maps}&libraries=visualization`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.keys.google_maps}&libraries=visualization,places`;
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
@@ -29,8 +37,60 @@ export class MapsApiService {
     };
   }
 
-  openInGoogleMapsInNewTab(location: google.maps.LatLngLiteral) {
+  openLatLngInGoogleMaps(location: google.maps.LatLngLiteral) {
     window.open(`https://maps.google.com/?q=${location.lat},${location.lng}`);
+  }
+
+  autocompletePlaceSearch(
+    input: string,
+    types: string[],
+    biasRect?: google.maps.LatLngBoundsLiteral
+  ): Promise<google.maps.places.AutocompletePrediction[]> {
+    if (!input || input.length === 0) return Promise.resolve([]);
+
+    const autocompleteService = new google.maps.places.AutocompleteService();
+
+    return new Promise((resolve, reject) => {
+      autocompleteService.getPlacePredictions(
+        {
+          input: input,
+          types: types,
+          locationBias: biasRect,
+          language: "en",
+        },
+        (predictions, status) => {
+          if (status !== "OK" && status !== "ZERO_RESULTS") {
+            reject(status);
+            return;
+          }
+
+          resolve(predictions);
+        }
+      );
+    });
+  }
+
+  getGooglePlaceById(placeId: string): Promise<google.maps.places.PlaceResult> {
+    const placesService = new google.maps.places.PlacesService(
+      document.createElement("div")
+    );
+
+    return new Promise((resolve, reject) => {
+      placesService.getDetails(
+        {
+          placeId: placeId,
+          fields: ["name", "geometry"],
+        },
+        (place, status) => {
+          if (status !== "OK") {
+            reject(status);
+            return;
+          }
+
+          resolve(place);
+        }
+      );
+    });
   }
 
   reverseGeocoding(location: google.maps.LatLngLiteral): Observable<any> {

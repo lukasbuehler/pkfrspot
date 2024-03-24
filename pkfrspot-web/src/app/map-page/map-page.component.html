@@ -27,6 +27,8 @@
       <mat-icon *ngIf="!selectedSpot" matSuffix>search</mat-icon>
 
       <input
+        #mapSearchInput
+        id="mapSearchInput"
         matInput
         placeholder="Find spots"
         [value]="selectedSpot ? selectedSpot.name : ''"
@@ -36,15 +38,21 @@
       <mat-autocomplete
         #spotAutocomplete="matAutocomplete"
         (optionSelected)="
-          openSpotById($event.option.value);
+          openSpotOrPlace($event.option.value);
           spotSearchControl.setValue('');
           ($event.stopPropagation)
         "
       >
         <mat-option
           class="spotAutocompleteOption"
-          *ngFor="let hit of (spotSearchResults$ | async)?.hits"
-          [value]="hit.document.id"
+          *ngFor="let place of (spotAndPlaceSearchResults$ | async)?.places"
+          [value]="{ type: 'place', id: place.place_id }"
+          ><span>{{ place.description ?? "" }}</span>
+        </mat-option>
+        <mat-option
+          class="spotAutocompleteOption"
+          *ngFor="let hit of (spotAndPlaceSearchResults$ | async)?.spots?.hits"
+          [value]="{ type: 'spot', id: hit.document.id }"
         >
           <!-- <img *ngIf="spot.previewImage" [src]="spot.previewImage" alt="Img" /> -->
           <span>{{ hit.document.name.de_CH ?? "" }}</span>
