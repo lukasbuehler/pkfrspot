@@ -164,6 +164,7 @@ div.search-group {
 }
 
 app-bottom-sheet {
+  overflow: hidden !important;
   margin-bottom: 0px !important;
 
   @media (max-width: 599px) {
@@ -230,6 +231,14 @@ app-bottom-sheet {
 
 mat-chip-listbox.search-option-chips {
   position: absolute;
-  top: 75px;
-  left: 30px;
+  @media (max-width: 767px) {
+    // mobile
+    top: 75px;
+    left: 30px;
+  }
+  @media (min-width: 768px) {
+    // desktop (large screen)
+    left: 430px;
+    top: 10px;
+  }
 }

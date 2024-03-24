@@ -49,10 +49,10 @@ mat-toolbar {
 
 .main-content {
   overflow-y: scroll;
-  @media (max-width: 599px) {
+  @media (max-width: 767px) {
     height: calc(100% - $toolbar-height);
   }
-  @media (min-width: 600px) {
+  @media (min-width: 768px) {
     height: 100%;
   }
 }
