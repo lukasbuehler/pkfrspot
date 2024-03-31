@@ -13,7 +13,6 @@ registerSwiper();
 
 // Firebase
 import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
-import { getAnalytics, provideAnalytics } from "@angular/fire/analytics";
 import {
   connectFirestoreEmulator,
   enableIndexedDbPersistence,
@@ -175,7 +174,6 @@ import { ImgCarouselComponent } from "./img-carousel/img-carousel.component";
       return getFirestore();
     }),
     provideStorage(() => getStorage()),
-    provideAnalytics(() => getAnalytics()),
 
     // Angular material modules
     BrowserAnimationsModule,
