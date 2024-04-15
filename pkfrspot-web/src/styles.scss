@@ -1,9 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-  --primary-color: #3b5fe2;
+  --primary-color-light: #2b51d5;
   --primary-color-dark: #b8c4ff;
-  --accent-color: #51cd74;
+  --secondary-color-light: #246c18;
+  --secondary-color-dark: #8cd977;
+  --tertiary-color-light: #75546e;
+  --tertiary-color-dark: #e4bad9;
+  --accent-color: var(--secondary-color-dark);
   --swiper-theme-color: var(--primary-color-dark) !important;
 }
 

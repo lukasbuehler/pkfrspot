@@ -350,8 +350,10 @@ export class SpotMapComponent implements AfterViewInit {
   }
 
   focusPoint(point: google.maps.LatLngLiteral, zoom: number = 17) {
-    this.mapCenterStart = point;
-    this.mapZoom = zoom;
+    this.map.googleMap.panTo(point);
+    if (this.mapZoom < zoom) {
+      this.mapZoom = zoom;
+    }
   }
 
   focusBounds(bounds: google.maps.LatLngBounds) {
