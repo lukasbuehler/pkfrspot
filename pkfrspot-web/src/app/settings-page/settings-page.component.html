@@ -49,53 +49,55 @@
             your contact information.
           </p>
           <div class="my-4">
-          <h3 class="mat-h3">
-            E-Mail address
-          </h3>
-          <div class="d-flex flex-column my-4">
-            <mat-form-field appearance="outline">
-              <mat-label>E-mail address</mat-label>
-              <input #emailInput matInput type="text" [value]="emailAddress" (keyup)="emailAddress = emailInput.value"/>
-              <mat-icon
+            <h3 class="mat-h3">E-Mail address</h3>
+            <div class="d-flex flex-column my-4">
+              <mat-form-field appearance="outline">
+                <mat-label>E-mail address</mat-label>
+                <input
+                  #emailInput
+                  matInput
+                  type="text"
+                  [value]="emailAddress"
+                  (keyup)="emailAddress = emailInput.value"
+                />
+                <mat-icon
+                  *ngIf="!authService.user?.emailVerified"
+                  matSuffix
+                  matTooltip="Your E-Mail has not been verified!"
+                  >warning</mat-icon
+                >
+                <mat-icon
+                  *ngIf="authService.user?.emailVerified"
+                  matSuffix
+                  matTooltip="Your E-Mail is verified!"
+                  >verified</mat-icon
+                >
+                <mat-hint
+                  >Changing this E-mail will change your login
+                  information</mat-hint
+                >
+              </mat-form-field>
+              <button
+                [disabled]="emailAddress === authService.user?.email"
+                mat-flat-button
+                class="mt-3 mb-1"
+                color="primary"
+                (click)="changeEmailAddress()"
+              >
+                Change E-Mail address
+              </button>
+              <button
                 *ngIf="!authService.user?.emailVerified"
-                matSuffix
-                matTooltip="Your E-Mail has not been verified!"
-                >warning</mat-icon
+                mat-flat-button
+                class="mt-3 mb-1"
+                color="accent"
+                (click)="verifyUserEmailAddress()"
               >
-              <mat-icon
-                *ngIf="authService.user?.emailVerified"
-                matSuffix
-                matTooltip="Your E-Mail is verified!"
-                >verified</mat-icon
-              >
-              <mat-hint
-                >Changing this E-mail will change your login
-                information</mat-hint
-              >
-            </mat-form-field>
-            <button
-              [disabled]="emailAddress === authService.user?.email"
-              mat-flat-button
-              class="mt-3 mb-1"
-              color="primary"
-              (click)="changeEmailAddress()"
-            >
-              Change E-Mail address
-            </button>
-            <button
-              *ngIf="!authService.user?.emailVerified"
-              mat-flat-button
-              class="mt-3 mb-1"
-              color="accent"
-              (click)="verifyUserEmailAddress()"
-            >
-              Resend verification E-mail
-            </button>
+                Resend verification E-mail
+              </button>
             </div>
             <div class="my-4">
-              <h3 class="mat-h3">
-                Password
-              </h3>
+              <h3 class="mat-h3">Password</h3>
               <div class="my-3 d-flex flex-column">
                 <button mat-stroked-button class="mb-1" color="primary">
                   Change password
@@ -109,7 +111,7 @@
           <h3 class="mat-body">
             General settings to tune your experience on PKFR Spot.
           </h3>
-          <div class="my-4">
+          <!-- <div class="my-4">
             <h3 class="mat-h3">Geo-URI links</h3>
             <p class="mat-body">
               On supported mobile devices this will open the spot location in
@@ -137,7 +139,7 @@
                 >OpenSreetMap</mat-button-toggle
               >
             </mat-button-toggle-group>
-          </div>
+          </div> -->
         </div>
         <div *ngSwitchCase="'notifications'">
           <h2 class="mat-h2">Notifications</h2>
