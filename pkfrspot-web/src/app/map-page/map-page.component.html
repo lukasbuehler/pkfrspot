@@ -7,7 +7,7 @@
     [(isEditing)]="isEditing"
     [(mapStyle)]="mapStyle"
     (visibleSpotsChange)="visibleSpots = $event"
-    (hasGeolocationChange)="hasGeolocation = $event"
+    (hasGeolocationChange)="askedGeoPermission = true; hasGeolocation = $event"
   ></app-spot-map>
 
   <div class="search-group">
@@ -201,10 +201,13 @@
     color="primary"
     (click)="spotMap.focusOnGeolocation()"
   >
-    <!-- empty location icon is: "location_searching" -->
+    @if(askedGeoPermission) {
     <mat-icon>{{
       hasGeolocation ? "my_location" : "location_disabled"
     }}</mat-icon>
+    } @else {
+    <mat-icon>location_searching</mat-icon>
+    }
   </button>
 
   <mat-menu #searchUserMatMenu="matMenu">

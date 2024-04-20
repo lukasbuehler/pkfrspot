@@ -39,6 +39,8 @@ export class MapPageComponent implements AfterViewInit {
   selectedSpot: Spot.Class = null;
   isEditing: boolean = false;
   mapStyle: string = "roadmap";
+
+  askedGeoPermission: boolean = false;
   hasGeolocation: boolean = false;
 
   visibleSpots: Spot.Class[] = [];

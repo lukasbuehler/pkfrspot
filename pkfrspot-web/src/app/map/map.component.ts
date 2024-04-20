@@ -105,8 +105,8 @@ export class MapComponent implements OnInit {
   ngOnInit() {
     this.mapsApiService.isApiLoaded$.subscribe((isLoaded) => {
       if (isLoaded) {
-        this.initGeolocation();
         this.initMap();
+        this.initGeolocation();
       }
     });
   }
@@ -165,6 +165,14 @@ export class MapComponent implements OnInit {
   }
 
   initGeolocation() {
+    navigator.permissions.query({ name: "geolocation" }).then((permission) => {
+      if (permission.state == "granted") {
+        this.useGeolocation();
+      }
+    });
+  }
+
+  useGeolocation() {
     if (this.showGeolocation) {
       let geolocationWatchId = navigator.geolocation.watchPosition(
         (_location) => {
@@ -270,7 +278,7 @@ export class MapComponent implements OnInit {
   };
   geolocationCircleOptions: google.maps.CircleOptions = {
     fillColor: "#0000ff",
-    fillOpacity: 0.2,
+    fillOpacity: 0.1,
     draggable: false,
     clickable: false,
     strokeWeight: 0,

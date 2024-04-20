@@ -136,6 +136,7 @@ export class SpotMapComponent implements AfterViewInit {
   }
 
   focusOnGeolocation() {
+    this.map.useGeolocation();
     this.map.focusOnGeolocation();
   }
 
