@@ -2,9 +2,9 @@ import { Component, Inject, OnInit, Pipe, PipeTransform } from "@angular/core";
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from "@angular/material/legacy-dialog";
 import { User } from "src/scripts/db/User";
 
-import * as moment from "moment";
 import { DatabaseService } from "../database.service";
 import { Observable } from "rxjs";
+import { humanTimeSince } from "src/scripts/Helpers";
 
 export interface FollowListDialogData {
   userId: string;
@@ -22,10 +22,8 @@ export class FollowDurationPipe implements PipeTransform {
     timestamp: firebase.default.firestore.Timestamp,
     args?: any
   ): string {
-    const millis = timestamp.toMillis();
-    return `${moment(millis).fromNow(true)} (since ${moment(millis).format(
-      "l LT"
-    )})`;
+    const data = timestamp.toDate();
+    return `${humanTimeSince(data)} (since ${data.toLocaleDateString()})`;
   }
 }
 

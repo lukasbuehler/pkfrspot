@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
-import * as moment from "moment";
 import { Post } from "src/scripts/db/Post";
 import { DatabaseService } from "../database.service";
 import { AuthenticationService } from "../authentication.service";
@@ -7,6 +6,7 @@ import { MapHelpers } from "../../scripts/MapHelpers";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { Timestamp } from "firebase/firestore";
+import { humanTimeSince } from "src/scripts/Helpers";
 
 @Component({
   selector: "app-post",
@@ -61,11 +61,11 @@ export class PostComponent implements OnInit {
   //   }
 
   getTimeAgoString(): string {
-    return moment(this.post.timePosted).fromNow();
+    return humanTimeSince(this.post.timePosted);
   }
 
   getDateAndTimeString(): string {
-    return moment(this.post.timePosted).format("lll");
+    return humanTimeSince(this.post.timePosted);
   }
 
   likeButtonPress() {
