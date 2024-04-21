@@ -27,6 +27,8 @@ interface LoadedSpotReference {
   indexInTotalArray: number;
 }
 
+type Dot = google.maps.visualization.WeightedLocation;
+
 @Component({
   selector: "app-spot-map",
   templateUrl: "./spot-map.component.html",
@@ -80,17 +82,15 @@ export class SpotMapComponent implements AfterViewInit {
   mapCenter: google.maps.LatLngLiteral;
   bounds: google.maps.LatLngBounds;
 
-  visibleDots: Array<SpotClusterTile["points"]> = new Array<
-    SpotClusterTile["points"]
-  >();
+  visibleDots: Dot[] = [];
   loadedDots = {
-    2: new Map<string, SpotClusterTile["points"]>(),
-    4: new Map<string, SpotClusterTile["points"]>(),
-    6: new Map<string, SpotClusterTile["points"]>(),
-    8: new Map<string, SpotClusterTile["points"]>(),
-    10: new Map<string, SpotClusterTile["points"]>(),
-    12: new Map<string, SpotClusterTile["points"]>(),
-    14: new Map<string, SpotClusterTile["points"]>(),
+    2: new Map<string, Dot[]>(),
+    4: new Map<string, Dot[]>(),
+    6: new Map<string, Dot[]>(),
+    8: new Map<string, Dot[]>(),
+    10: new Map<string, Dot[]>(),
+    12: new Map<string, Dot[]>(),
+    14: new Map<string, Dot[]>(),
   };
 
   private _northEastTileCoordsZ16: google.maps.Point;
@@ -307,9 +307,9 @@ export class SpotMapComponent implements AfterViewInit {
       zoom = this.mapZoom % 2 === 0 ? this.mapZoom : this.mapZoom - 1;
     }
 
-    if (this.loadedDots[zoom]) {
-      const dotArray = Array.from(this.loadedDots[zoom].values());
-      this.visibleDots = [].concat(...dotArray);
+    if (this.loadedDots[zoom]?.size > 0) {
+      const dotArrays: Dot[] = Array.from(this.loadedDots[zoom].values());
+      this.visibleDots = [].concat(...dotArrays);
     }
   }
 
@@ -496,11 +496,17 @@ export class SpotMapComponent implements AfterViewInit {
         if (clusterTiles.length > 0) {
           clusterTiles.forEach((tile) => {
             const key = `z${zoom}_${tile.x}_${tile.y}`;
-            if (this.loadedDots[zoom].has(key)) {
-              this.loadedDots[zoom].get(key).push(tile.points);
-            } else {
-              this.loadedDots[zoom].set(key, tile.points);
-            }
+            const dots: Dot[] = tile.points.map((point) => {
+              return {
+                location: new google.maps.LatLng(
+                  point.location.latitude,
+                  point.location.longitude
+                ),
+                weight: point.weight,
+              };
+            });
+
+            this.loadedDots[zoom].set(key, dots);
           });
           this.updateVisibleDots();
         }

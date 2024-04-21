@@ -13,17 +13,17 @@
   width="100%"
   height="100%"
 >
+  @if (zoom < 16) { @if(mapTypeId !== 'satellite') {
   <!-- Cluster Heatmap -->
-  <!-- <map-heatmap-layer [data]="heatmapData" [options]="heatmapOptions" /> -->
-
+  <map-heatmap-layer [data]="dots" [options]="heatmapOptions" />
+  } @else {
   <!-- Cluster Marker -->
-  @if (zoom < 16) {
+  @if (zoom < 16) { @for (dot of dots; track $index) {
   <map-marker
-    *ngFor="let point of dotPoints"
-    [position]="point"
+    [position]="dot.location"
     [options]="primaryDotMarkerOptions"
   ></map-marker>
-  }
+  } } } }
 
   <map-circle
     *ngFor="let spot of spots"

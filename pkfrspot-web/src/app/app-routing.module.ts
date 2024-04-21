@@ -25,8 +25,20 @@ const routes: Routes = [
   { path: "", redirectTo: "map", pathMatch: "full" },
   {
     path: "p/:postID",
+    redirectTo: "post/:postID",
+  },
+  {
+    path: "post/:postID",
     component: PostPageComponent,
     data: { routeName: "Post" },
+  },
+  {
+    path: "s/:spotID",
+    redirectTo: "map/:spotID",
+  },
+  {
+    path: "spot/:spotID",
+    redirectTo: "map/:spotID",
   },
 
   // Map page

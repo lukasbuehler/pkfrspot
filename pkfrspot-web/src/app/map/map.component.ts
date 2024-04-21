@@ -77,19 +77,7 @@ export class MapComponent implements OnInit {
 
   @Input() spots: Spot.Class[] = [];
 
-  heatmapData: google.maps.visualization.WeightedLocation[] = [];
-  _dots: SpotClusterTile["points"] = [];
-  dotPoints: google.maps.LatLngLiteral[] = [];
-  @Input() set dots(newDots: SpotClusterTile["points"]) {
-    this._dots = newDots;
-    this.heatmapData = this.heatmapDataFromDots(newDots);
-    this.dotPoints = newDots.map((dot) => {
-      if (dot.location) return this._geoPointToLatLng(dot.location);
-    });
-  }
-  get dots() {
-    return this._dots;
-  }
+  @Input() dots: google.maps.visualization.WeightedLocation[];
 
   @Input() selectedSpot: Spot.Class | null = null;
   @Input() isEditing: boolean = false;
@@ -151,17 +139,6 @@ export class MapComponent implements OnInit {
     return geoPoint
       ? { lat: geoPoint.latitude, lng: geoPoint.longitude }
       : null;
-  }
-
-  heatmapDataFromDots(
-    dots: SpotClusterTile["points"]
-  ): google.maps.visualization.WeightedLocation[] {
-    return dots.map((dot) => {
-      return {
-        location: new google.maps.LatLng(this._geoPointToLatLng(dot.location)),
-        weight: dot.weight,
-      };
-    });
   }
 
   initGeolocation() {
