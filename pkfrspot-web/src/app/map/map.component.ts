@@ -202,28 +202,50 @@ export class MapComponent implements OnInit {
   };
   mapTypeId: string = "roadmap";
 
-  heatmapOptions: google.maps.visualization.HeatmapLayerOptions = {
-    radius: 20,
+  heatmapDarkOptions: google.maps.visualization.HeatmapLayerOptions = {
+    radius: 15,
     gradient: ["rgba(184,196,255,0)", "rgba(184,196,255,1)"],
     dissipating: true,
     maxIntensity: 1,
-    opacity: 0.7,
+    opacity: 0.6,
   };
 
-  selectedSpotMarkerOptions: google.maps.MarkerOptions = {
+  heatmapLightOptions: google.maps.visualization.HeatmapLayerOptions = {
+    radius: 20,
+    gradient: [
+      "rgba(43, 81, 213,0)",
+      "rgba(43, 81, 213,1)",
+      "rgba(184,196,255,1)",
+    ],
+    dissipating: true,
+    maxIntensity: 1,
+    opacity: 0.6,
+  };
+  heatmapOptions: google.maps.visualization.HeatmapLayerOptions =
+    this.heatmapDarkOptions;
+
+  selectedSpotMarkerDarkOptions: google.maps.MarkerOptions = {
     draggable: false,
     clickable: false,
     icon: {
-      url: "/assets/icons/marker-primary.png",
+      url: "/assets/icons/marker-primary-dark.png",
     },
     opacity: 1,
   };
+  selectedSpotMarkerLightOptions: google.maps.MarkerOptions = {
+    ...this.selectedSpotMarkerDarkOptions.anchorPoint,
+    icon: {
+      url: "/assets/icons/marker-primary-light.png",
+    },
+  };
+  selectedSpotMarkerOptions: google.maps.MarkerOptions =
+    this.selectedSpotMarkerDarkOptions;
   selectedSpotMarkerEditingOptions: google.maps.MarkerOptions = {
     draggable: true,
     clickable: false,
     crossOnDrag: true,
     icon: {
-      url: "/assets/icons/marker-primary.png",
+      url: "/assets/icons/marker-primary-dark.png",
     },
     opacity: 1,
   };
@@ -231,7 +253,7 @@ export class MapComponent implements OnInit {
     draggable: false,
     clickable: false,
     icon: {
-      url: "/assets/icons/marker-tertiary.png",
+      url: "/assets/icons/marker-tertiary-dark.png",
     },
   };
   teriaryDotMarkerOptions: google.maps.MarkerOptions;
@@ -239,28 +261,32 @@ export class MapComponent implements OnInit {
     draggable: false,
     clickable: false,
     icon: {
-      url: "/assets/icons/marker-primary.png",
+      url: "/assets/icons/marker-primary-dark.png",
     },
     opacity: 0,
   };
   geolocationMarkerOptions: google.maps.MarkerOptions;
   primaryDotMarkerOptions: google.maps.MarkerOptions;
-  spotCircleOptions: google.maps.CircleOptions = {
+
+  spotCircleDarkOptions: google.maps.CircleOptions = {
     fillColor: "#b8c4ff",
     fillOpacity: 0.7,
     strokeColor: "#b8c4ff",
     draggable: false,
     clickable: true,
     strokeWeight: 0,
+    strokeOpacity: 0,
   };
-  geolocationCircleOptions: google.maps.CircleOptions = {
-    fillColor: "#0000ff",
-    fillOpacity: 0.1,
-    draggable: false,
-    clickable: false,
-    strokeWeight: 0,
+  spotCircleLightOptions: google.maps.CircleOptions = {
+    ...this.spotCircleDarkOptions,
+    fillOpacity: 0.4,
+    strokeColor: "#2b51d5",
+    strokeWeight: 5,
+    strokeOpacity: 1,
   };
-  spotPolygonOptions: google.maps.PolygonOptions = {
+  spotCircleOptions: google.maps.CircleOptions = this.spotCircleDarkOptions;
+
+  spotPolygonDarkOptions: google.maps.PolygonOptions = {
     fillColor: "#b8c4ff",
     strokeColor: "#b8c4ff",
     fillOpacity: 0.5,
@@ -268,13 +294,24 @@ export class MapComponent implements OnInit {
     draggable: false,
     clickable: true,
   };
+  spotPolygonLightOptions: google.maps.PolygonOptions = {
+    ...this.spotPolygonDarkOptions,
+    strokeColor: "#2b51d5",
+    strokeWeight: 5,
+    strokeOpacity: 1,
+  };
+  spotPolygonOptions: google.maps.PolygonOptions = this.spotPolygonDarkOptions;
   spotPolygonEditingOptions: google.maps.PolygonOptions = {
-    fillColor: "#b8c4ff",
-    strokeColor: "#b8c4ff",
-    fillOpacity: 0.2,
+    ...this.spotPolygonOptions,
     editable: true,
+  };
+
+  geolocationCircleOptions: google.maps.CircleOptions = {
+    fillColor: "#0000ff",
+    fillOpacity: 0.1,
     draggable: false,
-    clickable: true,
+    clickable: false,
+    strokeWeight: 0,
   };
 
   toggleMapStyle() {
@@ -284,10 +321,25 @@ export class MapComponent implements OnInit {
     ) {
       // if it is equal to roadmap, toggle to satellite
       this.mapTypeId = google.maps.MapTypeId.SATELLITE;
+      this.setLightMode();
     } else {
       // otherwise toggle back to roadmap
       this.mapTypeId = google.maps.MapTypeId.ROADMAP;
+      this.setDarkMode();
     }
+  }
+
+  setLightMode() {
+    this.heatmapOptions = this.heatmapLightOptions;
+    this.spotCircleOptions = this.spotCircleLightOptions;
+    this.spotPolygonOptions = this.spotPolygonLightOptions;
+    this.selectedSpotMarkerOptions = this.selectedSpotMarkerLightOptions;
+  }
+  setDarkMode() {
+    this.heatmapOptions = this.heatmapDarkOptions;
+    this.spotCircleOptions = this.spotCircleDarkOptions;
+    this.spotPolygonOptions = this.spotPolygonDarkOptions;
+    this.selectedSpotMarkerOptions = this.selectedSpotMarkerDarkOptions;
   }
 
   emitBoundsChanged() {

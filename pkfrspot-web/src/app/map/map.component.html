@@ -13,37 +13,37 @@
   width="100%"
   height="100%"
 >
-  @if (zoom < 16) { @if(mapTypeId !== 'satellite') {
+  @if (zoom < 16) {
   <!-- Cluster Heatmap -->
   <map-heatmap-layer [data]="dots" [options]="heatmapOptions" />
-  } @else {
+
   <!-- Cluster Marker -->
-  @if (zoom < 16) { @for (dot of dots; track $index) {
+  <!-- @for (dot of dots; track $index) {
   <map-marker
     [position]="dot.location"
     [options]="primaryDotMarkerOptions"
   ></map-marker>
-  } } } }
-
+  }  -->
+  } @else { @for(spot of spots; track $index) { @if(!spot?.hasBounds()) {
   <map-circle
-    *ngFor="let spot of spots"
     [center]="spot.location"
     [radius]="10"
     [options]="spotCircleOptions"
     (circleClick)="spotClick.emit(spot)"
   >
-    <map-polygon
-      *ngIf="spot?.hasBounds()"
-      [id]="'polygon-' + spot.id"
-      [options]="
-        spot === selectedSpot && isEditing
-          ? spotPolygonEditingOptions
-          : spotPolygonOptions
-      "
-      [paths]="spot.paths"
-      (polygonClick)="spotClick.emit(spot)"
-    ></map-polygon>
   </map-circle>
+  } @else {
+  <map-polygon
+    [id]="'polygon-' + spot.id"
+    [options]="
+      spot === selectedSpot && isEditing
+        ? spotPolygonEditingOptions
+        : spotPolygonOptions
+    "
+    [paths]="spot.paths"
+    (polygonClick)="spotClick.emit(spot)"
+  ></map-polygon>
+  }
 
   <map-marker
     *ngIf="selectedSpot"
@@ -56,6 +56,7 @@
     (mapDragend)="editingSpotPositionChanged($event.latLng)"
     [title]="selectedSpot.name"
   ></map-marker>
+  } }
 
   <!-- Geolocation -->
   <map-marker
