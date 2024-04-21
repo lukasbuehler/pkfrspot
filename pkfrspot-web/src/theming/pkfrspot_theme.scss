@@ -3,6 +3,38 @@
 @include mat.core();
 @include mat.legacy-core(); // TODO remove after removing legacy components
 
+$mat3-primary-palette: (
+  0: #000000,
+  10: #001453,
+  20: #002585,
+  30: #0037b9,
+  40: #2b51d5,
+  50: #496cef,
+  60: #6b89ff,
+  70: #92a6ff,
+  80: #b8c4ff,
+  90: #dde1ff,
+  95: #efefff,
+  99: #fefbff,
+  100: #ffffff,
+);
+
+$mat3-secondary-palette: (
+  0: #000000,
+  10: #012200,
+  20: #033900,
+  30: #055300,
+  40: #246c18,
+  50: #3e862f,
+  60: #58a147,
+  70: #72bd5e,
+  80: #8cd977,
+  90: #a7f690,
+  95: #cbffb7,
+  99: #f7ffee,
+  100: #ffffff,
+);
+
 $md-primary: (
   50: #f6f8ff,
   100: #eaedff,

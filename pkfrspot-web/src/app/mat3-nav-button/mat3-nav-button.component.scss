@@ -2,15 +2,18 @@
 @use "@angular/material" as mat;
 @import "../../theming/pkfrspot_theme.scss";
 
-$color-config: mat.get-color-config($pkfrspot-dark-theme);
 $typography-config: mat.get-typography-config($pkfrspot-dark-theme);
-$primary-palette: map.get($color-config, "primary");
-$accent-palette: map.get($color-config, "accent");
+
+$secondary-container: map.get($mat3-secondary-palette, 30);
+$on-secondary-container: map.get($mat3-secondary-palette, 90);
+$on-surface: #c8c6ca;
+$on-surface-variant: #c6c5d0;
 
 button {
   font-family: mat.font-family($typography-config);
   font-weight: mat.font-weight($typography-config, button);
   font-size: mat.font-size($typography-config, button);
+  color: $on-surface;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,19 +26,34 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 80%;
+    @media (max-width: 767px) {
+      width: 64px;
+    }
+    @media (min-width: 768px) {
+      width: 56px;
+    }
     height: 32px;
     border-radius: 16px;
   }
 }
-button:hover {
-  > mat-icon {
-    background-color: #424242;
-  }
+
+button > mat-icon {
+  transition: color 0.2s, background-color 0.2s;
 }
-button:active {
-  > mat-icon {
-    //color: mat.get-color-from-palette($accent-palette, 500);
-    background-color: mat.get-color-from-palette($accent-palette, 900);
-  }
+button:enabled > mat-icon {
+  color: $on-surface-variant;
+  background-color: transparent;
+}
+button:active > mat-icon,
+button.active > mat-icon {
+  color: $on-secondary-container;
+  background-color: $secondary-container;
+}
+button:hover > mat-icon {
+  color: $on-secondary-container;
+  background-color: lighten($secondary-container, 8%);
+}
+button:focus > mat-icon {
+  color: $on-secondary-container;
+  background-color: lighten($secondary-container, 12%);
 }

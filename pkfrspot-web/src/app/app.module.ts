@@ -111,6 +111,7 @@ import { HammerModule } from "@angular/platform-browser";
 import { MapComponent } from "./map/map.component";
 import { SpotMapComponent } from "./spot-map/spot-map.component";
 import { ImgCarouselComponent } from "./img-carousel/img-carousel.component";
+import { UnfocusableDirective } from "./unfocusable.directive";
 
 @NgModule({
   declarations: [
@@ -156,6 +157,7 @@ import { ImgCarouselComponent } from "./img-carousel/img-carousel.component";
     UserMenuContentComponent,
     MapComponent,
     SpotMapComponent,
+    UnfocusableDirective,
   ],
   imports: [
     BrowserModule,
