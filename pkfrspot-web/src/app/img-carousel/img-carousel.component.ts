@@ -106,7 +106,8 @@ export class SwiperDialogComponent implements AfterViewInit {
   constructor(
     public dialogRef: MatDialogRef<SwiperDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    public storageService: StorageService
   ) {
     dialogRef.disableClose = false;
   }
