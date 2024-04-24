@@ -4,16 +4,11 @@
 
 $typography-config: mat.get-typography-config($pkfrspot-dark-theme);
 
-$secondary-container: map.get($mat3-secondary-palette, 30);
-$on-secondary-container: map.get($mat3-secondary-palette, 90);
-$on-surface: #c8c6ca;
-$on-surface-variant: #c6c5d0;
-
 button {
   font-family: mat.font-family($typography-config);
   font-weight: mat.font-weight($typography-config, button);
   font-size: mat.font-size($typography-config, button);
-  color: $on-surface;
+  color: $dark-on-surface;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,12 +31,12 @@ button > mat-icon {
   transition: color 0.2s, background-color 0.2s, width 0.2s;
 }
 button:enabled > mat-icon {
-  color: $on-surface-variant;
+  color: $dark-on-surface-variant;
   background-color: transparent;
 }
 button.active > mat-icon {
-  color: $on-secondary-container;
-  background-color: $secondary-container;
+  color: $dark-on-secondary-container;
+  background-color: $dark-secondary-container;
 }
 button:hover > mat-icon,
 button:focus > mat-icon,
@@ -54,18 +49,18 @@ button.active > mat-icon {
   }
 }
 button:hover > mat-icon {
-  color: $on-surface-variant;
-  background-color: rgb(256, 256, 256, 0.08);
+  color: $dark-on-surface-variant;
+  background-color: rgb(255, 255, 255, 0.08);
 }
 button:focus > mat-icon {
-  color: $on-surface-variant;
-  background-color: rbg(256, 256, 256, 0.12);
+  color: $dark-on-surface-variant;
+  background-color: rbg(255, 255, 255, 0.12);
 }
 button:hover.active > mat-icon {
-  color: $on-secondary-container;
-  background-color: lighten($secondary-container, 8%);
+  color: $dark-on-secondary-container;
+  background-color: lighten($dark-secondary-container, 8%);
 }
 button:focus.active > mat-icon {
-  color: $on-secondary-container;
-  background-color: lighten($secondary-container, 12%);
+  color: $dark-on-secondary-container;
+  background-color: lighten($dark-secondary-container, 12%);
 }

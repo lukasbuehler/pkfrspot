@@ -106,4 +106,28 @@ export class SpeedDialFabComponent implements OnInit {
   miniButtonClick(index: number) {
     this.miniFabClick.emit(index);
   }
+
+  getBackgroundColor(color: string) {
+    switch (color) {
+      case "primary":
+        return "var(--dark-primary-bg)";
+      case "accent":
+      case "secondary":
+        return "var(--dark-secondary-bg)";
+      default:
+        return "var(--dark-default-bg)";
+    }
+  }
+
+  getIconColor(color: string) {
+    switch (color) {
+      case "primary":
+        return "var(--dark-primary-icon)";
+      case "accent":
+      case "secondary":
+        return "var(--dark-secondary-icon)";
+      default:
+        return "var(--dark-default-icon)";
+    }
+  }
 }

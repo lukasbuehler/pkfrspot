@@ -1,9 +1,14 @@
+@use "sass:map";
+
 @use "@angular/material" as mat;
 
 @include mat.core();
 @include mat.legacy-core(); // TODO remove after removing legacy components
 
-$mat3-primary-palette: (
+// Material 3 colors
+
+// primary
+$primary-palette: (
   0: #000000,
   10: #001453,
   20: #002585,
@@ -19,7 +24,8 @@ $mat3-primary-palette: (
   100: #ffffff,
 );
 
-$mat3-secondary-palette: (
+// secondary
+$secondary-palette: (
   0: #000000,
   10: #012200,
   20: #033900,
@@ -34,6 +40,78 @@ $mat3-secondary-palette: (
   99: #f7ffee,
   100: #ffffff,
 );
+
+// tertiary
+
+// error
+
+// neutral
+$neutral-palette: (
+  0: #000000,
+  4: #0e0e11,
+  6: #131316,
+  10: #1b1b1f,
+  12: #1f1f23,
+  17: #2a2a2d,
+  20: #303034,
+  22: #343438,
+  24: #39393c,
+  //...
+  90: #e4e1e6,
+  100: #ffffff,
+);
+
+// neutral variant
+$neutral-variant-palette: (
+  0: #000000,
+  30: #45464f,
+  50: #767680,
+  80: #c6c5d0,
+  100: #ffffff,
+);
+
+// themes
+
+// light theme
+
+// dark theme
+$dark-sufrace-dim: map.get($neutral-palette, 6);
+$dark-sufrace: map.get($neutral-palette, 6);
+$dark-surface-bright: map.get($neutral-palette, 24);
+$dark-surface-container-lowest: map.get($neutral-palette, 4);
+$dark-surface-container-low: map.get($neutral-palette, 10);
+$dark-surfcae-container: map.get($neutral-palette, 12);
+$dark-surface-container-high: map.get($neutral-palette, 17);
+$dark-surface-container-highest: map.get($neutral-palette, 22);
+
+$dark-on-surface: map.get($neutral-palette, 90);
+$dark-on-surface-variant: map.get($neutral-variant-palette, 80);
+$dark-outline: map.get($neutral-variant-palette, 60);
+$dark-outline-variant: map.get($neutral-variant-palette, 30);
+
+$dark-primary: map.get($primary-palette, 80);
+$dark-on-primary: map.get($primary-palette, 20);
+$dark-primary-container: map.get($primary-palette, 30);
+$dark-on-primary-container: map.get($primary-palette, 90);
+$dark-primary-fixed: map.get($primary-palette, 90);
+$dark-primray-fixed-dim: map.get($primary-palette, 80);
+$dark-on-primary-fixed: map.get($primary-palette, 10);
+$dark-on-primary-variant: map.get($primary-palette, 30);
+
+$dark-secondary: map.get($secondary-palette, 80);
+$dark-on-secondary: map.get($secondary-palette, 20);
+$dark-secondary-container: map.get($secondary-palette, 30);
+$dark-on-secondary-container: map.get($secondary-palette, 90);
+$dark-secondary-fixed: map.get($secondary-palette, 90);
+$dark-secondary-fixed-dim: map.get($secondary-palette, 80);
+$dark-on-secondary-fixed: map.get($secondary-palette, 10);
+$dark-on-secondary-variant: map.get($secondary-palette, 30);
+
+$dark-inverse-surface: map.get($neutral-palette, 90);
+$dark-inverse-on-surface: map.get($neutral-palette, 20);
+$dark-inverse-primary: map.get($primary-palette, 40);
+$dark-scrim: map.get($neutral-palette, 0);
+$dark-shadow: map.get($neutral-palette, 0);
 
 $md-primary: (
   50: #f6f8ff,

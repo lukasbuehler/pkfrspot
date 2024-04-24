@@ -7,7 +7,9 @@
   <button
     mat-fab
     class="sd-toggler"
-    [color]="buttonConfig?.mainButton?.color || 'primary'"
+    [style.backgroundColor]="
+      getBackgroundColor(buttonConfig?.mainButton?.color)
+    "
     [matTooltipDisabled]="!buttonConfig?.mainButton?.tooltip || !openOnHover"
     [matTooltip]="buttonConfig?.mainButton?.tooltip || ''"
     [matTooltipPosition]="buttonConfig?.tooltipPosition || 'left'"
@@ -18,6 +20,7 @@
         value: isOpen ? 'open' : 'closed',
         params: { degrees: rotationDegrees }
       }"
+      [style.color]="getIconColor(buttonConfig?.mainButton?.color)"
       >{{
         buttonConfig?.mainButton?.icon ? buttonConfig.mainButton.icon : "add"
       }}</mat-icon
@@ -32,12 +35,16 @@
       *ngFor="let miniBtn of buttonConfig.miniButtons; let i = index"
       mat-mini-fab
       class="mini-fab"
-      [color]="buttonConfig?.miniButtonColor || 'accent'"
+      [style.backgroundColor]="
+        getBackgroundColor(buttonConfig?.miniButtonColor)
+      "
       [matTooltip]="miniBtn.tooltip"
       [matTooltipPosition]="buttonConfig?.tooltipPosition || 'left'"
       (click)="miniButtonClick(i)"
     >
-      <mat-icon>{{ miniBtn.icon }}</mat-icon>
+      <mat-icon [style.color]="getIconColor(buttonConfig?.miniButtonColor)">{{
+        miniBtn.icon
+      }}</mat-icon>
     </button>
   </div>
 </div>

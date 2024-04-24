@@ -1,4 +1,20 @@
+@import "../../theming/pkfrspot_theme.scss";
+
+$default-bg: $dark-surface-container-high;
+$default-icon: $dark-primary;
+$primary-bg: $dark-primary-container;
+$primary-icon: $dark-primary;
+$secondary-bg: $dark-secondary-container;
+$secondary-icon: $dark-secondary;
+
 .fab-container {
+  --dark-primary-bg: #{$primary-bg};
+  --dark-primary-icon: #{$primary-icon};
+  --dark-default-bg: #{$default-bg};
+  --dark-default-icon: #{$default-icon};
+  --dark-secondary-bg: #{$secondary-bg};
+  --dark-secondary-icon: #{$secondary-icon};
+
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
