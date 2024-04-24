@@ -9,8 +9,6 @@
     >
     @for (button of navbarConfig.buttons; track button) {
     <app-mat3-nav-button
-      unfocusable
-      appUnfocusable
       [icon]="button.icon"
       [label]="button.name"
       [routerLink]="button.link"

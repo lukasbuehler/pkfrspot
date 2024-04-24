@@ -54,7 +54,7 @@ button:hover > mat-icon {
 }
 button:focus > mat-icon {
   color: $dark-on-surface-variant;
-  background-color: rbg(255, 255, 255, 0.12);
+  background-color: rgb(255, 255, 255, 0.12);
 }
 button:hover.active > mat-icon {
   color: $dark-on-secondary-container;

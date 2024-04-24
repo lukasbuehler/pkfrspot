@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, HostBinding, Input } from "@angular/core";
 
 @Component({
   selector: "app-mat3-nav-button",
@@ -9,4 +9,6 @@ export class Mat3NavButtonComponent {
   @Input() icon: string;
   @Input() label: string;
   @Input() routerLink: string;
+
+  @HostBinding("attr.tabindex") tabindex = -1;
 }
