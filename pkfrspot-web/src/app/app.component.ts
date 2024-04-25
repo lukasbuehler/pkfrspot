@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   }
 
   enforceAlainMode() {
-    if (window.innerHeight < 700) {
+    if (window.innerHeight < 700 && window.innerWidth < 768) {
       this.alainMode = true;
     } else {
       this.alainMode = false;

@@ -18,6 +18,7 @@ mat-toolbar {
   align-items: center;
 
   height: $toolbar-height;
+  flex-shrink: 0;
 }
 
 .spacer {
@@ -51,4 +52,8 @@ mat-toolbar {
   position: absolute;
   left: 10px;
   top: 10px;
+}
+
+.main-content {
+  overflow: scroll;
 }
