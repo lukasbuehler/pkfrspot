@@ -1,4 +1,10 @@
-import { Component, ViewChild, AfterViewInit } from "@angular/core";
+import {
+  Component,
+  ViewChild,
+  AfterViewInit,
+  HostListener,
+  Input,
+} from "@angular/core";
 import { Spot } from "src/scripts/db/Spot";
 import { Router } from "@angular/router";
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
@@ -14,6 +20,7 @@ import { SearchResponse } from "typesense/lib/Typesense/Documents";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
 import { Location } from "@angular/common";
 import { StorageService } from "../storage.service";
+import { GlobalVariables } from "src/scripts/global";
 
 @Component({
   selector: "app-map-page",
@@ -51,6 +58,8 @@ export class MapPageComponent implements AfterViewInit {
     spots: SearchResponse<any> | null;
   }> = new BehaviorSubject(null);
 
+  alainMode: boolean;
+
   constructor(
     public authService: AuthenticationService,
     public mapsService: MapsApiService,
@@ -59,7 +68,11 @@ export class MapPageComponent implements AfterViewInit {
     private router: Router,
     private location: Location,
     private _snackbar: MatSnackBar
-  ) {}
+  ) {
+    GlobalVariables.alainMode.subscribe((value) => {
+      this.alainMode = value;
+    });
+  }
 
   // Speed dial FAB //////////////////////////////////////////////////////////
 

@@ -47,12 +47,8 @@ mat-toolbar {
   z-index: 2;
 }
 
-.main-content {
-  overflow-y: scroll;
-  @media (max-width: 767px) {
-    height: calc(100% - $toolbar-height);
-  }
-  @media (min-width: 768px) {
-    height: 100%;
-  }
+#alainMenuButton {
+  position: absolute;
+  left: 10px;
+  top: 10px;
 }

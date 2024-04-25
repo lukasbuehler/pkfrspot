@@ -15,12 +15,13 @@
     ></app-mat3-nav-button>
     }
   </app-nav-rail>
-  <app-nav-rail-content>
+  <app-nav-rail-content class="flex-col">
     <!-- This is where the pages content gets displayed -->
-    <div class="main-content">
+    <div class="main-content flex-grow-1">
       <router-outlet></router-outlet>
     </div>
 
+    @if(!alainMode) {
     <!-- Bottom navigation bar -->
     <mat-toolbar class="d-md-none mat-elevation-z1">
       @for (button of navbarConfig.buttons; track button){
@@ -31,6 +32,24 @@
       ></app-mat3-nav-button>
       }
     </mat-toolbar>
+    } @else {
+    <!-- Menu button -->
+    <app-mat3-fab
+      [matMenuTriggerFor]="mainMenu"
+      id="alainMenuButton"
+      color="default"
+      icon="menu"
+    ></app-mat3-fab>
+    <mat-menu #mainMenu>
+      @for(button of navbarConfig.buttons; track button) {
+      <button mat-menu-item [routerLink]="button.link">
+        <mat-icon>{{ button.icon }}</mat-icon>
+        <span>{{ button.name }}</span>
+      </button>
+
+      }
+    </mat-menu>
+    }
 
     <!-- User FAB -->
     <button

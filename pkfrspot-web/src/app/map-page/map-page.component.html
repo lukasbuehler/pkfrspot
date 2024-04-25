@@ -13,78 +13,85 @@
   ></app-spot-map>
 
   <div class="search-group">
-    <mat-form-field
-      class="spot-search-field mat-elevation-z3"
-      appearance="fill"
-    >
-      <button
-        *ngIf="selectedSpot"
-        mat-icon-button
-        matSuffix
-        [matMenuTriggerFor]="searchUserMatMenu"
-        (click)="$event.stopPropagation(); spotMap.closeSpot()"
+    <div class="d-flex flex-row gap-3">
+      @if(alainMode) {
+      <div class="spacer" style="width: 56px"></div>
+      }
+      <mat-form-field
+        class="spot-search-field mat-elevation-z3"
+        appearance="fill"
       >
-        <mat-icon>close</mat-icon>
-      </button>
-      <mat-icon *ngIf="!selectedSpot" matSuffix>search</mat-icon>
-
-      <input
-        #mapSearchInput
-        id="mapSearchInput"
-        matInput
-        placeholder="Find spots"
-        [value]="selectedSpot ? selectedSpot.name : ''"
-        [formControl]="spotSearchControl"
-        [matAutocomplete]="spotAutocomplete"
-      />
-      <mat-autocomplete
-        #spotAutocomplete="matAutocomplete"
-        (optionSelected)="
-          openSpotOrPlace($event.option.value);
-          spotSearchControl.setValue('');
-          ($event.stopPropagation)
-        "
-      >
-        <mat-option
-          class="spotAutocompleteOption"
-          *ngFor="let place of (spotAndPlaceSearchResults$ | async)?.places"
-          [value]="{ type: 'place', id: place.place_id }"
-          ><span>{{ place.description ?? "" }}</span>
-        </mat-option>
-        <mat-option
-          class="spotAutocompleteOption"
-          *ngFor="let hit of (spotAndPlaceSearchResults$ | async)?.spots?.hits"
-          [value]="{ type: 'spot', id: hit.document.id }"
+        <button
+          *ngIf="selectedSpot"
+          mat-icon-button
+          matSuffix
+          [matMenuTriggerFor]="searchUserMatMenu"
+          (click)="$event.stopPropagation(); spotMap.closeSpot()"
         >
-          <!-- <img *ngIf="spot.previewImage" [src]="spot.previewImage" alt="Img" /> -->
-          <span>{{ hit.document.name.de_CH ?? "" }}</span>
-          <!-- <small
-            >Location: {{ spot.location.lat }}, {{ spot.location.lng }}</small
-          > -->
-        </mat-option>
-      </mat-autocomplete>
-      <button
-        mat-icon-button
-        matSuffix
-        color="primary"
-        class="profile-icon-button login-fab d-md-none"
-        [matMenuTriggerFor]="searchUserMatMenu"
-        (click)="$event.stopPropagation()"
-      >
-        <mat-icon *ngIf="!authService.isSignedIn">person_outline</mat-icon>
-        <img
-          *ngIf="
-            authService.isSignedIn && authService.user?.data?.profilePicture
-          "
-          [src]="
-            storageService.makeThumbnailURL(
-              authService.user.data.profilePicture,
-              200
-            )
-          "
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-icon *ngIf="!selectedSpot" matSuffix>search</mat-icon>
+
+        <input
+          #mapSearchInput
+          id="mapSearchInput"
+          matInput
+          placeholder="Find spots"
+          [value]="selectedSpot ? selectedSpot.name : ''"
+          [formControl]="spotSearchControl"
+          [matAutocomplete]="spotAutocomplete"
         />
-      </button>
-    </mat-form-field>
+        <mat-autocomplete
+          #spotAutocomplete="matAutocomplete"
+          (optionSelected)="
+            openSpotOrPlace($event.option.value);
+            spotSearchControl.setValue('');
+            ($event.stopPropagation)
+          "
+        >
+          <mat-option
+            class="spotAutocompleteOption"
+            *ngFor="let place of (spotAndPlaceSearchResults$ | async)?.places"
+            [value]="{ type: 'place', id: place.place_id }"
+            ><span>{{ place.description ?? "" }}</span>
+          </mat-option>
+          <mat-option
+            class="spotAutocompleteOption"
+            *ngFor="
+              let hit of (spotAndPlaceSearchResults$ | async)?.spots?.hits
+            "
+            [value]="{ type: 'spot', id: hit.document.id }"
+          >
+            <!-- <img *ngIf="spot.previewImage" [src]="spot.previewImage" alt="Img" /> -->
+            <span>{{ hit.document.name.de_CH ?? "" }}</span>
+            <!-- <small
+              >Location: {{ spot.location.lat }}, {{ spot.location.lng }}</small
+            > -->
+          </mat-option>
+        </mat-autocomplete>
+        <button
+          mat-icon-button
+          matSuffix
+          color="primary"
+          class="profile-icon-button login-fab d-md-none"
+          [matMenuTriggerFor]="searchUserMatMenu"
+          (click)="$event.stopPropagation()"
+        >
+          <mat-icon *ngIf="!authService.isSignedIn">person_outline</mat-icon>
+          <img
+            *ngIf="
+              authService.isSignedIn && authService.user?.data?.profilePicture
+            "
+            [src]="
+              storageService.makeThumbnailURL(
+                authService.user.data.profilePicture,
+                200
+              )
+            "
+          />
+        </button>
+      </mat-form-field>
+    </div>
 
     @if(selectedSpot) {
     <div class="d-none d-md-block spot-preview-container pt-3">

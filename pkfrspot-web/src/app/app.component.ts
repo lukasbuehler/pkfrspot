@@ -1,11 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, HostListener, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router, RoutesRecognized } from "@angular/router";
 import { filter, map } from "rxjs/operators";
 import { AuthenticationService } from "./authentication.service";
 import { environment } from "src/environments/environment";
 import { StorageService } from "./storage.service";
-
+import { GlobalVariables } from "src/scripts/global";
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
@@ -17,13 +17,29 @@ export class AppComponent implements OnInit {
     public authService: AuthenticationService,
     public storageService: StorageService
   ) {
-    // initialize google maps
+    this.enforceAlainMode();
   }
 
   currentPageName = "";
 
   hasAds = window["canRunAds"];
   userId: string = "";
+
+  alainMode: boolean = false;
+
+  @HostListener("window:resize", ["$event"])
+  onResize(event) {
+    this.enforceAlainMode();
+  }
+
+  enforceAlainMode() {
+    if (window.innerHeight < 700) {
+      this.alainMode = true;
+    } else {
+      this.alainMode = false;
+    }
+    GlobalVariables.alainMode.next(this.alainMode);
+  }
 
   ngOnInit() {
     this.authService.authState$.subscribe(
