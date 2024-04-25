@@ -325,7 +325,6 @@ export class SpotMapComponent implements AfterViewInit {
   openSpot(spot: Spot.Class) {
     this.setSelectedSpot(spot);
     this.focusSpot(spot);
-
     this.titleService.setTitle(`PKFR Spot map: ${spot.name}`);
 
     this.meta.updateTag(

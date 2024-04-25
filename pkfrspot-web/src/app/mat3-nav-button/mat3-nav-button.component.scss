@@ -34,13 +34,15 @@ button:enabled > mat-icon {
   color: $dark-on-surface-variant;
   background-color: transparent;
 }
-button.active > mat-icon {
+button.active > mat-icon,
+button:active > mat-icon {
   color: $dark-on-secondary-container;
   background-color: $dark-secondary-container;
 }
 button:hover > mat-icon,
 button:focus > mat-icon,
-button.active > mat-icon {
+button.active > mat-icon,
+button:active > mat-icon {
   @media (max-width: 767px) {
     width: 64px;
   }
@@ -56,11 +58,13 @@ button:focus > mat-icon {
   color: $dark-on-surface-variant;
   background-color: rgb(255, 255, 255, 0.12);
 }
-button:hover.active > mat-icon {
+button:hover.active > mat-icon,
+button:hover:active > mat-icon {
   color: $dark-on-secondary-container;
   background-color: lighten($dark-secondary-container, 8%);
 }
-button:focus.active > mat-icon {
+button:focus.active > mat-icon,
+button:focus:active > mat-icon {
   color: $dark-on-secondary-container;
   background-color: lighten($dark-secondary-container, 12%);
 }

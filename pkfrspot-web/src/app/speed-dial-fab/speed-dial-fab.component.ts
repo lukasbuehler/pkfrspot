@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostBinding,
   HostListener,
   Input,
   OnInit,
@@ -55,6 +56,8 @@ export class SpeedDialFabComponent implements OnInit {
       this.onClickOutside();
     }
   }
+
+  @HostBinding("attr.tabindex") tabindex = -1;
 
   constructor() {}
 

@@ -1,1 +1,9 @@
-<p>mat3-fab works!</p>
+<button
+  [class]="'color-' + color + ' ' + variant + '-variant'"
+  matRipple
+  (click)="click.emit(); $event.stopPropagation()"
+>
+  <mat-icon>
+    {{ icon }}
+  </mat-icon>
+</button>

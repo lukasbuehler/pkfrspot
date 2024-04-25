@@ -111,6 +111,7 @@ import { HammerModule } from "@angular/platform-browser";
 import { MapComponent } from "./map/map.component";
 import { SpotMapComponent } from "./spot-map/spot-map.component";
 import { ImgCarouselComponent } from "./img-carousel/img-carousel.component";
+import { Mat3FabComponent } from "./mat3-fab/mat3-fab.component";
 
 @NgModule({
   declarations: [
@@ -156,7 +157,13 @@ import { ImgCarouselComponent } from "./img-carousel/img-carousel.component";
     UserMenuContentComponent,
     MapComponent,
     SpotMapComponent,
+    Mat3FabComponent,
   ],
+  exports: [MatButtonModule],
+  providers: [
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
+  ],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     FormsModule,
@@ -164,7 +171,6 @@ import { ImgCarouselComponent } from "./img-carousel/img-carousel.component";
     AppRoutingModule,
     HttpClientModule,
     HttpClientJsonpModule,
-
     // firestore
     provideFirebaseApp(() => initializeApp(environment.keys.firebaseConfig)),
     provideFirestore(() => {
@@ -174,7 +180,6 @@ import { ImgCarouselComponent } from "./img-carousel/img-carousel.component";
       return getFirestore();
     }),
     provideStorage(() => getStorage()),
-
     // Angular material modules
     BrowserAnimationsModule,
     HammerModule,
@@ -207,25 +212,16 @@ import { ImgCarouselComponent } from "./img-carousel/img-carousel.component";
     MatNativeDateModule,
     DragDropModule,
     MatButtonToggleModule,
-
     // Other modules
     // ServiceWorkerModule.register("ngsw-worker.js", {
     //   enabled: environment.production,
     // }),
-
     VgCoreModule,
     VgControlsModule,
     VgOverlayPlayModule,
     VgBufferingModule,
-
     GoogleMapsModule,
-
     ImgCarouselComponent,
   ],
-  exports: [MatButtonModule],
-  providers: [
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
-  ],
-  bootstrap: [AppComponent],
 })
 export class AppModule {}

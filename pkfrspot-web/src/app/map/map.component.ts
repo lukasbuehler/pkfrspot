@@ -54,11 +54,10 @@ export class MapComponent implements OnInit {
     return this._zoom ?? 4;
   }
   setZoom(newZoom: number) {
-    this._zoom = newZoom;
-    if (this.googleMap) {
-      this.googleMap.zoom = newZoom;
-    }
+    this.zoom = newZoom;
     this.zoomChange.emit(this._zoom);
+
+    this.heatmapOptions.radius = 20 / Math.pow(2, 17 - this._zoom);
   }
 
   getAndEmitChangedZoom() {
@@ -203,7 +202,7 @@ export class MapComponent implements OnInit {
   mapTypeId: string = "roadmap";
 
   heatmapDarkOptions: google.maps.visualization.HeatmapLayerOptions = {
-    radius: 15,
+    radius: 20,
     gradient: ["rgba(184,196,255,0)", "rgba(184,196,255,1)"],
     dissipating: true,
     maxIntensity: 1,
@@ -211,7 +210,7 @@ export class MapComponent implements OnInit {
   };
 
   heatmapLightOptions: google.maps.visualization.HeatmapLayerOptions = {
-    radius: 20,
+    radius: 25,
     gradient: [
       "rgba(43, 81, 213,0)",
       "rgba(43, 81, 213,1)",
@@ -315,6 +314,7 @@ export class MapComponent implements OnInit {
   };
 
   toggleMapStyle() {
+    console.log("toggle map style");
     if (
       this.mapTypeId.toLowerCase() ===
       google.maps.MapTypeId.ROADMAP.toLowerCase()

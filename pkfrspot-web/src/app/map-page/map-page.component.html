@@ -3,7 +3,9 @@
     #spotMap
     id="spotMap"
     [selectedSpot]="selectedSpot"
-    (selectedSpotChange)="selectedSpot = $event; updateMapURL()"
+    (selectedSpotChange)="
+      selectedSpot = $event; updateMapURL(); bottomSheet.halfOpenSheet()
+    "
     [(isEditing)]="isEditing"
     [(mapStyle)]="mapStyle"
     (visibleSpotsChange)="visibleSpots = $event"
@@ -119,8 +121,7 @@
         </app-spot-preview-card>
       </div>
     </div>
-    }
-
+    } @if(spotMap.mapZoom >= 16) {
     <app-bottom-sheet
       #bottomSheet
       class="d-md-none"
@@ -160,6 +161,8 @@
         </app-spot-preview-card>
       </div>
     </app-bottom-sheet>
+
+    }
   </div>
 
   <!-- Search option chips -->
@@ -170,9 +173,36 @@
       >Visited</mat-chip-option
     >
   </mat-chip-listbox>
+  }
 
+  <app-mat3-fab
+    #mapStyleFab
+    id="mapStyleFab"
+    variant="small"
+    [icon]="mapStyle === 'roadmap' ? 'terrain' : 'map'"
+    (click)="spotMap.toggleMapStyle()"
+  >
+  </app-mat3-fab>
+
+  <app-mat3-fab
+    #geolocationFab
+    id="geolocationFab"
+    variant="small"
+    color="default"
+    [icon]="
+      askedGeoPermission
+        ? hasGeolocation
+          ? 'my_location'
+          : 'location_disabled'
+        : 'location_searching'
+    "
+    (click)="spotMap.focusOnGeolocation()"
+  >
+  </app-mat3-fab>
+
+  @if(spotMap.mapZoom >= 16 && authService.isSignedIn && !isEditing) {
   <!-- Add / import spots speed dial-->
-  <app-speed-dial-fab
+  <!-- <app-speed-dial-fab
     #createSpotSpeedDial
     id="createSpotSpeedDial"
     [buttonConfig]="speedDialButtonConfig"
@@ -180,35 +210,16 @@
     [rotationDegrees]="0"
     (mainFabClick)="spotMap.createSpot()"
     (miniFabClick)="speedDialMiniFabClick($event)"
-  ></app-speed-dial-fab>
+  ></app-speed-dial-fab> -->
+  <app-mat3-fab
+    #createSpotSpeedDial
+    id="createSpotSpeedDial"
+    color="secondary"
+    icon="add_location"
+    (click)="spotMap.createSpot()"
+  >
+  </app-mat3-fab>
   }
-
-  <button
-    mat-mini-fab
-    #mapStyleFab
-    id="mapStyleFab"
-    (click)="spotMap.toggleMapStyle()"
-  >
-    <mat-icon aria-label="Button with magnifying lens to search for spots">
-      {{ mapStyle === "roadmap" ? "terrain" : "map" }}
-    </mat-icon>
-  </button>
-
-  <button
-    #geolocationFab
-    id="geolocationFab"
-    mat-fab
-    color="primary"
-    (click)="spotMap.focusOnGeolocation()"
-  >
-    @if(askedGeoPermission) {
-    <mat-icon>{{
-      hasGeolocation ? "my_location" : "location_disabled"
-    }}</mat-icon>
-    } @else {
-    <mat-icon>location_searching</mat-icon>
-    }
-  </button>
 
   <mat-menu #searchUserMatMenu="matMenu">
     <app-user-menu-content></app-user-menu-content>
