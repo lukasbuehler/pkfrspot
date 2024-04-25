@@ -56,8 +56,6 @@ export class MapComponent implements OnInit {
   setZoom(newZoom: number) {
     this.zoom = newZoom;
     this.zoomChange.emit(this._zoom);
-
-    this.heatmapOptions.radius = 20 / Math.pow(2, 17 - this._zoom);
   }
 
   getAndEmitChangedZoom() {

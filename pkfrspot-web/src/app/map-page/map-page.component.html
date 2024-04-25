@@ -4,7 +4,7 @@
     id="spotMap"
     [selectedSpot]="selectedSpot"
     (selectedSpotChange)="
-      selectedSpot = $event; updateMapURL(); bottomSheet.halfOpenSheet()
+      selectedSpot = $event; bottomSheet?.halfOpenSheet(); updateMapURL()
     "
     [(isEditing)]="isEditing"
     [(mapStyle)]="mapStyle"
