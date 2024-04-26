@@ -6,6 +6,9 @@ import { AuthenticationService } from "./authentication.service";
 import { environment } from "src/environments/environment";
 import { StorageService } from "./storage.service";
 import { GlobalVariables } from "src/scripts/global";
+
+declare function plausible(eventName: string, options?: { props: any }): void;
+
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
@@ -39,18 +42,21 @@ export class AppComponent implements OnInit {
       this.alainMode = false;
     }
     GlobalVariables.alainMode.next(this.alainMode);
+    plausible("pageview", { props: { alainMode: this.alainMode } });
   }
 
   ngOnInit() {
     this.authService.authState$.subscribe(
       (user) => {
+        let isAuthenticated: boolean = false;
         if (user) {
           if (user.uid !== this.userId) {
-            this.userId = user.uid;
+            this.userId = user.uid; // TODO check whyyy
           }
-        } else {
-          // User is not signed in
+          isAuthenticated = true;
         }
+
+        plausible("pageview", { props: { authenticated: isAuthenticated } });
       },
       (error) => {
         console.error(error);

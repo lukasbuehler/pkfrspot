@@ -19,6 +19,8 @@ import { map, filter, tap } from "rxjs/operators";
 import { User } from "src/scripts/db/User";
 import { DatabaseService } from "./database.service";
 
+declare function plausible(eventName: string, options?: { props: any }): void;
+
 interface AuthServiceUser {
   uid?: string;
   email?: string;
@@ -127,6 +129,11 @@ export class AuthenticationService {
         this._databaseService.getUserById(googleSignInResponse.user.uid)
       );
       if (!user) {
+        // This is a new user!
+        plausible("Create Account", {
+          props: { accountType: "Google" },
+        });
+
         // create a database entry for the user
         this._databaseService.addUser(
           googleSignInResponse.user.uid,
@@ -161,6 +168,10 @@ export class AuthenticationService {
       email,
       confirmedPassword
     );
+
+    plausible("Create Account", {
+      props: { accountType: "Email and Password" },
+    });
 
     // Set the user chose Display name
     updateProfile(this._currentFirebaseUser, {
