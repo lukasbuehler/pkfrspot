@@ -94,7 +94,7 @@
     </div>
 
     @if(selectedSpot) {
-    <div class="d-none d-md-block spot-preview-container pt-3">
+    <div class="info-panel d-none d-md-block spot-preview-container pt-3">
       <app-spot-compact-view
         [@inOutAnimation]
         #spotDetail
@@ -112,7 +112,7 @@
       ></app-spot-compact-view>
     </div>
     } @else {
-    <div class="d-none d-md-block p-3">
+    <div class="info-panel d-none d-md-block p-3">
       <h3 class="mat-h3">
         {{ visibleSpots.length }} spot{{ visibleSpots.length === 1 ? "" : "s" }}
         in this area
@@ -173,14 +173,14 @@
   </div>
 
   <!-- Search option chips -->
-  @if(authService.isSignedIn && !isEditing) {
+  <!-- @if(authService.isSignedIn && !isEditing) {
   <mat-chip-listbox class="search-option-chips">
     <mat-chip-option color="">Unvisited</mat-chip-option>
     <mat-chip-option color="primary" leadingIcon="flag"
       >Visited</mat-chip-option
     >
   </mat-chip-listbox>
-  }
+  } -->
 
   <app-mat3-fab
     #mapStyleFab

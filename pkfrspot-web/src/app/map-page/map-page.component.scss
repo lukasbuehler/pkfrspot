@@ -134,7 +134,8 @@ div.search-group {
   padding-right: 10px;
 
   mat-form-field,
-  app-bottom-sheet {
+  app-bottom-sheet,
+  div.info-panel {
     overflow-y: scroll;
     pointer-events: visible;
     background-color: #2a2a2d;
@@ -207,15 +208,15 @@ app-bottom-sheet {
   position: absolute;
   z-index: 1;
 
-  right: 20px;
-  top: 85px;
+  right: 28px;
+  top: 95px;
 }
 
 #geolocationFab {
   position: absolute;
   z-index: 1;
-  right: 20px;
-  top: 135px;
+  right: 28px;
+  top: 150px;
 }
 
 mat-chip-listbox.search-option-chips {
