@@ -79,7 +79,7 @@ export class MapsApiService {
       placesService.getDetails(
         {
           placeId: placeId,
-          fields: ["name", "geometry"],
+          fields: ["name", "geometry", "photos"],
         },
         (place, status) => {
           if (status !== "OK") {
@@ -93,25 +93,52 @@ export class MapsApiService {
     });
   }
 
-  reverseGeocoding(location: google.maps.LatLngLiteral): Observable<any> {
-    return this.http.get("https://maps.googleapis.com/maps/api/geocode/json", {
-      params: {
-        latlng: `${location.lat},${location.lng}`,
-        key: environment.keys.google_maps,
-      },
-    });
-  }
+  getGooglePlaceByLocation(
+    location: google.maps.LatLngLiteral,
+    type: string = "point_of_interest",
+    radius: number = 200
+  ): Promise<google.maps.places.PlaceResult> {
+    const placesService = new google.maps.places.PlacesService(
+      document.createElement("div")
+    );
 
-  getAddressComponents(latLng: google.maps.LatLngLiteral): Observable<any> {
-    return new Observable<any>((observer) => {
-      this.reverseGeocoding(latLng).subscribe(
-        (data) => {
-          console.log(data);
+    return new Promise((resolve, reject) => {
+      placesService.nearbySearch(
+        {
+          location: location,
+          radius: 200,
+          type: type,
         },
-        (error) => {
-          console.error(error);
+        (results, status) => {
+          if (status !== "OK") {
+            reject(status);
+            return;
+          }
+
+          resolve(results[0]);
         }
       );
     });
+  }
+
+  getPhotoURLOfGooglePlace(
+    place: google.maps.places.PlaceResult,
+    maxWidth: number = 200,
+    maxHeight: number = 200
+  ): string | null {
+    let photos = place.photos;
+    if (!photos || photos.length === 0) return null;
+
+    return photos[0].getUrl({ maxWidth: maxWidth, maxHeight: maxHeight });
+  }
+
+  getStaticStreetViewImageForLocation(
+    location: google.maps.LatLngLiteral,
+    imageWidth: number = 400,
+    imageHeight: number = 400
+  ): string {
+    return `https://maps.googleapis.com/maps/api/streetview?size=${imageWidth}x${imageHeight}&location=${
+      location.lat
+    },${location.lng}&fov=${120}&key=${environment.keys.google_maps}`;
   }
 }

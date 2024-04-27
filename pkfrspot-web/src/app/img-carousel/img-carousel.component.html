@@ -2,7 +2,11 @@
   @for (mediaObj of media; track $index) { @if (mediaObj.type === "image") {
   <div matRipple class="spot-img">
     <img
-      [src]="storageService.makeThumbnailURL(mediaObj.src, 400)"
+      [src]="
+        mediaObj.uid
+          ? storageService.makeThumbnailURL(mediaObj.src, 400)
+          : mediaObj.src
+      "
       (click)="imageClick($index)"
     />
   </div>

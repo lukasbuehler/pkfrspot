@@ -17,7 +17,7 @@ import { StorageService, StorageFolder } from "../storage.service";
 import { Post } from "src/scripts/db/Post";
 import { Observable, Subscription } from "rxjs";
 import { AuthenticationService } from "../authentication.service";
-import { MediaType } from "src/scripts/db/Interfaces";
+import { ContributedMedia, MediaType } from "src/scripts/db/Interfaces";
 
 //import { MatTooltipModule } from "@angular/material/tooltip";
 
@@ -32,6 +32,8 @@ import { map, startWith } from "rxjs/operators";
 import { trigger, transition, style, animate } from "@angular/animations";
 import { MapsApiService } from "../maps-api.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
+
+declare function plausible(eventName: string, options?: { props: any }): void;
 
 @Component({
   selector: "app-spot-compact-view",
@@ -263,6 +265,8 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
               MediaType.Image,
               this.authenticationService.user.uid
             );
+
+            plausible("Upload Spot Image", { props: { spotId: this.spot.id } });
           },
           (error) => {}
         );
@@ -304,9 +308,12 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
         verticalPosition: "top",
       });
     }
+
+    plausible("Share Spot", { props: { spotId: this.spot.id } });
   }
 
   openSpotInMaps() {
+    plausible("Opening in Google Maps", { props: { spotId: this.spot.id } });
     this._mapsApiService.openLatLngInGoogleMaps(this.spot.location);
   }
 

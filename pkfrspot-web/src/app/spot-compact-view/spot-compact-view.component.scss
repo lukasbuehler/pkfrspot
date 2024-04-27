@@ -113,7 +113,9 @@ mat-card-header {
 app-img-carousel {
   position: relative;
   display: block;
-  height: 150px;
+  min-height: 150px;
+  max-height: 410px;
+  height: 26vh;
   margin-left: -16px;
   margin-right: -16px;
 }

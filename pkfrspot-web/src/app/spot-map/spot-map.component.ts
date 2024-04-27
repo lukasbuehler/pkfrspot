@@ -16,6 +16,7 @@ import { AuthenticationService } from "../authentication.service";
 import { MapComponent } from "../map/map.component";
 import { SpotClusterTile } from "src/scripts/db/SpotClusterTile";
 import { Meta, Title } from "@angular/platform-browser";
+import { MapsApiService } from "../maps-api.service";
 
 /**
  * This interface is used to reference a spot in the loaded spots array.
@@ -101,7 +102,8 @@ export class SpotMapComponent implements AfterViewInit {
     private _dbService: DatabaseService,
     private authService: AuthenticationService,
     private meta: Meta,
-    private titleService: Title
+    private titleService: Title,
+    private mapsAPIService: MapsApiService
   ) {
     this.titleService.setTitle(`PKFR Spot map`);
   }
@@ -323,10 +325,7 @@ export class SpotMapComponent implements AfterViewInit {
   }
 
   openSpot(spot: Spot.Class) {
-    this.setSelectedSpot(spot);
-    this.focusSpot(spot);
     this.titleService.setTitle(`PKFR Spot map: ${spot.name}`);
-
     this.meta.updateTag(
       { name: "og:title", content: spot.name },
       'name="og:title"'
@@ -343,6 +342,9 @@ export class SpotMapComponent implements AfterViewInit {
       ],
       true
     );
+
+    this.setSelectedSpot(spot);
+    this.focusSpot(spot);
   }
 
   focusSpot(spot: Spot.Class) {

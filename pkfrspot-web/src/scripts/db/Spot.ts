@@ -3,6 +3,7 @@ import { MapHelpers } from "../MapHelpers";
 import { DatabaseService } from "src/app/database.service";
 import { StorageFolder, StorageService } from "src/app/storage.service";
 import { GeoPoint } from "firebase/firestore";
+import { environment } from "src/environments/environment";
 
 export namespace Spot {
   export class Class {
@@ -60,18 +61,24 @@ export namespace Spot {
     }
 
     public get hasMedia(): boolean {
-      return this._data.media && this._data.media.length > 0;
+      return this.media && this.media.length > 0;
     }
 
     public get previewImage(): string {
-      if (this.hasMedia && this._data.media[0].type === MediaType.Image) {
-        return this.getMediaByIndex(0).src;
+      if (this.hasMedia && this.media[0].type === MediaType.Image) {
+        let media = this.getMediaByIndex(0);
+        let url = media.src;
+        if (media.uid) {
+          url = url.replace(/\?/, `_${200}x${200}?`);
+        }
+
+        return url;
       }
       return "";
     }
 
     public get media(): ContributedMedia[] {
-      return this._data.media;
+      return [].concat(this._data.media ?? [], this._streetview ?? []);
     }
 
     public get type(): string {
@@ -113,6 +120,7 @@ export namespace Spot {
     }
 
     private _data: Schema;
+    private _streetview: ContributedMedia;
 
     constructor(private _id: string, _data: Partial<Schema>) {
       this._data = _data as Schema; // I don't think this is safe... // TODO: make safe
@@ -128,10 +136,34 @@ export namespace Spot {
       this._data.tile_coordinates = this._generateTileCoordinates(
         this._location
       );
+
+      // street view media
+      const streetView: ContributedMedia = {
+        src: `https://maps.googleapis.com/maps/api/streetview?size=800x800&location=${
+          this._location.lat
+        },${this._location.lng}&fov=${120}&return_error_code=${true}&key=${
+          environment.keys.google_maps
+        }`,
+        type: MediaType.Image,
+        uid: "",
+      };
+
+      // fetch a get request to the street view api and check if yields an error code
+
+      fetch(streetView.src)
+        .then((response) => {
+          if (response.ok) {
+            // Add it to the media
+            this._streetview = streetView;
+          }
+        })
+        .catch((error) => {
+          // Don't add it to the media
+        });
     }
 
     public getMediaByIndex(index: number) {
-      return this._data.media[index];
+      return this.media[index];
     }
 
     public getReadableLocation(): string {
