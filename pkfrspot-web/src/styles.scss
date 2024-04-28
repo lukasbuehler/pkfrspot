@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-:root  {
+:root {
   --primary-color-light: #2b51d5;
   --primary-color-dark: #b8c4ff;
   --secondary-color-light: #246c18;
@@ -20,6 +20,8 @@ html {
   padding: 0;
   height: 100%;
   color: white;
+
+  overscroll-behavior-y: contain;
 }
 
 mat-card.mat-mdc-card {
