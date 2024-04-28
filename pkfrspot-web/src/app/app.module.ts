@@ -112,7 +112,7 @@ import { MapComponent } from "./map/map.component";
 import { SpotMapComponent } from "./spot-map/spot-map.component";
 import { ImgCarouselComponent } from "./img-carousel/img-carousel.component";
 import { Mat3FabComponent } from "./mat3-fab/mat3-fab.component";
-
+import { MatRadioModule } from "@angular/material/radio";
 @NgModule({
   declarations: [
     AppComponent,
@@ -212,6 +212,7 @@ import { Mat3FabComponent } from "./mat3-fab/mat3-fab.component";
     MatNativeDateModule,
     DragDropModule,
     MatButtonToggleModule,
+    MatRadioModule,
     // Other modules
     // ServiceWorkerModule.register("ngsw-worker.js", {
     //   enabled: environment.production,

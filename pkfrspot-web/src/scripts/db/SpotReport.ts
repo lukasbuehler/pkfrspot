@@ -5,12 +5,12 @@ interface SpotData {
   id: string;
 }
 
-enum SpotReportReason {
+export enum SpotReportReason {
   Duplicate = "duplicate",
 }
 
 export interface SpotReport {
-  spotId: string;
+  spot: SpotData;
   reason: SpotReportReason | string;
   duplicateOf?: SpotData;
   userId: string;

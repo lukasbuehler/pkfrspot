@@ -668,7 +668,7 @@ export class DatabaseService {
     return getDocs(
       query(
         collection(this.firestore, "spot_reports"),
-        where("spotId", "==", spotId)
+        where("spot.id", "==", spotId)
       )
     ).then((snap) => {
       if (snap.size == 0) {
@@ -692,27 +692,7 @@ export class DatabaseService {
     });
   }
 
-  addSpotReport(
-    spotId: string,
-    reason: string,
-    userid: string,
-    duplicateSpot?: Spot.Class
-  ) {
-    let reportData: SpotReport = {
-      spotId: spotId,
-      reason: reason,
-      userId: userid,
-    };
-
-    let spotNameEnglish = duplicateSpot.data.name.en_US ?? "Unnamed Spot";
-
-    if (duplicateSpot) {
-      reportData.duplicateOf = {
-        name: spotNameEnglish,
-        id: duplicateSpot.id,
-      };
-    }
-
-    return addDoc(collection(this.firestore, "spot_reports"), reportData);
+  addSpotReport(report: SpotReport) {
+    return addDoc(collection(this.firestore, "spot_reports"), report);
   }
 }

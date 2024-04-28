@@ -1,14 +1,31 @@
-<h2 mat-dialog-title>Hi {{ data.name }}</h2>
+<h2 mat-dialog-title>Report Spot '{{ data.spot?.name }}'</h2>
 <mat-dialog-content>
-  <p>What's your favorite animal?</p>
-  <mat-form-field>
-    <mat-label>Favorite Animal</mat-label>
-    <input matInput [(ngModel)]="data.animal" />
-  </mat-form-field>
+  <p>What would you like to report this spot for?</p>
+  <mat-radio-group
+    color="warn"
+    class="d-flex flex-column"
+    [(ngModel)]="data.reason"
+  >
+    <mat-radio-button value="duplicate">Duplicate</mat-radio-button>
+    <mat-radio-button value="torn down">Torn down</mat-radio-button>
+    <mat-radio-button value="does not exist">Does not exist</mat-radio-button>
+    <mat-radio-button value="secret spot">It's a secret spot!</mat-radio-button>
+    <mat-radio-button value="other">Other</mat-radio-button>
+  </mat-radio-group>
+  @if(data.reason === "duplicate") {
+  <!-- TODO Add input field for spot duplicate -->
+  <p>Select which of which spot this is a duplicate of:</p>
+  }
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>
-    Ok
+<mat-dialog-actions class="d-flex justify-content-between p-3">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button
+    [disabled]="!data.reason"
+    mat-flat-button
+    [mat-dialog-close]="data"
+    color="warn"
+    cdkFocusInitial
+  >
+    Report
   </button>
 </mat-dialog-actions>

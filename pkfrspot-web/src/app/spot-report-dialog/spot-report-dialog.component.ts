@@ -10,8 +10,9 @@ import {
 } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
-import { SpotReport } from "src/scripts/db/SpotReport";
-
+import { SpotReport, SpotReportReason } from "src/scripts/db/SpotReport";
+import { MatRadioModule } from "@angular/material/radio";
+import { FormsModule } from "@angular/forms";
 @Component({
   selector: "app-spot-report-dialog",
   standalone: true,
@@ -23,6 +24,8 @@ import { SpotReport } from "src/scripts/db/SpotReport";
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
+    MatRadioModule,
+    FormsModule,
   ],
   templateUrl: "./spot-report-dialog.component.html",
   styleUrl: "./spot-report-dialog.component.scss",

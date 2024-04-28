@@ -34,6 +34,7 @@ import { MapsApiService } from "../maps-api.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { SpotReportDialogComponent } from "../spot-report-dialog/spot-report-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
+import { SpotReport } from "src/scripts/db/SpotReport.js";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
@@ -369,14 +370,19 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
   openSpotReportDialog() {
     const dialogRef = this.dialog.open(SpotReportDialogComponent, {
       data: {
-        spotId: this.spot.id,
+        spot: {
+          id: this.spot.id,
+          name: this.spot.data.name.en_US ?? this.spot.name ?? "Unnamed Spot",
+        },
         userId: this.authenticationService.user.uid,
         reason: "",
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+    dialogRef.afterClosed().subscribe((report: SpotReport) => {
+      console.log(report);
+      // Report this spot
+      this._dbService.addSpotReport(report);
     });
   }
 }
