@@ -43,21 +43,22 @@ export class BottomSheetComponent {
     );
 
     const startDrag = (event) => {
-      // Only start the drag when the sheet is at the top if the user is
-      // dragging on the header. Otherwise, the user might be trying to
-      // scroll the content.
-      let headerElement =
-        this.bottomSheet.nativeElement.querySelector(".header");
-
-      // Check if the event target is the header element or a descendant of it
-      let isHeaderOrChild = headerElement.contains(event.target);
-
-      if (
-        // this.bottomSheet.nativeElement.offsetTop === 0 &&
-        !isHeaderOrChild
-      ) {
-        return;
+      let isScrollable = false;
+      let target = event.target;
+      while (target) {
+        if (target === this.bottomSheet.nativeElement) break;
+        if (
+          target.clientHeight !== 0 &&
+          target.scrollHeight > target.clientHeight + 2
+        ) {
+          // the + 2 is for borders i assume, had to put it in
+          isScrollable = true;
+          break;
+        }
+        target = target.parentElement;
       }
+
+      if (isScrollable) return;
 
       let clientY =
         event.type === "touchstart" ? event.touches[0].clientY : event.clientY;
