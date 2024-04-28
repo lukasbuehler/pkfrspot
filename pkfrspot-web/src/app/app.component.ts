@@ -42,7 +42,8 @@ export class AppComponent implements OnInit {
       this.alainMode = false;
     }
     GlobalVariables.alainMode.next(this.alainMode);
-    plausible("pageview", { props: { alainMode: this.alainMode } });
+    if (plausible)
+      plausible("pageview", { props: { alainMode: this.alainMode } });
   }
 
   ngOnInit() {
@@ -56,7 +57,8 @@ export class AppComponent implements OnInit {
           isAuthenticated = true;
         }
 
-        plausible("pageview", { props: { authenticated: isAuthenticated } });
+        if (plausible)
+          plausible("pageview", { props: { authenticated: isAuthenticated } });
       },
       (error) => {
         console.error(error);

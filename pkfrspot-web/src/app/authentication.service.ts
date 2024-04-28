@@ -130,9 +130,10 @@ export class AuthenticationService {
       );
       if (!user) {
         // This is a new user!
-        plausible("Create Account", {
-          props: { accountType: "Google" },
-        });
+        if (plausible)
+          plausible("Create Account", {
+            props: { accountType: "Google" },
+          });
 
         // create a database entry for the user
         this._databaseService.addUser(
@@ -169,9 +170,10 @@ export class AuthenticationService {
       confirmedPassword
     );
 
-    plausible("Create Account", {
-      props: { accountType: "Email and Password" },
-    });
+    if (plausible)
+      plausible("Create Account", {
+        props: { accountType: "Email and Password" },
+      });
 
     // Set the user chose Display name
     updateProfile(this._currentFirebaseUser, {

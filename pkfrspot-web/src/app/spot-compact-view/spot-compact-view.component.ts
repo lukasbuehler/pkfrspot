@@ -270,7 +270,10 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
               this.authenticationService.user.uid
             );
 
-            plausible("Upload Spot Image", { props: { spotId: this.spot.id } });
+            if (plausible)
+              plausible("Upload Spot Image", {
+                props: { spotId: this.spot.id },
+              });
           },
           (error) => {}
         );
@@ -313,11 +316,12 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
       });
     }
 
-    plausible("Share Spot", { props: { spotId: this.spot.id } });
+    if (plausible) plausible("Share Spot", { props: { spotId: this.spot.id } });
   }
 
   openSpotInMaps() {
-    plausible("Opening in Google Maps", { props: { spotId: this.spot.id } });
+    if (plausible)
+      plausible("Opening in Google Maps", { props: { spotId: this.spot.id } });
     this._mapsApiService.openLatLngInGoogleMaps(this.spot.location);
   }
 
