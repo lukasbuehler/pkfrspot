@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, Pipe, PipeTransform } from "@angular/core";
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from "@angular/material/legacy-dialog";
+import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { User } from "src/scripts/db/User";
 
 import { DatabaseService } from "../database.service";

@@ -137,28 +137,37 @@ export namespace Spot {
         this._location
       );
 
-      // street view media
-      const streetView: ContributedMedia = {
-        src: `https://maps.googleapis.com/maps/api/streetview?size=800x800&location=${
+      // street view metadata
+      fetch(
+        `https://maps.googleapis.com/maps/api/streetview/metadata?size=800x800&location=${
           this._location.lat
-        },${this._location.lng}&fov=${120}&return_error_code=${true}&key=${
+        },${
+          this._location.lng
+        }&fov=${120}&return_error_code=${true}&source=outdoor&key=${
           environment.keys.google_maps
-        }`,
-        type: MediaType.Image,
-        uid: "",
-      };
-
-      // fetch a get request to the street view api and check if yields an error code
-
-      fetch(streetView.src)
+        }`
+      )
         .then((response) => {
-          if (response.ok) {
-            // Add it to the media
+          console.log(response);
+          return response.json();
+        })
+        .then((data) => {
+          if (data.status !== "ZERO_RESULTS") {
+            // street view media
+            const streetView: ContributedMedia = {
+              src: `https://maps.googleapis.com/maps/api/streetview?size=800x800&location=${
+                this._location.lat
+              },${
+                this._location.lng
+              }&fov=${120}&return_error_code=${true}&source=outdoor&key=${
+                environment.keys.google_maps
+              }`,
+              type: MediaType.Image,
+              uid: "",
+            };
+
             this._streetview = streetView;
           }
-        })
-        .catch((error) => {
-          // Don't add it to the media
         });
     }
 

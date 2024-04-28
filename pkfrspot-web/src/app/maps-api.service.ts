@@ -139,6 +139,8 @@ export class MapsApiService {
   ): string {
     return `https://maps.googleapis.com/maps/api/streetview?size=${imageWidth}x${imageHeight}&location=${
       location.lat
-    },${location.lng}&fov=${120}&key=${environment.keys.google_maps}`;
+    },${location.lng}&fov=${120}&source=outdoor&key=${
+      environment.keys.google_maps
+    }`;
   }
 }

@@ -98,6 +98,11 @@ export class ProfilePageComponent implements OnInit {
   loadProfile(userId: string) {
     this._databaseService.getUserById(userId).subscribe(
       (user) => {
+        if (!user) {
+          this.isLoading = false;
+          return;
+        }
+
         this.user = user;
         this.isLoading = false;
 
