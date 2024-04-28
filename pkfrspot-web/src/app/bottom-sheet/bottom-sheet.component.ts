@@ -28,6 +28,8 @@ export class BottomSheetComponent {
     let height = this.bottomSheet.nativeElement.clientHeight;
     let alwaysVisibleHeight = height - this.headerHeight;
 
+    let animationSteps = 500;
+
     let topHeightOffset = 0;
     let middleHeightOffset = alwaysVisibleHeight / 2;
     let bottomHeightOffset = alwaysVisibleHeight;
@@ -93,17 +95,18 @@ export class BottomSheetComponent {
           if (!start) start = timestamp;
           let progress = timestamp - start;
 
-          //   console.log("progress", progress);
-          //   console.log("startOffset", startOffset);
-          //   console.log("distance", distance);
-
           // Calculate the current position
-          let current = this.easeOutCubic(progress, startOffset, distance, 500);
+          let current = this.easeOutCubic(
+            progress,
+            startOffset,
+            distance,
+            animationSteps
+          );
 
           this.bottomSheet.nativeElement.style.top = current + "px";
 
           // Continue the easing if not at the target position
-          if (progress < 500) {
+          if (progress < animationSteps) {
             window.requestAnimationFrame(step);
           }
         };
