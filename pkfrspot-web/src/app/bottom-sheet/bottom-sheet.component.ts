@@ -1,11 +1,10 @@
-import { CdkDragDrop } from "@angular/cdk/drag-drop/index.js";
-import { Component, Input, ViewChild } from "@angular/core";
-
-enum BottomSheetOpenState {
-  Closed = 1,
-  HalfOpen = 2,
-  FullyOpen = 3,
-}
+import {
+  Component,
+  ElementRef,
+  Input,
+  Renderer2,
+  ViewChild,
+} from "@angular/core";
 
 @Component({
   selector: "app-bottom-sheet",
@@ -13,61 +12,65 @@ enum BottomSheetOpenState {
   styleUrls: ["./bottom-sheet.component.scss"],
 })
 export class BottomSheetComponent {
-  _bottomSheetSate: BottomSheetOpenState = BottomSheetOpenState.Closed;
-
   @Input() title: string = "";
 
   @Input() hasHeader: boolean = true;
 
-  @Input() hasMiddleState: boolean = true;
+  headerHeight: number = 102;
 
-  @ViewChild("bottomSheet", { static: true }) bottomSheet: any;
+  @ViewChild("bottomSheet", { static: true }) bottomSheet: ElementRef;
 
-  onDrop(event: CdkDragDrop<string[]>) {
-    switch (event.currentIndex) {
-      case 0:
-        this._bottomSheetSate = BottomSheetOpenState.FullyOpen;
-        break;
-      case 1:
-        this._bottomSheetSate = BottomSheetOpenState.HalfOpen;
-        break;
-      default:
-        this._bottomSheetSate = BottomSheetOpenState.Closed;
-        break;
-    }
-  }
+  constructor(private renderer: Renderer2) {}
 
-  get isFullyOpen(): boolean {
-    return this._bottomSheetSate === BottomSheetOpenState.FullyOpen;
-  }
-  get isHalfOpen(): boolean {
-    return this._bottomSheetSate === BottomSheetOpenState.HalfOpen;
-  }
-  get isClosed(): boolean {
-    return this._bottomSheetSate === BottomSheetOpenState.Closed;
-  }
+  ngAfterViewInit() {
+    this.renderer.listen(
+      this.bottomSheet.nativeElement,
+      "dragstart",
+      (event) => {
+        event.preventDefault();
+      }
+    );
 
-  openSheetMore() {
-    if (this.isClosed) this._bottomSheetSate = BottomSheetOpenState.HalfOpen;
-    else if (this.isHalfOpen)
-      this._bottomSheetSate = BottomSheetOpenState.FullyOpen;
-  }
+    this.renderer.listen(
+      this.bottomSheet.nativeElement,
+      "mousedown",
+      (event) => {
+        event.preventDefault();
 
-  closeSheetMore() {
-    if (this.isFullyOpen) this._bottomSheetSate = BottomSheetOpenState.HalfOpen;
-    else if (this.isHalfOpen)
-      this._bottomSheetSate = BottomSheetOpenState.Closed;
-  }
+        let shiftY = event.clientY - this.bottomSheet.nativeElement.offsetTop;
 
-  fullyOpenSheet() {
-    this._bottomSheetSate = BottomSheetOpenState.FullyOpen;
-  }
+        // this.bottomSheet.nativeElement.style.position = "absolute";
 
-  halfOpenSheet() {
-    this._bottomSheetSate = BottomSheetOpenState.HalfOpen;
-  }
+        const mouseMoveListener = this.renderer.listen(
+          "document",
+          "mousemove",
+          (event) => {
+            let newTop = event.pageY - shiftY;
 
-  closeSheet() {
-    this._bottomSheetSate = BottomSheetOpenState.Closed;
+            if (newTop < 0) newTop = 0;
+            if (
+              newTop >
+              this.bottomSheet.nativeElement.clientHeight - this.headerHeight
+            )
+              newTop =
+                this.bottomSheet.nativeElement.clientHeight - this.headerHeight;
+
+            this.bottomSheet.nativeElement.style.top = newTop + "px";
+          }
+        );
+
+        const stopDrag = () => {
+          mouseMoveListener();
+        };
+
+        this.renderer.listen(
+          this.bottomSheet.nativeElement,
+          "mouseup",
+          stopDrag
+        );
+        this.renderer.listen("document", "mouseleave", stopDrag);
+        this.renderer.listen("window", "blur", stopDrag);
+      }
+    );
   }
 }

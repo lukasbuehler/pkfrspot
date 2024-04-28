@@ -3,9 +3,7 @@
     #spotMap
     id="spotMap"
     [selectedSpot]="selectedSpot"
-    (selectedSpotChange)="
-      selectedSpot = $event; bottomSheet?.halfOpenSheet(); updateMapURL()
-    "
+    (selectedSpotChange)="selectedSpot = $event; updateMapURL()"
     [(isEditing)]="isEditing"
     [(mapStyle)]="mapStyle"
     (visibleSpotsChange)="visibleSpots = $event"
@@ -131,7 +129,7 @@
     } @if(spotMap.mapZoom >= 16) {
     <app-bottom-sheet
       #bottomSheet
-      class="d-md-none"
+      class="d-md-none flex-grow-1"
       title="{{ visibleSpots.length }} spot{{
         visibleSpots.length === 1 ? '' : 's'
       }} in this area"

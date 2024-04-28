@@ -1,44 +1,11 @@
-<div class="sheet-region" cdkDropList (cdkDropListDropped)="onDrop($event)">
-  <div
-    *ngIf="!isFullyOpen"
-    class="spacer-large"
-    [class.half-spacer]="hasMiddleState"
-    cdkDrag
-  ></div>
-  <div
-    *ngIf="hasMiddleState && !isHalfOpen && !isFullyOpen"
-    class="spacer-small"
-    [class.half-spacer]="hasMiddleState"
-    cdkDrag
-  ></div>
-  <div
-    #bottomSheet
-    id="bottomSheet"
-    class="sheet mat-elevation-z3"
-    cdkDragBoundary=".sheet-region"
-    cdkDrag
-    cdkDragLockAxis="y"
-  >
-    <div class="header" [class.headless]="!hasHeader">
-      <div class="handle-region" cdkDragHandle>
-        <div class="handle"></div>
-      </div>
-      <h3 *ngIf="hasHeader" class="mat-h3">{{ title }}</h3>
+<div #bottomSheet class="sheet mat-elevation-z3">
+  <div class="header" [class.headless]="!hasHeader">
+    <div class="handle-region">
+      <div class="handle"></div>
     </div>
-    <div class="content" [class.headless]="!hasHeader">
-      <ng-content></ng-content>
-    </div>
+    <h3 *ngIf="hasHeader" class="mat-h3">{{ title }}</h3>
   </div>
-  <div
-    *ngIf="isFullyOpen"
-    class="spacer-large"
-    [class.half-spacer]="hasMiddleState"
-    cdkDrag
-  ></div>
-  <div
-    *ngIf="isHalfOpen || isFullyOpen"
-    class="spacer-small"
-    [class.half-spacer]="hasMiddleState"
-    cdkDrag
-  ></div>
+  <div class="content" [class.headless]="!hasHeader">
+    <ng-content></ng-content>
+  </div>
 </div>
