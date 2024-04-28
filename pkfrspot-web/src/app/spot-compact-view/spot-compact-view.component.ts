@@ -32,6 +32,8 @@ import { map, startWith } from "rxjs/operators";
 import { trigger, transition, style, animate } from "@angular/animations";
 import { MapsApiService } from "../maps-api.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { SpotReportDialogComponent } from "../spot-report-dialog/spot-report-dialog.component";
+import { MatDialog } from "@angular/material/dialog";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
@@ -103,6 +105,7 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
 
   constructor(
     public authenticationService: AuthenticationService,
+    public dialog: MatDialog,
     private _element: ElementRef,
     private _dbService: DatabaseService,
     private _storageService: StorageService,
@@ -361,5 +364,19 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
 
   automaticallyDetermineCountryAndAddressToggleChanged(change) {
     this.automaticallyDetermineAddress = change.checked;
+  }
+
+  openSpotReportDialog() {
+    const dialogRef = this.dialog.open(SpotReportDialogComponent, {
+      data: {
+        spotId: this.spot.id,
+        userId: this.authenticationService.user.uid,
+        reason: "",
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }

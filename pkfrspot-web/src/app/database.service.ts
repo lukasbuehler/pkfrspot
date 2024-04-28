@@ -28,10 +28,13 @@ import {
   DocumentReference,
   QuerySnapshot,
   Timestamp,
+  getDoc,
+  getDocs,
   updateDoc,
   writeBatch,
 } from "firebase/firestore";
 import { SpotClusterTile } from "src/scripts/db/SpotClusterTile.js";
+import { SpotReport } from "src/scripts/db/SpotReport.js";
 
 @Injectable({
   providedIn: "root",
@@ -648,4 +651,68 @@ export class DatabaseService {
   //         );
   //     });
   //   }
+
+  // Reports //////////////////////////////////////////////////////////////////
+  getSpotReportByReportId(reportId: string): Promise<SpotReport> {
+    return getDoc(doc(this.firestore, "spot_reports", reportId)).then(
+      (snap) => {
+        if (!snap.exists()) {
+          return Promise.reject("No report found for this report id.");
+        }
+        return snap.data() as SpotReport;
+      }
+    );
+  }
+
+  getSpotReportsBySpotId(spotId: string): Promise<SpotReport> {
+    return getDocs(
+      query(
+        collection(this.firestore, "spot_reports"),
+        where("spotId", "==", spotId)
+      )
+    ).then((snap) => {
+      if (snap.size == 0) {
+        return Promise.reject("No reports found for this spot id.");
+      }
+      return snap.docs[0].data() as SpotReport;
+    });
+  }
+
+  getSpotReportsByUserId(userId: string): Promise<SpotReport> {
+    return getDocs(
+      query(
+        collection(this.firestore, "spot_reports"),
+        where("userId", "==", userId)
+      )
+    ).then((snap) => {
+      if (snap.size == 0) {
+        return Promise.reject("No reports found for this user id.");
+      }
+      return snap.docs[0].data() as SpotReport;
+    });
+  }
+
+  addSpotReport(
+    spotId: string,
+    reason: string,
+    userid: string,
+    duplicateSpot?: Spot.Class
+  ) {
+    let reportData: SpotReport = {
+      spotId: spotId,
+      reason: reason,
+      userId: userid,
+    };
+
+    let spotNameEnglish = duplicateSpot.data.name.en_US ?? "Unnamed Spot";
+
+    if (duplicateSpot) {
+      reportData.duplicateOf = {
+        name: spotNameEnglish,
+        id: duplicateSpot.id,
+      };
+    }
+
+    return addDoc(collection(this.firestore, "spot_reports"), reportData);
+  }
 }
