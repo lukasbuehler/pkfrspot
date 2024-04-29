@@ -1,7 +1,7 @@
 .spot-container {
   padding: 20px;
 }
-.spot-container.compact {
+.spot-container:not(.compact) {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;

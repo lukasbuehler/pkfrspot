@@ -55,9 +55,9 @@
       <mat-icon>share</mat-icon>
     </button>
   </div> -->
-  @if(spot.previewImage && isCompact) {
+  @if(isCompact) { @if(spot.previewImage) {
   <img mat-card-sm-image [src]="spot.previewImage" />
-  } @else {
+  } } @else {
   <img
     [src]="spot.previewImage || '/assets/no_media.png'"
     [alt]="
