@@ -129,8 +129,11 @@ div.search-group {
     background: transparent;
     width: 420px;
   }
-  @media (min-width: 1400px) {
+  @media (min-width: 1200px) {
     width: 500px;
+  }
+  @media (min-width: 1400px) {
+    width: 600px;
   }
   padding-left: 10px;
   padding-right: 10px;
