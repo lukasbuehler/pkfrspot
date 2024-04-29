@@ -13,6 +13,7 @@ export class SpotPreviewCardComponent implements OnInit {
   @Input() spot: Spot.Class;
   @Input() infoOnly: boolean = false;
   @Input() clickable: boolean = false;
+  @Input() isCompact: boolean = false;
 
   @Output() dismiss: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() edit: EventEmitter<any> = new EventEmitter<any>();

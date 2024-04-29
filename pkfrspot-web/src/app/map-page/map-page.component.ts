@@ -91,6 +91,23 @@ export class MapPageComponent implements AfterViewInit {
     ],
   };
 
+  setVisibleSpots(spots: Spot.Class[], mapCenter: google.maps.LatLngLiteral) {
+    this.visibleSpots = spots;
+
+    this.visibleSpots.sort((a, b) => {
+      return (
+        Math.sqrt(a.location.lat ** 2 + a.location.lng ** 2) -
+        Math.sqrt(mapCenter.lat ** 2 + mapCenter.lng ** 2) -
+        (Math.sqrt(b.location.lat ** 2 + b.location.lng ** 2) -
+          Math.sqrt(mapCenter.lat ** 2 + mapCenter.lng ** 2))
+      );
+    });
+
+    this.visibleSpots.sort(
+      (a, b) => b?.media?.length ?? 0 - a?.media?.length ?? 0
+    );
+  }
+
   speedDialMiniFabClick(index: number) {
     switch (index) {
       case 0:

@@ -2,15 +2,17 @@
   matRipple
   [matRippleDisabled]="!clickable"
   [class.mat-elevation-z0]="true"
+  [class.compact]="isCompact"
   [class.clickable]="clickable"
   class="mb-2"
   [class.border]="true"
   [class.rounded]="true"
 >
   <mat-card-header>
-    <mat-card-title>
+    <mat-card-title class="text-truncate mw-100">
       {{ spot.name }}
     </mat-card-title>
+    @if(isCompact) {
     <mat-card-subtitle>
       {{ capitalize(spot.type) }}
       <!-- <app-rating
@@ -20,6 +22,7 @@
         color="accent"
       ></app-rating> -->
     </mat-card-subtitle>
+    }
   </mat-card-header>
   <!-- <div class="button-row d-flex">
     @if (!visited) {
@@ -52,5 +55,9 @@
       <mat-icon>share</mat-icon>
     </button>
   </div> -->
-  <img mat-card-sm-image *ngIf="spot.previewImage" [src]="spot.previewImage" />
+  @if(spot.previewImage && isCompact) {
+  <img mat-card-sm-image [src]="spot.previewImage" />
+  } @else {
+  <img [src]="spot.previewImage" alt="" />
+  }
 </mat-card>
