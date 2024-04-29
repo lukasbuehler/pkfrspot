@@ -67,11 +67,12 @@ export class BottomSheetComponent {
       const moveAt = (event) => {
         let pageY =
           event.type === "touchmove" ? event.touches[0].pageY : event.pageY;
-        let newTop = pageY - shiftY;
 
         // Calculate speed
         speed = pageY - lastY;
         lastY = pageY;
+
+        let newTop = pageY - shiftY;
 
         if (newTop < 0) newTop = 0;
         if (newTop > alwaysVisibleHeight) newTop = alwaysVisibleHeight;
@@ -90,15 +91,23 @@ export class BottomSheetComponent {
         moveAt
       );
 
-      const stopDrag = () => {
+      const stopDrag = (event) => {
         mouseMoveListener();
         touchMoveListener();
 
+        // current target should be the current location
         let targetOffset = 0;
 
-        // Limit the target position
-        if (speed < 0) targetOffset = topHeightOffset;
-        if (speed >= 0) targetOffset = bottomHeightOffset;
+        if (
+          // Math.abs(event.pageY - clientY) > 20 ||
+          Math.abs(speed) > 10
+        ) {
+          // if we are here the user let go fast or far enough, so we set the
+          // other point as the target now
+          // Limit the target position
+          if (speed >= -1) targetOffset = bottomHeightOffset;
+          else targetOffset = topHeightOffset;
+        }
 
         // Calculate the distance to the target position
         let startOffset = this.bottomSheet.nativeElement.offsetTop;
