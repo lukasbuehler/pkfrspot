@@ -3,11 +3,15 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { Router } from "@angular/router";
 import { Spot } from "src/scripts/db/Spot";
 import { StorageService } from "../storage.service";
+import { MatCardModule } from "@angular/material/card";
+import { MatRippleModule } from "@angular/material/core";
 
 @Component({
   selector: "app-spot-preview-card",
   templateUrl: "./spot-preview-card.component.html",
   styleUrls: ["./spot-preview-card.component.scss"],
+  standalone: true,
+  imports: [MatCardModule, MatRippleModule],
 })
 export class SpotPreviewCardComponent implements OnInit {
   @Input() spot: Spot.Class;

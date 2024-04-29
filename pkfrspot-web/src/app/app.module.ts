@@ -113,6 +113,8 @@ import { SpotMapComponent } from "./spot-map/spot-map.component";
 import { ImgCarouselComponent } from "./img-carousel/img-carousel.component";
 import { Mat3FabComponent } from "./mat3-fab/mat3-fab.component";
 import { MatRadioModule } from "@angular/material/radio";
+import { SpotListComponent } from "./spot-list/spot-list.component";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -123,7 +125,6 @@ import { MatRadioModule } from "@angular/material/radio";
     PageHeaderComponent,
     PostCollectionComponent,
     PostComponent,
-    SpotPreviewCardComponent,
     SignInPageComponent,
     EditPostDialogComponent,
     RatingComponent,
@@ -223,6 +224,8 @@ import { MatRadioModule } from "@angular/material/radio";
     VgBufferingModule,
     GoogleMapsModule,
     ImgCarouselComponent,
+    SpotPreviewCardComponent,
+    SpotListComponent,
   ],
 })
 export class AppModule {}

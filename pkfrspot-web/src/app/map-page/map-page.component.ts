@@ -4,6 +4,7 @@ import {
   AfterViewInit,
   HostListener,
   Input,
+  NgModule,
 } from "@angular/core";
 import { Spot } from "src/scripts/db/Spot";
 import { Router } from "@angular/router";
@@ -21,6 +22,7 @@ import { SpotMapComponent } from "../spot-map/spot-map.component";
 import { Location } from "@angular/common";
 import { StorageService } from "../storage.service";
 import { GlobalVariables } from "src/scripts/global";
+import { SpotListComponent } from "../spot-list/spot-list.component";
 
 @Component({
   selector: "app-map-page",
@@ -92,9 +94,7 @@ export class MapPageComponent implements AfterViewInit {
   };
 
   setVisibleSpots(spots: Spot.Class[], mapCenter: google.maps.LatLngLiteral) {
-    this.visibleSpots = spots;
-
-    this.visibleSpots.sort((a, b) => {
+    spots.sort((a, b) => {
       return (
         Math.sqrt(a.location.lat ** 2 + a.location.lng ** 2) -
         Math.sqrt(mapCenter.lat ** 2 + mapCenter.lng ** 2) -
@@ -103,9 +103,9 @@ export class MapPageComponent implements AfterViewInit {
       );
     });
 
-    this.visibleSpots.sort(
-      (a, b) => b?.media?.length ?? 0 - a?.media?.length ?? 0
-    );
+    spots.sort((a, b) => b?.media?.length ?? 0 - a?.media?.length ?? 0);
+
+    this.visibleSpots = spots;
   }
 
   speedDialMiniFabClick(index: number) {

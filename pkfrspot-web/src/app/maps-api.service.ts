@@ -11,6 +11,11 @@ import {
   firstValueFrom,
 } from "rxjs";
 
+interface LocationAndZoom {
+  location: google.maps.LatLngLiteral;
+  zoom: number;
+}
+
 @Injectable({
   providedIn: "root",
 })
@@ -35,6 +40,20 @@ export class MapsApiService {
     script.onload = () => {
       this._isApiLoaded$.next(true);
     };
+  }
+
+  storeLastLocationAndZoom(lastLocationAndZoom: LocationAndZoom) {
+    localStorage.setItem(
+      "lastLocationAndZoom",
+      JSON.stringify(lastLocationAndZoom)
+    );
+  }
+
+  loadLastLocationAndZoom(): Promise<LocationAndZoom | null> {
+    let lastLocationAndZoom = localStorage.getItem("lastLocationAndZoom");
+    if (!lastLocationAndZoom) return Promise.resolve(null);
+
+    return Promise.resolve(JSON.parse(lastLocationAndZoom));
   }
 
   openLatLngInGoogleMaps(location: google.maps.LatLngLiteral) {

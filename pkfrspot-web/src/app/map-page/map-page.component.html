@@ -109,27 +109,18 @@
         (saveClick)="spotMap.saveSpot($event)"
       ></app-spot-compact-view>
     </div>
-    } @else {
+    } @else { @if(spotMap.mapZoom >= 16) {
     <div class="info-panel d-none d-md-block p-3">
       <h3 class="mat-h3">
         {{ visibleSpots.length }} spot{{ visibleSpots.length === 1 ? "" : "s" }}
         in this area
       </h3>
-      <div
-        *ngIf="visibleSpots.length > 0"
-        [ngClass]="{ 'spots-container': true, compact: true }"
-      >
-        <app-spot-preview-card
-          *ngFor="let spot of visibleSpots"
-          [spot]="spot"
-          [infoOnly]="true"
-          [clickable]="true"
-          (click)="spotMap.openSpot(spot)"
-        >
-        </app-spot-preview-card>
-      </div>
+      <app-spot-list
+        [spots]="visibleSpots"
+        (clickSpot)="spotMap.openSpot($event)"
+      ></app-spot-list>
     </div>
-    } @if(spotMap.mapZoom >= 16) {
+    } } @if(spotMap.mapZoom >= 16) {
     <app-bottom-sheet
       #bottomSheet
       class="d-md-none flex-grow-1"
@@ -158,19 +149,11 @@
           (saveClick)="spotMap.saveSpot($event)"
         ></app-spot-compact-view>
       </div>
-      <div
+      <app-spot-list
         *ngIf="!selectedSpot"
-        [ngClass]="{ 'spots-container': true, compact: true }"
-      >
-        <app-spot-preview-card
-          *ngFor="let spot of visibleSpots"
-          [spot]="spot"
-          [infoOnly]="true"
-          [clickable]="true"
-          (click)="spotMap.openSpot(spot)"
-        >
-        </app-spot-preview-card>
-      </div>
+        [spots]="visibleSpots"
+        (clickSpot)="spotMap.openSpot($event)"
+      ></app-spot-list>
     </app-bottom-sheet>
 
     }

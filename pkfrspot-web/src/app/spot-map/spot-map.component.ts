@@ -108,14 +108,27 @@ export class SpotMapComponent implements AfterViewInit {
     this.titleService.setTitle(`PKFR Spot map`);
   }
 
+  isInitiated: boolean = false;
+
   ngAfterViewInit(): void {
     let spotId: string = this.route.snapshot.paramMap.get("spotID") ?? "";
 
     if (spotId) {
       this.openSpotById(spotId);
     } else {
-      this.mapCenter = this.mapCenterStart;
-      this.mapZoom = this.startZoom;
+      // load the last location and zoom from memory
+      this.mapsAPIService
+        .loadLastLocationAndZoom()
+        .then((lastLocationAndZoom) => {
+          if (lastLocationAndZoom) {
+            this.map.center = lastLocationAndZoom.location;
+            this.mapZoom = lastLocationAndZoom.zoom;
+          } else {
+            this.map.center = this.mapCenterStart;
+            this.mapZoom = this.startZoom;
+          }
+          this.isInitiated = true;
+        });
     }
   }
 
@@ -144,6 +157,17 @@ export class SpotMapComponent implements AfterViewInit {
 
   mapBoundsChanged(bounds: google.maps.LatLngBounds, zoom: number) {
     this.bounds = bounds;
+
+    // store the new last location
+    let newCenter: google.maps.LatLngLiteral = bounds.getCenter().toJSON();
+    if (this.isInitiated && newCenter !== this.mapCenterStart) {
+      if (this.mapCenter !== newCenter || zoom !== this.mapZoom) {
+        this.mapsAPIService.storeLastLocationAndZoom({
+          location: newCenter,
+          zoom: zoom,
+        });
+      }
+    }
 
     let northEastLiteral: google.maps.LatLngLiteral = {
       lat: bounds.getNorthEast().lat(),
@@ -373,7 +397,7 @@ export class SpotMapComponent implements AfterViewInit {
       return;
     }
 
-    let center_coordinates: google.maps.LatLngLiteral = this.mapCenter;
+    let center_coordinates: google.maps.LatLngLiteral = this.map.center;
 
     this.setSelectedSpot(
       new Spot.Class(

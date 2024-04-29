@@ -1,0 +1,17 @@
+<div>
+  @if(spots.length > 0) {
+  <div [class.spot-container]="true" [class.compact]="true">
+    @for(spot of spots; track spot) {
+    <app-spot-preview-card
+      [spot]="spot"
+      [infoOnly]="true"
+      [clickable]="true"
+      (click)="clickSpot.emit(spot)"
+    >
+    </app-spot-preview-card>
+    }
+  </div>
+  } @else {
+  <p>No spots.</p>
+  }
+</div>
