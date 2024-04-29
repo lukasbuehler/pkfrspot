@@ -58,6 +58,13 @@
   @if(spot.previewImage && isCompact) {
   <img mat-card-sm-image [src]="spot.previewImage" />
   } @else {
-  <img [src]="spot.previewImage" alt="" />
+  <img
+    [src]="spot.previewImage || '/assets/no_media.png'"
+    [alt]="
+      spot.previewImage
+        ? 'Image of spot ' + spot.name
+        : 'No media for spot' + spot.name
+    "
+  />
   }
 </mat-card>
