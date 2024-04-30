@@ -21,17 +21,6 @@ export class BottomSheetComponent {
   constructor(private renderer: Renderer2) {}
 
   ngAfterViewInit() {
-    let lastY = 0;
-    let speed = 0;
-    let height = this.bottomSheet.nativeElement.clientHeight;
-    let alwaysVisibleHeight = height - this.headerHeight;
-
-    let animationSteps = 500;
-
-    let topHeightOffset = 0;
-    let middleHeightOffset = alwaysVisibleHeight / 2;
-    let bottomHeightOffset = alwaysVisibleHeight;
-
     this.renderer.listen(
       this.bottomSheet.nativeElement,
       "dragstart",
@@ -41,6 +30,17 @@ export class BottomSheetComponent {
     );
 
     const startDrag = (event) => {
+      let lastY = 0;
+      let speed = 0;
+      let height = this.bottomSheet.nativeElement.clientHeight;
+      let alwaysVisibleHeight = height - this.headerHeight;
+
+      let animationSteps = 500;
+
+      let topHeightOffset = 0;
+      let middleHeightOffset = alwaysVisibleHeight / 2;
+      let bottomHeightOffset = alwaysVisibleHeight;
+
       let isScrollableUp = false;
       let target = event.target;
 
@@ -65,6 +65,8 @@ export class BottomSheetComponent {
           }
           target = target.parentElement;
         }
+      } else {
+        event.preventDefault();
       }
 
       let clientY =
@@ -80,8 +82,6 @@ export class BottomSheetComponent {
           // don't move the sheet when the user is scrolling up, and the content can scroll up
           return;
         }
-
-        event.preventDefault();
 
         // Calculate speed
         speed = pageY - lastY;
@@ -110,13 +110,17 @@ export class BottomSheetComponent {
         mouseMoveListener();
         touchMoveListener();
 
+        let pageY =
+          event.type === "touchend"
+            ? event.changedTouches[0].pageY
+            : event.pageY;
+
         // current target should be the current location
         let targetOffset = 0;
 
-        if (
-          // Math.abs(event.pageY - clientY) > 20 ||
-          Math.abs(speed) > 10
-        ) {
+        console.log(pageY, shiftY, clientY, Math.abs(shiftY - pageY));
+
+        if (Math.abs(speed) > 8) {
           // if we are here the user let go fast or far enough, so we set the
           // other point as the target now
           // Limit the target position
@@ -154,8 +158,8 @@ export class BottomSheetComponent {
 
       this.renderer.listen("document", "mouseup", stopDrag);
       this.renderer.listen("document", "touchend", stopDrag);
-      this.renderer.listen("document", "mouseleave", stopDrag);
-      this.renderer.listen("window", "blur", stopDrag);
+      //   this.renderer.listen("document", "mouseleave", stopDrag);
+      //   this.renderer.listen("window", "blur", stopDrag);
     };
 
     this.renderer.listen(
