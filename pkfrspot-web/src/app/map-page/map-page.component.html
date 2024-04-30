@@ -111,24 +111,13 @@
     </div>
     } @else { @if(spotMap.mapZoom >= 16) {
     <div class="info-panel d-none d-md-block p-3">
-      <h3 class="mat-h3">
-        {{ visibleSpots.length }} spot{{ visibleSpots.length === 1 ? "" : "s" }}
-        in this area
-      </h3>
       <app-spot-list
         [spots]="visibleSpots"
         (clickSpot)="spotMap.openSpot($event)"
       ></app-spot-list>
     </div>
     } } @if(spotMap.mapZoom >= 16) {
-    <app-bottom-sheet
-      #bottomSheet
-      class="d-md-none flex-grow-1"
-      title="{{ visibleSpots.length }} spot{{
-        visibleSpots.length === 1 ? '' : 's'
-      }} in this area"
-      [hasHeader]="!selectedSpot"
-    >
+    <app-bottom-sheet #bottomSheet class="d-md-none flex-grow-1">
       <div class="spot-preview-container">
         <app-spot-compact-view
           [@inOutAnimation]

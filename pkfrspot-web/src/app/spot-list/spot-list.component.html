@@ -1,31 +1,32 @@
-<div class="px-3">
-  <div class="d-flex justify-content-end">
-    <mat-button-toggle-group #group="matButtonToggleGroup" value="grid">
-      <mat-button-toggle value="grid" aria-label="Grid view">
-        <mat-icon>grid_view</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle value="compact" aria-label="List view">
-        <mat-icon>view_list</mat-icon>
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
-  @if(spots.length > 0) {
-  <div
-    [class.spot-container]="true"
-    [class.compact]="group.value === 'compact'"
+<div class="d-flex justify-content-between align-items-center">
+  <h3 class="mat-h3 m-0">
+    {{ spots.length }} spot{{ spots.length === 1 ? "" : "s" }}
+    in this area
+  </h3>
+  <mat-button-toggle-group #group="matButtonToggleGroup" value="grid">
+    <mat-button-toggle value="grid" aria-label="Grid view">
+      <mat-icon>grid_view</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="compact" aria-label="List view">
+      <mat-icon>view_list</mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+@if(spots.length > 0) {
+<div
+  class="py-3"
+  [class.spot-container]="true"
+  [class.compact]="group.value === 'compact'"
+>
+  @for(spot of spots; track spot) {
+  <app-spot-preview-card
+    [spot]="spot"
+    [infoOnly]="true"
+    [clickable]="true"
+    [isCompact]="group.value === 'compact'"
+    (click)="clickSpot.emit(spot)"
   >
-    @for(spot of spots; track spot) {
-    <app-spot-preview-card
-      [spot]="spot"
-      [infoOnly]="true"
-      [clickable]="true"
-      [isCompact]="group.value === 'compact'"
-      (click)="clickSpot.emit(spot)"
-    >
-    </app-spot-preview-card>
-    }
-  </div>
-  } @else {
-  <p>No spots.</p>
+  </app-spot-preview-card>
   }
 </div>
+}

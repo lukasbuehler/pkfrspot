@@ -26,20 +26,8 @@ div.sheet {
     position: relative;
   }
 
-  > div.header:not(.headless) {
-    padding: 20px;
-    padding-top: 0px;
-    height: $sheet-header-height;
-  }
   > div.content {
     overflow-y: scroll;
-    // border-top: solid 1px #4a4a4f2f;
-  }
-  > div.content:not(.headless) {
-    // border-top: #4a4a4f solid 1px;
-    height: calc(100% - 80px);
-  }
-  > div.content.headless {
     height: calc(100% - $handle-region-height);
   }
 }

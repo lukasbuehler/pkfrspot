@@ -1,9 +1,7 @@
 import { Component, HostListener, OnInit } from "@angular/core";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router, RoutesRecognized } from "@angular/router";
 import { filter, map } from "rxjs/operators";
 import { AuthenticationService } from "./authentication.service";
-import { environment } from "src/environments/environment";
 import { StorageService } from "./storage.service";
 import { GlobalVariables } from "src/scripts/global";
 
@@ -42,8 +40,9 @@ export class AppComponent implements OnInit {
       this.alainMode = false;
     }
     GlobalVariables.alainMode.next(this.alainMode);
-    if (plausible)
+    if (typeof plausible !== "undefined") {
       plausible("pageview", { props: { alainMode: this.alainMode } });
+    }
   }
 
   ngOnInit() {
@@ -57,8 +56,9 @@ export class AppComponent implements OnInit {
           isAuthenticated = true;
         }
 
-        if (plausible)
+        if (plausible) {
           plausible("pageview", { props: { authenticated: isAuthenticated } });
+        }
       },
       (error) => {
         console.error(error);

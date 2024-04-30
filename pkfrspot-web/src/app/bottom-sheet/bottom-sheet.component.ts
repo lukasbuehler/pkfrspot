@@ -14,8 +14,6 @@ import {
 export class BottomSheetComponent {
   @Input() title: string = "";
 
-  @Input() hasHeader: boolean = true;
-
   headerHeight: number = 102;
 
   @ViewChild("bottomSheet", { static: true }) bottomSheet: ElementRef;
@@ -43,22 +41,34 @@ export class BottomSheetComponent {
     );
 
     const startDrag = (event) => {
-      let isScrollable = false;
+      let isScrollableUp = false;
       let target = event.target;
-      while (target) {
-        if (target === this.bottomSheet.nativeElement) break;
-        if (
-          target.clientHeight !== 0 &&
-          target.scrollHeight > target.clientHeight + 2
-        ) {
-          // the + 2 is for borders i assume, had to put it in
-          isScrollable = true;
-          break;
-        }
-        target = target.parentElement;
-      }
 
-      if (isScrollable) return;
+      const isAtTop: boolean = this.bottomSheet.nativeElement.offsetTop === 0;
+
+      if (isAtTop) {
+        while (target) {
+          if (target === this.bottomSheet.nativeElement) break;
+          if (
+            target.clientHeight !== 0 &&
+            target.scrollHeight > target.clientHeight + 2
+          ) {
+            // the + 2 is for borders i assume, had to put it in
+
+            // now check if a scrollable element is at the top
+            const scrollOffsetToTop = target.scrollTop;
+
+            if (scrollOffsetToTop !== 0) {
+              isScrollableUp = true;
+              break;
+            }
+          }
+          target = target.parentElement;
+        }
+      } else {
+        // don't kick the sheet when it's down
+        event.preventDefault();
+      }
 
       let clientY =
         event.type === "touchstart" ? event.touches[0].clientY : event.clientY;
@@ -71,6 +81,13 @@ export class BottomSheetComponent {
         // Calculate speed
         speed = pageY - lastY;
         lastY = pageY;
+
+        const isScrollingUp = speed > 0;
+        console.log(isAtTop, isScrollingUp, isScrollableUp, speed);
+        if (isScrollingUp && isScrollableUp) {
+          // don't move the sheet when scrolling up
+          return;
+        }
 
         let newTop = pageY - shiftY;
 
@@ -90,6 +107,10 @@ export class BottomSheetComponent {
         "touchmove",
         moveAt
       );
+
+      if (isScrollableUp && isScrollableUp) {
+        return;
+      }
 
       const stopDrag = (event) => {
         mouseMoveListener();

@@ -1,11 +1,9 @@
 <div #bottomSheet class="sheet mat-elevation-z3">
-  <div class="header" [class.headless]="!hasHeader">
-    <div class="handle-region">
-      <div class="handle"></div>
-    </div>
-    <h3 *ngIf="hasHeader" class="mat-h3">{{ title }}</h3>
+  <div class="handle-region">
+    <div class="handle"></div>
   </div>
-  <div class="content" [class.headless]="!hasHeader">
+
+  <div class="content px-3 pb-3">
     <ng-content></ng-content>
   </div>
 </div>
