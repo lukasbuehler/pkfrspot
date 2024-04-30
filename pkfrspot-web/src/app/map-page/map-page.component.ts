@@ -94,6 +94,7 @@ export class MapPageComponent implements AfterViewInit {
   };
 
   setVisibleSpots(spots: Spot.Class[], mapCenter: google.maps.LatLngLiteral) {
+    if (!spots || !mapCenter) return;
     spots.sort((a, b) => {
       return (
         Math.sqrt(a.location.lat ** 2 + a.location.lng ** 2) -

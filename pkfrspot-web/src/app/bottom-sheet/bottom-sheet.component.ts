@@ -44,7 +44,7 @@ export class BottomSheetComponent {
       let isScrollableUp = false;
       let target = event.target;
 
-      const isAtTop: boolean = this.bottomSheet.nativeElement.offsetTop === 0;
+      let isAtTop: boolean = this.bottomSheet.nativeElement.offsetTop === 0;
 
       if (isAtTop) {
         while (target) {
@@ -65,9 +65,6 @@ export class BottomSheetComponent {
           }
           target = target.parentElement;
         }
-      } else {
-        // don't kick the sheet when it's down
-        event.preventDefault();
       }
 
       let clientY =
@@ -78,16 +75,17 @@ export class BottomSheetComponent {
         let pageY =
           event.type === "touchmove" ? event.touches[0].pageY : event.pageY;
 
+        const isScrollingUp = pageY - shiftY > 0;
+        if (isScrollingUp && isScrollableUp) {
+          // don't move the sheet when the user is scrolling up, and the content can scroll up
+          return;
+        }
+
+        event.preventDefault();
+
         // Calculate speed
         speed = pageY - lastY;
         lastY = pageY;
-
-        const isScrollingUp = speed > 0;
-        console.log(isAtTop, isScrollingUp, isScrollableUp, speed);
-        if (isScrollingUp && isScrollableUp) {
-          // don't move the sheet when scrolling up
-          return;
-        }
 
         let newTop = pageY - shiftY;
 
@@ -107,10 +105,6 @@ export class BottomSheetComponent {
         "touchmove",
         moveAt
       );
-
-      if (isScrollableUp && isScrollableUp) {
-        return;
-      }
 
       const stopDrag = (event) => {
         mouseMoveListener();
