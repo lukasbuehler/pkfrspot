@@ -14,7 +14,7 @@ import {
 export class BottomSheetComponent {
   @Input() title: string = "";
 
-  headerHeight: number = 102;
+  headerHeight: number = 120;
 
   @ViewChild("bottomSheet", { static: true }) bottomSheet: ElementRef;
 
@@ -118,9 +118,7 @@ export class BottomSheetComponent {
         // current target should be the current location
         let targetOffset = 0;
 
-        console.log(pageY, shiftY, clientY, Math.abs(shiftY - pageY));
-
-        if (Math.abs(speed) > 8) {
+        if (Math.abs(speed) > 5) {
           // if we are here the user let go fast or far enough, so we set the
           // other point as the target now
           // Limit the target position

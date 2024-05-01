@@ -58,5 +58,15 @@ service cloud.firestore {
         allow write: if request.auth.uid == otherUserId && request.auth.uid != userId;
       }
     }
+
+    // Spot Reports
+    match /spot_reports/{reportId}
+    {
+        // Only allow to read and create if the report is from the same user.
+        // Disallow altering and viewing other users reports.
+        allow read: if true;
+        allow create: if request.auth.uid == request.resource.data.userId;
+        allow update: if false;
+    }
   }
 }

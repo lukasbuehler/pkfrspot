@@ -73,6 +73,12 @@
       </button>
     </div>
   </mat-card-header>
+  } @if(report) {
+  <div class="report-info">
+    <span class="mat-h3 m-0"
+      >This spot was reported as "{{ report.reason }}"</span
+    >
+  </div>
   }
   <mat-card-content>
     @if(!isEditing) {

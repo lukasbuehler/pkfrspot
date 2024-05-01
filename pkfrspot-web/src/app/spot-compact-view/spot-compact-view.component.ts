@@ -92,6 +92,8 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
   filteredCountries: Observable<any[]>;
   stateCtrl = new UntypedFormControl();
 
+  report: SpotReport | null = null;
+
   automaticallyDetermineAddress: boolean = true;
 
   get isNewSpot() {
@@ -125,6 +127,8 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
     //console.log(this._element.nativeElement.clientHeight);
 
     this.startHeight = this._element.nativeElement.clientHeight;
+
+    this.loadReportForSpot();
   }
 
   ngOnInit() {
@@ -327,6 +331,12 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
       plausible("Opening in Google Maps", { props: { spotId: this.spot.id } });
     }
     this._mapsApiService.openLatLngInGoogleMaps(this.spot.location);
+  }
+
+  loadReportForSpot() {
+    this._dbService.getSpotReportsBySpotId(this.spot.id).then((report) => {
+      this.report = report || null;
+    });
   }
 
   hasBounds() {

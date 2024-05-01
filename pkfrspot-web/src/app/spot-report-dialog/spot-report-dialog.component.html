@@ -6,16 +6,28 @@
     class="d-flex flex-column"
     [(ngModel)]="data.reason"
   >
-    <mat-radio-button value="duplicate">Duplicate</mat-radio-button>
+    <mat-radio-button value="duplicate"> Duplicate </mat-radio-button>
+
     <mat-radio-button value="torn down">Torn down</mat-radio-button>
     <mat-radio-button value="does not exist">Does not exist</mat-radio-button>
     <mat-radio-button value="secret spot">It's a secret spot!</mat-radio-button>
     <mat-radio-button value="other">Other</mat-radio-button>
   </mat-radio-group>
-  @if(data.reason === "duplicate") {
-  <!-- TODO Add input field for spot duplicate -->
-  <p>Select which of which spot this is a duplicate of:</p>
-  }
+  @if(data.reason === 'duplicate') {
+  <p class="mat-body pt-3">Which spot is this spot a duplicate of?</p>
+  <mat-form-field class="w-100">
+    <mat-label>Spot</mat-label>
+    <input
+      matInput
+      placeholder="Spot name"
+      [(ngModel)]="data.duplicateOf"
+      required
+    /> </mat-form-field
+  >}
+  <p class="mat-body pt-3">
+    Note: Spot reports are public and will be displayed on the spot itself
+    together with your profile and user name.
+  </p>
 </mat-dialog-content>
 <mat-dialog-actions class="d-flex justify-content-between p-3">
   <button mat-button (click)="onNoClick()">Cancel</button>

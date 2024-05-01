@@ -1,10 +1,11 @@
 :host {
-  overflow: none;
+  //overflow: none;
 }
 
 mat-card {
   height: auto;
   overflow-y: scroll;
+  overflow: visible;
 
   ::ng-deep .mat-card-header-text {
     width: 100%;
@@ -122,4 +123,17 @@ app-img-carousel {
 
 .flex-basis-0 {
   flex-basis: 0;
+}
+
+.report-info {
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  background-color: #ffdad6;
+  margin-bottom: 10px;
+  > * {
+    color: #410002;
+  }
 }
