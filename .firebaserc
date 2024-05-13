@@ -1,4 +1,13 @@
 {
+  "targets": {
+    "parkour-base-project": {
+      "hosting": {
+        "parkour-base-angular": [
+          "parkour-base-project"
+        ]
+      }
+    }
+  },
   "projects": {
     "test": "parkour-base-project",
     "prod": "pkfrspot",

@@ -24,7 +24,7 @@
     "@angular/common": "^17.3.6",
     "@angular/compiler": "^17.3.6",
     "@angular/core": "^17.3.6",
-    "@angular/fire": "^7.4.1",
+    "@angular/fire": "^17.0.1",
     "@angular/forms": "^17.3.6",
     "@angular/google-maps": "^16.0.4",
     "@angular/localize": "^17.3.6",
