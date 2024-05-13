@@ -32,23 +32,12 @@ const routes: Routes = [
     component: PostPageComponent,
     data: { routeName: "Post" },
   },
-  {
-    path: "s/:spotID",
-    redirectTo: "map/:spotID",
-  },
-  {
-    path: "spot/:spotID",
-    redirectTo: "map/:spotID",
-  },
-
   // Map page
   { path: "map", component: MapPageComponent, data: { routeName: "Spot map" } },
   {
-    path: "map/:spotID",
-    component: MapPageComponent,
-    data: { routeName: "Spot map" },
+    path: "map/:id",
+    redirectTo: "map",
   },
-  //{ path: "s/:spotID", component: SpotDetailComponent, data: {routeName: "Spot"} },
   {
     path: "kml-import",
     component: KmlImportPageComponent,

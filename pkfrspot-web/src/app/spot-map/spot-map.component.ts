@@ -98,24 +98,20 @@ export class SpotMapComponent implements AfterViewInit {
   private _southWestTileCoordsZ16: google.maps.Point;
 
   constructor(
+    public titleService: Title,
     private route: ActivatedRoute,
     private _dbService: DatabaseService,
     private authService: AuthenticationService,
     private meta: Meta,
-    private titleService: Title,
     private mapsAPIService: MapsApiService
-  ) {
-    this.titleService.setTitle(`PKFR Spot map`);
-  }
+  ) {}
 
   isInitiated: boolean = false;
 
   ngAfterViewInit(): void {
     let spotId: string = this.route.snapshot.paramMap.get("spotID") ?? "";
 
-    if (spotId) {
-      this.openSpotById(spotId);
-    } else {
+    if (!spotId) {
       // load the last location and zoom from memory
       this.mapsAPIService
         .loadLastLocationAndZoom()
@@ -349,6 +345,13 @@ export class SpotMapComponent implements AfterViewInit {
   }
 
   openSpot(spot: Spot.Class) {
+    this.setSpotMetaTags(spot);
+
+    this.setSelectedSpot(spot);
+    this.focusSpot(spot);
+  }
+
+  setSpotMetaTags(spot: Spot.Class) {
     this.titleService.setTitle(`PKFR Spot map: ${spot.name}`);
     this.meta.updateTag(
       { name: "og:title", content: spot.name },
@@ -366,9 +369,6 @@ export class SpotMapComponent implements AfterViewInit {
       ],
       true
     );
-
-    this.setSelectedSpot(spot);
-    this.focusSpot(spot);
   }
 
   focusSpot(spot: Spot.Class) {

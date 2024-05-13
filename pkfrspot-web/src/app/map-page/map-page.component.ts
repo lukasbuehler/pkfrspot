@@ -5,14 +5,15 @@ import {
   HostListener,
   Input,
   NgModule,
+  OnInit,
 } from "@angular/core";
 import { Spot } from "src/scripts/db/Spot";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
 import { AuthenticationService } from "../authentication.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MapsApiService } from "../maps-api.service";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, take } from "rxjs";
 import { animate, style, transition, trigger } from "@angular/animations";
 import { BottomSheetComponent } from "../bottom-sheet/bottom-sheet.component";
 import { FormControl } from "@angular/forms";
@@ -23,6 +24,7 @@ import { Location } from "@angular/common";
 import { StorageService } from "../storage.service";
 import { GlobalVariables } from "src/scripts/global";
 import { SpotListComponent } from "../spot-list/spot-list.component";
+import { DatabaseService } from "../database.service";
 
 @Component({
   selector: "app-map-page",
@@ -41,7 +43,7 @@ import { SpotListComponent } from "../spot-list/spot-list.component";
     ]),
   ],
 })
-export class MapPageComponent implements AfterViewInit {
+export class MapPageComponent implements OnInit, AfterViewInit {
   @ViewChild("spotMap") spotMap: SpotMapComponent;
   @ViewChild("bottomSheet") bottomSheet: BottomSheetComponent;
 
@@ -63,9 +65,11 @@ export class MapPageComponent implements AfterViewInit {
   alainMode: boolean;
 
   constructor(
+    public route: ActivatedRoute,
     public authService: AuthenticationService,
     public mapsService: MapsApiService,
     public storageService: StorageService,
+    private _dbService: DatabaseService,
     private _searchService: SearchService,
     private router: Router,
     private location: Location,
@@ -74,6 +78,26 @@ export class MapPageComponent implements AfterViewInit {
     GlobalVariables.alainMode.subscribe((value) => {
       this.alainMode = value;
     });
+  }
+
+  ngOnInit(): void {
+    // This is run on the server as well (when using SSR)
+    let spotId: string =
+      this.route.snapshot.queryParamMap.get("spot") ??
+      this.route.snapshot.queryParamMap.get("spotId") ??
+      this.route.snapshot.paramMap.get("spotID") ??
+      "";
+
+    if (spotId) {
+      this._dbService
+        .getSpotById(spotId)
+        .pipe(take(1))
+        .subscribe((spot) => {
+          this.spotMap.setSpotMetaTags(spot);
+        });
+    } else {
+      this.spotMap.titleService.setTitle(`PKFR Spot map`);
+    }
   }
 
   // Speed dial FAB //////////////////////////////////////////////////////////
@@ -167,7 +191,7 @@ export class MapPageComponent implements AfterViewInit {
 
   updateMapURL() {
     if (this.selectedSpot) {
-      this.location.go(`/map/${this.selectedSpot.id}`);
+      this.location.go(`/map?spot=${this.selectedSpot.id}`);
     } else {
       this.location.go(`/map`);
     }

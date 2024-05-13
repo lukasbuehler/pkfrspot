@@ -63,7 +63,7 @@
     *ngIf="post.spot && (post.spot?.ref || post.spot?.spot_location)"
     [routerLink]="
       post.spot?.ref
-        ? '/map/' + post.spot?.ref?.id
+        ? '/map?spot=' + post.spot?.ref?.id
         : '/map?lat=' +
           post.spot.spot_location.latitude +
           '&lng=' +

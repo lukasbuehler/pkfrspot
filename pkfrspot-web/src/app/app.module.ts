@@ -107,14 +107,17 @@ import { VgCoreModule } from "@videogular/ngx-videogular/core";
 import { VgControlsModule } from "@videogular/ngx-videogular/controls";
 import { VgOverlayPlayModule } from "@videogular/ngx-videogular/overlay-play";
 import { VgBufferingModule } from "@videogular/ngx-videogular/buffering";
-import { HammerModule, provideClientHydration } from "@angular/platform-browser";
+import {
+  HammerModule,
+  provideClientHydration,
+} from "@angular/platform-browser";
 import { MapComponent } from "./map/map.component";
 import { SpotMapComponent } from "./spot-map/spot-map.component";
 import { ImgCarouselComponent } from "./img-carousel/img-carousel.component";
 import { Mat3FabComponent } from "./mat3-fab/mat3-fab.component";
 import { MatRadioModule } from "@angular/material/radio";
 import { SpotListComponent } from "./spot-list/spot-list.component";
-import { getFunctions, provideFunctions } from '@angular/fire/functions';
+import { getFunctions, provideFunctions } from "@angular/fire/functions";
 
 @NgModule({
   declarations: [
@@ -228,7 +231,7 @@ import { getFunctions, provideFunctions } from '@angular/fire/functions';
     ImgCarouselComponent,
     SpotPreviewCardComponent,
     SpotListComponent,
-    provideFirebaseApp(() => initializeApp({"projectId":"parkour-base-project","appId":"1:294969617102:web:8fcaf3a0e082fad2","databaseURL":"https://parkour-base-project.firebaseio.com","storageBucket":"parkour-base-project.appspot.com","locationId":"europe-west","apiKey":"AIzaSyAv_ogjKAWB3Ud_siO0M5F7ZvHglF9KAX4","authDomain":"parkour-base-project.firebaseapp.com","messagingSenderId":"294969617102","measurementId":"G-QWY7ZQX6MP"})),
+    provideFirebaseApp(() => initializeApp(environment.keys.firebaseConfig)),
     provideFirestore(() => getFirestore()),
     provideFunctions(() => getFunctions()),
   ],
