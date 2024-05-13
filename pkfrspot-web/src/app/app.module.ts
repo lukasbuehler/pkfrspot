@@ -107,7 +107,7 @@ import { VgCoreModule } from "@videogular/ngx-videogular/core";
 import { VgControlsModule } from "@videogular/ngx-videogular/controls";
 import { VgOverlayPlayModule } from "@videogular/ngx-videogular/overlay-play";
 import { VgBufferingModule } from "@videogular/ngx-videogular/buffering";
-import { HammerModule } from "@angular/platform-browser";
+import { HammerModule, provideClientHydration } from "@angular/platform-browser";
 import { MapComponent } from "./map/map.component";
 import { SpotMapComponent } from "./spot-map/spot-map.component";
 import { ImgCarouselComponent } from "./img-carousel/img-carousel.component";
@@ -164,6 +164,7 @@ import { getFunctions, provideFunctions } from '@angular/fire/functions';
   exports: [MatButtonModule],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
+    provideClientHydration(),
   ],
   bootstrap: [AppComponent],
   imports: [
