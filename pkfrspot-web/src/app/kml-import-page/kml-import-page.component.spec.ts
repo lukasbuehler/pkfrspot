@@ -8,8 +8,8 @@ describe('KmlImportPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ KmlImportPageComponent ]
-    })
+    imports: [KmlImportPageComponent]
+})
     .compileComponents();
   });
 

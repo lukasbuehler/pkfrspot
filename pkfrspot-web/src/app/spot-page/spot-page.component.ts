@@ -25,14 +25,68 @@ import {
   getCountriesList,
   isMobileDevice,
 } from "../../scripts/Helpers";
-import { UntypedFormControl } from "@angular/forms";
+import { UntypedFormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { map, startWith } from "rxjs/operators";
 import { MapsApiService } from "../maps-api.service";
+import { MatAutocompleteTrigger, MatAutocomplete } from "@angular/material/autocomplete";
+import { MatSlideToggle } from "@angular/material/slide-toggle";
+import { MatSelect } from "@angular/material/select";
+import { MediaPreviewGridComponent } from "../media-preview-grid/media-preview-grid.component";
+import { PostCollectionComponent } from "../post-collection/post-collection.component";
+import { MatTooltip } from "@angular/material/tooltip";
+import { MatTabGroup, MatTab } from "@angular/material/tabs";
+import { RatingComponent } from "../rating/rating.component";
+import { MatInput } from "@angular/material/input";
+import { MatFormField, MatLabel, MatHint } from "@angular/material/form-field";
+import { MatIcon } from "@angular/material/icon";
+import { MatIconButton, MatButton } from "@angular/material/button";
+import { MatRipple, MatOption } from "@angular/material/core";
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from "@angular/material/card";
+import { MatMenu, MatMenuItem, MatMenuTrigger } from "@angular/material/menu";
+import { NgIf, NgFor, AsyncPipe } from "@angular/common";
 
 @Component({
-  selector: "app-spot-page",
-  templateUrl: "./spot-page.component.html",
-  styleUrls: ["./spot-page.component.scss"],
+    selector: "app-spot-page",
+    templateUrl: "./spot-page.component.html",
+    styleUrls: ["./spot-page.component.scss"],
+    standalone: true,
+    imports: [
+        NgIf,
+        MatProgressBar,
+        MatMenu,
+        MatMenuItem,
+        MatCard,
+        MatRipple,
+        MatCardHeader,
+        MatCardTitle,
+        MatIconButton,
+        MatIcon,
+        FormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatCardSubtitle,
+        RatingComponent,
+        MatCardContent,
+        MatTabGroup,
+        MatTab,
+        MatButton,
+        MatMenuTrigger,
+        NgFor,
+        MatTooltip,
+        PostCollectionComponent,
+        MediaPreviewGridComponent,
+        UploadMediaUiComponent,
+        MatSelect,
+        MatOption,
+        MatSlideToggle,
+        MatAutocompleteTrigger,
+        ReactiveFormsModule,
+        MatAutocomplete,
+        MatHint,
+        MatCardActions,
+        AsyncPipe,
+    ],
 })
 export class SpotPageComponent implements OnInit {
   @Input() spot: Spot.Class;

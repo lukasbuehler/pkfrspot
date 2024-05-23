@@ -31,9 +31,11 @@ interface LoadedSpotReference {
 type Dot = google.maps.visualization.WeightedLocation;
 
 @Component({
-  selector: "app-spot-map",
-  templateUrl: "./spot-map.component.html",
-  styleUrls: ["./spot-map.component.scss"],
+    selector: "app-spot-map",
+    templateUrl: "./spot-map.component.html",
+    styleUrls: ["./spot-map.component.scss"],
+    standalone: true,
+    imports: [MapComponent],
 })
 export class SpotMapComponent implements AfterViewInit {
   @ViewChild("map") map: MapComponent;

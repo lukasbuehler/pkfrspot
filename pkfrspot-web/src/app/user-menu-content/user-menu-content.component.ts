@@ -1,11 +1,22 @@
 import { Component } from "@angular/core";
 import { AuthenticationService } from "../authentication.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { MatIcon } from "@angular/material/icon";
+import { MatMenuItem } from "@angular/material/menu";
+import { RouterLink } from "@angular/router";
+import { NgIf } from "@angular/common";
 
 @Component({
-  selector: "app-user-menu-content",
-  templateUrl: "./user-menu-content.component.html",
-  styleUrls: ["./user-menu-content.component.scss"],
+    selector: "app-user-menu-content",
+    templateUrl: "./user-menu-content.component.html",
+    styleUrls: ["./user-menu-content.component.scss"],
+    standalone: true,
+    imports: [
+        NgIf,
+        RouterLink,
+        MatMenuItem,
+        MatIcon,
+    ],
 })
 export class UserMenuContentComponent {
   constructor(

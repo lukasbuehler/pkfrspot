@@ -12,11 +12,24 @@ import { MediaType } from "src/scripts/db/Interfaces";
 import { DocumentChangeType } from "@angular/fire/compat/firestore";
 import { Observable, Subscription } from "rxjs";
 import { GeoPoint, Timestamp } from "firebase/firestore";
+import { MatIcon } from "@angular/material/icon";
+import { MatFabButton } from "@angular/material/button";
+import { NgIf } from "@angular/common";
+import { MatTabGroup, MatTab } from "@angular/material/tabs";
 
 @Component({
-  selector: "app-home-page",
-  templateUrl: "./home-page.component.html",
-  styleUrls: ["./home-page.component.scss"],
+    selector: "app-home-page",
+    templateUrl: "./home-page.component.html",
+    styleUrls: ["./home-page.component.scss"],
+    standalone: true,
+    imports: [
+        MatTabGroup,
+        NgIf,
+        MatTab,
+        PostCollectionComponent,
+        MatFabButton,
+        MatIcon,
+    ],
 })
 export class HomePageComponent implements OnInit, OnDestroy {
   constructor(

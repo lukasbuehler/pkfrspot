@@ -7,9 +7,10 @@ import {
 } from "@angular/core";
 
 @Component({
-  selector: "app-bottom-sheet",
-  templateUrl: "./bottom-sheet.component.html",
-  styleUrls: ["./bottom-sheet.component.scss"],
+    selector: "app-bottom-sheet",
+    templateUrl: "./bottom-sheet.component.html",
+    styleUrls: ["./bottom-sheet.component.scss"],
+    standalone: true,
 })
 export class BottomSheetComponent {
   @Input() title: string = "";

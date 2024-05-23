@@ -1,16 +1,32 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthenticationService } from "../authentication.service";
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from "@angular/forms";
-import { Router } from "@angular/router";
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { Router, RouterLink } from "@angular/router";
+import { MatDivider } from "@angular/material/divider";
+import { MatButton } from "@angular/material/button";
+import { NgIf } from "@angular/common";
+import { MatInput } from "@angular/material/input";
+import { MatFormField, MatLabel, MatError } from "@angular/material/form-field";
+import { PageHeaderComponent } from "../page-header/page-header.component";
 
 @Component({
-  selector: "app-sign-in-page",
-  templateUrl: "./sign-in-page.component.html",
-  styleUrls: ["./sign-in-page.component.scss"],
+    selector: "app-sign-in-page",
+    templateUrl: "./sign-in-page.component.html",
+    styleUrls: ["./sign-in-page.component.scss"],
+    standalone: true,
+    imports: [
+        PageHeaderComponent,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        NgIf,
+        MatError,
+        MatButton,
+        RouterLink,
+        MatDivider,
+    ],
 })
 export class SignInPageComponent implements OnInit {
   signInForm: UntypedFormGroup;

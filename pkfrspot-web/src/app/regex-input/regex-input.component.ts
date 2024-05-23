@@ -11,16 +11,7 @@ import {
   Output,
   Self,
 } from "@angular/core";
-import {
-  AbstractControl,
-  ControlValueAccessor,
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  NgControl,
-  ValidationErrors,
-  Validator,
-  ValidatorFn,
-} from "@angular/forms";
+import { AbstractControl, ControlValueAccessor, UntypedFormBuilder, UntypedFormGroup, NgControl, ValidationErrors, Validator, ValidatorFn, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {
   MatFormField,
   MatFormFieldControl,
@@ -66,15 +57,17 @@ export function regexValidator(): ValidatorFn {
 }
 
 @Component({
-  selector: "app-regex-input",
-  templateUrl: "./regex-input.component.html",
-  styleUrls: ["./regex-input.component.scss"],
-  providers: [
-    { provide: MatFormFieldControl, useExisting: RegexInputComponent },
-  ],
-  host: {
-    "(change)": "_onChange($event.target.value)",
-  },
+    selector: "app-regex-input",
+    templateUrl: "./regex-input.component.html",
+    styleUrls: ["./regex-input.component.scss"],
+    providers: [
+        { provide: MatFormFieldControl, useExisting: RegexInputComponent },
+    ],
+    host: {
+        "(change)": "_onChange($event.target.value)",
+    },
+    standalone: true,
+    imports: [FormsModule, ReactiveFormsModule],
 })
 export class RegexInputComponent
   implements

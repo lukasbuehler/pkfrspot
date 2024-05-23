@@ -9,8 +9,8 @@ describe("SpotDetailComponent", () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SpotCompactViewComponent],
-      }).compileComponents();
+    imports: [SpotCompactViewComponent],
+}).compileComponents();
     })
   );
 

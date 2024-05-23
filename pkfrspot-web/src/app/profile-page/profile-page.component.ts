@@ -5,18 +5,38 @@ import {
   MatDialogRef,
 } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import { Post } from "src/scripts/db/Post";
 import { User } from "src/scripts/db/User";
 import { AuthenticationService } from "../authentication.service";
 import { DatabaseService } from "../database.service";
 import { FollowListComponent } from "../follow-list/follow-list.component";
 import { StorageService } from "../storage.service";
+import { MatButton } from "@angular/material/button";
+import { FancyCounterComponent } from "../fancy-counter/fancy-counter.component";
+import { MatChipSet, MatChip } from "@angular/material/chips";
+import { NgIf } from "@angular/common";
+import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from "@angular/material/card";
+import { MatProgressSpinner } from "@angular/material/progress-spinner";
 
 @Component({
-  selector: "app-profile-page",
-  templateUrl: "./profile-page.component.html",
-  styleUrls: ["./profile-page.component.scss"],
+    selector: "app-profile-page",
+    templateUrl: "./profile-page.component.html",
+    styleUrls: ["./profile-page.component.scss"],
+    standalone: true,
+    imports: [
+        MatProgressSpinner,
+        MatCard,
+        MatCardContent,
+        NgIf,
+        MatChipSet,
+        MatChip,
+        FancyCounterComponent,
+        MatButton,
+        RouterLink,
+        MatCardHeader,
+        MatCardTitle,
+    ],
 })
 export class ProfilePageComponent implements OnInit {
   userId: string = "";

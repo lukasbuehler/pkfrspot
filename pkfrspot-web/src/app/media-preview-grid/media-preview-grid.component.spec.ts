@@ -8,8 +8,8 @@ describe('MediaPreviewGridComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MediaPreviewGridComponent ]
-    })
+    imports: [MediaPreviewGridComponent]
+})
     .compileComponents();
   });
 

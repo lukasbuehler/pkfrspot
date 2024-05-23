@@ -8,8 +8,8 @@ describe('BottomSheetComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [BottomSheetComponent]
-    });
+    imports: [BottomSheetComponent]
+});
     fixture = TestBed.createComponent(BottomSheetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

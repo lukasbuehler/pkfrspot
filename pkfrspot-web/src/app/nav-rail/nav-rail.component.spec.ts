@@ -8,8 +8,8 @@ describe('NavRailComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [NavRailComponent]
-    });
+    imports: [NavRailComponent]
+});
     fixture = TestBed.createComponent(NavRailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

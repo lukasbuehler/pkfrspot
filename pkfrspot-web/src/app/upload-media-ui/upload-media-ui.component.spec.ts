@@ -8,8 +8,8 @@ describe('UploadMediaUiComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ UploadMediaUiComponent ]
-    })
+    imports: [UploadMediaUiComponent]
+})
     .compileComponents();
   }));
 

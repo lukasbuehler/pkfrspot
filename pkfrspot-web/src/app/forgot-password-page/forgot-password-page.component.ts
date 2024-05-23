@@ -1,17 +1,32 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AuthenticationService } from "../authentication.service";
 import { RecaptchaVerifier, sendPasswordResetEmail } from "firebase/auth";
+import { MatIcon } from "@angular/material/icon";
+import { MatButton } from "@angular/material/button";
+import { NgIf } from "@angular/common";
+import { MatInput } from "@angular/material/input";
+import { MatFormField, MatLabel, MatError } from "@angular/material/form-field";
+import { PageHeaderComponent } from "../page-header/page-header.component";
 
 @Component({
-  selector: "app-forgot-password-page",
-  templateUrl: "./forgot-password-page.component.html",
-  styleUrls: ["./forgot-password-page.component.scss"],
+    selector: "app-forgot-password-page",
+    templateUrl: "./forgot-password-page.component.html",
+    styleUrls: ["./forgot-password-page.component.scss"],
+    standalone: true,
+    imports: [
+        PageHeaderComponent,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        NgIf,
+        MatError,
+        MatButton,
+        MatIcon,
+    ],
 })
 export class ForgotPasswordPageComponent implements OnInit {
   forgotPasswordForm: UntypedFormGroup;

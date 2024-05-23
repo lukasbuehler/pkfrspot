@@ -1,6 +1,6 @@
 // used this answer on github for help: https://github.com/angular/components/issues/13372#issuecomment-447129222
 
-import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
+import { CdkDragDrop, moveItemInArray, CdkDropListGroup, CdkDropList, CdkDrag } from "@angular/cdk/drag-drop";
 import {
   Component,
   EventEmitter,
@@ -10,11 +10,24 @@ import {
   ViewChild,
 } from "@angular/core";
 import { ContributedMedia, Media, MediaType } from "src/scripts/db/Interfaces";
+import { MatIcon } from "@angular/material/icon";
+import { MatIconButton } from "@angular/material/button";
+import { NgIf, NgFor } from "@angular/common";
 
 @Component({
-  selector: "app-media-preview-grid",
-  templateUrl: "./media-preview-grid.component.html",
-  styleUrls: ["./media-preview-grid.component.scss"],
+    selector: "app-media-preview-grid",
+    templateUrl: "./media-preview-grid.component.html",
+    styleUrls: ["./media-preview-grid.component.scss"],
+    standalone: true,
+    imports: [
+        NgIf,
+        CdkDropListGroup,
+        NgFor,
+        CdkDropList,
+        CdkDrag,
+        MatIconButton,
+        MatIcon,
+    ],
 })
 export class MediaPreviewGridComponent implements OnInit {
   @Input() media: (Media | ContributedMedia)[] = null;

@@ -1,9 +1,27 @@
 import { Component, OnInit } from "@angular/core";
+import { PageHeaderComponent } from "../page-header/page-header.component";
+import { MatDivider } from "@angular/material/divider";
+import { MatIcon } from "@angular/material/icon";
+import { NgIf } from "@angular/common";
+import { MatSelectionList, MatListSubheaderCssMatStyler, MatListOption } from "@angular/material/list";
+import { MatDrawerContainer, MatDrawer } from "@angular/material/sidenav";
 
 @Component({
-  selector: "app-community-page",
-  templateUrl: "./community-page.component.html",
-  styleUrls: ["./community-page.component.scss"],
+    selector: "app-community-page",
+    templateUrl: "./community-page.component.html",
+    styleUrls: ["./community-page.component.scss"],
+    standalone: true,
+    imports: [
+        MatDrawerContainer,
+        MatDrawer,
+        MatSelectionList,
+        MatListSubheaderCssMatStyler,
+        MatListOption,
+        NgIf,
+        MatIcon,
+        MatDivider,
+        PageHeaderComponent,
+    ],
 })
 export class CommunityPageComponent implements OnInit {
   constructor() {}

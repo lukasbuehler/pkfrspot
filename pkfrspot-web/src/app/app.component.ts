@@ -1,16 +1,45 @@
 import { Component, HostListener, OnInit } from "@angular/core";
-import { Router, RoutesRecognized } from "@angular/router";
+import { Router, RoutesRecognized, RouterLink, RouterOutlet } from "@angular/router";
 import { filter, map } from "rxjs/operators";
 import { AuthenticationService } from "./authentication.service";
 import { StorageService } from "./storage.service";
 import { GlobalVariables } from "src/scripts/global";
+import { UserMenuContentComponent } from "./user-menu-content/user-menu-content.component";
+import { NgIf } from "@angular/common";
+import { MatFabButton } from "@angular/material/button";
+import { MatIcon } from "@angular/material/icon";
+import { MatMenuTrigger, MatMenu, MatMenuItem } from "@angular/material/menu";
+import { Mat3FabComponent } from "./mat3-fab/mat3-fab.component";
+import { MatToolbar } from "@angular/material/toolbar";
+import { NavRailContentComponent } from "./nav-rail-content/nav-rail-content.component";
+import { Mat3NavButtonComponent } from "./mat3-nav-button/mat3-nav-button.component";
+import { NavRailComponent } from "./nav-rail/nav-rail.component";
+import { NavRailContainerComponent } from "./nav-rail-container/nav-rail-container.component";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"],
+    selector: "app-root",
+    templateUrl: "./app.component.html",
+    styleUrls: ["./app.component.scss"],
+    standalone: true,
+    imports: [
+        NavRailContainerComponent,
+        NavRailComponent,
+        RouterLink,
+        Mat3NavButtonComponent,
+        NavRailContentComponent,
+        RouterOutlet,
+        MatToolbar,
+        Mat3FabComponent,
+        MatMenuTrigger,
+        MatMenu,
+        MatMenuItem,
+        MatIcon,
+        MatFabButton,
+        NgIf,
+        UserMenuContentComponent,
+    ],
 })
 export class AppComponent implements OnInit {
   constructor(

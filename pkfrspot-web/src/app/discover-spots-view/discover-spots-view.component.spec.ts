@@ -8,8 +8,8 @@ describe('DiscoverSpotsViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DiscoverSpotsViewComponent ]
-    })
+    imports: [DiscoverSpotsViewComponent]
+})
     .compileComponents();
   });
 

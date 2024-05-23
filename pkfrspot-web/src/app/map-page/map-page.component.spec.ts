@@ -8,8 +8,8 @@ describe('MapPageComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MapPageComponent ]
-    })
+    imports: [MapPageComponent]
+})
     .compileComponents();
   }));
 

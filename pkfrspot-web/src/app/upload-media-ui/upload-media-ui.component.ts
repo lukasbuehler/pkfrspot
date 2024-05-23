@@ -1,19 +1,31 @@
 import { Optional, Self } from "@angular/core";
 import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
-import {
-  ControlValueAccessor,
-  UntypedFormControl,
-  FormControlName,
-  UntypedFormGroup,
-  NgControl,
-  Validators,
-} from "@angular/forms";
+import { ControlValueAccessor, UntypedFormControl, FormControlName, UntypedFormGroup, NgControl, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { humanFileSize } from "./../../scripts/Helpers";
+import { NgIf } from "@angular/common";
+import { MatInput } from "@angular/material/input";
+import { MatFormField, MatLabel, MatSuffix, MatHint, MatError } from "@angular/material/form-field";
+import { MatIcon } from "@angular/material/icon";
+import { MatMiniFabButton } from "@angular/material/button";
 
 @Component({
-  selector: "app-upload-media-ui",
-  templateUrl: "./upload-media-ui.component.html",
-  styleUrls: ["./upload-media-ui.component.scss"],
+    selector: "app-upload-media-ui",
+    templateUrl: "./upload-media-ui.component.html",
+    styleUrls: ["./upload-media-ui.component.scss"],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatMiniFabButton,
+        MatIcon,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatSuffix,
+        NgIf,
+        MatHint,
+        MatError,
+    ],
 })
 export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
   @Input() required: boolean = false;

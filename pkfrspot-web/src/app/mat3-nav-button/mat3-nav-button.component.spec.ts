@@ -8,8 +8,8 @@ describe('Mat3NavButtonComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [Mat3NavButtonComponent]
-    });
+    imports: [Mat3NavButtonComponent]
+});
     fixture = TestBed.createComponent(Mat3NavButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

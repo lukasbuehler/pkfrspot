@@ -27,7 +27,7 @@ import {
   getCountriesList,
   isMobileDevice,
 } from "../../scripts/Helpers";
-import { UntypedFormControl } from "@angular/forms";
+import { UntypedFormControl, FormsModule } from "@angular/forms";
 import { map, startWith } from "rxjs/operators";
 import { trigger, transition, style, animate } from "@angular/animations";
 import { MapsApiService } from "../maps-api.service";
@@ -35,23 +35,60 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { SpotReportDialogComponent } from "../spot-report-dialog/spot-report-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import { SpotReport } from "src/scripts/db/SpotReport.js";
+import { MatSelect } from "@angular/material/select";
+import { MediaPreviewGridComponent } from "../media-preview-grid/media-preview-grid.component";
+import { MatInput } from "@angular/material/input";
+import { MatFormField, MatLabel } from "@angular/material/form-field";
+import { ImgCarouselComponent } from "../img-carousel/img-carousel.component";
+import { MatIcon } from "@angular/material/icon";
+import { MatTooltip } from "@angular/material/tooltip";
+import { MatIconButton, MatButton } from "@angular/material/button";
+import { NgIf, NgFor } from "@angular/common";
+import { MatChip } from "@angular/material/chips";
+import { MatRipple, MatOption } from "@angular/material/core";
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from "@angular/material/card";
+import { MatMenu, MatMenuItem } from "@angular/material/menu";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
 @Component({
-  selector: "app-spot-compact-view",
-  templateUrl: "./spot-compact-view.component.html",
-  styleUrls: ["./spot-compact-view.component.scss"],
-  animations: [
-    trigger("grow", [
-      transition("void <=> *", []),
-      transition(
-        "* <=> *",
-        [style({ height: "{{startHeight}}px" }), animate(".3s ease")],
-        { params: { startHeight: 0 } }
-      ),
-    ]),
-  ],
+    selector: "app-spot-compact-view",
+    templateUrl: "./spot-compact-view.component.html",
+    styleUrls: ["./spot-compact-view.component.scss"],
+    animations: [
+        trigger("grow", [
+            transition("void <=> *", []),
+            transition("* <=> *", [style({ height: "{{startHeight}}px" }), animate(".3s ease")], { params: { startHeight: 0 } }),
+        ]),
+    ],
+    standalone: true,
+    imports: [
+        MatMenu,
+        MatMenuItem,
+        MatCard,
+        MatRipple,
+        MatCardHeader,
+        MatCardTitle,
+        MatCardSubtitle,
+        MatChip,
+        NgIf,
+        MatIconButton,
+        MatTooltip,
+        MatIcon,
+        MatCardContent,
+        ImgCarouselComponent,
+        MatButton,
+        FormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MediaPreviewGridComponent,
+        UploadMediaUiComponent,
+        MatSelect,
+        NgFor,
+        MatOption,
+        MatCardActions,
+    ],
 })
 export class SpotCompactViewComponent implements OnInit, OnChanges {
   @Input() spot: Spot.Class;

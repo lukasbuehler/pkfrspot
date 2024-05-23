@@ -4,14 +4,39 @@ import { DatabaseService } from "../database.service";
 import { AuthenticationService } from "../authentication.service";
 import { MapHelpers } from "../../scripts/MapHelpers";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { Router } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { Timestamp } from "firebase/firestore";
 import { humanTimeSince } from "src/scripts/Helpers";
+import { MatMenuTrigger, MatMenu, MatMenuItem } from "@angular/material/menu";
+import { FancyCounterComponent } from "../fancy-counter/fancy-counter.component";
+import { MatIcon } from "@angular/material/icon";
+import { MatIconButton } from "@angular/material/button";
+import { VgCoreModule } from "@videogular/ngx-videogular/core";
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from "@angular/material/card";
+import { NgIf } from "@angular/common";
 
 @Component({
-  selector: "app-post",
-  templateUrl: "./post.component.html",
-  styleUrls: ["./post.component.scss"],
+    selector: "app-post",
+    templateUrl: "./post.component.html",
+    styleUrls: ["./post.component.scss"],
+    standalone: true,
+    imports: [
+        NgIf,
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatCardSubtitle,
+        RouterLink,
+        VgCoreModule,
+        MatCardContent,
+        MatCardActions,
+        MatIconButton,
+        MatIcon,
+        FancyCounterComponent,
+        MatMenuTrigger,
+        MatMenu,
+        MatMenuItem,
+    ],
 })
 export class PostComponent implements OnInit {
   @Input() post: Post.Class;

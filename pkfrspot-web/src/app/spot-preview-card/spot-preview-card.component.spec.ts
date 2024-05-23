@@ -9,8 +9,8 @@ describe("SpotCardComponent", () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SpotPreviewCardComponent],
-      }).compileComponents();
+    imports: [SpotPreviewCardComponent],
+}).compileComponents();
     })
   );
 

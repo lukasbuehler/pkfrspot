@@ -1,19 +1,34 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  AbstractControl,
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from "@angular/forms";
-import { Router } from "@angular/router";
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { Router, RouterLink } from "@angular/router";
 import { AuthenticationService } from "../authentication.service";
 import { DatabaseService } from "../database.service";
 import { RecaptchaVerifier } from "firebase/auth";
+import { NgIf } from "@angular/common";
+import { MatCheckbox } from "@angular/material/checkbox";
+import { MatInput } from "@angular/material/input";
+import { MatFormField, MatLabel, MatHint } from "@angular/material/form-field";
+import { MatButton } from "@angular/material/button";
+import { PageHeaderComponent } from "../page-header/page-header.component";
 
 @Component({
-  selector: "app-sign-up-page",
-  templateUrl: "./sign-up-page.component.html",
-  styleUrls: ["./sign-up-page.component.scss"],
+    selector: "app-sign-up-page",
+    templateUrl: "./sign-up-page.component.html",
+    styleUrls: ["./sign-up-page.component.scss"],
+    standalone: true,
+    imports: [
+        PageHeaderComponent,
+        MatButton,
+        RouterLink,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatHint,
+        MatCheckbox,
+        NgIf,
+    ],
 })
 export class SignUpPageComponent implements OnInit {
   createAccountForm: UntypedFormGroup;

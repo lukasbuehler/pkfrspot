@@ -8,8 +8,8 @@ describe('ForgotPasswordPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ForgotPasswordPageComponent ]
-    })
+    imports: [ForgotPasswordPageComponent]
+})
     .compileComponents();
   });
 

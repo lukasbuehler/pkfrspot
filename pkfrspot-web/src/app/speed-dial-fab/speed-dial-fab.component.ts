@@ -10,6 +10,10 @@ import {
   ViewChild,
 } from "@angular/core";
 import { speedDialFabAnimations } from "./speed-dial-fab.animations";
+import { NgIf, NgFor } from "@angular/common";
+import { MatIcon } from "@angular/material/icon";
+import { MatTooltip } from "@angular/material/tooltip";
+import { MatFabButton, MatMiniFabButton } from "@angular/material/button";
 
 export interface SpeedDialFabButtonConfig {
   mainButton?: {
@@ -26,10 +30,19 @@ export interface SpeedDialFabButtonConfig {
 }
 
 @Component({
-  selector: "app-speed-dial-fab",
-  templateUrl: "./speed-dial-fab.component.html",
-  styleUrls: ["./speed-dial-fab.component.scss"],
-  animations: speedDialFabAnimations,
+    selector: "app-speed-dial-fab",
+    templateUrl: "./speed-dial-fab.component.html",
+    styleUrls: ["./speed-dial-fab.component.scss"],
+    animations: speedDialFabAnimations,
+    standalone: true,
+    imports: [
+        MatFabButton,
+        MatTooltip,
+        MatIcon,
+        NgIf,
+        NgFor,
+        MatMiniFabButton,
+    ],
 })
 export class SpeedDialFabComponent implements OnInit {
   @ViewChild("fabContainer") fabContainer: ElementRef;

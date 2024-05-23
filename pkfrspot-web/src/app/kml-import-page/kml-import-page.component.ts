@@ -6,29 +6,74 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from "@angular/forms";
-import { MatStepper } from "@angular/material/stepper";
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MatStepper, MatStepperIcon, MatStep, MatStepLabel, MatStepperNext, MatStepperPrevious } from "@angular/material/stepper";
 import { KmlParserService, KMLSetupInfo, KMLSpot } from "../kml-parser.service";
 import { filter, first, firstValueFrom } from "rxjs";
-import { MyRegex } from "../regex-input/regex-input.component";
+import { MyRegex, RegexInputComponent } from "../regex-input/regex-input.component";
 import { DatabaseService } from "../database.service";
 import { Spot } from "src/scripts/db/Spot";
 import { GeoPoint } from "firebase/firestore";
+import { SpotMapComponent } from "../spot-map/spot-map.component";
+import { MatDivider } from "@angular/material/divider";
+import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from "@angular/material/expansion";
+import { MatCheckbox } from "@angular/material/checkbox";
+import { MatSlideToggle } from "@angular/material/slide-toggle";
+import { MatTooltip } from "@angular/material/tooltip";
+import { MatOption } from "@angular/material/core";
+import { MatAutocompleteTrigger, MatAutocomplete } from "@angular/material/autocomplete";
+import { MatInput } from "@angular/material/input";
+import { MatFormField, MatLabel, MatSuffix, MatHint, MatError } from "@angular/material/form-field";
+import { NgIf, AsyncPipe } from "@angular/common";
+import { MatButton } from "@angular/material/button";
+import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
-  selector: "app-kml-import-page",
-  templateUrl: "./kml-import-page.component.html",
-  styleUrls: ["./kml-import-page.component.scss"],
-  providers: [
-    {
-      provide: STEPPER_GLOBAL_OPTIONS,
-      useValue: { displayDefaultIndicatorType: false },
-    },
-  ],
+    selector: "app-kml-import-page",
+    templateUrl: "./kml-import-page.component.html",
+    styleUrls: ["./kml-import-page.component.scss"],
+    providers: [
+        {
+            provide: STEPPER_GLOBAL_OPTIONS,
+            useValue: { displayDefaultIndicatorType: false },
+        },
+    ],
+    standalone: true,
+    imports: [
+        MatStepper,
+        MatStepperIcon,
+        MatIcon,
+        MatStep,
+        MatStepLabel,
+        FormsModule,
+        ReactiveFormsModule,
+        UploadMediaUiComponent,
+        MatButton,
+        NgIf,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatAutocompleteTrigger,
+        MatAutocomplete,
+        MatOption,
+        MatSuffix,
+        MatTooltip,
+        MatSlideToggle,
+        RegexInputComponent,
+        MatHint,
+        MatError,
+        MatCheckbox,
+        MatAccordion,
+        MatExpansionPanel,
+        MatExpansionPanelHeader,
+        MatExpansionPanelTitle,
+        MatDivider,
+        SpotMapComponent,
+        MatStepperNext,
+        MatStepperPrevious,
+        AsyncPipe,
+    ],
 })
 export class KmlImportPageComponent implements OnInit, AfterViewInit {
   @ViewChild("stepperHorizontal") stepperHorizontal: MatStepper;

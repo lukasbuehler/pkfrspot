@@ -10,8 +10,8 @@ describe("SpeedDialFabComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SpeedDialFabComponent],
-    }).compileComponents(); // compiles template and css
+    imports: [SpeedDialFabComponent],
+}).compileComponents(); // compiles template and css
   });
 
   beforeEach(() => {

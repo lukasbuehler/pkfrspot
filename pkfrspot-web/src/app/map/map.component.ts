@@ -12,17 +12,29 @@ import {
 } from "@angular/core";
 import { map_style } from "./map_style";
 import { Spot } from "src/scripts/db/Spot";
-import { GoogleMap, MapPolygon } from "@angular/google-maps";
+import { GoogleMap, MapPolygon, MapHeatmapLayer, MapCircle, MapMarker } from "@angular/google-maps";
 import { BehaviorSubject, Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { MapsApiService } from "../maps-api.service";
 import { SpotClusterTile } from "src/scripts/db/SpotClusterTile.js";
 import { GeoPoint } from "firebase/firestore";
+import { NgIf, NgFor, AsyncPipe } from "@angular/common";
 
 @Component({
-  selector: "app-map",
-  templateUrl: "./map.component.html",
-  styleUrls: ["./map.component.scss"],
+    selector: "app-map",
+    templateUrl: "./map.component.html",
+    styleUrls: ["./map.component.scss"],
+    standalone: true,
+    imports: [
+        NgIf,
+        GoogleMap,
+        MapHeatmapLayer,
+        MapCircle,
+        MapPolygon,
+        MapMarker,
+        NgFor,
+        AsyncPipe,
+    ],
 })
 export class MapComponent implements OnInit {
   @ViewChild("googleMap") googleMap: GoogleMap;

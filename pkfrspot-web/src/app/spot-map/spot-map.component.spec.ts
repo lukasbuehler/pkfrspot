@@ -8,8 +8,8 @@ describe('SpotMapComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [SpotMapComponent]
-    });
+    imports: [SpotMapComponent]
+});
     fixture = TestBed.createComponent(SpotMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,9 +1,19 @@
 import { Component, OnInit, Input } from "@angular/core";
+import { MatIcon } from "@angular/material/icon";
+import { MatTooltip } from "@angular/material/tooltip";
+import { NgIf, NgFor } from "@angular/common";
 
 @Component({
-  selector: "app-rating",
-  templateUrl: "./rating.component.html",
-  styleUrls: ["./rating.component.scss"],
+    selector: "app-rating",
+    templateUrl: "./rating.component.html",
+    styleUrls: ["./rating.component.scss"],
+    standalone: true,
+    imports: [
+        NgIf,
+        MatTooltip,
+        NgFor,
+        MatIcon,
+    ],
 })
 export class RatingComponent implements OnInit {
   @Input() rating: number; // number between 1 and 10

@@ -8,8 +8,8 @@ describe('UserMenuContentComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [UserMenuContentComponent]
-    });
+    imports: [UserMenuContentComponent]
+});
     fixture = TestBed.createComponent(UserMenuContentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

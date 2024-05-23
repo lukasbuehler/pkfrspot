@@ -13,11 +13,35 @@ import { DatabaseService } from "../database.service";
 import { StorageFolder, StorageService } from "../storage.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Timestamp } from "firebase/firestore";
+import { MatProgressSpinner } from "@angular/material/progress-spinner";
+import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from "@angular/material/datepicker";
+import { MatInput } from "@angular/material/input";
+import { MatFormField, MatLabel, MatSuffix, MatHint } from "@angular/material/form-field";
+import { MatButton } from "@angular/material/button";
+import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
+import { MatBadge } from "@angular/material/badge";
+import { NgIf } from "@angular/common";
 
 @Component({
-  selector: "app-edit-profile",
-  templateUrl: "./edit-profile.component.html",
-  styleUrls: ["./edit-profile.component.scss"],
+    selector: "app-edit-profile",
+    templateUrl: "./edit-profile.component.html",
+    styleUrls: ["./edit-profile.component.scss"],
+    standalone: true,
+    imports: [
+        NgIf,
+        MatBadge,
+        UploadMediaUiComponent,
+        MatButton,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatDatepickerInput,
+        MatDatepickerToggle,
+        MatSuffix,
+        MatDatepicker,
+        MatHint,
+        MatProgressSpinner,
+    ],
 })
 export class EditProfileComponent implements OnInit {
   @ViewChild("croppie") croppie: ElementRef;

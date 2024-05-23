@@ -8,8 +8,8 @@ describe('WikiPageComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ WikiPageComponent ]
-    })
+    imports: [WikiPageComponent]
+})
     .compileComponents();
   }));
 

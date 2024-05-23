@@ -8,8 +8,8 @@ describe('RegexInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RegexInputComponent ]
-    })
+    imports: [RegexInputComponent]
+})
     .compileComponents();
   });
 
