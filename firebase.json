@@ -1,17 +1,13 @@
 {
   "hosting": {
-    "public": "./pkfrspot-web/dist/parkour-base-angular/",
+    "public": "./pkfrspot-web/dist/parkour-base-angular/browser",
     "rewrites": [
       {
         "source": "**",
-        "destination": "/index.html"
+        "function": "ssr"
       }
     ],
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
   },
   "firestore": {
     "rules": "firestore.rules",
@@ -31,6 +27,9 @@
         "firebase-debug.log",
         "firebase-debug.*.log"
       ]
+    },
+    {
+      "source": "dist/parkour-base-angular/server"
     }
   ]
 }
