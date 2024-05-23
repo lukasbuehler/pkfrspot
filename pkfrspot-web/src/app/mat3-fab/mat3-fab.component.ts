@@ -9,13 +9,11 @@ import { MatIcon } from "@angular/material/icon";
 import { MatRipple } from "@angular/material/core";
 
 @Component({
-    selector: "app-mat3-fab",
-    standalone: false,
-    //   imports: [],
-    templateUrl: "./mat3-fab.component.html",
-    styleUrl: "./mat3-fab.component.scss",
-    standalone: true,
-    imports: [MatRipple, MatIcon],
+  selector: "app-mat3-fab",
+  templateUrl: "./mat3-fab.component.html",
+  styleUrl: "./mat3-fab.component.scss",
+  standalone: true,
+  imports: [MatRipple, MatIcon],
 })
 export class Mat3FabComponent {
   @Input() icon: string;
