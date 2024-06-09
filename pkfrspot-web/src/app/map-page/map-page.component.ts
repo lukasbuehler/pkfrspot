@@ -38,6 +38,7 @@ import { MatIcon } from "@angular/material/icon";
 import { MatMenuTrigger, MatMenu } from "@angular/material/menu";
 import { MatIconButton } from "@angular/material/button";
 import { MatFormField, MatSuffix } from "@angular/material/form-field";
+import { Title } from "@angular/platform-browser";
 
 @Component({
   selector: "app-map-page",
@@ -110,7 +111,8 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     private _searchService: SearchService,
     private router: Router,
     private location: Location,
-    private _snackbar: MatSnackBar
+    private _snackbar: MatSnackBar,
+    private titleService: Title
   ) {
     GlobalVariables.alainMode.subscribe((value) => {
       this.alainMode = value;
@@ -133,7 +135,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
           this.spotMap.setSpotMetaTags(spot);
         });
     } else {
-      this.spotMap.titleService.setTitle(`PKFR Spot map`);
+      this.titleService.setTitle(`PKFR Spot map`);
     }
   }
 

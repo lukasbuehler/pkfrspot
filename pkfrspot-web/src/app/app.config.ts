@@ -42,6 +42,7 @@ import {
   withInterceptorsFromDi,
   provideHttpClient,
   HttpClientJsonpModule,
+  withFetch,
 } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {
@@ -122,7 +123,7 @@ export const appConfig: ApplicationConfig = {
     ),
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
     provideClientHydration(),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withInterceptorsFromDi(), withFetch()),
     provideAnimations(),
     {
       provide: WINDOW,

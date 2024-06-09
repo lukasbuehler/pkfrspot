@@ -32,6 +32,8 @@ export class MapsApiService {
     // Load the Google Maps API if it is not already loaded
     if (this._isApiLoaded$.value) return;
 
+    if (typeof document === "undefined") return; // abort if not in browser (e.g. server-side rendering
+
     const script = document.createElement("script");
     script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.keys.google_maps}&libraries=visualization,places`;
     script.async = true;
@@ -43,6 +45,8 @@ export class MapsApiService {
   }
 
   storeLastLocationAndZoom(lastLocationAndZoom: LocationAndZoom) {
+    if (typeof localStorage === "undefined") return;
+
     localStorage.setItem(
       "lastLocationAndZoom",
       JSON.stringify(lastLocationAndZoom)
@@ -50,6 +54,8 @@ export class MapsApiService {
   }
 
   loadLastLocationAndZoom(): Promise<LocationAndZoom | null> {
+    if (typeof localStorage === "undefined") return Promise.resolve(null);
+
     let lastLocationAndZoom = localStorage.getItem("lastLocationAndZoom");
     if (!lastLocationAndZoom) return Promise.resolve(null);
 
