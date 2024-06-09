@@ -166,7 +166,7 @@ export class KmlParserService {
               (someTile) => someTile.x === tile.x && someTile.y === tile.y
             )
           ) {
-            tilesToLoad.push(tile);
+            tilesToLoad.push(new google.maps.Point(tile.x, tile.y));
           }
         });
       }

@@ -92,7 +92,7 @@ export class AppComponent implements OnInit {
           isAuthenticated = true;
         }
 
-        if (plausible) {
+        if (typeof plausible !== "undefined") {
           plausible("pageview", { props: { authenticated: isAuthenticated } });
         }
       },

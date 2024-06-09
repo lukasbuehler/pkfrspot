@@ -130,7 +130,7 @@ export class AuthenticationService {
       );
       if (!user) {
         // This is a new user!
-        if (plausible) {
+        if (typeof plausible !== "undefined") {
           plausible("Create Account", {
             props: { accountType: "Google" },
           });
@@ -171,7 +171,7 @@ export class AuthenticationService {
       confirmedPassword
     );
 
-    if (plausible) {
+    if (typeof plausible !== "undefined") {
       plausible("Create Account", {
         props: { accountType: "Email and Password" },
       });

@@ -96,8 +96,8 @@ export class SpotMapComponent implements AfterViewInit {
     14: new Map<string, Dot[]>(),
   };
 
-  private _northEastTileCoordsZ16: google.maps.Point;
-  private _southWestTileCoordsZ16: google.maps.Point;
+  private _northEastTileCoordsZ16: { x: number; y: number };
+  private _southWestTileCoordsZ16: { x: number; y: number };
 
   constructor(
     public titleService: Title,
@@ -176,9 +176,9 @@ export class SpotMapComponent implements AfterViewInit {
       lng: bounds.getSouthWest().lng(),
     };
 
-    let northEastTileCoords: google.maps.Point =
+    let northEastTileCoords: { x: number; y: number } =
       MapHelpers.getTileCoordinatesForLocationAndZoom(northEastLiteral, 16);
-    let southWestTileCoords: google.maps.Point =
+    let southWestTileCoords: { x: number; y: number } =
       MapHelpers.getTileCoordinatesForLocationAndZoom(southWestLiteral, 16);
 
     this._northEastTileCoordsZ16 = northEastTileCoords;
@@ -248,8 +248,8 @@ export class SpotMapComponent implements AfterViewInit {
 
   getNewTilesToLoad(
     zoom: number,
-    northEastTileCoords: google.maps.Point,
-    southWestTileCoords: google.maps.Point,
+    northEastTileCoords: { x: number; y: number },
+    southWestTileCoords: { x: number; y: number },
     loadedSpots: Map<string, any>
   ) {
     let tilesToLoad: { x: number; y: number }[] = [];
