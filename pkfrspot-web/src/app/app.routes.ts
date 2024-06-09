@@ -3,23 +3,18 @@ import { Routes, RouterModule } from "@angular/router";
 import { HomePageComponent } from "./home-page/home-page.component";
 import { NotFoundPageComponent } from "./not-found-page/not-found-page.component";
 import { MapPageComponent } from "./map-page/map-page.component";
-import { WikiPageComponent } from "./wiki-page/wiki-page.component";
 import { SignInPageComponent } from "./sign-in-page/sign-in-page.component";
-import { CommunityPageComponent } from "./community-page/community-page.component";
 import { AboutPageComponent } from "./about-page/about-page.component";
 import { KmlImportPageComponent } from "./kml-import-page/kml-import-page.component";
 import { PostPageComponent } from "./post-page/post-page.component";
 import { ProfilePageComponent } from "./profile-page/profile-page.component";
-import { WelcomePageComponent } from "./welcome-page/welcome-page.component";
-import { SpotCompactViewComponent } from "./spot-compact-view/spot-compact-view.component";
 import { SignUpPageComponent } from "./sign-up-page/sign-up-page.component";
 import { TermsOfServiceComponent } from "./terms-of-service/terms-of-service.component";
 import { PrivacyPolicyComponent } from "./privacy-policy/privacy-policy.component";
-import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 import { SettingsPageComponent } from "./settings-page/settings-page.component";
 import { ForgotPasswordPageComponent } from "./forgot-password-page/forgot-password-page.component";
 
-const routes: Routes = [
+export const routes: Routes = [
   // Home page and posts (displays posts and updates)
   { path: "posts", component: HomePageComponent, data: { routeName: "Posts" } },
   { path: "", redirectTo: "map", pathMatch: "full" },
@@ -125,9 +120,3 @@ const routes: Routes = [
   { path: "pp", redirectTo: "privacy_policy", pathMatch: "full" },
   { path: "**", component: NotFoundPageComponent },
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {}
