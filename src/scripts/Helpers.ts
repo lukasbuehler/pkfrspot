@@ -1,7 +1,11 @@
-import * as countries from "i18n-iso-countries";
-countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
-countries.registerLocale(require("i18n-iso-countries/langs/de.json"));
-countries.registerLocale(require("i18n-iso-countries/langs/fr.json"));
+import countries from "i18n-iso-countries";
+import en from "i18n-iso-countries/langs/en.json";
+import de from "i18n-iso-countries/langs/de.json";
+import fr from "i18n-iso-countries/langs/fr.json";
+
+countries.registerLocale(en);
+countries.registerLocale(de);
+countries.registerLocale(fr);
 
 export function humanTimeSince(date: Date): string {
   var seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
