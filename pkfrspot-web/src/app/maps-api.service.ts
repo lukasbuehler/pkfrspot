@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { environment } from "src/environments/environment";
+import { environment } from "../environments/environment";
 import {
   Observable,
   BehaviorSubject,
@@ -57,6 +57,7 @@ export class MapsApiService {
   }
 
   openLatLngInGoogleMaps(location: google.maps.LatLngLiteral) {
+    if (typeof window === "undefined") return; // abort if not in browser
     window.open(`https://maps.google.com/?q=${location.lat},${location.lng}`);
   }
 

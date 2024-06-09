@@ -1,9 +1,14 @@
 import { Component, HostListener, OnInit } from "@angular/core";
-import { Router, RoutesRecognized, RouterLink, RouterOutlet } from "@angular/router";
+import {
+  Router,
+  RoutesRecognized,
+  RouterLink,
+  RouterOutlet,
+} from "@angular/router";
 import { filter, map } from "rxjs/operators";
 import { AuthenticationService } from "./authentication.service";
 import { StorageService } from "./storage.service";
-import { GlobalVariables } from "src/scripts/global";
+import { GlobalVariables } from "../scripts/global";
 import { UserMenuContentComponent } from "./user-menu-content/user-menu-content.component";
 import { NgIf } from "@angular/common";
 import { MatFabButton } from "@angular/material/button";
@@ -19,27 +24,27 @@ import { NavRailContainerComponent } from "./nav-rail-container/nav-rail-contain
 declare function plausible(eventName: string, options?: { props: any }): void;
 
 @Component({
-    selector: "app-root",
-    templateUrl: "./app.component.html",
-    styleUrls: ["./app.component.scss"],
-    standalone: true,
-    imports: [
-        NavRailContainerComponent,
-        NavRailComponent,
-        RouterLink,
-        Mat3NavButtonComponent,
-        NavRailContentComponent,
-        RouterOutlet,
-        MatToolbar,
-        Mat3FabComponent,
-        MatMenuTrigger,
-        MatMenu,
-        MatMenuItem,
-        MatIcon,
-        MatFabButton,
-        NgIf,
-        UserMenuContentComponent,
-    ],
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"],
+  standalone: true,
+  imports: [
+    NavRailContainerComponent,
+    NavRailComponent,
+    RouterLink,
+    Mat3NavButtonComponent,
+    NavRailContentComponent,
+    RouterOutlet,
+    MatToolbar,
+    Mat3FabComponent,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    MatIcon,
+    MatFabButton,
+    NgIf,
+    UserMenuContentComponent,
+  ],
 })
 export class AppComponent implements OnInit {
   constructor(
@@ -52,7 +57,7 @@ export class AppComponent implements OnInit {
 
   currentPageName = "";
 
-  hasAds = window["canRunAds"];
+  hasAds = false;
   userId: string = "";
 
   alainMode: boolean = false;
@@ -63,14 +68,16 @@ export class AppComponent implements OnInit {
   }
 
   enforceAlainMode() {
-    if (window.innerHeight < 700 && window.innerWidth < 768) {
-      this.alainMode = true;
-    } else {
-      this.alainMode = false;
-    }
-    GlobalVariables.alainMode.next(this.alainMode);
-    if (typeof plausible !== "undefined") {
-      plausible("pageview", { props: { alainMode: this.alainMode } });
+    if (typeof window !== "undefined") {
+      if (window.innerHeight < 700 && window.innerWidth < 768) {
+        this.alainMode = true;
+      } else {
+        this.alainMode = false;
+      }
+      GlobalVariables.alainMode.next(this.alainMode);
+      if (typeof plausible !== "undefined") {
+        plausible("pageview", { props: { alainMode: this.alainMode } });
+      }
     }
   }
 
@@ -94,12 +101,16 @@ export class AppComponent implements OnInit {
       }
     );
 
+    if (typeof window !== "undefined") {
+      this.hasAds = window["canRunAds"];
+    }
+
     // get the route name
     this.router.events
       .pipe(filter((event) => event instanceof RoutesRecognized))
       .pipe(
         map((event: RoutesRecognized) => {
-          return event.state.root.firstChild.data?.routeName || "";
+          return event.state.root.firstChild.data["routeName"] || "";
         })
       )
       .subscribe((routeName) => {

@@ -7,14 +7,14 @@ import {
   ViewChild,
 } from "@angular/core";
 import { MatProgressBar } from "@angular/material/progress-bar";
-import { Spot } from "src/scripts/db/Spot";
+import { Spot } from "../../scripts/db/Spot";
 import { DatabaseService } from "../database.service";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
 import { StorageService, StorageFolder } from "../storage.service";
-import { Post } from "src/scripts/db/Post";
+import { Post } from "../../scripts/db/Post";
 import { Observable, Subscription } from "rxjs";
 import { AuthenticationService } from "../authentication.service";
-import { MediaType } from "src/scripts/db/Interfaces";
+import { MediaType } from "../../scripts/db/Interfaces";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 SwiperCore.use([Navigation, Pagination]);
 //import { MatTooltipModule } from "@angular/material/tooltip";
@@ -25,10 +25,17 @@ import {
   getCountriesList,
   isMobileDevice,
 } from "../../scripts/Helpers";
-import { UntypedFormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {
+  UntypedFormControl,
+  FormsModule,
+  ReactiveFormsModule,
+} from "@angular/forms";
 import { map, startWith } from "rxjs/operators";
 import { MapsApiService } from "../maps-api.service";
-import { MatAutocompleteTrigger, MatAutocomplete } from "@angular/material/autocomplete";
+import {
+  MatAutocompleteTrigger,
+  MatAutocomplete,
+} from "@angular/material/autocomplete";
 import { MatSlideToggle } from "@angular/material/slide-toggle";
 import { MatSelect } from "@angular/material/select";
 import { MediaPreviewGridComponent } from "../media-preview-grid/media-preview-grid.component";
@@ -41,52 +48,59 @@ import { MatFormField, MatLabel, MatHint } from "@angular/material/form-field";
 import { MatIcon } from "@angular/material/icon";
 import { MatIconButton, MatButton } from "@angular/material/button";
 import { MatRipple, MatOption } from "@angular/material/core";
-import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from "@angular/material/card";
+import {
+  MatCard,
+  MatCardHeader,
+  MatCardTitle,
+  MatCardSubtitle,
+  MatCardContent,
+  MatCardActions,
+} from "@angular/material/card";
 import { MatMenu, MatMenuItem, MatMenuTrigger } from "@angular/material/menu";
 import { NgIf, NgFor, AsyncPipe } from "@angular/common";
 
 @Component({
-    selector: "app-spot-page",
-    templateUrl: "./spot-page.component.html",
-    styleUrls: ["./spot-page.component.scss"],
-    standalone: true,
-    imports: [
-        NgIf,
-        MatProgressBar,
-        MatMenu,
-        MatMenuItem,
-        MatCard,
-        MatRipple,
-        MatCardHeader,
-        MatCardTitle,
-        MatIconButton,
-        MatIcon,
-        FormsModule,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        MatCardSubtitle,
-        RatingComponent,
-        MatCardContent,
-        MatTabGroup,
-        MatTab,
-        MatButton,
-        MatMenuTrigger,
-        NgFor,
-        MatTooltip,
-        PostCollectionComponent,
-        MediaPreviewGridComponent,
-        UploadMediaUiComponent,
-        MatSelect,
-        MatOption,
-        MatSlideToggle,
-        MatAutocompleteTrigger,
-        ReactiveFormsModule,
-        MatAutocomplete,
-        MatHint,
-        MatCardActions,
-        AsyncPipe,
-    ],
+  selector: "app-spot-page",
+  templateUrl: "./spot-page.component.html",
+  styleUrls: ["./spot-page.component.scss"],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatProgressBar,
+    MatMenu,
+    MatMenuItem,
+    MatCard,
+    MatRipple,
+    MatCardHeader,
+    MatCardTitle,
+    MatIconButton,
+    MatIcon,
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatCardSubtitle,
+    RatingComponent,
+    MatCardContent,
+    MatTabGroup,
+    MatTab,
+    MatButton,
+    MatMenuTrigger,
+    NgFor,
+    MatTooltip,
+    PostCollectionComponent,
+    MediaPreviewGridComponent,
+    UploadMediaUiComponent,
+    MatSelect,
+    MatOption,
+    MatSlideToggle,
+    MatAutocompleteTrigger,
+    ReactiveFormsModule,
+    MatAutocomplete,
+    MatHint,
+    MatCardActions,
+    AsyncPipe,
+  ],
 })
 export class SpotPageComponent implements OnInit {
   @Input() spot: Spot.Class;

@@ -6,17 +6,31 @@ import {
   Inject,
   AfterViewInit,
 } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from "@angular/material/dialog";
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from "@angular/material/dialog";
 
-import { Post } from "src/scripts/db/Post";
-import { Spot } from "src/scripts/db/Spot";
+import { Post } from "../../scripts/db/Post";
+import { Spot } from "../../scripts/db/Spot";
 
 import { StorageService, StorageFolder } from "../storage.service";
 import { DatabaseService } from "../database.service";
 
-import { UntypedFormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { MatAutocomplete, MatAutocompleteTrigger } from "@angular/material/autocomplete";
-import { MediaType } from "src/scripts/db/Interfaces";
+import {
+  UntypedFormControl,
+  FormsModule,
+  ReactiveFormsModule,
+} from "@angular/forms";
+import {
+  MatAutocomplete,
+  MatAutocompleteTrigger,
+} from "@angular/material/autocomplete";
+import { MediaType } from "../../scripts/db/Interfaces";
 import { Observable } from "rxjs";
 import { MatButton } from "@angular/material/button";
 import { MatOption } from "@angular/material/core";
@@ -25,41 +39,47 @@ import { MatIcon } from "@angular/material/icon";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
 import { MatTabGroup, MatTab } from "@angular/material/tabs";
 import { MatInput } from "@angular/material/input";
-import { MatFormField, MatLabel, MatSuffix, MatHint, MatError } from "@angular/material/form-field";
+import {
+  MatFormField,
+  MatLabel,
+  MatSuffix,
+  MatHint,
+  MatError,
+} from "@angular/material/form-field";
 
 export interface PostDialogData {
   isCreating: string;
 }
 
 @Component({
-    selector: "app-edit-post-dialog",
-    templateUrl: "./edit-post-dialog.component.html",
-    styleUrls: ["./edit-post-dialog.component.scss"],
-    standalone: true,
-    imports: [
-        MatDialogTitle,
-        MatDialogContent,
-        FormsModule,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        MatTabGroup,
-        MatTab,
-        UploadMediaUiComponent,
-        ReactiveFormsModule,
-        MatIcon,
-        MatSuffix,
-        MatHint,
-        NgIf,
-        MatError,
-        MatAutocompleteTrigger,
-        MatAutocomplete,
-        NgFor,
-        MatOption,
-        MatDialogActions,
-        MatButton,
-        MatDialogClose,
-    ],
+  selector: "app-edit-post-dialog",
+  templateUrl: "./edit-post-dialog.component.html",
+  styleUrls: ["./edit-post-dialog.component.scss"],
+  standalone: true,
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatTabGroup,
+    MatTab,
+    UploadMediaUiComponent,
+    ReactiveFormsModule,
+    MatIcon,
+    MatSuffix,
+    MatHint,
+    NgIf,
+    MatError,
+    MatAutocompleteTrigger,
+    MatAutocomplete,
+    NgFor,
+    MatOption,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+  ],
 })
 export class EditPostDialogComponent implements AfterViewInit {
   constructor(

@@ -15,14 +15,13 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "aot": true,
-            "outputPath": "dist/parkour-base-angular/browser",
+            "outputPath": "dist/parkour-base-angular",
             "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "browser": "src/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
               "src/assets",
@@ -49,7 +48,15 @@
               "@angular/fire",
               "@angular/fire/firestore",
               "dialog-polyfill"
-            ]
+            ],
+            "server": "src/main.server.ts",
+            "prerender": {
+              "routesFile": "routes.txt",
+              "discoverRoutes": false
+            },
+            "ssr": {
+              "entry": "server.ts"
+            }
           },
           "configurations": {
             "development": {
@@ -70,9 +77,7 @@
               "aot": true,
               "extractLicenses": false,
               "statsJson": false,
-              "progress": false,
-              "vendorChunk": true,
-              "buildOptimizer": false
+              "progress": false
             },
             "test": {
               "fileReplacements": [
@@ -91,8 +96,6 @@
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -103,9 +106,7 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "6kb"
                 }
-              ],
-              "serviceWorker": true,
-              "ngswConfigPath": "ngsw-config.json"
+              ]
             },
             "production": {
               "fileReplacements": [
@@ -124,8 +125,6 @@
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -136,11 +135,10 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "6kb"
                 }
-              ],
-              "serviceWorker": true,
-              "ngswConfigPath": "ngsw-config.json"
+              ]
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -151,13 +149,14 @@
             "development": {
               "buildTarget": "parkour-base-angular:build:development"
             },
-            "test": {
+            "testing": {
               "buildTarget": "parkour-base-angular:build:test"
             },
             "production": {
               "buildTarget": "parkour-base-angular:build:production"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -211,103 +210,6 @@
             }
           },
           "defaultConfiguration": "production"
-        },
-        "server": {
-          "builder": "@angular-devkit/build-angular:server",
-          "options": {
-            "outputPath": "dist/parkour-base-angular/server",
-            "main": "server.ts",
-            "tsConfig": "src/tsconfig.server.json"
-          },
-          "configurations": {
-            "development": {
-              "buildOptimizer": false,
-              "outputHashing": "none",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.test.ts"
-                },
-                {
-                  "replace": "src/environments/keys.ts",
-                  "with": "src/environments/keys.test.ts"
-                }
-              ],
-              "optimization": false,
-              "sourceMap": true,
-              "extractLicenses": false,
-              "vendorChunk": true
-            },
-            "test": {
-              "buildOptimizer": true,
-              "outputHashing": "media",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.test.ts"
-                },
-                {
-                  "replace": "src/environments/keys.ts",
-                  "with": "src/environments/keys.test.ts"
-                }
-              ],
-              "optimization": true,
-              "sourceMap": false,
-              "extractLicenses": true,
-              "vendorChunk": false
-            },
-            "production": {
-              "buildOptimizer": true,
-              "outputHashing": "media",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "src/environments/keys.ts",
-                  "with": "src/environments/keys.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "sourceMap": false,
-              "extractLicenses": true,
-              "vendorChunk": false
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve-ssr": {
-          "builder": "@angular-devkit/build-angular:ssr-dev-server",
-          "configurations": {
-            "development": {
-              "browserTarget": "parkour-base-angular:build:development",
-              "serverTarget": "parkour-base-angular:server:development"
-            },
-            "production": {
-              "browserTarget": "parkour-base-angular:build:production",
-              "serverTarget": "parkour-base-angular:server:production"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "prerender": {
-          "builder": "@angular-devkit/build-angular:prerender",
-          "options": {
-            "routes": ["/", "/map", "/about"],
-            "routesFile": "prerender-routes.txt"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "parkour-base-angular:build:production",
-              "serverTarget": "parkour-base-angular:server:production"
-            },
-            "development": {
-              "browserTarget": "parkour-base-angular:build:development",
-              "serverTarget": "parkour-base-angular:server:development"
-            }
-          },
-          "defaultConfiguration": "production"
         }
       }
     },
@@ -326,7 +228,7 @@
             "development": {
               "devServerTarget": "parkour-base-angular:serve:development"
             },
-            "test": {
+            "testting": {
               "devServerTarget": "parkour-base-angular:serve:test"
             },
             "production": {

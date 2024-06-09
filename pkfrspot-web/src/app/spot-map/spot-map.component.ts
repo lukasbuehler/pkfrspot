@@ -6,15 +6,15 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import { Spot } from "src/scripts/db/Spot";
+import { Spot } from "../../scripts/db/Spot";
 import { DatabaseService } from "../database.service";
 import { ActivatedRoute } from "@angular/router";
 import { GeoPoint } from "firebase/firestore";
 import { take } from "rxjs";
-import { MapHelpers } from "src/scripts/MapHelpers";
+import { MapHelpers } from "../../scripts/MapHelpers";
 import { AuthenticationService } from "../authentication.service";
 import { MapComponent } from "../map/map.component";
-import { SpotClusterTile } from "src/scripts/db/SpotClusterTile";
+import { SpotClusterTile } from "../../scripts/db/SpotClusterTile";
 import { Meta, Title } from "@angular/platform-browser";
 import { MapsApiService } from "../maps-api.service";
 
@@ -31,11 +31,11 @@ interface LoadedSpotReference {
 type Dot = google.maps.visualization.WeightedLocation;
 
 @Component({
-    selector: "app-spot-map",
-    templateUrl: "./spot-map.component.html",
-    styleUrls: ["./spot-map.component.scss"],
-    standalone: true,
-    imports: [MapComponent],
+  selector: "app-spot-map",
+  templateUrl: "./spot-map.component.html",
+  styleUrls: ["./spot-map.component.scss"],
+  standalone: true,
+  imports: [MapComponent],
 })
 export class SpotMapComponent implements AfterViewInit {
   @ViewChild("map") map: MapComponent;

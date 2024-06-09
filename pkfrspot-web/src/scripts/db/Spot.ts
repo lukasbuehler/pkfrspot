@@ -1,9 +1,9 @@
 import { ContributedMedia, LocaleMap, MediaType } from "./Interfaces";
 import { MapHelpers } from "../MapHelpers";
-import { DatabaseService } from "src/app/database.service";
-import { StorageFolder, StorageService } from "src/app/storage.service";
+import { DatabaseService } from "../../app/database.service";
+import { StorageFolder, StorageService } from "../../app/storage.service";
 import { GeoPoint } from "firebase/firestore";
-import { environment } from "src/environments/environment";
+import { environment } from "../../environments/environment";
 
 export namespace Spot {
   export class Class {

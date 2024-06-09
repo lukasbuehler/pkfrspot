@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
-import { Spot } from "src/scripts/db/Spot";
+import { Spot } from "../../scripts/db/Spot";
 import { DatabaseService } from "../database.service";
 import { MatInput } from "@angular/material/input";
 import { MatFormField, MatLabel } from "@angular/material/form-field";
@@ -9,22 +9,22 @@ import { MatIcon } from "@angular/material/icon";
 import { MatTabGroup, MatTab, MatTabLabel } from "@angular/material/tabs";
 
 @Component({
-    selector: "app-discover-spots-view",
-    templateUrl: "./discover-spots-view.component.html",
-    styleUrls: ["./discover-spots-view.component.scss"],
-    standalone: true,
-    imports: [
-        MatTabGroup,
-        MatTab,
-        MatTabLabel,
-        MatIcon,
-        MatMiniFabButton,
-        MatButton,
-        SpotPreviewCardComponent,
-        MatFormField,
-        MatLabel,
-        MatInput,
-    ],
+  selector: "app-discover-spots-view",
+  templateUrl: "./discover-spots-view.component.html",
+  styleUrls: ["./discover-spots-view.component.scss"],
+  standalone: true,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    MatTabLabel,
+    MatIcon,
+    MatMiniFabButton,
+    MatButton,
+    SpotPreviewCardComponent,
+    MatFormField,
+    MatLabel,
+    MatInput,
+  ],
 })
 export class DiscoverSpotsViewComponent implements OnInit {
   @Output() close: EventEmitter<void> = new EventEmitter<void>();

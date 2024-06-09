@@ -8,7 +8,7 @@ import {
   ElementRef,
   ViewChild,
 } from "@angular/core";
-import { ContributedMedia } from "src/scripts/db/Interfaces";
+import { ContributedMedia } from "../../scripts/db/Interfaces";
 import { MatRippleModule } from "@angular/material/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";

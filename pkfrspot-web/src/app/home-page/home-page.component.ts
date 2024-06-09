@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { DatabaseService } from "src/app/database.service";
-import { Post } from "src/scripts/db/Post";
+import { DatabaseService } from "../../app/database.service";
+import { Post } from "../../scripts/db/Post";
 import { PostCollectionComponent } from "../post-collection/post-collection.component";
 import { MatDialog } from "@angular/material/dialog";
 import { MatDrawer } from "@angular/material/sidenav";
 import { EditPostDialogComponent } from "../edit-post-dialog/edit-post-dialog.component";
 import { StorageService } from "../storage.service";
 import { AuthenticationService } from "../authentication.service";
-import { Spot } from "src/scripts/db/Spot";
-import { MediaType } from "src/scripts/db/Interfaces";
+import { Spot } from "../../scripts/db/Spot";
+import { MediaType } from "../../scripts/db/Interfaces";
 import { DocumentChangeType } from "@angular/fire/compat/firestore";
 import { Observable, Subscription } from "rxjs";
 import { GeoPoint, Timestamp } from "firebase/firestore";
@@ -18,18 +18,18 @@ import { NgIf } from "@angular/common";
 import { MatTabGroup, MatTab } from "@angular/material/tabs";
 
 @Component({
-    selector: "app-home-page",
-    templateUrl: "./home-page.component.html",
-    styleUrls: ["./home-page.component.scss"],
-    standalone: true,
-    imports: [
-        MatTabGroup,
-        NgIf,
-        MatTab,
-        PostCollectionComponent,
-        MatFabButton,
-        MatIcon,
-    ],
+  selector: "app-home-page",
+  templateUrl: "./home-page.component.html",
+  styleUrls: ["./home-page.component.scss"],
+  standalone: true,
+  imports: [
+    MatTabGroup,
+    NgIf,
+    MatTab,
+    PostCollectionComponent,
+    MatFabButton,
+    MatIcon,
+  ],
 })
 export class HomePageComponent implements OnInit, OnDestroy {
   constructor(

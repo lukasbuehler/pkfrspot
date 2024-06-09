@@ -7,10 +7,10 @@ import {
 } from "@angular/core";
 
 @Component({
-    selector: "app-bottom-sheet",
-    templateUrl: "./bottom-sheet.component.html",
-    styleUrls: ["./bottom-sheet.component.scss"],
-    standalone: true,
+  selector: "app-bottom-sheet",
+  templateUrl: "./bottom-sheet.component.html",
+  styleUrls: ["./bottom-sheet.component.scss"],
+  standalone: true,
 })
 export class BottomSheetComponent {
   @Input() title: string = "";
@@ -31,6 +31,8 @@ export class BottomSheetComponent {
     );
 
     const startDrag = (event) => {
+      if (typeof window === "undefined") return; // abort if not in browser
+
       let lastY = 0;
       let speed = 0;
       let height = this.bottomSheet.nativeElement.clientHeight;

@@ -7,7 +7,7 @@ import {
   NgModule,
   OnInit,
 } from "@angular/core";
-import { Spot } from "src/scripts/db/Spot";
+import { Spot } from "../../scripts/db/Spot";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
 import { AuthenticationService } from "../authentication.service";
@@ -22,14 +22,17 @@ import { SearchResponse } from "typesense/lib/Typesense/Documents";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
 import { Location, NgIf, NgFor, AsyncPipe } from "@angular/common";
 import { StorageService } from "../storage.service";
-import { GlobalVariables } from "src/scripts/global";
+import { GlobalVariables } from "../../scripts/global";
 import { SpotListComponent } from "../spot-list/spot-list.component";
 import { DatabaseService } from "../database.service";
 import { UserMenuContentComponent } from "../user-menu-content/user-menu-content.component";
 import { Mat3FabComponent } from "../mat3-fab/mat3-fab.component";
 import { SpotCompactViewComponent } from "../spot-compact-view/spot-compact-view.component";
 import { MatOption } from "@angular/material/core";
-import { MatAutocompleteTrigger, MatAutocomplete } from "@angular/material/autocomplete";
+import {
+  MatAutocompleteTrigger,
+  MatAutocomplete,
+} from "@angular/material/autocomplete";
 import { MatInput } from "@angular/material/input";
 import { MatIcon } from "@angular/material/icon";
 import { MatMenuTrigger, MatMenu } from "@angular/material/menu";
@@ -37,45 +40,45 @@ import { MatIconButton } from "@angular/material/button";
 import { MatFormField, MatSuffix } from "@angular/material/form-field";
 
 @Component({
-    selector: "app-map-page",
-    templateUrl: "./map-page.component.html",
-    styleUrls: ["./map-page.component.scss"],
-    animations: [
-        trigger("inOutAnimation", [
-            transition(":enter", [
-                style({ height: 0, opacity: 0, scale: 0.8 }),
-                animate("0.3s ease-out", style({ height: "*", opacity: 1, scale: 1 })),
-            ]),
-            transition(":leave", [
-                style({ height: "*", opacity: 1, scale: 1 }),
-                animate("0.3s ease-in", style({ height: 0, opacity: 0, scale: 0.8 })),
-            ]),
-        ]),
-    ],
-    standalone: true,
-    imports: [
-        SpotMapComponent,
-        MatFormField,
-        NgIf,
-        MatIconButton,
-        MatSuffix,
-        MatMenuTrigger,
-        MatIcon,
-        MatInput,
-        FormsModule,
-        MatAutocompleteTrigger,
-        ReactiveFormsModule,
-        MatAutocomplete,
-        NgFor,
-        MatOption,
-        SpotCompactViewComponent,
-        SpotListComponent,
-        BottomSheetComponent,
-        Mat3FabComponent,
-        MatMenu,
-        UserMenuContentComponent,
-        AsyncPipe,
-    ],
+  selector: "app-map-page",
+  templateUrl: "./map-page.component.html",
+  styleUrls: ["./map-page.component.scss"],
+  animations: [
+    trigger("inOutAnimation", [
+      transition(":enter", [
+        style({ height: 0, opacity: 0, scale: 0.8 }),
+        animate("0.3s ease-out", style({ height: "*", opacity: 1, scale: 1 })),
+      ]),
+      transition(":leave", [
+        style({ height: "*", opacity: 1, scale: 1 }),
+        animate("0.3s ease-in", style({ height: 0, opacity: 0, scale: 0.8 })),
+      ]),
+    ]),
+  ],
+  standalone: true,
+  imports: [
+    SpotMapComponent,
+    MatFormField,
+    NgIf,
+    MatIconButton,
+    MatSuffix,
+    MatMenuTrigger,
+    MatIcon,
+    MatInput,
+    FormsModule,
+    MatAutocompleteTrigger,
+    ReactiveFormsModule,
+    MatAutocomplete,
+    NgFor,
+    MatOption,
+    SpotCompactViewComponent,
+    SpotListComponent,
+    BottomSheetComponent,
+    Mat3FabComponent,
+    MatMenu,
+    UserMenuContentComponent,
+    AsyncPipe,
+  ],
 })
 export class MapPageComponent implements OnInit, AfterViewInit {
   @ViewChild("spotMap") spotMap: SpotMapComponent;

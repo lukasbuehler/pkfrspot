@@ -56,6 +56,8 @@ import {
 
 import { routes } from "./app.routes";
 import { provideRouter } from "@angular/router";
+import { WINDOW, windowProvider } from "./providers/window";
+import { DOCUMENT } from "@angular/common";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -122,5 +124,10 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimations(),
+    {
+      provide: WINDOW,
+      useFactory: (document: Document) => windowProvider(document),
+      deps: [DOCUMENT],
+    },
   ],
 };

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { Spot } from "src/scripts/db/Spot.js";
+import { Spot } from "../../scripts/db/Spot.js";
 import { SpotPreviewCardComponent } from "../spot-preview-card/spot-preview-card.component";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatIconModule } from "@angular/material/icon";

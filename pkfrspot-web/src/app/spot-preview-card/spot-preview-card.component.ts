@@ -1,7 +1,7 @@
 import { trigger, transition, style, animate } from "@angular/animations";
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { Router } from "@angular/router";
-import { Spot } from "src/scripts/db/Spot";
+import { Spot } from "../../scripts/db/Spot";
 import { StorageService } from "../storage.service";
 import { MatCardModule } from "@angular/material/card";
 import { MatRippleModule } from "@angular/material/core";

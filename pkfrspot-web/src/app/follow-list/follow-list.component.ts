@@ -1,15 +1,26 @@
 import { Component, Inject, OnInit, Pipe, PipeTransform } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogTitle } from "@angular/material/dialog";
-import { User } from "src/scripts/db/User";
+import { User } from "../../scripts/db/User";
 
 import { DatabaseService } from "../database.service";
 import { Observable } from "rxjs";
-import { humanTimeSince } from "src/scripts/Helpers";
+import { humanTimeSince } from "../../scripts/Helpers";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
 import { MatIcon } from "@angular/material/icon";
 import { RouterLink } from "@angular/router";
 import { MatIconButton, MatButton } from "@angular/material/button";
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from "@angular/material/table";
+import {
+  MatTable,
+  MatColumnDef,
+  MatHeaderCellDef,
+  MatHeaderCell,
+  MatCellDef,
+  MatCell,
+  MatHeaderRowDef,
+  MatHeaderRow,
+  MatRowDef,
+  MatRow,
+} from "@angular/material/table";
 import { NgIf } from "@angular/common";
 
 export interface FollowListDialogData {
@@ -20,9 +31,9 @@ export interface FollowListDialogData {
 }
 
 @Pipe({
-    name: "followDuration",
-    pure: true,
-    standalone: true,
+  name: "followDuration",
+  pure: true,
+  standalone: true,
 })
 export class FollowDurationPipe implements PipeTransform {
   transform(
@@ -35,30 +46,30 @@ export class FollowDurationPipe implements PipeTransform {
 }
 
 @Component({
-    selector: "app-follow-list",
-    templateUrl: "./follow-list.component.html",
-    styleUrls: ["./follow-list.component.scss"],
-    standalone: true,
-    imports: [
-        MatDialogTitle,
-        NgIf,
-        MatTable,
-        MatColumnDef,
-        MatHeaderCellDef,
-        MatHeaderCell,
-        MatCellDef,
-        MatCell,
-        MatIconButton,
-        RouterLink,
-        MatIcon,
-        MatHeaderRowDef,
-        MatHeaderRow,
-        MatRowDef,
-        MatRow,
-        MatProgressSpinner,
-        MatButton,
-        FollowDurationPipe,
-    ],
+  selector: "app-follow-list",
+  templateUrl: "./follow-list.component.html",
+  styleUrls: ["./follow-list.component.scss"],
+  standalone: true,
+  imports: [
+    MatDialogTitle,
+    NgIf,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatIconButton,
+    RouterLink,
+    MatIcon,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    MatProgressSpinner,
+    MatButton,
+    FollowDurationPipe,
+  ],
 })
 export class FollowListComponent implements OnInit {
   constructor(

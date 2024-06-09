@@ -16,7 +16,7 @@ import {
 import { rejects } from "assert";
 import { Observable, Subject, firstValueFrom } from "rxjs";
 import { map, filter, tap } from "rxjs/operators";
-import { User } from "src/scripts/db/User";
+import { User } from "../scripts/db/User";
 import { DatabaseService } from "./database.service";
 
 declare function plausible(eventName: string, options?: { props: any }): void;

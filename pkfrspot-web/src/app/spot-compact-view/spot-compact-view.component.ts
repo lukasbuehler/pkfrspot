@@ -10,14 +10,14 @@ import {
   HostBinding,
 } from "@angular/core";
 import { MatProgressBar } from "@angular/material/progress-bar";
-import { Spot } from "src/scripts/db/Spot";
+import { Spot } from "../../scripts/db/Spot";
 import { DatabaseService } from "../database.service";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
 import { StorageService, StorageFolder } from "../storage.service";
-import { Post } from "src/scripts/db/Post";
+import { Post } from "../../scripts/db/Post";
 import { Observable, Subscription } from "rxjs";
 import { AuthenticationService } from "../authentication.service";
-import { ContributedMedia, MediaType } from "src/scripts/db/Interfaces";
+import { ContributedMedia, MediaType } from "../../scripts/db/Interfaces";
 
 //import { MatTooltipModule } from "@angular/material/tooltip";
 
@@ -34,7 +34,7 @@ import { MapsApiService } from "../maps-api.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { SpotReportDialogComponent } from "../spot-report-dialog/spot-report-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
-import { SpotReport } from "src/scripts/db/SpotReport.js";
+import { SpotReport } from "../../scripts/db/SpotReport.js";
 import { MatSelect } from "@angular/material/select";
 import { MediaPreviewGridComponent } from "../media-preview-grid/media-preview-grid.component";
 import { MatInput } from "@angular/material/input";
@@ -46,49 +46,60 @@ import { MatIconButton, MatButton } from "@angular/material/button";
 import { NgIf, NgFor } from "@angular/common";
 import { MatChip } from "@angular/material/chips";
 import { MatRipple, MatOption } from "@angular/material/core";
-import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from "@angular/material/card";
+import {
+  MatCard,
+  MatCardHeader,
+  MatCardTitle,
+  MatCardSubtitle,
+  MatCardContent,
+  MatCardActions,
+} from "@angular/material/card";
 import { MatMenu, MatMenuItem } from "@angular/material/menu";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
 @Component({
-    selector: "app-spot-compact-view",
-    templateUrl: "./spot-compact-view.component.html",
-    styleUrls: ["./spot-compact-view.component.scss"],
-    animations: [
-        trigger("grow", [
-            transition("void <=> *", []),
-            transition("* <=> *", [style({ height: "{{startHeight}}px" }), animate(".3s ease")], { params: { startHeight: 0 } }),
-        ]),
-    ],
-    standalone: true,
-    imports: [
-        MatMenu,
-        MatMenuItem,
-        MatCard,
-        MatRipple,
-        MatCardHeader,
-        MatCardTitle,
-        MatCardSubtitle,
-        MatChip,
-        NgIf,
-        MatIconButton,
-        MatTooltip,
-        MatIcon,
-        MatCardContent,
-        ImgCarouselComponent,
-        MatButton,
-        FormsModule,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        MediaPreviewGridComponent,
-        UploadMediaUiComponent,
-        MatSelect,
-        NgFor,
-        MatOption,
-        MatCardActions,
-    ],
+  selector: "app-spot-compact-view",
+  templateUrl: "./spot-compact-view.component.html",
+  styleUrls: ["./spot-compact-view.component.scss"],
+  animations: [
+    trigger("grow", [
+      transition("void <=> *", []),
+      transition(
+        "* <=> *",
+        [style({ height: "{{startHeight}}px" }), animate(".3s ease")],
+        { params: { startHeight: 0 } }
+      ),
+    ]),
+  ],
+  standalone: true,
+  imports: [
+    MatMenu,
+    MatMenuItem,
+    MatCard,
+    MatRipple,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardSubtitle,
+    MatChip,
+    NgIf,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    MatCardContent,
+    ImgCarouselComponent,
+    MatButton,
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MediaPreviewGridComponent,
+    UploadMediaUiComponent,
+    MatSelect,
+    NgFor,
+    MatOption,
+    MatCardActions,
+  ],
 })
 export class SpotCompactViewComponent implements OnInit, OnChanges {
   @Input() spot: Spot.Class;

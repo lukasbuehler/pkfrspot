@@ -10,7 +10,7 @@ import {
 } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
-import { SpotReport, SpotReportReason } from "src/scripts/db/SpotReport";
+import { SpotReport, SpotReportReason } from "../../scripts/db/SpotReport";
 import { MatRadioModule } from "@angular/material/radio";
 import { FormsModule } from "@angular/forms";
 @Component({

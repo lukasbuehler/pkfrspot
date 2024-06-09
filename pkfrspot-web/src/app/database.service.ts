@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 
-import { Post } from "src/scripts/db/Post";
-import { Spot } from "src/scripts/db/Spot";
+import { Post } from "../scripts/db/Post";
+import { Spot } from "../scripts/db/Spot";
 
 import {
   Firestore,
@@ -20,8 +20,8 @@ import {
 } from "@angular/fire/firestore";
 
 import { Observable, forkJoin } from "rxjs";
-import { Like } from "src/scripts/db/Like";
-import { User } from "src/scripts/db/User";
+import { Like } from "../scripts/db/Like";
+import { User } from "../scripts/db/User";
 import { map, take } from "rxjs/operators";
 import {
   DocumentData,
@@ -33,8 +33,8 @@ import {
   updateDoc,
   writeBatch,
 } from "firebase/firestore";
-import { SpotClusterTile } from "src/scripts/db/SpotClusterTile.js";
-import { SpotReport } from "src/scripts/db/SpotReport.js";
+import { SpotClusterTile } from "../scripts/db/SpotClusterTile.js";
+import { SpotReport } from "../scripts/db/SpotReport.js";
 
 @Injectable({
   providedIn: "root",
