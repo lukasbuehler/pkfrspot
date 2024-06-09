@@ -1,31 +1,27 @@
-# PKFR Spot ([pkfrspot.com](https://pkfrspot.com))
+# PKFR Spot
 
-A place for Parkour and Freerunning
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.9.
 
-Disvover, Train, Share.
+## Development server
 
-Discover spots and fellow athletes, plan training sessions with your friends 
-and share achievements and memories with them and the world.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Open-Source 
+## Code scaffolding
 
-This project is Open-Source! Our code is licensed under the [MIT License](./LICENSE)!
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Beta Roadmap
+## Build
 
-The project is still in closed-beta. This is our projected roadmap:
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-| Version | Release date | Changes                                                                                           |
-| :------ | :----------- | :------------------------------------------------------------------------------------------------ |
-| 0.1     | Soon-ish     | Start of closed-beta testing                                                                      |
-| 0.1.x   | ?            | Behind the scenes improvements: Adding testing, CI/CD, accessibility improvements and PWA support |
-| 0.2     | ?            | Internationalization (Adding language support)                                                    |
-| 0.3     | ?            | Text search                                                                                       |
-| 0.4     | ?            | Collab update (Adding teams, groups and sessions)                                                 |
-| ...     | ...          | ...                                                                                               |
-| 1.0     | ?            | Public release                                                                                    |
+## Running unit tests
 
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Contributing
+## Running end-to-end tests
 
-TODO Add contibuting info... :/
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
