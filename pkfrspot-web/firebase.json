@@ -1,0 +1,11 @@
+{
+  "hosting": [
+    {
+      "target": "parkour-base-angular",
+      "source": ".",
+      "frameworksBackend": {
+        "region": "europe-west1"
+      }
+    }
+  ]
+}

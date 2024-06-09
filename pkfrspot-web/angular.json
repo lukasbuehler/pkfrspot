@@ -20,7 +20,9 @@
             "outputPath": "dist/parkour-base-angular",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
@@ -171,7 +173,9 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "src/styles.scss"
+            ],
             "scripts": [],
             "assets": [
               "src/favicon.ico",
@@ -184,8 +188,13 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "deploy": {
@@ -196,17 +205,11 @@
           "configurations": {
             "production": {
               "buildTarget": "parkour-base-angular:build:production",
-              "serveTarget": "parkour-base-angular:serve:production",
-              "browserTarget": "parkour-base-angular:build:production",
-              "serverTarget": "parkour-base-angular:server:production",
-              "prerenderTarget": "parkour-base-angular:prerender:production"
+              "serveTarget": "parkour-base-angular:serve:production"
             },
             "development": {
               "buildTarget": "parkour-base-angular:build:development",
-              "serveTarget": "parkour-base-angular:serve:development",
-              "browserTarget": "parkour-base-angular:build:development",
-              "serverTarget": "parkour-base-angular:server:development",
-              "prerenderTarget": "parkour-base-angular:prerender:development"
+              "serveTarget": "parkour-base-angular:serve:development"
             }
           },
           "defaultConfiguration": "production"
@@ -240,7 +243,9 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
