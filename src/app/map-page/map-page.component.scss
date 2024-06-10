@@ -187,11 +187,11 @@ app-bottom-sheet {
 .profile-icon-button {
   padding: 0px;
   margin-right: 5px;
+  overflow: clip;
 
   img {
-    width: 75%;
-    height: 75%;
-    border-radius: 50%;
+    width: 100%;
+    height: 100%;
   }
 }
 

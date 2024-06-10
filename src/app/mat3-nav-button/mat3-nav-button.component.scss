@@ -1,14 +1,13 @@
-@use "sass:map";
+// @use "sass:map";
 @use "@angular/material" as mat;
-@import "../../theming/pkfrspot_theme.scss";
 
-$typography-config: mat.get-typography-config($pkfrspot-dark-theme);
+// $typography-config: mat.get-typography-config($pkfrspot-dark-theme);
 
 button {
-  font-family: mat.font-family($typography-config);
-  font-weight: mat.font-weight($typography-config, button);
-  font-size: mat.font-size($typography-config, button);
-  color: $dark-on-surface;
+  //   font-family: mat.font-family($typography-config);
+  //   font-weight: mat.font-weight($typography-config, button);
+  //   font-size: mat.font-size($typography-config, button);
+  //   color: $dark-on-surface;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,13 +30,13 @@ button > mat-icon {
   transition: color 0.2s, background-color 0.2s, width 0.2s;
 }
 button:enabled > mat-icon {
-  color: $dark-on-surface-variant;
-  background-color: transparent;
+  //   color: $dark-on-surface-variant;
+  //   background-color: transparent;
 }
 button.active > mat-icon,
 button:active > mat-icon {
-  color: $dark-on-secondary-container;
-  background-color: $dark-secondary-container;
+  //   color: $dark-on-secondary-container;
+  //   background-color: $dark-secondary-container;
 }
 button:hover > mat-icon,
 button:focus > mat-icon,
@@ -51,20 +50,20 @@ button:active > mat-icon {
   }
 }
 button:hover > mat-icon {
-  color: $dark-on-surface-variant;
+  //   color: $dark-on-surface-variant;
   background-color: rgb(255, 255, 255, 0.08);
 }
 button:focus > mat-icon {
-  color: $dark-on-surface-variant;
+  //   color: $dark-on-surface-variant;
   background-color: rgb(255, 255, 255, 0.12);
 }
 button:hover.active > mat-icon,
 button:hover:active > mat-icon {
-  color: $dark-on-secondary-container;
-  background-color: lighten($dark-secondary-container, 8%);
+  //   color: $dark-on-secondary-container;
+  //   background-color: lighten($dark-secondary-container, 8%);
 }
 button:focus.active > mat-icon,
 button:focus:active > mat-icon {
-  color: $dark-on-secondary-container;
-  background-color: lighten($dark-secondary-container, 12%);
+  //   color: $dark-on-secondary-container;
+  //   background-color: lighten($dark-secondary-container, 12%);
 }

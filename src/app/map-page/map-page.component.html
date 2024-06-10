@@ -158,30 +158,35 @@
   </mat-chip-listbox>
   } -->
 
-  <app-mat3-fab
+  <button
+    mat-mini-fab
     #mapStyleFab
     id="mapStyleFab"
-    variant="small"
-    [icon]="mapStyle === 'roadmap' ? 'terrain' : 'map'"
+    color="accent"
     (click)="spotMap.toggleMapStyle()"
   >
-  </app-mat3-fab>
+    <mat-icon>
+      {{ mapStyle === "roadmap" ? "terrain" : "map" }}
+    </mat-icon>
+  </button>
 
-  <app-mat3-fab
+  <button
+    mat-mini-fab
     #geolocationFab
     id="geolocationFab"
-    variant="small"
-    color="default"
-    [icon]="
-      askedGeoPermission
-        ? hasGeolocation
-          ? 'my_location'
-          : 'location_disabled'
-        : 'location_searching'
-    "
+    color="tertiary"
     (click)="spotMap.focusOnGeolocation()"
   >
-  </app-mat3-fab>
+    <mat-icon>
+      {{
+        askedGeoPermission
+          ? hasGeolocation
+            ? "my_location"
+            : "location_disabled"
+          : "location_searching"
+      }}
+    </mat-icon>
+  </button>
 
   @if(spotMap.mapZoom >= 16 && authService.isSignedIn && !isEditing) {
   <!-- Add / import spots speed dial-->
@@ -194,14 +199,15 @@
     (mainFabClick)="spotMap.createSpot()"
     (miniFabClick)="speedDialMiniFabClick($event)"
   ></app-speed-dial-fab> -->
-  <app-mat3-fab
+  <button
+    mat-fab
     #createSpotSpeedDial
     id="createSpotSpeedDial"
     color="secondary"
-    icon="add_location"
     (click)="spotMap.createSpot()"
   >
-  </app-mat3-fab>
+    <mat-icon> add_location </mat-icon>
+  </button>
   }
 
   <mat-menu #searchUserMatMenu="matMenu">

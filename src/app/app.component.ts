@@ -14,7 +14,6 @@ import { NgIf } from "@angular/common";
 import { MatFabButton } from "@angular/material/button";
 import { MatIcon } from "@angular/material/icon";
 import { MatMenuTrigger, MatMenu, MatMenuItem } from "@angular/material/menu";
-import { Mat3FabComponent } from "./mat3-fab/mat3-fab.component";
 import { MatToolbar } from "@angular/material/toolbar";
 import { NavRailContentComponent } from "./nav-rail-content/nav-rail-content.component";
 import { Mat3NavButtonComponent } from "./mat3-nav-button/mat3-nav-button.component";
@@ -32,11 +31,9 @@ declare function plausible(eventName: string, options?: { props: any }): void;
     NavRailContainerComponent,
     NavRailComponent,
     RouterLink,
-    Mat3NavButtonComponent,
     NavRailContentComponent,
     RouterOutlet,
     MatToolbar,
-    Mat3FabComponent,
     MatMenuTrigger,
     MatMenu,
     MatMenuItem,

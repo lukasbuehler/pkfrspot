@@ -26,7 +26,6 @@ import { GlobalVariables } from "../../scripts/global";
 import { SpotListComponent } from "../spot-list/spot-list.component";
 import { DatabaseService } from "../database.service";
 import { UserMenuContentComponent } from "../user-menu-content/user-menu-content.component";
-import { Mat3FabComponent } from "../mat3-fab/mat3-fab.component";
 import { SpotCompactViewComponent } from "../spot-compact-view/spot-compact-view.component";
 import { MatOption } from "@angular/material/core";
 import {
@@ -36,7 +35,7 @@ import {
 import { MatInput } from "@angular/material/input";
 import { MatIcon } from "@angular/material/icon";
 import { MatMenuTrigger, MatMenu } from "@angular/material/menu";
-import { MatIconButton } from "@angular/material/button";
+import { MatButtonModule, MatIconButton } from "@angular/material/button";
 import { MatFormField, MatSuffix } from "@angular/material/form-field";
 import { Title } from "@angular/platform-browser";
 
@@ -62,6 +61,7 @@ import { Title } from "@angular/platform-browser";
     MatFormField,
     NgIf,
     MatIconButton,
+    MatButtonModule,
     MatSuffix,
     MatMenuTrigger,
     MatIcon,
@@ -75,7 +75,6 @@ import { Title } from "@angular/platform-browser";
     SpotCompactViewComponent,
     SpotListComponent,
     BottomSheetComponent,
-    Mat3FabComponent,
     MatMenu,
     UserMenuContentComponent,
     AsyncPipe,

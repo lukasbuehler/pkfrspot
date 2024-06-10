@@ -1,8 +1,8 @@
-@use "sass:map";
-
 @use "@angular/material" as mat;
 
 @include mat.core();
+
+@use "sass:map";
 
 // Material 3 colors
 
@@ -211,29 +211,29 @@ $md-warn: (
   ),
 );
 
-$my-primary: mat.define-palette($md-primary);
-$my-accent: mat.define-palette($md-secondary);
+$primary-palette: mat.define-palette($md-primary);
+$secondary-palette: mat.define-palette($md-secondary);
 
 // The "warn" palette is optional and defaults to red if not specified.
 $my-warn: mat.define-palette($md-warn);
 
-$pkfrspot-dark-theme: mat.define-dark-theme(
+$pkfrspot-dark-theme: mat.define-theme(
   (
     color: (
-      primary: $my-primary,
-      accent: $my-accent,
-      warn: $my-warn,
+      theme-type: dark,
+      primary: $primary-palette,
+      //   secondary: $secondary-palette
     ),
     typography: mat.define-typography-config(),
     density: 0,
   )
 );
-$pkfrspot-light-theme: mat.define-light-theme(
+$pkfrspot-light-theme: mat.define-theme(
   (
     color: (
-      primary: $my-primary,
-      accent: $my-accent,
-      warn: $my-warn,
+      theme-type: light,
+      primary: $primary-palette,
+      //   secondary: $secondary-palette
     ),
     typography:
       mat.define-typography-config(

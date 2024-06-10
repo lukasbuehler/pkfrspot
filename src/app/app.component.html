@@ -34,12 +34,12 @@
     </mat-toolbar>
     } @else {
     <!-- Menu button -->
-    <app-mat3-fab
+    <button
+      mat-fab
       [matMenuTriggerFor]="mainMenu"
       id="alainMenuButton"
-      color="default"
       icon="menu"
-    ></app-mat3-fab>
+    ></button>
     <mat-menu #mainMenu>
       @for(button of navbarConfig.buttons; track button) {
       <button mat-menu-item [routerLink]="button.link">
