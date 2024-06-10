@@ -41,7 +41,6 @@ import { provideFirebaseApp, initializeApp } from "@angular/fire/app";
 import {
   withInterceptorsFromDi,
   provideHttpClient,
-  HttpClientJsonpModule,
   withFetch,
 } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -67,7 +66,6 @@ export const appConfig: ApplicationConfig = {
       BrowserModule,
       FormsModule,
       ReactiveFormsModule,
-      HttpClientJsonpModule,
       // firestore
       provideFirebaseApp(() => initializeApp(environment.keys.firebaseConfig)),
       provideFirestore(() => {
