@@ -162,8 +162,8 @@
     mat-mini-fab
     #mapStyleFab
     id="mapStyleFab"
-    color="accent"
     (click)="spotMap.toggleMapStyle()"
+    color="primary"
   >
     <mat-icon>
       {{ mapStyle === "roadmap" ? "terrain" : "map" }}
@@ -174,7 +174,7 @@
     mat-mini-fab
     #geolocationFab
     id="geolocationFab"
-    color="tertiary"
+    color="primary"
     (click)="spotMap.focusOnGeolocation()"
   >
     <mat-icon>
@@ -203,7 +203,7 @@
     mat-fab
     #createSpotSpeedDial
     id="createSpotSpeedDial"
-    color="secondary"
+    color="accent"
     (click)="spotMap.createSpot()"
   >
     <mat-icon> add_location </mat-icon>

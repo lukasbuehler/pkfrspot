@@ -1,13 +1,8 @@
 // @use "sass:map";
 @use "@angular/material" as mat;
-
-// $typography-config: mat.get-typography-config($pkfrspot-dark-theme);
+@use "../../theming/m3-theme" as theme;
 
 button {
-  //   font-family: mat.font-family($typography-config);
-  //   font-weight: mat.font-weight($typography-config, button);
-  //   font-size: mat.font-size($typography-config, button);
-  //   color: $dark-on-surface;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,18 +21,39 @@ button {
   }
 }
 
+button {
+  font-family: mat.get-theme-typography(
+    theme.$dark-theme,
+    label-medium,
+    font-family
+  );
+  font-weight: mat.get-theme-typography(
+    theme.$dark-theme,
+    label-medium,
+    font-weight
+  );
+  font-size: mat.get-theme-typography(
+    theme.$dark-theme,
+    label-medium,
+    font-size
+  );
+  color: mat.get-theme-color(theme.$dark-theme, on-surface);
+}
+
 button > mat-icon {
   transition: color 0.2s, background-color 0.2s, width 0.2s;
 }
+
 button:enabled > mat-icon {
-  //   color: $dark-on-surface-variant;
-  //   background-color: transparent;
+  color: mat.get-theme-color(theme.$dark-theme, on-surface-variant);
+  background-color: transparent;
 }
 button.active > mat-icon,
 button:active > mat-icon {
-  //   color: $dark-on-secondary-container;
-  //   background-color: $dark-secondary-container;
+  color: mat.get-theme-color(theme.$dark-theme, on-secondary-container);
+  background-color: mat.get-theme-color(theme.$dark-theme, secondary-container);
 }
+
 button:hover > mat-icon,
 button:focus > mat-icon,
 button.active > mat-icon,
@@ -49,21 +65,28 @@ button:active > mat-icon {
     width: 56px;
   }
 }
+
 button:hover > mat-icon {
-  //   color: $dark-on-surface-variant;
-  background-color: rgb(255, 255, 255, 0.08);
+  color: mat.get-theme-color(theme.$dark-theme, on-surface-variant);
+  background-color: mat.get-theme-color(
+    theme.$dark-theme,
+    surface-container-highest
+  );
 }
 button:focus > mat-icon {
-  //   color: $dark-on-surface-variant;
-  background-color: rgb(255, 255, 255, 0.12);
+  color: mat.get-theme-color(theme.$dark-theme, on-surface-variant);
+  background-color: mat.get-theme-color(
+    theme.$dark-theme,
+    surface-container-highest
+  );
 }
 button:hover.active > mat-icon,
 button:hover:active > mat-icon {
-  //   color: $dark-on-secondary-container;
-  //   background-color: lighten($dark-secondary-container, 8%);
+  color: mat.get-theme-color(theme.$dark-theme, on-secondary-container);
+  background-color: mat.get-theme-color(theme.$dark-theme, secondary-container);
 }
 button:focus.active > mat-icon,
 button:focus:active > mat-icon {
-  //   color: $dark-on-secondary-container;
-  //   background-color: lighten($dark-secondary-container, 12%);
+  color: mat.get-theme-color(theme.$dark-theme, on-secondary-container);
+  background-color: mat.get-theme-color(theme.$dark-theme, secondary-container);
 }

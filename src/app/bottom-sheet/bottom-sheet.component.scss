@@ -1,3 +1,6 @@
+@use "@angular/material" as mat;
+@use "../../theming/m3-theme" as theme;
+
 :host {
   background-color: transparent !important;
   pointer-events: none !important;
@@ -19,7 +22,10 @@ div.sheet {
   width: 100%;
 
   pointer-events: visible;
-  background-color: #2a2a2d;
+  background-color: mat.get-theme-color(
+    theme.$dark-theme,
+    surface-container-low
+  );
   //border-radius: 28px 28px 0px 0px;
 
   > * {

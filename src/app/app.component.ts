@@ -41,6 +41,7 @@ declare function plausible(eventName: string, options?: { props: any }): void;
     MatFabButton,
     NgIf,
     UserMenuContentComponent,
+    Mat3NavButtonComponent,
   ],
 })
 export class AppComponent implements OnInit {

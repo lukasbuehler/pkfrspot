@@ -79,7 +79,7 @@ $_palettes: (
     98: #fbf8fd,
     99: #fefbff,
     100: #ffffff,
-    4: #0e0e11,
+    4: #1f1f23,
     6: #131316,
     12: #1f1f23,
     17: #2a2a2d,
@@ -144,6 +144,9 @@ $light-theme: mat.define-theme(
       primary: $_primary,
       tertiary: $_tertiary,
     ),
+    density: (
+      scale: -1,
+    ),
   )
 );
 $dark-theme: mat.define-theme(
@@ -153,8 +156,14 @@ $dark-theme: mat.define-theme(
       primary: $_primary,
       tertiary: $_tertiary,
     ),
+    density: (
+      scale: -1,
+    ),
   )
 );
+
+@include mat.color-variants-backwards-compatibility($dark-theme);
+@include mat.typography-hierarchy($dark-theme);
 
 html {
   @include mat.all-component-themes($dark-theme);

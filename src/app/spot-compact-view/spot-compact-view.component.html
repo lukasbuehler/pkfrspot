@@ -105,7 +105,7 @@
 
     <!-- Spot Description -->
     <div *ngIf="spot.description">
-      <h4 class="mat-body-2">Description</h4>
+      <h4 class="mat-title-small">Description</h4>
       <p>
         {{ spot.description }}
       </p>
@@ -113,7 +113,7 @@
 
     <!-- Location -->
     <div>
-      <h4 class="mat-body-2">Location</h4>
+      <h4 class="mat-title-small">Location</h4>
       <p>
         {{ spot.getReadableLocation() }}
       </p>
@@ -121,9 +121,9 @@
 
     <!-- Spot Address -->
     <!-- <div *ngIf="spot.address?.country">
-      <h4 *ngIf="spot.address?.formatted" class="mat-body-2">Address</h4>
+      <h4 *ngIf="spot.address?.formatted" class="mat-title-small">Address</h4>
       <p>{{ spot.address.formatted }}</p>
-      <h4 class="mat-body-2">Country</h4>
+      <h4 class="mat-title-small">Country</h4>
       <p>
         {{ getCountryEmojiFromAlpha2(spot.address.country.short) }}
         {{ getCountryNameFromShortCode(spot.address.country.short) }}

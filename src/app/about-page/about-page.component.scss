@@ -1,3 +1,6 @@
+@use "@angular/material" as mat;
+@use "../../theming/m3-theme" as theme;
+
 .logo {
   font-family: "Permanent Marker", cursive;
 }
@@ -24,8 +27,8 @@ mat-card {
   }
 }
 
-.sph-background {
-  background-color: var(--secondary-color-dark);
+div.sph-background {
+  background-color: mat.get-theme-color(theme.$dark-theme, secondary);
 }
 
 .mat-icon-link {
