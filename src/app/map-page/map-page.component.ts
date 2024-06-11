@@ -113,12 +113,6 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     private _snackbar: MatSnackBar,
     private titleService: Title
   ) {
-    GlobalVariables.alainMode.subscribe((value) => {
-      this.alainMode = value;
-    });
-  }
-
-  ngOnInit(): void {
     // This is run on the server as well (when using SSR)
     let spotId: string =
       this.route.snapshot.queryParamMap.get("spot") ??
@@ -126,6 +120,17 @@ export class MapPageComponent implements OnInit, AfterViewInit {
       this.route.snapshot.paramMap.get("spotID") ??
       "";
 
+    GlobalVariables.alainMode.subscribe((value) => {
+      this.alainMode = value;
+    });
+
+    this.setMetaAndTitleFromSpotId(spotId);
+  }
+
+  ngOnInit(): void {}
+
+  setMetaAndTitleFromSpotId(spotId: string) {
+    console.log("Setting meta and title from spot ID", spotId);
     if (spotId) {
       this._dbService
         .getSpotById(spotId)

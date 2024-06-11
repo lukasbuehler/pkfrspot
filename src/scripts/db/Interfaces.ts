@@ -47,4 +47,10 @@ export interface Media {
 
 export interface ContributedMedia extends Media {
   uid: string;
+  sizes?: {
+    full: string;
+    "400x400": string;
+    "200x200": string;
+  };
+  origin?: "streetview" | "user";
 }

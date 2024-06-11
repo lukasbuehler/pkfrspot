@@ -65,11 +65,14 @@ export namespace Spot {
     }
 
     public get previewImage(): string {
+      const previewSize: string = "400x400";
+
       if (this.hasMedia && this.media[0].type === MediaType.Image) {
         let media = this.getMediaByIndex(0);
         let url = media.src;
         if (media.uid) {
-          url = url.replace(/\?/, `_${200}x${200}?`);
+          // has uid: is from a user.
+          url = url.replace(/\?/, `_${previewSize}?`);
         }
 
         return url;
@@ -163,6 +166,7 @@ export namespace Spot {
               }`,
               type: MediaType.Image,
               uid: "",
+              origin: "streetview",
             };
 
             this._streetview = streetView;
@@ -170,7 +174,7 @@ export namespace Spot {
         });
     }
 
-    public getMediaByIndex(index: number) {
+    public getMediaByIndex(index: number): ContributedMedia {
       return this.media[index];
     }
 

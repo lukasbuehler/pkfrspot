@@ -207,6 +207,8 @@ export class DatabaseService {
       return Promise.reject("The User ID and User ID on the like don't match!");
     }
 
+    console.debug("Adding like to post", postId, "by user", userUID, newLike);
+
     return setDoc(
       doc(this.firestore, `posts/${postId}/likes/${userUID}`),
       newLike
@@ -358,6 +360,8 @@ export class DatabaseService {
   }
 
   setSpot(spotId: string, spotData: Spot.Schema): Promise<any> {
+    console.debug("Setting spot", spotId, spotData);
+
     return setDoc(doc(this.firestore, "spots", spotId), spotData);
   }
 
@@ -393,6 +397,8 @@ export class DatabaseService {
       verified_email: false,
       ...data,
     };
+
+    console.debug("Adding user", userId, schema);
 
     return setDoc(doc(this.firestore, "users", userId), schema);
   }
@@ -662,20 +668,22 @@ export class DatabaseService {
         return snap.data() as SpotReport;
       }
     );
+    return Promise.reject("Not implemented yet.");
   }
 
   getSpotReportsBySpotId(spotId: string): Promise<SpotReport> {
-    return getDocs(
-      query(
-        collection(this.firestore, "spot_reports"),
-        where("spot.id", "==", spotId)
-      )
-    ).then((snap) => {
-      if (snap.size == 0) {
-        return Promise.reject("No reports found for this spot id.");
-      }
-      return snap.docs[0].data() as SpotReport;
-    });
+    // return getDocs(
+    //   query(
+    //     collection(this.firestore, "spot_reports"),
+    //     where("spot.id", "==", spotId)
+    //   )
+    // ).then((snap) => {
+    //   if (snap.size == 0) {
+    //     return Promise.reject("No reports found for this spot id.");
+    //   }
+    //   return snap.docs[0].data() as SpotReport;
+    // });
+    return Promise.reject("Not implemented yet.");
   }
 
   getSpotReportsByUserId(userId: string): Promise<SpotReport> {
