@@ -1,6 +1,3 @@
-@use "@angular/material" as mat;
-@use "../../theming/m3-theme" as theme;
-
 div.nav-rail {
   display: flex;
   flex-direction: column;
@@ -14,11 +11,4 @@ div.nav-rail {
   ::ng-deep > * {
     margin-bottom: 20px;
   }
-}
-
-div.nav-rail {
-  background-color: mat.get-theme-color(
-    theme.$dark-theme,
-    surface-container-low
-  );
 }

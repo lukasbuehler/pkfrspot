@@ -79,7 +79,7 @@
               "statsJson": false,
               "progress": false
             },
-            "test": {
+            "testing": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -99,12 +99,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
+                  "maximumWarning": "4mb",
                   "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
                 }
               ]
             },
@@ -123,17 +124,16 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
+                  "maximumWarning": "4mb",
                   "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "4kb",
+                  "maximumError": "4kb"
                 }
               ]
             }
@@ -147,8 +147,8 @@
             "development": {
               "buildTarget": "parkour-base-angular:build:development"
             },
-            "test": {
-              "buildTarget": "parkour-base-angular:build:test"
+            "testing": {
+              "buildTarget": "parkour-base-angular:build:testing"
             },
             "production": {
               "buildTarget": "parkour-base-angular:build:production"

@@ -1,0 +1,56 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+
+@mixin color($theme) {
+  button {
+    color: mat.get-theme-color($theme, on-surface);
+  }
+
+  button:enabled {
+    color: mat.get-theme-color($theme, on-surface-variant);
+  }
+
+  button.active > mat-icon,
+  button:active > mat-icon {
+    color: mat.get-theme-color($theme, on-secondary-container);
+    background-color: mat.get-theme-color($theme, secondary-container);
+  }
+
+  button:hover > mat-icon {
+    color: mat.get-theme-color($theme, on-surface-variant);
+    background-color: mat.get-theme-color($theme, surface-container-highest);
+  }
+  button:focus > mat-icon {
+    color: mat.get-theme-color($theme, on-surface-variant);
+    background-color: mat.get-theme-color($theme, surface-container-highest);
+  }
+
+  button:hover.active > mat-icon,
+  button:hover:active > mat-icon {
+    color: mat.get-theme-color($theme, on-secondary-container);
+    background-color: mat.get-theme-color($theme, secondary-container);
+  }
+  button:focus.active > mat-icon,
+  button:focus:active > mat-icon {
+    color: mat.get-theme-color($theme, on-secondary-container);
+    background-color: mat.get-theme-color($theme, secondary-container);
+  }
+}
+
+@mixin typography($theme) {
+  button {
+    font-family: mat.get-theme-typography($theme, label-medium, font-family);
+    font-weight: mat.get-theme-typography($theme, label-medium, font-weight);
+    font-size: mat.get-theme-typography($theme, label-medium, font-size);
+  }
+}
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+
+  @if mat.theme-has($theme, typography) {
+    @include typography($theme);
+  }
+}
