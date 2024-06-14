@@ -2,7 +2,8 @@
 @use "@angular/material" as mat;
 
 @mixin color($theme) {
-  div.info-panel {
+  div.info-panel,
+  .spot-search-field {
     background-color: mat.get-theme-color($theme, surface-container-low);
   }
 }

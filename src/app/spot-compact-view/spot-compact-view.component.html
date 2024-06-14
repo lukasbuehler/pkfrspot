@@ -27,7 +27,7 @@
     <mat-card-title>
       {{ spot.name }}
     </mat-card-title>
-    <mat-card-subtitle>
+    <mat-card-subtitle class="pt-2">
       @if(spot.type && spot.type !== "other") {
       <mat-chip class="me-1">{{ capitalize(spot.type) }}</mat-chip>
       } @if(spot.area && spot.area !== "other") {

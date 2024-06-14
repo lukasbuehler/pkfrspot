@@ -2,7 +2,7 @@
 @use "@angular/material" as mat;
 
 @mixin color($theme) {
-  div.sheet {
+  app-bottom-sheet > div.sheet {
     background-color: mat.get-theme-color($theme, surface-container-low);
   }
 }

@@ -9,6 +9,8 @@
   mat3-nav-button;
 @use "./../app/bottom-sheet/bottom-sheet.component-theme" as bottom-sheet;
 @use "./../app/about-page/about-page.component-theme" as about-page;
+@use "./../app/nav-rail/nav-rail.component-theme" as nav-rail;
+@use "./../app/map-page/map-page.component-theme" as map-page;
 
 @include mat.core();
 
@@ -176,11 +178,15 @@ html {
   @include mat3-nav-button.theme($dark-theme);
   @include bottom-sheet.theme($dark-theme);
   @include about-page.theme($dark-theme);
+  @include nav-rail.theme($dark-theme);
+  @include map-page.theme($dark-theme);
 
   //   @media (prefers-color-scheme: light) {
   //     @include mat.all-component-colors($light-theme);
   //     @include mat3-nav-button.theme($light-theme);
   //     @include bottom-sheet.theme($light-theme);
   //     @include about-page.theme($light-theme);
+  //     @include nav-rail.theme($light-theme);
+  //     @include map-page.theme($light-theme);
   //   }
 }

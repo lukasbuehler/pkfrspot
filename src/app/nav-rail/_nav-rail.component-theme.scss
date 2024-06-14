@@ -3,10 +3,7 @@
 
 @mixin color($theme) {
   div.nav-rail {
-    background-color: mat.get-theme-color(
-      theme.$dark-theme,
-      surface-container-low
-    );
+    background-color: mat.get-theme-color($theme, surface-container-low);
   }
 }
 
