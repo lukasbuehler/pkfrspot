@@ -2,9 +2,6 @@
 @use "./theming/m3-theme" as theme;
 
 /* You can add global styles to this file, and also import other style files */
-:root {
-  --swiper-theme-color: mat.get-theme-color($theme, primary) !important;
-}
 
 button:focus {
   outline: none;
@@ -21,10 +18,11 @@ html {
   position: relative;
 }
 
-// mat-card.mat-mdc-card {
-//   background-color: inherit;
-// }
+// Removes blue google maps iframe border
+.gm-style iframe + div {
+  border: none !important;
+}
 
-// .gm-style iframe + div {
-//   border: none !important;
-// }
+#fh5co-hero .fh5co-overlay {
+  background-color: transparent !important;
+}

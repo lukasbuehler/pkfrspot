@@ -354,7 +354,7 @@ export class SpotMapComponent implements AfterViewInit {
   }
 
   setSpotMetaTags(spot: Spot.Class) {
-    console.log("Setting Spot Meta Tags:", spot.name);
+    // console.log("Setting Spot Meta Tags:", spot.name);
 
     // Title
     this.titleService.setTitle(`PKFR Spot: ${spot.name}`);
@@ -386,8 +386,6 @@ export class SpotMapComponent implements AfterViewInit {
     //   name: "twitter:description",
     //   content: spot.description,
     // });
-
-    console.log(this.meta.getTag("property='og:image'").content);
   }
 
   focusSpot(spot: Spot.Class) {

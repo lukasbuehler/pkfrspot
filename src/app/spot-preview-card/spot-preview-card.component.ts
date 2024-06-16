@@ -36,7 +36,7 @@ export class SpotPreviewCardComponent implements OnInit {
   onClick() {
     if (this.clickable) {
       // open the spot in the spot map
-      this._router.navigateByUrl(`/map?spot=${this.spot.id}`);
+      this._router.navigateByUrl(`/map/${this.spot.id}`);
     }
   }
 

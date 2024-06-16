@@ -28,11 +28,11 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              "src/theming/m3-theme.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/croppie/croppie.css",
               "node_modules/swiper/swiper-bundle.css",
               "node_modules/@videogular/ngx-videogular/fonts/videogular.css",
+              "src/theming/m3-theme.scss",
               "src/styles.scss"
             ],
             "scripts": [],

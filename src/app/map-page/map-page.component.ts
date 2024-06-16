@@ -13,7 +13,7 @@ import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.compo
 import { AuthenticationService } from "../authentication.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MapsApiService } from "../maps-api.service";
-import { BehaviorSubject, take } from "rxjs";
+import { BehaviorSubject, firstValueFrom, take, timeout } from "rxjs";
 import { animate, style, transition, trigger } from "@angular/animations";
 import { BottomSheetComponent } from "../bottom-sheet/bottom-sheet.component";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -113,31 +113,44 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     private _snackbar: MatSnackBar,
     private titleService: Title
   ) {
-    // This is run on the server as well (when using SSR)
-    let spotId: string =
-      this.route.snapshot.queryParamMap.get("spot") ??
-      this.route.snapshot.queryParamMap.get("spotId") ??
-      this.route.snapshot.paramMap.get("spotID") ??
-      "";
-
     GlobalVariables.alainMode.subscribe((value) => {
       this.alainMode = value;
     });
-
-    this.setMetaAndTitleFromSpotId(spotId);
   }
 
-  ngOnInit(): void {}
+  async ngOnInit() {
+    let spotId: string =
+      this.route.snapshot.paramMap.get("id") ??
+      this.route.snapshot.paramMap.get("spotID") ??
+      this.route.snapshot.queryParamMap.get("spot") ??
+      this.route.snapshot.queryParamMap.get("spotId") ??
+      "";
 
-  setMetaAndTitleFromSpotId(spotId: string) {
-    console.log("Setting meta and title from spot ID", spotId);
+    // load the spot
     if (spotId) {
-      this._dbService
-        .getSpotById(spotId)
-        .pipe(take(1))
-        .subscribe((spot) => {
-          this.spotMap.setSpotMetaTags(spot);
-        });
+      const durationSeconds = 10;
+      try {
+        this.selectedSpot = await firstValueFrom(
+          this._dbService
+            .getSpotById(spotId)
+            .pipe(timeout(durationSeconds * 1000), take(1))
+        );
+
+        this.spotMap.setSpotMetaTags(this.selectedSpot);
+      } catch (error) {
+        console.error(
+          `Error: The spot did not load in ${durationSeconds} seconds while server-side rendering!`,
+          error
+        );
+
+        this._dbService
+          .getSpotById(spotId)
+          .pipe(take(1))
+          .subscribe((spot) => {
+            this.selectedSpot = spot;
+            this.spotMap.setSpotMetaTags(this.selectedSpot);
+          });
+      }
     } else {
       this.titleService.setTitle(`PKFR Spot map`);
     }
@@ -234,7 +247,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
 
   updateMapURL() {
     if (this.selectedSpot) {
-      this.location.go(`/map?spot=${this.selectedSpot.id}`);
+      this.location.go(`/map/${this.selectedSpot.id}`);
     } else {
       this.location.go(`/map`);
     }
