@@ -2,10 +2,9 @@ import {
   Component,
   ViewChild,
   AfterViewInit,
-  HostListener,
-  Input,
-  NgModule,
   OnInit,
+  Inject,
+  PLATFORM_ID,
 } from "@angular/core";
 import { Spot } from "../../scripts/db/Spot";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -20,7 +19,13 @@ import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SearchService } from "../search.service";
 import { SearchResponse } from "typesense/lib/Typesense/Documents";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
-import { Location, NgIf, NgFor, AsyncPipe } from "@angular/common";
+import {
+  Location,
+  NgIf,
+  NgFor,
+  AsyncPipe,
+  isPlatformServer,
+} from "@angular/common";
 import { StorageService } from "../storage.service";
 import { GlobalVariables } from "../../scripts/global";
 import { SpotListComponent } from "../spot-list/spot-list.component";
@@ -81,7 +86,7 @@ import { Title } from "@angular/platform-browser";
   ],
 })
 export class MapPageComponent implements OnInit, AfterViewInit {
-  @ViewChild("spotMap") spotMap: SpotMapComponent;
+  @ViewChild("spotMap", { static: true }) spotMap: SpotMapComponent;
   @ViewChild("bottomSheet") bottomSheet: BottomSheetComponent;
 
   selectedSpot: Spot.Class = null;
@@ -101,7 +106,10 @@ export class MapPageComponent implements OnInit, AfterViewInit {
 
   alainMode: boolean;
 
+  isServer: boolean;
+
   constructor(
+    @Inject(PLATFORM_ID) platformId: Object,
     public route: ActivatedRoute,
     public authService: AuthenticationService,
     public mapsService: MapsApiService,
@@ -116,6 +124,10 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     GlobalVariables.alainMode.subscribe((value) => {
       this.alainMode = value;
     });
+
+    this.isServer = isPlatformServer(platformId);
+
+    this.titleService.setTitle(`PKFR Spot map`);
   }
 
   async ngOnInit() {
@@ -126,33 +138,8 @@ export class MapPageComponent implements OnInit, AfterViewInit {
       this.route.snapshot.queryParamMap.get("spotId") ??
       "";
 
-    // load the spot
     if (spotId) {
-      const durationSeconds = 10;
-      try {
-        this.selectedSpot = await firstValueFrom(
-          this._dbService
-            .getSpotById(spotId)
-            .pipe(timeout(durationSeconds * 1000), take(1))
-        );
-
-        this.spotMap.setSpotMetaTags(this.selectedSpot);
-      } catch (error) {
-        console.error(
-          `Error: The spot did not load in ${durationSeconds} seconds while server-side rendering!`,
-          error
-        );
-
-        this._dbService
-          .getSpotById(spotId)
-          .pipe(take(1))
-          .subscribe((spot) => {
-            this.selectedSpot = spot;
-            this.spotMap.setSpotMetaTags(this.selectedSpot);
-          });
-      }
-    } else {
-      this.titleService.setTitle(`PKFR Spot map`);
+      await this.openSpotById(spotId);
     }
   }
 
@@ -227,22 +214,32 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openSpotOrPlace(value: { type: "place" | "spot"; id: string }) {
+  openSpotOrGooglePlace(value: { type: "place" | "spot"; id: string }) {
     if (value.type === "place") {
-      this.openPlaceById(value.id);
+      this.openGooglePlaceById(value.id);
     } else {
       this.openSpotById(value.id);
     }
   }
 
-  openPlaceById(id: string) {
+  openGooglePlaceById(id: string) {
     this.mapsService.getGooglePlaceById(id).then((place) => {
       this.spotMap.focusBounds(place.geometry.viewport);
     });
   }
 
-  openSpotById(id: string) {
-    this.spotMap.openSpotById(id);
+  async openSpotById(spotId: string): Promise<void> {
+    if (typeof this.spotMap === "undefined" || this.spotMap === null) {
+      throw new Error(
+        "Map page: openSpotById: Spot map is not defined at this time!"
+      );
+    }
+
+    if (this.isServer) {
+      await this.spotMap.openSpotByIdAsync(spotId);
+    } else {
+      this.spotMap.openSpotByIdWithSubscription(spotId);
+    }
   }
 
   updateMapURL() {

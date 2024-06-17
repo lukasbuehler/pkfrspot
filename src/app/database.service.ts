@@ -343,7 +343,8 @@ export class DatabaseService {
     let newSpots: Spot.Class[] = [];
 
     snapshot.forEach((doc) => {
-      const spotData = doc.data() as Spot.Schema;
+      const data: any = doc.data();
+      const spotData: Spot.Schema = data as Spot.Schema;
       if (spotData) {
         let newSpot: Spot.Class = new Spot.Class(doc.id, spotData);
         newSpots.push(newSpot);
@@ -359,10 +360,15 @@ export class DatabaseService {
     return addDoc(collection(this.firestore, "spots"), spotData);
   }
 
-  setSpot(spotId: string, spotData: Spot.Schema): Promise<any> {
-    console.debug("Setting spot", spotId, spotData);
+  setSpot(spotId: string, spotData: Spot.Schema): Promise<void> {
+    console.debug("Setting spot", spotId, JSON.stringify(spotData));
+    console.debug("Spot data", spotData);
 
-    return setDoc(doc(this.firestore, "spots", spotId), spotData);
+    try {
+      return setDoc(doc(this.firestore, "spots", spotId), spotData);
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
 
   updateSpot(

@@ -126,9 +126,19 @@ export namespace Spot {
     private _streetview: ContributedMedia;
 
     constructor(private _id: string, _data: Partial<Schema>) {
+      console.log(_data);
+
       this._data = _data as Schema; // I don't think this is safe... // TODO: make safe
       this._data.bounds = _data.bounds ?? [];
-      this._data.location = _data.location;
+
+      if (_data.location["_lat"] && _data.location["_long"]) {
+        this._data.location = new GeoPoint(
+          _data.location["_lat"],
+          _data.location["_long"]
+        );
+      }
+
+      console.log(this._data.location);
 
       this._paths = this._makePathsFromBounds(this._data.bounds);
 

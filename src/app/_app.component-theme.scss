@@ -2,8 +2,8 @@
 @use "@angular/material" as mat;
 
 @mixin color($theme) {
-  div.nav-rail {
-    background-color: mat.get-theme-color($theme, surface-container);
+  mat-toolbar {
+    background-color: mat.get-theme-color($theme, surface-container) !important;
   }
 }
 

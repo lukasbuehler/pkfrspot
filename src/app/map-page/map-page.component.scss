@@ -141,7 +141,7 @@ div.search-group {
   mat-form-field,
   app-bottom-sheet,
   div.info-panel {
-    overflow-y: scroll;
+    overflow-y: auto;
     pointer-events: visible;
     border-radius: 16px;
     width: 100%;
