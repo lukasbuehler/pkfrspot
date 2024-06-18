@@ -7,12 +7,6 @@ runConfig:
   memoryMiB: 1024
 
 env:
-  - variable: PORT
-    value: 8080
-    availability:
-      - BUILD
-      - RUNTIME
-
   - variable: GOOGLE_API_KEY
     secret: googleAPIKey
     availability:
