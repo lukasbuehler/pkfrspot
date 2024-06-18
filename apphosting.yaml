@@ -12,3 +12,9 @@ env:
     availability:
       - BUILD
       
+  - variable: HOST
+    value: 0.0.0.0
+    availability:
+      - BUILD
+      - RUNTIME
+      
