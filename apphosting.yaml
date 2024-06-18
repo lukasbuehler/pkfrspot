@@ -1,7 +1,14 @@
 # Settings for Clour Run
 runConfig:
-  minInstances: 1
+  minInstances: 0
   maxInstances: 10
   concurrency: 8
   cpu: 1
-  memoryMiB: 512
+  memoryMiB: 1024
+
+env:
+  - variable: PORT
+    value: 8080
+    availability: 
+      - BUILD
+      - RUNTIME

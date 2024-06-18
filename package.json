@@ -2,6 +2,7 @@
   "name": "pkfrspot",
   "version": "1.0.0",
   "scripts": {
+    "ng": "ng",
     "start": "ng serve",
     "serve": "ng serve",
     "serve:ssr": "LOCAL=true node dist/parkour-base-angular/server/server.mjs",
