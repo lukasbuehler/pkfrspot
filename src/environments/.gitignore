@@ -1,1 +1,3 @@
 keys.*.ts
+!keys.default.ts
+

@@ -157,7 +157,7 @@ export namespace Spot {
         },${
           this._location.lng
         }&fov=${120}&return_error_code=${true}&source=outdoor&key=${
-          environment.keys.google_maps
+          environment.keys.firebaseConfig.apiKey
         }`
       )
         .then((response) => {
@@ -172,7 +172,7 @@ export namespace Spot {
               },${
                 this._location.lng
               }&fov=${120}&return_error_code=${true}&source=outdoor&key=${
-                environment.keys.google_maps
+                environment.keys.firebaseConfig.apiKey
               }`,
               type: MediaType.Image,
               uid: "",

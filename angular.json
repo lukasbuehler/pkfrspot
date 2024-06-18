@@ -63,39 +63,22 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.test.ts"
-                },
-                {
-                  "replace": "src/environments/keys.ts",
-                  "with": "src/environments/keys.test.ts"
+                  "with": "src/environments/environment.development.ts"
                 }
               ],
               "optimization": false,
               "outputHashing": "none",
               "sourceMap": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": false,
-              "statsJson": false,
-              "progress": false
+              "extractLicenses": false
             },
-            "testing": {
+            "staging": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.test.ts"
-                },
-                {
-                  "replace": "src/environments/keys.ts",
-                  "with": "src/environments/keys.test.ts"
+                  "with": "src/environments/environment.staging.ts"
                 }
               ],
-              "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -113,17 +96,10 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "src/environments/keys.ts",
-                  "with": "src/environments/keys.prod.ts"
+                  "with": "src/environments/environment.production.ts"
                 }
               ],
-              "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
               "budgets": [
                 {
                   "type": "initial",
@@ -147,8 +123,8 @@
             "development": {
               "buildTarget": "parkour-base-angular:build:development"
             },
-            "testing": {
-              "buildTarget": "parkour-base-angular:build:testing"
+            "staging": {
+              "buildTarget": "parkour-base-angular:build:staging"
             },
             "production": {
               "buildTarget": "parkour-base-angular:build:production"
@@ -160,6 +136,6 @@
     }
   },
   "cli": {
-    "analytics": false
+    "analytics": "5ba466b0-10a6-4c49-9de2-9bed548e9520"
   }
 }
