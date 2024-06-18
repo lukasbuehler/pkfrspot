@@ -1,4 +1,5 @@
 import { googleAPIKey } from "./keys";
+import env from "./env.json";
 
 export const environment = {
   name: "Default",
@@ -13,7 +14,7 @@ export const environment = {
       authDomain: "parkour-base-project.firebaseapp.com",
       messagingSenderId: "294969617102",
       measurementId: "G-K7E4HFP8NM",
-      apiKey: googleAPIKey,
+      apiKey: env["GOOGLE_API_KEY"],
     },
     typesense: {
       host: "XXX",

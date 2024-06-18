@@ -8,7 +8,7 @@
     "serve:ssr": "LOCAL=true node dist/parkour-base-angular/server/server.mjs",
     "dev": "ng serve --watch",
     "watch": "ng build --watch",
-    "build": "which ng && ng version && ng build",
+    "build": "./setenv.sh && ng version && ng build",
     "build:dev": "ng build --configuration=development",
     "build:prod": "ng build --configuration=production",
     "test": "ng test",

@@ -9,6 +9,12 @@ runConfig:
 env:
   - variable: PORT
     value: 8080
-    availability: 
+    availability:
       - BUILD
       - RUNTIME
+
+  - variable: GOOGLE_API_KEY
+    secret: googleAPIKey
+    availability:
+      - BUILD
+      

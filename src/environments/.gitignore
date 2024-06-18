@@ -1,3 +1,5 @@
 keys.*.ts
 !keys.default.ts
 
+env.json
+
