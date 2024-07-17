@@ -1,7 +1,7 @@
 # Settings for Clour Run
 runConfig:
-  minInstances: 0
-  maxInstances: 10
+  minInstances: 1
+  maxInstances: 1
   concurrency: 8
   cpu: 1
   memoryMiB: 1024
