@@ -47,12 +47,13 @@ export function app(): express.Express {
 }
 
 function run(): void {
+  const host = process.env["HOST"] || "0.0.0.0";
   const port = process.env["PORT"] || 8080;
 
   // Start up the Node server
   const server = app();
   server.listen(port, () => {
-    console.log(`Node Express server listening on http://localhost:${port}`);
+    console.log(`Node Express server listening on http://${host}:${port}`);
   });
 }
 

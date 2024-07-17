@@ -1,9 +1,8 @@
-import { googleAPIKey } from "./keys";
 import env from "./env.json";
 
 export const environment = {
   name: "Default",
-  production: true,
+  production: false,
   keys: {
     firebaseConfig: {
       projectId: "parkour-base-project",
