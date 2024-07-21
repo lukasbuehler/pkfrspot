@@ -3,11 +3,11 @@
   "version": "1.0.1",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 8080 --host 0.0.0.0 --disable-host-check",
+    "start": "ng serve",
     "serve": "ng serve",
     "dev": "ng serve --watch",
     "watch": "ng build --watch",
-    "build": "./setenv.sh && ng version && ng build",
+    "build": "./setenv.sh && ng build",
     "build:dev": "ng build --configuration=development",
     "build:prod": "ng build --configuration=production",
     "test": "ng test",

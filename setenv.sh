@@ -8,10 +8,18 @@ GOOGLE_API_KEY=${GOOGLE_API_KEY}
 echo "Checking if the environment variables are set..."
 echo "PORT: ${PORT}"
 echo "GOOGLE_API_KEY: ${GOOGLE_API_KEY}"
+echo "LOCAL": ${LOCAL}
 
 if [ -z "${GOOGLE_API_KEY}" ]; then
   echo "GOOGLE_API_KEY is not set. Please set the PORT environment variable."
-  exit 1
+ 
+  # if a file .env exists, read the environment variables from it
+  if [ -f .env ]; then
+    echo "Reading environment variables from .env file..."
+    export $(cat .env | xargs)
+  else
+    exit 1
+  fi
 fi
 
 # create the JSON file

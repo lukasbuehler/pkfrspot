@@ -47,17 +47,17 @@ export function app(): express.Express {
 }
 
 function run(): void {
-  const host = process.env["HOST"] || "0.0.0.0";
   const port = process.env["PORT"] || 8080;
 
   // Start up the Node server
   const server = app();
   server.listen(port, () => {
-    console.log(`Node Express server listening on http://${host}:${port}`);
+    console.log(`Node Express server listening on http://localhost:${port}`);
   });
 }
 
 // Note: The express server is started by Firebase automatically.
-if (process.env["LOCAL"]) {
-  run();
-}
+// if (process.env["LOCAL"]) {
+//   run();
+// }
+run();
