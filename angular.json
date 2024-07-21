@@ -64,6 +64,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.development.ts"
+                },
+                {
+                  "replace": "src/environments/keys.ts",
+                  "with": "src/environments/keys.development.ts"
                 }
               ],
               "optimization": false,
@@ -76,6 +80,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.staging.ts"
+                },
+                {
+                  "replace": "src/environments/keys.ts",
+                  "with": "src/environments/keys.staging.ts"
                 }
               ],
               "outputHashing": "all",
@@ -97,6 +105,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.production.ts"
+                },
+                {
+                  "replace": "src/environments/keys.ts",
+                  "with": "src/environments/keys.production.ts"
                 }
               ],
               "outputHashing": "all",

@@ -57,7 +57,6 @@ function run(): void {
 }
 
 // Note: The express server is started by Firebase automatically.
-// if (process.env["LOCAL"]) {
-//   run();
-// }
-run();
+if (process.env["LOCAL"]) {
+  run();
+}

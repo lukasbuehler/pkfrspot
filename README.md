@@ -8,6 +8,10 @@
 
 ### Developing Locally
 
+1. Generate your own Google API key
+2. Enter it in `keys.development.ts`
+3. Build for the development environment when developing locally
+
 #### Build
 
 ```

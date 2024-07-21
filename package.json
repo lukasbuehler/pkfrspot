@@ -7,7 +7,7 @@
     "serve": "ng serve",
     "dev": "ng serve --watch",
     "watch": "ng build --watch",
-    "build": "./setenv.sh && ng build",
+    "build": "ng build",
     "build:dev": "ng build --configuration=development",
     "build:prod": "ng build --configuration=production",
     "test": "ng test",
