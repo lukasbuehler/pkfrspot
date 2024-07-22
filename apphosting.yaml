@@ -4,7 +4,7 @@ runConfig:
   maxInstances: 1
   concurrency: 8
   cpu: 1
-  memoryMiB: 4096
+  memoryMiB: 1024
 
 env:
   # - variable: GOOGLE_API_KEY
