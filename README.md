@@ -31,6 +31,16 @@ npm run build
 npm run serve:ssr
 ```
 
+#### Testing firebase
+
+```
+firebase experiments:enable webframeworks
+```
+
+```
+firebase emulators:start
+```
+
 #### Testing container build
 
 Using gcloud CLI, you can test the deployment to Google Cloud.
