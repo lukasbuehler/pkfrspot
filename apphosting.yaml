@@ -2,9 +2,9 @@
 runConfig:
   minInstances: 1
   maxInstances: 1
-  concurrency: 8
+  concurrency: 1
   cpu: 1
-  memoryMiB: 1024
+  memoryMiB: 4096
 
 env:
   # - variable: GOOGLE_API_KEY
@@ -18,3 +18,8 @@ env:
       - BUILD
       - RUNTIME
       
+  - variable: PORT
+    value: 8080
+    availability:
+      - BUILD
+      - RUNTIME
