@@ -325,7 +325,7 @@ export class SpotPageComponent implements OnInit {
   async shareSpot() {
     let baseUrl = "https://pkfrspot.com";
 
-    let link = baseUrl + "/map?spot=" + this.spot.id;
+    let link = baseUrl + "/map/" + this.spot.id;
 
     if (navigator["share"]) {
       try {

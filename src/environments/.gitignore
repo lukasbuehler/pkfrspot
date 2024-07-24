@@ -1,1 +1,6 @@
 keys.*.ts
+!keys.default.ts
+!keys.production.ts
+
+env.json
+

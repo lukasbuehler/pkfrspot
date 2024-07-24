@@ -18,7 +18,7 @@ export class SearchService {
         protocol: "https",
       },
     ],
-    apiKey: environment.keys.typesense.api_key,
+    apiKey: environment.keys.typesense.apiKey,
   });
 
   spotSearchParameters = {

@@ -4,16 +4,16 @@
   overflow-x: scroll;
   display: flex;
   flex-direction: row;
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-bottom: 10px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 16px;
 
   //   hide scrollbar
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE 10+ */
-  &::-webkit-scrollbar {
-    display: none; /* Safari and Chrome */
-  }
+  //   scrollbar-width: none; /* Firefox */
+  //   -ms-overflow-style: none; /* IE 10+ */
+  //   &::-webkit-scrollbar {
+  //     display: none; /* Safari and Chrome */
+  //   }
 
   .spot-img {
     position: relative;

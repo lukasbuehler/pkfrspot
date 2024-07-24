@@ -31,7 +31,8 @@ export const routes: Routes = [
   { path: "map", component: MapPageComponent, data: { routeName: "Spot map" } },
   {
     path: "map/:id",
-    redirectTo: "map",
+    component: MapPageComponent,
+    data: { routeName: "Spot map" },
   },
   {
     path: "kml-import",

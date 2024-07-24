@@ -47,7 +47,7 @@ export function app(): express.Express {
 }
 
 function run(): void {
-  const port = process.env["PORT"] || 4000;
+  const port = process.env["PORT"] || 8080;
 
   // Start up the Node server
   const server = app();
@@ -57,6 +57,7 @@ function run(): void {
 }
 
 // Note: The express server is started by Firebase automatically.
-if (process.env["LOCAL"]) {
-  run();
-}
+// if (process.env["LOCAL"]) {
+//   run();
+// }
+run();

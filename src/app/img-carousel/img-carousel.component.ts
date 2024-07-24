@@ -7,26 +7,27 @@ import {
   Inject,
   ElementRef,
   ViewChild,
+  PLATFORM_ID,
 } from "@angular/core";
 import { ContributedMedia } from "../../scripts/db/Interfaces";
 import { MatRippleModule } from "@angular/material/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import {
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
   MatDialogRef,
   MAT_DIALOG_DATA,
   MatDialog,
   MatDialogModule,
 } from "@angular/material/dialog";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
-import SwiperCore, { Navigation, Pagination } from "swiper";
 import { StorageService } from "../storage.service";
-SwiperCore.use([Navigation, Pagination]);
+
+// Swiper
+import Swiper from "swiper";
+import { Navigation, Pagination } from "swiper/modules";
+// import "swiper/css";
+// import "swiper/css/navigation";
+// import "swiper/css/pagination";
+import { isPlatformBrowser } from "@angular/common";
 
 @Component({
   selector: "app-img-carousel",
@@ -51,6 +52,8 @@ export class ImgCarouselComponent {
     const dialogRef = this.dialog.open(SwiperDialogComponent, {
       data: { media: this.media, index: index },
       hasBackdrop: true,
+      maxWidth: "95vw",
+      maxHeight: "75vh",
     });
 
     // dialogRef.afterClosed().subscribe((result) => {
@@ -62,17 +65,23 @@ export class ImgCarouselComponent {
 @Component({
   selector: "swiper-dialog",
   template: `
-    <swiper-container
-      #swiperRef
-      zoom-max-ratio="3"
-      zoom-min-ratio="1"
-      [navigation]="true"
-      [pagination]="{ clickable: true }"
-    >
-      @for (mediaObj of data.media; track $index) { @if(mediaObj.type ===
-      'image') {
-      <swiper-slide><img src="{{ mediaObj.src }}" /> </swiper-slide>} }
-    </swiper-container>
+    <div id="swiper" class="swiper">
+      <div class="swiper-wrapper">
+        @for (mediaObj of data.media; track $index) { @if(mediaObj.type ===
+        'image') {
+        <div class="swiper-slide"><img src="{{ mediaObj.src }}" /></div>
+        } }
+      </div>
+      <!-- pagination -->
+      <div class="swiper-pagination"></div>
+
+      <!-- navigation buttons -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+
+      <!-- scrollbar -->
+      <div class="swiper-scrollbar"></div>
+    </div>
   `,
   standalone: true,
   imports: [MatDialogModule, MatButtonModule],
@@ -80,15 +89,6 @@ export class ImgCarouselComponent {
     `
       :host {
         display: flex;
-      }
-      swiper-container {
-        max-height: 95vh;
-        max-width: 95vw;
-      }
-      swiper-slide {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
       }
 
       img {
@@ -101,29 +101,64 @@ export class ImgCarouselComponent {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SwiperDialogComponent implements AfterViewInit {
-  @ViewChild("swiperRef") swiperRef: ElementRef | undefined;
+  swiper: Swiper = null;
+  isBroswer: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<SwiperDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private renderer: Renderer2,
+    @Inject(PLATFORM_ID) platformId: Object,
     public storageService: StorageService
   ) {
     dialogRef.disableClose = false;
+
+    this.isBroswer = isPlatformBrowser(platformId);
   }
 
   ngAfterViewInit() {
-    const swiperContainer = document.querySelector("swiper-container");
-    if (swiperContainer) {
-      this.renderer.listen(swiperContainer, "touchstart", (event) => {
-        event.stopPropagation();
-      });
-      this.renderer.listen(swiperContainer, "touchmove", (event) => {
-        event.stopPropagation();
+    if (this.isBroswer) {
+      // const swiperContainer = document.querySelector(".swiper");
+      this.swiper = new Swiper(".swiper", {
+        // configure Swiper to use modules
+        // modules: [Navigation, Pagination],
+
+        // Optional parameters
+        direction: "horizontal",
+        loop: false,
+        observer: true,
+        observeParents: true,
+        autoplay: false,
+
+        // If we need pagination
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+          dynamicBullets: true,
+        },
+
+        // Navigation arrows
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+          enabled: true,
+        },
+
+        // scrollbar
+        scrollbar: {
+          el: ".swiper-scrollbar",
+        },
       });
 
-      if (this.data.index && this.swiperRef) {
-        this.swiperRef?.nativeElement.swiper.slideTo(this.data.index);
+      //   this.renderer.listen(swiperContainer, "touchstart", (event) => {
+      //     event.stopPropagation();
+      //   });
+      //   this.renderer.listen(swiperContainer, "touchmove", (event) => {
+      //     event.stopPropagation();
+      //   });
+
+      if (this.data.index && this.swiper) {
+        const what: boolean = this.swiper.slideTo(this.data.index, 1, false);
+        console.log(what);
       }
     }
   }

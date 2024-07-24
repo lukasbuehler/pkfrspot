@@ -4,6 +4,16 @@
 @use "sass:map";
 @use "@angular/material" as mat;
 
+// Custom component styles
+@use "./../app/mat3-nav-button/mat3-nav-button.component-theme" as
+  mat3-nav-button;
+@use "./../app/bottom-sheet/bottom-sheet.component-theme" as bottom-sheet;
+@use "./../app/about-page/about-page.component-theme" as about-page;
+@use "./../app/nav-rail/nav-rail.component-theme" as nav-rail;
+@use "./../app/map-page/map-page.component-theme" as map-page;
+@use "./../app/app.component-theme" as app;
+@use "../styles-theme" as styles;
+
 @include mat.core();
 
 // Note: Color palettes are generated from primary: #2b51d5, secondary: #246c18, tertiary: #75546E
@@ -167,8 +177,22 @@ $dark-theme: mat.define-theme(
 
 html {
   @include mat.all-component-themes($dark-theme);
+  @include mat3-nav-button.theme($dark-theme);
+  @include bottom-sheet.theme($dark-theme);
+  @include about-page.theme($dark-theme);
+  @include nav-rail.theme($dark-theme);
+  @include map-page.theme($dark-theme);
+  @include app.theme($dark-theme);
+  @include styles.theme($dark-theme);
 
-  @media (prefers-color-scheme: light) {
-    @include mat.all-component-colors($light-theme);
-  }
+  //   @media (prefers-color-scheme: light) {
+  //     @include mat.all-component-colors($light-theme);
+  //     @include mat3-nav-button.theme($light-theme);
+  //     @include bottom-sheet.theme($light-theme);
+  //     @include about-page.theme($light-theme);
+  //     @include nav-rail.theme($light-theme);
+  //     @include map-page.theme($light-theme);
+  //     @include app.theme($light-theme);
+  //     @include styles.theme($light-theme);
+  //   }
 }

@@ -42,7 +42,7 @@
         <mat-autocomplete
           #spotAutocomplete="matAutocomplete"
           (optionSelected)="
-            openSpotOrPlace($event.option.value);
+            openSpotOrGooglePlace($event.option.value);
             spotSearchControl.setValue('');
             ($event.stopPropagation)
           "
@@ -92,7 +92,7 @@
     </div>
 
     @if(selectedSpot) {
-    <div class="info-panel d-none d-md-block spot-preview-container pt-3">
+    <div class="info-panel d-none d-md-block spot-preview-container p-3">
       <app-spot-compact-view
         [@inOutAnimation]
         #spotDetail

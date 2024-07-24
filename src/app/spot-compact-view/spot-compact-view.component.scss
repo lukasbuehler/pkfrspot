@@ -112,13 +112,14 @@ mat-card-header {
 }
 
 app-img-carousel {
+  overflow: hidden;
   position: relative;
   display: block;
   min-height: 150px;
   max-height: 410px;
   height: 26vh;
-  margin-left: -16px;
-  margin-right: -16px;
+  margin-left: -32px;
+  margin-right: -32px;
 }
 
 .flex-basis-0 {

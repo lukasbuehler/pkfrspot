@@ -2,21 +2,25 @@ import {
   AfterViewInit,
   Component,
   EventEmitter,
+  Inject,
   Input,
   Output,
+  PLATFORM_ID,
   ViewChild,
 } from "@angular/core";
 import { Spot } from "../../scripts/db/Spot";
 import { DatabaseService } from "../database.service";
 import { ActivatedRoute } from "@angular/router";
 import { GeoPoint } from "firebase/firestore";
-import { take } from "rxjs";
+import { firstValueFrom, take, timeout } from "rxjs";
 import { MapHelpers } from "../../scripts/MapHelpers";
 import { AuthenticationService } from "../authentication.service";
 import { MapComponent } from "../map/map.component";
 import { SpotClusterTile } from "../../scripts/db/SpotClusterTile";
 import { Meta, Title } from "@angular/platform-browser";
 import { MapsApiService } from "../maps-api.service";
+import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
+import { isPlatformServer } from "@angular/common";
 
 /**
  * This interface is used to reference a spot in the loaded spots array.
@@ -35,7 +39,7 @@ type Dot = google.maps.visualization.WeightedLocation;
   templateUrl: "./spot-map.component.html",
   styleUrls: ["./spot-map.component.scss"],
   standalone: true,
-  imports: [MapComponent],
+  imports: [MapComponent, MatSnackBarModule],
 })
 export class SpotMapComponent implements AfterViewInit {
   @ViewChild("map") map: MapComponent;
@@ -99,21 +103,25 @@ export class SpotMapComponent implements AfterViewInit {
   private _northEastTileCoordsZ16: { x: number; y: number };
   private _southWestTileCoordsZ16: { x: number; y: number };
 
+  isServer: boolean;
+
   constructor(
+    @Inject(PLATFORM_ID) platformId: Object,
     public titleService: Title,
     private route: ActivatedRoute,
     private _dbService: DatabaseService,
     private authService: AuthenticationService,
     private meta: Meta,
-    private mapsAPIService: MapsApiService
-  ) {}
+    private mapsAPIService: MapsApiService,
+    private snackBar: MatSnackBar
+  ) {
+    this.isServer = isPlatformServer(platformId);
+  }
 
   isInitiated: boolean = false;
 
   ngAfterViewInit(): void {
-    let spotId: string = this.route.snapshot.paramMap.get("spotID") ?? "";
-
-    if (!spotId) {
+    if (!this.selectedSpot) {
       // load the last location and zoom from memory
       this.mapsAPIService
         .loadLastLocationAndZoom()
@@ -337,7 +345,7 @@ export class SpotMapComponent implements AfterViewInit {
     }
   }
 
-  openSpotById(spotId: string) {
+  openSpotByIdWithSubscription(spotId: string) {
     this._dbService
       .getSpotById(spotId)
       .pipe(take(1))
@@ -346,15 +354,30 @@ export class SpotMapComponent implements AfterViewInit {
       });
   }
 
+  async openSpotByIdAsync(
+    spotId: string,
+    timeoutSeconds: number = 10
+  ): Promise<void> {
+    const spot: Spot.Class = await firstValueFrom(
+      this._dbService
+        .getSpotById(spotId)
+        .pipe(take(1), timeout(timeoutSeconds * 1000))
+    );
+
+    this.openSpot(spot);
+  }
+
   openSpot(spot: Spot.Class) {
     this.setSpotMetaTags(spot);
-
     this.setSelectedSpot(spot);
-    this.focusSpot(spot);
+
+    if (!this.isServer) {
+      this.focusSpot(spot);
+    }
   }
 
   setSpotMetaTags(spot: Spot.Class) {
-    console.log("Setting Spot Meta Tags:", spot.name);
+    // console.log("Setting Spot Meta Tags:", spot.name);
 
     // Title
     this.titleService.setTitle(`PKFR Spot: ${spot.name}`);
@@ -386,8 +409,6 @@ export class SpotMapComponent implements AfterViewInit {
     //   name: "twitter:description",
     //   content: spot.description,
     // });
-
-    console.log(this.meta.getTag("property='og:image'").content);
   }
 
   focusSpot(spot: Spot.Class) {
@@ -465,7 +486,8 @@ export class SpotMapComponent implements AfterViewInit {
       })
       .catch((error) => {
         this.setIsEditing(false);
-        console.error("Error on spot save", error);
+        console.error("Error saving spot:", error);
+        this.snackBar.open("Error saving spot", "Dismiss");
       });
   }
 

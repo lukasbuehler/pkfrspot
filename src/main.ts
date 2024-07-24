@@ -13,5 +13,3 @@ if (environment.production) {
 bootstrapApplication(AppComponent, appConfig).catch((err) =>
   console.error(err)
 );
-
-const GOOGLE_MAPS_API_KEY: string = environment.keys.google_maps;

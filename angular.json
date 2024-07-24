@@ -28,11 +28,11 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              "src/theming/m3-theme.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/croppie/croppie.css",
               "node_modules/swiper/swiper-bundle.css",
               "node_modules/@videogular/ngx-videogular/fonts/videogular.css",
+              "src/theming/m3-theme.scss",
               "src/styles.scss"
             ],
             "scripts": [],
@@ -63,48 +63,39 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.test.ts"
+                  "with": "src/environments/environment.development.ts"
                 },
                 {
                   "replace": "src/environments/keys.ts",
-                  "with": "src/environments/keys.test.ts"
+                  "with": "src/environments/keys.development.ts"
                 }
               ],
-              "optimization": false,
               "outputHashing": "none",
-              "sourceMap": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": false,
-              "statsJson": false,
-              "progress": false
+              "optimization": true,
+              "sourceMap": true
             },
-            "test": {
+            "staging": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.test.ts"
+                  "with": "src/environments/environment.staging.ts"
                 },
                 {
                   "replace": "src/environments/keys.ts",
-                  "with": "src/environments/keys.test.ts"
+                  "with": "src/environments/keys.staging.ts"
                 }
               ],
-              "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
+                  "maximumWarning": "4mb",
                   "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
                 }
               ]
             },
@@ -112,135 +103,50 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "with": "src/environments/environment.production.ts"
                 },
                 {
                   "replace": "src/environments/keys.ts",
-                  "with": "src/environments/keys.prod.ts"
+                  "with": "src/environments/keys.production.ts"
                 }
               ],
-              "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
+                  "maximumWarning": "4mb",
                   "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "4kb",
+                  "maximumError": "4kb"
                 }
               ]
             }
           },
           "defaultConfiguration": "production"
         },
+
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "buildTarget": "parkour-base-angular:build"
-          },
           "configurations": {
             "development": {
               "buildTarget": "parkour-base-angular:build:development"
             },
-            "testing": {
-              "buildTarget": "parkour-base-angular:build:test"
+            "staging": {
+              "buildTarget": "parkour-base-angular:build:staging"
             },
             "production": {
               "buildTarget": "parkour-base-angular:build:production"
             }
           },
           "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "parkour-base-angular:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
-            "styles": ["src/styles.scss"],
-            "scripts": [],
-            "assets": [
-              "src/favicon.ico",
-              "src/assets",
-              "src/manifest.webmanifest"
-            ],
-            "codeCoverage": true
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
-          }
-        },
-        "deploy": {
-          "builder": "@angular/fire:deploy",
-          "options": {
-            "version": 2
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "parkour-base-angular:build:production",
-              "serveTarget": "parkour-base-angular:serve:production"
-            },
-            "development": {
-              "buildTarget": "parkour-base-angular:build:development",
-              "serveTarget": "parkour-base-angular:serve:development"
-            }
-          },
-          "defaultConfiguration": "production"
-        }
-      }
-    },
-    "parkour-base-angular-e2e": {
-      "root": "e2e/",
-      "projectType": "application",
-      "prefix": "",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "parkour-base-angular:serve"
-          },
-          "configurations": {
-            "development": {
-              "devServerTarget": "parkour-base-angular:serve:development"
-            },
-            "testting": {
-              "devServerTarget": "parkour-base-angular:serve:test"
-            },
-            "production": {
-              "devServerTarget": "parkour-base-angular:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": ["**/node_modules/**"]
-          }
         }
       }
     }
   },
   "cli": {
-    "analytics": "a5311b13-5fc5-4e67-ac18-01d7f1579646"
+    "analytics": "5ba466b0-10a6-4c49-9de2-9bed548e9520"
   }
 }
