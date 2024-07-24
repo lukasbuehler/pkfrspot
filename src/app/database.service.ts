@@ -227,7 +227,9 @@ export class DatabaseService {
         doc(this.firestore, "spots", spotId),
         (snap) => {
           if (snap.exists) {
-            let spot = new Spot.Class(snap.id, snap.data() as Spot.Schema);
+            //   console.log("Snap data", spotId, snap.data());
+            const data = snap.data() as Spot.Schema;
+            let spot = new Spot.Class(snap.id, data);
             observer.next(spot);
           } else {
             observer.error({ msg: "Error! This Spot does not exist." });

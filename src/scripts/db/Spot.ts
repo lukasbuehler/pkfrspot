@@ -132,6 +132,7 @@ export namespace Spot {
       this._data.bounds = _data.bounds ?? [];
 
       if (_data.location["_lat"] && _data.location["_long"]) {
+        throw new Error("Location is not a GeoPoint");
         this._data.location = new GeoPoint(
           _data.location["_lat"],
           _data.location["_long"]
@@ -349,6 +350,7 @@ export namespace Spot {
     name: LocaleMap;
 
     location: GeoPoint;
+
     tile_coordinates: {
       z2: { x: number; y: number };
       z4: { x: number; y: number };
