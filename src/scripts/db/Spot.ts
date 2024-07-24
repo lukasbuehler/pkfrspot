@@ -2,8 +2,13 @@ import { ContributedMedia, LocaleMap, MediaType } from "./Interfaces";
 import { MapHelpers } from "../MapHelpers";
 import { DatabaseService } from "../../app/database.service";
 import { StorageFolder, StorageService } from "../../app/storage.service";
-import { GeoPoint } from "firebase/firestore";
 import { environment } from "../../environments/environment";
+import { GeoPoint } from "firebase/firestore";
+
+interface GeoPointLiteral {
+  latitude: number;
+  longitude: number;
+}
 
 export namespace Spot {
   export class Class {
@@ -33,7 +38,10 @@ export namespace Spot {
     public set location(newLocation: google.maps.LatLngLiteral) {
       console.log("setting location");
       this._location = newLocation;
-      this._data.location = new GeoPoint(newLocation.lat, newLocation.lng);
+      this._data.location = new GeoPoint(
+        newLocation.lat,
+        newLocation.lng
+      ).toJSON();
       this._data.tile_coordinates = this._generateTileCoordinates(
         this._location
       ); // update tile coords
@@ -126,20 +134,17 @@ export namespace Spot {
     private _streetview: ContributedMedia;
 
     constructor(private _id: string, _data: Partial<Schema>) {
-      console.log(_data);
+      this._data = _data as Schema;
 
-      this._data = _data as Schema; // I don't think this is safe... // TODO: make safe
       this._data.bounds = _data.bounds ?? [];
 
       if (_data.location["_lat"] && _data.location["_long"]) {
-        throw new Error("Location is not a GeoPoint");
+        // convert LatLongLiteral to GeoPoint literal
         this._data.location = new GeoPoint(
           _data.location["_lat"],
           _data.location["_long"]
-        );
+        ).toJSON();
       }
-
-      console.log(this._data.location);
 
       this._paths = this._makePathsFromBounds(this._data.bounds);
 
@@ -295,7 +300,7 @@ export namespace Spot {
     }
 
     private _makePathsFromBounds(
-      bounds: GeoPoint[]
+      bounds: GeoPointLiteral[]
     ): Array<Array<google.maps.LatLngLiteral>> {
       if (!bounds) return [];
 
@@ -349,7 +354,7 @@ export namespace Spot {
   export interface Schema {
     name: LocaleMap;
 
-    location: GeoPoint;
+    location: GeoPointLiteral;
 
     tile_coordinates: {
       z2: { x: number; y: number };
@@ -372,7 +377,7 @@ export namespace Spot {
 
     address?: AddressSchema;
 
-    bounds?: GeoPoint[];
+    bounds?: GeoPointLiteral[];
 
     time_created?: firebase.default.firestore.Timestamp;
     time_updated?: { seconds: number; nanoseconds: number };

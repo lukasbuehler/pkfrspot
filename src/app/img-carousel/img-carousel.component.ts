@@ -13,22 +13,15 @@ import { MatRippleModule } from "@angular/material/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import {
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
   MatDialogRef,
   MAT_DIALOG_DATA,
   MatDialog,
   MatDialogModule,
 } from "@angular/material/dialog";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
 import SwiperCore from "swiper";
-// import Navigation from "swiper";
-// import Pagination from "swiper";
+import { Navigation, Pagination } from "swiper/modules";
 import { StorageService } from "../storage.service";
-// SwiperCore.use([Navigation, Pagination]);
+SwiperCore.use([Navigation, Pagination]);
 
 @Component({
   selector: "app-img-carousel",
