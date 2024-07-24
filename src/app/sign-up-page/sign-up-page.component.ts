@@ -1,5 +1,12 @@
 import { Component, OnInit } from "@angular/core";
-import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {
+  AbstractControl,
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { AuthenticationService } from "../authentication.service";
 import { DatabaseService } from "../database.service";
@@ -12,23 +19,23 @@ import { MatButton } from "@angular/material/button";
 import { PageHeaderComponent } from "../page-header/page-header.component";
 
 @Component({
-    selector: "app-sign-up-page",
-    templateUrl: "./sign-up-page.component.html",
-    styleUrls: ["./sign-up-page.component.scss"],
-    standalone: true,
-    imports: [
-        PageHeaderComponent,
-        MatButton,
-        RouterLink,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        MatHint,
-        MatCheckbox,
-        NgIf,
-    ],
+  selector: "app-sign-up-page",
+  templateUrl: "./sign-up-page.component.html",
+  styleUrls: ["./sign-up-page.component.scss"],
+  standalone: true,
+  imports: [
+    PageHeaderComponent,
+    MatButton,
+    RouterLink,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatHint,
+    MatCheckbox,
+    NgIf,
+  ],
 })
 export class SignUpPageComponent implements OnInit {
   createAccountForm: UntypedFormGroup;
@@ -72,22 +79,18 @@ export class SignUpPageComponent implements OnInit {
   }
 
   setupSignUpReCaptcha() {
-    let recaptcha = new RecaptchaVerifier(
-      "reCaptchaDiv",
-      {
-        size: "invisible",
-        callback: (response) => {
-          // reCAPTCHA solved, allow sign in
-          this._recaptchaSolved = true;
-          console.log("recaptcha solved", response);
-        },
-        "expired-callback": () => {
-          // Response expired. Ask user to solve reCAPTCHA again.
-          console.error("Response expired");
-        },
+    let recaptcha = new RecaptchaVerifier(null, "reCaptchaDiv", {
+      size: "invisible",
+      callback: (response) => {
+        // reCAPTCHA solved, allow sign in
+        this._recaptchaSolved = true;
+        console.log("recaptcha solved", response);
       },
-      null
-    );
+      "expired-callback": () => {
+        // Response expired. Ask user to solve reCAPTCHA again.
+        console.error("Response expired");
+      },
+    });
     recaptcha.render();
   }
 

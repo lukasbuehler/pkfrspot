@@ -40,13 +40,13 @@
     "@angular/router": "^18.1.1",
     "@angular/service-worker": "^18.1.1",
     "@angular/ssr": "^18.1.1",
-    "@firebase/firestore": "^4.6.1",
+    "@firebase/firestore": "^4.6.4",
     "@videogular/ngx-videogular": "^8.0.0",
     "bootstrap": "^5.3.0",
     "croppie": "^2.6.5",
     "express": "^4.18.2",
     "firebase": "^10.12.4",
-    "i18n-iso-countries": "^7.6.0",
+    "i18n-iso-countries": "^7.11.3",
     "rxjs": "^7.8.1",
     "swiper": "^11.1.7",
     "timers": "^0.1.1",
@@ -68,5 +68,9 @@
     "@types/xml2js": "^0.4.9",
     "sass": "^1.63.3",
     "typescript": "5.4"
+  },
+  "overrides": {
+    "undici": "6.19.2",
+    "undici-types": "6.19.2"
   }
 }

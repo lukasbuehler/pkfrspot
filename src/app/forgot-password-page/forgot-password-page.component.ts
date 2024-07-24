@@ -1,5 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from "@angular/forms";
 import { Router } from "@angular/router";
 import { AuthenticationService } from "../authentication.service";
 import { RecaptchaVerifier, sendPasswordResetEmail } from "firebase/auth";
@@ -11,22 +17,22 @@ import { MatFormField, MatLabel, MatError } from "@angular/material/form-field";
 import { PageHeaderComponent } from "../page-header/page-header.component";
 
 @Component({
-    selector: "app-forgot-password-page",
-    templateUrl: "./forgot-password-page.component.html",
-    styleUrls: ["./forgot-password-page.component.scss"],
-    standalone: true,
-    imports: [
-        PageHeaderComponent,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        NgIf,
-        MatError,
-        MatButton,
-        MatIcon,
-    ],
+  selector: "app-forgot-password-page",
+  templateUrl: "./forgot-password-page.component.html",
+  styleUrls: ["./forgot-password-page.component.scss"],
+  standalone: true,
+  imports: [
+    PageHeaderComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    NgIf,
+    MatError,
+    MatButton,
+    MatIcon,
+  ],
 })
 export class ForgotPasswordPageComponent implements OnInit {
   forgotPasswordForm: UntypedFormGroup;
@@ -60,6 +66,7 @@ export class ForgotPasswordPageComponent implements OnInit {
 
   setupForgetPasswordReCaptcha() {
     this.recaptcha = new RecaptchaVerifier(
+      this._authService.auth,
       "reCaptchaDiv",
       {
         size: "invisible",
@@ -73,8 +80,7 @@ export class ForgotPasswordPageComponent implements OnInit {
           // Response expired. Ask user to solve reCAPTCHA again.
           console.error("Response expired");
         },
-      },
-      null // TODO maybe pass app instead of null
+      }
     );
     this.recaptcha.render();
   }

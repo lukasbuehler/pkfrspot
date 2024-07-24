@@ -24,9 +24,11 @@ import {
 } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
-import SwiperCore, { Navigation, Pagination } from "swiper";
+import SwiperCore from "swiper";
+// import Navigation from "swiper";
+// import Pagination from "swiper";
 import { StorageService } from "../storage.service";
-SwiperCore.use([Navigation, Pagination]);
+// SwiperCore.use([Navigation, Pagination]);
 
 @Component({
   selector: "app-img-carousel",

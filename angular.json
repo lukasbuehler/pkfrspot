@@ -70,10 +70,9 @@
                   "with": "src/environments/keys.development.ts"
                 }
               ],
-              "optimization": false,
               "outputHashing": "none",
-              "sourceMap": true,
-              "extractLicenses": false
+              "optimization": true,
+              "sourceMap": true
             },
             "staging": {
               "fileReplacements": [
