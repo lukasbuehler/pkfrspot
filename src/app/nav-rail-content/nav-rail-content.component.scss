@@ -5,3 +5,8 @@ div.nav-rail-content {
   display: flex;
   flex-direction: column;
 }
+
+::ng-deep div.nav-rail-content > div.main-content {
+  height: calc(100% - 80px);
+  overflow-y: scroll;
+}
