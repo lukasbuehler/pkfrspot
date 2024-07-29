@@ -379,36 +379,40 @@ export class SpotMapComponent implements AfterViewInit {
   setSpotMetaTags(spot: Spot.Class) {
     // console.log("Setting Spot Meta Tags:", spot.name);
 
+    const title: string = `${spot.name} - PKFR Spot`;
+    const image_src: string = spot.previewImage;
+    const description: string = spot.description || spot.getReadableLocation();
+
     // Title
-    this.titleService.setTitle(`PKFR Spot: ${spot.name}`);
+    this.titleService.setTitle(title);
     this.meta.updateTag({
       property: "og:title",
-      content: `PKFR Spot: ${spot.name}`,
+      content: title,
     });
     this.meta.updateTag({
       name: "twitter:title",
-      content: `PKFR Spot: ${spot.name}`,
+      content: title,
     });
 
     // Image
     this.meta.updateTag({
       property: "og:image",
-      content: spot.previewImage,
+      content: image_src,
     });
     this.meta.updateTag({
       name: "twitter:image",
-      content: spot.previewImage,
+      content: image_src,
     });
 
     // Description
-    // this.meta.updateTag({
-    //   property: "og:description",
-    //   content: spot.description || "",
-    // });
-    // this.meta.updateTag({
-    //   name: "twitter:description",
-    //   content: spot.description,
-    // });
+    this.meta.updateTag({
+      property: "og:description",
+      content: description,
+    });
+    this.meta.updateTag({
+      name: "twitter:description",
+      content: description,
+    });
   }
 
   focusSpot(spot: Spot.Class) {

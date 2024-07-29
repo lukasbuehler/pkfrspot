@@ -38,8 +38,10 @@
       mat-fab
       [matMenuTriggerFor]="mainMenu"
       id="alainMenuButton"
-      icon="menu"
-    ></button>
+      color="primary"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
     <mat-menu #mainMenu>
       @for(button of navbarConfig.buttons; track button) {
       <button mat-menu-item [routerLink]="button.link">
