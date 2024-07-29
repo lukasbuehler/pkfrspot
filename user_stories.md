@@ -6,7 +6,7 @@
 
 - [ ] As a Freerunner, I want to see clips from other Freerunners as inspiration.
 
-### Planning
+### Planning Trainings
 
 - [x] As a practicing Freerunner before a training, I want to see spots in an area so I can train at new spots.
 - [ ] As a practicing Freerunner planning a training, I want to be able to plan a training session and invite my friends, so I can train with them.
