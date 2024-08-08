@@ -1,7 +1,7 @@
 {
   "name": "PKFR Spot",
   "short_name": "PKFR Spot",
-  "description": "The spot for parkour and freerunning",
+  "description": "The spot for Parkour and Freerunning",
   "theme_color": "#1f1f23",
   "background_color": "#1f1f23",
   "display": "standalone",
