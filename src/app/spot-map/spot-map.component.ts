@@ -441,7 +441,14 @@ export class SpotMapComponent implements AfterViewInit {
       return;
     }
 
-    let center_coordinates: google.maps.LatLngLiteral = this.map.center;
+    let center_coordinates: google.maps.LatLngLiteral = this.map.googleMap
+      .getCenter()
+      ?.toJSON();
+
+    if (!center_coordinates) {
+      console.error("Could not get center coordinates of the map");
+      return;
+    }
 
     this.setSelectedSpot(
       new Spot.Class(
@@ -472,7 +479,7 @@ export class SpotMapComponent implements AfterViewInit {
 
     // If the spot does not have an ID, it does not exist in the database yet.
 
-    let saveSpotPromise: Promise<void>;
+    let saveSpotPromise: Promise<void | string>;
     if (spot.id) {
       // this is an old spot that is edited
       saveSpotPromise = this._dbService.setSpot(spot.id, spot.data);
@@ -482,11 +489,21 @@ export class SpotMapComponent implements AfterViewInit {
     }
 
     saveSpotPromise
-      .then(() => {
+      .then((id: string | void) => {
+        if (id) {
+          // add the new ID to the spot and update the loaded spots
+          spot.updateId(id);
+        }
+
+        this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spot);
+
         // Successfully updated
         this.setIsEditing(false);
-        // TODO Snackbar or something
-        this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spot);
+        this.snackBar.open("Spot saved successfully", "Dismiss");
+
+        // update the selected spot so that it is displayed in the URL
+        this.setSelectedSpot(null);
+        this.openSpot(spot);
       })
       .catch((error) => {
         this.setIsEditing(false);
@@ -673,6 +690,12 @@ export class SpotMapComponent implements AfterViewInit {
    * @param newSpot The newly created spot class.
    */
   addOrUpdateNewSpotToLoadedSpotsAndUpdate(newSpot: Spot.Class) {
+    if (!newSpot.id) {
+      throw new Error(
+        "The spot has no ID. It needs to be saved before it can be added to the loaded spots."
+      );
+    }
+
     //Get the tile coordinates to save in loaded spots
     const ref = this.getReferenceToLoadedSpotById(newSpot.id);
     console.log("spot to update ref", ref);
@@ -692,12 +715,16 @@ export class SpotMapComponent implements AfterViewInit {
       );
       let spots = this.loadedSpots.get(`z${16}_${tile.x}_${tile.y}`);
 
-      if (spots) {
+      console.log("spots", spots);
+
+      if (spots && spots.length > 0) {
+        // There are spots loaded for this 16 tile, add the new spot to the loaded spots array
         spots.push(newSpot);
       } else {
-        // There are no spots loaded for this tile, add it to the loaded spots
-        this.loadedSpots.set(`z${16}_${tile.x}_${tile.y}`, [newSpot]);
+        // There are no spots loaded for this 16 tile, add it to the loaded spots
+        spots = [newSpot];
       }
+      this.loadedSpots.set(`z${16}_${tile.x}_${tile.y}`, spots);
     }
     // update the map to show the new spot on the loaded spots array.
     this.updateVisibleSpots();

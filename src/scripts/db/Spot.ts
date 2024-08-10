@@ -18,6 +18,10 @@ export namespace Spot {
       return this._id;
     }
 
+    updateId(newId: string) {
+      this._id = newId;
+    }
+
     public get name(): string {
       if (this._data.name) {
         return this._data.name[this._locale] || "";
