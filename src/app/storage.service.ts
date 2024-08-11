@@ -46,6 +46,16 @@ export class StorageService {
     return deleteObject(ref(this.storage, `${location}/${filename}`));
   }
 
+  deleteSpotImageFromStorage(filename: string): Promise<void> {
+    return Promise.all([
+      this.deleteFromStorage(StorageFolder.SpotPictures, filename),
+      this.deleteFromStorage(StorageFolder.SpotPictures, filename + "_200x200"),
+      this.deleteFromStorage(StorageFolder.SpotPictures, filename + "_400x400"),
+    ]).then(() => {
+      return;
+    });
+  }
+
   upload(): Observable<string> {
     return this.uploadObs;
   }

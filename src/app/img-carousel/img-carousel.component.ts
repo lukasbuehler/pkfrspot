@@ -24,9 +24,8 @@ import { StorageService } from "../storage.service";
 // Swiper
 import Swiper from "swiper";
 import { Navigation, Pagination } from "swiper/modules";
-// import "swiper/css";
-// import "swiper/css/navigation";
-// import "swiper/css/pagination";
+Swiper.use([Navigation, Pagination]);
+
 import { isPlatformBrowser } from "@angular/common";
 
 @Component({
@@ -120,7 +119,7 @@ export class SwiperDialogComponent implements AfterViewInit {
       // const swiperContainer = document.querySelector(".swiper");
       this.swiper = new Swiper(".swiper", {
         // configure Swiper to use modules
-        // modules: [Navigation, Pagination],
+        modules: [Navigation, Pagination],
 
         // Optional parameters
         direction: "horizontal",
@@ -133,7 +132,7 @@ export class SwiperDialogComponent implements AfterViewInit {
         pagination: {
           el: ".swiper-pagination",
           clickable: true,
-          dynamicBullets: true,
+          dynamicBullets: false,
         },
 
         // Navigation arrows
@@ -144,9 +143,9 @@ export class SwiperDialogComponent implements AfterViewInit {
         },
 
         // scrollbar
-        scrollbar: {
-          el: ".swiper-scrollbar",
-        },
+        // scrollbar: {
+        //   el: ".swiper-scrollbar",
+        // },
       });
 
       //   this.renderer.listen(swiperContainer, "touchstart", (event) => {

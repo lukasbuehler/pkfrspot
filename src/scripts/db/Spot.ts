@@ -96,6 +96,10 @@ export namespace Spot {
       return [].concat(this._data.media ?? [], this._streetview ?? []);
     }
 
+    get editableMedia(): ContributedMedia[] {
+      return this._data.media ?? [];
+    }
+
     public get type(): string {
       return this._data.type;
     }
@@ -249,19 +253,15 @@ export namespace Spot {
             let storageFilename = storageFilenameMatch[1] || "";
 
             if (storageFilename) {
-              _storageService
-                .deleteFromStorage(StorageFolder.SpotPictures, storageFilename)
-                .then(
-                  () => {
-                    // deleting successful
-                    console.log(
-                      "successfully deleted file: " + storageFilename
-                    );
-                  },
-                  (error) => {
-                    console.error(error);
-                  }
-                );
+              _storageService.deleteSpotImageFromStorage(storageFilename).then(
+                () => {
+                  // deleting successful
+                  console.log("successfully deleted file: " + storageFilename);
+                },
+                (error) => {
+                  console.error(error);
+                }
+              );
             } else {
               console.error(
                 "Couldn't resolve storage filename when setting media"
