@@ -330,7 +330,6 @@ export class MapComponent implements OnInit {
   };
 
   toggleMapStyle() {
-    console.log("toggle map style");
     if (
       this.mapTypeId.toLowerCase() ===
       google.maps.MapTypeId.ROADMAP.toLowerCase()

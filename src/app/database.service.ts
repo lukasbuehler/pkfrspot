@@ -357,8 +357,17 @@ export class DatabaseService {
     return newSpots;
   }
 
-  createSpot(spotData: Spot.Schema): Promise<any> {
-    return addDoc(collection(this.firestore, "spots"), spotData);
+  /**
+   * Create a new spot and return its ID.
+   * @param spotData Spot data to add to this new spot
+   * @returns the ID of the new spot
+   */
+  createSpot(spotData: Spot.Schema): Promise<string> {
+    return addDoc(collection(this.firestore, "spots"), spotData).then(
+      (data) => {
+        return data.id;
+      }
+    );
   }
 
   setSpot(spotId: string, spotData: Spot.Schema): Promise<void> {

@@ -1,0 +1,3 @@
+POST overpass-api.de/api/interpreter
+
+data=%2F*%0AThis+is+an+example+Overpass+query.%0ATry+it+out+by+pressing+the+Run+button+above!%0AYou+can+find+more+examples+with+the+Load+tool.%0A*%2F%0Anode%0A++%5Bamenity%3Ddrinking_water%5D%0A++(47.372859560740935%2C8.549031615257265%2C47.376165410427156%2C8.552813529968263)%3B%0Aout%3B
