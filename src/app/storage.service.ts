@@ -48,9 +48,9 @@ export class StorageService {
 
   deleteSpotImageFromStorage(filename: string): Promise<void> {
     return Promise.all([
-      this.deleteFromStorage(StorageFolder.SpotPictures, filename),
       this.deleteFromStorage(StorageFolder.SpotPictures, filename + "_200x200"),
       this.deleteFromStorage(StorageFolder.SpotPictures, filename + "_400x400"),
+      this.deleteFromStorage(StorageFolder.SpotPictures, filename + "_800x800"),
     ]).then(() => {
       return;
     });
@@ -60,7 +60,7 @@ export class StorageService {
     return this.uploadObs;
   }
 
-  makeThumbnailURL(pathUrl: string, size: number): string {
+  getSpotMediaURL(pathUrl: string, size: 200 | 400 | 800): string {
     return pathUrl.replace(/\?/, `_${size}x${size}?`);
   }
 }

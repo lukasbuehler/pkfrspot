@@ -43,6 +43,7 @@ import { MatMenuTrigger, MatMenu } from "@angular/material/menu";
 import { MatButtonModule, MatIconButton } from "@angular/material/button";
 import { MatFormField, MatSuffix } from "@angular/material/form-field";
 import { Title } from "@angular/platform-browser";
+import { MatDividerModule } from "@angular/material/divider";
 
 @Component({
   selector: "app-map-page",
@@ -83,6 +84,7 @@ import { Title } from "@angular/platform-browser";
     MatMenu,
     UserMenuContentComponent,
     AsyncPipe,
+    MatDividerModule,
   ],
 })
 export class MapPageComponent implements OnInit, AfterViewInit {
@@ -192,25 +194,25 @@ export class MapPageComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     // subscribe to the spot search control and update the search results
     this.spotSearchControl.valueChanges.subscribe((query) => {
-      //   if (query) {
-      //     this._searchService
-      //       .searchSpots(query)
-      //       .then((results) => {
-      //         this.spotAndPlaceSearchResults$.next(results);
-      //         console.log("results", results);
-      //       });
-      //   } else {
-      //     this.spotAndPlaceSearchResults$.next(null);
-      //   }
-
-      this.mapsService
-        .autocompletePlaceSearch(query, ["geocode"])
-        .then((results) => {
-          this.spotAndPlaceSearchResults$.next({
-            places: results,
-            spots: null,
+      if (query) {
+        this._searchService
+          .searchSpotsAndGeocodePlaces(query)
+          .then((results) => {
+            this.spotAndPlaceSearchResults$.next(results);
+            console.log("results", results);
           });
-        });
+      } else {
+        this.spotAndPlaceSearchResults$.next(null);
+      }
+
+      //   this.mapsService
+      //     .autocompletePlaceSearch(query, ["geocode"])
+      //     .then((results) => {
+      //       this.spotAndPlaceSearchResults$.next({
+      //         places: results,
+      //         spots: null,
+      //       });
+      //     });
     });
   }
 

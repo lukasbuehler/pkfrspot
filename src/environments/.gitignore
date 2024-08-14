@@ -1,6 +1,5 @@
-keys.*.ts
-!keys.default.ts
-!keys.production.ts
+environment.*.ts
+!environment.default.ts
+!environment.production.ts
 
 env.json
-

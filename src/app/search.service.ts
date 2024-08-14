@@ -22,8 +22,7 @@ export class SearchService {
   });
 
   spotSearchParameters = {
-    query_by:
-      "description.de_CH,description.en_GB,name.de_CH,name.de_DE,name.en_US",
+    query_by: "description,name",
     sort_by: "_text_match:desc",
     per_page: 10,
     page: 1,
