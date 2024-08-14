@@ -4,7 +4,7 @@
     <img
       [src]="
         mediaObj.uid
-          ? storageService.makeThumbnailURL(mediaObj.src, 400)
+          ? storageService.getSpotMediaURL(mediaObj.src, 400)
           : mediaObj.src
       "
       (click)="imageClick($index)"

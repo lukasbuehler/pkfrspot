@@ -1,0 +1,16 @@
+{
+  "name": "spots",
+  "fields": [
+    {
+      "name": "name",
+      "type": "object",
+      "optional": false
+    },
+    {
+      "name": "description",
+      "type": "object",
+      "optional": true
+    }
+  ],
+  "enable_nested_fields": true
+}

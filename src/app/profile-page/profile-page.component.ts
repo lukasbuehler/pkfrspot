@@ -132,7 +132,7 @@ export class ProfilePageComponent implements OnInit {
         this.isLoading = false;
 
         // Load the profile picture of this user
-        this.profilePicture = this._storageService.makeThumbnailURL(
+        this.profilePicture = this._storageService.getSpotMediaURL(
           this.user.profilePicture,
           400
         );

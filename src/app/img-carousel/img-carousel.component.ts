@@ -2,17 +2,14 @@ import {
   AfterViewInit,
   Component,
   Input,
-  Renderer2,
   CUSTOM_ELEMENTS_SCHEMA,
   Inject,
-  ElementRef,
-  ViewChild,
   PLATFORM_ID,
 } from "@angular/core";
 import { ContributedMedia } from "../../scripts/db/Interfaces";
 import { MatRippleModule } from "@angular/material/core";
-import { FormsModule } from "@angular/forms";
-import { MatButtonModule } from "@angular/material/button";
+import { MatButtonModule, MatIconButton } from "@angular/material/button";
+import { MatIcon } from "@angular/material/icon";
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -52,7 +49,8 @@ export class ImgCarouselComponent {
       data: { media: this.media, index: index },
       hasBackdrop: true,
       maxWidth: "95vw",
-      maxHeight: "75vh",
+      maxHeight: "95vh",
+      panelClass: "square",
     });
 
     // dialogRef.afterClosed().subscribe((result) => {
@@ -68,7 +66,17 @@ export class ImgCarouselComponent {
       <div class="swiper-wrapper">
         @for (mediaObj of data.media; track $index) { @if(mediaObj.type ===
         'image') {
-        <div class="swiper-slide"><img src="{{ mediaObj.src }}" /></div>
+        <div class="swiper-slide">
+          @if(mediaObj.origin !== 'streetview') {
+          <!-- if the media is not a street view image, use the 800x800 size -->
+          <img
+            src="{{ this.storageService.getSpotMediaURL(mediaObj.src, 800) }}"
+          />
+          } @else {
+          <!-- if the media is a streetview image, or link show the source directly -->
+          <img src="{{ mediaObj.src }}" />
+          }
+        </div>
         } }
       </div>
       <!-- pagination -->
@@ -79,15 +87,24 @@ export class ImgCarouselComponent {
       <div class="swiper-button-next"></div>
 
       <!-- scrollbar -->
-      <div class="swiper-scrollbar"></div>
+      <!-- <div class="swiper-scrollbar"></div> -->
+
+      <button
+        mat-icon-button
+        style="position: absolute; top: 10px; right: 10px; z-index: 1; background-color: #00000080;"
+        (click)="onNoClick()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
     </div>
   `,
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule],
+  imports: [MatDialogModule, MatButtonModule, MatIconButton, MatIcon],
   styles: [
     `
       :host {
         display: flex;
+        aspect-ratio: 1;
       }
 
       img {

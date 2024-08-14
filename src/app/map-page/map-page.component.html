@@ -82,7 +82,7 @@
               authService.isSignedIn && authService.user?.data?.profilePicture
             "
             [src]="
-              storageService.makeThumbnailURL(
+              storageService.getSpotMediaURL(
                 authService.user.data.profilePicture,
                 200
               )
