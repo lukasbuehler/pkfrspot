@@ -1,8 +1,5 @@
-// This file will be replaced by angular at compile time.
-// It is used by Typescript.
-
 export const environment = {
-  name: "Name",
+  name: "Default",
   production: false,
   keys: {
     firebaseConfig: {

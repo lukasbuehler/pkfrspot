@@ -13,14 +13,21 @@
           "style": "scss"
         }
       },
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          //   "de-CH": "src/locale/messages.de-CH.xlf"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            // "localize": ["de-CH"],
             "outputPath": "dist/parkour-base-angular",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": ["zone.js", "@angular/localize/init"],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
@@ -66,10 +73,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.development.ts"
-                },
-                {
-                  "replace": "src/environments/keys.ts",
-                  "with": "src/environments/keys.development.ts"
                 }
               ],
               "outputHashing": "none",
@@ -81,10 +84,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.staging.ts"
-                },
-                {
-                  "replace": "src/environments/keys.ts",
-                  "with": "src/environments/keys.staging.ts"
                 }
               ],
               "outputHashing": "all",
@@ -106,10 +105,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.production.ts"
-                },
-                {
-                  "replace": "src/environments/keys.ts",
-                  "with": "src/environments/keys.production.ts"
                 }
               ],
               "outputHashing": "all",
