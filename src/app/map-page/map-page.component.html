@@ -47,13 +47,14 @@
             spotSearchControl.setValue('');
             ($event.stopPropagation)
           "
+          class="mt-2 rounded"
         >
-          <mat-option
-            class="spotAutocompleteOption"
-            *ngFor="let place of (spotAndPlaceSearchResults$ | async)?.places"
-            [value]="{ type: 'place', id: place.place_id }"
-            ><span>{{ place.description ?? "" }}</span>
-          </mat-option>
+          @if((spotAndPlaceSearchResults$ | async)?.spots?.hits?.length > 0) {
+          <div>
+            <p class="mat-label-medium ps-3 pt-1 mb-1">Spots</p>
+            <mat-divider></mat-divider>
+          </div>
+          }
           <mat-option
             class="spotAutocompleteOption"
             *ngFor="
@@ -61,11 +62,29 @@
             "
             [value]="{ type: 'spot', id: hit.document.id }"
           >
-            <!-- <img *ngIf="spot.previewImage" [src]="spot.previewImage" alt="Img" /> -->
+            <!-- <img
+              *ngIf="spot.previewImage"
+              [src]="spot.previewImage"
+              alt="Img"
+            /> -->
             <span>{{ hit.document.name.de_CH ?? "" }}</span>
             <!-- <small
               >Location: {{ spot.location.lat }}, {{ spot.location.lng }}</small
             > -->
+          </mat-option>
+          @if((spotAndPlaceSearchResults$ | async)?.spots?.hits?.length > 0) {
+          <div class="pt-2"></div>
+          } @if((spotAndPlaceSearchResults$ | async)?.places?.length > 0) {
+          <div>
+            <p class="mat-label-medium ps-3 pt-1 mb-1">Places</p>
+            <mat-divider></mat-divider>
+          </div>
+          }
+          <mat-option
+            class="spotAutocompleteOption"
+            *ngFor="let place of (spotAndPlaceSearchResults$ | async)?.places"
+            [value]="{ type: 'place', id: place.place_id }"
+            ><span>{{ place.description ?? "" }}</span>
           </mat-option>
         </mat-autocomplete>
         <button
