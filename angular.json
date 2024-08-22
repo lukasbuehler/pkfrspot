@@ -14,16 +14,26 @@
         }
       },
       "i18n": {
-        "sourceLocale": "en-US",
+        "sourceLocale": {
+          "code": "en",
+          "baseHref": "/en/"
+        },
         "locales": {
-          //   "de-CH": "src/locale/messages.de-CH.xlf"
+          "de": {
+            "translation": "src/locale/messages.de.xlf",
+            "baseHref": "/de/"
+          },
+          "de-CH": {
+            "translation": "src/locale/messages.de-CH.xlf",
+            "baseHref": "/de-CH/"
+          }
         }
       },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            // "localize": ["de-CH"],
+            "localize": ["en", "de", "de-CH"],
             "outputPath": "dist/parkour-base-angular",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -77,7 +87,9 @@
               ],
               "outputHashing": "none",
               "optimization": true,
-              "sourceMap": true
+              "sourceMap": true,
+              "localize": ["en"],
+              "baseHref": "/en/"
             },
             "staging": {
               "fileReplacements": [
@@ -139,6 +151,15 @@
             }
           },
           "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "ng-extract-i18n-merge:ng-extract-i18n-merge",
+          "options": {
+            "browserTarget": "parkour-base-angular:build",
+            "format": "xlf2",
+            "outputPath": "src/locale",
+            "targetFiles": ["messages.de.xlf", "messages.de-CH.xlf"]
+          }
         }
       }
     }

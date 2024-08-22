@@ -6,6 +6,11 @@
 
 ## Collaborating
 
+### Translation
+
+The translation files are in `src/locales`.
+`en-US` is the source language and all other languages
+
 ### Developing Locally
 
 1. Generate your own Google API key
