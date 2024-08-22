@@ -6,10 +6,16 @@
 
 - [ ] As a Freerunner, I want to see clips from other Freerunners as inspiration.
 
-### Planning Trainings
+### Discovering Spots
 
 - [x] As a practicing Freerunner before a training, I want to see spots in an area so I can train at new spots.
+- [x] As a Parkour Athlete, I have heard about a spot and I want to be able to find information about it.
+- [ ] As a Parkour Athlete, I want to see the best spots in a region.
+
+### Planning Trainings
+
 - [ ] As a practicing Freerunner planning a training, I want to be able to plan a training session and invite my friends, so I can train with them.
+      This means we have to narrow it down to a time and spot(s) on a weekday.
 - [ ] As a practicing Freerunner looking to train, I want to find open training sessions to train with others.
 
 ### Discovering Jams / Competitions
