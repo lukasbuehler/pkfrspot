@@ -8,8 +8,12 @@
 
 ### Translation
 
-The translation files are in `src/locales`.
-`en-US` is the source language and all other languages
+The translation files are in `src/locales` and
+`en` is the source language.
+
+To tweak a translation go to the corresponding file,
+
+#### Adding a language
 
 ### Developing Locally
 
