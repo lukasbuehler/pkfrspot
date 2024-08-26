@@ -1,6 +1,6 @@
-import { app as serverEn } from "./server/en/server.mjs";
-import { app as serverDe } from "./server/de/server.mjs";
-import { app as serverDeCH } from "./server/de-CH/server.mjs";
+import { app as serverEn } from "./en/server.mjs";
+import { app as serverDe } from "./de/server.mjs";
+import { app as serverDeCH } from "./de-CH/server.mjs";
 
 const express = require("express");
 

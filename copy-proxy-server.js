@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const sourcePath = "src/proxy-server.mjs";
-const destinationPath = "dist/parkour-base-angular/server.mjs";
+const destinationPath = "dist/parkour-base-angular/server/server.mjs";
 
 // Check if the source file exists
 if (fs.existsSync(sourcePath)) {
