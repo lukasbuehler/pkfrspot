@@ -1,27 +1,120 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="ng2.template">
-        <body>
-            <trans-unit id="1479415597449651120" datatype="html">
-                <source>Spot Karte</source>
-                <context-group purpose="location">
-                    <context context-type="sourcefile">src/app/app.component.ts</context>
-                    <context context-type="linenumber">137</context>
-                </context-group>
-                <note priority="1" from="description">A very short label for the navbar spot map
-                    label</note>
-                <note priority="1" from="meaning">Spot map navbar button label</note>
-            </trans-unit>
-            <trans-unit id="6493290522598468378" datatype="html">
-                <source>Über uns</source>
-                <context-group purpose="location">
-                    <context context-type="sourcefile">src/app/app.component.ts</context>
-                    <context context-type="linenumber">165</context>
-                </context-group>
-                <note priority="1" from="description">A very short label for the navbar about page
-                    button</note>
-                <note priority="1" from="meaning">About page navbar button label</note>
-            </trans-unit>
-        </body>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en" trgLang="de-CH">
+    <file id="ngi18n" original="ng.template">
+        <unit id="1940752772695642659">
+            <segment state="initial">
+                <source> The spot for Parkour and Freerunning. </source>
+                <target> Der Spot für Parkour und Freerunning. </target>
+            </segment>
+        </unit>
+        <unit id="3710111609881776947">
+            <segment state="initial">
+                <source>Discover, Train, Share.</source>
+                <target>Entdecken, Trainieren, Teilen.</target>
+            </segment>
+        </unit>
+        <unit id="3733695846697223562">
+            <segment state="initial">
+                <source> Discover spots and fellow athletes, plan training sessions with your
+                    friends and share achievements and memories with them and the world. </source>
+                <target> Entdecke Spots und Athleten, plane gemeinsame Trainings mit deinen Freunden
+                    und teile deine Erfolge und Erinnerungen mit ihnen und der Welt. </target>
+            </segment>
+        </unit>
+        <unit id="7411379953853971507">
+            <segment state="initial">
+                <source> This project is Open-Source! Our code is licensed under the <pc id="0"
+                        equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt"
+                        dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT License</pc>. </source>
+                <target> Dieses Projekt ist Open-Source! Unser Code ist lizenziert unter der <pc
+                        id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt"
+                        dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT Lizenz</pc>. </target>
+            </segment>
+        </unit>
+        <unit id="1563251428514246752">
+            <segment state="initial">
+                <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
+                        type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">
+                    receipt_long</pc> View License </source>
+                <target><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
+                        type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">
+                    receipt_long</pc> Lizenz ansehen </target>
+            </segment>
+        </unit>
+        <unit id="7217756648427967816">
+            <segment state="initial">
+                <source>Supporters</source>
+                <target>Unterstützer</target>
+            </segment>
+        </unit>
+        <unit id="6511882108366913037">
+            <segment state="initial">
+                <source>Contributors</source>
+                <target>Mitwirkende</target>
+            </segment>
+        </unit>
+        <unit id="2405554561656775177">
+            <segment state="initial">
+                <source>Lead developer</source>
+                <target>Haupt-Entwickler</target>
+            </segment>
+        </unit>
+        <unit id="8985868511640294928">
+            <segment state="initial">
+                <source>Testing</source>
+                <target>Tester</target>
+            </segment>
+        </unit>
+        <unit id="6034013755958678236">
+            <segment state="initial">
+                <source> Testing, UI/UX Advisor </source>
+                <target> Tester, UI/UX Berater </target>
+            </segment>
+        </unit>
+        <unit id="8062277427231117545">
+            <segment state="initial">
+                <source> Join our community of Parkour and Freerunning enthusiasts! Contribute your
+                    ideas, report bugs, and provide feedback to help us improve this platform
+                    together! </source>
+                <target> Tritt unserer Community von Parkour und Freerunning Enthusiasten bei!
+                    Bringe deine Ideen ein, melde Bugs und teile Feedback, um uns zu helfen, diese
+                    Plattform gemeinsam zu verbessern! </target>
+            </segment>
+        </unit>
+        <unit id="5825310972408482968">
+            <segment state="initial">
+                <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
+                        type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">
+                    sports_esports</pc> Discord </source>
+                <target><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
+                        type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">
+                    sports_esports</pc> Discord </target>
+            </segment>
+        </unit>
+        <unit id="1479415597449651120">
+            <notes>
+                <note category="description">A very short label for the navbar spot map label</note>
+                <note category="meaning">Spot map navbar button label</note>
+            </notes>
+            <segment state="initial">
+                <source>Spot map</source>
+                <target>Spot Karte</target>
+            </segment>
+        </unit>
+        <unit id="6493290522598468378">
+            <notes>
+                <note category="description">A very short label for the navbar about page button</note>
+                <note category="meaning">About page navbar button label</note>
+            </notes>
+            <segment state="initial">
+                <source>About</source>
+                <target>Über uns</target>
+            </segment>
+        </unit>
+        <unit id="6058033902089935749">
+            <segment state="initial">
+                <source>Find spots and places</source>
+                <target>Finde Spots und Orte</target>
+            </segment>
+        </unit>
     </file>
 </xliff>
