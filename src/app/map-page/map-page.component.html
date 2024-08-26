@@ -35,7 +35,8 @@
           #mapSearchInput
           id="mapSearchInput"
           matInput
-          placeholder="Find spots"
+          i18n-placeholder
+          placeholder="Find spots and places"
           [value]="selectedSpot ? selectedSpot.name : ''"
           [formControl]="spotSearchControl"
           [matAutocomplete]="spotAutocomplete"
