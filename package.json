@@ -39,7 +39,7 @@
     "@angular/platform-server": "^18.1.1",
     "@angular/router": "^18.1.1",
     "@angular/service-worker": "^18.1.1",
-    "@angular/ssr": "^18.1.1",
+    "@angular/ssr": "^18.2.1",
     "@firebase/firestore": "^4.6.4",
     "@videogular/ngx-videogular": "^8.0.0",
     "bootstrap": "^5.3.0",
@@ -56,9 +56,9 @@
     "zone.js": "^0.14.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^18.1.1",
-    "@angular-devkit/core": "^18.1.1",
-    "@angular/cli": "^18.1.1",
+    "@angular-devkit/build-angular": "^18.2.1",
+    "@angular-devkit/core": "^18.2.1",
+    "@angular/cli": "^18.2.1",
     "@angular/compiler-cli": "^18.1.1",
     "@angular/language-service": "^18.1.1",
     "@types/core-js": "^2.5.5",
