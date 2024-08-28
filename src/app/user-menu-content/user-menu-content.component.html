@@ -1,10 +1,10 @@
 <a routerLink="/sign-in" *ngIf="!authService.isSignedIn" mat-menu-item>
   <mat-icon>login</mat-icon>
-  <span>Sign in</span>
+  <span i18n>Sign in</span>
 </a>
 <a *ngIf="!authService.isSignedIn" routerLink="/sign-up" mat-menu-item>
   <mat-icon>person_add</mat-icon>
-  <span>Sign up</span>
+  <span i18n>Sign up</span>
 </a>
 <a
   [routerLink]="'/u/' + authService.user?.data?.uid || ''"
@@ -12,13 +12,19 @@
   mat-menu-item
 >
   <mat-icon>face</mat-icon>
-  <span>My Profile</span>
+  <span i18n="my profile label|The profile dropdown menu label for 'my profile'"
+    >My Profile</span
+  >
 </a>
 <button *ngIf="authService.isSignedIn" mat-menu-item [routerLink]="'/settings'">
   <mat-icon>settings</mat-icon>
-  <span>Settings</span>
+  <span i18n="settings label|The profile dropdown menu label for the settings"
+    >Settings</span
+  >
 </button>
 <button *ngIf="authService.isSignedIn" mat-menu-item (click)="logUserOut()">
   <mat-icon>logout</mat-icon>
-  <span>Logout</span>
+  <span i18n="logout label|The profile dropdown menu label to logout"
+    >Logout</span
+  >
 </button>

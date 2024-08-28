@@ -88,8 +88,8 @@
               "outputHashing": "none",
               "optimization": true,
               "sourceMap": true,
-              "localize": ["en"],
-              "baseHref": "/en/"
+              "localize": ["de"],
+              "baseHref": "/de/"
             },
             "staging": {
               "fileReplacements": [

@@ -388,7 +388,7 @@ export namespace Spot {
   }
 
   export enum Types {
-    Playground = "playground",
+    Playground = `playground`,
     Park = "park",
     PkPark = "parkour park",
     Gym = "parkour gym",

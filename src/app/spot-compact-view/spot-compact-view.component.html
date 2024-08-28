@@ -106,19 +106,24 @@
 
     <!-- Spot Description -->
     <div *ngIf="spot.description">
-      <h4 class="mat-title-small">Description</h4>
+      <h4
+        class="mat-title-small"
+        i18n="description header|The header for the spot description"
+      >
+        Description
+      </h4>
       <p>
         {{ spot.description }}
       </p>
     </div>
 
     <!-- Location -->
-    <div>
-      <h4 class="mat-title-small">Location</h4>
+    <!-- <div>
+      <h4 class="mat-title-small" i18n>Location</h4>
       <p>
         {{ spot.getReadableLocation() }}
       </p>
-    </div>
+    </div> -->
 
     <!-- Spot Address -->
     <!-- <div *ngIf="spot.address?.country">
@@ -135,9 +140,14 @@
       <button
         mat-stroked-button
         color="primary"
+        i18n-matTooltip="
+          Open in maps button tooltip|Tooltip of button to open the spot in
+          maps@@open_maps_tooltip"
         matTooltip="Open in maps"
-        aria-label="Example icon button with an open in icon"
         (click)="openSpotInMaps()"
+        i18n="
+          Open in maps button|Button to open the spot in
+          maps@@open_maps_button_label"
       >
         Open in maps
       </button>
@@ -148,20 +158,26 @@
     <div class="d-flex mb-3 mt-3 gap-2">
       <button
         mat-stroked-button
+        i18n-matTooltip
         matTooltip="Edit this spot"
+        i18n-aria-label
         aria-label="Example icon button with a share icon"
         (click)="editButtonClick()"
         class="flex-grow-1 flex-basis-0"
+        i18n="Edit button label|Label of the button to edit the spot"
       >
         Edit
       </button>
       <button
         mat-stroked-button
         color="warn"
+        i18n-matTooltip
         matTooltip="Report this spot"
+        i18n-aria-label
         aria-label="Example icon button with a share icon"
         class="flex-grow-1 flex-basis-0"
         (click)="openSpotReportDialog()"
+        i18n="Report button label|Label of the button to report the spot"
       >
         Report
       </button>
@@ -170,7 +186,12 @@
     <!-- Spot title editing field -->
     <form>
       <mat-form-field style="width: 100%">
-        <mat-label>Spot name</mat-label>
+        <mat-label
+          i18n="
+            spot name placeholder|Placeholder of the spot name in the edit form
+          "
+          >Spot name</mat-label
+        >
         <input
           #spotNameInput
           matInput
@@ -199,6 +220,10 @@
         [disabled]="!newSpotImage"
         class="mt-2"
         color="primary"
+        i18n="
+          Upload spot image button label|Label of the button to upload a spot
+          image
+        "
       >
         Upload Spot Image
       </button>
@@ -206,7 +231,7 @@
 
     <!-- Edit spot form -->
     <mat-form-field style="width: 100%">
-      <mat-label>Spot type</mat-label>
+      <mat-label i18n>Spot type</mat-label>
       <mat-select
         [value]="spot?.type"
         (selectionChange)="spot.type = $event.value"
@@ -217,7 +242,7 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field style="width: 100%">
-      <mat-label>Spot area</mat-label>
+      <mat-label i18n>Spot area</mat-label>
       <mat-select
         [value]="spot?.area"
         (selectionChange)="spot.area = $event.value"
@@ -228,9 +253,13 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field style="width: 100%">
-      <mat-label>Description</mat-label>
+      <mat-label i18n>Description</mat-label>
       <textarea
         matInput
+        i18n-placeholder="
+          Spot description edit field placeholder|Placeholder of the spot
+          description edit field
+        "
         placeholder="Description of the spot, its features and more..."
         [value]="spot?.description || ''"
         (change)="spot.description = $event.target.value"
@@ -242,6 +271,9 @@
         mat-stroked-button
         *ngIf="spot.id && !hasBounds()"
         (click)="addBoundsClicked()"
+        i18n="
+          Add bounds button label|Label of the button to add bounds to a spot
+        "
       >
         Add bounds
       </button>
@@ -256,6 +288,7 @@
       *ngIf="editable"
       (click)="discardButtonClick()"
       class="flex-grow-1 flex-basis-0"
+      i18n="Discard changes button label|Label of the button to discard changes"
     >
       Discard changes
     </button>
@@ -265,6 +298,7 @@
       *ngIf="editable"
       (click)="saveButtonClick()"
       class="flex-grow-1 flex-basis-0"
+      i18n="Save changes button label|Label of the button to save changes"
     >
       Save changes
     </button>
