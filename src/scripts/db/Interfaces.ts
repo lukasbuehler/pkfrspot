@@ -10,11 +10,11 @@ export interface DbDate {
 
 export type SupportedLanguage =
   | "en"
-  | "en_US"
-  | "en_GB"
+  | "en-US"
+  | "en-GB"
   | "de"
-  | "de_CH"
-  | "de_DE";
+  | "de-CH"
+  | "de-DE";
 
 // LangMap maps keys of SUPPORTED_LANGUAGES to strings
 type LangMap = {

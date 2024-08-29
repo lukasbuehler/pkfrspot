@@ -68,7 +68,12 @@
               [src]="spot.previewImage"
               alt="Img"
             /> -->
-            <span>{{ hit.document.name.de_CH ?? "" }}</span>
+            <!-- TODO FIX -->
+            <span>{{
+              hit.document.name[locale] ??
+                hit.document.name["de-CH"] ??
+                "Unnamed Spot"
+            }}</span>
             <!-- <small
               >Location: {{ spot.location.lat }}, {{ spot.location.lng }}</small
             > -->

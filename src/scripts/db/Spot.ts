@@ -12,11 +12,11 @@ interface GeoPointLiteral {
 
 const defaultSpotNames: LocaleMap = {
   en: "Unnamed Spot",
-  en_US: "Unnamed Spot",
-  en_GB: "Unnamed Spot",
+  "en-US": "Unnamed Spot",
+  "en-GB": "Unnamed Spot",
   de: "Unbenannter Spot",
-  de_DE: "Unbenannter Spot",
-  de_CH: "Unbenännte Spot",
+  "de-DE": "Unbenannter Spot",
+  "de-CH": "Unbenännte Spot",
 };
 
 export namespace Spot {

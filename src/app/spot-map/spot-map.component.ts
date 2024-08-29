@@ -457,7 +457,7 @@ export class SpotMapComponent implements AfterViewInit {
       new Spot.Class(
         "", // The id needs to be empty for the spot to be recognized as new
         {
-          name: { de_CH: "New Spot" }, // TODO change to user lang
+          name: { [this.locale]: "New Spot" }, // TODO change to user lang
           location: new GeoPoint(
             center_coordinates.lat,
             center_coordinates.lng

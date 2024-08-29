@@ -8,5 +8,8 @@
         "region": "us-central1"
       }
     }
-  ]
+  ],
+  "functions": {
+    "source": "functions"
+  }
 }

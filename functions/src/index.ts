@@ -272,3 +272,59 @@ export const clusterAllSpots = functions.firestore
 //         .set(updatedSpotClusterTile, { merge: false });
 //     }
 //   });
+
+type PartialSpotWithLocales = {
+  name?: {
+    [locale: string]: string;
+  };
+  description?: {
+    [locale: string]: string;
+  };
+};
+
+// fix to replace the underscore in the name and description locale keys with
+// hyphens (e.g de_CH to de-CH)
+export const fixLocaleKeys = functions.firestore
+  .document("spots/run-underscore-fix")
+  .onCreate(async (snap, context) => {
+    // 1. Load ALL spots
+    const spotsSnap = await admin.firestore().collection("spots").get();
+    const spots = spotsSnap.docs;
+
+    // 2. Update all spots
+    const updateBatch = admin.firestore().batch();
+
+    spots.forEach((doc) => {
+      const spot = doc.data() as PartialSpotWithLocales;
+      const updatedSpot: PartialSpotWithLocales = {};
+
+      if (spot.name) {
+        updatedSpot.name = {};
+        Object.keys(spot.name).forEach((locale) => {
+          const newLocale: string = locale.replace(/_/g, "-");
+          updatedSpot.name![newLocale] = spot.name![locale];
+        });
+      }
+
+      if (spot.description) {
+        updatedSpot.description = {};
+        Object.keys(spot.description).forEach((locale) => {
+          const newLocale: string = locale.replace(/_/g, "-");
+          updatedSpot.description![newLocale] = spot.description![locale];
+        });
+      }
+
+      if (Object.keys(updatedSpot).length === 0) return;
+
+      updateBatch.update(doc.ref, updatedSpot);
+    });
+
+    // Commit the batch
+    await updateBatch.commit();
+    console.log("Locale keys updated successfully");
+
+    // delete the run document
+    await snap.ref.delete();
+
+    return;
+  });
