@@ -84,7 +84,7 @@
           [value]="spot.id"
         >
           <img *ngIf="spot.previewImage" [src]="spot.previewImage" alt="Img" />
-          <span>{{ spot.name }}</span> |
+          <span>{{ spot.getName(locale) }}</span> |
           <small
             >Location: {{ spot.location.lat }}, {{ spot.location.lng }}</small
           >

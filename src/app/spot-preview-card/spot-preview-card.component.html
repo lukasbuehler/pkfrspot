@@ -10,7 +10,7 @@
 >
   <mat-card-header>
     <mat-card-title class="text-truncate mw-100 pt-2">
-      {{ spot.name }}
+      {{ spot.getName(this.locale) }}
     </mat-card-title>
     @if(isCompact) {
     <mat-card-subtitle>
@@ -62,8 +62,8 @@
     [src]="spot.previewImage || '/assets/no_media.png'"
     [alt]="
       spot.previewImage
-        ? 'Image of spot ' + spot.name
-        : 'No media for spot' + spot.name
+        ? 'Image of spot ' + spot.getName(this.locale)
+        : 'No media for spot' + spot.getName(this.locale)
     "
   />
   }

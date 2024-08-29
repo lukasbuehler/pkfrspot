@@ -4,18 +4,6 @@
   mode="indeterminate"
 ></mat-progress-bar> -->
 
-<mat-menu #navUserMenu="matMenu">
-  <button mat-menu-item>
-    <span>en_US</span>
-  </button>
-  <button mat-menu-item>
-    <span>de_DE</span>
-  </button>
-  <button mat-menu-item>
-    <span>de_CH</span>
-  </button>
-</mat-menu>
-
 <mat-card
   matRipple
   [matRippleDisabled]="!clickable"
@@ -26,16 +14,17 @@
   @if(!isEditing) {
   <mat-card-header class="pb-2">
     <mat-card-title>
-      {{ spot.name }}
+      {{ spot.getName(locale) }}
     </mat-card-title>
     <mat-card-subtitle class="pt-2">
-      @if(spot.type && spot.type !== "other") {
+      <!-- @if(spot.type && spot.type !== "other") {
       <mat-chip class="me-1">{{ capitalize(spot.type) }}</mat-chip>
       } @if(spot.area && spot.area !== "other") {
       <mat-chip [color]="spot.area === 'private' ? 'warn' : ''">{{
         capitalize(spot.area)
       }}</mat-chip>
-      }
+      } -->
+      Area, City, Country Code
     </mat-card-subtitle>
 
     <!-- Icon buttons in header -->
@@ -105,7 +94,7 @@
     </swiper-container> -->
 
     <!-- Spot Description -->
-    <div *ngIf="spot.description">
+    <div *ngIf="spot.getDescription(locale)">
       <h4
         class="mat-title-small"
         i18n="description header|The header for the spot description"
@@ -113,7 +102,7 @@
         Description
       </h4>
       <p>
-        {{ spot.description }}
+        {{ spot.getDescription(locale) }}
       </p>
     </div>
 
@@ -195,8 +184,8 @@
         <input
           #spotNameInput
           matInput
-          [value]="spot?.name || ''"
-          (change)="spot.name = $event.target.value"
+          [value]="spot?.getName(locale)"
+          (change)="spot.setName($event.target.value, locale)"
         />
       </mat-form-field>
     </form>
@@ -261,8 +250,8 @@
           description edit field
         "
         placeholder="Description of the spot, its features and more..."
-        [value]="spot?.description || ''"
-        (change)="spot.description = $event.target.value"
+        [value]="spot?.getDescription(locale)"
+        (change)="spot.setDescription($event.target.value, locale)"
       ></textarea>
     </mat-form-field>
 

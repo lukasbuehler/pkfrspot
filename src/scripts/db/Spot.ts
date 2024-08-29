@@ -10,10 +10,17 @@ interface GeoPointLiteral {
   longitude: number;
 }
 
+const defaultSpotNames: LocaleMap = {
+  en: "Unnamed Spot",
+  en_US: "Unnamed Spot",
+  en_GB: "Unnamed Spot",
+  de: "Unbenannter Spot",
+  de_DE: "Unbenannter Spot",
+  de_CH: "Unbenännte Spot",
+};
+
 export namespace Spot {
   export class Class {
-    private _locale: string = "de_CH"; // TODO: don't fix
-
     public get id(): string {
       return this._id;
     }
@@ -22,17 +29,29 @@ export namespace Spot {
       this._id = newId;
     }
 
-    public get name(): string {
+    public getName(locale: string): string {
       if (this._data.name) {
-        return this._data.name[this._locale] || "";
+        const nameLocales: string[] = Object.keys(this._data.name);
+        if (nameLocales.length > 0) {
+          if (nameLocales.includes(locale)) {
+            return this._data.name[locale];
+          } else if (nameLocales.includes(locale.split("-")[0])) {
+            return this._data.name[locale.split("-")[0]];
+          } else if (nameLocales.includes("en")) {
+            return this._data.name["en"];
+          } else {
+            return this._data.name[nameLocales[0]];
+          }
+        }
       }
-      return ""; // TODO add default names for all locales;
+      return defaultSpotNames[locale];
     }
-    public set name(newName: string) {
+
+    public setName(newName: string, locale: string) {
       if (!this._data.name) {
         this._data.name = {};
       }
-      this._data.name[this._locale] = newName;
+      this._data.name[locale] = newName;
     }
 
     private _location: google.maps.LatLngLiteral;
@@ -59,17 +78,17 @@ export namespace Spot {
       return this._data.rating;
     }
 
-    public get description(): string {
+    public getDescription(locale: string): string {
       if (this._data.description) {
-        return this._data.description[this._locale];
+        return this._data.description[locale];
       }
       return "";
     }
-    public set description(newDescription: string) {
+    public setDescription(newDescription: string, locale: string) {
       if (!this._data.description) {
         this._data.description = {};
       }
-      this._data.description[this._locale] = newDescription;
+      this._data.description[locale] = newDescription;
     }
 
     public get hasMedia(): boolean {

@@ -8,25 +8,18 @@ export interface DbDate {
   nanoseconds: number;
 }
 
-interface LangMap {
-  // english
-  en_US?: string;
-  en_GB?: string;
+export type SupportedLanguage =
+  | "en"
+  | "en_US"
+  | "en_GB"
+  | "de"
+  | "de_CH"
+  | "de_DE";
 
-  // german
-  de_DE?: string;
-  de_CH?: string;
-  de_AT?: string;
-
-  // french
-  fr_FR?: string;
-  fr_CH?: string;
-  fr_CA?: string;
-
-  // italian
-  it_IT?: string;
-  it_CH?: string;
-}
+// LangMap maps keys of SUPPORTED_LANGUAGES to strings
+type LangMap = {
+  [key in SupportedLanguage]?: string;
+};
 
 export interface LocaleMap extends LangMap {
   google_translate?: LangMap;

@@ -8,6 +8,8 @@ import {
   OnChanges,
   ElementRef,
   HostBinding,
+  LOCALE_ID,
+  Inject,
 } from "@angular/core";
 import { MatProgressBar } from "@angular/material/progress-bar";
 import { Spot } from "../../scripts/db/Spot";
@@ -121,8 +123,6 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
 
   @ViewChild(UploadMediaUiComponent) uploadMediaComp;
 
-  spotLanguage: string = "de_CH";
-
   isSaving: boolean = false;
 
   visited: boolean = false;
@@ -155,6 +155,7 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
   }
 
   constructor(
+    @Inject(LOCALE_ID) public locale: string,
     public authenticationService: AuthenticationService,
     public dialog: MatDialog,
     private _element: ElementRef,
@@ -350,8 +351,8 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
     if (navigator["share"]) {
       try {
         const shareData = {
-          title: "Spot: " + this.spot.name,
-          text: `PKFR Spot: ${this.spot.name}`,
+          title: "Spot: " + this.spot.getName(this.locale),
+          text: `PKFR Spot: ${this.spot.getName(this.locale)}`,
           url: link,
         };
 
@@ -438,7 +439,7 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
       data: {
         spot: {
           id: this.spot.id,
-          name: this.spot.data.name.en_US ?? this.spot.name ?? "Unnamed Spot",
+          name: this.spot.data.name.en ?? this.spot.getName(this.locale),
         },
         userId: this.authenticationService.user.uid,
         reason: "",

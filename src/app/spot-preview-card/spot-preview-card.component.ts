@@ -1,5 +1,13 @@
 import { trigger, transition, style, animate } from "@angular/animations";
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  Inject,
+  LOCALE_ID,
+} from "@angular/core";
 import { Router } from "@angular/router";
 import { Spot } from "../../scripts/db/Spot";
 import { StorageService } from "../storage.service";
@@ -25,7 +33,11 @@ export class SpotPreviewCardComponent implements OnInit {
   bookmarked = false;
   visited = false;
 
-  constructor(private _router: Router, public storageService: StorageService) {}
+  constructor(
+    @Inject(LOCALE_ID) public locale: string,
+    private _router: Router,
+    public storageService: StorageService
+  ) {}
 
   ngOnInit() {}
 

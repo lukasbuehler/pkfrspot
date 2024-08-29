@@ -5,6 +5,7 @@ import {
   OnInit,
   Inject,
   PLATFORM_ID,
+  LOCALE_ID,
 } from "@angular/core";
 import { Spot } from "../../scripts/db/Spot";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -111,6 +112,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
   isServer: boolean;
 
   constructor(
+    @Inject(LOCALE_ID) public locale: string,
     @Inject(PLATFORM_ID) platformId: Object,
     public route: ActivatedRoute,
     public authService: AuthenticationService,

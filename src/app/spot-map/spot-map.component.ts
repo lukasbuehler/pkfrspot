@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Inject,
   Input,
+  LOCALE_ID,
   Output,
   PLATFORM_ID,
   ViewChild,
@@ -106,8 +107,9 @@ export class SpotMapComponent implements AfterViewInit {
   isServer: boolean;
 
   constructor(
-    @Inject(PLATFORM_ID) platformId: Object,
+    @Inject(LOCALE_ID) public locale: string,
     public titleService: Title,
+    @Inject(PLATFORM_ID) platformId: Object,
     private route: ActivatedRoute,
     private _dbService: DatabaseService,
     private authService: AuthenticationService,
@@ -379,9 +381,10 @@ export class SpotMapComponent implements AfterViewInit {
   setSpotMetaTags(spot: Spot.Class) {
     // console.log("Setting Spot Meta Tags:", spot.name);
 
-    const title: string = `${spot.name} - PKFR Spot`;
+    const title: string = `${spot.getName(this.locale)} - PKFR Spot`;
     const image_src: string = spot.previewImage;
-    const description: string = spot.description || spot.getReadableLocation();
+    const description: string =
+      spot.getDescription(this.locale) || spot.getReadableLocation();
 
     // Title
     this.titleService.setTitle(title);

@@ -5,6 +5,7 @@ import {
   ViewChild,
   Inject,
   AfterViewInit,
+  LOCALE_ID,
 } from "@angular/core";
 import {
   MatDialogRef,
@@ -83,8 +84,9 @@ export interface PostDialogData {
 })
 export class EditPostDialogComponent implements AfterViewInit {
   constructor(
-    public dialogRef: MatDialogRef<EditPostDialogComponent>,
+    @Inject(LOCALE_ID) public locale: string,
     @Inject(MAT_DIALOG_DATA) public data: PostDialogData,
+    public dialogRef: MatDialogRef<EditPostDialogComponent>,
     private _storageService: StorageService,
     private _databaseService: DatabaseService
   ) {
@@ -245,7 +247,7 @@ export class EditPostDialogComponent implements AfterViewInit {
         return spot.id === spotId;
       });
       if (findSpot) {
-        return findSpot.name;
+        return findSpot.getName(this.locale);
       }
     }
 

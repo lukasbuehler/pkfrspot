@@ -3,6 +3,8 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
+  Inject,
+  LOCALE_ID,
   OnInit,
   ViewChild,
 } from "@angular/core";
@@ -58,6 +60,7 @@ import { NgIf, AsyncPipe } from "@angular/common";
 import { MatButton } from "@angular/material/button";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
 import { MatIcon } from "@angular/material/icon";
+import { locale } from "core-js";
 
 @Component({
   selector: "app-kml-import-page",
@@ -131,8 +134,9 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
   ];
 
   constructor(
-    private _formBuilder: UntypedFormBuilder,
+    @Inject(LOCALE_ID) public locale: string,
     public kmlParserService: KmlParserService,
+    private _formBuilder: UntypedFormBuilder,
     private _dbService: DatabaseService,
     private cdr: ChangeDetectorRef
   ) {}
@@ -232,7 +236,7 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
     firstValueFrom(this.kmlParserService.spotsToImport$).then((kmlSpots) => {
       const spotsData: Spot.Schema[] = kmlSpots.map((kmlSpot: KMLSpot) => {
         const spot = new Spot.Class("", {
-          name: { de_CH: kmlSpot.spot.name.trim() },
+          name: { [this.locale]: kmlSpot.spot.name.trim() },
           location: new GeoPoint(
             kmlSpot.spot.location.lat,
             kmlSpot.spot.location.lng

@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import {
+  Component,
+  Inject,
+  LOCALE_ID,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { DatabaseService } from "../../app/database.service";
 import { Post } from "../../scripts/db/Post";
 import { PostCollectionComponent } from "../post-collection/post-collection.component";
@@ -33,6 +40,7 @@ import { MatTabGroup, MatTab } from "@angular/material/tabs";
 })
 export class HomePageComponent implements OnInit, OnDestroy {
   constructor(
+    @Inject(LOCALE_ID) public locale: string,
     public authService: AuthenticationService,
     private _dbService: DatabaseService,
     private _storageService: StorageService,
@@ -223,7 +231,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       const lat = spot.location.lat;
       const lng = spot.location.lng;
       post.spot = {
-        name: spot.name || "",
+        name: spot.getName(this.locale),
         spot_location: new GeoPoint(lat, lng),
         image_src: spot.media && spot.media[0]?.src ? spot.media[0].src : "",
         ref: this._dbService.docRef("spots/" + spot.id),
