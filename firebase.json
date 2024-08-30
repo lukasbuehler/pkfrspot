@@ -1,7 +1,7 @@
 {
   "hosting": [
     {
-      "target": "parkour-base-angular",
+      "target": "pkfrspot",
       "source": ".",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "frameworksBackend": {

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "parkour-base-angular": {
+    "pkfrspot": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -34,7 +34,7 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "localize": ["en", "de", "de-CH"],
-            "outputPath": "dist/parkour-base-angular",
+            "outputPath": "dist/pkfrspot",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js", "@angular/localize/init"],
@@ -141,13 +141,13 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "development": {
-              "buildTarget": "parkour-base-angular:build:development"
+              "buildTarget": "pkfrspot:build:development"
             },
             "staging": {
-              "buildTarget": "parkour-base-angular:build:staging"
+              "buildTarget": "pkfrspot:build:staging"
             },
             "production": {
-              "buildTarget": "parkour-base-angular:build:production"
+              "buildTarget": "pkfrspot:build:production"
             }
           },
           "defaultConfiguration": "development"
@@ -155,7 +155,7 @@
         "extract-i18n": {
           "builder": "ng-extract-i18n-merge:ng-extract-i18n-merge",
           "options": {
-            "browserTarget": "parkour-base-angular:build",
+            "browserTarget": "pkfrspot:build",
             "format": "xlf2",
             "outputPath": "src/locale",
             "targetFiles": ["messages.de.xlf", "messages.de-CH.xlf"]
