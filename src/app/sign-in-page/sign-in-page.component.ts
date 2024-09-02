@@ -1,6 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthenticationService } from "../authentication.service";
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { MatDivider } from "@angular/material/divider";
 import { MatButton } from "@angular/material/button";
@@ -10,23 +16,23 @@ import { MatFormField, MatLabel, MatError } from "@angular/material/form-field";
 import { PageHeaderComponent } from "../page-header/page-header.component";
 
 @Component({
-    selector: "app-sign-in-page",
-    templateUrl: "./sign-in-page.component.html",
-    styleUrls: ["./sign-in-page.component.scss"],
-    standalone: true,
-    imports: [
-        PageHeaderComponent,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        NgIf,
-        MatError,
-        MatButton,
-        RouterLink,
-        MatDivider,
-    ],
+  selector: "app-sign-in-page",
+  templateUrl: "./sign-in-page.component.html",
+  styleUrls: ["./sign-in-page.component.scss"],
+  standalone: true,
+  imports: [
+    PageHeaderComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    NgIf,
+    MatError,
+    MatButton,
+    RouterLink,
+    MatDivider,
+  ],
 })
 export class SignInPageComponent implements OnInit {
   signInForm: UntypedFormGroup;
@@ -73,19 +79,17 @@ export class SignInPageComponent implements OnInit {
         console.error(err);
         switch (err.code) {
           case "auth/invalid-email":
-            this.signInError = "The E-Mail address is invalid!";
+            this.signInError = $localize`The E-Mail address is invalid!`;
             break;
           case "auth/invalid-password":
-            this.signInError = "The password is invalid!";
+            this.signInError = $localize`The password is invalid!`;
             break;
           case "auth/user-not-found":
           case "auth/wrong-password":
-            this.signInError =
-              "The E-Mail address and password do not match for any existing user.";
+            this.signInError = $localize`The E-Mail address and password do not match for any existing user.`;
             break;
           default:
-            this.signInError =
-              "An unknown error has occured on sign in. Please try again.";
+            this.signInError = $localize`An unknown error has occured on sign in. Please try again.`;
             break;
         }
       }

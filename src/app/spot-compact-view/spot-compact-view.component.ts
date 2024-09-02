@@ -201,35 +201,6 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
     }
   }
 
-  countryOptionSelected(event) {
-    let selectedCountryLong = event.option.value;
-
-    let index = this.countries.findIndex(
-      (val) => val.name === selectedCountryLong
-    );
-
-    if (!this.spot.address) {
-      this.spot.address = {
-        country: {
-          long: selectedCountryLong,
-          short: this.countries[index].code,
-        },
-        formatted: "",
-      };
-    } else {
-      if (!this.spot.address.country) {
-        this.spot.address.country = {
-          long: selectedCountryLong,
-          short: this.countries[index].code,
-        };
-      } else {
-        this.spot.address.country.long = selectedCountryLong;
-        this.spot.address.country.short = this.countries[index].code;
-      }
-      this.spot.address = this.spot.address;
-    }
-  }
-
   dismissed() {
     if (this.dismissable) {
       this.isEditing = false;

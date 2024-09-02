@@ -384,7 +384,7 @@ export class SpotMapComponent implements AfterViewInit {
     const title: string = `${spot.getName(this.locale)} - PKFR Spot`;
     const image_src: string = spot.previewImage;
     const description: string =
-      spot.getDescription(this.locale) || spot.getReadableLocation();
+      "Spot in "+ spot.getLocalityString(); // TODO change and localize
 
     // Title
     this.titleService.setTitle(title);

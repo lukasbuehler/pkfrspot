@@ -59,7 +59,7 @@ export namespace Spot {
       return this._location;
     }
     public set location(newLocation: google.maps.LatLngLiteral) {
-      console.log("setting location");
+      //   console.log("setting location");
       this._location = newLocation;
       this._data.location = new GeoPoint(
         newLocation.lat,
@@ -142,11 +142,28 @@ export namespace Spot {
       this._data.bounds = this._makeBoundsFromPaths(paths);
     }
 
+    public getLocalityString(): string {
+      let str = "";
+      if (this._data.address.sublocality) {
+        str += this._data.address.sublocality + ", ";
+      }
+      if (this._data.address.locality) {
+        str += this._data.address.locality + ", ";
+      }
+      if (this._data.address.country) {
+        str += this._data.address.country.code.toUpperCase();
+      }
+      return str;
+    }
     public get address(): AddressSchema {
       return this._data.address;
     }
     public set address(address: AddressSchema) {
       this._data.address = address;
+    }
+
+    public get formattedAddress(): string {
+      return this._data.address.formatted ?? "";
     }
 
     public get tileCoordinates() {
@@ -354,24 +371,13 @@ export namespace Spot {
   }
 
   export interface AddressSchema {
-    route?: {
-      short: string;
-      long: string;
+    sublocality?: string;
+    locality?: string;
+    country?: {
+      code: string; // alpha 2
+      name: string;
     };
-    street_number?: number;
-    neighborhood?: string;
-    city?: string;
-    postal_code?: number;
-    county?: string;
-    state?: {
-      short?: string;
-      long: string;
-    };
-    country: {
-      short: string; // alpha 2
-      long: string;
-    };
-    formatted: string;
+    formatted?: string;
   }
 
   export interface Schema {

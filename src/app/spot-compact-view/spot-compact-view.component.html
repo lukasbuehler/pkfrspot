@@ -16,6 +16,7 @@
     <mat-card-title>
       {{ spot.getName(locale) }}
     </mat-card-title>
+    @if(spot.address) {
     <mat-card-subtitle class="pt-2">
       <!-- @if(spot.type && spot.type !== "other") {
       <mat-chip class="me-1">{{ capitalize(spot.type) }}</mat-chip>
@@ -24,8 +25,9 @@
         capitalize(spot.area)
       }}</mat-chip>
       } -->
-      Area, City, Country Code
+      {{ spot.getLocalityString() }}
     </mat-card-subtitle>
+    }
 
     <!-- Icon buttons in header -->
     <div class="spot-button-row" *ngIf="!isEditing">

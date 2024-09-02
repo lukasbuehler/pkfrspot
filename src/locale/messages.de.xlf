@@ -1,398 +1,613 @@
 <xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en" trgLang="de">
-  <file id="ngi18n" original="ng.template">
-    <unit id="1940752772695642659">
-      <segment state="initial">
-        <source> The spot for Parkour and Freerunning. </source>
-        <target> Der Spot für Parkour und Freerunning. </target>
-      </segment>
-    </unit>
-    <unit id="3710111609881776947">
-      <segment state="initial">
-        <source>Discover, Train, Share.</source>
-        <target>Entdecken, Trainieren, Teilen.</target>
-      </segment>
-    </unit>
-    <unit id="3733695846697223562">
-      <segment state="initial">
-        <source> Discover spots and fellow athletes, plan training sessions with your friends and share achievements and memories with them and the world. </source>
-        <target> Entdecke Spots und Athleten, plane gemeinsame Trainings mit deinen Freunden und teile deine Erfolge und Erinnerungen mit ihnen und der Welt. </target>
-      </segment>
-    </unit>
-    <unit id="7411379953853971507">
-      <segment state="initial">
-        <source> This project is Open-Source! Our code is licensed under the <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT License</pc>. </source>
-        <target> Dieses Projekt ist Open-Source! Unser Code ist lizenziert unter der <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT Lizenz</pc>. </target>
-      </segment>
-    </unit>
-    <unit id="1563251428514246752">
-      <segment state="initial">
-        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">receipt_long</pc> View License </source>
-        <target><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;"> receipt_long</pc> Lizenz ansehen </target>
-      </segment>
-    </unit>
-    <unit id="7217756648427967816">
-      <segment state="initial">
-        <source>Supporters</source>
-        <target>Unterstützer</target>
-      </segment>
-    </unit>
-    <unit id="6511882108366913037">
-      <segment state="initial">
-        <source>Contributors</source>
-        <target>Mitwirkende</target>
-      </segment>
-    </unit>
-    <unit id="2405554561656775177">
-      <segment state="initial">
-        <source>Lead developer</source>
-        <target>Haupt-Entwickler</target>
-      </segment>
-    </unit>
-    <unit id="8985868511640294928">
-      <segment state="initial">
-        <source>Testing</source>
-        <target>Tester</target>
-      </segment>
-    </unit>
-    <unit id="6034013755958678236">
-      <segment state="initial">
-        <source> Testing, UI/UX Advisor </source>
-        <target> Tester, UI/UX Berater </target>
-      </segment>
-    </unit>
-    <unit id="8062277427231117545">
-      <segment state="initial">
-        <source> Join our community of Parkour and Freerunning enthusiasts! Contribute your ideas, report bugs, and provide feedback to help us improve this platform together! </source>
-        <target> Tritt unserer Community von Parkour und Freerunning Enthusiasten bei! Bringe deine Ideen ein, melde Bugs und teile Feedback, um uns zu helfen, diese Plattform gemeinsam zu verbessern! </target>
-      </segment>
-    </unit>
-    <unit id="5825310972408482968">
-      <segment state="initial">
-        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">sports_esports</pc> Discord </source>
-        <target><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">sports_esports</pc> Discord </target>
-      </segment>
-    </unit>
-    <unit id="1479415597449651120">
-      <notes>
-        <note category="description">A very short label for the navbar spot map label</note>
-        <note category="meaning">Spot map navbar button label</note>
-      </notes>
-      <segment state="initial">
-        <source>Spot map</source>
-        <target>Spot Karte</target>
-      </segment>
-    </unit>
-    <unit id="6493290522598468378">
-      <notes>
-        <note category="description">A very short label for the navbar about page button</note>
-        <note category="meaning">About page navbar button label</note>
-      </notes>
-      <segment state="initial">
-        <source>About</source>
-        <target>Über uns</target>
-      </segment>
-    </unit>
-    <unit id="6058033902089935749">
-      <segment state="initial">
-        <source>Find spots and places</source>
-        <target>Finde Spots und Orte</target>
-      </segment>
-    </unit>
-    <unit id="8126459137636028145">
-      <notes>
-        <note category="description">The header for the spot description</note>
-        <note category="meaning">description header</note>
-      </notes>
-      <segment state="initial">
-        <source> Description </source>
-        <target> Beschreibung </target>
-      </segment>
-    </unit>
-    <unit id="open_maps_tooltip">
-      <notes>
-        <note category="description">Tooltip of button to open the spot in maps</note>
-        <note category="meaning">Open in maps button tooltip</note>
-      </notes>
-      <segment state="initial">
-        <source>Open in maps</source>
-        <target>In Karten öffnen</target>
-      </segment>
-    </unit>
-    <unit id="open_maps_button_label">
-      <notes>
-        <note category="description">Button to open the spot in maps</note>
-        <note category="meaning">Open in maps button</note>
-      </notes>
-      <segment state="initial">
-        <source> Open in maps </source>
-        <target> In Karten öffnen </target>
-      </segment>
-    </unit>
-    <unit id="2066444621746625793">
-      <segment state="initial">
-        <source>Edit this spot</source>
-        <target>Diesen Spot bearbeiten</target>
-      </segment>
-    </unit>
-    <unit id="3699896649941451869">
-      <segment state="initial">
-        <source>Example icon button with a share icon</source>
-        <target>Beispiel Bild-Knopf mit &apos;teilen&apos; Grafik</target>
-      </segment>
-    </unit>
-    <unit id="7649443828660758780">
-      <notes>
-        <note category="description">Label of the button to edit the spot</note>
-        <note category="meaning">Edit button label</note>
-      </notes>
-      <segment state="initial">
-        <source> Edit </source>
-        <target> Bearbeiten </target>
-      </segment>
-    </unit>
-    <unit id="7970470041734812503">
-      <segment state="initial">
-        <source>Report this spot</source>
-        <target>Diesen Spot melden</target>
-      </segment>
-    </unit>
-    <unit id="2965948069228600049">
-      <notes>
-        <note category="description">Label of the button to report the spot</note>
-        <note category="meaning">Report button label</note>
-      </notes>
-      <segment state="initial">
-        <source> Report </source>
-        <target> Melden </target>
-      </segment>
-    </unit>
-    <unit id="6417858746273147766">
-      <notes>
-        <note category="description">Placeholder of the spot name in the edit form</note>
-        <note category="meaning">spot name placeholder</note>
-      </notes>
-      <segment state="initial">
-        <source>Spot name</source>
-        <target>Spot Name</target>
-      </segment>
-    </unit>
-    <unit id="5447579510411800451">
-      <notes>
-        <note category="description">Label of the button to upload a spot image</note>
-        <note category="meaning">Upload spot image button label</note>
-      </notes>
-      <segment state="initial">
-        <source> Upload Spot Image </source>
-        <target> Spot Bild hochladen </target>
-      </segment>
-    </unit>
-    <unit id="8023330231865239041">
-      <segment state="initial">
-        <source>Spot type</source>
-        <target>Spot Typ</target>
-      </segment>
-    </unit>
-    <unit id="2604369786412998010">
-      <segment state="initial">
-        <source>Spot area</source>
-        <target>Spot Umgebung</target>
-      </segment>
-    </unit>
-    <unit id="4902817035128594900">
-      <segment state="initial">
-        <source>Description</source>
-        <target>Beschreibung</target>
-      </segment>
-    </unit>
-    <unit id="8942517704279686805">
-      <notes>
-        <note category="description">Placeholder of the spot description edit field</note>
-        <note category="meaning">Spot description edit field placeholder</note>
-      </notes>
-      <segment state="initial">
-        <source>Description of the spot, its features and more...</source>
-        <target>Beschreibung des Spots, den Eigenschaften und mehr...</target>
-      </segment>
-    </unit>
-    <unit id="6876434298853499564">
-      <notes>
-        <note category="description">Label of the button to add bounds to a spot</note>
-        <note category="meaning">Add bounds button label</note>
-      </notes>
-      <segment state="initial">
-        <source> Add bounds </source>
-        <target> Grundriß hinzufügen </target>
-      </segment>
-    </unit>
-    <unit id="4470656372477479316">
-      <notes>
-        <note category="description">Label of the button to discard changes</note>
-        <note category="meaning">Discard changes button label</note>
-      </notes>
-      <segment state="initial">
-        <source> Discard changes </source>
-        <target> Änderungen verwerfen </target>
-      </segment>
-    </unit>
-    <unit id="8486228314424763172">
-      <notes>
-        <note category="description">Label of the button to save changes</note>
-        <note category="meaning">Save changes button label</note>
-      </notes>
-      <segment state="initial">
-        <source> Save changes </source>
-        <target> Änderungen speichern </target>
-      </segment>
-    </unit>
-    <unit id="4930506384627295710">
-      <segment state="initial">
-        <source>Settings</source>
-        <target>Einstellungen</target>
-      </segment>
-    </unit>
-    <unit id="5464118521750361406">
-      <segment state="initial">
-        <source>Public profile</source>
-        <target>Öffentliches Profil</target>
-      </segment>
-    </unit>
-    <unit id="2123282629077022668">
-      <segment state="initial">
-        <source> You can edit your public profile here. The information on your public profile can be seen by everyone, even unauthenticated visitors. </source>
-        <target> Hier kannst du dein öffentliches Profil bearbeiten. Diese Informationen von deinem öffentlichen Profil können von allen eingesehen werden, auch unauthentifizierten Nutzern. </target>
-      </segment>
-    </unit>
-    <unit id="7008130086784868968">
-      <segment state="initial">
-        <source>Login information</source>
-        <target>Login Information</target>
-      </segment>
-    </unit>
-    <unit id="4248798592595704576">
-      <segment state="initial">
-        <source> Your login information. Your E-mail address here is used for your login. You can add the same E-mail address or a different one to your contact information. </source>
-        <target> Deine Login-Informationen. Diese E-Mail Adresse wird für das Login verwendet. Du kannst die selbe oder eine andere E-Mail Adresse für deine Kontaktinformation angeben. </target>
-      </segment>
-    </unit>
-    <unit id="6815507474406960450">
-      <segment state="initial">
-        <source>E-Mail address</source>
-        <target>E-Mail Adresse</target>
-      </segment>
-    </unit>
-    <unit id="5830520205989474611">
-      <segment state="initial">
-        <source>E-mail address</source>
-        <target>E-Mail Adresse</target>
-      </segment>
-    </unit>
-    <unit id="5563672453089263696">
-      <segment state="initial">
-        <source>Changing this E-mail will change your login information</source>
-        <target>Das ändern dieser E-Mail Adresse ändert deine Login-Informationen</target>
-      </segment>
-    </unit>
-    <unit id="3934298777794632654">
-      <segment state="initial">
-        <source> Change E-mail address </source>
-        <target> E-Mail Adresse ändern </target>
-      </segment>
-    </unit>
-    <unit id="2818862099235102080">
-      <segment state="initial">
-        <source> Resend verification E-mail </source>
-        <target> Verifikations E-mail erneut senden </target>
-      </segment>
-    </unit>
-    <unit id="1431416938026210429">
-      <segment state="initial">
-        <source>Password</source>
-        <target>Passwort</target>
-      </segment>
-    </unit>
-    <unit id="8626615958100222841">
-      <segment state="initial">
-        <source> Change password </source>
-        <target> Password ändern </target>
-      </segment>
-    </unit>
-    <unit id="1347241542439262355">
-      <segment state="initial">
-        <source>General settings</source>
-        <target>Allgemeine Einstellungen</target>
-      </segment>
-    </unit>
-    <unit id="6471548761726956967">
-      <segment state="initial">
-        <source> General settings to tune your experience on PKFR Spot. </source>
-        <target> Deine allgemeinen Einstellungen für PKFR Spot </target>
-      </segment>
-    </unit>
-    <unit id="5851560788527570644">
-      <segment state="initial">
-        <source>Notifications</source>
-        <target>Benachrichtungen</target>
-      </segment>
-    </unit>
-    <unit id="6374817750820299933">
-      <segment state="initial">
-        <source> <ph id="0" equiv="INTERPOLATION" disp="{{ spots.length }}"/> spot<ph id="1" equiv="INTERPOLATION_1" disp="{{ spots.length === 1 ? &quot;&quot; : &quot;s&quot; }}"/> in this area </source>
-        <target> <ph id="0" equiv="INTERPOLATION" disp="{{ spots.length }}"/> Spot<ph id="1" equiv="INTERPOLATION_1" disp="{{ spots.length === 1 ? &quot;&quot; : &quot;s&quot; }}"/> in dieser Region </target>
-      </segment>
-    </unit>
-    <unit id="5207635742003539443">
-      <segment state="initial">
-        <source>Sign in</source>
-        <target>Anmelden</target>
-      </segment>
-    </unit>
-    <unit id="7028204981963450021">
-      <segment state="initial">
-        <source>Sign up</source>
-        <target>Registrieren</target>
-      </segment>
-    </unit>
-    <unit id="1237816927659510577">
-      <notes>
-        <note category="description">The profile dropdown menu label for &apos;my profile&apos;</note>
-        <note category="meaning">my profile label</note>
-      </notes>
-      <segment state="initial">
-        <source>My Profile</source>
-        <target>Mein Profil</target>
-      </segment>
-    </unit>
-    <unit id="5060391165154083287">
-      <notes>
-        <note category="description">The profile dropdown menu label for the settings</note>
-        <note category="meaning">settings label</note>
-      </notes>
-      <segment state="initial">
-        <source>Settings</source>
-        <target>Einstellungen</target>
-      </segment>
-    </unit>
-    <unit id="339940386378543699">
-      <notes>
-        <note category="description">The profile dropdown menu label to logout</note>
-        <note category="meaning">logout label</note>
-      </notes>
-      <segment state="initial">
-        <source>Logout</source>
-        <target>Abmelden</target>
-      </segment>
-    </unit>
-    <unit id="3539941729807255231">
-      <segment state="initial">
-        <source>Your E-mail has not been verified!</source>
-        <target>Deine E-Mail wurde noch nicht verifiziert!</target>
-      </segment>
-    </unit>
-    <unit id="4060911346155655179">
-      <segment state="initial">
-        <source>Your E-mail is verified!</source>
-        <target>Deine E-Mail ist verifiziert!</target>
-      </segment>
-    </unit>
-  </file>
+    <file id="ngi18n" original="ng.template">
+        <unit id="1940752772695642659">
+            <segment state="initial">
+                <source> The spot for Parkour and Freerunning. </source>
+                <target> Der Spot für Parkour und Freerunning. </target>
+            </segment>
+        </unit>
+        <unit id="3710111609881776947">
+            <segment state="initial">
+                <source>Discover, Train, Share.</source>
+                <target>Entdecken, Trainieren, Teilen.</target>
+            </segment>
+        </unit>
+        <unit id="3733695846697223562">
+            <segment state="initial">
+                <source> Discover spots and fellow athletes, plan training sessions with your
+                    friends and share achievements and memories with them and the world. </source>
+                <target> Entdecke Spots und Athleten, plane gemeinsame Trainings mit deinen Freunden
+                    und teile deine Erfolge und Erinnerungen mit ihnen und der Welt. </target>
+            </segment>
+        </unit>
+        <unit id="7411379953853971507">
+            <segment state="initial">
+                <source> This project is Open-Source! Our code is licensed under the <pc id="0"
+                        equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt"
+                        dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT License</pc>. </source>
+                <target> Dieses Projekt ist Open-Source! Unser Code ist lizenziert unter der <pc
+                        id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt"
+                        dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT Lizenz</pc>. </target>
+            </segment>
+        </unit>
+        <unit id="1563251428514246752">
+            <segment state="initial">
+                <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
+                        type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">
+                    receipt_long</pc> View License </source>
+                <target><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
+                        type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">
+                    receipt_long</pc> Lizenz ansehen </target>
+            </segment>
+        </unit>
+        <unit id="7217756648427967816">
+            <segment state="initial">
+                <source>Supporters</source>
+                <target>Unterstützer</target>
+            </segment>
+        </unit>
+        <unit id="6511882108366913037">
+            <segment state="initial">
+                <source>Contributors</source>
+                <target>Mitwirkende</target>
+            </segment>
+        </unit>
+        <unit id="2405554561656775177">
+            <segment state="initial">
+                <source>Lead developer</source>
+                <target>Haupt-Entwickler</target>
+            </segment>
+        </unit>
+        <unit id="8985868511640294928">
+            <segment state="initial">
+                <source>Testing</source>
+                <target>Tester</target>
+            </segment>
+        </unit>
+        <unit id="6034013755958678236">
+            <segment state="initial">
+                <source> Testing, UI/UX Advisor </source>
+                <target> Tester, UI/UX Berater </target>
+            </segment>
+        </unit>
+        <unit id="8062277427231117545">
+            <segment state="initial">
+                <source> Join our community of Parkour and Freerunning enthusiasts! Contribute your
+                    ideas, report bugs, and provide feedback to help us improve this platform
+                    together! </source>
+                <target> Tritt unserer Community von Parkour und Freerunning Enthusiasten bei!
+                    Bringe deine Ideen ein, melde Bugs und teile Feedback, um uns zu helfen, diese
+                    Plattform gemeinsam zu verbessern! </target>
+            </segment>
+        </unit>
+        <unit id="5825310972408482968">
+            <segment state="initial">
+                <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
+                        type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">
+                    sports_esports</pc> Discord </source>
+                <target><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
+                        type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">
+                    sports_esports</pc> Discord </target>
+            </segment>
+        </unit>
+        <unit id="1479415597449651120">
+            <notes>
+                <note category="description">A very short label for the navbar spot map label</note>
+                <note category="meaning">Spot map navbar button label</note>
+            </notes>
+            <segment state="initial">
+                <source>Spot map</source>
+                <target>Spot Karte</target>
+            </segment>
+        </unit>
+        <unit id="6493290522598468378">
+            <notes>
+                <note category="description">A very short label for the navbar about page button</note>
+                <note category="meaning">About page navbar button label</note>
+            </notes>
+            <segment state="initial">
+                <source>About</source>
+                <target>Über uns</target>
+            </segment>
+        </unit>
+        <unit id="6058033902089935749">
+            <segment state="initial">
+                <source>Find spots and places</source>
+                <target>Finde Spots und Orte</target>
+            </segment>
+        </unit>
+        <unit id="8126459137636028145">
+            <notes>
+                <note category="description">The header for the spot description</note>
+                <note category="meaning">description header</note>
+            </notes>
+            <segment state="initial">
+                <source> Description </source>
+                <target> Beschreibung </target>
+            </segment>
+        </unit>
+        <unit id="open_maps_tooltip">
+            <notes>
+                <note category="description">Tooltip of button to open the spot in maps</note>
+                <note category="meaning">Open in maps button tooltip</note>
+            </notes>
+            <segment state="initial">
+                <source>Open in maps</source>
+                <target>In Karten öffnen</target>
+            </segment>
+        </unit>
+        <unit id="open_maps_button_label">
+            <notes>
+                <note category="description">Button to open the spot in maps</note>
+                <note category="meaning">Open in maps button</note>
+            </notes>
+            <segment state="initial">
+                <source> Open in maps </source>
+                <target> In Karten öffnen </target>
+            </segment>
+        </unit>
+        <unit id="2066444621746625793">
+            <segment state="initial">
+                <source>Edit this spot</source>
+                <target>Diesen Spot bearbeiten</target>
+            </segment>
+        </unit>
+        <unit id="3699896649941451869">
+            <segment state="initial">
+                <source>Example icon button with a share icon</source>
+                <target>Beispiel Bild-Knopf mit &apos;teilen&apos; Grafik</target>
+            </segment>
+        </unit>
+        <unit id="7649443828660758780">
+            <notes>
+                <note category="description">Label of the button to edit the spot</note>
+                <note category="meaning">Edit button label</note>
+            </notes>
+            <segment state="initial">
+                <source> Edit </source>
+                <target> Bearbeiten </target>
+            </segment>
+        </unit>
+        <unit id="7970470041734812503">
+            <segment state="initial">
+                <source>Report this spot</source>
+                <target>Diesen Spot melden</target>
+            </segment>
+        </unit>
+        <unit id="2965948069228600049">
+            <notes>
+                <note category="description">Label of the button to report the spot</note>
+                <note category="meaning">Report button label</note>
+            </notes>
+            <segment state="initial">
+                <source> Report </source>
+                <target> Melden </target>
+            </segment>
+        </unit>
+        <unit id="6417858746273147766">
+            <notes>
+                <note category="description">Placeholder of the spot name in the edit form</note>
+                <note category="meaning">spot name placeholder</note>
+            </notes>
+            <segment state="initial">
+                <source>Spot name</source>
+                <target>Spot Name</target>
+            </segment>
+        </unit>
+        <unit id="5447579510411800451">
+            <notes>
+                <note category="description">Label of the button to upload a spot image</note>
+                <note category="meaning">Upload spot image button label</note>
+            </notes>
+            <segment state="initial">
+                <source> Upload Spot Image </source>
+                <target> Spot Bild hochladen </target>
+            </segment>
+        </unit>
+        <unit id="8023330231865239041">
+            <segment state="initial">
+                <source>Spot type</source>
+                <target>Spot Typ</target>
+            </segment>
+        </unit>
+        <unit id="2604369786412998010">
+            <segment state="initial">
+                <source>Spot area</source>
+                <target>Spot Umgebung</target>
+            </segment>
+        </unit>
+        <unit id="4902817035128594900">
+            <segment state="initial">
+                <source>Description</source>
+                <target>Beschreibung</target>
+            </segment>
+        </unit>
+        <unit id="8942517704279686805">
+            <notes>
+                <note category="description">Placeholder of the spot description edit field</note>
+                <note category="meaning">Spot description edit field placeholder</note>
+            </notes>
+            <segment state="initial">
+                <source>Description of the spot, its features and more...</source>
+                <target>Beschreibung des Spots, den Eigenschaften und mehr...</target>
+            </segment>
+        </unit>
+        <unit id="6876434298853499564">
+            <notes>
+                <note category="description">Label of the button to add bounds to a spot</note>
+                <note category="meaning">Add bounds button label</note>
+            </notes>
+            <segment state="initial">
+                <source> Add bounds </source>
+                <target> Grundriß hinzufügen </target>
+            </segment>
+        </unit>
+        <unit id="4470656372477479316">
+            <notes>
+                <note category="description">Label of the button to discard changes</note>
+                <note category="meaning">Discard changes button label</note>
+            </notes>
+            <segment state="initial">
+                <source> Discard changes </source>
+                <target> Änderungen verwerfen </target>
+            </segment>
+        </unit>
+        <unit id="8486228314424763172">
+            <notes>
+                <note category="description">Label of the button to save changes</note>
+                <note category="meaning">Save changes button label</note>
+            </notes>
+            <segment state="initial">
+                <source> Save changes </source>
+                <target> Änderungen speichern </target>
+            </segment>
+        </unit>
+        <unit id="4930506384627295710">
+            <segment state="initial">
+                <source>Settings</source>
+                <target>Einstellungen</target>
+            </segment>
+        </unit>
+        <unit id="5464118521750361406">
+            <segment state="initial">
+                <source>Public profile</source>
+                <target>Öffentliches Profil</target>
+            </segment>
+        </unit>
+        <unit id="2123282629077022668">
+            <segment state="initial">
+                <source> You can edit your public profile here. The information on your public
+                    profile can be seen by everyone, even unauthenticated visitors. </source>
+                <target> Hier kannst du dein öffentliches Profil bearbeiten. Diese Informationen von
+                    deinem öffentlichen Profil können von allen eingesehen werden, auch
+                    unauthentifizierten Nutzern. </target>
+            </segment>
+        </unit>
+        <unit id="7008130086784868968">
+            <segment state="initial">
+                <source>Login information</source>
+                <target>Login Information</target>
+            </segment>
+        </unit>
+        <unit id="4248798592595704576">
+            <segment state="initial">
+                <source> Your login information. Your E-mail address here is used for your login.
+                    You can add the same E-mail address or a different one to your contact
+                    information. </source>
+                <target> Deine Login-Informationen. Diese E-Mail Adresse wird für das Login
+                    verwendet. Du kannst die selbe oder eine andere E-Mail Adresse für deine
+                    Kontaktinformation angeben. </target>
+            </segment>
+        </unit>
+        <unit id="6815507474406960450">
+            <segment state="initial">
+                <source>E-Mail address</source>
+                <target>E-Mail Adresse</target>
+            </segment>
+        </unit>
+        <unit id="5830520205989474611">
+            <segment state="initial">
+                <source>E-mail address</source>
+                <target>E-Mail Adresse</target>
+            </segment>
+        </unit>
+        <unit id="5563672453089263696">
+            <segment state="initial">
+                <source>Changing this E-mail will change your login information</source>
+                <target>Das ändern dieser E-Mail Adresse ändert deine Login-Informationen</target>
+            </segment>
+        </unit>
+        <unit id="3934298777794632654">
+            <segment state="initial">
+                <source> Change E-mail address </source>
+                <target> E-Mail Adresse ändern </target>
+            </segment>
+        </unit>
+        <unit id="2818862099235102080">
+            <segment state="initial">
+                <source> Resend verification E-mail </source>
+                <target> Verifikations E-mail erneut senden </target>
+            </segment>
+        </unit>
+        <unit id="1431416938026210429">
+            <segment state="initial">
+                <source>Password</source>
+                <target>Passwort</target>
+            </segment>
+        </unit>
+        <unit id="8626615958100222841">
+            <segment state="initial">
+                <source> Change password </source>
+                <target> Password ändern </target>
+            </segment>
+        </unit>
+        <unit id="1347241542439262355">
+            <segment state="initial">
+                <source>General settings</source>
+                <target>Allgemeine Einstellungen</target>
+            </segment>
+        </unit>
+        <unit id="6471548761726956967">
+            <segment state="initial">
+                <source> General settings to tune your experience on PKFR Spot. </source>
+                <target> Deine allgemeinen Einstellungen für PKFR Spot </target>
+            </segment>
+        </unit>
+        <unit id="5851560788527570644">
+            <segment state="initial">
+                <source>Notifications</source>
+                <target>Benachrichtungen</target>
+            </segment>
+        </unit>
+        <unit id="6374817750820299933">
+            <segment state="initial">
+                <source>
+                    <ph id="0" equiv="INTERPOLATION" disp="{{ spots.length }}" /> spot<ph id="1"
+                        equiv="INTERPOLATION_1"
+                        disp="{{ spots.length === 1 ? &quot;&quot; : &quot;s&quot; }}" /> in this
+                    area </source>
+                <target>
+                    <ph id="0" equiv="INTERPOLATION" disp="{{ spots.length }}" /> Spot<ph id="1"
+                        equiv="INTERPOLATION_1"
+                        disp="{{ spots.length === 1 ? &quot;&quot; : &quot;s&quot; }}" /> in dieser
+                    Region </target>
+            </segment>
+        </unit>
+        <unit id="5207635742003539443">
+            <segment state="initial">
+                <source>Sign in</source>
+                <target>Anmelden</target>
+            </segment>
+        </unit>
+        <unit id="7028204981963450021">
+            <segment state="initial">
+                <source>Sign up</source>
+                <target>Registrieren</target>
+            </segment>
+        </unit>
+        <unit id="1237816927659510577">
+            <notes>
+                <note category="description">The profile dropdown menu label for &apos;my
+                    profile&apos;</note>
+                <note category="meaning">my profile label</note>
+            </notes>
+            <segment state="initial">
+                <source>My Profile</source>
+                <target>Mein Profil</target>
+            </segment>
+        </unit>
+        <unit id="5060391165154083287">
+            <notes>
+                <note category="description">The profile dropdown menu label for the settings</note>
+                <note category="meaning">settings label</note>
+            </notes>
+            <segment state="initial">
+                <source>Settings</source>
+                <target>Einstellungen</target>
+            </segment>
+        </unit>
+        <unit id="339940386378543699">
+            <notes>
+                <note category="description">The profile dropdown menu label to logout</note>
+                <note category="meaning">logout label</note>
+            </notes>
+            <segment state="initial">
+                <source>Logout</source>
+                <target>Abmelden</target>
+            </segment>
+        </unit>
+        <unit id="3539941729807255231">
+            <segment state="initial">
+                <source>Your E-mail has not been verified!</source>
+                <target>Deine E-Mail wurde noch nicht verifiziert!</target>
+            </segment>
+        </unit>
+        <unit id="4060911346155655179">
+            <segment state="initial">
+                <source>Your E-mail is verified!</source>
+                <target>Deine E-Mail ist verifiziert!</target>
+            </segment>
+        </unit>
+        <unit id="6735606153713625905">
+            <segment state="initial">
+                <source>E-Mail and password</source>
+                <target>E-Mail und Passwort</target>
+            </segment>
+        </unit>
+        <unit id="947995176992343811">
+            <segment state="initial">
+                <source>This E-Mail address is not valid!</source>
+                <target>Diese E-Mail Adresse ist ungültig!</target>
+            </segment>
+        </unit>
+        <unit id="3865137547467472091">
+            <segment state="initial">
+                <source>The password field is empty!</source>
+                <target>Das Passwort Feld ist leer!</target>
+            </segment>
+        </unit>
+        <unit id="6663783128602596673">
+            <segment state="initial">
+                <source> Sign in </source>
+                <target> Anmelden </target>
+            </segment>
+        </unit>
+        <unit id="4056337625566966411">
+            <segment state="initial">
+                <source> Forgot password </source>
+                <target> Passwort vergessen </target>
+            </segment>
+        </unit>
+        <unit id="7931009175244499164">
+            <segment state="initial">
+                <source>OAuth providers</source>
+                <target>OAuth Anbieter</target>
+            </segment>
+        </unit>
+        <unit id="1221014007346917816">
+            <segment state="initial">
+                <source>You can also sign in with:</source>
+                <target>Du kannst dich auch anmelden mit:</target>
+            </segment>
+        </unit>
+        <unit id="906351267490856003">
+            <segment state="initial">
+                <source> Don&apos;t have an account yet? Simply sign in with your Google account or
+                    sign up below. </source>
+                <target> Du hast keinen Account? Melde dich einfach mit Google an oder regestriere
+                    dich unten. </target>
+            </segment>
+        </unit>
+        <unit id="4815152070613902062">
+            <segment state="initial">
+                <source> Sign up here </source>
+                <target> Hier registrieren </target>
+            </segment>
+        </unit>
+        <unit id="4464026855827934139">
+            <segment state="initial">
+                <source>The E-Mail address is invalid!</source>
+                <target>Diese E-Mail Adresse ist ungültig!</target>
+            </segment>
+        </unit>
+        <unit id="427922060915202050">
+            <segment state="initial">
+                <source>The password is invalid!</source>
+                <target>Das Passwort ist ungültig!</target>
+            </segment>
+        </unit>
+        <unit id="783565455063139196">
+            <segment state="initial">
+                <source>The E-Mail address and password do not match for any existing user.</source>
+                <target>The E-Mail address and password do not match for any existing user.</target>
+            </segment>
+        </unit>
+        <unit id="7733953409417762446">
+            <segment state="initial">
+                <source>An unknown error has occured on sign in. Please try again.</source>
+                <target>Ein unbekannter Fehler ist aufgetrete bei der Anmeldung. Bitte versueche es
+                    erneut.</target>
+            </segment>
+        </unit>
+        <unit id="7323901917278002498">
+            <segment state="initial">
+                <source>Sign in instead?</source>
+                <target>Lieber anmelden?</target>
+            </segment>
+        </unit>
+        <unit id="6969445338945867053">
+            <segment state="initial">
+                <source>Create a new account</source>
+                <target>Neuen Account erstellen</target>
+            </segment>
+        </unit>
+        <unit id="3013055597615607317">
+            <segment state="initial">
+                <source>Display Name</source>
+                <target>Anzeigename</target>
+            </segment>
+        </unit>
+        <unit id="5664264029355272360">
+            <segment state="initial">
+                <source>Don&apos;t worry, the display name can be changed later.</source>
+                <target>Keine sorge, der Anzeigename kann später geändert werden.</target>
+            </segment>
+        </unit>
+        <unit id="5834187794255360331">
+            <segment state="initial">
+                <source>The E-mail address needs to be verified later.</source>
+                <target>Die E-Mail Adresse muss später verifiziert werden.</target>
+            </segment>
+        </unit>
+        <unit id="7486528540316266957">
+            <segment state="initial">
+                <source>Choose a strong password.</source>
+                <target>Wähle ein starkes Passwort.</target>
+            </segment>
+        </unit>
+        <unit id="4541118533130714111">
+            <segment state="initial">
+                <source>Repeat Password</source>
+                <target>Passwort wiederholen</target>
+            </segment>
+        </unit>
+        <unit id="5261342889229534364">
+            <segment state="initial">
+                <source>The repeated password needs to match the password entered.</source>
+                <target>Das wiederholte Passwort muss dem ersten entsprechen.</target>
+            </segment>
+        </unit>
+        <unit id="7571375880734710634">
+            <segment state="initial">
+                <source> Terms of Service </source>
+                <target> Terms of Service </target>
+            </segment>
+        </unit>
+        <unit id="3028950182768355353">
+            <segment state="initial">
+                <source> Privacy policy </source>
+                <target> Privacy policy </target>
+            </segment>
+        </unit>
+        <unit id="6956729575928529796">
+            <segment state="initial">
+                <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT"
+                        equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;"
+                        dispEnd="&lt;/b&gt;">Terms of Service</pc> and the <pc id="1"
+                        equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt"
+                        dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacy declaration</pc> and
+                    agree to both.</source>
+                <target>Ich habe die <pc id="0" equivStart="START_BOLD_TEXT"
+                        equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;"
+                        dispEnd="&lt;/b&gt;">Terms of Service</pc> und die <pc id="1"
+                        equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt"
+                        dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacy declaration</pc> gelesen
+                    und verstanden und stimme beiden zu.</target>
+            </segment>
+        </unit>
+        <unit id="149974019994124409">
+            <segment state="initial">
+                <source> Create Account </source>
+                <target> Account erstellen </target>
+            </segment>
+        </unit>
+        <unit id="6464436780502674570">
+            <segment state="initial">
+                <source>Password and repeated password don&apos;t match</source>
+                <target>Die Passwörter stimmen nicht überein.</target>
+            </segment>
+        </unit>
+        <unit id="1948163304836345687">
+            <segment state="initial">
+                <source>You need to agree to the terms and conditions!</source>
+                <target>Du musst den Terms and Conditions zustimemn.</target>
+            </segment>
+        </unit>
+        <unit id="3601523967492159201">
+            <segment state="initial">
+                <source>Could not create account!</source>
+                <target>Account konnte nicht erstellt werden.</target>
+            </segment>
+        </unit>
+    </file>
 </xliff>

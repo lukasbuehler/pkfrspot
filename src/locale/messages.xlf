@@ -340,5 +340,145 @@
         <source>Your E-mail has not been verified!</source>
       </segment>
     </unit>
+    <unit id="1221014007346917816">
+      <segment>
+        <source>You can also sign in with:</source>
+      </segment>
+    </unit>
+    <unit id="149974019994124409">
+      <segment>
+        <source> Create Account </source>
+      </segment>
+    </unit>
+    <unit id="1948163304836345687">
+      <segment>
+        <source>You need to agree to the terms and conditions!</source>
+      </segment>
+    </unit>
+    <unit id="3013055597615607317">
+      <segment>
+        <source>Display Name</source>
+      </segment>
+    </unit>
+    <unit id="3028950182768355353">
+      <segment>
+        <source> Privacy policy </source>
+      </segment>
+    </unit>
+    <unit id="3601523967492159201">
+      <segment>
+        <source>Could not create account!</source>
+      </segment>
+    </unit>
+    <unit id="3865137547467472091">
+      <segment>
+        <source>The password field is empty!</source>
+      </segment>
+    </unit>
+    <unit id="4056337625566966411">
+      <segment>
+        <source> Forgot password </source>
+      </segment>
+    </unit>
+    <unit id="427922060915202050">
+      <segment>
+        <source>The password is invalid!</source>
+      </segment>
+    </unit>
+    <unit id="4464026855827934139">
+      <segment>
+        <source>The E-Mail address is invalid!</source>
+      </segment>
+    </unit>
+    <unit id="4541118533130714111">
+      <segment>
+        <source>Repeat Password</source>
+      </segment>
+    </unit>
+    <unit id="4815152070613902062">
+      <segment>
+        <source> Sign up here </source>
+      </segment>
+    </unit>
+    <unit id="5261342889229534364">
+      <segment>
+        <source>The repeated password needs to match the password entered.</source>
+      </segment>
+    </unit>
+    <unit id="5664264029355272360">
+      <segment>
+        <source>Don&apos;t worry, the display name can be changed later.</source>
+      </segment>
+    </unit>
+    <unit id="5834187794255360331">
+      <segment>
+        <source>The E-mail address needs to be verified later.</source>
+      </segment>
+    </unit>
+    <unit id="6464436780502674570">
+      <segment>
+        <source>Password and repeated password don&apos;t match</source>
+      </segment>
+    </unit>
+    <unit id="6663783128602596673">
+      <segment>
+        <source> Sign in </source>
+      </segment>
+    </unit>
+    <unit id="6735606153713625905">
+      <segment>
+        <source>E-Mail and password</source>
+      </segment>
+    </unit>
+    <unit id="6956729575928529796">
+      <segment>
+        <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacy declaration</pc> and agree to both.</source>
+      </segment>
+    </unit>
+    <unit id="6969445338945867053">
+      <segment>
+        <source>Create a new account</source>
+      </segment>
+    </unit>
+    <unit id="7323901917278002498">
+      <segment>
+        <source>Sign in instead?</source>
+      </segment>
+    </unit>
+    <unit id="7486528540316266957">
+      <segment>
+        <source>Choose a strong password.</source>
+      </segment>
+    </unit>
+    <unit id="7571375880734710634">
+      <segment>
+        <source> Terms of Service </source>
+      </segment>
+    </unit>
+    <unit id="7733953409417762446">
+      <segment>
+        <source>An unknown error has occured on sign in. Please try again.</source>
+      </segment>
+    </unit>
+    <unit id="783565455063139196">
+      <segment>
+        <source>The E-Mail address and password do not match for any existing user.</source>
+      </segment>
+    </unit>
+    <unit id="7931009175244499164">
+      <segment>
+        <source>OAuth providers</source>
+      </segment>
+    </unit>
+    <unit id="906351267490856003">
+      <segment>
+        <source> Don&apos;t have an account yet? Simply sign in with your Google account or sign up below. </source>
+      </segment>
+    </unit>
+    <unit id="947995176992343811">
+      <segment>
+        <source>This E-Mail address is not valid!</source>
+      </segment>
+    </unit>
   </file>
 </xliff>

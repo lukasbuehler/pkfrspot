@@ -4,7 +4,7 @@
       <app-page-header [title]="'Sign Up'"></app-page-header>
     </div>
   </div>
-  <div class="row justify-content-center">
+  <!-- <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="alert alert-danger" color="">
         Sign-up is currently set to invite-only at this stage of development.
@@ -12,53 +12,57 @@
         valid invite code.
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="row justify-content-center">
     <div class="col-md-12 text-center">
-      <h3 class="mat-h2 text-center">Sign in instead?</h3>
+      <h3 class="mat-h2 text-center" i18n>Sign in instead?</h3>
 
       <div class="oauth-buttons d-flex flex-row justify-content-center">
-        <button mat-flat-button color="accent" routerLink="/sign-in">
+        <button mat-flat-button color="accent" routerLink="/sign-in" i18n>
           Sign in
         </button>
         <button mat-flat-button color="warn">Google</button>
-        <button mat-flat-button disabled color="accent">Twitter</button>
-        <button mat-flat-button disabled color="primary">Github</button>
+        <!-- <button mat-flat-button disabled color="accent">Twitter</button> -->
+        <!-- <button mat-flat-button disabled color="primary">Github</button> -->
       </div>
     </div>
   </div>
   <div class="row justify-content-center">
     <div class="col-md-8">
-      <h2 class="mat-h2 mt-5">Create a new account</h2>
+      <h2 class="mat-h2 mt-5" i18n>Create a new account</h2>
       <form
         [formGroup]="createAccountForm"
         class="d-flex flex-column"
         (ngSubmit)="tryCreateAccount(createAccountForm.value)"
       >
         <mat-form-field appearance="outline">
-          <mat-label>Display Name</mat-label>
+          <mat-label i18n>Display Name</mat-label>
           <input matInput type="text" formControlName="displayName" required />
-          <mat-hint>The display name can be changed at any time.</mat-hint>
+          <mat-hint i18n
+            >Don't worry, the display name can be changed later.</mat-hint
+          >
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>E-Mail address</mat-label>
+          <mat-label i18n>E-Mail address</mat-label>
           <input matInput type="email" formControlName="email" required />
-          <mat-hint>The E-mail address needs to be verified later.</mat-hint>
+          <mat-hint i18n
+            >The E-mail address needs to be verified later.</mat-hint
+          >
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
+          <mat-label i18n>Password</mat-label>
           <input matInput type="password" formControlName="password" required />
-          <mat-hint>Choose a strong password.</mat-hint>
+          <mat-hint i18n>Choose a strong password.</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Repeat Password</mat-label>
+          <mat-label i18n>Repeat Password</mat-label>
           <input
             matInput
             type="password"
             formControlName="repeatPassword"
             required
           />
-          <mat-hint
+          <mat-hint i18n
             >The repeated password needs to match the password
             entered.</mat-hint
           >
@@ -70,6 +74,7 @@
             mat-stroked-button
             routerLink="/terms_of_service"
             color="accent"
+            i18n
           >
             Terms of Service
           </button>
@@ -78,6 +83,7 @@
             mat-stroked-button
             routerLink="/privacy_policy"
             color="accent"
+            i18n
           >
             Privacy policy
           </button>
@@ -85,7 +91,7 @@
 
         <div class="mt-4 d-flex flex-row align-items-center">
           <mat-checkbox class="mr-3" formControlName="agreeCheck" required
-            ><span class="mat-body" style="white-space: normal"
+            ><span class="mat-body" style="white-space: normal" i18n
               >I have read and understood the <b>Terms of Service</b> and the
               <b>privacy declaration</b> and agree to both.</span
             >
@@ -104,6 +110,7 @@
             color="accent"
             type="submit"
             (click)="tryCreateAccount(createAccountForm.value)"
+            i18n
           >
             Create Account
           </button>

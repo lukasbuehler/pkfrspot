@@ -108,14 +108,14 @@ export class SignUpPageComponent implements OnInit {
     // check that the repeated password matches the password
     if (!password || !repeatedPassword || password !== repeatedPassword) {
       console.error("Password and repeated password don't match");
-      this.signUpError = "Password and repeated password don't match";
+      this.signUpError = $localize`Password and repeated password don't match`;
       return;
     }
 
     // check if the terms of service and legal shebang was accepted
     if (!agreeCheck) {
       console.error("User did not agree!");
-      this.signUpError = "You need to agree to the terms and conditions!";
+      this.signUpError = $localize`You need to agree to the terms and conditions!`;
       return;
     }
 
@@ -128,11 +128,12 @@ export class SignUpPageComponent implements OnInit {
       .createAccount(email, password, displayName)
       .then(() => {
         console.log("Created account!");
+        // TODO nvaigate to the last page
         this._router.navigateByUrl("/");
       })
       .catch((err) => {
         console.error("Cannot create account!", err);
-        this.signUpError = "Could not create account!";
+        this.signUpError = $localize`Could not create account!`;
       });
   }
 }

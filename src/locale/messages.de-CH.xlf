@@ -428,5 +428,186 @@
                 <target>Deine E-Mail ist verifiziert!</target>
             </segment>
         </unit>
+        <unit id="6735606153713625905">
+            <segment state="initial">
+                <source>E-Mail and password</source>
+                <target>E-Mail und Passwort</target>
+            </segment>
+        </unit>
+        <unit id="947995176992343811">
+            <segment state="initial">
+                <source>This E-Mail address is not valid!</source>
+                <target>Diese E-Mail Adresse ist ungültig!</target>
+            </segment>
+        </unit>
+        <unit id="3865137547467472091">
+            <segment state="initial">
+                <source>The password field is empty!</source>
+                <target>Das Passwort Feld ist leer!</target>
+            </segment>
+        </unit>
+        <unit id="6663783128602596673">
+            <segment state="initial">
+                <source> Sign in </source>
+                <target> Anmelden </target>
+            </segment>
+        </unit>
+        <unit id="4056337625566966411">
+            <segment state="initial">
+                <source> Forgot password </source>
+                <target> Passwort vergessen </target>
+            </segment>
+        </unit>
+        <unit id="7931009175244499164">
+            <segment state="initial">
+                <source>OAuth providers</source>
+                <target>OAuth Anbieter</target>
+            </segment>
+        </unit>
+        <unit id="1221014007346917816">
+            <segment state="initial">
+                <source>You can also sign in with:</source>
+                <target>Du kannst dich auch anmelden mit:</target>
+            </segment>
+        </unit>
+        <unit id="906351267490856003">
+            <segment state="initial">
+                <source> Don&apos;t have an account yet? Simply sign in with your Google account or
+                    sign up below. </source>
+                <target> Du hast keinen Account? Melde dich einfach mit Google an oder regestriere
+                    dich unten. </target>
+            </segment>
+        </unit>
+        <unit id="4815152070613902062">
+            <segment state="initial">
+                <source> Sign up here </source>
+                <target> Hier registrieren </target>
+            </segment>
+        </unit>
+        <unit id="4464026855827934139">
+            <segment state="initial">
+                <source>The E-Mail address is invalid!</source>
+                <target>Diese E-Mail Adresse ist ungültig!</target>
+            </segment>
+        </unit>
+        <unit id="427922060915202050">
+            <segment state="initial">
+                <source>The password is invalid!</source>
+                <target>Das Passwort ist ungültig!</target>
+            </segment>
+        </unit>
+        <unit id="783565455063139196">
+            <segment state="initial">
+                <source>The E-Mail address and password do not match for any existing user.</source>
+                <target>The E-Mail address and password do not match for any existing user.</target>
+            </segment>
+        </unit>
+        <unit id="7733953409417762446">
+            <segment state="initial">
+                <source>An unknown error has occured on sign in. Please try again.</source>
+                <target>Ein unbekannter Fehler ist aufgetrete bei der Anmeldung. Bitte versueche es
+                    erneut.</target>
+            </segment>
+        </unit>
+        <unit id="7323901917278002498">
+            <segment state="initial">
+                <source>Sign in instead?</source>
+                <target>Lieber anmelden?</target>
+            </segment>
+        </unit>
+        <unit id="6969445338945867053">
+            <segment state="initial">
+                <source>Create a new account</source>
+                <target>Neuen Account erstellen</target>
+            </segment>
+        </unit>
+        <unit id="3013055597615607317">
+            <segment state="initial">
+                <source>Display Name</source>
+                <target>Anzeigename</target>
+            </segment>
+        </unit>
+        <unit id="5664264029355272360">
+            <segment state="initial">
+                <source>Don&apos;t worry, the display name can be changed later.</source>
+                <target>Keine sorge, der Anzeigename kann später geändert werden.</target>
+            </segment>
+        </unit>
+        <unit id="5834187794255360331">
+            <segment state="initial">
+                <source>The E-mail address needs to be verified later.</source>
+                <target>Die E-Mail Adresse muss später verifiziert werden.</target>
+            </segment>
+        </unit>
+        <unit id="7486528540316266957">
+            <segment state="initial">
+                <source>Choose a strong password.</source>
+                <target>Wähle ein starkes Passwort.</target>
+            </segment>
+        </unit>
+        <unit id="4541118533130714111">
+            <segment state="initial">
+                <source>Repeat Password</source>
+                <target>Passwort wiederholen</target>
+            </segment>
+        </unit>
+        <unit id="5261342889229534364">
+            <segment state="initial">
+                <source>The repeated password needs to match the password entered.</source>
+                <target>Das wiederholte Passwort muss dem ersten entsprechen.</target>
+            </segment>
+        </unit>
+        <unit id="7571375880734710634">
+            <segment state="initial">
+                <source> Terms of Service </source>
+                <target> Terms of Service </target>
+            </segment>
+        </unit>
+        <unit id="3028950182768355353">
+            <segment state="initial">
+                <source> Privacy policy </source>
+                <target> Privacy policy </target>
+            </segment>
+        </unit>
+        <unit id="6956729575928529796">
+            <segment state="initial">
+                <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT"
+                        equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;"
+                        dispEnd="&lt;/b&gt;">Terms of Service</pc> and the <pc id="1"
+                        equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt"
+                        dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacy declaration</pc> and
+                    agree to both.</source>
+                <target>Ich habe die <pc id="0" equivStart="START_BOLD_TEXT"
+                        equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;"
+                        dispEnd="&lt;/b&gt;">Terms of Service</pc> und die <pc id="1"
+                        equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt"
+                        dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacy declaration</pc> gelesen
+                    und verstanden und stimme beiden zu.</target>
+            </segment>
+        </unit>
+        <unit id="149974019994124409">
+            <segment state="initial">
+                <source> Create Account </source>
+                <target> Account erstellen </target>
+            </segment>
+        </unit>
+        <unit id="6464436780502674570">
+            <segment state="initial">
+                <source>Password and repeated password don&apos;t match</source>
+                <target>Die Passwörter stimmen nicht überein.</target>
+            </segment>
+        </unit>
+        <unit id="1948163304836345687">
+            <segment state="initial">
+                <source>You need to agree to the terms and conditions!</source>
+                <target>Du musst den Terms and Conditions zustimemn.</target>
+            </segment>
+        </unit>
+        <unit id="3601523967492159201">
+            <segment state="initial">
+                <source>Could not create account!</source>
+                <target>Account konnte nicht erstellt werden.</target>
+            </segment>
+        </unit>
     </file>
 </xliff>
