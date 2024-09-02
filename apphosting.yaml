@@ -3,8 +3,8 @@ runConfig:
   minInstances: 0
   maxInstances: 4
   concurrency: 100
-  cpu: 1
-  memoryMiB: 512
+  cpu: 1 # in [1, 8]
+  memoryMiB: 512 # in [512, 32768]
 
 env:
   # - variable: GOOGLE_API_KEY
