@@ -144,13 +144,13 @@ export namespace Spot {
 
     public getLocalityString(): string {
       let str = "";
-      if (this._data.address.sublocality) {
+      if (this._data.address?.sublocality) {
         str += this._data.address.sublocality + ", ";
       }
-      if (this._data.address.locality) {
+      if (this._data.address?.locality) {
         str += this._data.address.locality + ", ";
       }
-      if (this._data.address.country) {
+      if (this._data.address?.country) {
         str += this._data.address.country.code.toUpperCase();
       }
       return str;
@@ -397,7 +397,7 @@ export namespace Spot {
     };
 
     isMiniSpot?: boolean;
-    rating?: number;
+    rating?: number; // from 1 to 10, set by cloud function.
     description?: LocaleMap;
     media?: ContributedMedia[];
 
