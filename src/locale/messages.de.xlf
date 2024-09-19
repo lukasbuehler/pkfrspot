@@ -280,7 +280,7 @@
                     profile can be seen by everyone, even unauthenticated visitors. </source>
                 <target> Hier kannst du dein öffentliches Profil bearbeiten. Diese Informationen von
                     deinem öffentlichen Profil können von allen eingesehen werden, auch
-                    unauthentifizierten Nutzern. </target>
+                    unauthentifizierten Benutzer. </target>
             </segment>
         </unit>
         <unit id="7008130086784868968">
@@ -424,8 +424,8 @@
         </unit>
         <unit id="4060911346155655179">
             <segment state="initial">
-                <source>Your E-mail is verified!</source>
-                <target>Deine E-Mail ist verifiziert!</target>
+                <source>Your E-mail is verified</source>
+                <target>Deine E-Mail ist verifiziert</target>
             </segment>
         </unit>
         <unit id="6735606153713625905">
@@ -486,7 +486,7 @@
         </unit>
         <unit id="4464026855827934139">
             <segment state="initial">
-                <source>The E-Mail address is invalid!</source>
+                <source>The E-mail address is invalid!</source>
                 <target>Diese E-Mail Adresse ist ungültig!</target>
             </segment>
         </unit>
@@ -498,8 +498,8 @@
         </unit>
         <unit id="783565455063139196">
             <segment state="initial">
-                <source>The E-Mail address and password do not match for any existing user.</source>
-                <target>The E-Mail address and password do not match for any existing user.</target>
+                <source>The E-mail address and password do not match for any existing user.</source>
+                <target>Für diese E-Mail Adresse und Passwort Kombination gibt es keinen Benutzer.</target>
             </segment>
         </unit>
         <unit id="7733953409417762446">
@@ -600,7 +600,7 @@
         <unit id="1948163304836345687">
             <segment state="initial">
                 <source>You need to agree to the terms and conditions!</source>
-                <target>Du musst den Terms and Conditions zustimemn.</target>
+                <target>Du musst den Terms and Conditions zustimmen.</target>
             </segment>
         </unit>
         <unit id="3601523967492159201">

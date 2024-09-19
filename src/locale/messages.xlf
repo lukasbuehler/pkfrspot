@@ -1,484 +1,507 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
-  <file id="ngi18n" original="ng.template">
-    <unit id="1479415597449651120">
-      <notes>
-        <note category="description">A very short label for the navbar spot map label</note>
-        <note category="meaning">Spot map navbar button label</note>
-      </notes>
-      <segment>
-        <source>Spot map</source>
-      </segment>
-    </unit>
-    <unit id="1563251428514246752">
-      <segment>
-        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">receipt_long</pc> View License </source>
-      </segment>
-    </unit>
-    <unit id="1940752772695642659">
-      <segment>
-        <source> The spot for Parkour and Freerunning. </source>
-      </segment>
-    </unit>
-    <unit id="2405554561656775177">
-      <segment>
-        <source>Lead developer</source>
-      </segment>
-    </unit>
-    <unit id="3710111609881776947">
-      <segment>
-        <source>Discover, Train, Share.</source>
-      </segment>
-    </unit>
-    <unit id="3733695846697223562">
-      <segment>
-        <source> Discover spots and fellow athletes, plan training sessions with your friends and share achievements and memories with them and the world. </source>
-      </segment>
-    </unit>
-    <unit id="5825310972408482968">
-      <segment>
-        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">sports_esports</pc> Discord </source>
-      </segment>
-    </unit>
-    <unit id="6034013755958678236">
-      <segment>
-        <source> Testing, UI/UX Advisor </source>
-      </segment>
-    </unit>
-    <unit id="6058033902089935749">
-      <segment>
-        <source>Find spots and places</source>
-      </segment>
-    </unit>
-    <unit id="6493290522598468378">
-      <notes>
-        <note category="description">A very short label for the navbar about page button</note>
-        <note category="meaning">About page navbar button label</note>
-      </notes>
-      <segment>
-        <source>About</source>
-      </segment>
-    </unit>
-    <unit id="6511882108366913037">
-      <segment>
-        <source>Contributors</source>
-      </segment>
-    </unit>
-    <unit id="7217756648427967816">
-      <segment>
-        <source>Supporters</source>
-      </segment>
-    </unit>
-    <unit id="7411379953853971507">
-      <segment>
-        <source> This project is Open-Source! Our code is licensed under the <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT License</pc>. </source>
-      </segment>
-    </unit>
-    <unit id="8062277427231117545">
-      <segment>
-        <source> Join our community of Parkour and Freerunning enthusiasts! Contribute your ideas, report bugs, and provide feedback to help us improve this platform together! </source>
-      </segment>
-    </unit>
-    <unit id="8985868511640294928">
-      <segment>
-        <source>Testing</source>
-      </segment>
-    </unit>
-    <unit id="2066444621746625793">
-      <segment>
-        <source>Edit this spot</source>
-      </segment>
-    </unit>
-    <unit id="2604369786412998010">
-      <segment>
-        <source>Spot area</source>
-      </segment>
-    </unit>
-    <unit id="2965948069228600049">
-      <notes>
-        <note category="description">Label of the button to report the spot</note>
-        <note category="meaning">Report button label</note>
-      </notes>
-      <segment>
-        <source> Report </source>
-      </segment>
-    </unit>
-    <unit id="open_maps_button_label">
-      <notes>
-        <note category="description">Button to open the spot in maps</note>
-        <note category="meaning">Open in maps button</note>
-      </notes>
-      <segment>
-        <source> Open in maps </source>
-      </segment>
-    </unit>
-    <unit id="3699896649941451869">
-      <segment>
-        <source>Example icon button with a share icon</source>
-      </segment>
-    </unit>
-    <unit id="4470656372477479316">
-      <notes>
-        <note category="description">Label of the button to discard changes</note>
-        <note category="meaning">Discard changes button label</note>
-      </notes>
-      <segment>
-        <source> Discard changes </source>
-      </segment>
-    </unit>
-    <unit id="4902817035128594900">
-      <segment>
-        <source>Description</source>
-      </segment>
-    </unit>
-    <unit id="open_maps_tooltip">
-      <notes>
-        <note category="description">Tooltip of button to open the spot in maps</note>
-        <note category="meaning">Open in maps button tooltip</note>
-      </notes>
-      <segment>
-        <source>Open in maps</source>
-      </segment>
-    </unit>
-    <unit id="5447579510411800451">
-      <notes>
-        <note category="description">Label of the button to upload a spot image</note>
-        <note category="meaning">Upload spot image button label</note>
-      </notes>
-      <segment>
-        <source> Upload Spot Image </source>
-      </segment>
-    </unit>
-    <unit id="6417858746273147766">
-      <notes>
-        <note category="description">Placeholder of the spot name in the edit form</note>
-        <note category="meaning">spot name placeholder</note>
-      </notes>
-      <segment>
-        <source>Spot name</source>
-      </segment>
-    </unit>
-    <unit id="6876434298853499564">
-      <notes>
-        <note category="description">Label of the button to add bounds to a spot</note>
-        <note category="meaning">Add bounds button label</note>
-      </notes>
-      <segment>
-        <source> Add bounds </source>
-      </segment>
-    </unit>
-    <unit id="7649443828660758780">
-      <notes>
-        <note category="description">Label of the button to edit the spot</note>
-        <note category="meaning">Edit button label</note>
-      </notes>
-      <segment>
-        <source> Edit </source>
-      </segment>
-    </unit>
-    <unit id="7970470041734812503">
-      <segment>
-        <source>Report this spot</source>
-      </segment>
-    </unit>
-    <unit id="8023330231865239041">
-      <segment>
-        <source>Spot type</source>
-      </segment>
-    </unit>
-    <unit id="8126459137636028145">
-      <notes>
-        <note category="description">The header for the spot description</note>
-        <note category="meaning">description header</note>
-      </notes>
-      <segment>
-        <source> Description </source>
-      </segment>
-    </unit>
-    <unit id="8486228314424763172">
-      <notes>
-        <note category="description">Label of the button to save changes</note>
-        <note category="meaning">Save changes button label</note>
-      </notes>
-      <segment>
-        <source> Save changes </source>
-      </segment>
-    </unit>
-    <unit id="8942517704279686805">
-      <notes>
-        <note category="description">Placeholder of the spot description edit field</note>
-        <note category="meaning">Spot description edit field placeholder</note>
-      </notes>
-      <segment>
-        <source>Description of the spot, its features and more...</source>
-      </segment>
-    </unit>
-    <unit id="1237816927659510577">
-      <notes>
-        <note category="description">The profile dropdown menu label for &apos;my profile&apos;</note>
-        <note category="meaning">my profile label</note>
-      </notes>
-      <segment>
-        <source>My Profile</source>
-      </segment>
-    </unit>
-    <unit id="1347241542439262355">
-      <segment>
-        <source>General settings</source>
-      </segment>
-    </unit>
-    <unit id="1431416938026210429">
-      <segment>
-        <source>Password</source>
-      </segment>
-    </unit>
-    <unit id="3934298777794632654">
-      <segment>
-        <source> Change E-mail address </source>
-      </segment>
-    </unit>
-    <unit id="2123282629077022668">
-      <segment>
-        <source> You can edit your public profile here. The information on your public profile can be seen by everyone, even unauthenticated visitors. </source>
-      </segment>
-    </unit>
-    <unit id="2818862099235102080">
-      <segment>
-        <source> Resend verification E-mail </source>
-      </segment>
-    </unit>
-    <unit id="339940386378543699">
-      <notes>
-        <note category="description">The profile dropdown menu label to logout</note>
-        <note category="meaning">logout label</note>
-      </notes>
-      <segment>
-        <source>Logout</source>
-      </segment>
-    </unit>
-    <unit id="4248798592595704576">
-      <segment>
-        <source> Your login information. Your E-mail address here is used for your login. You can add the same E-mail address or a different one to your contact information. </source>
-      </segment>
-    </unit>
-    <unit id="4930506384627295710">
-      <segment>
-        <source>Settings</source>
-      </segment>
-    </unit>
-    <unit id="5060391165154083287">
-      <notes>
-        <note category="description">The profile dropdown menu label for the settings</note>
-        <note category="meaning">settings label</note>
-      </notes>
-      <segment>
-        <source>Settings</source>
-      </segment>
-    </unit>
-    <unit id="5207635742003539443">
-      <segment>
-        <source>Sign in</source>
-      </segment>
-    </unit>
-    <unit id="5464118521750361406">
-      <segment>
-        <source>Public profile</source>
-      </segment>
-    </unit>
-    <unit id="5563672453089263696">
-      <segment>
-        <source>Changing this E-mail will change your login information</source>
-      </segment>
-    </unit>
-    <unit id="5830520205989474611">
-      <segment>
-        <source>E-mail address</source>
-      </segment>
-    </unit>
-    <unit id="5851560788527570644">
-      <segment>
-        <source>Notifications</source>
-      </segment>
-    </unit>
-    <unit id="6374817750820299933">
-      <segment>
-        <source> <ph id="0" equiv="INTERPOLATION" disp="{{ spots.length }}"/> spot<ph id="1" equiv="INTERPOLATION_1" disp="{{ spots.length === 1 ? &quot;&quot; : &quot;s&quot; }}"/> in this area </source>
-      </segment>
-    </unit>
-    <unit id="6471548761726956967">
-      <segment>
-        <source> General settings to tune your experience on PKFR Spot. </source>
-      </segment>
-    </unit>
-    <unit id="6815507474406960450">
-      <segment>
-        <source>E-Mail address</source>
-      </segment>
-    </unit>
-    <unit id="7008130086784868968">
-      <segment>
-        <source>Login information</source>
-      </segment>
-    </unit>
-    <unit id="7028204981963450021">
-      <segment>
-        <source>Sign up</source>
-      </segment>
-    </unit>
-    <unit id="8626615958100222841">
-      <segment>
-        <source> Change password </source>
-      </segment>
-    </unit>
-    <unit id="4060911346155655179">
-      <segment>
-        <source>Your E-mail is verified!</source>
-      </segment>
-    </unit>
-    <unit id="3539941729807255231">
-      <segment>
-        <source>Your E-mail has not been verified!</source>
-      </segment>
-    </unit>
-    <unit id="1221014007346917816">
-      <segment>
-        <source>You can also sign in with:</source>
-      </segment>
-    </unit>
-    <unit id="149974019994124409">
-      <segment>
-        <source> Create Account </source>
-      </segment>
-    </unit>
-    <unit id="1948163304836345687">
-      <segment>
-        <source>You need to agree to the terms and conditions!</source>
-      </segment>
-    </unit>
-    <unit id="3013055597615607317">
-      <segment>
-        <source>Display Name</source>
-      </segment>
-    </unit>
-    <unit id="3028950182768355353">
-      <segment>
-        <source> Privacy policy </source>
-      </segment>
-    </unit>
-    <unit id="3601523967492159201">
-      <segment>
-        <source>Could not create account!</source>
-      </segment>
-    </unit>
-    <unit id="3865137547467472091">
-      <segment>
-        <source>The password field is empty!</source>
-      </segment>
-    </unit>
-    <unit id="4056337625566966411">
-      <segment>
-        <source> Forgot password </source>
-      </segment>
-    </unit>
-    <unit id="427922060915202050">
-      <segment>
-        <source>The password is invalid!</source>
-      </segment>
-    </unit>
-    <unit id="4464026855827934139">
-      <segment>
-        <source>The E-Mail address is invalid!</source>
-      </segment>
-    </unit>
-    <unit id="4541118533130714111">
-      <segment>
-        <source>Repeat Password</source>
-      </segment>
-    </unit>
-    <unit id="4815152070613902062">
-      <segment>
-        <source> Sign up here </source>
-      </segment>
-    </unit>
-    <unit id="5261342889229534364">
-      <segment>
-        <source>The repeated password needs to match the password entered.</source>
-      </segment>
-    </unit>
-    <unit id="5664264029355272360">
-      <segment>
-        <source>Don&apos;t worry, the display name can be changed later.</source>
-      </segment>
-    </unit>
-    <unit id="5834187794255360331">
-      <segment>
-        <source>The E-mail address needs to be verified later.</source>
-      </segment>
-    </unit>
-    <unit id="6464436780502674570">
-      <segment>
-        <source>Password and repeated password don&apos;t match</source>
-      </segment>
-    </unit>
-    <unit id="6663783128602596673">
-      <segment>
-        <source> Sign in </source>
-      </segment>
-    </unit>
-    <unit id="6735606153713625905">
-      <segment>
-        <source>E-Mail and password</source>
-      </segment>
-    </unit>
-    <unit id="6956729575928529796">
-      <segment>
-        <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacy declaration</pc> and agree to both.</source>
-      </segment>
-    </unit>
-    <unit id="6969445338945867053">
-      <segment>
-        <source>Create a new account</source>
-      </segment>
-    </unit>
-    <unit id="7323901917278002498">
-      <segment>
-        <source>Sign in instead?</source>
-      </segment>
-    </unit>
-    <unit id="7486528540316266957">
-      <segment>
-        <source>Choose a strong password.</source>
-      </segment>
-    </unit>
-    <unit id="7571375880734710634">
-      <segment>
-        <source> Terms of Service </source>
-      </segment>
-    </unit>
-    <unit id="7733953409417762446">
-      <segment>
-        <source>An unknown error has occured on sign in. Please try again.</source>
-      </segment>
-    </unit>
-    <unit id="783565455063139196">
-      <segment>
-        <source>The E-Mail address and password do not match for any existing user.</source>
-      </segment>
-    </unit>
-    <unit id="7931009175244499164">
-      <segment>
-        <source>OAuth providers</source>
-      </segment>
-    </unit>
-    <unit id="906351267490856003">
-      <segment>
-        <source> Don&apos;t have an account yet? Simply sign in with your Google account or sign up below. </source>
-      </segment>
-    </unit>
-    <unit id="947995176992343811">
-      <segment>
-        <source>This E-Mail address is not valid!</source>
-      </segment>
-    </unit>
-  </file>
+    <file id="ngi18n" original="ng.template">
+        <unit id="1479415597449651120">
+            <notes>
+                <note category="description">A very short label for the navbar spot map label</note>
+                <note category="meaning">Spot map navbar button label</note>
+            </notes>
+            <segment>
+                <source>Spot map</source>
+            </segment>
+        </unit>
+        <unit id="1563251428514246752">
+            <segment>
+                <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
+                        type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">
+                    receipt_long</pc> View License </source>
+            </segment>
+        </unit>
+        <unit id="1940752772695642659">
+            <segment>
+                <source> The spot for Parkour and Freerunning. </source>
+            </segment>
+        </unit>
+        <unit id="2405554561656775177">
+            <segment>
+                <source>Lead developer</source>
+            </segment>
+        </unit>
+        <unit id="3710111609881776947">
+            <segment>
+                <source>Discover, Train, Share.</source>
+            </segment>
+        </unit>
+        <unit id="3733695846697223562">
+            <segment>
+                <source> Discover spots and fellow athletes, plan training sessions with your
+                    friends and share achievements and memories with them and the world. </source>
+            </segment>
+        </unit>
+        <unit id="5825310972408482968">
+            <segment>
+                <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
+                        type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">
+                    sports_esports</pc> Discord </source>
+            </segment>
+        </unit>
+        <unit id="6034013755958678236">
+            <segment>
+                <source> Testing, UI/UX Advisor </source>
+            </segment>
+        </unit>
+        <unit id="6058033902089935749">
+            <segment>
+                <source>Find spots and places</source>
+            </segment>
+        </unit>
+        <unit id="6493290522598468378">
+            <notes>
+                <note category="description">A very short label for the navbar about page button</note>
+                <note category="meaning">About page navbar button label</note>
+            </notes>
+            <segment>
+                <source>About</source>
+            </segment>
+        </unit>
+        <unit id="6511882108366913037">
+            <segment>
+                <source>Contributors</source>
+            </segment>
+        </unit>
+        <unit id="7217756648427967816">
+            <segment>
+                <source>Supporters</source>
+            </segment>
+        </unit>
+        <unit id="7411379953853971507">
+            <segment>
+                <source> This project is Open-Source! Our code is licensed under the <pc id="0"
+                        equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt"
+                        dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT License</pc>. </source>
+            </segment>
+        </unit>
+        <unit id="8062277427231117545">
+            <segment>
+                <source> Join our community of Parkour and Freerunning enthusiasts! Contribute your
+                    ideas, report bugs, and provide feedback to help us improve this platform
+                    together! </source>
+            </segment>
+        </unit>
+        <unit id="8985868511640294928">
+            <segment>
+                <source>Testing</source>
+            </segment>
+        </unit>
+        <unit id="2066444621746625793">
+            <segment>
+                <source>Edit this spot</source>
+            </segment>
+        </unit>
+        <unit id="2604369786412998010">
+            <segment>
+                <source>Spot area</source>
+            </segment>
+        </unit>
+        <unit id="2965948069228600049">
+            <notes>
+                <note category="description">Label of the button to report the spot</note>
+                <note category="meaning">Report button label</note>
+            </notes>
+            <segment>
+                <source> Report </source>
+            </segment>
+        </unit>
+        <unit id="open_maps_button_label">
+            <notes>
+                <note category="description">Button to open the spot in maps</note>
+                <note category="meaning">Open in maps button</note>
+            </notes>
+            <segment>
+                <source> Open in maps </source>
+            </segment>
+        </unit>
+        <unit id="3699896649941451869">
+            <segment>
+                <source>Example icon button with a share icon</source>
+            </segment>
+        </unit>
+        <unit id="4470656372477479316">
+            <notes>
+                <note category="description">Label of the button to discard changes</note>
+                <note category="meaning">Discard changes button label</note>
+            </notes>
+            <segment>
+                <source> Discard changes </source>
+            </segment>
+        </unit>
+        <unit id="4902817035128594900">
+            <segment>
+                <source>Description</source>
+            </segment>
+        </unit>
+        <unit id="open_maps_tooltip">
+            <notes>
+                <note category="description">Tooltip of button to open the spot in maps</note>
+                <note category="meaning">Open in maps button tooltip</note>
+            </notes>
+            <segment>
+                <source>Open in maps</source>
+            </segment>
+        </unit>
+        <unit id="5447579510411800451">
+            <notes>
+                <note category="description">Label of the button to upload a spot image</note>
+                <note category="meaning">Upload spot image button label</note>
+            </notes>
+            <segment>
+                <source> Upload Spot Image </source>
+            </segment>
+        </unit>
+        <unit id="6417858746273147766">
+            <notes>
+                <note category="description">Placeholder of the spot name in the edit form</note>
+                <note category="meaning">spot name placeholder</note>
+            </notes>
+            <segment>
+                <source>Spot name</source>
+            </segment>
+        </unit>
+        <unit id="6876434298853499564">
+            <notes>
+                <note category="description">Label of the button to add bounds to a spot</note>
+                <note category="meaning">Add bounds button label</note>
+            </notes>
+            <segment>
+                <source> Add bounds </source>
+            </segment>
+        </unit>
+        <unit id="7649443828660758780">
+            <notes>
+                <note category="description">Label of the button to edit the spot</note>
+                <note category="meaning">Edit button label</note>
+            </notes>
+            <segment>
+                <source> Edit </source>
+            </segment>
+        </unit>
+        <unit id="7970470041734812503">
+            <segment>
+                <source>Report this spot</source>
+            </segment>
+        </unit>
+        <unit id="8023330231865239041">
+            <segment>
+                <source>Spot type</source>
+            </segment>
+        </unit>
+        <unit id="8126459137636028145">
+            <notes>
+                <note category="description">The header for the spot description</note>
+                <note category="meaning">description header</note>
+            </notes>
+            <segment>
+                <source> Description </source>
+            </segment>
+        </unit>
+        <unit id="8486228314424763172">
+            <notes>
+                <note category="description">Label of the button to save changes</note>
+                <note category="meaning">Save changes button label</note>
+            </notes>
+            <segment>
+                <source> Save changes </source>
+            </segment>
+        </unit>
+        <unit id="8942517704279686805">
+            <notes>
+                <note category="description">Placeholder of the spot description edit field</note>
+                <note category="meaning">Spot description edit field placeholder</note>
+            </notes>
+            <segment>
+                <source>Description of the spot, its features and more...</source>
+            </segment>
+        </unit>
+        <unit id="1237816927659510577">
+            <notes>
+                <note category="description">The profile dropdown menu label for &apos;my
+                    profile&apos;</note>
+                <note category="meaning">my profile label</note>
+            </notes>
+            <segment>
+                <source>My Profile</source>
+            </segment>
+        </unit>
+        <unit id="1347241542439262355">
+            <segment>
+                <source>General settings</source>
+            </segment>
+        </unit>
+        <unit id="1431416938026210429">
+            <segment>
+                <source>Password</source>
+            </segment>
+        </unit>
+        <unit id="3934298777794632654">
+            <segment>
+                <source> Change E-mail address </source>
+            </segment>
+        </unit>
+        <unit id="2123282629077022668">
+            <segment>
+                <source> You can edit your public profile here. The information on your public
+                    profile can be seen by everyone, even unauthenticated visitors. </source>
+            </segment>
+        </unit>
+        <unit id="2818862099235102080">
+            <segment>
+                <source> Resend verification E-mail </source>
+            </segment>
+        </unit>
+        <unit id="339940386378543699">
+            <notes>
+                <note category="description">The profile dropdown menu label to logout</note>
+                <note category="meaning">logout label</note>
+            </notes>
+            <segment>
+                <source>Logout</source>
+            </segment>
+        </unit>
+        <unit id="4248798592595704576">
+            <segment>
+                <source> Your login information. Your E-mail address here is used for your login.
+                    You can add the same E-mail address or a different one to your contact
+                    information. </source>
+            </segment>
+        </unit>
+        <unit id="4930506384627295710">
+            <segment>
+                <source>Settings</source>
+            </segment>
+        </unit>
+        <unit id="5060391165154083287">
+            <notes>
+                <note category="description">The profile dropdown menu label for the settings</note>
+                <note category="meaning">settings label</note>
+            </notes>
+            <segment>
+                <source>Settings</source>
+            </segment>
+        </unit>
+        <unit id="5207635742003539443">
+            <segment>
+                <source>Sign in</source>
+            </segment>
+        </unit>
+        <unit id="5464118521750361406">
+            <segment>
+                <source>Public profile</source>
+            </segment>
+        </unit>
+        <unit id="5563672453089263696">
+            <segment>
+                <source>Changing this E-mail will change your login information</source>
+            </segment>
+        </unit>
+        <unit id="5830520205989474611">
+            <segment>
+                <source>E-mail address</source>
+            </segment>
+        </unit>
+        <unit id="5851560788527570644">
+            <segment>
+                <source>Notifications</source>
+            </segment>
+        </unit>
+        <unit id="6374817750820299933">
+            <segment>
+                <source>
+                    <ph id="0" equiv="INTERPOLATION" disp="{{ spots.length }}" /> spot<ph id="1"
+                        equiv="INTERPOLATION_1"
+                        disp="{{ spots.length === 1 ? &quot;&quot; : &quot;s&quot; }}" /> in this
+                    area </source>
+            </segment>
+        </unit>
+        <unit id="6471548761726956967">
+            <segment>
+                <source> General settings to tune your experience on PKFR Spot. </source>
+            </segment>
+        </unit>
+        <unit id="6815507474406960450">
+            <segment>
+                <source>E-Mail address</source>
+            </segment>
+        </unit>
+        <unit id="7008130086784868968">
+            <segment>
+                <source>Login information</source>
+            </segment>
+        </unit>
+        <unit id="7028204981963450021">
+            <segment>
+                <source>Sign up</source>
+            </segment>
+        </unit>
+        <unit id="8626615958100222841">
+            <segment>
+                <source> Change password </source>
+            </segment>
+        </unit>
+        <unit id="4060911346155655179">
+            <segment>
+                <source>Your E-mail is verified</source>
+            </segment>
+        </unit>
+        <unit id="3539941729807255231">
+            <segment>
+                <source>Your E-mail has not been verified</source>
+            </segment>
+        </unit>
+        <unit id="1221014007346917816">
+            <segment>
+                <source>You can also sign in with:</source>
+            </segment>
+        </unit>
+        <unit id="149974019994124409">
+            <segment>
+                <source> Create Account </source>
+            </segment>
+        </unit>
+        <unit id="1948163304836345687">
+            <segment>
+                <source>You need to agree to the terms and conditions!</source>
+            </segment>
+        </unit>
+        <unit id="3013055597615607317">
+            <segment>
+                <source>Display Name</source>
+            </segment>
+        </unit>
+        <unit id="3028950182768355353">
+            <segment>
+                <source> Privacy policy </source>
+            </segment>
+        </unit>
+        <unit id="3601523967492159201">
+            <segment>
+                <source>Could not create account!</source>
+            </segment>
+        </unit>
+        <unit id="3865137547467472091">
+            <segment>
+                <source>The password field is empty!</source>
+            </segment>
+        </unit>
+        <unit id="4056337625566966411">
+            <segment>
+                <source> Forgot password </source>
+            </segment>
+        </unit>
+        <unit id="427922060915202050">
+            <segment>
+                <source>The password is invalid!</source>
+            </segment>
+        </unit>
+        <unit id="4464026855827934139">
+            <segment>
+                <source>The E-mail address is invalid!</source>
+            </segment>
+        </unit>
+        <unit id="4541118533130714111">
+            <segment>
+                <source>Repeat Password</source>
+            </segment>
+        </unit>
+        <unit id="4815152070613902062">
+            <segment>
+                <source> Sign up here </source>
+            </segment>
+        </unit>
+        <unit id="5261342889229534364">
+            <segment>
+                <source>The repeated password needs to match the password entered.</source>
+            </segment>
+        </unit>
+        <unit id="5664264029355272360">
+            <segment>
+                <source>Don&apos;t worry, the display name can be changed later.</source>
+            </segment>
+        </unit>
+        <unit id="5834187794255360331">
+            <segment>
+                <source>The E-mail address needs to be verified later.</source>
+            </segment>
+        </unit>
+        <unit id="6464436780502674570">
+            <segment>
+                <source>Password and repeated password don&apos;t match</source>
+            </segment>
+        </unit>
+        <unit id="6663783128602596673">
+            <segment>
+                <source> Sign in </source>
+            </segment>
+        </unit>
+        <unit id="6735606153713625905">
+            <segment>
+                <source>E-Mail and password</source>
+            </segment>
+        </unit>
+        <unit id="6956729575928529796">
+            <segment>
+                <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT"
+                        equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;"
+                        dispEnd="&lt;/b&gt;">Terms of Service</pc> and the <pc id="1"
+                        equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt"
+                        dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacy declaration</pc> and
+                    agree to both.</source>
+            </segment>
+        </unit>
+        <unit id="6969445338945867053">
+            <segment>
+                <source>Create a new account</source>
+            </segment>
+        </unit>
+        <unit id="7323901917278002498">
+            <segment>
+                <source>Sign in instead?</source>
+            </segment>
+        </unit>
+        <unit id="7486528540316266957">
+            <segment>
+                <source>Choose a strong password.</source>
+            </segment>
+        </unit>
+        <unit id="7571375880734710634">
+            <segment>
+                <source> Terms of Service </source>
+            </segment>
+        </unit>
+        <unit id="7733953409417762446">
+            <segment>
+                <source>An unknown error has occured on sign in. Please try again.</source>
+            </segment>
+        </unit>
+        <unit id="783565455063139196">
+            <segment>
+                <source>The E-mail address and password do not match for any existing user.</source>
+            </segment>
+        </unit>
+        <unit id="7931009175244499164">
+            <segment>
+                <source>OAuth providers</source>
+            </segment>
+        </unit>
+        <unit id="906351267490856003">
+            <segment>
+                <source> Don&apos;t have an account yet? Simply sign in with your Google account or
+                    sign up below. </source>
+            </segment>
+        </unit>
+        <unit id="947995176992343811">
+            <segment>
+                <source>This E-Mail address is not valid!</source>
+            </segment>
+        </unit>
+    </file>
 </xliff>

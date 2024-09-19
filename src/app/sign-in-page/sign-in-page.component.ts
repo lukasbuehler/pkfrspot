@@ -79,14 +79,14 @@ export class SignInPageComponent implements OnInit {
         console.error(err);
         switch (err.code) {
           case "auth/invalid-email":
-            this.signInError = $localize`The E-Mail address is invalid!`;
+            this.signInError = $localize`The E-mail address is invalid!`;
             break;
           case "auth/invalid-password":
             this.signInError = $localize`The password is invalid!`;
             break;
           case "auth/user-not-found":
           case "auth/wrong-password":
-            this.signInError = $localize`The E-Mail address and password do not match for any existing user.`;
+            this.signInError = $localize`The E-mail address and password do not match for any existing user.`;
             break;
           default:
             this.signInError = $localize`An unknown error has occured on sign in. Please try again.`;
