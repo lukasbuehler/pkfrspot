@@ -46,7 +46,7 @@ import { MatIcon } from "@angular/material/icon";
 import { MatTooltip } from "@angular/material/tooltip";
 import { MatIconButton, MatButton } from "@angular/material/button";
 import { NgIf, NgFor } from "@angular/common";
-import { MatChip } from "@angular/material/chips";
+import { MatChipsModule } from "@angular/material/chips";
 import { MatRipple, MatOption } from "@angular/material/core";
 import {
   MatCard,
@@ -83,7 +83,7 @@ declare function plausible(eventName: string, options?: { props: any }): void;
     MatCardHeader,
     MatCardTitle,
     MatCardSubtitle,
-    MatChip,
+    MatChipsModule,
     NgIf,
     MatIconButton,
     MatTooltip,
@@ -351,6 +351,13 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
       plausible("Opening in Google Maps", { props: { spotId: this.spot.id } });
     }
     this._mapsApiService.openLatLngInGoogleMaps(this.spot.location);
+  }
+
+  openDirectionsInMaps() {
+    if (typeof plausible !== "undefined") {
+      plausible("Opening in Google Maps", { props: { spotId: this.spot.id } });
+    }
+    this._mapsApiService.openDirectionsInGoogleMaps(this.spot.location);
   }
 
   loadReportForSpot() {

@@ -146,7 +146,7 @@
                 <note category="meaning">Open in maps button tooltip</note>
             </notes>
             <segment>
-                <source>Open in maps</source>
+                <source>Open the location of this Spot in Google Maps</source>
             </segment>
         </unit>
         <unit id="5447579510411800451">
@@ -347,14 +347,14 @@
                 <source> Change password </source>
             </segment>
         </unit>
-        <unit id="4060911346155655179">
+        <unit id="133789173523080152">
             <segment>
                 <source>Your E-mail is verified</source>
             </segment>
         </unit>
         <unit id="3539941729807255231">
             <segment>
-                <source>Your E-mail has not been verified</source>
+                <source>Your E-mail has not been verified!</source>
             </segment>
         </unit>
         <unit id="1221014007346917816">
@@ -402,7 +402,7 @@
                 <source>The password is invalid!</source>
             </segment>
         </unit>
-        <unit id="4464026855827934139">
+        <unit id="5726791725186220555">
             <segment>
                 <source>The E-mail address is invalid!</source>
             </segment>
@@ -427,9 +427,9 @@
                 <source>Don&apos;t worry, the display name can be changed later.</source>
             </segment>
         </unit>
-        <unit id="5834187794255360331">
+        <unit id="6858563845386603352">
             <segment>
-                <source>The E-mail address needs to be verified later.</source>
+                <source>The e-mail address needs to be verified later.</source>
             </segment>
         </unit>
         <unit id="6464436780502674570">
@@ -482,7 +482,7 @@
                 <source>An unknown error has occured on sign in. Please try again.</source>
             </segment>
         </unit>
-        <unit id="783565455063139196">
+        <unit id="2978266456005156211">
             <segment>
                 <source>The E-mail address and password do not match for any existing user.</source>
             </segment>
@@ -501,6 +501,42 @@
         <unit id="947995176992343811">
             <segment>
                 <source>This E-Mail address is not valid!</source>
+            </segment>
+        </unit>
+        <unit id="directions_spot_aria_label">
+            <notes>
+                <note category="description">The aria label of the directions spot icon button</note>
+                <note category="meaning">Spot directions aria label</note>
+            </notes>
+            <segment>
+                <source>Icon button with a directions icon</source>
+            </segment>
+        </unit>
+        <unit id="directions_spot_tooltip">
+            <notes>
+                <note category="description">The tooltip of the directions spot icon button</note>
+                <note category="meaning">Directions spot tooltip</note>
+            </notes>
+            <segment>
+                <source>Directions to spot</source>
+            </segment>
+        </unit>
+        <unit id="share_spot_aria_label">
+            <notes>
+                <note category="description">The aria label of the share spot icon button</note>
+                <note category="meaning">Share spot aria label</note>
+            </notes>
+            <segment>
+                <source>Icon button with a share icon</source>
+            </segment>
+        </unit>
+        <unit id="share_spot_tooltip">
+            <notes>
+                <note category="description">The tootltip of the share spot icon button</note>
+                <note category="meaning">Share spot tooltip</note>
+            </notes>
+            <segment>
+                <source>Share this spot</source>
             </segment>
         </unit>
     </file>

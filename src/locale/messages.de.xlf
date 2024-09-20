@@ -132,7 +132,7 @@
                 <note category="meaning">Open in maps button tooltip</note>
             </notes>
             <segment state="initial">
-                <source>Open in maps</source>
+                <source>Open the location of this Spot in Google Maps</source>
                 <target>In Karten öffnen</target>
             </segment>
         </unit>
@@ -422,7 +422,7 @@
                 <target>Deine E-Mail wurde noch nicht verifiziert!</target>
             </segment>
         </unit>
-        <unit id="4060911346155655179">
+        <unit id="133789173523080152">
             <segment state="initial">
                 <source>Your E-mail is verified</source>
                 <target>Deine E-Mail ist verifiziert</target>
@@ -484,7 +484,7 @@
                 <target> Hier registrieren </target>
             </segment>
         </unit>
-        <unit id="4464026855827934139">
+        <unit id="5726791725186220555">
             <segment state="initial">
                 <source>The E-mail address is invalid!</source>
                 <target>Diese E-Mail Adresse ist ungültig!</target>
@@ -496,7 +496,7 @@
                 <target>Das Passwort ist ungültig!</target>
             </segment>
         </unit>
-        <unit id="783565455063139196">
+        <unit id="2978266456005156211">
             <segment state="initial">
                 <source>The E-mail address and password do not match for any existing user.</source>
                 <target>Für diese E-Mail Adresse und Passwort Kombination gibt es keinen Benutzer.</target>
@@ -533,9 +533,9 @@
                 <target>Keine sorge, der Anzeigename kann später geändert werden.</target>
             </segment>
         </unit>
-        <unit id="5834187794255360331">
+        <unit id="6858563845386603352">
             <segment state="initial">
-                <source>The E-mail address needs to be verified later.</source>
+                <source>The e-mail address needs to be verified later.</source>
                 <target>Die E-Mail Adresse muss später verifiziert werden.</target>
             </segment>
         </unit>
@@ -607,6 +607,46 @@
             <segment state="initial">
                 <source>Could not create account!</source>
                 <target>Account konnte nicht erstellt werden.</target>
+            </segment>
+        </unit>
+        <unit id="share_spot_tooltip">
+            <notes>
+                <note category="description">The tootltip of the share spot icon button</note>
+                <note category="meaning">Share spot tooltip</note>
+            </notes>
+            <segment state="initial">
+                <source>Share this spot</source>
+                <target>Spot teilen</target>
+            </segment>
+        </unit>
+        <unit id="share_spot_aria_label">
+            <notes>
+                <note category="description">The aria label of the share spot icon button</note>
+                <note category="meaning">Share spot aria label</note>
+            </notes>
+            <segment state="initial">
+                <source>Icon button with a share icon</source>
+                <target>Knopf mit 'Teilen' Grafik</target>
+            </segment>
+        </unit>
+        <unit id="directions_spot_tooltip">
+            <notes>
+                <note category="description">The tooltip of the directions spot icon button</note>
+                <note category="meaning">Directions spot tooltip</note>
+            </notes>
+            <segment state="initial">
+                <source>Directions to spot</source>
+                <target>Zu Spot navigieren</target>
+            </segment>
+        </unit>
+        <unit id="directions_spot_aria_label">
+            <notes>
+                <note category="description">The aria label of the directions spot icon button</note>
+                <note category="meaning">Spot directions aria label</note>
+            </notes>
+            <segment state="initial">
+                <source>Icon button with a directions icon</source>
+                <target>Knopf mit 'Navigation' Grafik</target>
             </segment>
         </unit>
     </file>

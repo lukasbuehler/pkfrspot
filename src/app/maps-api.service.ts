@@ -64,7 +64,16 @@ export class MapsApiService {
 
   openLatLngInGoogleMaps(location: google.maps.LatLngLiteral) {
     if (typeof window === "undefined") return; // abort if not in browser
-    window.open(`https://maps.google.com/?q=${location.lat},${location.lng}`);
+    window.open(
+      `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lng}`
+    );
+  }
+
+  openDirectionsInGoogleMaps(location: google.maps.LatLngLiteral) {
+    if (typeof window === "undefined") return; // abort if not in browser
+    window.open(
+      `https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`
+    );
   }
 
   autocompletePlaceSearch(

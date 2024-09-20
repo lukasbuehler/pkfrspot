@@ -58,10 +58,33 @@
       <button
         mat-icon-button
         matTooltip="Share this spot"
+        i18n-matTooltip="
+          Share spot tooltip|The tootltip of the share spot icon
+          button@@share_spot_tooltip"
         aria-label="Icon button with a share icon"
+        i18n-aria-label="
+          Share spot aria label|The aria label of the share spot icon
+          button@@share_spot_aria_label"
         (click)="shareSpot(); $event.stopPropagation()"
       >
         <mat-icon>share</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        matTooltip="Directions to spot"
+        i18n-matTooltip="
+          Directions spot tooltip|The tooltip of the directions spot icon
+          button@@directions_spot_tooltip"
+        aria-label="Icon button with a directions icon"
+        i18n-aria-label="
+          Spot directions aria label|The aria label of the directions spot icon
+          button@@directions_spot_aria_label"
+        (click)="openDirectionsInMaps()"
+      >
+        <mat-icon>directions</mat-icon>
+        <!-- <mat-icon>turn_right</mat-icon> -->
+        <!-- <mat-icon>route</mat-icon> -->
+        <!-- <mat-icon>share_location</mat-icon> -->
       </button>
     </div>
   </mat-card-header>
@@ -126,6 +149,63 @@
         {{ getCountryNameFromShortCode(spot.address.country.short) }}
       </p>
     </div> -->
+
+    <!-- Freatures -->
+    @if(false) {
+    <div class="mb-5">
+      <h4 i18n class="mat-title-small">Features</h4>
+      <mat-chip-set aria-label="Dog selection">
+        <mat-chip>
+          <mat-icon matChipAvatar>roofing</mat-icon>
+          Covered
+        </mat-chip>
+        <mat-chip>
+          <mat-icon matChipAvatar>nature_people</mat-icon>
+          Outdoor
+        </mat-chip>
+        <mat-chip>
+          <mat-icon matChipAvatar>home</mat-icon>
+          Indoor
+        </mat-chip>
+        <mat-chip>
+          <mat-icon matChipAvatar>lightbulb</mat-icon>
+          Lighting
+        </mat-chip>
+        <mat-chip>
+          <mat-icon matChipAvatar>wc</mat-icon>
+          WC
+        </mat-chip>
+        <mat-chip>
+          <mat-icon matChipAvatar>checkroom</mat-icon>
+          Changing room
+        </mat-chip>
+        <mat-chip>
+          <mat-icon matChipAvatar>lock</mat-icon>
+          Lockers
+        </mat-chip>
+        <mat-chip class="error-chips">
+          <mat-icon matChipAvatar>paid</mat-icon>
+          Enree fee
+        </mat-chip>
+        <mat-chip>
+          <mat-icon matChipAvatar>water_drop</mat-icon>
+          Drinking water
+        </mat-chip>
+        <mat-chip>
+          <mat-icon matChipAvatar>local_parking</mat-icon>
+          Local parking
+        </mat-chip>
+        <mat-chip>
+          <mat-icon matChipAvatar>power</mat-icon>
+          Power outlet
+        </mat-chip>
+        <mat-chip class="tertiary-chips">
+          <mat-icon matChipAvatar>grass</mat-icon>
+          Possibly overgrown
+        </mat-chip>
+      </mat-chip-set>
+    </div>
+    }
 
     <div class="d-flex justify-start pb-2">
       <button

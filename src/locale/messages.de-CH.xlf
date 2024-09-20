@@ -16,8 +16,8 @@
             <segment state="initial">
                 <source> Discover spots and fellow athletes, plan training sessions with your
                     friends and share achievements and memories with them and the world. </source>
-                <target> Entdeck Spots und Athlete, plan gemeinsami Trainings mit dine Fründe
-                    und teil deini Erfolg und Erinnerunge mit ihne und de Welt. </target>
+                <target> Entdeck Spots und Athlete, plan gemeinsami Trainings mit dine Fründe und
+                    teil deini Erfolg und Erinnerunge mit ihne und de Welt. </target>
             </segment>
         </unit>
         <unit id="7411379953853971507">
@@ -75,9 +75,9 @@
                 <source> Join our community of Parkour and Freerunning enthusiasts! Contribute your
                     ideas, report bugs, and provide feedback to help us improve this platform
                     together! </source>
-                <target> Tritt eusere Community vo Parkour und Freerunning Enthusiaste bi!
-                    Bring deini Idee ih, meld Bugs und teil Feedback, zum eus helfe, die
-                    Plattform gmeinsam z'verbessere! </target>
+                <target> Tritt eusere Community vo Parkour und Freerunning Enthusiaste bi! Bring
+                    deini Idee ih, meld Bugs und teil Feedback, zum eus helfe, die Plattform
+                    gmeinsam z&apos;verbessere! </target>
             </segment>
         </unit>
         <unit id="5825310972408482968">
@@ -132,7 +132,7 @@
                 <note category="meaning">Open in maps button tooltip</note>
             </notes>
             <segment state="initial">
-                <source>Open in maps</source>
+                <source>Open the location of this Spot in Google Maps</source>
                 <target>Öffne de Spot in Google Maps</target>
             </segment>
         </unit>
@@ -278,9 +278,9 @@
             <segment state="initial">
                 <source> You can edit your public profile here. The information on your public
                     profile can be seen by everyone, even unauthenticated visitors. </source>
-                <target> Da chasch du dis öffentliche Profil bearbeite. Die Informatione vo
-                    dim öffentlichen Profil chönd von alle gseh werde, au
-                    Benutzer wo nöd ahgmeldet sind. </target>
+                <target> Da chasch du dis öffentliche Profil bearbeite. Die Informatione vo dim
+                    öffentlichen Profil chönd von alle gseh werde, au Benutzer wo nöd ahgmeldet
+                    sind. </target>
             </segment>
         </unit>
         <unit id="7008130086784868968">
@@ -294,9 +294,9 @@
                 <source> Your login information. Your E-mail address here is used for your login.
                     You can add the same E-mail address or a different one to your contact
                     information. </source>
-                <target> Deini Login-Informatione. Die E-Mail Adresse wird fürs Login
-                    bruucht. Du chasch di gliiche oder en anderi E-Mail Adresse für dini
-                    Kontaktinformatione ahgeh. </target>
+                <target> Deini Login-Informatione. Die E-Mail Adresse wird fürs Login bruucht. Du
+                    chasch di gliiche oder en anderi E-Mail Adresse für dini Kontaktinformatione
+                    ahgeh. </target>
             </segment>
         </unit>
         <unit id="6815507474406960450">
@@ -314,7 +314,7 @@
         <unit id="5563672453089263696">
             <segment state="initial">
                 <source>Changing this E-mail will change your login information</source>
-                <target>S'ändere vo dere E-Mail Adresse änderet deini Login-Informatione</target>
+                <target>S&apos;ändere vo dere E-Mail Adresse änderet deini Login-Informatione</target>
             </segment>
         </unit>
         <unit id="3934298777794632654">
@@ -422,7 +422,7 @@
                 <target>Dini E-Mail isch nonig verifiziert worde!</target>
             </segment>
         </unit>
-        <unit id="4060911346155655179">
+        <unit id="133789173523080152">
             <segment state="initial">
                 <source>Your E-mail is verified</source>
                 <target>Dini E-Mail isch verifiziert</target>
@@ -443,7 +443,7 @@
         <unit id="3865137547467472091">
             <segment state="initial">
                 <source>The password field is empty!</source>
-                <target>S'Passwort Feld isch leer!</target>
+                <target>S&apos;Passwort Feld isch leer!</target>
             </segment>
         </unit>
         <unit id="6663783128602596673">
@@ -484,7 +484,7 @@
                 <target> Da registrieren </target>
             </segment>
         </unit>
-        <unit id="4464026855827934139">
+        <unit id="5726791725186220555">
             <segment state="initial">
                 <source>The E-mail address is invalid!</source>
                 <target>Die E-Mail Adresse isch ungültig!</target>
@@ -496,7 +496,7 @@
                 <target>Das Passwort isch ungültig!</target>
             </segment>
         </unit>
-        <unit id="783565455063139196">
+        <unit id="2978266456005156211">
             <segment state="initial">
                 <source>The E-mail address and password do not match for any existing user.</source>
                 <target>Für die E-Mail Adresse und Passwort Kombination gits kein Benutzer.</target>
@@ -505,8 +505,7 @@
         <unit id="7733953409417762446">
             <segment state="initial">
                 <source>An unknown error has occured on sign in. Please try again.</source>
-                <target>En unbekannte Fehler isch uftrette bi de Ahnmeldig. Bitte versuechs
-                    nomal.</target>
+                <target>En unbekannte Fehler isch uftrette bi de Ahnmeldig. Bitte versuechs nomal.</target>
             </segment>
         </unit>
         <unit id="7323901917278002498">
@@ -533,9 +532,9 @@
                 <target>Kei sorge, de Anzeigename cha spöter gändert werde.</target>
             </segment>
         </unit>
-        <unit id="5834187794255360331">
+        <unit id="6858563845386603352">
             <segment state="initial">
-                <source>The E-mail address needs to be verified later.</source>
+                <source>The e-mail address needs to be verified later.</source>
                 <target>Die E-Mail Adresse muss spöter verifiziert werde.</target>
             </segment>
         </unit>
@@ -554,7 +553,7 @@
         <unit id="5261342889229534364">
             <segment state="initial">
                 <source>The repeated password needs to match the password entered.</source>
-                <target>S'wiederholte Passwort muss dem ersten entspreche.</target>
+                <target>S&apos;wiederholte Passwort muss dem ersten entspreche.</target>
             </segment>
         </unit>
         <unit id="7571375880734710634">
@@ -577,7 +576,7 @@
                         equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt"
                         dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacy declaration</pc> and
                     agree to both.</source>
-                <target>Ich ha d'<pc id="0" equivStart="START_BOLD_TEXT"
+                <target>Ich ha d&apos;<pc id="0" equivStart="START_BOLD_TEXT"
                         equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;"
                         dispEnd="&lt;/b&gt;">Terms of Service</pc> und die <pc id="1"
                         equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt"
@@ -594,19 +593,59 @@
         <unit id="6464436780502674570">
             <segment state="initial">
                 <source>Password and repeated password don&apos;t match</source>
-                <target>D'ie 'Passwörter stimmed nöd überein.</target>
+                <target>D&apos;ie &apos;Passwörter stimmed nöd überein.</target>
             </segment>
         </unit>
         <unit id="1948163304836345687">
             <segment state="initial">
                 <source>You need to agree to the terms and conditions!</source>
-                <target>Du musch d"Terms and Conditions" ahneh.</target>
+                <target>Du musch d&quot;Terms and Conditions&quot; ahneh.</target>
             </segment>
         </unit>
         <unit id="3601523967492159201">
             <segment state="initial">
                 <source>Could not create account!</source>
                 <target>De Account het nöd chöne erstellt werde.</target>
+            </segment>
+        </unit>
+        <unit id="share_spot_tooltip">
+            <notes>
+                <note category="description">The tootltip of the share spot icon button</note>
+                <note category="meaning">Share spot tooltip</note>
+            </notes>
+            <segment state="initial">
+                <source>Share this spot</source>
+                <target>Spot teile</target>
+            </segment>
+        </unit>
+        <unit id="share_spot_aria_label">
+            <notes>
+                <note category="description">The aria label of the share spot icon button</note>
+                <note category="meaning">Share spot aria label</note>
+            </notes>
+            <segment state="initial">
+                <source>Icon button with a share icon</source>
+                <target>Knopf mit 'Teile' Grafik</target>
+            </segment>
+        </unit>
+        <unit id="directions_spot_tooltip">
+            <notes>
+                <note category="description">The tooltip of the directions spot icon button</note>
+                <note category="meaning">Directions spot tooltip</note>
+            </notes>
+            <segment state="initial">
+                <source>Directions to spot</source>
+                <target>Zum Spot navigiere</target>
+            </segment>
+        </unit>
+        <unit id="directions_spot_aria_label">
+            <notes>
+                <note category="description">The aria label of the directions spot icon button</note>
+                <note category="meaning">Spot directions aria label</note>
+            </notes>
+            <segment state="initial">
+                <source>Icon button with a directions icon</source>
+                <target>Knopf mit 'Navigation' Grafik</target>
             </segment>
         </unit>
     </file>
