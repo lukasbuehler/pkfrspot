@@ -23,7 +23,7 @@ function detectLanguage(req, res, next) {
     !req.path.startsWith("/de") &&
     !req.path.startsWith("/de-CH")
   ) {
-    return res.redirect(`/${preferredLanguage}${req.path}`);
+    return res.redirect(`/${preferredLanguage}${req.path}`, 301);
   }
 
   next();
