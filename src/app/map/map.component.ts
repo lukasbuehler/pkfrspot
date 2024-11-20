@@ -18,6 +18,7 @@ import {
   MapHeatmapLayer,
   MapCircle,
   MapMarker,
+  MapAdvancedMarker,
 } from "@angular/google-maps";
 import { BehaviorSubject, Observable } from "rxjs";
 import { environment } from "../../environments/environment";
@@ -38,6 +39,7 @@ import { NgIf, NgFor, AsyncPipe } from "@angular/common";
     MapCircle,
     MapPolygon,
     MapMarker,
+    MapAdvancedMarker,
     NgFor,
     AsyncPipe,
   ],
@@ -100,10 +102,18 @@ export class MapComponent implements OnInit {
   @Input() markers: google.maps.LatLngLiteral[] = [];
   @Input() selectedMarker: google.maps.LatLngLiteral | null = null;
 
+  selectedSpotMarkerNode: Node | null = null;
+
   constructor(
     private cdr: ChangeDetectorRef,
     public mapsApiService: MapsApiService
-  ) {}
+  ) {
+    if (this.selectedSpot) {
+      this.selectedSpotMarkerNode = this.buildAdvancedMarkerContent(
+        this.selectedSpot
+      );
+    }
+  }
 
   ngOnInit() {
     this.mapsApiService.isApiLoaded$.subscribe((isLoaded) => {
@@ -164,6 +174,16 @@ export class MapComponent implements OnInit {
     });
   }
 
+  buildAdvancedMarkerContent(spot: Spot.Class): HTMLDivElement {
+    const content = document.createElement("div");
+    content.classList.add("advanced-spot-marker");
+    content.innerHTML = `
+      <div>${spot.rating ?? 7}</div> 
+    `; // TODO remove 7
+
+    return content;
+  }
+
   useGeolocation() {
     if (this.showGeolocation) {
       let geolocationWatchId = navigator.geolocation.watchPosition(
@@ -205,15 +225,16 @@ export class MapComponent implements OnInit {
 
   //mapStyle: google.maps.MapTypeId = google.maps.MapTypeId.ROADMAP;
   mapStyle = "roadmap";
-  mapStylesConfig = map_style;
+  //   mapStylesConfig = map_style;
 
   mapOptions: google.maps.MapOptions = {
+    mapId: environment.mapId,
     backgroundColor: "#000000",
     clickableIcons: false,
     gestureHandling: "greedy",
     mapTypeId: this.mapStyle,
     disableDefaultUI: true,
-    styles: this.mapStylesConfig,
+    // styles: this.mapStylesConfig,
   };
   mapTypeId: string = "roadmap";
 

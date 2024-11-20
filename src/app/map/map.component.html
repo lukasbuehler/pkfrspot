@@ -45,16 +45,23 @@
   ></map-polygon>
   }
 
-  <map-marker
+  <!-- Advanced marker -->
+
+  @if(selectedSpot) {
+  <map-advanced-marker [position]="selectedSpot.location"></map-advanced-marker>
+  }
+
+  <!-- <map-marker
     *ngIf="selectedSpot"
     #selectedSpotMarker
+    className="'spot-marker'"
     id="selectedSpotMarker"
     [options]="
       isEditing ? selectedSpotMarkerEditingOptions : selectedSpotMarkerOptions
     "
     [position]="selectedSpot.location"
     (mapDragend)="editingSpotPositionChanged($event.latLng)"
-  ></map-marker>
+  ></map-marker> -->
   } }
 
   <!-- Geolocation -->
