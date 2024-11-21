@@ -74,8 +74,12 @@ export namespace Spot {
       return this._data.isMiniSpot;
     }
 
-    public get rating(): number {
+    public get rating(): number | null {
       return this._data.rating;
+    }
+
+    public get isIconic(): boolean {
+      return this._data.isIconic ?? false;
     }
 
     public getDescription(locale: string): string {
@@ -398,6 +402,7 @@ export namespace Spot {
 
     isMiniSpot?: boolean;
     rating?: number; // from 1 to 10, set by cloud function.
+    isIconic?: boolean;
     description?: LocaleMap;
     media?: ContributedMedia[];
 
