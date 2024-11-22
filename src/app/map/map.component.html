@@ -14,16 +14,21 @@
   height="100%"
 >
   @if (zoom < 16) {
-  <!-- Cluster Heatmap -->
-  <!-- <map-heatmap-layer [data]="dots" [options]="heatmapOptions" /> -->
-
-  <!-- Cluster Marker -->
+  <!-- Cluster Markers -->
   @for (dot of dots; track $index) {
-  <div #smallDot class="small-dot-marker marker-primary"></div>
+  <div
+    #smallDot
+    class="small-dot-marker marker-primary"
+    [ngClass]="{
+      'marker-primary-dark': isDarkMode,
+      'marker-primary-light': !isDarkMode
+    }"
+  ></div>
   <map-advanced-marker
     [position]="dot.location"
     [options]="primaryDotMarkerOptions"
     [content]="smallDot"
+    (mapClick)="focusOnDot(dot.location)"
   ></map-advanced-marker>
   } } @else { @for(spot of spots; track $index) { @if(!spot?.hasBounds()) {
   <map-circle
@@ -114,6 +119,7 @@
     [position]="(geolocation$ | async).location"
     [options]="geolocationMarkerOptions"
     [content]="geolocationMarker"
+    [zIndex]="10"
   >
   </map-advanced-marker>
   <map-circle

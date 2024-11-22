@@ -15,6 +15,16 @@
 
   .marker-primary {
     background-color: mat.get-theme-color($theme, primary);
+
+    transition: background-color 1s ease, border-color 1s ease;
+
+    &.marker-primary-light {
+      background-color: border-color #dde1ff;
+    }
+
+    &.marker-primary-dark {
+      background-color: mat.get-theme-color($theme, primary);
+    }
   }
   .marker-secondary {
     background-color: mat.get-theme-color($theme, secondary);

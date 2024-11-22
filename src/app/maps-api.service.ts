@@ -35,9 +35,7 @@ export class MapsApiService {
     if (typeof document === "undefined") return; // abort if not in browser (e.g. server-side rendering
 
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${
-      environment.keys.firebaseConfig.apiKey
-    }&libraries=visualization,places&v=${"beta"}`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.keys.firebaseConfig.apiKey}&libraries=visualization,places`;
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
