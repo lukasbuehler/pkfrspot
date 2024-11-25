@@ -16,15 +16,7 @@
     <mat-card-title>
       {{ spot.getName(locale) }}
     </mat-card-title>
-    @if(spot.address) {
-    <mat-card-subtitle class="pt-1 d-flex flex-row">
-      <!-- @if(spot.type && spot.type !== "other") {
-      <mat-chip class="me-1">{{ capitalize(spot.type) }}</mat-chip>
-      } @if(spot.area && spot.area !== "other") {
-      <mat-chip [color]="spot.area === 'private' ? 'warn' : ''">{{
-        capitalize(spot.area)
-      }}</mat-chip>
-      } -->
+    <mat-card-subtitle>
       @if(spot.rating) {
       <span class="d-flex flex-row font-weight-bold align-items-center">
         <mat-icon style="width: 20px; height: 20px; font-size: 20px"
@@ -33,10 +25,19 @@
         {{ spot.rating }}
         <span class="px-1">·</span>
       </span>
-      }
+      } @if(spot.address) {
       {{ spot.getLocalityString() }}
+      }
     </mat-card-subtitle>
-    }
+    <!-- <mat-card-subtitle class="pt-2 d-flex flex-row">
+      @if(spot.type && spot.type !== "other") {
+      <mat-chip class="me-1">{{ capitalize(spot.type) }}</mat-chip>
+      } @if(spot.area && spot.area !== "other") {
+      <mat-chip [color]="spot.area === 'private' ? 'warn' : ''">{{
+        capitalize(spot.area)
+      }}</mat-chip>
+      }
+    </mat-card-subtitle> -->
 
     <!-- Icon buttons in header -->
     <div class="spot-button-row" *ngIf="!isEditing">

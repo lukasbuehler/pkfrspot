@@ -423,11 +423,5 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
         reason: "",
       },
     });
-
-    dialogRef.afterClosed().subscribe((report: SpotReport) => {
-      console.log(report);
-      // Report this spot
-      this._dbService.addSpotReport(report);
-    });
   }
 }

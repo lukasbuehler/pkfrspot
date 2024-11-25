@@ -383,8 +383,7 @@ export class SpotMapComponent implements AfterViewInit {
 
     const title: string = `${spot.getName(this.locale)} - PKFR Spot`;
     const image_src: string = spot.previewImage;
-    const description: string =
-      "Spot in "+ spot.getLocalityString(); // TODO change and localize
+    const description: string = "Spot in " + spot.getLocalityString(); // TODO change and localize
 
     // Title
     this.titleService.setTitle(title);
@@ -457,7 +456,7 @@ export class SpotMapComponent implements AfterViewInit {
       new Spot.Class(
         "", // The id needs to be empty for the spot to be recognized as new
         {
-          name: { [this.locale]: "New Spot" }, // TODO change to user lang
+          name: { [this.locale]: $localize`New Spot` }, // TODO change to user lang
           location: new GeoPoint(
             center_coordinates.lat,
             center_coordinates.lng
@@ -502,7 +501,10 @@ export class SpotMapComponent implements AfterViewInit {
 
         // Successfully updated
         this.setIsEditing(false);
-        this.snackBar.open("Spot saved successfully", "Dismiss");
+        this.snackBar.open(
+          $localize`Spot saved successfully`,
+          $localize`Dismiss`
+        );
 
         // update the selected spot so that it is displayed in the URL
         this.setSelectedSpot(null);
@@ -511,7 +513,7 @@ export class SpotMapComponent implements AfterViewInit {
       .catch((error) => {
         this.setIsEditing(false);
         console.error("Error saving spot:", error);
-        this.snackBar.open("Error saving spot", "Dismiss");
+        this.snackBar.open($localize`Error saving spot`, $localize`Dismiss`);
       });
   }
 

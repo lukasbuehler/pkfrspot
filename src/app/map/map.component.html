@@ -113,11 +113,13 @@
     #selectedSpotMarker
     id="selectedSpotMarker"
     [position]="spot.location"
-    [draggable]="isEditing"
+    [options]="{
+      gmpDraggable: true
+    }"
     (mapDragend)="editingSpotPositionChanged($event.latLng)"
     [content]="selectedSpotMarkerNode"
   ></map-advanced-marker>
-  <div
+  <!-- <div
     class="pin-marker"
     #selectedSpotMarkerNode
     id="selectedSpotMarkerNode"
@@ -140,7 +142,7 @@
         fill="#DDE1FF"
       />
     </svg>
-  </div>
+  </div> -->
   }
 
   <!-- Geolocation -->

@@ -12,8 +12,8 @@
     <mat-radio-button value="does not exist" i18n
       >Does not exist</mat-radio-button
     >
-    <mat-radio-button value="secret spot" i18n
-      >It's a secret spot!</mat-radio-button
+    <mat-radio-button value="private" i18n
+      >It's a private spot and should not be on this spot map.</mat-radio-button
     >
     <mat-radio-button value="other" i18n>Other</mat-radio-button>
   </mat-radio-group>
@@ -41,6 +41,7 @@
     [mat-dialog-close]="data"
     color="warn"
     cdkFocusInitial
+    (click)="submitReport()"
     i18n
   >
     Report

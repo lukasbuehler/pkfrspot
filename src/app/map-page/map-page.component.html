@@ -165,10 +165,16 @@
         ></app-spot-compact-view>
       </div>
       } @else {
+      <!-- @if(spotMap.mapZoom >= 16) { -->
       <app-spot-list
         [spots]="visibleSpots"
         (clickSpot)="spotMap.openSpot($event)"
       ></app-spot-list>
+      <!-- } @else { -->
+      <!-- <p i18n class="mat-body-large">
+        Zoom in closer on an area to see its spots.
+      </p> -->
+      <!-- }  -->
       }
     </app-bottom-sheet>
   </div>
