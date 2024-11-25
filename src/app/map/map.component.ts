@@ -101,15 +101,19 @@ export class MapComponent implements OnInit {
   @Input() markers: google.maps.LatLngLiteral[] = [];
   @Input() selectedMarker: google.maps.LatLngLiteral | null = null;
 
+  highlightedSpots: Spot.Class[] = [];
+
   constructor(
     private cdr: ChangeDetectorRef,
     public mapsApiService: MapsApiService
   ) {
-    if (this.selectedSpot) {
-      this.selectedSpotMarkerNode = this.buildAdvancedMarkerContent(
-        this.selectedSpot
-      );
-    }
+    // if (this.selectedSpot) {
+    //   this.selectedSpotMarkerNode = this.buildAdvancedMarkerContent(
+    //     this.selectedSpot
+    //   );
+    // }
+
+    this.highlightedSpots = this.spots.slice(0, 3);
   }
 
   mapStyle = "roadmap";
@@ -173,15 +177,15 @@ export class MapComponent implements OnInit {
     });
   }
 
-  buildAdvancedMarkerContent(spot: Spot.Class): HTMLDivElement {
-    const content = document.createElement("div");
-    content.classList.add("advanced-spot-marker");
-    content.innerHTML = `
-      <div>${spot.rating ?? 7}</div> 
-    `; // TODO remove 7
+  //   buildAdvancedMarkerContent(spot: Spot.Class): HTMLDivElement {
+  //     const content = document.createElement("div");
+  //     content.classList.add("advanced-spot-marker");
+  //     content.innerHTML = `
+  //       <div>${spot.rating ?? 7}</div>
+  //     `; // TODO remove 7
 
-    return content;
-  }
+  //     return content;
+  //   }
 
   useGeolocation() {
     if (this.showGeolocation) {
@@ -296,13 +300,14 @@ export class MapComponent implements OnInit {
   //   };
 
   spotCircleDarkOptions: google.maps.CircleOptions = {
-    fillColor: "#b8c4ff",
-    fillOpacity: 0.7,
+    fillColor: "#0036ba",
+    fillOpacity: 0.3,
     strokeColor: "#b8c4ff",
+    strokeWeight: 5,
     draggable: false,
     clickable: true,
-    strokeWeight: 0,
-    strokeOpacity: 0,
+    // strokeWeight: 0,
+    // strokeOpacity: 0,
   };
   //   spotCircleLightOptions: google.maps.CircleOptions = {
   //     ...this.spotCircleDarkOptions,
@@ -314,9 +319,10 @@ export class MapComponent implements OnInit {
   spotCircleOptions: google.maps.CircleOptions = this.spotCircleDarkOptions;
 
   spotPolygonDarkOptions: google.maps.PolygonOptions = {
-    fillColor: "#b8c4ff",
+    fillColor: "#0036ba",
     strokeColor: "#b8c4ff",
-    fillOpacity: 0.5,
+    strokeWeight: 5,
+    fillOpacity: 0.3,
     editable: false,
     draggable: false,
     clickable: true,

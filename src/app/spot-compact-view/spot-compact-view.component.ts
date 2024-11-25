@@ -361,8 +361,8 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
   }
 
   loadReportForSpot() {
-    this._dbService.getSpotReportsBySpotId(this.spot.id).then((report) => {
-      this.report = report || null;
+    this._dbService.getSpotReportsBySpotId(this.spot.id).then((reports) => {
+      this.report = reports[0] || null;
     });
   }
 

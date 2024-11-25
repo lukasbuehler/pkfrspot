@@ -17,7 +17,7 @@
       {{ spot.getName(locale) }}
     </mat-card-title>
     @if(spot.address) {
-    <mat-card-subtitle class="pt-2">
+    <mat-card-subtitle class="pt-1 d-flex flex-row">
       <!-- @if(spot.type && spot.type !== "other") {
       <mat-chip class="me-1">{{ capitalize(spot.type) }}</mat-chip>
       } @if(spot.area && spot.area !== "other") {
@@ -25,6 +25,15 @@
         capitalize(spot.area)
       }}</mat-chip>
       } -->
+      @if(spot.rating) {
+      <span class="d-flex flex-row font-weight-bold align-items-center">
+        <mat-icon style="width: 20px; height: 20px; font-size: 20px"
+          >star</mat-icon
+        >
+        {{ spot.rating }}
+        <span class="px-1">·</span>
+      </span>
+      }
       {{ spot.getLocalityString() }}
     </mat-card-subtitle>
     }
@@ -90,7 +99,7 @@
   </mat-card-header>
   } @if(report) {
   <div class="report-info">
-    <span class="mat-h3 m-0"
+    <span class="mat-h3 m-0" i18n
       >This spot was reported as "{{ report.reason }}"</span
     >
   </div>
@@ -151,8 +160,8 @@
     </div> -->
 
     <!-- Freatures -->
-    @if(false) {
-    <div class="mb-5">
+    @if(true) {
+    <div class="mb-3">
       <h4 i18n class="mat-title-small">Features and amenities</h4>
       <mat-chip-set aria-label="Dog selection">
         <mat-chip>
@@ -332,7 +341,7 @@
           description edit field
         "
         placeholder="Description of the spot, its features and more..."
-        [value]="spot?.getDescription(locale)"
+        [value]="spot?.getDescription(locale) ?? ''"
         (change)="spot.setDescription($event.target.value, locale)"
       ></textarea>
     </mat-form-field>

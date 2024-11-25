@@ -15,6 +15,12 @@ To tweak a translation go to the corresponding file,
 
 #### Adding a language
 
+#### Updating the language files after adding text
+
+```
+ng extract-i18n
+```
+
 ### Developing Locally
 
 1. Generate your own Google API key

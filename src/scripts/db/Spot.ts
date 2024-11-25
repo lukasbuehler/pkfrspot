@@ -1,4 +1,9 @@
-import { ContributedMedia, LocaleMap, MediaType } from "./Interfaces";
+import {
+  ContributedMedia,
+  LocaleMap,
+  MediaType,
+  AmenitiesMap,
+} from "./Interfaces";
 import { MapHelpers } from "../MapHelpers";
 import { DatabaseService } from "../../app/database.service";
 import { StorageFolder, StorageService } from "../../app/storage.service";
@@ -84,7 +89,7 @@ export namespace Spot {
 
     public getDescription(locale: string): string {
       if (this._data.description) {
-        return this._data.description[locale];
+        return this._data.description[locale] ?? "";
       }
       return "";
     }
@@ -410,6 +415,8 @@ export namespace Spot {
     area?: string;
 
     address?: AddressSchema;
+
+    amenities?: AmenitiesMap;
 
     bounds?: GeoPointLiteral[];
 

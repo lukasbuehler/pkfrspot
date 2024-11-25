@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center">
-  <h3 class="mat-title-medium m-0" i18n>In this area</h3>
+  <h3 class="mat-title-medium m-0" i18n>Spots in this area</h3>
   <mat-button-toggle-group #group="matButtonToggleGroup" value="grid">
     <mat-button-toggle value="grid" aria-label="Grid view">
       <mat-icon>grid_view</mat-icon>
@@ -12,7 +12,7 @@
 
 <!-- Spot highlights -->
 @if(highlightedSpots.length > 0) {
-<h4 class="mat-title-large" i18n>Highlights</h4>
+<!-- <h4 class="mat-title-large" i18n>Highlights</h4> -->
 <div>
   @for(spot of highlightedSpots; track spot) {
   <app-spot-preview-card
@@ -30,7 +30,7 @@
 
 <!-- All spots except highlights -->
 @if(remainingSpots.length > 0) {
-<h4 class="mat-title-large" i18n>Spots</h4>
+<!-- <h4 class="mat-title-large" i18n>Spots</h4> -->
 <div [class.compact]="group.value === 'compact'" [class.spot-container]="true">
   @for(spot of remainingSpots; track spot) {
   <app-spot-preview-card
@@ -44,6 +44,4 @@
   </app-spot-preview-card>
   }
 </div>
-} @else {
-<p i18n class="mat-body-medium">No spots in this area.</p>
 }

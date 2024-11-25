@@ -359,20 +359,6 @@
                 <target>Benachrichtunge</target>
             </segment>
         </unit>
-        <unit id="6374817750820299933">
-            <segment state="initial">
-                <source>
-                    <ph id="0" equiv="INTERPOLATION" disp="{{ spots.length }}" /> spot<ph id="1"
-                        equiv="INTERPOLATION_1"
-                        disp="{{ spots.length === 1 ? &quot;&quot; : &quot;s&quot; }}" /> in this
-                    area </source>
-                <target>
-                    <ph id="0" equiv="INTERPOLATION" disp="{{ spots.length }}" /> Spot<ph id="1"
-                        equiv="INTERPOLATION_1"
-                        disp="{{ spots.length === 1 ? &quot;&quot; : &quot;s&quot; }}" /> i dere
-                    Region </target>
-            </segment>
-        </unit>
         <unit id="5207635742003539443">
             <segment state="initial">
                 <source>Sign in</source>
@@ -593,7 +579,7 @@
         <unit id="6464436780502674570">
             <segment state="initial">
                 <source>Password and repeated password don&apos;t match</source>
-                <target>D&apos;ie &apos;Passwörter stimmed nöd überein.</target>
+                <target>D'Passwörter stimmed nöd überein.</target>
             </segment>
         </unit>
         <unit id="1948163304836345687">
@@ -625,7 +611,7 @@
             </notes>
             <segment state="initial">
                 <source>Icon button with a share icon</source>
-                <target>Knopf mit 'Teile' Grafik</target>
+                <target>Knopf mit &apos;Teile&apos; Grafik</target>
             </segment>
         </unit>
         <unit id="directions_spot_tooltip">
@@ -645,7 +631,27 @@
             </notes>
             <segment state="initial">
                 <source>Icon button with a directions icon</source>
-                <target>Knopf mit 'Navigation' Grafik</target>
+                <target>Knopf mit &apos;Navigation&apos; Grafik</target>
+            </segment>
+        </unit>
+        <unit id="5176788475731011723">
+            <segment state="initial">
+                <source>This spot was reported as &quot;<ph id="0" equiv="INTERPOLATION"
+                        disp="{{ report.reason }}" />&quot;</source>
+                <target>De spot isch gmolde worde als &quot;<ph id="0" equiv="INTERPOLATION"
+                        disp="{{ report.reason }}" />&quot;</target>
+            </segment>
+        </unit>
+        <unit id="2267637299863581067">
+            <segment state="initial">
+                <source>Features and amenities</source>
+                <target>Eigeschafte und Annehmlichkeite</target>
+            </segment>
+        </unit>
+        <unit id="8011758699583016596">
+            <segment state="initial">
+                <source>Spots in this area</source>
+                <target>Spots i dere Umgebig</target>
             </segment>
         </unit>
     </file>

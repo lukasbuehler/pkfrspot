@@ -1,22 +1,26 @@
-<h2 mat-dialog-title>Report Spot '{{ data.spot?.name }}'</h2>
+<h2 mat-dialog-title i18n>Report Spot '{{ data.spot?.name }}'</h2>
 <mat-dialog-content>
-  <p>What would you like to report this spot for?</p>
+  <p i18n>What would you like to report this spot for?</p>
   <mat-radio-group
     color="warn"
     class="d-flex flex-column"
     [(ngModel)]="data.reason"
   >
-    <mat-radio-button value="duplicate"> Duplicate </mat-radio-button>
+    <mat-radio-button value="duplicate" i18n> Duplicate </mat-radio-button>
 
-    <mat-radio-button value="torn down">Torn down</mat-radio-button>
-    <mat-radio-button value="does not exist">Does not exist</mat-radio-button>
-    <mat-radio-button value="secret spot">It's a secret spot!</mat-radio-button>
-    <mat-radio-button value="other">Other</mat-radio-button>
+    <mat-radio-button value="torn down" i18n>Torn down</mat-radio-button>
+    <mat-radio-button value="does not exist" i18n
+      >Does not exist</mat-radio-button
+    >
+    <mat-radio-button value="secret spot" i18n
+      >It's a secret spot!</mat-radio-button
+    >
+    <mat-radio-button value="other" i18n>Other</mat-radio-button>
   </mat-radio-group>
   @if(data.reason === 'duplicate') {
-  <p class="mat-body pt-3">Which spot is this spot a duplicate of?</p>
+  <p class="mat-body pt-3" i18n>Which spot is this spot a duplicate of?</p>
   <mat-form-field class="w-100">
-    <mat-label>Spot</mat-label>
+    <mat-label i18n>Spot</mat-label>
     <input
       matInput
       placeholder="Spot name"
@@ -24,19 +28,20 @@
       required
     /> </mat-form-field
   >}
-  <p class="mat-body pt-3">
+  <p class="mat-body pt-3" i18n>
     Note: Spot reports are public and will be displayed on the spot itself
     together with your profile and user name.
   </p>
 </mat-dialog-content>
 <mat-dialog-actions class="d-flex justify-content-between p-3">
-  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onNoClick()" i18n>Cancel</button>
   <button
     [disabled]="!data.reason"
     mat-flat-button
     [mat-dialog-close]="data"
     color="warn"
     cdkFocusInitial
+    i18n
   >
     Report
   </button>

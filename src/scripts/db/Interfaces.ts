@@ -42,3 +42,18 @@ export interface ContributedMedia extends Media {
   uid: string;
   origin?: "streetview" | "user";
 }
+
+export interface AmenitiesMap {
+  covered: boolean;
+  outdoor: boolean;
+  indoor: boolean;
+  lighting: boolean;
+  wc: boolean;
+  changing_room: boolean;
+  lockers: boolean;
+  entry_fee: boolean;
+  drinking_water: boolean;
+  parking_on_site: boolean;
+  power_outlets: boolean;
+  maybe_overgrown: boolean;
+}
