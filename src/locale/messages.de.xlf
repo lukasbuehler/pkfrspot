@@ -174,10 +174,10 @@
                 <target>Diesen Spot melden</target>
             </segment>
         </unit>
-        <unit id="2965948069228600049">
+        <unit id="3228321309780982411">
             <notes>
                 <note category="description">Label of the button to report the spot</note>
-                <note category="meaning">Report button label</note>
+                <note category="meaning">report button label</note>
             </notes>
             <segment state="initial">
                 <source> Report </source>
@@ -653,6 +653,121 @@
             <segment state="initial">
                 <source>Spots in this area</source>
                 <target>Spots in dieser Umgebung</target>
+            </segment>
+        </unit>
+        <unit id="6590727333456499202">
+            <segment state="initial">
+                <source>New Spot</source>
+                <target>Neuer Spot</target>
+            </segment>
+        </unit>
+        <unit id="5749021803913348721">
+            <segment state="initial">
+                <source>Spot saved successfully</source>
+                <target>Spot erfolgreich gespeichert</target>
+            </segment>
+        </unit>
+        <unit id="1536087519743707362">
+            <segment state="initial">
+                <source>Dismiss</source>
+                <target>Ignorieren</target>
+            </segment>
+        </unit>
+        <unit id="6957965842552679691">
+            <segment state="initial">
+                <source>Error saving spot</source>
+                <target>Fehler beim Speichern des Spots</target>
+            </segment>
+        </unit>
+        <unit id="6024008212258429928">
+            <segment state="initial">
+                <source>Report Spot &apos;<ph id="0" equiv="INTERPOLATION"
+                        disp="{{ data.spot?.name }}" />&apos;</source>
+                <target>Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ data.spot?.name }}" />&apos;
+                    melden</target>
+            </segment>
+        </unit>
+        <unit id="8425796083769561052">
+            <segment state="initial">
+                <source>What would you like to report this spot for?</source>
+                <target>Wieso möchtest du diesen Spot melden?</target>
+            </segment>
+        </unit>
+        <unit id="3278358550418950949">
+            <segment state="initial">
+                <source> Duplicate </source>
+                <target> Duplikat </target>
+            </segment>
+        </unit>
+        <unit id="4178793080892122578">
+            <segment state="initial">
+                <source>Torn down</source>
+                <target>Abgerissen</target>
+            </segment>
+        </unit>
+        <unit id="8374523856907728400">
+            <segment state="initial">
+                <source>Does not exist</source>
+                <target>Existiert nicht</target>
+            </segment>
+        </unit>
+        <unit id="4430765953319659794">
+            <segment state="initial">
+                <source>It&apos;s a private spot and should not be on this spot map.</source>
+                <target>Es ist ein privater Spot und er sollte nicht auf der Spot Karte sein.</target>
+            </segment>
+        </unit>
+        <unit id="8693603235657020323">
+            <segment state="initial">
+                <source>Other</source>
+                <target>Anderes</target>
+            </segment>
+        </unit>
+        <unit id="4965889425715950321">
+            <segment state="initial">
+                <source>Which spot is this spot a duplicate of?</source>
+                <target>Von welchem Spot ist dieser ein Duplikat?</target>
+            </segment>
+        </unit>
+        <unit id="2029717048910432760">
+            <segment state="initial">
+                <source>Spot</source>
+                <target>Spot</target>
+            </segment>
+        </unit>
+        <unit id="4411046525037051458">
+            <segment state="initial">
+                <source> Note: Spot reports are public and will be displayed on the spot itself
+                    together with your profile and user name. </source>
+                <target> Anmerkung: Spot Meldungen sind öffentlich und werden auf dem Spot
+                    angezeigt, zusammen mit deinem Benutzerprofil. </target>
+            </segment>
+        </unit>
+        <unit id="7708270344948043036">
+            <segment state="initial">
+                <source>
+                    <ph id="0" equiv="INTERPOLATION"
+                        disp="{{ hasChanged ? &quot;Discard&quot; : &quot;Cancel&quot; }}" />
+                </source>
+                <target>
+                    <ph id="0" equiv="INTERPOLATION"
+                        disp="{{ hasChanged ? &quot;Discard&quot; : &quot;Cancel&quot; }}" />
+                </target>
+            </segment>
+        </unit>
+        <unit id="7650916050216152686">
+            <segment state="initial">
+                <source>Report post</source>
+                <target>Beitrag melden</target>
+            </segment>
+        </unit>
+        <unit id="2330577642930707695">
+            <notes>
+                <note category="description">cancel button label</note>
+            </notes>
+            <segment state="initial">
+                <source> Cancel </source>
+                <target> Abbrechen </target>
             </segment>
         </unit>
     </file>

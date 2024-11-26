@@ -108,7 +108,12 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-flat-button [color]="hasChanged ? 'warn' : ''" (click)="close()">
+  <button
+    i18n
+    mat-flat-button
+    [color]="hasChanged ? 'warn' : ''"
+    (click)="close()"
+  >
     {{ hasChanged ? "Discard" : "Cancel" }}
   </button>
   <div class="spacer"></div>

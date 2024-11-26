@@ -6,7 +6,7 @@
     class="d-flex flex-column"
     [(ngModel)]="data.reason"
   >
-    <mat-radio-button value="duplicate" i18n> Duplicate </mat-radio-button>
+    <mat-radio-button value="duplicate" i18n=> Duplicate </mat-radio-button>
 
     <mat-radio-button value="torn down" i18n>Torn down</mat-radio-button>
     <mat-radio-button value="does not exist" i18n
@@ -34,7 +34,9 @@
   </p>
 </mat-dialog-content>
 <mat-dialog-actions class="d-flex justify-content-between p-3">
-  <button mat-button (click)="onNoClick()" i18n>Cancel</button>
+  <button mat-button (click)="onNoClick()" i18n="cancel button label">
+    Cancel
+  </button>
   <button
     [disabled]="!data.reason"
     mat-flat-button
@@ -42,7 +44,7 @@
     color="warn"
     cdkFocusInitial
     (click)="submitReport()"
-    i18n
+    i18n="report button label|"
   >
     Report
   </button>

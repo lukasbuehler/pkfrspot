@@ -94,10 +94,10 @@
         <source>Spot area</source>
       </segment>
     </unit>
-    <unit id="2965948069228600049">
+    <unit id="3228321309780982411">
       <notes>
         <note category="description">Label of the button to report the spot</note>
-        <note category="meaning">Report button label</note>
+        <note category="meaning">report button label</note>
       </notes>
       <segment>
         <source> Report </source>
@@ -524,6 +524,96 @@
     <unit id="8011758699583016596">
       <segment>
         <source>Spots in this area</source>
+      </segment>
+    </unit>
+    <unit id="1536087519743707362">
+      <segment>
+        <source>Dismiss</source>
+      </segment>
+    </unit>
+    <unit id="2029717048910432760">
+      <segment>
+        <source>Spot</source>
+      </segment>
+    </unit>
+    <unit id="3278358550418950949">
+      <segment>
+        <source> Duplicate </source>
+      </segment>
+    </unit>
+    <unit id="4178793080892122578">
+      <segment>
+        <source>Torn down</source>
+      </segment>
+    </unit>
+    <unit id="4411046525037051458">
+      <segment>
+        <source> Note: Spot reports are public and will be displayed on the spot itself together with your profile and user name. </source>
+      </segment>
+    </unit>
+    <unit id="4430765953319659794">
+      <segment>
+        <source>It&apos;s a private spot and should not be on this spot map.</source>
+      </segment>
+    </unit>
+    <unit id="4965889425715950321">
+      <segment>
+        <source>Which spot is this spot a duplicate of?</source>
+      </segment>
+    </unit>
+    <unit id="5749021803913348721">
+      <segment>
+        <source>Spot saved successfully</source>
+      </segment>
+    </unit>
+    <unit id="6024008212258429928">
+      <segment>
+        <source>Report Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ data.spot?.name }}"/>&apos;</source>
+      </segment>
+    </unit>
+    <unit id="6590727333456499202">
+      <segment>
+        <source>New Spot</source>
+      </segment>
+    </unit>
+    <unit id="6957965842552679691">
+      <segment>
+        <source>Error saving spot</source>
+      </segment>
+    </unit>
+    <unit id="8374523856907728400">
+      <segment>
+        <source>Does not exist</source>
+      </segment>
+    </unit>
+    <unit id="8425796083769561052">
+      <segment>
+        <source>What would you like to report this spot for?</source>
+      </segment>
+    </unit>
+    <unit id="8693603235657020323">
+      <segment>
+        <source>Other</source>
+      </segment>
+    </unit>
+    <unit id="2330577642930707695">
+      <notes>
+        <note category="description">cancel button label</note>
+      </notes>
+      <segment>
+        <source> Cancel </source>
+      </segment>
+    </unit>
+    <unit id="7650916050216152686">
+      <segment>
+        <source>Report post</source>
+      </segment>
+    </unit>
+    <unit id="7708270344948043036">
+      <segment>
+        <source>
+          <ph id="0" equiv="INTERPOLATION" disp="{{ hasChanged ? &quot;Discard&quot; : &quot;Cancel&quot; }}"/>
+        </source>
       </segment>
     </unit>
   </file>
