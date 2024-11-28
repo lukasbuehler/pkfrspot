@@ -1,6 +1,9 @@
 @use "sass:map";
 @use "@angular/material" as mat;
 
+.marker-base {
+}
+
 @mixin color($theme) {
   .pin-primary {
     border-color: #dde1ff; // var(--mat-sys-on-primary-container);
@@ -13,23 +16,24 @@
     color: white;
   }
 
-  .marker-primary {
-    background-color: mat.get-theme-color($theme, primary);
-
-    transition: background-color 1s ease, border-color 1s ease;
-
-    &.marker-primary-light {
-      background-color: border-color #dde1ff;
-    }
-
-    &.marker-primary-dark {
-      background-color: mat.get-theme-color($theme, primary);
-    }
+  .marker-primary-light {
+    @extend .small-dot-marker !optional;
+    background-color: #0037b9;
+    border-color: mat.get-theme-color($theme, primary);
   }
-  .marker-secondary {
+
+  .marker-primary-dark {
+    @extend .small-dot-marker !optional;
+    background-color: mat.get-theme-color($theme, primary);
+    border-color: #0037b9;
+  }
+
+  .marker-secondary-dark {
+    @extend .small-dot-marker !optional;
     background-color: mat.get-theme-color($theme, secondary);
   }
-  .marker-tertiary {
+  .marker-tertiary-dark {
+    @extend .small-dot-marker !optional;
     background-color: mat.get-theme-color($theme, tertiary);
   }
 }
