@@ -1,13 +1,40 @@
-# PKFR Spot
+# PKFR Spot ([pkfrspot.com](https://pkfrspot.com))
 
-- Web: [pkfrspot.com](https://pkfrspot.com)
+**The spot for Parkour and Freerunning.**
+
+Discover spots <strike>and fellow athletes, plan training sessions with your friends and share achievements and memories with them and the world.</strike>
+
+(Striked-through features are in development.)
 
 ## Roadmap
+
+| Shipped                 | Non-binding time estimate | Features                                                                                                                |
+| :---------------------- | :------------------------ | :---------------------------------------------------------------------------------------------------------------------- |
+| :ballot_box_with_check: | Spring 2024               | Spot and places full-text search                                                                                        |
+| :black_square_button:   | Spring 2024               | Mobile (web) UI/UX enhancements                                                                                         |
+| :ballot_box_with_check: | Summer 2024               | Multilanguage (English, German), SSR, link previews, Angular 18                                                         |
+| :ballot_box_with_check: | Summer 2024               | Added locality (region, city, country) to spots                                                                         |
+| :soon:                  | Autumn 2024               | Spot map overview overhaul, performance improvements, more languages (French, Italian, Swiss-German), Angular 19        |
+| :black_square_button:   | Winter 24/25              | Spot map usefulness update: Spot ratings, spot features, add corresponding Google Places, bookmark and mark as visisted |
+| :black_square_button:   | Spring 2025               | Integration update: Let websites embed PKFR Spots or the PKFR Spot map.                                                 |
+| :black_square_button:   | Summer 2025               | Native iOS, Android apps with [Tauri](https://v2.tauri.app/)                                                            |
+| :black_square_button:   | ?                         | Posts and profiles                                                                                                      |
+| :black_square_button:   | ?                         | Plan trainings                                                                                                          |
+
+For the detailed progress please refer to the following GitHub project board: [PKFR Spot Board](https://github.com/users/lukasbuehler/projects/1/views/1)
 
 ## Collaborating
 
 To collaborate on the code of this project, you will need to create a pull-request on GitHub. To get started you should for this repository, and
 after making your changes, create a pull-request with your changes.
+
+### Bug reports
+
+For bug reports, please open an issue in this GitHub repository.
+
+### Feature requests
+
+For feature requests please use the Discord or contact me directly.
 
 ### Translation
 
@@ -32,7 +59,7 @@ To tweak a translation simply go to the corresponding file, find what you want t
 
 #### Update the language files
 
-After adding new text in the markup and adding the i18n attribute, the language files will need to be updated to include this new text source.
+After adding new text in the HTML markup and adding the i18n attribute, the language files will need to be updated to include this new text source.
 
 Run the following command:
 
@@ -49,63 +76,64 @@ After that the language files will be updated (and possibly reformatted, which i
    If it is not country specific, the language code is simply of the form `xx`.
    Check out the list of language codes on [Wikipedia](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) and see Set 1. Also, for country specific languages, check out this site: [Country Code Language List](https://www.fincher.org/Utilities/CountryLanguageList.shtml).
 
-2. With the code, add the language in [`angular.json`](./angular.json). Add it as a locale inside `i18n > locales`, and the language code inside the `architect > build > options > localize` JSON
+2. With the code, add the language in [`angular.json`](./angular.json). Add it as a locale inside `i18n > locales`, and the language code inside the JSON `architect > build > options > localize`
 
-```json
-{
-  ...
-  "projects": {
-    "pkfrspot": {
-      ...
-      "i18n": {
-        ...
-        "locales": {
-          ...
-          "de": {
-            "translation": "src/locale/messages.de.xlf",
-            "baseHref": "/de/"
-          },
-          "de-CH": {
-            "translation": "src/locale/messages.de-CH.xlf",
-            "baseHref": "/de-CH/"
-          }
-          ...
+   ```json
+   {
+   ...
+   "projects": {
+       "pkfrspot": {
+       ...
+       "i18n": {
+           ...
+           "locales": {
+           ...
+           "de": {
+               "translation": "src/locale/messages.de.xlf",
+               "baseHref": "/de/"
+           },
+           "de-CH": {
+               "translation": "src/locale/messages.de-CH.xlf",
+               "baseHref": "/de-CH/"
+           }
+           ...
 
-          // add your new language here
-          // with its language code xx-XX or xx similar to above...
+           // add your new language here
+           // with its language code xx-XX or xx similar to above...
 
-          // "xx-XX": {
-          //   "translation": "src/locale/messages.xx-XX.xlf",
-          //   "baseHref": "/xx-XX/"
-          // }
-        }
-        ...
-      },
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:application",
-          "options": {
-            "localize": ["en", "de", "de-CH", "xx-XX"], // add you language here too
-            ...
-          }
-          ...
-        }
-        ...
-      }
-      ...
-    }
-  }
-}
-```
+           // "xx-XX": {
+           //   "translation": "src/locale/messages.xx-XX.xlf",
+           //   "baseHref": "/xx-XX/"
+           // }
+           }
+           ...
+       },
+       "architect": {
+           "build": {
+           "builder": "@angular-devkit/build-angular:application",
+           "options": {
+               "localize": ["en", "de", "de-CH", "xx-XX"], // add you language here too
+               ...
+           }
+           ...
+           }
+           ...
+       }
+       ...
+       }
+   }
+   }
+   ```
 
 3. Copy an existing language file like `messages.de.xlf` in `src/locale` and paste it with the same name as in [`angular.json`](./angular.json), e.g. `messages.xx-XX.xlf` or `messages.xx.xlf`.
-4. Edit this new language file in [`src/locales`](./src/locale/).
-5. Update the [src/proxy-server.mjs](./src/proxy-server.mjs) file to include the new language in the `supportedLanguages` array at the very top.
+4. Update the [src/proxy-server.mjs](./src/proxy-server.mjs) file to include the new language in the `supportedLanguages` array at the very top.
 
-```mjs
-const supportedLanguages = ["en", "de", "de-CH", "xx-XX"]; // here
-...
-```
+   ```mjs
+   const supportedLanguages = ["en", "de", "de-CH", "xx-XX"]; // here
+   ...
+   ```
+
+5. Edit this new language file in [`src/locales`](./src/locale/).
 
 6. Submit a pull-request with your changes on [GitHub](https://github.com/lukasbuehler/pkfrspot/compare)
 
