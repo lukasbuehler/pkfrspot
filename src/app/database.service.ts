@@ -687,19 +687,18 @@ export class DatabaseService {
     return Promise.reject("Not implemented yet.");
   }
 
-  getSpotReportsBySpotId(spotId: string): Promise<SpotReport> {
-    // return getDocs(
-    //   query(
-    //     collection(this.firestore, "spot_reports"),
-    //     where("spot.id", "==", spotId)
-    //   )
-    // ).then((snap) => {
-    //   if (snap.size == 0) {
-    //     return Promise.reject("No reports found for this spot id.");
-    //   }
-    //   return snap.docs[0].data() as SpotReport;
-    // });
-    return Promise.reject("Not implemented yet.");
+  getSpotReportsBySpotId(spotId: string): Promise<SpotReport[]> {
+    return getDocs(
+      query(
+        collection(this.firestore, "spot_reports"),
+        where("spot.id", "==", spotId)
+      )
+    ).then((snap) => {
+      if (snap.size == 0) {
+        return [];
+      }
+      return snap.docs.map((data) => data.data() as SpotReport);
+    });
   }
 
   getSpotReportsByUserId(userId: string): Promise<SpotReport> {

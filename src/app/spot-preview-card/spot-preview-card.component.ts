@@ -13,13 +13,14 @@ import { Spot } from "../../scripts/db/Spot";
 import { StorageService } from "../storage.service";
 import { MatCardModule } from "@angular/material/card";
 import { MatRippleModule } from "@angular/material/core";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   selector: "app-spot-preview-card",
   templateUrl: "./spot-preview-card.component.html",
   styleUrls: ["./spot-preview-card.component.scss"],
   standalone: true,
-  imports: [MatCardModule, MatRippleModule],
+  imports: [MatCardModule, MatRippleModule, MatIconModule],
 })
 export class SpotPreviewCardComponent implements OnInit {
   @Input() spot: Spot.Class;

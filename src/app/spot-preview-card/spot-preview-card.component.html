@@ -4,25 +4,29 @@
   [class.mat-elevation-z0]="true"
   [class.compact]="isCompact"
   [class.clickable]="clickable"
-  class="mb-2"
   [class.border]="true"
   [class.rounded]="true"
 >
-  <mat-card-header>
+  <mat-card-header class="pb-2">
     <mat-card-title class="text-truncate mw-100 pt-2">
       {{ spot.getName(this.locale) }}
     </mat-card-title>
-    @if(isCompact) {
-    <mat-card-subtitle>
-      {{ capitalize(spot.type) }}
-      <!-- <app-rating
-        class="float-right"
-        *ngIf="spot?.rating"
-        [rating]="spot.rating"
-        color="accent"
-      ></app-rating> -->
+    <!-- @if(isCompact) { -->
+    <mat-card-subtitle class="d-flex flex-row">
+      @if(spot.rating) {
+      <span class="d-flex flex-row font-weight-bold align-items-center">
+        <mat-icon style="width: 20px; height: 20px; font-size: 20px"
+          >star</mat-icon
+        >
+        {{ spot.rating }}
+        <span class="px-1">·</span>
+      </span>
+      }
+      <span class="text-truncate" style="flex-shrink: 1">
+        {{ spot.getLocalityString() }}
+      </span>
     </mat-card-subtitle>
-    }
+    <!-- } -->
   </mat-card-header>
   <!-- <div class="button-row d-flex">
     @if (!visited) {

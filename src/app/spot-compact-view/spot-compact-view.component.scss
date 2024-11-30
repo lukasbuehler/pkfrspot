@@ -68,7 +68,7 @@ form {
   justify-content: space-around;
 }
 
-.spot-button-row button {
+.spot-button-row button:not(:last-of-type) {
   margin-right: 5px;
 }
 

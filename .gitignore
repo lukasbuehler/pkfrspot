@@ -120,3 +120,6 @@ Thumbs.db
 .firebase
 *-debug.log
 .runtimeconfig.json
+
+# TODO remove when merging tauri stuff in
+src-tauri*

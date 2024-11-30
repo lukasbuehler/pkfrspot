@@ -1,6 +1,7 @@
 export const environment = {
   name: "Production",
   production: true,
+  mapId: "e2926e5bfb22860c",
   keys: {
     firebaseConfig: {
       projectId: "parkour-base-project",

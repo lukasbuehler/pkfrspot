@@ -1,5 +1,7 @@
 @use "@angular/material" as mat;
-@use "./theming/m3-theme" as theme;
+
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "./theming/m3-theme";
 
 /* You can add global styles to this file, and also import other style files */
 
@@ -25,4 +27,20 @@ html {
 
 #fh5co-hero .fh5co-overlay {
   background-color: transparent !important;
+}
+
+.primary-chips {
+  @include mat.chips-color($dark-theme, $color-variant: primary);
+}
+
+.secondary-chips {
+  @include mat.chips-color($dark-theme, $color-variant: secondary);
+}
+
+.tertiary-chips {
+  @include mat.chips-color($dark-theme, $color-variant: tertiary);
+}
+
+.error-chips {
+  @include mat.chips-color($dark-theme, $color-variant: error);
 }

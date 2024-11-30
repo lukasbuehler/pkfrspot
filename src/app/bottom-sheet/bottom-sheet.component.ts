@@ -16,6 +16,7 @@ export class BottomSheetComponent {
   @Input() title: string = "";
 
   headerHeight: number = 120;
+  minimumSpeedToSlide: number = 10;
 
   @ViewChild("bottomSheet", { static: true }) bottomSheet: ElementRef;
 
@@ -41,7 +42,6 @@ export class BottomSheetComponent {
       let animationSteps = 500;
 
       let topHeightOffset = 0;
-      let middleHeightOffset = alwaysVisibleHeight / 2;
       let bottomHeightOffset = alwaysVisibleHeight;
 
       let isScrollableUp = false;
@@ -118,20 +118,30 @@ export class BottomSheetComponent {
             ? event.changedTouches[0].pageY
             : event.pageY;
 
-        // current target should be the current location
-        let targetOffset = 0;
-
-        if (Math.abs(speed) > 5) {
-          // if we are here the user let go fast or far enough, so we set the
-          // other point as the target now
-          // Limit the target position
-          if (speed >= -1) targetOffset = bottomHeightOffset;
-          else targetOffset = topHeightOffset;
-        }
+        let targetOffset = bottomHeightOffset; // default closed
 
         // Calculate the distance to the target position
-        let startOffset = this.bottomSheet.nativeElement.offsetTop;
-        let distance = targetOffset - startOffset;
+        let offset = this.bottomSheet.nativeElement.offsetTop;
+
+        let middlePoint = (bottomHeightOffset - topHeightOffset) / 2;
+
+        // the user let go, decide where to slide the sheet to
+        if (Math.abs(speed) > this.minimumSpeedToSlide) {
+          if (speed > 0) {
+            targetOffset = bottomHeightOffset;
+          } else {
+            targetOffset = topHeightOffset;
+          }
+        } else {
+          // decide the next sheet position based on the offset
+          if (offset > middlePoint) {
+            targetOffset = bottomHeightOffset;
+          } else {
+            targetOffset = topHeightOffset;
+          }
+        }
+
+        let distance = targetOffset - offset;
 
         // Start the easing
         let start = null;
@@ -142,7 +152,7 @@ export class BottomSheetComponent {
           // Calculate the current position
           let current = this.easeOutCubic(
             progress,
-            startOffset,
+            offset,
             distance,
             animationSteps
           );

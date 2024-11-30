@@ -94,10 +94,10 @@
         <source>Spot area</source>
       </segment>
     </unit>
-    <unit id="2965948069228600049">
+    <unit id="3228321309780982411">
       <notes>
         <note category="description">Label of the button to report the spot</note>
-        <note category="meaning">Report button label</note>
+        <note category="meaning">report button label</note>
       </notes>
       <segment>
         <source> Report </source>
@@ -137,7 +137,7 @@
         <note category="meaning">Open in maps button tooltip</note>
       </notes>
       <segment>
-        <source>Open in maps</source>
+        <source>Open the location of this Spot in Google Maps</source>
       </segment>
     </unit>
     <unit id="5447579510411800451">
@@ -300,11 +300,6 @@
         <source>Notifications</source>
       </segment>
     </unit>
-    <unit id="6374817750820299933">
-      <segment>
-        <source> <ph id="0" equiv="INTERPOLATION" disp="{{ spots.length }}"/> spot<ph id="1" equiv="INTERPOLATION_1" disp="{{ spots.length === 1 ? &quot;&quot; : &quot;s&quot; }}"/> in this area </source>
-      </segment>
-    </unit>
     <unit id="6471548761726956967">
       <segment>
         <source> General settings to tune your experience on PKFR Spot. </source>
@@ -330,9 +325,9 @@
         <source> Change password </source>
       </segment>
     </unit>
-    <unit id="4060911346155655179">
+    <unit id="133789173523080152">
       <segment>
-        <source>Your E-mail is verified!</source>
+        <source>Your E-mail is verified</source>
       </segment>
     </unit>
     <unit id="3539941729807255231">
@@ -385,9 +380,9 @@
         <source>The password is invalid!</source>
       </segment>
     </unit>
-    <unit id="4464026855827934139">
+    <unit id="5726791725186220555">
       <segment>
-        <source>The E-Mail address is invalid!</source>
+        <source>The E-mail address is invalid!</source>
       </segment>
     </unit>
     <unit id="4541118533130714111">
@@ -410,9 +405,9 @@
         <source>Don&apos;t worry, the display name can be changed later.</source>
       </segment>
     </unit>
-    <unit id="5834187794255360331">
+    <unit id="6858563845386603352">
       <segment>
-        <source>The E-mail address needs to be verified later.</source>
+        <source>The e-mail address needs to be verified later.</source>
       </segment>
     </unit>
     <unit id="6464436780502674570">
@@ -460,9 +455,9 @@
         <source>An unknown error has occured on sign in. Please try again.</source>
       </segment>
     </unit>
-    <unit id="783565455063139196">
+    <unit id="2978266456005156211">
       <segment>
-        <source>The E-Mail address and password do not match for any existing user.</source>
+        <source>The E-mail address and password do not match for any existing user.</source>
       </segment>
     </unit>
     <unit id="7931009175244499164">
@@ -478,6 +473,147 @@
     <unit id="947995176992343811">
       <segment>
         <source>This E-Mail address is not valid!</source>
+      </segment>
+    </unit>
+    <unit id="directions_spot_aria_label">
+      <notes>
+        <note category="description">The aria label of the directions spot icon button</note>
+        <note category="meaning">Spot directions aria label</note>
+      </notes>
+      <segment>
+        <source>Icon button with a directions icon</source>
+      </segment>
+    </unit>
+    <unit id="directions_spot_tooltip">
+      <notes>
+        <note category="description">The tooltip of the directions spot icon button</note>
+        <note category="meaning">Directions spot tooltip</note>
+      </notes>
+      <segment>
+        <source>Directions to spot</source>
+      </segment>
+    </unit>
+    <unit id="share_spot_aria_label">
+      <notes>
+        <note category="description">The aria label of the share spot icon button</note>
+        <note category="meaning">Share spot aria label</note>
+      </notes>
+      <segment>
+        <source>Icon button with a share icon</source>
+      </segment>
+    </unit>
+    <unit id="share_spot_tooltip">
+      <notes>
+        <note category="description">The tootltip of the share spot icon button</note>
+        <note category="meaning">Share spot tooltip</note>
+      </notes>
+      <segment>
+        <source>Share this spot</source>
+      </segment>
+    </unit>
+    <unit id="2267637299863581067">
+      <segment>
+        <source>Features and amenities</source>
+      </segment>
+    </unit>
+    <unit id="5176788475731011723">
+      <segment>
+        <source>This spot was reported as &quot;<ph id="0" equiv="INTERPOLATION" disp="{{ report.reason }}"/>&quot;</source>
+      </segment>
+    </unit>
+    <unit id="8011758699583016596">
+      <segment>
+        <source>Spots in this area</source>
+      </segment>
+    </unit>
+    <unit id="1536087519743707362">
+      <segment>
+        <source>Dismiss</source>
+      </segment>
+    </unit>
+    <unit id="2029717048910432760">
+      <segment>
+        <source>Spot</source>
+      </segment>
+    </unit>
+    <unit id="3278358550418950949">
+      <segment>
+        <source> Duplicate </source>
+      </segment>
+    </unit>
+    <unit id="4178793080892122578">
+      <segment>
+        <source>Torn down</source>
+      </segment>
+    </unit>
+    <unit id="4411046525037051458">
+      <segment>
+        <source> Note: Spot reports are public and will be displayed on the spot itself together with your profile and user name. </source>
+      </segment>
+    </unit>
+    <unit id="4430765953319659794">
+      <segment>
+        <source>It&apos;s a private spot and should not be on this spot map.</source>
+      </segment>
+    </unit>
+    <unit id="4965889425715950321">
+      <segment>
+        <source>Which spot is this spot a duplicate of?</source>
+      </segment>
+    </unit>
+    <unit id="5749021803913348721">
+      <segment>
+        <source>Spot saved successfully</source>
+      </segment>
+    </unit>
+    <unit id="6024008212258429928">
+      <segment>
+        <source>Report Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ data.spot?.name }}"/>&apos;</source>
+      </segment>
+    </unit>
+    <unit id="6590727333456499202">
+      <segment>
+        <source>New Spot</source>
+      </segment>
+    </unit>
+    <unit id="6957965842552679691">
+      <segment>
+        <source>Error saving spot</source>
+      </segment>
+    </unit>
+    <unit id="8374523856907728400">
+      <segment>
+        <source>Does not exist</source>
+      </segment>
+    </unit>
+    <unit id="8425796083769561052">
+      <segment>
+        <source>What would you like to report this spot for?</source>
+      </segment>
+    </unit>
+    <unit id="8693603235657020323">
+      <segment>
+        <source>Other</source>
+      </segment>
+    </unit>
+    <unit id="2330577642930707695">
+      <notes>
+        <note category="description">cancel button label</note>
+      </notes>
+      <segment>
+        <source> Cancel </source>
+      </segment>
+    </unit>
+    <unit id="7650916050216152686">
+      <segment>
+        <source>Report post</source>
+      </segment>
+    </unit>
+    <unit id="7708270344948043036">
+      <segment>
+        <source>
+          <ph id="0" equiv="INTERPOLATION" disp="{{ hasChanged ? &quot;Discard&quot; : &quot;Cancel&quot; }}"/>
+        </source>
       </segment>
     </unit>
   </file>

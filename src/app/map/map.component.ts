@@ -10,21 +10,22 @@ import {
   ViewChild,
   ViewChildren,
 } from "@angular/core";
-import { map_style } from "./map_style";
 import { Spot } from "../../scripts/db/Spot";
 import {
   GoogleMap,
   MapPolygon,
-  MapHeatmapLayer,
   MapCircle,
-  MapMarker,
+  MapAdvancedMarker,
+  //   MapHeatmapLayer,
 } from "@angular/google-maps";
 import { BehaviorSubject, Observable } from "rxjs";
 import { environment } from "../../environments/environment";
 import { MapsApiService } from "../maps-api.service";
 import { SpotClusterTile } from "../../scripts/db/SpotClusterTile.js";
 import { GeoPoint } from "firebase/firestore";
-import { NgIf, NgFor, AsyncPipe } from "@angular/common";
+import { NgIf, NgFor, AsyncPipe, NgClass } from "@angular/common";
+import { MatIconModule } from "@angular/material/icon";
+import { trigger, transition, style, animate } from "@angular/animations";
 
 @Component({
   selector: "app-map",
@@ -34,12 +35,26 @@ import { NgIf, NgFor, AsyncPipe } from "@angular/common";
   imports: [
     NgIf,
     GoogleMap,
-    MapHeatmapLayer,
     MapCircle,
     MapPolygon,
-    MapMarker,
+    MapAdvancedMarker,
+    MatIconModule,
     NgFor,
+    NgClass,
     AsyncPipe,
+    // MapHeatmapLayer,
+  ],
+  animations: [
+    trigger("fadeInOut", [
+      transition(":enter", [
+        style({ opacity: 0, scale: 0.8 }),
+        animate("0.3s ease-out", style({ opacity: 1, scale: 1 })),
+      ]),
+      transition(":leave", [
+        style({ opacity: 1, scale: 1 }),
+        animate("0.3s ease-in", style({ opacity: 0, scale: 0.8 })),
+      ]),
+    ]),
   ],
 })
 export class MapComponent implements OnInit {
@@ -47,6 +62,10 @@ export class MapComponent implements OnInit {
   @ViewChildren(MapPolygon) polygons: QueryList<MapPolygon>;
   @ViewChildren(MapPolygon, { read: ElementRef })
   polygonElements: QueryList<ElementRef>;
+  @ViewChild("selectedSpotMarkerNode") selectedSpotMarkerNode: Node;
+
+  // add math function to markup
+  sqrt = Math.sqrt;
 
   private _center: google.maps.LatLngLiteral;
   @Input() set center(coords: google.maps.LatLngLiteral) {
@@ -100,10 +119,23 @@ export class MapComponent implements OnInit {
   @Input() markers: google.maps.LatLngLiteral[] = [];
   @Input() selectedMarker: google.maps.LatLngLiteral | null = null;
 
+  highlightedSpots: Spot.Class[] = [];
+
   constructor(
     private cdr: ChangeDetectorRef,
     public mapsApiService: MapsApiService
-  ) {}
+  ) {
+    // if (this.selectedSpot) {
+    //   this.selectedSpotMarkerNode = this.buildAdvancedMarkerContent(
+    //     this.selectedSpot
+    //   );
+    // }
+
+    this.highlightedSpots = this.spots.slice(0, 3);
+  }
+
+  mapStyle = "roadmap";
+  isDarkMode: boolean = true; // should be false if mapStyle is roadmap and the dark map is used
 
   ngOnInit() {
     this.mapsApiService.isApiLoaded$.subscribe((isLoaded) => {
@@ -115,37 +147,36 @@ export class MapComponent implements OnInit {
   }
 
   initMap(): void {
-    this.geolocationMarkerOptions = {
-      draggable: false,
-      clickable: false,
-      opacity: 1,
-      icon: {
-        url: "/assets/icons/geolocation-16x16.png",
-        scaledSize: new google.maps.Size(16, 16),
-        anchor: new google.maps.Point(8, 8),
-      },
-      zIndex: 1000,
-    };
-    this.primaryDotMarkerOptions = {
-      draggable: false,
-      clickable: false,
-      opacity: 0.8,
-      icon: {
-        url: "/assets/icons/circle-primary-16x16.png",
-        scaledSize: new google.maps.Size(16, 16),
-        anchor: new google.maps.Point(8, 8),
-      },
-    };
-    this.teriaryDotMarkerOptions = {
-      draggable: false,
-      clickable: false,
-      opacity: 0.8,
-      icon: {
-        url: "/assets/icons/circle-tertiary-16x16.png",
-        scaledSize: new google.maps.Size(16, 16),
-        anchor: new google.maps.Point(8, 8),
-      },
-    };
+    // this.geolocationMarkerOptions = {
+    //   gmpDraggable: false,
+    //   gmpClickable: false,
+    //   //   icon: {
+    //   //     url: "/assets/icons/geolocation-16x16.png",
+    //   //     scaledSize: new google.maps.Size(16, 16),
+    //   //     anchor: new google.maps.Point(8, 8),
+    //   //   },
+    //   zIndex: 1000,
+    // };
+    // this.primaryDotMarkerOptions = {
+    //   gmpDraggable: false,
+    //   gmpClickable: false,
+    //   //   opacity: 0.8,
+    //   //   icon: {
+    //   //     url: "/assets/icons/circle-primary-16x16.png",
+    //   //     scaledSize: new google.maps.Size(16, 16),
+    //   //     anchor: new google.maps.Point(8, 8),
+    //   //   },
+    // };
+    // this.teriaryDotMarkerOptions = {
+    //   gmpDraggable: false,
+    //   gmpClickable: false,
+    //   //   opacity: 0.8,
+    //   //   icon: {
+    //   //     url: "/assets/icons/circle-tertiary-16x16.png",
+    //   //     scaledSize: new google.maps.Size(16, 16),
+    //   //     anchor: new google.maps.Point(8, 8),
+    //   //   },
+    // };
   }
 
   private _geoPointToLatLng(
@@ -163,6 +194,16 @@ export class MapComponent implements OnInit {
       }
     });
   }
+
+  //   buildAdvancedMarkerContent(spot: Spot.Class): HTMLDivElement {
+  //     const content = document.createElement("div");
+  //     content.classList.add("advanced-spot-marker");
+  //     content.innerHTML = `
+  //       <div>${spot.rating ?? 7}</div>
+  //     `; // TODO remove 7
+
+  //     return content;
+  //   }
 
   useGeolocation() {
     if (this.showGeolocation) {
@@ -204,122 +245,109 @@ export class MapComponent implements OnInit {
   //spotDotZoomRadii: number[] = Array<number>(16);
 
   //mapStyle: google.maps.MapTypeId = google.maps.MapTypeId.ROADMAP;
-  mapStyle = "roadmap";
-  mapStylesConfig = map_style;
+
+  //   mapStylesConfig = map_style;
 
   mapOptions: google.maps.MapOptions = {
+    mapId: environment.mapId,
     backgroundColor: "#000000",
     clickableIcons: false,
     gestureHandling: "greedy",
     mapTypeId: this.mapStyle,
     disableDefaultUI: true,
-    styles: this.mapStylesConfig,
+    // styles: this.mapStylesConfig,
   };
   mapTypeId: string = "roadmap";
 
-  heatmapDarkOptions: google.maps.visualization.HeatmapLayerOptions = {
-    radius: 20,
-    gradient: ["rgba(184,196,255,0)", "rgba(184,196,255,1)"],
-    dissipating: true,
-    maxIntensity: 1,
-    opacity: 0.6,
-  };
+  //   heatmapDarkOptions: google.maps.visualization.HeatmapLayerOptions = {
+  //     radius: 20,
+  //     gradient: ["rgba(184,196,255,0)", "rgba(184,196,255,1)"],
+  //     dissipating: true,
+  //     maxIntensity: 1,
+  //     opacity: 0.6,
+  //   };
 
-  heatmapLightOptions: google.maps.visualization.HeatmapLayerOptions = {
-    radius: 25,
-    gradient: [
-      "rgba(43, 81, 213,0)",
-      "rgba(43, 81, 213,1)",
-      "rgba(184,196,255,1)",
-    ],
-    dissipating: true,
-    maxIntensity: 1,
-    opacity: 0.6,
-  };
-  heatmapOptions: google.maps.visualization.HeatmapLayerOptions =
-    this.heatmapDarkOptions;
-
-  selectedSpotMarkerDarkOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    clickable: false,
-    icon: {
-      url: "/assets/icons/marker-primary-dark.png",
-    },
-    opacity: 1,
-  };
-  selectedSpotMarkerLightOptions: google.maps.MarkerOptions = {
-    ...this.selectedSpotMarkerDarkOptions.anchorPoint,
-    icon: {
-      url: "/assets/icons/marker-primary-light.png",
-    },
-  };
-  selectedSpotMarkerOptions: google.maps.MarkerOptions =
-    this.selectedSpotMarkerDarkOptions;
-  selectedSpotMarkerEditingOptions: google.maps.MarkerOptions = {
-    draggable: true,
-    clickable: false,
-    crossOnDrag: true,
-    icon: {
-      url: "/assets/icons/marker-primary-dark.png",
-    },
-    opacity: 1,
-  };
-  tertiaryMarkerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    clickable: false,
-    icon: {
-      url: "/assets/icons/marker-tertiary-dark.png",
-    },
-  };
-  teriaryDotMarkerOptions: google.maps.MarkerOptions;
-  noSelectedSpotMarkerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    clickable: false,
-    icon: {
-      url: "/assets/icons/marker-primary-dark.png",
-    },
-    opacity: 0,
-  };
-  geolocationMarkerOptions: google.maps.MarkerOptions;
-  primaryDotMarkerOptions: google.maps.MarkerOptions;
+  //   selectedSpotMarkerDarkOptions: google.maps.marker.AdvancedMarkerElementOptions =
+  //     {
+  //       gmpDraggable: false,
+  //       gmpClickable: false,
+  //       //   icon: {
+  //       //     url: "/assets/icons/marker-primary-dark.png",
+  //       //   },
+  //       //   opacity: 1,
+  //     };
+  //   selectedSpotMarkerLightOptions: google.maps.marker.AdvancedMarkerElementOptions =
+  //     {
+  //       //   ...this.selectedSpotMarkerDarkOptions.anchorPoint,
+  //       //   icon: {
+  //       //     url: "/assets/icons/marker-primary-light.png",
+  //       //   },
+  //     };
+  //   selectedSpotMarkerOptions: google.maps.marker.AdvancedMarkerElementOptions =
+  //     this.selectedSpotMarkerDarkOptions;
+  //   selectedSpotMarkerEditingOptions: google.maps.marker.AdvancedMarkerElementOptions =
+  //     {
+  //       gmpDraggable: true,
+  //       gmpClickable: false,
+  //       //   crossOnDrag: true,
+  //       //   icon: {
+  //       //     url: "/assets/icons/marker-primary-dark.png",
+  //       //   },
+  //       //   opacity: 1,
+  //     };
+  //   tertiaryMarkerOptions: google.maps.marker.AdvancedMarkerElementOptions = {
+  //     gmpDraggable: false,
+  //     gmpClickable: false,
+  //     // icon: {
+  //     //   url: "/assets/icons/marker-tertiary-dark.png",
+  //     // },
+  //   };
 
   spotCircleDarkOptions: google.maps.CircleOptions = {
     fillColor: "#b8c4ff",
-    fillOpacity: 0.7,
-    strokeColor: "#b8c4ff",
+    strokeColor: "#0036ba",
+    fillOpacity: 0.8,
+    strokeOpacity: 0.8,
+    strokeWeight: 3,
     draggable: false,
     clickable: true,
-    strokeWeight: 0,
-    strokeOpacity: 0,
   };
   spotCircleLightOptions: google.maps.CircleOptions = {
-    ...this.spotCircleDarkOptions,
-    fillOpacity: 0.4,
-    strokeColor: "#2b51d5",
-    strokeWeight: 5,
-    strokeOpacity: 1,
+    fillColor: "#0036ba",
+    strokeColor: "#b8c4ff",
+    fillOpacity: 0.5,
+    strokeOpacity: 0.8,
+    strokeWeight: 3,
+    draggable: false,
+    clickable: true,
   };
   spotCircleOptions: google.maps.CircleOptions = this.spotCircleDarkOptions;
 
   spotPolygonDarkOptions: google.maps.PolygonOptions = {
     fillColor: "#b8c4ff",
-    strokeColor: "#b8c4ff",
-    fillOpacity: 0.5,
+    strokeColor: "#0036ba",
+    strokeOpacity: 0.8,
+    fillOpacity: 0.8,
+    strokeWeight: 3,
     editable: false,
     draggable: false,
     clickable: true,
   };
   spotPolygonLightOptions: google.maps.PolygonOptions = {
-    ...this.spotPolygonDarkOptions,
-    strokeColor: "#2b51d5",
-    strokeWeight: 5,
-    strokeOpacity: 1,
+    fillColor: "#0036ba",
+    strokeColor: "#b8c4ff",
+    strokeOpacity: 0.8,
+    fillOpacity: 0.5,
+    strokeWeight: 3,
+    editable: false,
+    draggable: false,
+    clickable: true,
   };
   spotPolygonOptions: google.maps.PolygonOptions = this.spotPolygonDarkOptions;
-  spotPolygonEditingOptions: google.maps.PolygonOptions = {
-    ...this.spotPolygonOptions,
-    editable: true,
-  };
+  //   spotPolygonEditingOptions: google.maps.PolygonOptions = {
+  //     ...this.spotPolygonOptions,
+  //     editable: true,
+  //   };
 
   geolocationCircleOptions: google.maps.CircleOptions = {
     fillColor: "#0000ff",
@@ -345,16 +373,18 @@ export class MapComponent implements OnInit {
   }
 
   setLightMode() {
-    this.heatmapOptions = this.heatmapLightOptions;
+    this.isDarkMode = false;
+    //     this.heatmapOptions = this.heatmapLightOptions;
     this.spotCircleOptions = this.spotCircleLightOptions;
     this.spotPolygonOptions = this.spotPolygonLightOptions;
-    this.selectedSpotMarkerOptions = this.selectedSpotMarkerLightOptions;
+    //     this.selectedSpotMarkerOptions = this.selectedSpotMarkerLightOptions;
   }
   setDarkMode() {
-    this.heatmapOptions = this.heatmapDarkOptions;
+    this.isDarkMode = true;
+    //     this.heatmapOptions = this.heatmapDarkOptions;
     this.spotCircleOptions = this.spotCircleDarkOptions;
     this.spotPolygonOptions = this.spotPolygonDarkOptions;
-    this.selectedSpotMarkerOptions = this.selectedSpotMarkerDarkOptions;
+    //     this.selectedSpotMarkerOptions = this.selectedSpotMarkerDarkOptions;
   }
 
   emitBoundsChanged() {
@@ -373,6 +403,11 @@ export class MapComponent implements OnInit {
 
   editingSpotPositionChanged(position: google.maps.LatLng) {
     this.selectedSpot.location = position.toJSON();
+  }
+
+  focusOnDot(dotLocation: google.maps.LatLngLiteral | google.maps.LatLng) {
+    this.googleMap.panTo(dotLocation);
+    this.setZoom(Math.min(this.zoom + 4, 16));
   }
 
   focusOnGeolocation() {
