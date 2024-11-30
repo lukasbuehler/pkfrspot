@@ -6,11 +6,6 @@ mat-card {
 
     ::ng-deep div.mat-mdc-card-header-text {
       width: 100%;
-      * {
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
     }
   }
 }

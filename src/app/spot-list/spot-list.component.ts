@@ -12,7 +12,22 @@ import { MatIconModule } from "@angular/material/icon";
   styleUrl: "./spot-list.component.scss",
 })
 export class SpotListComponent {
-  @Input() spots: Spot.Class[] = [];
+  @Input() highlightedSpots: Spot.Class[] = [];
+  @Input() set spots(spots: Spot.Class[]) {
+    this.remainingSpots = spots.filter((spot) => {
+      const foundSpot: Spot.Class | undefined = this.highlightedSpots.find(
+        (highlightedSpot) => {
+          return highlightedSpot.id === spot.id;
+        }
+      );
+      // if the spot is found in the highlights array,
+      // then we want to exclude it from the remaining spots
+      // meaning we want to return true if a spot is not found for it be not filtered out
+      return !foundSpot;
+    });
+  }
+
+  remainingSpots: Spot.Class[] = [];
 
   @Output() clickSpot: EventEmitter<Spot.Class> =
     new EventEmitter<Spot.Class>();

@@ -1,4 +1,9 @@
-import { ContributedMedia, LocaleMap, MediaType } from "./Interfaces";
+import {
+  ContributedMedia,
+  LocaleMap,
+  MediaType,
+  AmenitiesMap,
+} from "./Interfaces";
 import { MapHelpers } from "../MapHelpers";
 import { DatabaseService } from "../../app/database.service";
 import { StorageFolder, StorageService } from "../../app/storage.service";
@@ -74,13 +79,17 @@ export namespace Spot {
       return this._data.isMiniSpot;
     }
 
-    public get rating(): number {
+    public get rating(): number | null {
       return this._data.rating;
+    }
+
+    public get isIconic(): boolean {
+      return this._data.isIconic ?? false;
     }
 
     public getDescription(locale: string): string {
       if (this._data.description) {
-        return this._data.description[locale];
+        return this._data.description[locale] ?? "";
       }
       return "";
     }
@@ -398,6 +407,7 @@ export namespace Spot {
 
     isMiniSpot?: boolean;
     rating?: number; // from 1 to 10, set by cloud function.
+    isIconic?: boolean;
     description?: LocaleMap;
     media?: ContributedMedia[];
 
@@ -405,6 +415,8 @@ export namespace Spot {
     area?: string;
 
     address?: AddressSchema;
+
+    amenities?: AmenitiesMap;
 
     bounds?: GeoPointLiteral[];
 

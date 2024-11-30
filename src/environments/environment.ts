@@ -1,6 +1,7 @@
 export const environment = {
   name: "Default",
   production: false,
+  mapId: "",
   keys: {
     firebaseConfig: {
       projectId: "",

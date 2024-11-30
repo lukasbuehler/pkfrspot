@@ -39,7 +39,7 @@ import {
   MatAutocomplete,
 } from "@angular/material/autocomplete";
 import { MatInput } from "@angular/material/input";
-import { MatIcon } from "@angular/material/icon";
+import { MatIconModule, MatIcon } from "@angular/material/icon";
 import { MatMenuTrigger, MatMenu } from "@angular/material/menu";
 import { MatButtonModule, MatIconButton } from "@angular/material/button";
 import { MatFormField, MatSuffix } from "@angular/material/form-field";
@@ -51,14 +51,14 @@ import { MatDividerModule } from "@angular/material/divider";
   templateUrl: "./map-page.component.html",
   styleUrls: ["./map-page.component.scss"],
   animations: [
-    trigger("inOutAnimation", [
+    trigger("fadeInOut", [
       transition(":enter", [
-        style({ height: 0, opacity: 0, scale: 0.8 }),
-        animate("0.3s ease-out", style({ height: "*", opacity: 1, scale: 1 })),
+        style({ opacity: 0, scale: 0.8 }),
+        animate("0.3s ease-out", style({ opacity: 1, scale: 1 })),
       ]),
       transition(":leave", [
-        style({ height: "*", opacity: 1, scale: 1 }),
-        animate("0.3s ease-in", style({ height: 0, opacity: 0, scale: 0.8 })),
+        style({ opacity: 1, scale: 1 }),
+        animate("0.3s ease-in", style({ opacity: 0, scale: 0.8 })),
       ]),
     ]),
   ],
@@ -71,6 +71,7 @@ import { MatDividerModule } from "@angular/material/divider";
     MatButtonModule,
     MatSuffix,
     MatMenuTrigger,
+    MatIconModule,
     MatIcon,
     MatInput,
     FormsModule,

@@ -7,7 +7,7 @@ export interface SpotClusterTile {
   y: number;
 
   // the array of cluster points with their corresponding weights.
-  points: {
+  dots: {
     location: GeoPoint;
     weight: number;
   }[];

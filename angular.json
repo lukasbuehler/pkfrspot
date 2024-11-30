@@ -26,6 +26,10 @@
           "de-CH": {
             "translation": "src/locale/messages.de-CH.xlf",
             "baseHref": "/de-CH/"
+          },
+          "it": {
+            "translation": "src/locale/messages.it.xlf",
+            "baseHref": "/it/"
           }
         }
       },
@@ -33,7 +37,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "localize": ["en", "de", "de-CH"],
+            "localize": ["en", "de", "de-CH", "it"],
             "outputPath": "dist/pkfrspot",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -47,7 +51,6 @@
               "src/sitemap.xml"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/croppie/croppie.css",
               "node_modules/swiper/swiper-bundle.css",
               "node_modules/@videogular/ngx-videogular/fonts/videogular.css",
@@ -86,10 +89,17 @@
                 }
               ],
               "outputHashing": "none",
-              "optimization": true,
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              },
               "sourceMap": true,
-              "localize": ["de"],
-              "baseHref": "/de/"
+              "localize": ["de-CH"],
+              "baseHref": "/de-CH/"
             },
             "staging": {
               "fileReplacements": [
@@ -155,7 +165,7 @@
         "extract-i18n": {
           "builder": "ng-extract-i18n-merge:ng-extract-i18n-merge",
           "options": {
-            "browserTarget": "pkfrspot:build",
+            "buildTarget": "pkfrspot:build",
             "format": "xlf2",
             "outputPath": "src/locale",
             "targetFiles": ["messages.de.xlf", "messages.de-CH.xlf"]
