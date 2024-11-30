@@ -22,6 +22,13 @@ import { Meta, Title } from "@angular/platform-browser";
 import { MapsApiService } from "../maps-api.service";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
 import { isPlatformServer } from "@angular/common";
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from "@angular/animations";
 
 /**
  * This interface is used to reference a spot in the loaded spots array.
@@ -41,6 +48,7 @@ type Dot = google.maps.visualization.WeightedLocation;
   styleUrls: ["./spot-map.component.scss"],
   standalone: true,
   imports: [MapComponent, MatSnackBarModule],
+  animations: [],
 })
 export class SpotMapComponent implements AfterViewInit {
   @ViewChild("map") map: MapComponent;
@@ -92,13 +100,9 @@ export class SpotMapComponent implements AfterViewInit {
 
   visibleDots: Dot[] = [];
   loadedDots = {
-    2: new Map<string, Dot[]>(),
     4: new Map<string, Dot[]>(),
-    6: new Map<string, Dot[]>(),
     8: new Map<string, Dot[]>(),
-    10: new Map<string, Dot[]>(),
     12: new Map<string, Dot[]>(),
-    14: new Map<string, Dot[]>(),
   };
 
   private _northEastTileCoordsZ16: { x: number; y: number };
@@ -212,24 +216,24 @@ export class SpotMapComponent implements AfterViewInit {
 
       let zoomLevel = zoom;
 
-      if (zoomLevel <= 2) {
-        zoomLevel = 2;
-        this._northEastTileCoordsZ16.x = 0;
+      if (zoomLevel <= 4) {
+        zoomLevel = 4;
+        this._northEastTileCoordsZ16.x = (1 << 16) - 1;
         this._northEastTileCoordsZ16.y = 0;
-        this._southWestTileCoordsZ16.x = (1 << 16) - 1;
+        this._southWestTileCoordsZ16.x = 0;
         this._southWestTileCoordsZ16.y = (1 << 16) - 1;
-      } else if (zoomLevel % 2 !== 0) {
-        zoomLevel--;
+      } else if (zoomLevel % 4 !== 0) {
+        zoomLevel = zoomLevel - (zoomLevel % 4);
       }
 
       const tileCoords: { ne: google.maps.Point; sw: google.maps.Point } = {
         ne: new google.maps.Point(
-          this._northEastTileCoordsZ16.x >> (16 - zoomLevel + 2),
-          this._northEastTileCoordsZ16.y >> (16 - zoomLevel + 2)
+          this._northEastTileCoordsZ16.x >> (16 - zoomLevel),
+          this._northEastTileCoordsZ16.y >> (16 - zoomLevel)
         ),
         sw: new google.maps.Point(
-          this._southWestTileCoordsZ16.x >> (16 - zoomLevel + 2),
-          this._southWestTileCoordsZ16.y >> (16 - zoomLevel + 2)
+          this._southWestTileCoordsZ16.x >> (16 - zoomLevel),
+          this._southWestTileCoordsZ16.y >> (16 - zoomLevel)
         ),
       };
 
@@ -240,7 +244,9 @@ export class SpotMapComponent implements AfterViewInit {
         this.loadedDots[zoomLevel]
       );
 
-      this.loadNewDotsOnTiles(zoomLevel, tilesToLoad);
+      if (tilesToLoad?.length > 0) {
+        this.loadNewDotsOnTiles(zoomLevel, tilesToLoad);
+      }
     }
   }
 
@@ -260,7 +266,7 @@ export class SpotMapComponent implements AfterViewInit {
     zoom: number,
     northEastTileCoords: { x: number; y: number },
     southWestTileCoords: { x: number; y: number },
-    loadedSpots: Map<string, any>
+    loadedDotTiles: Map<string, any>
   ) {
     let tilesToLoad: { x: number; y: number }[] = [];
 
@@ -268,15 +274,17 @@ export class SpotMapComponent implements AfterViewInit {
     for (let x = southWestTileCoords.x; x <= northEastTileCoords.x; x++) {
       for (let y = northEastTileCoords.y; y <= southWestTileCoords.y; y++) {
         // here we go through all the x,y pairs for every visible tile on screen right now.
-        if (!loadedSpots.has(`z${zoom}_${x}_${y}`)) {
+        const key: string = `z${zoom}_${x}_${y}`;
+
+        if (!loadedDotTiles.has(key)) {
           // the tile was not loaded before
 
           // mark this tile as loaded, it will be filled after the data was
           // fetched. This prevents multiple fetches for the same tile
           // !([]) is false, !(undefined) is true
           // this way it wont be loaded twice
-          //loadedSpots.set(`z${zoom}_${x}_${y}`, []);
           tilesToLoad.push({ x: x, y: y });
+          loadedDotTiles.set(key, []);
         }
       }
     }
@@ -336,9 +344,12 @@ export class SpotMapComponent implements AfterViewInit {
   }
 
   updateVisibleDots() {
-    let zoom = 2;
-    if (this.mapZoom > 2) {
-      zoom = this.mapZoom % 2 === 0 ? this.mapZoom : this.mapZoom - 1;
+    let zoom = 4;
+    if (this.mapZoom > 4) {
+      zoom =
+        this.mapZoom % 4 === 0
+          ? this.mapZoom
+          : (this.mapZoom -= this.mapZoom % 4);
     }
 
     if (this.loadedDots[zoom]?.size > 0) {
@@ -574,27 +585,30 @@ export class SpotMapComponent implements AfterViewInit {
   }
 
   loadNewDotsOnTiles(zoom: number, tilesToLoad: { x: number; y: number }[]) {
-    if (zoom % 2 === 1) return;
+    console.log("loading dots for zoom", zoom, tilesToLoad);
+    if (zoom % 4 !== 0 && zoom > 0) return;
+    if (tilesToLoad.length === 0) return;
 
-    // tilesToLoad.forEach((tile) => {
-    //     const key = `z${zoom}_${tile.x}_${tile.y}`;
-    //     if (!this.loadedDots[zoom].has(key)) {
-    //         this.loadedDots[zoom].set(key, []);
-    //     }
-    // });
+    tilesToLoad.forEach((tile) => {
+      const key = `z${zoom}_${tile.x}_${tile.y}`;
+      if (!this.loadedDots[zoom].has(key)) {
+        this.loadedDots[zoom].set(key, []);
+      }
+    });
 
     this._dbService.getSpotClusterTiles(zoom, tilesToLoad).subscribe({
       next: (clusterTiles) => {
+        console.log("got cluster tiles", clusterTiles);
         if (clusterTiles.length > 0) {
           clusterTiles.forEach((tile) => {
             const key = `z${zoom}_${tile.x}_${tile.y}`;
-            const dots: Dot[] = tile.points.map((point) => {
+            const dots: Dot[] = tile.dots.map((dot) => {
               return {
                 location: new google.maps.LatLng(
-                  point.location.latitude,
-                  point.location.longitude
+                  dot.location.latitude,
+                  dot.location.longitude
                 ),
-                weight: point.weight,
+                weight: dot.weight,
               };
             });
 

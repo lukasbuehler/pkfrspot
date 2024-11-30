@@ -19,8 +19,8 @@
         class="spot-search-field mat-elevation-z3"
         appearance="fill"
       >
+        @if(selectedSpot) {
         <button
-          *ngIf="selectedSpot"
           mat-icon-button
           matSuffix
           [matMenuTriggerFor]="searchUserMatMenu"
@@ -29,7 +29,9 @@
         >
           <mat-icon>close</mat-icon>
         </button>
-        <mat-icon *ngIf="!selectedSpot" matSuffix>search</mat-icon>
+        } @else {
+        <mat-icon matSuffix>search</mat-icon>
+        }
 
         <input
           #mapSearchInput
@@ -120,7 +122,7 @@
     @if(selectedSpot) {
     <div class="info-panel d-none d-md-block spot-preview-container p-3 pt-4">
       <app-spot-compact-view
-        [@inOutAnimation]
+        @fadeInOut
         #spotDetail
         [spot]="selectedSpot"
         [flat]="true"
@@ -138,6 +140,7 @@
     } @else { @if(spotMap.mapZoom >= 16) {
     <div class="info-panel d-none d-md-block p-3">
       <app-spot-list
+        @fadeInOut
         [spots]="visibleSpots"
         (clickSpot)="spotMap.openSpot($event)"
       ></app-spot-list>
@@ -147,7 +150,7 @@
       @if(selectedSpot) {
       <div class="spot-preview-container">
         <app-spot-compact-view
-          [@inOutAnimation]
+          @fadeInOut
           #spotDetail
           [spot]="selectedSpot"
           [flat]="true"
@@ -167,6 +170,7 @@
       } @else {
       <!-- @if(spotMap.mapZoom >= 16) { -->
       <app-spot-list
+        @fadeInOut
         [spots]="visibleSpots"
         (clickSpot)="spotMap.openSpot($event)"
       ></app-spot-list>
@@ -231,6 +235,7 @@
     (miniFabClick)="speedDialMiniFabClick($event)"
   ></app-speed-dial-fab> -->
   <button
+    @fadeInOut
     mat-fab
     #createSpotSpeedDial
     id="createSpotSpeedDial"

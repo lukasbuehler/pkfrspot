@@ -1,4 +1,6 @@
 @use "@angular/material" as mat;
+
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 @import "./theming/m3-theme";
 
 /* You can add global styles to this file, and also import other style files */

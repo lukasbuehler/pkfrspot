@@ -51,7 +51,6 @@
               "src/sitemap.xml"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/croppie/croppie.css",
               "node_modules/swiper/swiper-bundle.css",
               "node_modules/@videogular/ngx-videogular/fonts/videogular.css",
@@ -90,7 +89,14 @@
                 }
               ],
               "outputHashing": "none",
-              "optimization": true,
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              },
               "sourceMap": true,
               "localize": ["de-CH"],
               "baseHref": "/de-CH/"

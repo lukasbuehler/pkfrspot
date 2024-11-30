@@ -14,14 +14,21 @@
   height="100%"
 >
   @if (zoom < 16) {
+  <!-- <map-heatmap-layer [data]="dots" [options]="heatmapDarkOptions" /> -->
+
   <!-- Cluster Markers -->
   @for (dot of dots; track $index) {
   <div
+    @fadeInOut
     #smallDot
     class="small-dot-marker"
     [ngClass]="{
       'marker-primary-dark': isDarkMode,
       'marker-primary-light': !isDarkMode
+    }"
+    [style]="{
+      height: 12 + sqrt(dot.weight) * 3 + 'px',
+      width: 12 + sqrt(dot.weight) * 3 + 'px'
     }"
   ></div>
   <map-advanced-marker
@@ -29,6 +36,7 @@
     [options]="primaryDotMarkerOptions"
     [content]="smallDot"
     (mapClick)="focusOnDot(dot.location)"
+    [zIndex]="dot.weight"
   ></map-advanced-marker>
   } } @else { @for(spot of spots; track $index) { @if(!spot?.hasBounds()) {
   <map-circle
@@ -49,10 +57,9 @@
     [paths]="spot.paths"
     (polygonClick)="spotClick.emit(spot)"
   ></map-polygon>
-  }
+  } } }
 
-  <!-- Advanced marker -->
-
+  <!-- selected spot marker -->
   @if(selectedSpot) {
   <map-advanced-marker
     #selectedSpotMarker
@@ -61,8 +68,10 @@
     [draggable]="isEditing"
     (mapDragend)="editingSpotPositionChanged($event.latLng)"
     [content]="selectedSpotMarkerNode"
+    [zIndex]="1000000 + 1"
   ></map-advanced-marker>
   <div
+    @fadeInOut
     class="pin-marker"
     #selectedSpotMarkerNode
     id="selectedSpotMarkerNode"
@@ -71,13 +80,13 @@
     <div
       class="mat-label-large"
       [ngClass]="{
-        'pin-iconc': selectedSpot.isIconic,
+        'pin-iconic': selectedSpot.isIconic,
         'pin-primary': !selectedSpot.isIconic
       }"
     >
-      <mat-icon style="height: 20px; font-size: 20px; width: 20px"
-        >zoom_in_map</mat-icon
-      >
+      <mat-icon style="height: 20px; font-size: 20px; width: 20px">{{
+        selectedSpot.isIconic ? "star" : "zoom_in_map"
+      }}</mat-icon>
     </div>
     <svg
       width="18"
@@ -105,7 +114,6 @@
     [position]="selectedSpot.location"
     (mapDragend)="editingSpotPositionChanged($event.latLng)"
   ></map-advanced-marker> -->
-  } }
 
   <!-- Highlighted spot markers -->
   @for(spot of highlightedSpots; track spot) {
@@ -152,7 +160,7 @@
     [position]="(geolocation$ | async).location"
     [options]="geolocationMarkerOptions"
     [content]="geolocationMarker"
-    [zIndex]="10"
+    [zIndex]="1000000"
   >
   </map-advanced-marker>
   <map-circle

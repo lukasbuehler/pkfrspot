@@ -8,20 +8,27 @@ Discover spots <strike>and fellow athletes, plan training sessions with your fri
 
 ## Roadmap
 
-| Shipped                 | Non-binding time estimate | Features                                                                                                                |
-| :---------------------- | :------------------------ | :---------------------------------------------------------------------------------------------------------------------- |
-| :ballot_box_with_check: | Spring 2024               | Spot and places full-text search                                                                                        |
-| :black_square_button:   | Spring 2024               | Mobile (web) UI/UX enhancements                                                                                         |
-| :ballot_box_with_check: | Summer 2024               | Multilanguage (English, German), SSR, link previews, Angular 18                                                         |
-| :ballot_box_with_check: | Summer 2024               | Added locality (region, city, country) to spots                                                                         |
-| :soon:                  | Autumn 2024               | Spot map overview overhaul, performance improvements, more languages (French, Italian, Swiss-German), Angular 19        |
-| :black_square_button:   | Winter 24/25              | Spot map usefulness update: Spot ratings, spot features, add corresponding Google Places, bookmark and mark as visisted |
-| :black_square_button:   | Spring 2025               | Integration update: Let websites embed PKFR Spots or the PKFR Spot map.                                                 |
-| :black_square_button:   | Summer 2025               | Native iOS, Android apps with [Tauri](https://v2.tauri.app/)                                                            |
-| :black_square_button:   | ?                         | Posts and profiles                                                                                                      |
-| :black_square_button:   | ?                         | Plan trainings                                                                                                          |
+### Future Updates
 
-For the detailed progress please refer to the following GitHub project board: [PKFR Spot Board](https://github.com/users/lukasbuehler/projects/1/views/1)
+For the detailed progress please refer to the following GitHub project: [PKFR Spot Updates](https://github.com/users/lukasbuehler/projects/1/views/8)
+
+| Non-binding time estimate | Features                                                                                                                                                                                               |
+| :------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Q4 2024                   | **Spot map update**: Spot ratings, spot features, add corresponding Google Places, bookmark and mark as visisted, performance improvements, more languages (French, Italian, Swiss-German), Angular 19 |
+| Q1 2025                   | **Integration update**: Let websites embed PKFR Spots or the PKFR Spot map.                                                                                                                            |
+| Q2 2025                   | **App Update**: Native iOS, Android apps with [Tauri](https://v2.tauri.app/), ...                                                                                                                      |
+| Q3 2025                   | **Post Update**: Posts (Image, Video, Link), Profile pages, Link posts to spots, ...                                                                                                                   |
+| Q4 2025                   | **Training Update**: Plan and share training sessions and jams, organize teams and groups, ...                                                                                                         |
+| ...                       | ...                                                                                                                                                                                                    |
+
+### Past Updates
+
+| Date              | Features                                                        | Last Commit                                                                                         |
+| :---------------- | :-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------- |
+| 8. September 2024 | Added locality (region, city, country) to spots                 | [8170d25](https://github.com/lukasbuehler/pkfrspot/commit/8170d25a558ff160b39de69095f928d0a44fd5a9) |
+| 28. August 2024   | Multilanguage (English, German), SSR, link previews, Angular 18 | [504d587](https://github.com/lukasbuehler/pkfrspot/commit/504d58743607b84a3932c98ee9e6ef5073d77c41) |
+| Spring 2024       | Mobile (web) UI/UX enhancements                                 |                                                                                                     |
+| Spring 2024       | Spot and places full-text search                                |                                                                                                     |
 
 ## Collaborating
 

@@ -1,9 +1,6 @@
 @use "sass:map";
 @use "@angular/material" as mat;
 
-.marker-base {
-}
-
 @mixin color($theme) {
   .pin-primary {
     border-color: #dde1ff; // var(--mat-sys-on-primary-container);
