@@ -350,14 +350,14 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
     if (typeof plausible !== "undefined") {
       plausible("Opening in Google Maps", { props: { spotId: this.spot.id } });
     }
-    this._mapsApiService.openLatLngInGoogleMaps(this.spot.location);
+    this._mapsApiService.openLatLngInMaps(this.spot.location);
   }
 
   openDirectionsInMaps() {
     if (typeof plausible !== "undefined") {
       plausible("Opening in Google Maps", { props: { spotId: this.spot.id } });
     }
-    this._mapsApiService.openDirectionsInGoogleMaps(this.spot.location);
+    this._mapsApiService.openDirectionsInMaps(this.spot.location);
   }
 
   loadReportForSpot() {
