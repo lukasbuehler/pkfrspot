@@ -63,7 +63,7 @@
   <img mat-card-sm-image [src]="spot.previewImage" />
   } } @else {
   <img
-    [src]="spot.previewImage || '/assets/no_media.png'"
+    [src]="spot.previewImage || 'assets/no_media.png'"
     [alt]="
       spot.previewImage
         ? 'Image of spot ' + spot.getName(this.locale)
