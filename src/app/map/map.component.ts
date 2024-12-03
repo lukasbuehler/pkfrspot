@@ -151,7 +151,7 @@ export class MapComponent implements OnInit {
     //   gmpDraggable: false,
     //   gmpClickable: false,
     //   //   icon: {
-    //   //     url: "/assets/icons/geolocation-16x16.png",
+    //   //     url: "assets/icons/geolocation-16x16.png",
     //   //     scaledSize: new google.maps.Size(16, 16),
     //   //     anchor: new google.maps.Point(8, 8),
     //   //   },
@@ -162,7 +162,7 @@ export class MapComponent implements OnInit {
     //   gmpClickable: false,
     //   //   opacity: 0.8,
     //   //   icon: {
-    //   //     url: "/assets/icons/circle-primary-16x16.png",
+    //   //     url: "assets/icons/circle-primary-16x16.png",
     //   //     scaledSize: new google.maps.Size(16, 16),
     //   //     anchor: new google.maps.Point(8, 8),
     //   //   },
@@ -172,7 +172,7 @@ export class MapComponent implements OnInit {
     //   gmpClickable: false,
     //   //   opacity: 0.8,
     //   //   icon: {
-    //   //     url: "/assets/icons/circle-tertiary-16x16.png",
+    //   //     url: "assets/icons/circle-tertiary-16x16.png",
     //   //     scaledSize: new google.maps.Size(16, 16),
     //   //     anchor: new google.maps.Point(8, 8),
     //   //   },
@@ -272,7 +272,7 @@ export class MapComponent implements OnInit {
   //       gmpDraggable: false,
   //       gmpClickable: false,
   //       //   icon: {
-  //       //     url: "/assets/icons/marker-primary-dark.png",
+  //       //     url: "assets/icons/marker-primary-dark.png",
   //       //   },
   //       //   opacity: 1,
   //     };
@@ -280,7 +280,7 @@ export class MapComponent implements OnInit {
   //     {
   //       //   ...this.selectedSpotMarkerDarkOptions.anchorPoint,
   //       //   icon: {
-  //       //     url: "/assets/icons/marker-primary-light.png",
+  //       //     url: "assets/icons/marker-primary-light.png",
   //       //   },
   //     };
   //   selectedSpotMarkerOptions: google.maps.marker.AdvancedMarkerElementOptions =
@@ -291,7 +291,7 @@ export class MapComponent implements OnInit {
   //       gmpClickable: false,
   //       //   crossOnDrag: true,
   //       //   icon: {
-  //       //     url: "/assets/icons/marker-primary-dark.png",
+  //       //     url: "assets/icons/marker-primary-dark.png",
   //       //   },
   //       //   opacity: 1,
   //     };
@@ -299,7 +299,7 @@ export class MapComponent implements OnInit {
   //     gmpDraggable: false,
   //     gmpClickable: false,
   //     // icon: {
-  //     //   url: "/assets/icons/marker-tertiary-dark.png",
+  //     //   url: "assets/icons/marker-tertiary-dark.png",
   //     // },
   //   };
 

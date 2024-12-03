@@ -21,11 +21,11 @@ export class AboutPageComponent implements OnInit {
 
     this.meta.updateTag({
       property: "og:image",
-      content: "/assets/banner_1200x630.png",
+      content: "assets/banner_1200x630.png",
     });
     this.meta.updateTag({
       name: "twitter:image",
-      content: "/assets/banner_1200x630.png",
+      content: "assets/banner_1200x630.png",
     });
 
     // this.meta.updateTag({ name: 'description', content: 'About PKFR Spot' });
