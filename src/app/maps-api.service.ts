@@ -62,14 +62,57 @@ export class MapsApiService {
     return Promise.resolve(JSON.parse(lastLocationAndZoom));
   }
 
-  openLatLngInGoogleMaps(location: google.maps.LatLngLiteral) {
+  isMacOSOriOS(): boolean {
+    const appleDevices = [
+      "iPad Simulator",
+      "iPhone Simulator",
+      "iPod Simulator",
+      "iPad",
+      "iPhone",
+      "iPod",
+      "Mac",
+    ];
+    return RegExp(`/${appleDevices.join("|")}/`).test(navigator.userAgent);
+  }
+
+  openLatLngInMaps(location: google.maps.LatLngLiteral) {
     if (typeof window === "undefined") return; // abort if not in browser
+
+    if (this.isMacOSOriOS()) {
+      this._openLatLngInAppleMaps(location);
+    } else {
+      this._openLatLngInGoogleMaps(location);
+    }
+  }
+
+  private _openLatLngInAppleMaps(location: google.maps.LatLngLiteral) {
+    window.open(`https://maps.apple.com/?ll=${location.lat},${location.lng}`);
+  }
+
+  private _openLatLngInGoogleMaps(location: google.maps.LatLngLiteral) {
     window.open(
       `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lng}`
     );
   }
 
-  openDirectionsInGoogleMaps(location: google.maps.LatLngLiteral) {
+  openDirectionsInMaps(location: google.maps.LatLngLiteral) {
+    if (typeof window === "undefined") return; // abort if not in browser
+
+    if (this.isMacOSOriOS()) {
+      this._openDirectionsInAppleMaps(location);
+    } else {
+      this._openDirectionsInGoogleMaps(location);
+    }
+  }
+
+  private _openDirectionsInAppleMaps(location: google.maps.LatLngLiteral) {
+    if (typeof window === "undefined") return; // abort if not in browser
+    window.open(
+      `https://maps.apple.com/?daddr=${location.lat},${location.lng}`
+    );
+  }
+
+  private _openDirectionsInGoogleMaps(location: google.maps.LatLngLiteral) {
     if (typeof window === "undefined") return; // abort if not in browser
     window.open(
       `https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`
