@@ -1,3 +1,6 @@
+import path from "node:path";
+import express from "express";
+
 const supportedLanguages = ["en", "de", "de-CH", "it"];
 const defaultLanguage = "en";
 const langSupportedPaths = ["map", "about"];
@@ -8,8 +11,6 @@ for (const lang of supportedLanguages) {
   serverExpressApps[lang] = (await import(`./${lang}/server.mjs`)).app;
   console.log("Loaded server for lang:", lang);
 }
-
-const express = require("express");
 
 function detectLanguage(req, res, next) {
   let preferredLanguage = defaultLanguage;
@@ -62,6 +63,11 @@ function detectLanguage(req, res, next) {
 function run() {
   const port = process.env.PORT || 8080;
   const server = express();
+
+  server.get("/robots.txt", (req, res) => {
+    const __dirname = path.dirname(new URL(import.meta.url).pathname);
+    res.sendFile(path.join(__dirname, "../browser/en/robots.txt"));
+  });
 
   // Redirect based on preffered language
   server.get("*", detectLanguage);
