@@ -326,7 +326,7 @@
         <unit id="2818862099235102080">
             <segment state="initial">
                 <source> Resend verification E-mail </source>
-                <target> Invia nuovamente l'E-mail di verifica </target>
+                <target> Invia nuovamente l&apos;E-mail di verifica </target>
             </segment>
         </unit>
         <unit id="1431416938026210429">
@@ -473,7 +473,7 @@
         <unit id="5726791725186220555">
             <segment state="initial">
                 <source>The E-mail address is invalid!</source>
-                <target>L'indirizzo E-mail non è valido!</target>
+                <target>L&apos;indirizzo E-mail non è valido!</target>
             </segment>
         </unit>
         <unit id="427922060915202050">
@@ -485,14 +485,15 @@
         <unit id="2978266456005156211">
             <segment state="initial">
                 <source>The E-mail address and password do not match for any existing user.</source>
-                <target>L'indirizzo E-mail e la password non corrispondono a nessun utente
+                <target>L&apos;indirizzo E-mail e la password non corrispondono a nessun utente
                     esistente.</target>
             </segment>
         </unit>
         <unit id="7733953409417762446">
             <segment state="initial">
                 <source>An unknown error has occured on sign in. Please try again.</source>
-                <target>Si è verificato un errore sconosciuto durante l'accesso. Per favore riprova.</target>
+                <target>Si è verificato un errore sconosciuto durante l&apos;accesso. Per favore
+                    riprova.</target>
             </segment>
         </unit>
         <unit id="7323901917278002498">
@@ -522,7 +523,7 @@
         <unit id="6858563845386603352">
             <segment state="initial">
                 <source>The e-mail address needs to be verified later.</source>
-                <target>L'indirizzo e-mail deve essere verificato in seguito.</target>
+                <target>L&apos;indirizzo e-mail deve essere verificato in seguito.</target>
             </segment>
         </unit>
         <unit id="7486528540316266957">
@@ -592,7 +593,7 @@
         <unit id="3601523967492159201">
             <segment state="initial">
                 <source>Could not create account!</source>
-                <target>Impossibile creare l'account!</target>
+                <target>Impossibile creare l&apos;account!</target>
             </segment>
         </unit>
         <unit id="share_spot_tooltip">
@@ -768,6 +769,100 @@
             <segment state="initial">
                 <source> Cancel </source>
                 <target> Annulla </target>
+            </segment>
+        </unit>
+        <unit id="about.title">
+            <segment state="initial">
+                <source>About PKFR Spot</source>
+                <target>Informazioni su PKFR Spot</target>
+            </segment>
+        </unit>
+        <unit id="pkfr.spotmap.title">
+            <segment state="initial">
+                <source>PKFR Spot map</source>
+                <target>Mappa PKFR Spot</target>
+            </segment>
+        </unit>
+        <unit id="spot.locality.pretext">
+            <notes>
+                <note category="description">The text before the localized location of the spot.
+                    E.g. Spot in Wiedikon, Zurich, CH</note>
+            </notes>
+            <segment state="initial">
+                <source>Spot in </source>
+                <target>Spot in </target>
+            </segment>
+        </unit>
+        <unit id="amenities.covered">
+            <segment state="initial">
+                <source>Covered</source>
+                <target>Coperto</target>
+            </segment>
+        </unit>
+        <unit id="amenities.outdoor">
+            <segment state="initial">
+                <source>Outdoor</source>
+                <target>All'aperto</target>
+            </segment>
+        </unit>
+        <unit id="amenities.indoor">
+            <segment state="initial">
+                <source>Indoor</source>
+                <target>Al chiuso</target>
+            </segment>
+        </unit>
+        <unit id="amenities.lighting">
+            <segment state="initial">
+                <source>Lighting</source>
+                <target>Illuminazione</target>
+            </segment>
+        </unit>
+        <unit id="amenities.wc">
+            <segment state="initial">
+                <source>WC</source>
+                <target>WC</target>
+            </segment>
+        </unit>
+        <unit id="amenities.changing_room">
+            <segment state="initial">
+                <source>Changing room</source>
+                <target>Spogliatoio</target>
+            </segment>
+        </unit>
+        <unit id="amenities.lockers">
+            <segment state="initial">
+                <source>Lockers</source>
+                <target>Armadietti</target>
+            </segment>
+        </unit>
+        <unit id="amenities.entry_fee">
+            <segment state="initial">
+                <source>Entry fee</source>
+                <target>Tariffa d'ingresso</target>
+            </segment>
+        </unit>
+        <unit id="amenities.drinking_water">
+            <segment state="initial">
+                <source>Drinking water</source>
+                <target>Acqua potabile</target>
+            </segment>
+        </unit>
+        <unit id="amenities.parking_on_site">
+            <segment state="initial">
+                <source>Parking on site</source>
+                <target>Parcheggio</target>
+            </segment>
+        </unit>
+        <unit id="amenities.power_outlets">
+            <segment state="initial">
+                <source>Power outlets</source>
+                <target>Prese di corrente</target>
+            </segment>
+        </unit>
+        <unit id="amenities.maybe_overgrown">
+            <segment state="initial">
+                <source>Maybe overgrown</source>
+                <target>Forse invaso dalla vegetazione</target>
             </segment>
         </unit>
     </file>

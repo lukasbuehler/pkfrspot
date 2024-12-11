@@ -168,7 +168,11 @@
             "buildTarget": "pkfrspot:build",
             "format": "xlf2",
             "outputPath": "src/locale",
-            "targetFiles": ["messages.de.xlf", "messages.de-CH.xlf"]
+            "targetFiles": [
+              "messages.de.xlf",
+              "messages.de-CH.xlf",
+              "messages.it.xlf"
+            ]
           }
         }
       }

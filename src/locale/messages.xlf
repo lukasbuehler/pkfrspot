@@ -616,5 +616,83 @@
         </source>
       </segment>
     </unit>
+    <unit id="about.title">
+      <segment>
+        <source>About PKFR Spot</source>
+      </segment>
+    </unit>
+    <unit id="amenities.changing_room">
+      <segment>
+        <source>Changing room</source>
+      </segment>
+    </unit>
+    <unit id="amenities.covered">
+      <segment>
+        <source>Covered</source>
+      </segment>
+    </unit>
+    <unit id="amenities.drinking_water">
+      <segment>
+        <source>Drinking water</source>
+      </segment>
+    </unit>
+    <unit id="amenities.entry_fee">
+      <segment>
+        <source>Entry fee</source>
+      </segment>
+    </unit>
+    <unit id="amenities.indoor">
+      <segment>
+        <source>Indoor</source>
+      </segment>
+    </unit>
+    <unit id="amenities.lighting">
+      <segment>
+        <source>Lighting</source>
+      </segment>
+    </unit>
+    <unit id="amenities.lockers">
+      <segment>
+        <source>Lockers</source>
+      </segment>
+    </unit>
+    <unit id="amenities.maybe_overgrown">
+      <segment>
+        <source>Maybe overgrown</source>
+      </segment>
+    </unit>
+    <unit id="amenities.outdoor">
+      <segment>
+        <source>Outdoor</source>
+      </segment>
+    </unit>
+    <unit id="amenities.parking_on_site">
+      <segment>
+        <source>Parking on site</source>
+      </segment>
+    </unit>
+    <unit id="amenities.power_outlets">
+      <segment>
+        <source>Power outlets</source>
+      </segment>
+    </unit>
+    <unit id="amenities.wc">
+      <segment>
+        <source>WC</source>
+      </segment>
+    </unit>
+    <unit id="pkfr.spotmap.title">
+      <segment>
+        <source>PKFR Spot map</source>
+      </segment>
+    </unit>
+    <unit id="spot.locality.pretext">
+      <notes>
+        <note category="description">The text before the localized location of the spot. E.g. Spot in Wiedikon, Zurich, CH</note>
+      </notes>
+      <segment>
+        <source>Spot in </source>
+      </segment>
+    </unit>
   </file>
 </xliff>

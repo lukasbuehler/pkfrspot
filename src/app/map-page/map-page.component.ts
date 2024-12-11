@@ -132,7 +132,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
 
     this.isServer = isPlatformServer(platformId);
 
-    this.titleService.setTitle(`PKFR Spot map`);
+    this.titleService.setTitle($localize`:@@pkfr.spotmap.title:PKFR Spot map`);
   }
 
   async ngOnInit() {
