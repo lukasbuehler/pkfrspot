@@ -1,4 +1,4 @@
-export module MapHelpers {
+export namespace MapHelpers {
   const TILE_SIZE = 256;
 
   export function mercatorProjection(latLng: google.maps.LatLngLiteral): {

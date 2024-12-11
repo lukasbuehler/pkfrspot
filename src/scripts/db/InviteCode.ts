@@ -1,4 +1,4 @@
-export module InviteCode {
+export namespace InviteCode {
   export interface Schema {
     creator: {
       uid: string;

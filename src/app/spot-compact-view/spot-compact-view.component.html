@@ -163,58 +163,16 @@
     </div> -->
 
     <!-- Freatures -->
-    @if(true) {
+    @if(spot.amenities?.length > 0) {
     <div class="mb-3">
       <h4 i18n class="mat-title-small">Features and amenities</h4>
       <mat-chip-set aria-label="Dog selection">
+        @for(amenity of spot.amenities; track amenity) {
         <mat-chip>
-          <mat-icon matChipAvatar>roofing</mat-icon>
-          Covered
+          <mat-icon matChipAvatar>{{ amenity.icon }}</mat-icon>
+          {{ amenity.name }}
         </mat-chip>
-        <mat-chip>
-          <mat-icon matChipAvatar>nature_people</mat-icon>
-          Outdoor
-        </mat-chip>
-        <mat-chip>
-          <mat-icon matChipAvatar>home</mat-icon>
-          Indoor
-        </mat-chip>
-        <mat-chip>
-          <mat-icon matChipAvatar>lightbulb</mat-icon>
-          Lighting
-        </mat-chip>
-        <mat-chip>
-          <mat-icon matChipAvatar>wc</mat-icon>
-          WC
-        </mat-chip>
-        <mat-chip>
-          <mat-icon matChipAvatar>checkroom</mat-icon>
-          Changing room
-        </mat-chip>
-        <mat-chip>
-          <mat-icon matChipAvatar>lock</mat-icon>
-          Lockers
-        </mat-chip>
-        <mat-chip class="error-chips">
-          <mat-icon matChipAvatar>paid</mat-icon>
-          Enree fee
-        </mat-chip>
-        <mat-chip>
-          <mat-icon matChipAvatar>water_drop</mat-icon>
-          Drinking water
-        </mat-chip>
-        <mat-chip>
-          <mat-icon matChipAvatar>local_parking</mat-icon>
-          Local parking
-        </mat-chip>
-        <mat-chip>
-          <mat-icon matChipAvatar>power</mat-icon>
-          Power outlet
-        </mat-chip>
-        <mat-chip class="tertiary-chips">
-          <mat-icon matChipAvatar>grass</mat-icon>
-          Possibly overgrown
-        </mat-chip>
+        }
       </mat-chip-set>
     </div>
     }
