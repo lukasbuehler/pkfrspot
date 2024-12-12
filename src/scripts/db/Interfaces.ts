@@ -15,6 +15,7 @@ export type SupportedLanguage =
   | "de"
   | "de-CH"
   | "de-DE";
+// TODO Fix this
 
 // LangMap maps keys of SUPPORTED_LANGUAGES to strings
 type LangMap = {
