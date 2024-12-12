@@ -15,7 +15,7 @@ export interface PartialSpotSchema {
   };
 }
 
-export module ClusterHelpers {
+export namespace ClusterHelpers {
   //   function _clusterPoints(
   //     zoom: number,
   //     arrayOfPoints: { location: GeoPoint; weight: number }[][]

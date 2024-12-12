@@ -14,10 +14,16 @@ export class AboutPageComponent implements OnInit {
   constructor(private titleService: Title, private meta: Meta) {
     // update the meta tags
 
-    this.titleService.setTitle("About PKFR Spot");
+    this.titleService.setTitle($localize`:@@about.title:About PKFR Spot`);
 
-    this.meta.updateTag({ property: "og:title", content: "About PKFR Spot" });
-    this.meta.updateTag({ name: "twitter:title", content: "About PKFR Spot" });
+    this.meta.updateTag({
+      property: "og:title",
+      content: $localize`:@@about.title:About PKFR Spot`,
+    });
+    this.meta.updateTag({
+      name: "twitter:title",
+      content: $localize`:@@about.title:About PKFR Spot`,
+    });
 
     this.meta.updateTag({
       property: "og:image",

@@ -394,7 +394,9 @@ export class SpotMapComponent implements AfterViewInit {
 
     const title: string = `${spot.getName(this.locale)} - PKFR Spot`;
     const image_src: string = spot.previewImage;
-    const description: string = "Spot in " + spot.getLocalityString(); // TODO change and localize
+    const description: string =
+      $localize`:The text before the localized location of the spot. E.g. Spot in Wiedikon, Zurich, CH@@spot.locality.pretext:Spot in ` +
+      spot.getLocalityString(); // TODO change and localize
 
     // Title
     this.titleService.setTitle(title);
@@ -649,7 +651,7 @@ export class SpotMapComponent implements AfterViewInit {
     // unselect
     this.setSelectedSpot(null);
 
-    this.titleService.setTitle(`PKFR Spot map`);
+    this.titleService.setTitle($localize`:@@pkfr.spotmap.title:PKFR Spot map`);
   }
 
   /**

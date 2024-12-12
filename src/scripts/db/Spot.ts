@@ -3,6 +3,9 @@ import {
   LocaleMap,
   MediaType,
   AmenitiesMap,
+  AmenityNames,
+  AmenityIcons,
+  AmenitiesOrder,
 } from "./Interfaces";
 import { MapHelpers } from "../MapHelpers";
 import { DatabaseService } from "../../app/database.service";
@@ -177,6 +180,15 @@ export namespace Spot {
 
     public get tileCoordinates() {
       return this._data.tile_coordinates;
+    }
+
+    public get amenities(): { name: string; icon: string }[] {
+      if (!this._data.amenities) return [];
+
+      return AmenitiesOrder.map((key) => {
+        if (!this._data.amenities[key]) return null;
+        return { name: AmenityNames[key], icon: AmenityIcons[key] };
+      }).filter((val) => val !== null);
     }
 
     public get data(): Schema {
