@@ -81,15 +81,21 @@ export const countFollowingOnWrite = onDocumentWritten(
 );
 
 interface PartialSpotSchema {
-  // address?: {
-  //     country: {
-  //         code: string;
-  //         name: string;
-  //     };
-  //     formatted: string;
-  //     locality: string;
-  //     sublocality?: string;
-  // }
+  name: { [langCode: string]: string };
+  address?: {
+    country: {
+      code: string;
+      name: string;
+    };
+    formatted: string;
+    locality: string;
+    sublocality?: string;
+  };
+  media: {
+    src: string;
+    type: string;
+    uid?: string;
+  }[];
   location: GeoPoint;
   tile_coordinates: {
     z2: { x: number; y: number };
@@ -105,9 +111,79 @@ interface PartialSpotSchema {
   rating?: number;
 }
 
+const defaultSpotNames: { [code: string]: string } = {
+  en: "Unnamed Spot",
+  "en-US": "Unnamed Spot",
+  "en-GB": "Unnamed Spot",
+  de: "Unbenannter Spot",
+  "de-DE": "Unbenannter Spot",
+  "de-CH": "Unbenännte Spot",
+};
+
+function getSpotName(spotSchema: PartialSpotSchema, locale: string): string {
+  if (spotSchema.name) {
+    const nameLocales: string[] = Object.keys(spotSchema.name);
+    if (nameLocales.length > 0) {
+      if (nameLocales.includes(locale)) {
+        return spotSchema.name[locale];
+      } else if (nameLocales.includes(locale.split("-")[0])) {
+        return spotSchema.name[locale.split("-")[0]];
+      } else if (nameLocales.includes("en")) {
+        return spotSchema.name["en"];
+      } else {
+        return spotSchema.name[nameLocales[0]];
+      }
+    }
+  }
+  return defaultSpotNames[locale];
+}
+
+function getSpotPreviewImage(spotSchema: PartialSpotSchema): string {
+  const previewSize: string = "400x400";
+
+  if (spotSchema.media && spotSchema.media[0]?.type === "image") {
+    const media = spotSchema.media[0];
+    let url: string = media.src;
+    if (media.uid) {
+      // has uid: is from a user.
+      url = url.replace(/\?/, `_${previewSize}?`);
+    }
+
+    return url;
+  }
+  return "";
+}
+
+function getSpotLocalityString(spotSchema: PartialSpotSchema): string {
+  let str = "";
+  const { address } = spotSchema;
+
+  if (address) {
+    if (address.sublocality) {
+      str += `${address.sublocality}, `;
+    }
+    if (address.locality) {
+      str += `${address.locality}, `;
+    }
+    if (address.country) {
+      str += address.country.code.toUpperCase();
+    }
+  }
+  return str;
+}
+
 interface ClusterTileDot {
   location: GeoPoint;
   weight: number;
+}
+
+interface SpotForClusterTile {
+  name: string;
+  id: string;
+  locality: string;
+  imageSrc: string;
+  isIconic: boolean;
+  rating?: number; // whole number 1-10
 }
 
 interface SpotClusterTile {
@@ -119,12 +195,7 @@ interface SpotClusterTile {
   // the array of cluster points with their corresponding weights.
   dots: ClusterTileDot[];
 
-  spots: {
-    // name: string;
-    // locality: string;
-    rating: number; // whole number 1-10
-    isIconic: boolean;
-  }[];
+  spots: SpotForClusterTile[];
 }
 
 /*
@@ -135,7 +206,7 @@ export const clusterAllSpots = onDocumentCreated(
   async (event) => {
     // define clustering function
     const getClusterTilesForAllSpots = (
-      allSpots: PartialSpotSchema[]
+      allSpotAndIds: { id: string; data: PartialSpotSchema }[]
     ): Map<string, SpotClusterTile> => {
       //   const zoomJump: number = 4;
       //   const highestDotZoom: number = 12;
@@ -148,53 +219,69 @@ export const clusterAllSpots = onDocumentCreated(
         4: new Map<string, string[]>(),
       };
 
-      // fistt add a dot for every spot at
-      allSpots.forEach((spot) => {
-        // for each spot, add a point of weight 1 to a cluster tile of zoom 14
+      // setup for clustering, setting all the tiles for zoom 12
+      allSpotAndIds.forEach(
+        (spotAndId: { id: string; data: PartialSpotSchema }) => {
+          const id = spotAndId.id;
+          const spot = spotAndId.data;
+          const spotIsClusterWorthy = spot.rating || spot.isIconic;
 
-        // get the tile coordinates for the spot at zoom 14
-        const tile = spot.tile_coordinates.z12; // the coords are for tiles at zoom 12
+          // for each spot, add a point of weight 1 to a cluster tile of zoom 14
 
-        const clusterTileDot: ClusterTileDot = {
-          location: spot.location,
-          weight: 1,
-        };
+          // get the tile coordinates for the spot at zoom 14
+          const tile = spot.tile_coordinates.z12; // the coords are for tiles at zoom 12
 
-        // check if the tile exists in the clusterTilesMap for zoom 12
-        if (clusterTiles.has(`z12_${tile.x}_${tile.y}`)) {
-          // if the tile exists, add the spot to the array of spots in the cluster tile
-          clusterTiles
-            .get(`z12_${tile.x}_${tile.y}`)!
-            .dots.push(clusterTileDot);
+          const clusterTileDot: ClusterTileDot = {
+            location: spot.location,
+            weight: 1,
+          };
 
-          // if(spot.isIconic || spot.rating) {
-          // clusterTiles
-          // .get(`z14_${tile.x}_${tile.y}`)!
-          // .spots.push({
-          //     rating: spot.rating,
-          //     isIconic: spot.isIconic ?? false
-          // });
-          // }
-        } else {
-          // if the tile does not exist, create a new array with the spot and add it to the clusterTilesMap for zoom 12
-          clusterTiles.set(`z12_${tile.x}_${tile.y}`, {
-            zoom: 12,
-            x: tile.x,
-            y: tile.y,
-            dots: [clusterTileDot],
-            spots: [],
-          });
+          let spotForTile: SpotForClusterTile;
+          if (spotIsClusterWorthy) {
+            spotForTile = {
+              name: getSpotName(spot, "en"),
+              id: id,
+              rating: spot.rating,
+              isIconic: spot.isIconic ?? false,
+              imageSrc: getSpotPreviewImage(spot),
+              locality: getSpotLocalityString(spot),
+            };
+          }
 
-          // also add the 12 tile to the cluster tiles map for zoom 8
-          const key8 = `z8_${tile.x >> 4}_${tile.y >> 4}`;
-          if (!clusterTilesMap[8].has(key8)) {
-            clusterTilesMap[8].set(key8, [`z12_${tile.x}_${tile.y}`]);
+          // check if the tile exists in the clusterTilesMap for zoom 12
+          if (clusterTiles.has(`z12_${tile.x}_${tile.y}`)) {
+            // if the tile exists, add the spot to the array of spots in the cluster tile
+            clusterTiles
+              .get(`z12_${tile.x}_${tile.y}`)!
+              .dots.push(clusterTileDot);
+
+            if (spotIsClusterWorthy) {
+              clusterTiles
+                .get(`z12_${tile.x}_${tile.y}`)!
+                .spots.push(spotForTile!);
+            }
           } else {
-            clusterTilesMap[8].get(key8)!.push(`z12_${tile.x}_${tile.y}`);
+            // if the tile does not exist, create a new array with the spot and add it to the clusterTilesMap for zoom 12
+            clusterTiles.set(`z12_${tile.x}_${tile.y}`, {
+              zoom: 12,
+              x: tile.x,
+              y: tile.y,
+              dots: [clusterTileDot],
+              spots: spotIsClusterWorthy ? [spotForTile!] : [],
+            });
+
+            // also add this 12 tile key to the cluster tiles map for zoom 8
+            const key8 = `z8_${tile.x >> 4}_${tile.y >> 4}`;
+            if (!clusterTilesMap[8].has(key8)) {
+              clusterTilesMap[8].set(key8, [`z12_${tile.x}_${tile.y}`]);
+            } else {
+              clusterTilesMap[8].get(key8)!.push(`z12_${tile.x}_${tile.y}`);
+            }
           }
         }
-      });
+      );
 
+      // actual clustering
       for (let zoom = 8; zoom >= 4; zoom -= 4) {
         // for each z cluster tile to compute in the map
         for (let [tileKey, smallerTileKeys] of clusterTilesMap[
@@ -202,6 +289,7 @@ export const clusterAllSpots = onDocumentCreated(
         ].entries()) {
           const firstSmallerTile = clusterTiles.get(smallerTileKeys[0])!;
 
+          // cluster the dots
           const clusterDots: ClusterTileDot[] = smallerTileKeys
             .map((key) => {
               return (clusterTiles.get(key) as SpotClusterTile).dots;
@@ -234,12 +322,36 @@ export const clusterAllSpots = onDocumentCreated(
               );
             });
 
+          // only add the best spots to the cluster tile
+          const numberOfClusterSpots = 1;
+          const iconicScore = 8;
+          const clusterSpots: SpotForClusterTile[] = smallerTileKeys
+            .map((key) => {
+              return (clusterTiles.get(key) as SpotClusterTile).spots;
+            })
+            .reduce((acc, spots) => {
+              return acc.concat(spots);
+            }, [])
+            .filter((spot) => spot.rating || spot.isIconic)
+            .map((spot) => {
+              return {
+                ...spot,
+                score: spot.isIconic
+                  ? Math.max(spot.rating ?? 1, iconicScore)
+                  : spot.rating!,
+              };
+            })
+            .sort((a, b) => b.score - a.score)
+            .slice(0, numberOfClusterSpots)
+            .map(({ score, ...rest }) => rest); // Remove the score field
+
+          // set the cluster tile
           clusterTiles.set(tileKey, {
             zoom: zoom,
             x: firstSmallerTile.x >> 4,
             y: firstSmallerTile.y >> 4,
             dots: clusterDots,
-            spots: [],
+            spots: clusterSpots,
           });
 
           // also add the zoom tile to the cluster tiles map for the next zoom level
@@ -264,16 +376,20 @@ export const clusterAllSpots = onDocumentCreated(
       .collection("spots")
       .get()
       .then((spotsSnap) => {
-        const spots: PartialSpotSchema[] = spotsSnap.docs.map((doc) => {
-          return doc.data() as PartialSpotSchema;
-        });
+        const spots: { id: string; data: PartialSpotSchema }[] =
+          spotsSnap.docs.map((doc) => {
+            return { id: doc.id, data: doc.data() as PartialSpotSchema };
+          });
 
         // get all clusters
         const clusters: Map<string, SpotClusterTile> =
           getClusterTilesForAllSpots(spots);
 
+        console.log("clusters", clusters);
+
         // delete all existing clusters with a batch write
         const deleteBatch = admin.firestore().batch();
+
         return admin
           .firestore()
           .collection("spot_clusters")
@@ -320,32 +436,6 @@ export const clusterAllSpots = onDocumentCreated(
       });
   }
 );
-
-// export const clusterSpotsOnWrite = functions.firestore
-//   .document("spots/{spotId}")
-//   .onWrite(async (change, context) => {
-//     const spotData: Spot.Schema = change.after.data() as Spot.Schema;
-
-//     const tileCoordinates = spotData.tile_coordinates;
-
-//     for (let zoom = 12; zoom >= 2; zoom += 2) {
-//       const tile =
-//         tileCoordinates[`z${zoom}` as keyof Spot.Schema["tile_coordinates"]];
-
-//       const updatedSpotClusterTile: SpotClusterTile = {
-//         zoom: zoom,
-//         x: tile.x,
-//         y: tile.y,
-//         points: [],
-//       };
-
-//       await admin
-//         .firestore()
-//         .collection("spot_clusters")
-//         .doc(`z${zoom}_${tile.x}_${tile.y}`)
-//         .set(updatedSpotClusterTile, { merge: false });
-//     }
-//   });
 
 type AddressType = {
   sublocality?: string;
