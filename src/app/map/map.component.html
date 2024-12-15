@@ -13,7 +13,6 @@
   width="100%"
   height="100%"
 >
-  @if (zoom < 16) {
   <!-- <map-heatmap-layer [data]="dots" [options]="heatmapDarkOptions" /> -->
 
   <!-- Cluster Markers -->
@@ -38,7 +37,11 @@
     (mapClick)="focusOnDot(dot.location)"
     [zIndex]="dot.weight"
   ></map-advanced-marker>
-  } } @else { @for(spot of spots; track $index) { @if(!spot?.hasBounds()) {
+  }
+
+  <!-- only display the bounds when close enough (zoom >= 16) -->
+  @if (zoom >= 16) { @for(spot of spots; track $index) { @if(!spot?.hasBounds())
+  {
   <map-circle
     [center]="spot.location"
     [radius]="10"

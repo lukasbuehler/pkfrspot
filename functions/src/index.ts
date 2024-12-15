@@ -224,7 +224,8 @@ export const clusterAllSpots = onDocumentCreated(
         (spotAndId: { id: string; data: PartialSpotSchema }) => {
           const id = spotAndId.id;
           const spot = spotAndId.data;
-          const spotIsClusterWorthy = spot.rating || spot.isIconic;
+          const spotIsClusterWorthy =
+            (spot.rating || spot.isIconic) && spot.media?.length > 0;
 
           // for each spot, add a point of weight 1 to a cluster tile of zoom 14
 

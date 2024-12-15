@@ -9,7 +9,7 @@ import {
   PLATFORM_ID,
   ViewChild,
 } from "@angular/core";
-import { Spot } from "../../scripts/db/Spot";
+import { Spot, SpotPreviewData } from "../../scripts/db/Spot";
 import { DatabaseService } from "../database.service";
 import { ActivatedRoute } from "@angular/router";
 import { GeoPoint } from "firebase/firestore";
@@ -81,6 +81,7 @@ export class SpotMapComponent implements AfterViewInit {
   visibleSpots: Spot.Class[] = [];
   loadedSpots: Map<string, Spot.Class[]> = new Map<string, Spot.Class[]>(); // is a map of tile coords to spot arrays
   @Output() visibleSpotsChange = new EventEmitter<Spot.Class[]>();
+  @Output() hightlightedSpotsChange = new EventEmitter<SpotPreviewData[]>();
 
   @Input() markers: google.maps.LatLngLiteral[] = [];
   @Input() selectedMarker: google.maps.LatLngLiteral | null = null;
@@ -97,6 +98,13 @@ export class SpotMapComponent implements AfterViewInit {
   };
   mapCenter: google.maps.LatLngLiteral;
   bounds: google.maps.LatLngBounds;
+
+  hightlightedSpots: SpotPreviewData[] = [];
+  loadedHighlighedSpots = {
+    4: new Map<string, SpotPreviewData[]>(),
+    8: new Map<string, SpotPreviewData[]>(),
+    12: new Map<string, SpotPreviewData[]>(),
+  };
 
   visibleDots: Dot[] = [];
   loadedDots = {
@@ -149,7 +157,7 @@ export class SpotMapComponent implements AfterViewInit {
   zoomChanged(zoom: number) {
     this.mapZoom = zoom;
 
-    this.updateVisibleDots();
+    this.updateVisibleDotsAndHighlightedSpots();
   }
 
   mapClick(event: google.maps.MapMouseEvent) {
@@ -343,7 +351,7 @@ export class SpotMapComponent implements AfterViewInit {
     }
   }
 
-  updateVisibleDots() {
+  updateVisibleDotsAndHighlightedSpots() {
     let zoom = 4;
     if (this.mapZoom > 4) {
       zoom =
@@ -353,21 +361,22 @@ export class SpotMapComponent implements AfterViewInit {
     }
 
     if (this.loadedDots[zoom]?.size > 0) {
-      const dotArrays: Dot[] = Array.from(this.loadedDots[zoom].values());
-      this.visibleDots = [].concat(...dotArrays);
+      const dotArrays: Dot[][] = Array.from(
+        this.loadedDots[zoom as 4 | 8 | 12].values()
+      );
+      this.visibleDots = dotArrays.flat();
     }
+
+    if (this.loadedHighlighedSpots[zoom as 4 | 8 | 12].size > 0) {
+      const spotArrays: SpotPreviewData[][] = Array.from(
+        this.loadedHighlighedSpots[zoom as 4 | 8 | 12].values()
+      );
+      this.hightlightedSpots = spotArrays.flat();
+    }
+    this.hightlightedSpotsChange.emit(this.hightlightedSpots);
   }
 
-  openSpotByIdWithSubscription(spotId: string) {
-    this._dbService
-      .getSpotById(spotId)
-      .pipe(take(1))
-      .subscribe((spot) => {
-        this.openSpot(spot);
-      });
-  }
-
-  async openSpotByIdAsync(
+  async loadAndOpenSpotById(
     spotId: string,
     timeoutSeconds: number = 10
   ): Promise<void> {
@@ -380,12 +389,16 @@ export class SpotMapComponent implements AfterViewInit {
     this.openSpot(spot);
   }
 
-  openSpot(spot: Spot.Class) {
-    this.setSpotMetaTags(spot);
-    this.setSelectedSpot(spot);
+  openSpot(spot: Spot.Class | SpotPreviewData) {
+    if (spot instanceof Spot.Class) {
+      this.setSpotMetaTags(spot);
+      this.setSelectedSpot(spot);
 
-    if (!this.isServer) {
-      this.focusSpot(spot);
+      if (!this.isServer) {
+        this.focusSpot(spot);
+      }
+    } else {
+      this.loadAndOpenSpotById(spot.id).then(() => {});
     }
   }
 
@@ -615,8 +628,9 @@ export class SpotMapComponent implements AfterViewInit {
             });
 
             this.loadedDots[zoom].set(key, dots);
+            this.loadedHighlighedSpots[zoom as 4 | 8 | 12].set(key, tile.spots);
           });
-          this.updateVisibleDots();
+          this.updateVisibleDotsAndHighlightedSpots();
         }
       },
       error: (error) => {
@@ -645,6 +659,7 @@ export class SpotMapComponent implements AfterViewInit {
       alert(
         "You are currently editing a spot. Please save or discard your changes before closing the spot."
       );
+      return;
       //this.discardEdit();
     }
 

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { Spot } from "../../scripts/db/Spot.js";
+import { Spot, SpotPreviewData } from "../../scripts/db/Spot.js";
 import { SpotPreviewCardComponent } from "../spot-preview-card/spot-preview-card.component";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatIconModule } from "@angular/material/icon";
@@ -12,10 +12,10 @@ import { MatIconModule } from "@angular/material/icon";
   styleUrl: "./spot-list.component.scss",
 })
 export class SpotListComponent {
-  @Input() highlightedSpots: Spot.Class[] = [];
+  @Input() highlightedSpots: SpotPreviewData[] = [];
   @Input() set spots(spots: Spot.Class[]) {
     this.remainingSpots = spots.filter((spot) => {
-      const foundSpot: Spot.Class | undefined = this.highlightedSpots.find(
+      const foundSpot: SpotPreviewData | undefined = this.highlightedSpots.find(
         (highlightedSpot) => {
           return highlightedSpot.id === spot.id;
         }

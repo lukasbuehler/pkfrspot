@@ -1,4 +1,5 @@
 import { GeoPoint } from "firebase/firestore";
+import { SpotPreviewData } from "./Spot";
 
 export interface SpotClusterTile {
   // the zoom level the tile should be loaded and displayed at.
@@ -11,4 +12,6 @@ export interface SpotClusterTile {
     location: GeoPoint;
     weight: number;
   }[];
+
+  spots: SpotPreviewData[];
 }

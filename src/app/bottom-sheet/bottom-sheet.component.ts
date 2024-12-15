@@ -16,7 +16,7 @@ export class BottomSheetComponent {
   @Input() title: string = "";
 
   headerHeight: number = 120;
-  minimumSpeedToSlide: number = 10;
+  minimumSpeedToSlide: number = 5;
 
   @ViewChild("bottomSheet", { static: true }) bottomSheet: ElementRef;
 
@@ -68,8 +68,6 @@ export class BottomSheetComponent {
           }
           target = target.parentElement;
         }
-      } else {
-        event.preventDefault();
       }
 
       let clientY =
@@ -132,6 +130,9 @@ export class BottomSheetComponent {
           } else {
             targetOffset = topHeightOffset;
           }
+
+          // prevent pull to refresh and other default browser behavior
+          event.preventDefault();
         } else {
           // decide the next sheet position based on the offset
           if (offset > middlePoint) {
