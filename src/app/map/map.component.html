@@ -31,10 +31,10 @@
     }"
   ></div>
   <map-advanced-marker
-    [position]="dot.location"
+    [position]="geopointToLatLngLiteral(dot.location)"
     [options]="primaryDotMarkerOptions"
     [content]="smallDot"
-    (mapClick)="focusOnDot(dot.location)"
+    (mapClick)="clickOnDot(dot)"
     [zIndex]="dot.weight"
   ></map-advanced-marker>
   }
@@ -118,7 +118,7 @@
     (mapDragend)="editingSpotPositionChanged($event.latLng)"
   ></map-advanced-marker> -->
 
-  <!-- Highlighted spot markers -->
+  <!-- Highlighted spot markers
   @for(spot of highlightedSpots; track spot) {
   <map-advanced-marker
     #selectedSpotMarker
@@ -129,7 +129,7 @@
     }"
     (mapDragend)="editingSpotPositionChanged($event.latLng)"
     [content]="selectedSpotMarkerNode"
-  ></map-advanced-marker>
+  ></map-advanced-marker> -->
   <!-- <div
     class="pin-marker"
     #selectedSpotMarkerNode
@@ -153,8 +153,7 @@
         fill="#DDE1FF"
       />
     </svg>
-  </div> -->
-  }
+  </div> } -->
 
   <!-- Geolocation -->
   <div #geolocationMarker class="geolocation-marker"></div>

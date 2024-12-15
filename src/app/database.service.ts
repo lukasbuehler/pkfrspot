@@ -33,8 +33,12 @@ import {
   updateDoc,
   writeBatch,
 } from "firebase/firestore";
-import { SpotClusterTile } from "../scripts/db/SpotClusterTile.js";
-import { SpotReport } from "../scripts/db/SpotReport.js";
+import {
+  ClusterTileKey,
+  getDataFromClusterTileKey,
+  SpotClusterTile,
+} from "../scripts/db/SpotClusterTile";
+import { SpotReport } from "../scripts/db/SpotReport";
 
 @Injectable({
   providedIn: "root",
@@ -244,6 +248,11 @@ export class DatabaseService {
     });
   }
 
+  getSpotsForTileKeys(tileKeys: ClusterTileKey[]): Observable<Spot.Class[]> {
+    const tiles = tileKeys.map((key) => getDataFromClusterTileKey(key));
+    return this.getSpotsForTiles(tiles);
+  }
+
   getSpotsForTiles(
     tiles: { x: number; y: number }[]
   ): Observable<Spot.Class[]> {
@@ -284,39 +293,27 @@ export class DatabaseService {
     );
   }
 
-  getSpotClusterTiles(
-    zoom: number,
-    tiles: { x: number; y: number }[]
-  ): Observable<SpotClusterTile[]> {
-    /**
-     * This is the zoom level that represents the sizes of the cluster tiles.
-     * Since each cluster tiles represents a 4x4 grid of tiles,
-     * we need to load the cluster tiles at a zoom level that is 2 levels higher than the current zoom level.
-     * Meaning at zoom level 2, all cluster points are in 1 cluster tile,
-     * at level 4 there are 16 cluster tiles, and so on.
-     */
-    const sizeZoom = zoom - 2;
-
+  /**
+   * Load all the cluster tile for all the given keys from firestore,
+   * and return only once all of them are loaded using forkJoin.
+   * @param tiles All the tile keys to load
+   * @returns
+   */
+  getSpotClusterTiles(tiles: ClusterTileKey[]): Observable<SpotClusterTile[]> {
     const observables = tiles.map((tile) => {
-      //console.log(`loading spot cluster tile: z${zoom}_${tile.x}_${tile.y}`);
-
       return new Observable<SpotClusterTile[]>((observer) => {
         const unsubscribe = onSnapshot(
-          query(
-            collection(this.firestore, "spot_clusters"),
-            where("zoom", "==", zoom),
-            where("x", "==", tile.x),
-            where("y", "==", tile.y)
-          ),
+          doc(this.firestore, "spot_clusters", tile),
           (snap) => {
-            observer.next(
-              snap.docs.map(
-                (clusterTile) => clusterTile.data() as SpotClusterTile
-              )
-            );
+            if (snap.exists()) {
+              observer.next([snap.data() as SpotClusterTile]);
+            } else {
+              observer.next([]);
+            }
           },
           (error) => {
             console.error(error);
+            observer.error(error);
           }
         );
         return () => {

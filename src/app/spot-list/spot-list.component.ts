@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from "@angular/core";
 import { Spot, SpotPreviewData } from "../../scripts/db/Spot.js";
 import { SpotPreviewCardComponent } from "../spot-preview-card/spot-preview-card.component";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
@@ -11,10 +17,22 @@ import { MatIconModule } from "@angular/material/icon";
   templateUrl: "./spot-list.component.html",
   styleUrl: "./spot-list.component.scss",
 })
-export class SpotListComponent {
+export class SpotListComponent implements OnChanges {
   @Input() highlightedSpots: SpotPreviewData[] = [];
-  @Input() set spots(spots: Spot.Class[]) {
-    this.remainingSpots = spots.filter((spot) => {
+  @Input() spots: Spot.Class[];
+
+  // all spots minus the highlighted spots, set manually in ngOnChanges
+  remainingSpots: Spot.Class[] = [];
+
+  @Output() clickSpot: EventEmitter<Spot.Class> =
+    new EventEmitter<Spot.Class>();
+
+  ngOnChanges() {
+    this.filterOutHighlightedSpotsFromOtherSpots();
+  }
+
+  filterOutHighlightedSpotsFromOtherSpots() {
+    this.remainingSpots = this.spots.filter((spot) => {
       const foundSpot: SpotPreviewData | undefined = this.highlightedSpots.find(
         (highlightedSpot) => {
           return highlightedSpot.id === spot.id;
@@ -26,9 +44,4 @@ export class SpotListComponent {
       return !foundSpot;
     });
   }
-
-  remainingSpots: Spot.Class[] = [];
-
-  @Output() clickSpot: EventEmitter<Spot.Class> =
-    new EventEmitter<Spot.Class>();
 }

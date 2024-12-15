@@ -61,14 +61,14 @@ import { DOCUMENT } from "@angular/common";
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
     provideFirebaseApp(() => initializeApp(environment.keys.firebaseConfig)),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
     provideFunctions(() => getFunctions()),
+    provideRouter(routes),
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     HammerModule,
     MatButtonModule,
     MatCheckboxModule,

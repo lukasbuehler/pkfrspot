@@ -60,13 +60,19 @@
     </button>
   </div> -->
   @if(isCompact) { @if(spotImage) {
-  <img mat-card-sm-image [src]="spotImage" />
+  <div mat-card-sm-image class="img-container">
+    <img [ngSrc]="spotImage" fill />
+  </div>
   } } @else {
-  <img
-    [src]="spotImage || 'assets/no_media.png'"
-    [alt]="
-      spotImage ? 'Image of spot ' + spotName : 'No media for spot' + spotName
-    "
-  />
+  <div class="img-container">
+    <img
+      [ngSrc]="spotImage || 'assets/no_media.png'"
+      [alt]="
+        spotImage ? 'Image of spot ' + spotName : 'No media for spot' + spotName
+      "
+      fill
+    />
+  </div>
+
   }
 </mat-card>

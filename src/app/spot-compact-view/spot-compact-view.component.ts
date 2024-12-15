@@ -10,6 +10,7 @@ import {
   HostBinding,
   LOCALE_ID,
   Inject,
+  AfterViewInit,
 } from "@angular/core";
 import { MatProgressBar } from "@angular/material/progress-bar";
 import { Spot } from "../../scripts/db/Spot";
@@ -56,7 +57,6 @@ import {
   MatCardContent,
   MatCardActions,
 } from "@angular/material/card";
-import { MatMenu, MatMenuItem } from "@angular/material/menu";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
@@ -76,8 +76,6 @@ declare function plausible(eventName: string, options?: { props: any }): void;
   ],
   standalone: true,
   imports: [
-    MatMenu,
-    MatMenuItem,
     MatCard,
     MatRipple,
     MatCardHeader,
@@ -103,7 +101,7 @@ declare function plausible(eventName: string, options?: { props: any }): void;
     MatCardActions,
   ],
 })
-export class SpotCompactViewComponent implements OnInit, OnChanges {
+export class SpotCompactViewComponent implements AfterViewInit, OnChanges {
   @Input() spot: Spot.Class;
   @Input() infoOnly: boolean = false;
   @Input() dismissable: boolean = false;
@@ -144,6 +142,8 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
 
   automaticallyDetermineAddress: boolean = true;
 
+  isAppleMaps: boolean = false;
+
   get isNewSpot() {
     return this.spot && !this.spot.id;
   }
@@ -172,16 +172,18 @@ export class SpotCompactViewComponent implements OnInit, OnChanges {
     );
   }
 
+  ngAfterViewInit() {
+    this.countries = getCountriesList("en"); // TODO wtf to do about this
+
+    this.isAppleMaps = this._mapsApiService.isMacOSOriOS();
+  }
+
   ngOnChanges() {
     //console.log(this._element.nativeElement.clientHeight);
 
     this.startHeight = this._element.nativeElement.clientHeight;
 
     this.loadReportForSpot();
-  }
-
-  ngOnInit() {
-    this.countries = getCountriesList("de");
   }
 
   private _filterCountries(value: string): any[] {

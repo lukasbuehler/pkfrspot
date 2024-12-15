@@ -63,6 +63,8 @@ export class MapsApiService {
   }
 
   isMacOSOriOS(): boolean {
+    if (typeof window === "undefined") return; // abort if not in browser
+
     const appleDevices = [
       "iPad Simulator",
       "iPhone Simulator",
@@ -87,13 +89,13 @@ export class MapsApiService {
 
   private _openLatLngInAppleMaps(location: google.maps.LatLngLiteral) {
     window.open(
-      `https://maps.apple.com/?address=${location.lat},${location.lng}`
+      `https://maps.apple.com/?api=1&address=${location.lat},${location.lng}`
     );
   }
 
   private _openLatLngInGoogleMaps(location: google.maps.LatLngLiteral) {
     window.open(
-      `https://www.google.com/maps/search/?query=${location.lat},${location.lng}`
+      `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lng}`
     );
   }
 
