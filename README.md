@@ -187,3 +187,20 @@ First you need to authenticate us
 ```
 gcloud beta code dev
 ``` -->
+
+### Working with Typesense for full-text search
+
+I use the Firebase Typesense extension.
+
+#### Changing the Schema
+
+[Typesense Collections Documentation](https://typesense.org/docs/0.24.0/api/collections.html#create-a-collection)
+
+#### Backfilling
+
+Add a document to the Firestore collection `typesense_sync` named `backfill` with the following content:
+
+```
+firestore_collections: ["spots"],
+trigger: true
+```

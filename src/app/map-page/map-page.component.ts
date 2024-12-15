@@ -7,7 +7,7 @@ import {
   PLATFORM_ID,
   LOCALE_ID,
 } from "@angular/core";
-import { Spot } from "../../scripts/db/Spot";
+import { Spot, SpotPreviewData } from "../../scripts/db/Spot";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
 import { AuthenticationService } from "../authentication.service";
@@ -101,6 +101,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
   hasGeolocation: boolean = false;
 
   visibleSpots: Spot.Class[] = [];
+  highlightedSpots: SpotPreviewData[] = [];
 
   spotSearchControl = new FormControl();
   spotAndPlaceSearchResults$: BehaviorSubject<{
@@ -240,11 +241,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
       );
     }
 
-    if (this.isServer) {
-      await this.spotMap.openSpotByIdAsync(spotId);
-    } else {
-      this.spotMap.openSpotByIdWithSubscription(spotId);
-    }
+    await this.spotMap.loadAndOpenSpotById(spotId);
   }
 
   updateMapURL() {

@@ -109,7 +109,7 @@
         <note category="meaning">Open in maps button</note>
       </notes>
       <segment>
-        <source> Open in maps </source>
+        <source> Open in <ph id="0" equiv="INTERPOLATION" disp="{{ isUsingAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}"/> </source>
       </segment>
     </unit>
     <unit id="3699896649941451869">
@@ -137,7 +137,7 @@
         <note category="meaning">Open in maps button tooltip</note>
       </notes>
       <segment>
-        <source>Open the location of this Spot in Google Maps</source>
+        <source>Open the location of this Spot in Maps</source>
       </segment>
     </unit>
     <unit id="5447579510411800451">
@@ -692,6 +692,27 @@
       </notes>
       <segment>
         <source>Spot in </source>
+      </segment>
+    </unit>
+    <unit id="no_spots_text">
+      <notes>
+        <note category="description">The text in the spot list panel if no spots are found/displayed</note>
+      </notes>
+      <segment>
+        <source> There are no highlighted spots for this area, zoom in on dots in the map to discover other spots. </source>
+      </segment>
+    </unit>
+    <unit id="regular_spots_text">
+      <segment>
+        <source>Spots</source>
+      </segment>
+    </unit>
+    <unit id="spot_highlights">
+      <notes>
+        <note category="description">Title for the spot highlights, spots is clear from the context</note>
+      </notes>
+      <segment>
+        <source> Highlights </source>
       </segment>
     </unit>
   </file>

@@ -9,7 +9,7 @@
 >
   <mat-card-header class="pb-2">
     <mat-card-title class="text-truncate mw-100 pt-2">
-      {{ spot.getName(this.locale) }}
+      {{ spotName }}
     </mat-card-title>
     <!-- @if(isCompact) { -->
     <mat-card-subtitle class="d-flex flex-row">
@@ -23,7 +23,7 @@
       </span>
       }
       <span class="text-truncate" style="flex-shrink: 1">
-        {{ spot.getLocalityString() }}
+        {{ spotLocality }}
       </span>
     </mat-card-subtitle>
     <!-- } -->
@@ -59,16 +59,20 @@
       <mat-icon>share</mat-icon>
     </button>
   </div> -->
-  @if(isCompact) { @if(spot.previewImage) {
-  <img mat-card-sm-image [src]="spot.previewImage" />
+  @if(isCompact) { @if(spotImage) {
+  <div mat-card-sm-image class="img-container">
+    <img [ngSrc]="spotImage" fill />
+  </div>
   } } @else {
-  <img
-    [src]="spot.previewImage || 'assets/no_media.png'"
-    [alt]="
-      spot.previewImage
-        ? 'Image of spot ' + spot.getName(this.locale)
-        : 'No media for spot' + spot.getName(this.locale)
-    "
-  />
+  <div class="img-container">
+    <img
+      [ngSrc]="spotImage || 'assets/no_media.png'"
+      [alt]="
+        spotImage ? 'Image of spot ' + spotName : 'No media for spot' + spotName
+      "
+      fill
+    />
+  </div>
+
   }
 </mat-card>

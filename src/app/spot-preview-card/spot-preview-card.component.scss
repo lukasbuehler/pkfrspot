@@ -18,9 +18,13 @@ mat-card.compact {
   height: 80px;
   overflow: hidden;
 
-  img {
+  > div.img-container {
     border-radius: 0;
-    object-fit: cover;
+    position: relative;
+
+    > img {
+      object-fit: cover;
+    }
   }
 
   ::ng-deep mat-icon {
@@ -31,8 +35,14 @@ mat-card:not(.compact) {
   flex-direction: column-reverse;
   width: 100%;
   height: 100%;
-  img {
+  > div.img-container {
     width: 100%;
+    aspect-ratio: 4/3;
+    position: relative;
+
+    > img {
+      object-fit: cover;
+    }
   }
 }
 

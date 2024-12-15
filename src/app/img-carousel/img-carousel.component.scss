@@ -8,17 +8,18 @@
   padding-right: 32px;
   padding-bottom: 16px;
 
-  //   hide scrollbar
-  //   scrollbar-width: none; /* Firefox */
-  //   -ms-overflow-style: none; /* IE 10+ */
-  //   &::-webkit-scrollbar {
-  //     display: none; /* Safari and Chrome */
-  //   }
+  // hide scrollbar
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+  &::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
 
-  .spot-img {
+  .spot-img-container {
     position: relative;
     height: 100%;
     width: auto;
+    aspect-ratio: 1/1;
 
     border-radius: 20px;
     margin-right: 10px;

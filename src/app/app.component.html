@@ -65,12 +65,14 @@
       }
       <img
         *ngIf="authService.isSignedIn && authService.user?.data?.profilePicture"
-        [src]="
+        [ngSrc]="
           storageService.getSpotMediaURL(
             authService.user.data.profilePicture,
             200
           )
         "
+        width="56"
+        height="56"
       />
     </button>
 

@@ -23,12 +23,12 @@ import Swiper from "swiper";
 import { Navigation, Pagination } from "swiper/modules";
 Swiper.use([Navigation, Pagination]);
 
-import { isPlatformBrowser } from "@angular/common";
+import { isPlatformBrowser, NgOptimizedImage } from "@angular/common";
 
 @Component({
   selector: "app-img-carousel",
   standalone: true,
-  imports: [MatRippleModule],
+  imports: [MatRippleModule, NgOptimizedImage],
   templateUrl: "./img-carousel.component.html",
   styleUrl: "./img-carousel.component.scss",
 })

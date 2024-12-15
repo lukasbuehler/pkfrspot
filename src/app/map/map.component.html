@@ -13,7 +13,6 @@
   width="100%"
   height="100%"
 >
-  @if (zoom < 16) {
   <!-- <map-heatmap-layer [data]="dots" [options]="heatmapDarkOptions" /> -->
 
   <!-- Cluster Markers -->
@@ -32,13 +31,17 @@
     }"
   ></div>
   <map-advanced-marker
-    [position]="dot.location"
+    [position]="geopointToLatLngLiteral(dot.location)"
     [options]="primaryDotMarkerOptions"
     [content]="smallDot"
-    (mapClick)="focusOnDot(dot.location)"
+    (mapClick)="clickOnDot(dot)"
     [zIndex]="dot.weight"
   ></map-advanced-marker>
-  } } @else { @for(spot of spots; track $index) { @if(!spot?.hasBounds()) {
+  }
+
+  <!-- only display the bounds when close enough (zoom >= 16) -->
+  @if (zoom >= 16) { @for(spot of spots; track $index) { @if(!spot?.hasBounds())
+  {
   <map-circle
     [center]="spot.location"
     [radius]="10"
@@ -115,7 +118,7 @@
     (mapDragend)="editingSpotPositionChanged($event.latLng)"
   ></map-advanced-marker> -->
 
-  <!-- Highlighted spot markers -->
+  <!-- Highlighted spot markers
   @for(spot of highlightedSpots; track spot) {
   <map-advanced-marker
     #selectedSpotMarker
@@ -126,7 +129,7 @@
     }"
     (mapDragend)="editingSpotPositionChanged($event.latLng)"
     [content]="selectedSpotMarkerNode"
-  ></map-advanced-marker>
+  ></map-advanced-marker> -->
   <!-- <div
     class="pin-marker"
     #selectedSpotMarkerNode
@@ -150,8 +153,7 @@
         fill="#DDE1FF"
       />
     </svg>
-  </div> -->
-  }
+  </div> } -->
 
   <!-- Geolocation -->
   <div #geolocationMarker class="geolocation-marker"></div>

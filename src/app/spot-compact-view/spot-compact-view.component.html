@@ -184,13 +184,13 @@
         i18n-matTooltip="
           Open in maps button tooltip|Tooltip of button to open the spot in
           maps@@open_maps_tooltip"
-        matTooltip="Open the location of this Spot in Google Maps"
+        matTooltip="Open the location of this spot in Maps"
         (click)="openSpotInMaps()"
         i18n="
           Open in maps button|Button to open the spot in
           maps@@open_maps_button_label"
       >
-        Open in maps
+        Open in {{ isUsingAppleMaps ? "Apple Maps" : "Google Maps" }}
       </button>
     </div>
 

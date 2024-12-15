@@ -12,8 +12,15 @@
 
 <!-- Spot highlights -->
 @if(highlightedSpots.length > 0) {
-<!-- <h4 class="mat-title-large" i18n>Highlights</h4> -->
-<div>
+<h4
+  class="mat-title-medium"
+  i18n="
+    Title for the spot highlights, spots is clear from the
+    context@@spot_highlights"
+>
+  Highlights
+</h4>
+<div [class.compact]="group.value === 'compact'" class="spot-container pb-3">
   @for(spot of highlightedSpots; track spot) {
   <app-spot-preview-card
     [spot]="spot"
@@ -29,9 +36,10 @@
 }
 
 <!-- All spots except highlights -->
-@if(remainingSpots.length > 0) {
-<!-- <h4 class="mat-title-large" i18n>Spots</h4> -->
-<div [class.compact]="group.value === 'compact'" [class.spot-container]="true">
+@if(remainingSpots.length > 0 && highlightedSpots.length > 0) {
+<h4 class="mat-title-medium" i18n="@@regular_spots_text">Spots</h4>
+} @if(remainingSpots.length > 0) {
+<div [class.compact]="group.value === 'compact'" class="spot-container">
   @for(spot of remainingSpots; track spot) {
   <app-spot-preview-card
     [spot]="spot"
@@ -43,5 +51,20 @@
   >
   </app-spot-preview-card>
   }
+</div>
+}
+
+<!-- No spots and no highlights text -->
+@if(remainingSpots.length === 0 && highlightedSpots.length === 0) {
+<div class="d-flex justify-content-center align-items-center h-100">
+  <p
+    class="mat-body-large"
+    i18n="
+      The text in the spot list panel if no spots are
+      found/displayed@@no_spots_text"
+  >
+    There are no highlighted spots for this area, zoom in on dots in the map to
+    discover other spots.
+  </p>
 </div>
 }

@@ -1,13 +1,14 @@
 <div class="carousel">
   @for (mediaObj of media; track $index) { @if (mediaObj.type === "image") {
-  <div matRipple class="spot-img">
+  <div matRipple class="spot-img-container">
     <img
-      [src]="
+      [ngSrc]="
         mediaObj.uid
           ? storageService.getSpotMediaURL(mediaObj.src, 400)
           : mediaObj.src
       "
       (click)="imageClick($index)"
+      fill
     />
   </div>
   } }

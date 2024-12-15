@@ -7,8 +7,23 @@
       "optional": false
     },
     {
+      "name": "location",
+      "type": "geopoint",
+      "optional": true
+    },
+    {
       "name": "description",
       "type": "object",
+      "optional": true
+    },
+    {
+      "name": "address",
+      "type": "object",
+      "optional": true
+    },
+    {
+      "name": "rating",
+      "type": "float",
       "optional": true
     }
   ],

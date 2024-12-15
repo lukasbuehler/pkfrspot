@@ -10,7 +10,7 @@ import {
   ViewChild,
   ViewChildren,
 } from "@angular/core";
-import { Spot } from "../../scripts/db/Spot";
+import { Spot, SpotPreviewData } from "../../scripts/db/Spot";
 import {
   GoogleMap,
   MapPolygon,
@@ -21,7 +21,10 @@ import {
 import { BehaviorSubject, Observable } from "rxjs";
 import { environment } from "../../environments/environment";
 import { MapsApiService } from "../maps-api.service";
-import { SpotClusterTile } from "../../scripts/db/SpotClusterTile.js";
+import {
+  SpotClusterDot,
+  SpotClusterTile,
+} from "../../scripts/db/SpotClusterTile.js";
 import { GeoPoint } from "firebase/firestore";
 import { NgIf, NgFor, AsyncPipe, NgClass } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
@@ -102,7 +105,9 @@ export class MapComponent implements OnInit {
 
   @Output() boundsChange = new EventEmitter<google.maps.LatLngBounds>();
   @Output() mapClick = new EventEmitter<google.maps.LatLngLiteral>();
-  @Output() spotClick = new EventEmitter<Spot.Class>();
+  @Output() spotClick = new EventEmitter<
+    Spot.Class | SpotPreviewData | string
+  >();
   @Output() polygonChanged = new EventEmitter<{
     spotId: string;
     path: google.maps.LatLngLiteral[][];
@@ -110,16 +115,13 @@ export class MapComponent implements OnInit {
   @Output() hasGeolocationChange = new EventEmitter<boolean>();
 
   @Input() spots: Spot.Class[] = [];
-
-  @Input() dots: google.maps.visualization.WeightedLocation[];
+  @Input() dots: SpotClusterDot[] = [];
 
   @Input() selectedSpot: Spot.Class | null = null;
   @Input() isEditing: boolean = false;
   @Input() showGeolocation: boolean = false;
   @Input() markers: google.maps.LatLngLiteral[] = [];
   @Input() selectedMarker: google.maps.LatLngLiteral | null = null;
-
-  highlightedSpots: Spot.Class[] = [];
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -130,8 +132,6 @@ export class MapComponent implements OnInit {
     //     this.selectedSpot
     //   );
     // }
-
-    this.highlightedSpots = this.spots.slice(0, 3);
   }
 
   mapStyle = "roadmap";
@@ -405,16 +405,44 @@ export class MapComponent implements OnInit {
     this.selectedSpot.location = position.toJSON();
   }
 
-  focusOnDot(dotLocation: google.maps.LatLngLiteral | google.maps.LatLng) {
-    this.googleMap.panTo(dotLocation);
-    this.setZoom(Math.min(this.zoom + 4, 16));
+  geopointToLatLngLiteral(geoPoint: GeoPoint): google.maps.LatLngLiteral {
+    if (!geoPoint) throw new Error("No GeoPoint provided");
+    if (!geoPoint.latitude || !geoPoint.longitude)
+      throw new Error("Invalid GeoPoint provided");
+
+    return { lat: geoPoint.latitude, lng: geoPoint.longitude };
+  }
+
+  clickOnDot(dot: SpotClusterDot) {
+    if (dot.spot_id) {
+      this.spotClick.emit(dot.spot_id);
+    } else {
+      const location: google.maps.LatLng = new google.maps.LatLng(
+        dot.location.latitude,
+        dot.location.longitude
+      );
+      this.focusOnLocation(location, Math.min(this.zoom + 4, 17));
+    }
+  }
+
+  focusOnLocation(
+    location: google.maps.LatLngLiteral | google.maps.LatLng,
+    zoom: number = 17
+  ) {
+    if (!location) {
+      console.warn("No or invalid location provided to focus on", location);
+      console.trace();
+      return;
+    }
+
+    this.googleMap.panTo(location);
+    this.setZoom(zoom);
   }
 
   focusOnGeolocation() {
     let geolocation = this.geolocation$.value;
     if (geolocation) {
-      this.googleMap.panTo(geolocation.location);
-      this.setZoom(17);
+      this.focusOnLocation(geolocation.location);
     } else {
       // TODO maybe ask again for geolocation in the future
     }

@@ -7,6 +7,7 @@
     [(isEditing)]="isEditing"
     [(mapStyle)]="mapStyle"
     (visibleSpotsChange)="setVisibleSpots($event, spotMap.map.center)"
+    (hightlightedSpotsChange)="highlightedSpots = $event"
     (hasGeolocationChange)="askedGeoPermission = true; hasGeolocation = $event"
   ></app-spot-map>
 
@@ -137,15 +138,16 @@
         (saveClick)="spotMap.saveSpot($event)"
       ></app-spot-compact-view>
     </div>
-    } @else { @if(spotMap.mapZoom >= 16) {
+    } @else {
     <div class="info-panel d-none d-md-block p-3">
       <app-spot-list
         @fadeInOut
         [spots]="visibleSpots"
+        [highlightedSpots]="highlightedSpots"
         (clickSpot)="spotMap.openSpot($event)"
       ></app-spot-list>
     </div>
-    } }
+    }
     <app-bottom-sheet #bottomSheet class="d-md-none flex-grow-1">
       @if(selectedSpot) {
       <div class="spot-preview-container">
@@ -168,17 +170,12 @@
         ></app-spot-compact-view>
       </div>
       } @else {
-      <!-- @if(spotMap.mapZoom >= 16) { -->
       <app-spot-list
         @fadeInOut
         [spots]="visibleSpots"
+        [highlightedSpots]="highlightedSpots"
         (clickSpot)="spotMap.openSpot($event)"
       ></app-spot-list>
-      <!-- } @else { -->
-      <!-- <p i18n class="mat-body-large">
-        Zoom in closer on an area to see its spots.
-      </p> -->
-      <!-- }  -->
       }
     </app-bottom-sheet>
   </div>
