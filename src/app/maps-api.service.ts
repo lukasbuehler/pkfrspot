@@ -89,7 +89,7 @@ export class MapsApiService {
 
   private _openLatLngInAppleMaps(location: google.maps.LatLngLiteral) {
     window.open(
-      `https://maps.apple.com/?api=1&address=${location.lat},${location.lng}`
+      `https://maps.apple.com/?address=${location.lat},${location.lng}`
     );
   }
 
@@ -119,7 +119,7 @@ export class MapsApiService {
   private _openDirectionsInGoogleMaps(location: google.maps.LatLngLiteral) {
     if (typeof window === "undefined") return; // abort if not in browser
     window.open(
-      `https://www.google.com/maps/dir/?destination=${location.lat},${location.lng}`
+      `https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`
     );
   }
 

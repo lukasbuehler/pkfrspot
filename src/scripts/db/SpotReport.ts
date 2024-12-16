@@ -1,4 +1,4 @@
-import { Spot } from "./Spot.js";
+import { User } from "./User";
 
 interface SpotData {
   name: string; // english name
@@ -13,5 +13,5 @@ export interface SpotReport {
   spot: SpotData;
   reason: SpotReportReason | string;
   duplicateOf?: SpotData;
-  userId: string;
+  user: User.ReferenceSchema;
 }

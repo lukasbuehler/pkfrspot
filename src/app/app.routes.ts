@@ -35,6 +35,11 @@ export const routes: Routes = [
     data: { routeName: "Spot map" },
   },
   {
+    path: "s/:slug",
+    component: MapPageComponent,
+    data: { routeName: "Spot map" },
+  },
+  {
     path: "kml-import",
     component: KmlImportPageComponent,
     data: { routeName: "KML Import" },

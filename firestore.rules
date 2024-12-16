@@ -1,10 +1,6 @@
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /spot_clusters/{cluster}
-    {
-        allow read: if true;
-        allow write: if false;
-    }
+
     match /spots/{spot}
     {
       // all the spots are visible to everyone, authenticated or not
@@ -12,8 +8,49 @@ service cloud.firestore {
 
       // TODO: In the future there should be a voting feature for changes on spots.
       // for now every authenticated user can write for every spot.
-      allow write: if request.auth.uid != null;
+      allow write: if request.auth.uid != null 
+        && !('rating' in request.resource.data);
     }
+
+    match /spot_clusters/{cluster}
+    {
+        allow read: if true;
+        allow write: if false;
+    }
+
+    match /spot_slugs/{slug} {
+      allow read: if true;
+
+      allow create: if request.auth.uid != null
+        && !exists(/databases/$(database)/documents/spot_slugs/$(slug));
+
+        // Allow deletion (currently not only by an owner // TODO?)
+      allow delete: if request.auth.uid != null;
+        //&& request.auth.uid == resource.data.ownerUid;
+
+      // Disallow updates to prevent changing slug ownership
+      allow update: if false;
+    }
+
+    match /spot_reviews/{reviewId} {
+      allow read: if true;
+      allow create: if request.auth.uid != null
+        && request.auth.uid == request.resource.data.user.uid;
+      allow update, delete: if request.auth.uid != null
+        && request.auth.uid == resource.data.user.uid;
+    }
+
+    // Spot Reports
+    match /spot_reports/{reportId}
+    {
+        // Only allow to read and create if the report is from the same user.
+        // Disallow altering and viewing other users reports.
+        allow read: if true;
+        allow create: if request.auth.uid != null 
+          && request.auth.uid == request.resource.data.user.uid;
+        allow update, delete: if false;
+    }
+
     match /posts/{post}
     {
       // every post is publicy available to everyone.
@@ -21,9 +58,10 @@ service cloud.firestore {
 
       // only authenticated users can create and edit posts and only create and edit it if it's their post. Also, they can't set the like_count variable.
       allow create, update: if request.auth.uid != null 
-        && !('like_count' in request.resource.data) 
         && request.auth.uid == request.resource.data.user.uid;
-      allow delete: if request.auth.uid == resource.data.user.uid
+        && !('like_count' in request.resource.data) 
+      allow delete: if request.auth.uid != null 
+        && request.auth.uid == resource.data.user.uid
 
       // match the subcollection likes
       match /likes/{userId} {
@@ -43,30 +81,22 @@ service cloud.firestore {
       // all users and their profiles are currently public
       allow read: if true;
       // It is not allowed to update the follower_count. This is handled by a cloud function.
-      allow create, update: if request.auth.uid == userId;
-        //  && !(request.resource.data.keys().hasAny(['follower_count'])
+      allow create, update: if request.auth.uid != null && request.auth.uid == userId
+         && !('follower_count' in request.resource.data);
 
       match /following/{otherUserId} {
         // A user can only see and update his own following
-        allow read: if request.auth.uid == userId;
-        allow write: if request.auth.uid == userId && request.auth.uid != otherUserId; 
+        allow read: if request.auth.uid != null && request.auth.uid == userId;
+        allow write: if request.auth.uid != null 
+        && request.auth.uid == userId && request.auth.uid != otherUserId; 
       }
       match /followers/{otherUserId} {
         // A user can only see his own followers
-        allow read: if request.auth.uid == userId;
+        allow read: if request.auth.uid != null && request.auth.uid == userId;
         // TODO write cloud function to handle updating followers and remove this permission to write.
-        allow write: if request.auth.uid == otherUserId && request.auth.uid != userId;
+        allow write: if request.auth.uid != null && 
+        request.auth.uid == otherUserId && request.auth.uid != userId;
       }
-    }
-
-    // Spot Reports
-    match /spot_reports/{reportId}
-    {
-        // Only allow to read and create if the report is from the same user.
-        // Disallow altering and viewing other users reports.
-        allow read: if true;
-        allow create: if request.auth.uid == request.resource.data.userId;
-        allow update: if false;
     }
   }
 }
