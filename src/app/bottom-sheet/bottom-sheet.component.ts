@@ -132,7 +132,7 @@ export class BottomSheetComponent {
           }
 
           // prevent pull to refresh and other default browser behavior
-          event.preventDefault();
+          // event.preventDefault();
         } else {
           // decide the next sheet position based on the offset
           if (offset > middlePoint) {
