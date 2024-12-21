@@ -10,6 +10,23 @@ service cloud.firestore {
       // for now every authenticated user can write for every spot.
       allow write: if request.auth.uid != null 
         && !('rating' in request.resource.data);
+
+      match /reviews/{reviewId} {
+        allow read: if true;
+        allow write: if request.auth.uid != null
+          && request.auth.uid == request.resource.data.user.uid;
+      }
+
+      // Spot Reports
+      match /reports/{reportId}
+      {
+        // Only allow to read and create if the report is from the same user.
+        // Disallow altering and viewing other users reports.
+        allow read: if true;
+        allow create: if request.auth.uid != null 
+          && request.auth.uid == request.resource.data.user.uid;
+        allow update, delete: if false;
+      }
     }
 
     match /spot_clusters/{cluster}
@@ -30,25 +47,6 @@ service cloud.firestore {
 
       // Disallow updates to prevent changing slug ownership
       allow update: if false;
-    }
-
-    match /spot_reviews/{reviewId} {
-      allow read: if true;
-      allow create: if request.auth.uid != null
-        && request.auth.uid == request.resource.data.user.uid;
-      allow update, delete: if request.auth.uid != null
-        && request.auth.uid == resource.data.user.uid;
-    }
-
-    // Spot Reports
-    match /spot_reports/{reportId}
-    {
-        // Only allow to read and create if the report is from the same user.
-        // Disallow altering and viewing other users reports.
-        allow read: if true;
-        allow create: if request.auth.uid != null 
-          && request.auth.uid == request.resource.data.user.uid;
-        allow update, delete: if false;
     }
 
     match /posts/{post}

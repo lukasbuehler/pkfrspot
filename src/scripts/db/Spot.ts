@@ -13,11 +13,6 @@ import { StorageFolder, StorageService } from "../../app/storage.service";
 import { environment } from "../../environments/environment";
 import { GeoPoint } from "firebase/firestore";
 
-interface GeoPointLiteral {
-  latitude: number;
-  longitude: number;
-}
-
 const defaultSpotNames: LocaleMap = {
   en: "Unnamed Spot",
   "en-US": "Unnamed Spot",
@@ -78,10 +73,7 @@ export namespace Spot {
     public set location(newLocation: google.maps.LatLngLiteral) {
       //   console.log("setting location");
       this._location = newLocation;
-      this._data.location = new GeoPoint(
-        newLocation.lat,
-        newLocation.lng
-      ).toJSON();
+      this._data.location = new GeoPoint(newLocation.lat, newLocation.lng);
       this._data.tile_coordinates = this._generateTileCoordinates(
         this._location
       ); // update tile coords
@@ -217,7 +209,7 @@ export namespace Spot {
         this._data.location = new GeoPoint(
           _data.location["_lat"],
           _data.location["_long"]
-        ).toJSON();
+        );
       }
 
       this._paths = this._makePathsFromBounds(this._data.bounds);
@@ -370,7 +362,7 @@ export namespace Spot {
     }
 
     private _makePathsFromBounds(
-      bounds: GeoPointLiteral[]
+      bounds: GeoPoint[]
     ): Array<Array<google.maps.LatLngLiteral>> {
       if (!bounds) return [];
 
@@ -413,7 +405,7 @@ export namespace Spot {
   export interface Schema {
     name: LocaleMap;
 
-    location: GeoPointLiteral;
+    location: GeoPoint;
 
     tile_coordinates: {
       z2: { x: number; y: number };
@@ -439,7 +431,7 @@ export namespace Spot {
 
     amenities?: AmenitiesMap;
 
-    bounds?: GeoPointLiteral[];
+    bounds?: GeoPoint[];
 
     time_created?: firebase.default.firestore.Timestamp;
     time_updated?: { seconds: number; nanoseconds: number };

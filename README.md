@@ -4,7 +4,7 @@
 
 Discover spots <strike>and fellow athletes, plan training sessions with your friends and share achievements and memories with them and the world.</strike>
 
-(Striked-through features are in development.)
+(Strike-through features are in development.)
 
 ## Roadmap
 
@@ -12,14 +12,13 @@ Discover spots <strike>and fellow athletes, plan training sessions with your fri
 
 For the detailed progress please refer to the following GitHub project: [PKFR Spot Updates](https://github.com/users/lukasbuehler/projects/1/views/8)
 
-| Non-binding time estimate | Features                                                                                                                                                                                               |
-| :------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Q4 2024                   | **Spot map update**: Spot ratings, spot features, add corresponding Google Places, bookmark and mark as visisted, performance improvements, more languages (French, Italian, Swiss-German), Angular 19 |
-| Q1 2025                   | **Integration update**: Let websites embed PKFR Spots or the PKFR Spot map.                                                                                                                            |
-| Q2 2025                   | **App Update**: Native iOS, Android apps with [Tauri](https://v2.tauri.app/), ...                                                                                                                      |
-| Q3 2025                   | **Post Update**: Posts (Image, Video, Link), Profile pages, Link posts to spots, ...                                                                                                                   |
-| Q4 2025                   | **Training Update**: Plan and share training sessions and jams, organize teams and groups, ...                                                                                                         |
-| ...                       | ...                                                                                                                                                                                                    |
+| Non-binding time estimate | Features                                                                                                                                                                                              |
+| :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Q4 2024                   | **Spot map update**: Spot ratings, spot features, add corresponding Google Places, bookmark and mark as visited, performance improvements, more languages (French, Italian, Swiss-German), Angular 19 |
+| Q1 2025                   | **Integration update**: Let websites embed PKFR Spots or the PKFR Spot map and more quality of life improvements.                                                                                     |
+| Q2 2025                   | **Post Update**: Posts (Image, Video, Link), Profile pages, Link posts to spots, ...                                                                                                                  |
+| Q3 2025                   | **Training Update**: Plan and share training sessions and jams, organize teams and groups, ...                                                                                                        |
+| ...                       | ...                                                                                                                                                                                                   |
 
 ### Past Updates
 

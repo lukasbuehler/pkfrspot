@@ -1,0 +1,33 @@
+<div
+  class="rating-container pe-2 d-flex align-items-center"
+  i18n-matTootltip
+  [matTooltip]="
+    rating1to5rounded +
+    '/5 or ' +
+    rating1to10rounded +
+    '/10 with ' +
+    numReviews +
+    ' reviews'
+  "
+  matTooltipPosition="above"
+>
+  <span class="pe-1">
+    {{ rating1to5rounded }}
+  </span>
+  @if(isCompact) {
+  <mat-icon style="width: 1em; height: 1em; font-size: 1em"> star </mat-icon>
+  } @else { @for(item of [].constructor(numFullStars); track item) {
+  <mat-icon style="width: 1em; height: 1em; font-size: 1em"> star </mat-icon>
+  } @if(showHalfStar) {
+  <mat-icon style="width: 1em; height: 1em; font-size: 1em">
+    star_half
+  </mat-icon>
+  } @if(showEmptyStars) { @for(item of [].constructor(numEmptyStars); track
+  item) {
+  <mat-icon style="width: 1em; height: 1em; font-size: 1em">
+    star_border
+  </mat-icon>
+  } } @if(showNumReviews) {
+  <span class="ps-1"> ({{ numReviews }}) </span>
+  } }
+</div>

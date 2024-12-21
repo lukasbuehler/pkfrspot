@@ -18,15 +18,10 @@
     </mat-card-title>
     <mat-card-subtitle class="d-flex flex-row">
       @if(spot.rating) {
-      <span
-        class="d-flex flex-row font-weight-bold align-items-center flex-shrink-0"
-      >
-        <mat-icon style="width: 20px; height: 20px; font-size: 20px"
-          >star</mat-icon
-        >
-        {{ spot.rating }}
-        <span class="px-1">·</span>
-      </span>
+      <app-spot-rating
+        class="flex-shrink-0"
+        [rating1to5]="spot.rating / 2"
+      ></app-spot-rating>
       } @if(spot.address) {
       <span class="text-truncate">{{ spot.getLocalityString() }}</span>
       }

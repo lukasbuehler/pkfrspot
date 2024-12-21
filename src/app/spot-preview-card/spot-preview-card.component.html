@@ -14,13 +14,11 @@
     <!-- @if(isCompact) { -->
     <mat-card-subtitle class="d-flex flex-row">
       @if(spot.rating) {
-      <span class="d-flex flex-row font-weight-bold align-items-center">
-        <mat-icon style="width: 20px; height: 20px; font-size: 20px"
-          >star</mat-icon
-        >
-        {{ spot.rating }}
-        <span class="px-1">·</span>
-      </span>
+      <app-spot-rating
+        [rating1to5]="spot.rating / 2"
+        [showEmptyStars]="false"
+        [isCompact]="true"
+      ></app-spot-rating>
       }
       <span class="text-truncate" style="flex-shrink: 1">
         {{ spotLocality }}
@@ -28,6 +26,7 @@
     </mat-card-subtitle>
     <!-- } -->
   </mat-card-header>
+
   <!-- <div class="button-row d-flex">
     @if (!visited) {
     <button

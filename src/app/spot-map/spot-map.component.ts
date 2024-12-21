@@ -534,7 +534,7 @@ export class SpotMapComponent implements AfterViewInit {
     let saveSpotPromise: Promise<void | string>;
     if (spot.id) {
       // this is an old spot that is edited
-      saveSpotPromise = this._dbService.setSpot(spot.id, spot.data);
+      saveSpotPromise = this._dbService.updateSpot(spot.id, spot.data);
     } else {
       // this is a new spot
       saveSpotPromise = this._dbService.createSpot(spot.data);

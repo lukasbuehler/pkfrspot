@@ -43,6 +43,7 @@ import { MediaPreviewGridComponent } from "../media-preview-grid/media-preview-g
 import { MatInput } from "@angular/material/input";
 import { MatFormField, MatLabel } from "@angular/material/form-field";
 import { ImgCarouselComponent } from "../img-carousel/img-carousel.component";
+import { SpotRatingComponent } from "../spot-rating/spot-rating.component";
 import { MatIcon } from "@angular/material/icon";
 import { MatTooltip } from "@angular/material/tooltip";
 import { MatIconButton, MatButton } from "@angular/material/button";
@@ -99,6 +100,7 @@ declare function plausible(eventName: string, options?: { props: any }): void;
     NgFor,
     MatOption,
     MatCardActions,
+    SpotRatingComponent,
   ],
 })
 export class SpotCompactViewComponent implements AfterViewInit, OnChanges {

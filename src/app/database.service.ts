@@ -265,7 +265,7 @@ export class DatabaseService {
             where("tile_coordinates.z16.y", "==", tile.y)
           ),
           (snap) => {
-            observer.next(this.parseSpots_(snap));
+            observer.next(this._parseSpots(snap));
           },
           (error) => {
             observer.error(error);
@@ -337,7 +337,7 @@ export class DatabaseService {
     );
   }
 
-  private parseSpots_(snapshot: QuerySnapshot<DocumentData>): Spot.Class[] {
+  private _parseSpots(snapshot: QuerySnapshot<DocumentData>): Spot.Class[] {
     let newSpots: Spot.Class[] = [];
 
     snapshot.forEach((doc) => {
@@ -367,16 +367,16 @@ export class DatabaseService {
     );
   }
 
-  setSpot(spotId: string, spotData: Spot.Schema): Promise<void> {
-    console.debug("Setting spot", spotId, JSON.stringify(spotData));
-    console.debug("Spot data", spotData);
+  // setSpot(spotId: string, spotData: Spot.Schema): Promise<void> {
+  //   console.debug("Setting spot", spotId, JSON.stringify(spotData));
+  //   console.debug("Spot data", spotData);
 
-    try {
-      return setDoc(doc(this.firestore, "spots", spotId), spotData);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
+  //   try {
+  //     return setDoc(doc(this.firestore, "spots", spotId), spotData);
+  //   } catch (error) {
+  //     return Promise.reject(error);
+  //   }
+  // }
 
   updateSpot(
     spotId: string,
