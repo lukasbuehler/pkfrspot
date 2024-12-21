@@ -62,9 +62,9 @@ import {
 declare function plausible(eventName: string, options?: { props: any }): void;
 
 @Component({
-  selector: "app-spot-compact-view",
-  templateUrl: "./spot-compact-view.component.html",
-  styleUrls: ["./spot-compact-view.component.scss"],
+  selector: "app-spot-details",
+  templateUrl: "./spot-details.component.html",
+  styleUrls: ["./spot-details.component.scss"],
   animations: [
     trigger("grow", [
       transition("void <=> *", []),
@@ -103,7 +103,7 @@ declare function plausible(eventName: string, options?: { props: any }): void;
     SpotRatingComponent,
   ],
 })
-export class SpotCompactViewComponent implements AfterViewInit, OnChanges {
+export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   @Input() spot: Spot.Class;
   @Input() infoOnly: boolean = false;
   @Input() dismissable: boolean = false;

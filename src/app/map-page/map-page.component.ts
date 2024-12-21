@@ -32,7 +32,7 @@ import { GlobalVariables } from "../../scripts/global";
 import { SpotListComponent } from "../spot-list/spot-list.component";
 import { DatabaseService } from "../database.service";
 import { UserMenuContentComponent } from "../user-menu-content/user-menu-content.component";
-import { SpotCompactViewComponent } from "../spot-compact-view/spot-compact-view.component";
+import { SpotDetailsComponent } from "../spot-details/spot-details.component";
 import { MatOption } from "@angular/material/core";
 import {
   MatAutocompleteTrigger,
@@ -80,7 +80,7 @@ import { MatDividerModule } from "@angular/material/divider";
     MatAutocomplete,
     NgFor,
     MatOption,
-    SpotCompactViewComponent,
+    SpotDetailsComponent,
     SpotListComponent,
     BottomSheetComponent,
     MatMenu,
