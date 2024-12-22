@@ -12,7 +12,10 @@ import {
   Inject,
   AfterViewInit,
 } from "@angular/core";
-import { MatProgressBar } from "@angular/material/progress-bar";
+import {
+  MatProgressBar,
+  MatProgressBarModule,
+} from "@angular/material/progress-bar";
 import { Spot } from "../../scripts/db/Spot";
 import { DatabaseService } from "../database.service";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
@@ -36,6 +39,7 @@ import { trigger, transition, style, animate } from "@angular/animations";
 import { MapsApiService } from "../maps-api.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { SpotReportDialogComponent } from "../spot-report-dialog/spot-report-dialog.component";
+import { SpotRatingDialogComponent } from "../spot-rating-dialog/spot-rating-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import { SpotReport } from "../../scripts/db/SpotReport.js";
 import { MatSelect } from "@angular/material/select";
@@ -58,6 +62,8 @@ import {
   MatCardContent,
   MatCardActions,
 } from "@angular/material/card";
+import { create } from "core-js/core/object";
+import { MatDividerModule } from "@angular/material/divider";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
@@ -101,6 +107,8 @@ declare function plausible(eventName: string, options?: { props: any }): void;
     MatOption,
     MatCardActions,
     SpotRatingComponent,
+    MatDividerModule,
+    MatProgressBarModule,
   ],
 })
 export class SpotDetailsComponent implements AfterViewInit, OnChanges {
@@ -159,7 +167,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   constructor(
     @Inject(LOCALE_ID) public locale: string,
     public authenticationService: AuthenticationService,
-    public dialog: MatDialog,
+    public reportDialog: MatDialog,
+    public reviewDialog: MatDialog,
     private _element: ElementRef,
     private _dbService: DatabaseService,
     private _storageService: StorageService,
@@ -352,7 +361,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
 
   openSpotInMaps() {
     if (typeof plausible !== "undefined") {
-      plausible("Opening in Google Maps", { props: { spotId: this.spot.id } });
+      plausible("Opening in Maps", { props: { spotId: this.spot.id } });
     }
     this._mapsApiService.openLatLngInMaps(this.spot.location);
   }
@@ -417,14 +426,35 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   openSpotReportDialog() {
-    const dialogRef = this.dialog.open(SpotReportDialogComponent, {
+    const spotReportData: SpotReport = {
+      spot: {
+        id: this.spot.id,
+        name: this.spot.data.name.en ?? this.spot.getName(this.locale),
+      },
+      user: {
+        uid: this.authenticationService.user.uid,
+        display_name: this.authenticationService.user.data.displayName,
+      },
+      reason: "",
+    };
+    const dialogRef = this.reportDialog.open(SpotReportDialogComponent, {
+      data: spotReportData,
+    });
+  }
+
+  openSpotReviewDialog() {
+    const dialogRef = this.reviewDialog.open(SpotRatingDialogComponent, {
       data: {
         spot: {
+          name: this.spot.getName(this.locale),
           id: this.spot.id,
-          name: this.spot.data.name.en ?? this.spot.getName(this.locale),
         },
-        userId: this.authenticationService.user.uid,
-        reason: "",
+        user: {
+          uid: this.authenticationService.user.uid,
+          display_name: this.authenticationService.user.data.displayName,
+        },
+        rating: 0,
+        comment: "",
       },
     });
   }

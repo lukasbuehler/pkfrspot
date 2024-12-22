@@ -15,11 +15,12 @@ export class SpotRatingComponent implements OnChanges {
   @Input() numReviews: number = 0; // integer number of reviews
   @Input() showNumReviews: boolean = false;
   @Input() isCompact: boolean = false;
+  @Input() showRating: boolean = true;
 
   constructor() {}
 
-  rating1to5rounded: number = 0;
-  rating1to10rounded: number = 0;
+  rating1to5rounded: string;
+  rating1to10rounded: string;
   numFullStars: number = 0;
   showHalfStar: boolean = false;
   numEmptyStars: number = 0;
@@ -27,8 +28,8 @@ export class SpotRatingComponent implements OnChanges {
   ngOnChanges() {
     // clamp rating to 1-5
     this.rating1to5 = Math.min(5, Math.max(1, this.rating1to5));
-    this.rating1to5rounded = Math.round(this.rating1to5 * 10) / 10;
-    this.rating1to10rounded = Math.round(this.rating1to5 * 20) / 10;
+    this.rating1to5rounded = this.rating1to5.toFixed(1);
+    this.rating1to10rounded = (this.rating1to5 * 2).toFixed(1);
 
     this.numFullStars = Math.floor(Math.round(this.rating1to5 * 2) / 2);
     this.showHalfStar = (Math.round(this.rating1to5 * 2) / 2) % 1 !== 0;

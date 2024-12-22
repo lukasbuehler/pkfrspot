@@ -151,7 +151,7 @@
     <app-bottom-sheet #bottomSheet class="d-md-none flex-grow-1">
       @if(selectedSpot) {
       <div class="spot-preview-container">
-        <app-spot-compact-view
+        <app-spot-details
           @fadeInOut
           #spotDetail
           [spot]="selectedSpot"
@@ -167,7 +167,7 @@
           (addBoundsClick)="spotMap.addBounds()"
           (focusClick)="spotMap.focusSpot(selectedSpot)"
           (saveClick)="spotMap.saveSpot($event)"
-        ></app-spot-compact-view>
+        ></app-spot-details>
       </div>
       } @else {
       <app-spot-list

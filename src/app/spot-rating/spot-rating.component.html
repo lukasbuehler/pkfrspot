@@ -1,5 +1,5 @@
 <div
-  class="rating-container pe-2 d-flex align-items-center"
+  class="rating-container d-flex align-items-center"
   i18n-matTootltip
   [matTooltip]="
     rating1to5rounded +
@@ -11,10 +11,11 @@
   "
   matTooltipPosition="above"
 >
+  @if(showRating) {
   <span class="pe-1">
     {{ rating1to5rounded }}
   </span>
-  @if(isCompact) {
+  } @if(isCompact) {
   <mat-icon style="width: 1em; height: 1em; font-size: 1em"> star </mat-icon>
   } @else { @for(item of [].constructor(numFullStars); track item) {
   <mat-icon style="width: 1em; height: 1em; font-size: 1em"> star </mat-icon>

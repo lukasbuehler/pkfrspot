@@ -16,7 +16,7 @@
     <mat-card-title [matTooltip]="spot.getName(locale)">
       {{ spot.getName(locale) }}
     </mat-card-title>
-    <mat-card-subtitle class="d-flex flex-row">
+    <mat-card-subtitle class="d-flex flex-column">
       @if(spot.rating) {
       <app-spot-rating
         class="flex-shrink-0"
@@ -138,28 +138,9 @@
       </p>
     </div>
 
-    <!-- Location -->
-    <!-- <div>
-      <h4 class="mat-title-small" i18n>Location</h4>
-      <p>
-        {{ spot.getReadableLocation() }}
-      </p>
-    </div> -->
-
-    <!-- Spot Address -->
-    <!-- <div *ngIf="spot.address?.country">
-      <h4 *ngIf="spot.address?.formatted" class="mat-title-small">Address</h4>
-      <p>{{ spot.address.formatted }}</p>
-      <h4 class="mat-title-small">Country</h4>
-      <p>
-        {{ getCountryEmojiFromAlpha2(spot.address.country.short) }}
-        {{ getCountryNameFromShortCode(spot.address.country.short) }}
-      </p>
-    </div> -->
-
     <!-- Freatures -->
     @if(spot.amenities?.length > 0) {
-    <div class="mb-3">
+    <div class="mb-4">
       <h4 i18n class="mat-title-small">Features and amenities</h4>
       <mat-chip-set aria-label="Dog selection">
         @for(amenity of spot.amenities; track amenity) {
@@ -172,26 +153,117 @@
     </div>
     }
 
-    <div class="d-flex justify-start pb-2">
+    <!-- Ratings -->
+    <div class="mb-4">
+      <h4 class="mat-title-small" i18n>Rating and user reviews</h4>
+      <div class="d-flex flex-row align-items-center mb-3">
+        <div
+          class="d-flex flex-column align-items-center justify-content-center gap-1 pe-4"
+        >
+          <span class="mat-headline-large mb-0">{{
+            (spot.rating / 2).toFixed(1)
+          }}</span>
+          <app-spot-rating
+            [rating1to5]="spot.rating / 2"
+            [showNumReviews]="false"
+            [showRating]="false"
+          ></app-spot-rating>
+          <span class="mat-body-medium">{{ 23 }} reviews</span>
+        </div>
+        <div class="flex-grow-1 d-flex flex-column gap-3">
+          <mat-progress-bar
+            class="rounded"
+            mode="determinate"
+            value="100"
+          ></mat-progress-bar>
+          <mat-progress-bar
+            class="rounded"
+            mode="determinate"
+            value="80"
+          ></mat-progress-bar>
+          <mat-progress-bar
+            class="rounded"
+            mode="determinate"
+            value="60"
+          ></mat-progress-bar>
+          <mat-progress-bar
+            class="rounded"
+            mode="determinate"
+            value="40"
+          ></mat-progress-bar>
+          <mat-progress-bar
+            class="rounded"
+            mode="determinate"
+            value="20"
+          ></mat-progress-bar>
+        </div>
+      </div>
+
+      <!-- Spot review histogram -->
+      <!-- // TODO review histogram -->
+
+      @if(authenticationService.isSignedIn) {
+      <!-- // TODO in the future also make sure the user visited the spot -->
       <button
         mat-stroked-button
         color="primary"
         i18n-matTooltip="
-          Open in maps button tooltip|Tooltip of button to open the spot in
-          maps@@open_maps_tooltip"
-        matTooltip="Open the location of this spot in Maps"
-        (click)="openSpotInMaps()"
+          Review this spot button tooltip|Tooltip of button to review the
+          spot@@review_spot_tooltip"
+        matTooltip="Review this spot"
+        (click)="openSpotReviewDialog()"
         i18n="
-          Open in maps button|Button to open the spot in
-          maps@@open_maps_button_label"
+          Review spot button lable|Button to review the spot
+          label@@review_spot_button_label"
       >
-        Open in {{ isUsingAppleMaps ? "Apple Maps" : "Google Maps" }}
+        Review this spot
       </button>
+      }
+    </div>
+
+    <!-- Spot Address or Location and action buttons -->
+    <div class="d-flex justify-start mb-4 flex-column">
+      @if(spot.address?.formatted) {
+      <h4 class="mat-title-small">Address</h4>
+      <p class="mat-body-large">{{ spot.address.formatted }}</p>
+      } @else {
+      <h4 class="mat-title-small">Location</h4>
+      <p class="mat-body-large">
+        {{ spot.getReadableLocation() }}
+      </p>
+      }
+      <div class="d-flex flex-row gap-2">
+        <button
+          mat-stroked-button
+          color="primary"
+          class="flex-grow-1 flex-basis-0"
+          i18n-matTooltip="
+            Open in maps button tooltip|Tooltip of button to open the spot in
+            maps@@open_maps_tooltip"
+          matTooltip="Open the location of this spot in Maps"
+          (click)="openSpotInMaps()"
+          i18n="
+            Open in maps button|Button to open the spot in
+            maps@@open_maps_button_label"
+        >
+          Open in {{ isUsingAppleMaps ? "Apple Maps" : "Google Maps" }}
+        </button>
+        <button
+          mat-stroked-button
+          color="primary"
+          class="flex-grow-1 flex-basis-0"
+          matTooltip="Navigate to this spot"
+          (click)="openDirectionsInMaps()"
+        >
+          Navigate to spot
+        </button>
+      </div>
     </div>
 
     <!-- Action buttons -->
     @if(authenticationService.isSignedIn) {
-    <div class="d-flex mb-3 mt-3 gap-2">
+    <mat-divider></mat-divider>
+    <div class="d-flex my-3 gap-2">
       <button
         mat-stroked-button
         i18n-matTooltip

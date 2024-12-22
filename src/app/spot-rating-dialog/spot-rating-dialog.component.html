@@ -1,1 +1,30 @@
-<p>spot-rating-dialog works!</p>
+<h2 mat-dialog-title i18n>Review Spot '{{ data.spot?.name }}'</h2>
+<mat-dialog-content>
+  <p i18n>What would you rate this spot from one to five stars?</p>
+  <div class="d-flex flex-row justify-content-center align-items-center">
+    <button
+      *ngFor="let star of [1, 2, 3, 4, 5]"
+      mat-icon-button
+      (mouseover)="hoverRating = star"
+      (mouseleave)="hoverRating = rating"
+      (click)="rating = star"
+    >
+      <mat-icon>{{ hoverRating >= star ? "star" : "star_border" }}</mat-icon>
+    </button>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="d-flex justify-content-between p-3">
+  <button mat-button (click)="onNoClick()" i18n="cancel button label">
+    Cancel
+  </button>
+  <button
+    mat-flat-button
+    [mat-dialog-close]="data"
+    color="warn"
+    cdkFocusInitial
+    (click)="submitReview()"
+    i18n="review button label|"
+  >
+    Review
+  </button>
+</mat-dialog-actions>
