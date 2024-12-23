@@ -38,7 +38,7 @@ import { trigger, transition, style, animate } from "@angular/animations";
 import { MapsApiService } from "../services/maps-api.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { SpotReportDialogComponent } from "../spot-report-dialog/spot-report-dialog.component";
-import { SpotRatingDialogComponent } from "../spot-rating-dialog/spot-rating-dialog.component";
+import { SpotReviewDialogComponent } from "../spot-review-dialog/spot-review-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import { SpotReport } from "../../scripts/db/SpotReport.js";
 import { MatSelect } from "@angular/material/select";
@@ -64,7 +64,7 @@ import {
 import { create } from "core-js/core/object";
 import { MatDividerModule } from "@angular/material/divider";
 import { SpotsService } from "../services/firestore-services/spots.service";
-import { ReportsService } from "../services/firestore-services/spot-reports.service";
+import { SpotReportsService } from "../services/firestore-services/spot-reports.service";
 import { PostsService } from "../services/firestore-services/posts.service";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
@@ -174,7 +174,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     public reviewDialog: MatDialog,
     private _element: ElementRef,
     private _spotsService: SpotsService,
-    private _spotsReportsService: ReportsService,
+    private _spotsReportsService: SpotReportsService,
     private _postsService: PostsService,
     private _storageService: StorageService,
     private _mapsApiService: MapsApiService,
@@ -450,7 +450,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   openSpotReviewDialog() {
-    const dialogRef = this.reviewDialog.open(SpotRatingDialogComponent, {
+    const dialogRef = this.reviewDialog.open(SpotReviewDialogComponent, {
       data: {
         spot: {
           name: this.spot.getName(this.locale),

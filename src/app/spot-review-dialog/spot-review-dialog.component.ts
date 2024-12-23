@@ -14,9 +14,10 @@ import {
   MatDialogClose,
 } from "@angular/material/dialog";
 import { MatIconModule, MatIcon } from "@angular/material/icon";
+import { SpotReviewsService } from "../services/firestore-services/spot-reviews.service";
 
 @Component({
-  selector: "app-spot-rating-dialog",
+  selector: "app-spot-review-dialog",
   standalone: true,
   imports: [
     MatDialogTitle,
@@ -29,16 +30,17 @@ import { MatIconModule, MatIcon } from "@angular/material/icon";
     MatIcon,
     MatButton,
   ],
-  templateUrl: "./spot-rating-dialog.component.html",
-  styleUrl: "./spot-rating-dialog.component.scss",
+  templateUrl: "./spot-review-dialog.component.html",
+  styleUrl: "./spot-review-dialog.component.scss",
 })
-export class SpotRatingDialogComponent {
+export class SpotReviewDialogComponent {
   hoverRating: number = 0;
   selectedRating: number = 0;
 
   constructor(
-    public dialogref: MatDialogRef<SpotRatingDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: SpotReview
+    public dialogref: MatDialogRef<SpotReviewDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: SpotReview,
+    private _spotReviewsService: SpotReviewsService
   ) {}
 
   onNoClick(): void {
@@ -46,6 +48,6 @@ export class SpotRatingDialogComponent {
   }
 
   submitReview() {
-    // this._dbService.addSpotReview(this.data);
+    this._spotReviewsService.addSpotReview(this.data);
   }
 }

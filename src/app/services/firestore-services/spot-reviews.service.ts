@@ -14,7 +14,7 @@ import { SpotReview } from "../../../scripts/db/SpotReview";
 @Injectable({
   providedIn: "root",
 })
-export class ReportsService {
+export class SpotReviewsService {
   constructor(private firestore: Firestore) {}
 
   getSpotReviewById(spotId: string, reviewId: string): Promise<SpotReview> {
