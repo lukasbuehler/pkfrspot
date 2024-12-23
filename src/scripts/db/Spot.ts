@@ -99,8 +99,8 @@ export namespace Spot {
       3: number;
       4: number;
       5: number;
-    } {
-      return this._data.rating_histogram;
+    } | null {
+      return this._data.rating_histogram ?? null;
     }
     public get normalizedRatingHistogram(): {
       1: number;
@@ -108,7 +108,9 @@ export namespace Spot {
       3: number;
       4: number;
       5: number;
-    } {
+    } | null {
+      if (!this._data.rating_histogram) return null;
+
       // get the maximum number of reviews for a single rating
       let maxNumReviews = 0;
       for (let key in this._data.rating_histogram) {

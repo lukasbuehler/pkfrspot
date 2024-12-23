@@ -68,7 +68,7 @@ export namespace User {
   }
 
   export interface ReferenceSchema {
-    uid?: string;
+    uid: string;
     display_name?: string;
     profile_picture?: string;
     ref?: DocumentReference;

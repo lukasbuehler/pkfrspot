@@ -3,7 +3,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    match /spots/{spot}
+    match /spots/{spotId}
     {
       // all the spots are visible to everyone, authenticated or not
       allow read: if true;
@@ -15,11 +15,19 @@ service cloud.firestore {
 
       match /reviews/{reviewId} {
         allow read: if true;
-        allow write: if request.auth.uid != null
+        allow create: if request.auth.uid != null 
+          && request.auth.uid == request.resource.data.user.uid
+          && !exists(/databases/$(database)/documents/spots/$(spotId)/reviews/$(reviewId))
+          && request.resource.data.rating is int 
+          && request.resource.data.rating >= 1 
+          && request.resource.data.rating <= 5;
+        allow update: if request.auth.uid != null
           && request.auth.uid == request.resource.data.user.uid
           && request.resource.data.rating is int 
           && request.resource.data.rating >= 1 
           && request.resource.data.rating <= 5;
+        allow delete: if request.auth.uid != null
+          && request.auth.uid == request.resource.data.user.uid;
       }
 
       // Spot Reports
