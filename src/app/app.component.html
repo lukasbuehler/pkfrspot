@@ -44,10 +44,12 @@
     </button>
     <mat-menu #mainMenu>
       @for(button of navbarConfig.buttons; track button) {
-      <button mat-menu-item [routerLink]="button.link">
-        <mat-icon>{{ button.icon }}</mat-icon>
-        <span>{{ button.name }}</span>
-      </button>
+      <a [routerLink]="button.link">
+        <button mat-menu-item>
+          <mat-icon>{{ button.icon }}</mat-icon>
+          <span>{{ button.name }}</span>
+        </button>
+      </a>
 
       }
     </mat-menu>

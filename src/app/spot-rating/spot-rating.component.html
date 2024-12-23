@@ -23,8 +23,8 @@
   <mat-icon style="width: 1em; height: 1em; font-size: 1em">
     star_half
   </mat-icon>
-  } @if(showEmptyStars) { @for(item of [].constructor(numEmptyStars); track
-  item) {
+  } @if(showEmptyStars && numEmptyStars > 0) { @for(item of
+  [].constructor(numEmptyStars); track item) {
   <mat-icon style="width: 1em; height: 1em; font-size: 1em">
     star_border
   </mat-icon>

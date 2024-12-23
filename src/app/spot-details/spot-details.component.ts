@@ -51,7 +51,7 @@ import { SpotRatingComponent } from "../spot-rating/spot-rating.component";
 import { MatIcon } from "@angular/material/icon";
 import { MatTooltip } from "@angular/material/tooltip";
 import { MatIconButton, MatButton } from "@angular/material/button";
-import { NgIf, NgFor } from "@angular/common";
+import { NgIf, NgFor, KeyValuePipe } from "@angular/common";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatRipple, MatOption } from "@angular/material/core";
 import {
@@ -109,6 +109,7 @@ declare function plausible(eventName: string, options?: { props: any }): void;
     SpotRatingComponent,
     MatDividerModule,
     MatProgressBarModule,
+    KeyValuePipe,
   ],
 })
 export class SpotDetailsComponent implements AfterViewInit, OnChanges {

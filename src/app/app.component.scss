@@ -57,3 +57,8 @@ mat-toolbar {
 // .main-content {
 //   overflow: scroll; // weird scroll bars on chrome
 // }
+
+a {
+  text-decoration: inherit;
+  color: inherit;
+}

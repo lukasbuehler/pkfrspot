@@ -3,36 +3,36 @@
 
 @mixin color($theme) {
   app-mat3-nav-button {
-    button {
+    a {
       color: mat.get-theme-color($theme, on-surface);
     }
 
-    button:enabled {
+    a:enabled {
       color: mat.get-theme-color($theme, on-surface-variant);
     }
 
-    button.active > mat-icon,
-    button:active > mat-icon {
+    a.active > mat-icon,
+    a:active > mat-icon {
       color: mat.get-theme-color($theme, on-secondary-container);
       background-color: mat.get-theme-color($theme, secondary-container);
     }
 
-    button:hover > mat-icon {
+    a:hover > mat-icon {
       color: mat.get-theme-color($theme, on-surface-variant);
       background-color: mat.get-theme-color($theme, surface-container-highest);
     }
-    button:focus > mat-icon {
+    a:focus > mat-icon {
       color: mat.get-theme-color($theme, on-surface-variant);
       background-color: mat.get-theme-color($theme, surface-container-highest);
     }
 
-    button:hover.active > mat-icon,
-    button:hover:active > mat-icon {
+    a:hover.active > mat-icon,
+    a:hover:active > mat-icon {
       color: mat.get-theme-color($theme, on-secondary-container);
       background-color: mat.get-theme-color($theme, secondary-container);
     }
-    button:focus.active > mat-icon,
-    button:focus:active > mat-icon {
+    a:focus.active > mat-icon,
+    a:focus:active > mat-icon {
       color: mat.get-theme-color($theme, on-secondary-container);
       background-color: mat.get-theme-color($theme, secondary-container);
     }
@@ -40,7 +40,7 @@
 }
 
 @mixin typography($theme) {
-  app-mat3-nav-button > button {
+  app-mat3-nav-button > a {
     font-family: mat.get-theme-typography($theme, label-medium, font-family);
     font-weight: mat.get-theme-typography($theme, label-medium, font-weight);
     font-size: mat.get-theme-typography($theme, label-medium, font-size);

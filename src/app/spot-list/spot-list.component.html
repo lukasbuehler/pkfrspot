@@ -22,15 +22,16 @@
 </h4>
 <div [class.compact]="group.value === 'compact'" class="spot-container pb-3">
   @for(spot of highlightedSpots; track spot) {
-  <app-spot-preview-card
-    [spot]="spot"
-    [infoOnly]="true"
-    [clickable]="true"
-    [isCompact]="group.value === 'compact'"
-    (click)="clickSpot.emit(spot)"
-    class="w-100"
-  >
-  </app-spot-preview-card>
+  <a [routerLink]="['/map', spot.id]">
+    <app-spot-preview-card
+      [spot]="spot"
+      [infoOnly]="true"
+      [clickable]="true"
+      [isCompact]="group.value === 'compact'"
+      class="w-100"
+    >
+    </app-spot-preview-card>
+  </a>
   }
 </div>
 }
@@ -41,15 +42,16 @@
 } @if(remainingSpots.length > 0) {
 <div [class.compact]="group.value === 'compact'" class="spot-container">
   @for(spot of remainingSpots; track spot) {
-  <app-spot-preview-card
-    [spot]="spot"
-    [infoOnly]="true"
-    [clickable]="true"
-    [isCompact]="group.value === 'compact'"
-    (click)="clickSpot.emit(spot)"
-    class="w-100"
-  >
-  </app-spot-preview-card>
+  <a [routerLink]="['/map', spot.id]">
+    <app-spot-preview-card
+      [spot]="spot"
+      [infoOnly]="true"
+      [clickable]="true"
+      [isCompact]="group.value === 'compact'"
+      class="w-100"
+    >
+    </app-spot-preview-card>
+  </a>
   }
 </div>
 }

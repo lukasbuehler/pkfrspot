@@ -12,6 +12,7 @@ import { DatabaseService } from "../../app/database.service";
 import { StorageFolder, StorageService } from "../../app/storage.service";
 import { environment } from "../../environments/environment";
 import { GeoPoint } from "firebase/firestore";
+import { SpotReview } from "./SpotReview.js";
 
 const defaultSpotNames: LocaleMap = {
   en: "Unnamed Spot",
@@ -86,9 +87,47 @@ export namespace Spot {
     public get rating(): number | null {
       return this._data.rating;
     }
+    public get numReviews(): number | null {
+      return this._data.num_reviews;
+    }
+    public get ratingHistogram(): {
+      1: number;
+      2: number;
+      3: number;
+      4: number;
+      5: number;
+    } {
+      return this._data.rating_histogram;
+    }
+    public get normalizedRatingHistogram(): {
+      1: number;
+      2: number;
+      3: number;
+      4: number;
+      5: number;
+    } {
+      // get the maximum number of reviews for a single rating
+      let maxNumReviews = 0;
+      for (let key in this._data.rating_histogram) {
+        if (this._data.rating_histogram[key] > maxNumReviews) {
+          maxNumReviews = this._data.rating_histogram[key];
+        }
+      }
+
+      // divide every histogram value by the max
+      let normalizedHistogram = {
+        1: this._data.rating_histogram[1] / maxNumReviews,
+        2: this._data.rating_histogram[2] / maxNumReviews,
+        3: this._data.rating_histogram[3] / maxNumReviews,
+        4: this._data.rating_histogram[4] / maxNumReviews,
+        5: this._data.rating_histogram[5] / maxNumReviews,
+      };
+
+      return normalizedHistogram;
+    }
 
     public get isIconic(): boolean {
-      return this._data.isIconic ?? false;
+      return this._data.is_iconic ?? false;
     }
 
     public getDescription(locale: string): string {
@@ -419,13 +458,23 @@ export namespace Spot {
     };
 
     isMiniSpot?: boolean;
-    rating?: number; // from 1 to 10, set by cloud function.
-    isIconic?: boolean;
+    is_iconic?: boolean;
     description?: LocaleMap;
     media?: ContributedMedia[];
 
     type?: string;
     area?: string;
+
+    rating?: number; // from 1 to 5, set by cloud function.
+    num_reviews?: number; // integer
+    rating_histogram?: {
+      1: number;
+      2: number;
+      3: number;
+      4: number;
+      5: number;
+    }; //
+    highlighted_reviews?: SpotReview[]; // max 3 reviews
 
     address?: AddressSchema;
 

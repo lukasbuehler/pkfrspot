@@ -2,8 +2,8 @@
 <mat-dialog-content>
   <p i18n>What would you rate this spot from one to five stars?</p>
   <div class="d-flex flex-row justify-content-center align-items-center">
+    @for(star of [1, 2, 3, 4, 5]; track star) {
     <button
-      *ngFor="let star of [1, 2, 3, 4, 5]"
       mat-icon-button
       (mouseover)="hoverRating = star"
       (mouseleave)="hoverRating = rating"
@@ -11,6 +11,7 @@
     >
       <mat-icon>{{ hoverRating >= star ? "star" : "star_border" }}</mat-icon>
     </button>
+    }
   </div>
 </mat-dialog-content>
 <mat-dialog-actions class="d-flex justify-content-between p-3">

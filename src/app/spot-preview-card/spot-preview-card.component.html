@@ -12,10 +12,10 @@
       {{ spotName }}
     </mat-card-title>
     <!-- @if(isCompact) { -->
-    <mat-card-subtitle class="d-flex flex-row">
+    <mat-card-subtitle class="d-flex flex-row gap-2">
       @if(spot.rating) {
       <app-spot-rating
-        [rating1to5]="spot.rating / 2"
+        [rating1to5]="spot.rating"
         [showEmptyStars]="false"
         [isCompact]="true"
       ></app-spot-rating>

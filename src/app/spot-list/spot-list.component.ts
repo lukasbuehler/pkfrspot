@@ -9,11 +9,17 @@ import { Spot, SpotPreviewData } from "../../scripts/db/Spot.js";
 import { SpotPreviewCardComponent } from "../spot-preview-card/spot-preview-card.component";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatIconModule } from "@angular/material/icon";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-spot-list",
   standalone: true,
-  imports: [SpotPreviewCardComponent, MatButtonToggleModule, MatIconModule],
+  imports: [
+    SpotPreviewCardComponent,
+    MatButtonToggleModule,
+    MatIconModule,
+    RouterLink,
+  ],
   templateUrl: "./spot-list.component.html",
   styleUrl: "./spot-list.component.scss",
 })
@@ -24,8 +30,8 @@ export class SpotListComponent implements OnChanges {
   // all spots minus the highlighted spots, set manually in ngOnChanges
   remainingSpots: Spot.Class[] = [];
 
-  @Output() clickSpot: EventEmitter<Spot.Class> =
-    new EventEmitter<Spot.Class>();
+  // @Output() clickSpot: EventEmitter<Spot.Class> =
+  //   new EventEmitter<Spot.Class>();
 
   ngOnChanges() {
     this.filterOutHighlightedSpotsFromOtherSpots();

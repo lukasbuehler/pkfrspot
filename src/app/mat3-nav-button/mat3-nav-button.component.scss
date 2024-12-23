@@ -1,4 +1,8 @@
-button {
+a {
+  // remove link shit
+  text-decoration: none;
+  color: inherit;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,14 +21,14 @@ button {
   }
 }
 
-button > mat-icon {
+a > mat-icon {
   transition: color 0.2s, background-color 0.2s, width 0.2s;
 }
 
-button:hover > mat-icon,
-button:focus > mat-icon,
-button.active > mat-icon,
-button:active > mat-icon {
+a:hover > mat-icon,
+a:focus > mat-icon,
+a.active > mat-icon,
+a:active > mat-icon {
   @media (max-width: 767px) {
     width: 64px;
   }

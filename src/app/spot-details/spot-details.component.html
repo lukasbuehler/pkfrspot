@@ -20,7 +20,7 @@
       @if(spot.rating) {
       <app-spot-rating
         class="flex-shrink-0"
-        [rating1to5]="spot.rating / 2"
+        [rating1to5]="spot.rating"
       ></app-spot-rating>
       } @if(spot.address) {
       <span class="text-truncate">{{ spot.getLocalityString() }}</span>
@@ -154,50 +154,48 @@
     }
 
     <!-- Ratings -->
+    @if(spot.rating || authenticationService.isSignedIn) {
     <div class="mb-4">
       <h4 class="mat-title-small" i18n>Rating and user reviews</h4>
+      @if(spot.rating) {
       <div class="d-flex flex-row align-items-center mb-3">
         <div
           class="d-flex flex-column align-items-center justify-content-center gap-1 pe-4"
         >
           <span class="mat-headline-large mb-0">{{
-            (spot.rating / 2).toFixed(1)
+            spot.rating.toFixed(1)
           }}</span>
           <app-spot-rating
-            [rating1to5]="spot.rating / 2"
+            [rating1to5]="spot.rating"
             [showNumReviews]="false"
             [showRating]="false"
           ></app-spot-rating>
-          <span class="mat-body-medium">{{ 23 }} reviews</span>
+          @if(spot.numReviews) {
+          <span class="mat-body-medium">{{ spot.numReviews }} reviews</span>
+          }
         </div>
-        <div class="flex-grow-1 d-flex flex-column gap-3">
-          <mat-progress-bar
-            class="rounded"
-            mode="determinate"
-            value="100"
-          ></mat-progress-bar>
-          <mat-progress-bar
-            class="rounded"
-            mode="determinate"
-            value="80"
-          ></mat-progress-bar>
-          <mat-progress-bar
-            class="rounded"
-            mode="determinate"
-            value="60"
-          ></mat-progress-bar>
-          <mat-progress-bar
-            class="rounded"
-            mode="determinate"
-            value="40"
-          ></mat-progress-bar>
-          <mat-progress-bar
-            class="rounded"
-            mode="determinate"
-            value="20"
-          ></mat-progress-bar>
+        @if(spot.normalizedRatingHistogram) {
+        <div class="flex-grow-1 d-flex flex-column-reverse gap-1">
+          @for(item of spot.normalizedRatingHistogram | keyvalue; track item) {
+          <div
+            class="d-flex flex-row gap-2 align-items-center mat-label-medium"
+          >
+            {{ item.key }}
+            <mat-progress-bar
+              class="rounded flex-grow-1"
+              mode="determinate"
+              [value]="100 * item.value"
+              style="margin-top: -2px"
+            ></mat-progress-bar>
+            ({{ spot.ratingHistogram[item.key] }})
+          </div>
+          }
         </div>
+        }
       </div>
+      } @else {
+      <p i18n>This spot has no reviews yet, be the first to leave one!</p>
+      }
 
       <!-- Spot review histogram -->
       <!-- // TODO review histogram -->
@@ -220,6 +218,7 @@
       </button>
       }
     </div>
+    }
 
     <!-- Spot Address or Location and action buttons -->
     <div class="d-flex justify-start mb-4 flex-column">

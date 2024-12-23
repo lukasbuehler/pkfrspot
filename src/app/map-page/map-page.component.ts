@@ -8,12 +8,17 @@ import {
   LOCALE_ID,
 } from "@angular/core";
 import { Spot, SpotPreviewData } from "../../scripts/db/Spot";
-import { ActivatedRoute, Router } from "@angular/router";
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  NavigationStart,
+  Router,
+} from "@angular/router";
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
 import { AuthenticationService } from "../authentication.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MapsApiService } from "../maps-api.service";
-import { BehaviorSubject, firstValueFrom, take, timeout } from "rxjs";
+import { BehaviorSubject, filter, firstValueFrom, take, timeout } from "rxjs";
 import { animate, style, transition, trigger } from "@angular/animations";
 import { BottomSheetComponent } from "../bottom-sheet/bottom-sheet.component";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -136,7 +141,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     this.titleService.setTitle($localize`:@@pkfr.spotmap.title:PKFR Spot map`);
   }
 
-  async ngOnInit() {
+  async _getSpotIdFromRouteAndOpenSpot() {
     let spotId: string =
       this.route.snapshot.paramMap.get("id") ??
       this.route.snapshot.paramMap.get("spotID") ??
@@ -147,6 +152,17 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     if (spotId) {
       await this.openSpotById(spotId);
     }
+  }
+
+  async ngOnInit() {
+    await this._getSpotIdFromRouteAndOpenSpot();
+
+    // subscribe to changes of the route
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationStart))
+      .subscribe(async (event: NavigationStart) => {
+        await this._getSpotIdFromRouteAndOpenSpot();
+      });
   }
 
   // Speed dial FAB //////////////////////////////////////////////////////////
