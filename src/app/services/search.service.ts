@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { SearchClient } from "typesense";
 import { SearchParams } from "typesense/lib/Typesense/Documents";
-import { environment } from "../environments/environment";
+import { environment } from "../../environments/environment";
 import { MapsApiService } from "./maps-api.service";
 
 @Injectable({

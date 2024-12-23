@@ -15,14 +15,14 @@ import {
   Router,
 } from "@angular/router";
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
-import { AuthenticationService } from "../authentication.service";
+import { AuthenticationService } from "../services/authentication.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { MapsApiService } from "../maps-api.service";
+import { MapsApiService } from "../services/maps-api.service";
 import { BehaviorSubject, filter, firstValueFrom, take, timeout } from "rxjs";
 import { animate, style, transition, trigger } from "@angular/animations";
 import { BottomSheetComponent } from "../bottom-sheet/bottom-sheet.component";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { SearchService } from "../search.service";
+import { SearchService } from "../services/search.service";
 import { SearchResponse } from "typesense/lib/Typesense/Documents";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
 import {
@@ -32,10 +32,10 @@ import {
   AsyncPipe,
   isPlatformServer,
 } from "@angular/common";
-import { StorageService } from "../storage.service";
+import { StorageService } from "../services/storage.service";
 import { GlobalVariables } from "../../scripts/global";
 import { SpotListComponent } from "../spot-list/spot-list.component";
-import { SpotsService } from "../services/spots.service";
+import { SpotsService } from "../services/firestore-services/spots.service";
 import { UserMenuContentComponent } from "../user-menu-content/user-menu-content.component";
 import { SpotDetailsComponent } from "../spot-details/spot-details.component";
 import { MatOption } from "@angular/material/core";

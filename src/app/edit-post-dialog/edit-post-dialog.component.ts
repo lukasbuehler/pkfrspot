@@ -19,8 +19,8 @@ import {
 import { Post } from "../../scripts/db/Post";
 import { Spot } from "../../scripts/db/Spot";
 
-import { StorageService, StorageFolder } from "../storage.service";
-import { PostsService } from "../services/posts.service";
+import { StorageService, StorageFolder } from "../services/storage.service";
+import { PostsService } from "../services/firestore-services/posts.service";
 
 import {
   UntypedFormControl,

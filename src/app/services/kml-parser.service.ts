@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import firebase from "firebase/compat";
 import { BehaviorSubject, Observable, firstValueFrom } from "rxjs";
-import { Spot } from "../scripts/db/Spot";
-import { MapHelpers } from "../scripts/MapHelpers";
+import { Spot } from "../../scripts/db/Spot";
+import { MapHelpers } from "../../scripts/MapHelpers";
 
 import { parseString } from "xml2js";
-import { SpotsService } from "./services/spots.service";
+import { SpotsService } from "./firestore-services/spots.service";
 import { MapsApiService } from "./maps-api.service";
 
 export interface KMLSetupInfo {

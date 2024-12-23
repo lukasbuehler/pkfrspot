@@ -8,9 +8,9 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { Post } from "../../scripts/db/Post";
 import { User } from "../../scripts/db/User";
-import { AuthenticationService } from "../authentication.service";
+import { AuthenticationService } from "../services/authentication.service";
 import { FollowListComponent } from "../follow-list/follow-list.component";
-import { StorageService } from "../storage.service";
+import { StorageService } from "../services/storage.service";
 import { MatButton } from "@angular/material/button";
 import { FancyCounterComponent } from "../fancy-counter/fancy-counter.component";
 import { MatChipSet, MatChip } from "@angular/material/chips";
@@ -22,9 +22,9 @@ import {
   MatCardTitle,
 } from "@angular/material/card";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
-import { FollowingService } from "../services/following.service";
-import { UsersService } from "../services/users.service";
-import { PostsService } from "../services/posts.service";
+import { FollowingService } from "../services/firestore-services/following.service";
+import { UsersService } from "../services/firestore-services/users.service";
+import { PostsService } from "../services/firestore-services/posts.service";
 
 @Component({
   selector: "app-profile-page",

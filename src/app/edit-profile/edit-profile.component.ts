@@ -7,9 +7,9 @@ import {
   ViewChild,
 } from "@angular/core";
 import { User } from "../../scripts/db/User";
-import { AuthenticationService } from "../authentication.service";
+import { AuthenticationService } from "../services/authentication.service";
 import Croppie from "croppie";
-import { StorageFolder, StorageService } from "../storage.service";
+import { StorageFolder, StorageService } from "../services/storage.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Timestamp } from "firebase/firestore";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
@@ -29,7 +29,7 @@ import { MatButton } from "@angular/material/button";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
 import { MatBadge } from "@angular/material/badge";
 import { NgIf } from "@angular/common";
-import { UsersService } from "../services/users.service";
+import { UsersService } from "../services/firestore-services/users.service";
 
 @Component({
   selector: "app-edit-profile",

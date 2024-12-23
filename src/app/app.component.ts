@@ -6,8 +6,8 @@ import {
   RouterOutlet,
 } from "@angular/router";
 import { filter, map } from "rxjs/operators";
-import { AuthenticationService } from "./authentication.service";
-import { StorageService } from "./storage.service";
+import { AuthenticationService } from "./services/authentication.service";
+import { StorageService } from "./services/storage.service";
 import { GlobalVariables } from "../scripts/global";
 import { UserMenuContentComponent } from "./user-menu-content/user-menu-content.component";
 import { NgIf, NgOptimizedImage } from "@angular/common";

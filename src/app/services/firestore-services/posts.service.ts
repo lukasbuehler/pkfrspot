@@ -14,9 +14,9 @@ import {
   setDoc,
 } from "@angular/fire/firestore";
 import { Observable } from "rxjs";
-import { Post } from "../../scripts/db/Post";
-import { Spot } from "../../scripts/db/Spot";
-import { Like } from "../../scripts/db/Like";
+import { Post } from "../../../scripts/db/Post";
+import { Spot } from "../../../scripts/db/Spot";
+import { Like } from "../../../scripts/db/Like";
 
 @Injectable({
   providedIn: "root",

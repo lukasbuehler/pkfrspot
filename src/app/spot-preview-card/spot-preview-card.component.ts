@@ -10,7 +10,7 @@ import {
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { Spot, SpotPreviewData } from "../../scripts/db/Spot";
-import { StorageService } from "../storage.service";
+import { StorageService } from "../services/storage.service";
 import { MatCardModule } from "@angular/material/card";
 import { MatRippleModule } from "@angular/material/core";
 import { MatIconModule } from "@angular/material/icon";

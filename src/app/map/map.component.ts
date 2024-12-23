@@ -20,7 +20,7 @@ import {
 } from "@angular/google-maps";
 import { BehaviorSubject, Observable } from "rxjs";
 import { environment } from "../../environments/environment";
-import { MapsApiService } from "../maps-api.service";
+import { MapsApiService } from "../services/maps-api.service";
 import {
   SpotClusterDot,
   SpotClusterTile,

@@ -21,7 +21,7 @@ import {
   MatRow,
 } from "@angular/material/table";
 import { NgIf } from "@angular/common";
-import { FollowingService } from "../services/following.service.js";
+import { FollowingService } from "../services/firestore-services/following.service.js";
 
 export interface FollowListDialogData {
   userId: string;

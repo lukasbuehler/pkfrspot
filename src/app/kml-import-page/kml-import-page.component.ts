@@ -23,13 +23,17 @@ import {
   MatStepperNext,
   MatStepperPrevious,
 } from "@angular/material/stepper";
-import { KmlParserService, KMLSetupInfo, KMLSpot } from "../kml-parser.service";
+import {
+  KmlParserService,
+  KMLSetupInfo,
+  KMLSpot,
+} from "../services/kml-parser.service";
 import { filter, first, firstValueFrom } from "rxjs";
 import {
   MyRegex,
   RegexInputComponent,
 } from "../regex-input/regex-input.component";
-import { SpotsService } from "../services/spots.service";
+import { SpotsService } from "../services/firestore-services/spots.service";
 import { Spot } from "../../scripts/db/Spot";
 import { GeoPoint } from "firebase/firestore";
 import { SpotMapComponent } from "../spot-map/spot-map.component";

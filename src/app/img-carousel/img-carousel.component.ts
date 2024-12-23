@@ -16,7 +16,7 @@ import {
   MatDialog,
   MatDialogModule,
 } from "@angular/material/dialog";
-import { StorageService } from "../storage.service";
+import { StorageService } from "../services/storage.service";
 
 // Swiper
 import Swiper from "swiper";

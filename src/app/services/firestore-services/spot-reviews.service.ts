@@ -9,7 +9,7 @@ import {
   query,
   where,
 } from "@angular/fire/firestore";
-import { SpotReview } from "../../scripts/db/SpotReview";
+import { SpotReview } from "../../../scripts/db/SpotReview";
 
 @Injectable({
   providedIn: "root",

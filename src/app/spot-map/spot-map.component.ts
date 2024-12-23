@@ -14,7 +14,7 @@ import { ActivatedRoute } from "@angular/router";
 import { GeoPoint } from "firebase/firestore";
 import { firstValueFrom, take, timeout } from "rxjs";
 import { MapHelpers } from "../../scripts/MapHelpers";
-import { AuthenticationService } from "../authentication.service";
+import { AuthenticationService } from "../services/authentication.service";
 import { MapComponent } from "../map/map.component";
 import {
   ClusterTileKey,
@@ -23,7 +23,7 @@ import {
   SpotClusterTile,
 } from "../../scripts/db/SpotClusterTile";
 import { Meta, Title } from "@angular/platform-browser";
-import { MapsApiService } from "../maps-api.service";
+import { MapsApiService } from "../services/maps-api.service";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
 import { isPlatformServer } from "@angular/common";
 import {
@@ -33,7 +33,7 @@ import {
   transition,
   trigger,
 } from "@angular/animations";
-import { SpotsService } from "../services/spots.service";
+import { SpotsService } from "../services/firestore-services/spots.service";
 
 /**
  * This interface is used to reference a spot in the loaded spots array.

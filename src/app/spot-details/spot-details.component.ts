@@ -18,10 +18,10 @@ import {
 } from "@angular/material/progress-bar";
 import { Spot } from "../../scripts/db/Spot";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
-import { StorageService, StorageFolder } from "../storage.service";
+import { StorageService, StorageFolder } from "../services/storage.service";
 import { Post } from "../../scripts/db/Post";
 import { Observable, Subscription } from "rxjs";
-import { AuthenticationService } from "../authentication.service";
+import { AuthenticationService } from "../services/authentication.service";
 import { ContributedMedia, MediaType } from "../../scripts/db/Interfaces";
 
 //import { MatTooltipModule } from "@angular/material/tooltip";
@@ -35,7 +35,7 @@ import {
 import { UntypedFormControl, FormsModule } from "@angular/forms";
 import { map, startWith } from "rxjs/operators";
 import { trigger, transition, style, animate } from "@angular/animations";
-import { MapsApiService } from "../maps-api.service";
+import { MapsApiService } from "../services/maps-api.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { SpotReportDialogComponent } from "../spot-report-dialog/spot-report-dialog.component";
 import { SpotRatingDialogComponent } from "../spot-rating-dialog/spot-rating-dialog.component";
@@ -63,9 +63,9 @@ import {
 } from "@angular/material/card";
 import { create } from "core-js/core/object";
 import { MatDividerModule } from "@angular/material/divider";
-import { SpotsService } from "../services/spots.service";
-import { ReportsService } from "../services/spot-reports.service";
-import { PostsService } from "../services/posts.service";
+import { SpotsService } from "../services/firestore-services/spots.service";
+import { ReportsService } from "../services/firestore-services/spot-reports.service";
+import { PostsService } from "../services/firestore-services/posts.service";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 

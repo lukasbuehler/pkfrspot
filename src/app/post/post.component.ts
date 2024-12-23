@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
 import { Post } from "../../scripts/db/Post";
-import { PostsService } from "../services/posts.service";
-import { AuthenticationService } from "../authentication.service";
+import { PostsService } from "../services/firestore-services/posts.service";
+import { AuthenticationService } from "../services/authentication.service";
 import { MapHelpers } from "../../scripts/MapHelpers";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router, RouterLink } from "@angular/router";

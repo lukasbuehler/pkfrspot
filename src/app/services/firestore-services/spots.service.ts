@@ -14,12 +14,12 @@ import {
 } from "@angular/fire/firestore";
 import { Observable, forkJoin } from "rxjs";
 import { map, take } from "rxjs/operators";
-import { Spot } from "../../scripts/db/Spot";
+import { Spot } from "../../../scripts/db/Spot";
 import {
   ClusterTileKey,
   getDataFromClusterTileKey,
   SpotClusterTile,
-} from "../../scripts/db/SpotClusterTile";
+} from "../../../scripts/db/SpotClusterTile";
 
 @Injectable({
   providedIn: "root",

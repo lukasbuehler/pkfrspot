@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
 } from "@angular/forms";
 import { Router } from "@angular/router";
-import { AuthenticationService } from "../authentication.service";
+import { AuthenticationService } from "../services/authentication.service";
 import { RecaptchaVerifier, sendPasswordResetEmail } from "firebase/auth";
 import { MatIcon } from "@angular/material/icon";
 import { MatButton } from "@angular/material/button";

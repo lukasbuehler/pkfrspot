@@ -1,42 +1,57 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute } from "@angular/router";
-import { Location, NgFor, NgClass, NgSwitch, NgSwitchCase, NgIf } from "@angular/common";
-import { AuthenticationService } from "../authentication.service";
+import {
+  Location,
+  NgFor,
+  NgClass,
+  NgSwitch,
+  NgSwitchCase,
+  NgIf,
+} from "@angular/common";
+import { AuthenticationService } from "../services/authentication.service";
 import { EditProfileComponent } from "../edit-profile/edit-profile.component";
-import { SpeedDialFabButtonConfig, SpeedDialFabComponent } from "../speed-dial-fab/speed-dial-fab.component";
+import {
+  SpeedDialFabButtonConfig,
+  SpeedDialFabComponent,
+} from "../speed-dial-fab/speed-dial-fab.component";
 import { MatTooltip } from "@angular/material/tooltip";
 import { MatInput } from "@angular/material/input";
-import { MatFormField, MatLabel, MatSuffix, MatHint } from "@angular/material/form-field";
+import {
+  MatFormField,
+  MatLabel,
+  MatSuffix,
+  MatHint,
+} from "@angular/material/form-field";
 import { MatDivider } from "@angular/material/divider";
 import { MatBadge } from "@angular/material/badge";
 import { MatIcon } from "@angular/material/icon";
 import { MatButton } from "@angular/material/button";
 
 @Component({
-    selector: "app-settings-page",
-    templateUrl: "./settings-page.component.html",
-    styleUrls: ["./settings-page.component.scss"],
-    standalone: true,
-    imports: [
-        NgFor,
-        MatButton,
-        NgClass,
-        MatIcon,
-        MatBadge,
-        NgSwitch,
-        MatDivider,
-        EditProfileComponent,
-        NgSwitchCase,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        NgIf,
-        MatSuffix,
-        MatTooltip,
-        MatHint,
-        SpeedDialFabComponent,
-    ],
+  selector: "app-settings-page",
+  templateUrl: "./settings-page.component.html",
+  styleUrls: ["./settings-page.component.scss"],
+  standalone: true,
+  imports: [
+    NgFor,
+    MatButton,
+    NgClass,
+    MatIcon,
+    MatBadge,
+    NgSwitch,
+    MatDivider,
+    EditProfileComponent,
+    NgSwitchCase,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    NgIf,
+    MatSuffix,
+    MatTooltip,
+    MatHint,
+    SpeedDialFabComponent,
+  ],
 })
 export class SettingsPageComponent implements OnInit {
   @ViewChild("editProfileComponent") editProfileComponent: EditProfileComponent;
