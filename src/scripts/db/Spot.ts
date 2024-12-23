@@ -227,7 +227,7 @@ export namespace Spot {
       return this._data.tile_coordinates;
     }
 
-    public get amenities(): { name: string; icon: string }[] {
+    public get amenitiesArray(): { name: string; icon: string }[] {
       if (!this._data.amenities) return [];
 
       return AmenitiesOrder.map((key) => {
@@ -265,6 +265,10 @@ export namespace Spot {
       this._data.tile_coordinates = this._generateTileCoordinates(
         this._location
       );
+
+      if (!this._data.amenities) this._data.amenities = {};
+      if (!this._data.amenities.indoor) this._data.amenities.indoor = false;
+      if (!this._data.amenities.outdoor) this._data.amenities.outdoor = false;
 
       // street view metadata
       fetch(

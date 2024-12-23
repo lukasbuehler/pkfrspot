@@ -74,6 +74,21 @@ export const AmenitiesOrder = [
   "maybe_overgrown",
 ];
 
+export const IndoorAmenities = [
+  "wc",
+  "changing_room",
+  "lockers",
+  "power_outlets",
+];
+
+export const GeneralAmenities = [
+  "entry_fee",
+  "drinking_water",
+  "parking_on_site",
+];
+
+export const OutdoorAmenities = ["covered", "lighting", "maybe_overgrown"];
+
 export const AmenityNames: { [key in keyof AmenitiesMap]: string } = {
   covered: $localize`:@@amenities.covered:Covered`,
   outdoor: $localize`:@@amenities.outdoor:Outdoor`,

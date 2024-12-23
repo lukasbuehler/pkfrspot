@@ -138,3 +138,14 @@ app-img-carousel {
     color: #410002;
   }
 }
+
+div.hist-grid-container {
+  display: grid;
+  grid-template-columns: 1fr 10000fr 1fr;
+  gap: 10px;
+  align-items: center;
+
+  > div.grid-item {
+    text-align: end;
+  }
+}

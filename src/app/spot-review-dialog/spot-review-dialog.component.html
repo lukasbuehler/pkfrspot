@@ -1,18 +1,31 @@
-<h2 mat-dialog-title i18n>Review Spot '{{ data.spot?.name }}'</h2>
+<h2 mat-dialog-title i18n>Review Spot '{{ review.spot?.name }}'</h2>
 <mat-dialog-content>
   <p i18n>What would you rate this spot from one to five stars?</p>
-  <div class="d-flex flex-row justify-content-center align-items-center">
+  <div
+    class="d-flex flex-row justify-content-center align-items-center p-3 mb-3"
+  >
     @for(star of [1, 2, 3, 4, 5]; track star) {
     <button
       mat-icon-button
-      (mouseover)="hoverRating = star"
-      (mouseleave)="hoverRating = rating"
-      (click)="rating = star"
+      (mouseover)="hoverRating = star; isHovering = true"
+      (mouseleave)="hoverRating = review.rating; isHovering = false"
+      (click)="review.rating = star; hoverRating = star"
+      color="primary"
+      locale
+      style="width: 64px; height: 64px"
     >
-      <mat-icon>{{ hoverRating >= star ? "star" : "star_border" }}</mat-icon>
+      <mat-icon style="width: 100%; height: 100%; font-size: 52px">{{
+        hoverRating >= star ? "star" : "star_border"
+      }}</mat-icon>
     </button>
     }
   </div>
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Comment</mat-label>
+    <textarea matInput [(ngModel)]="review.comment.text" rows="4"></textarea>
+    <mat-hint>Language: {{ review.comment.locale }}</mat-hint>
+  </mat-form-field>
+  <!-- // TODO Make it possible to toggle the language or something -->
 </mat-dialog-content>
 <mat-dialog-actions class="d-flex justify-content-between p-3">
   <button mat-button (click)="onNoClick()" i18n="cancel button label">
@@ -20,12 +33,12 @@
   </button>
   <button
     mat-flat-button
-    [mat-dialog-close]="data"
+    [mat-dialog-close]="review"
     color="warn"
     cdkFocusInitial
     (click)="submitReview()"
     i18n="review button label|"
   >
-    Review
+    {{ isUpdate ? "Update" : "" }} Review
   </button>
 </mat-dialog-actions>

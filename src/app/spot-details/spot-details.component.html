@@ -139,11 +139,16 @@
     </div>
 
     <!-- Freatures -->
-    @if(spot.amenities?.length > 0) {
+    @if(spot.amenitiesArray?.length > 0) {
     <div class="mb-4">
-      <h4 i18n class="mat-title-small">Features and amenities</h4>
+      <h4
+        i18n="amenities header|The header for the spot features and amenities"
+        class="mat-title-small"
+      >
+        Features and amenities
+      </h4>
       <mat-chip-set aria-label="Dog selection">
-        @for(amenity of spot.amenities; track amenity) {
+        @for(amenity of spot.amenitiesArray; track amenity) {
         <mat-chip>
           <mat-icon matChipAvatar>{{ amenity.icon }}</mat-icon>
           {{ amenity.name }}
@@ -175,18 +180,20 @@
           }
         </div>
         @if(spot.normalizedRatingHistogram) {
-        <div class="flex-grow-1 d-flex flex-column-reverse gap-1">
-          @for(item of spot.normalizedRatincgHistogram | keyvalue; track item) {
-          <div
-            class="d-flex flex-row gap-2 align-items-center mat-label-medium"
-          >
+        <div class="flex-grow-1 hist-grid-container">
+          @for(item of spot.normalizedRatingHistogram | keyvalue | reverse;
+          track item) {
+          <!-- row -->
+          <div class="grid-item mat-label-medium">
             {{ item.key }}
-            <mat-progress-bar
-              class="rounded flex-grow-1"
-              mode="determinate"
-              [value]="100 * item.value"
-              style="margin-top: -2px"
-            ></mat-progress-bar>
+          </div>
+          <mat-progress-bar
+            class="grid-item rounded"
+            mode="determinate"
+            [value]="100 * item.value"
+            style="margin-top: -2px"
+          ></mat-progress-bar>
+          <div class="grid-item mat-label-medium">
             ({{ spot.ratingHistogram[item.key] }})
           </div>
           }
@@ -336,8 +343,7 @@
       </button>
     </div>
 
-    <!-- Edit spot form -->
-    <mat-form-field style="width: 100%">
+    <!-- <mat-form-field style="width: 100%">
       <mat-label i18n>Spot type</mat-label>
       <mat-select
         [value]="spot?.type"
@@ -348,6 +354,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+
     <mat-form-field style="width: 100%">
       <mat-label i18n>Spot area</mat-label>
       <mat-select
@@ -358,7 +365,77 @@
           {{ capitalize(area) }}
         </mat-option>
       </mat-select>
-    </mat-form-field>
+    </mat-form-field> -->
+
+    <!-- Features and Amenities -->
+    <h4
+      i18n="amenities header|The header for the spot features and amenities"
+      class="mat-title-small"
+    >
+      Features and amenities
+    </h4>
+
+    <mat-chip-listbox class="">
+      <mat-chip-option
+        [selected]="spot.data.amenities.indoor"
+        (selectionChange)="
+          spot.data.amenities.indoor = $event.selected;
+          spot.data.amenities.outdoor = !$event.selected
+        "
+        ><mat-icon matChipAvatar>{{ AmenityIcons["indoor"] }}</mat-icon
+        >{{ AmenityNames["indoor"] }}</mat-chip-option
+      >
+      <mat-chip-option
+        [selected]="spot.data.amenities.outdoor"
+        (selectionChange)="
+          spot.data.amenities.outdoor = $event.selected;
+          spot.data.amenities.indoor = !$event.selected
+        "
+        ><mat-icon matChipAvatar>{{ AmenityIcons["outdoor"] }}</mat-icon
+        >{{ AmenityNames["outdoor"] }}</mat-chip-option
+      >
+    </mat-chip-listbox>
+    @if(spot.data.amenities.indoor) {
+    <mat-chip-set>
+      @for(amenity of IndoorAmenities; track amenity) {
+      <mat-chip-option
+        [selected]="spot.data.amenities[amenity]"
+        (selectionChange)="spot.data.amenities[amenity] = $event.selected"
+        ><mat-icon matChipAvatar>{{ AmenityIcons[amenity] }}</mat-icon
+        >{{ AmenityNames[amenity] }}</mat-chip-option
+      >
+      }
+    </mat-chip-set>
+    } @if(spot.data.amenities.outdoor) {
+    <mat-chip-set>
+      @for(amenity of OutdoorAmenities; track amenity) {
+      <mat-chip-option
+        [selected]="spot.data.amenities[amenity]"
+        (selectionChange)="spot.data.amenities[amenity] = $event.selected"
+        ><mat-icon matChipAvatar>{{ AmenityIcons[amenity] }}</mat-icon
+        >{{ AmenityNames[amenity] }}</mat-chip-option
+      >
+      }
+    </mat-chip-set>
+    }
+    <mat-chip-set>
+      @for(amenity of GeneralAmenities; track amenity) {
+      <mat-chip-option
+        [selected]="spot.data.amenities[amenity]"
+        (selectionChange)="spot.data.amenities[amenity] = $event.selected"
+        ><mat-icon matChipAvatar>{{ AmenityIcons[amenity] }}</mat-icon
+        >{{ AmenityNames[amenity] }}</mat-chip-option
+      >
+      }
+    </mat-chip-set>
+
+    <!-- Description -->
+    <h4
+      class="mat-title-small"
+      i18n="description header|The header for the spot description"
+    >
+      Description
+    </h4>
     <mat-form-field style="width: 100%">
       <mat-label i18n>Description</mat-label>
       <textarea

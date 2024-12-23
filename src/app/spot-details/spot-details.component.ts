@@ -11,6 +11,8 @@ import {
   LOCALE_ID,
   Inject,
   AfterViewInit,
+  Pipe,
+  PipeTransform,
 } from "@angular/core";
 import {
   MatProgressBar,
@@ -22,7 +24,15 @@ import { StorageService, StorageFolder } from "../services/storage.service";
 import { Post } from "../../scripts/db/Post";
 import { Observable, Subscription } from "rxjs";
 import { AuthenticationService } from "../services/authentication.service";
-import { ContributedMedia, MediaType } from "../../scripts/db/Interfaces";
+import {
+  AmenityIcons,
+  AmenityNames,
+  IndoorAmenities,
+  OutdoorAmenities,
+  GeneralAmenities,
+  ContributedMedia,
+  MediaType,
+} from "../../scripts/db/Interfaces";
 
 //import { MatTooltipModule } from "@angular/material/tooltip";
 
@@ -50,8 +60,8 @@ import { SpotRatingComponent } from "../spot-rating/spot-rating.component";
 import { MatIcon } from "@angular/material/icon";
 import { MatTooltip } from "@angular/material/tooltip";
 import { MatIconButton, MatButton } from "@angular/material/button";
-import { NgIf, NgFor, KeyValuePipe } from "@angular/common";
-import { MatChipsModule } from "@angular/material/chips";
+import { NgIf, KeyValuePipe } from "@angular/common";
+import { MatChipListbox, MatChipsModule } from "@angular/material/chips";
 import { MatRipple, MatOption } from "@angular/material/core";
 import {
   MatCard,
@@ -66,8 +76,20 @@ import { MatDividerModule } from "@angular/material/divider";
 import { SpotsService } from "../services/firestore-services/spots.service";
 import { SpotReportsService } from "../services/firestore-services/spot-reports.service";
 import { PostsService } from "../services/firestore-services/posts.service";
+import { SpotReview } from "../../scripts/db/SpotReview.js";
+import { SpotReviewsService } from "../services/firestore-services/spot-reviews.service";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
+
+@Pipe({ name: "reverse", standalone: true })
+export class ReversePipe implements PipeTransform {
+  transform(value: any[]): any[] {
+    if (!Array.isArray(value)) {
+      return value;
+    }
+    return value.slice().reverse();
+  }
+}
 
 @Component({
   selector: "app-spot-details",
@@ -104,14 +126,16 @@ declare function plausible(eventName: string, options?: { props: any }): void;
     MatInput,
     MediaPreviewGridComponent,
     UploadMediaUiComponent,
-    MatSelect,
-    NgFor,
-    MatOption,
+    // MatSelect,
+    // NgFor,
+    // MatOption,
+    MatChipListbox,
     MatCardActions,
     SpotRatingComponent,
     MatDividerModule,
     MatProgressBarModule,
     KeyValuePipe,
+    ReversePipe,
   ],
 })
 export class SpotDetailsComponent implements AfterViewInit, OnChanges {
@@ -135,6 +159,12 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   @ViewChild(UploadMediaUiComponent) uploadMediaComp;
 
   isSaving: boolean = false;
+
+  AmenityIcons = AmenityIcons;
+  AmenityNames = AmenityNames;
+  IndoorAmenities = IndoorAmenities;
+  OutdoorAmenities = OutdoorAmenities;
+  GeneralAmenities = GeneralAmenities;
 
   visited: boolean = false;
   bookmarked: boolean = false;
@@ -174,7 +204,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     public reviewDialog: MatDialog,
     private _element: ElementRef,
     private _spotsService: SpotsService,
-    private _spotsReportsService: SpotReportsService,
+    private _spotReportsService: SpotReportsService,
+    private _spotReviewsService: SpotReviewsService,
     private _postsService: PostsService,
     private _storageService: StorageService,
     private _mapsApiService: MapsApiService,
@@ -379,7 +410,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   loadReportForSpot() {
-    this._spotsReportsService
+    this._spotReportsService
       .getSpotReportsBySpotId(this.spot.id)
       .then((reports) => {
         this.report = reports[0] || null;
@@ -450,19 +481,57 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   openSpotReviewDialog() {
-    const dialogRef = this.reviewDialog.open(SpotReviewDialogComponent, {
-      data: {
-        spot: {
-          name: this.spot.getName(this.locale),
-          id: this.spot.id,
-        },
-        user: {
-          uid: this.authenticationService.user.uid,
-          display_name: this.authenticationService.user.data.displayName,
-        },
-        rating: 0,
-        comment: "",
-      },
-    });
+    const uid = this.authenticationService.user.uid;
+    const spotId = this.spot.id;
+    let isUpdate: boolean = false;
+
+    let review: SpotReview = null;
+
+    // TODO somehow show that we are loading the review
+
+    // check if the user has already reviewed this spot
+    this._spotReviewsService
+      .getSpotReviewById(spotId, uid)
+      .then((_review) => {
+        review = _review;
+        isUpdate = true;
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        // otherwise create an empty review
+        if (!review) {
+          review = {
+            spot: {
+              name: this.spot.getName(this.locale),
+              id: spotId,
+            },
+            user: {
+              uid: uid,
+              display_name: this.authenticationService.user.data.displayName,
+            },
+            rating: 0,
+            comment: {
+              text: "",
+              locale: this.locale,
+            },
+          };
+        } else {
+          if (!review.comment?.text || !review.comment?.locale) {
+            review.comment = {
+              text: "",
+              locale: this.locale,
+            };
+          }
+        }
+
+        const dialogRef = this.reviewDialog.open(SpotReviewDialogComponent, {
+          data: {
+            review: review,
+            isUpdate: isUpdate,
+          },
+        });
+      });
   }
 }

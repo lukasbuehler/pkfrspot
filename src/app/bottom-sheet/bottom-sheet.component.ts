@@ -15,7 +15,7 @@ import {
 export class BottomSheetComponent {
   @Input() title: string = "";
 
-  headerHeight: number = 120;
+  headerHeight: number = 170;
   minimumSpeedToSlide: number = 5;
 
   @ViewChild("bottomSheet", { static: true }) bottomSheet: ElementRef;

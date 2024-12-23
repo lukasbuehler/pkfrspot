@@ -13,21 +13,24 @@ service cloud.firestore {
       allow write: if request.auth.uid != null 
         && !('rating' in request.resource.data || 'num_reviews' in request.resource.data || 'rating_histogram' in request.resource.data);
 
-      match /reviews/{reviewId} {
+      match /reviews/{userId} {
         allow read: if true;
         allow create: if request.auth.uid != null 
+          && request.auth.uid == userId
           && request.auth.uid == request.resource.data.user.uid
-          && !exists(/databases/$(database)/documents/spots/$(spotId)/reviews/$(reviewId))
+          && !exists(/databases/$(database)/documents/spots/$(spotId)/reviews/$(userId))
           && request.resource.data.rating is int 
           && request.resource.data.rating >= 1 
           && request.resource.data.rating <= 5;
         allow update: if request.auth.uid != null
           && request.auth.uid == request.resource.data.user.uid
+          && request.auth.uid == userId
           && request.resource.data.rating is int 
           && request.resource.data.rating >= 1 
           && request.resource.data.rating <= 5;
         allow delete: if request.auth.uid != null
-          && request.auth.uid == request.resource.data.user.uid;
+          && request.auth.uid == request.resource.data.user.uid
+          && request.auth.uid == userId;
       }
 
       // Spot Reports

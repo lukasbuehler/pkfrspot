@@ -2,12 +2,12 @@ import { Injectable } from "@angular/core";
 import {
   Firestore,
   doc,
-  addDoc,
   collection,
   getDoc,
   getDocs,
   query,
   where,
+  setDoc,
 } from "@angular/fire/firestore";
 import { SpotReview } from "../../../scripts/db/SpotReview";
 
@@ -55,8 +55,10 @@ export class SpotReviewsService {
 
   addSpotReview(review: SpotReview) {
     const spot_id: string = review.spot.id;
-    return addDoc(
-      collection(this.firestore, "spots", spot_id, "reviews"),
+    const user_id: string = review.user.uid;
+
+    return setDoc(
+      doc(this.firestore, "spots", spot_id, "reviews", user_id),
       review
     );
   }
