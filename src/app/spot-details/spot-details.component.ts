@@ -17,7 +17,6 @@ import {
   MatProgressBarModule,
 } from "@angular/material/progress-bar";
 import { Spot } from "../../scripts/db/Spot";
-import { DatabaseService } from "../database.service";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
 import { StorageService, StorageFolder } from "../storage.service";
 import { Post } from "../../scripts/db/Post";
@@ -64,6 +63,9 @@ import {
 } from "@angular/material/card";
 import { create } from "core-js/core/object";
 import { MatDividerModule } from "@angular/material/divider";
+import { SpotsService } from "../services/spots.service";
+import { ReportsService } from "../services/spot-reports.service";
+import { PostsService } from "../services/posts.service";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
@@ -171,7 +173,9 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     public reportDialog: MatDialog,
     public reviewDialog: MatDialog,
     private _element: ElementRef,
-    private _dbService: DatabaseService,
+    private _spotsService: SpotsService,
+    private _spotsReportsService: ReportsService,
+    private _postsService: PostsService,
     private _storageService: StorageService,
     private _mapsApiService: MapsApiService,
     private _snackbar: MatSnackBar
@@ -302,7 +306,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
         observable.then(
           (imageLink) => {
             this.spot.addMedia(
-              this._dbService,
+              this._spotsService,
               imageLink,
               MediaType.Image,
               this.authenticationService.user.uid
@@ -325,7 +329,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   mediaChanged(newSpotMedia) {
-    this.spot.setMedia(newSpotMedia, this._dbService, this._storageService);
+    this.spot.setMedia(newSpotMedia, this._spotsService, this._storageService);
   }
 
   async shareSpot() {
@@ -375,9 +379,11 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   loadReportForSpot() {
-    this._dbService.getSpotReportsBySpotId(this.spot.id).then((reports) => {
-      this.report = reports[0] || null;
-    });
+    this._spotsReportsService
+      .getSpotReportsBySpotId(this.spot.id)
+      .then((reports) => {
+        this.report = reports[0] || null;
+      });
   }
 
   hasBounds() {
@@ -390,7 +396,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
 
   loadSpotPosts() {
     console.log("Loading posts");
-    this.postSubscription = this._dbService
+    this.postSubscription = this._postsService
       .getPostsFromSpot(this.spot)
       .subscribe(
         (postsSchemaMap) => {

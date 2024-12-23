@@ -9,7 +9,6 @@ import {
 import { User } from "../../scripts/db/User";
 import { AuthenticationService } from "../authentication.service";
 import Croppie from "croppie";
-import { DatabaseService } from "../database.service";
 import { StorageFolder, StorageService } from "../storage.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Timestamp } from "firebase/firestore";
@@ -30,6 +29,7 @@ import { MatButton } from "@angular/material/button";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
 import { MatBadge } from "@angular/material/badge";
 import { NgIf } from "@angular/common";
+import { UsersService } from "../services/users.service";
 
 @Component({
   selector: "app-edit-profile",
@@ -70,7 +70,7 @@ export class EditProfileComponent implements OnInit {
 
   constructor(
     public authService: AuthenticationService,
-    private _databaseService: DatabaseService,
+    private _userService: UsersService,
     private _storageService: StorageService,
     private _snackbar: MatSnackBar
   ) {}
@@ -173,7 +173,7 @@ export class EditProfileComponent implements OnInit {
               .setUploadToStorage(blob, StorageFolder.ProfilePictures, userId)
               .then(
                 (url) => {
-                  this._databaseService
+                  this._userService
                     .updateUser(userId, {
                       profile_picture: url,
                     })
@@ -253,7 +253,7 @@ export class EditProfileComponent implements OnInit {
 
       // Update user data if changed
       if (Object.keys(data).length > 0) {
-        promises.push(this._databaseService.updateUser(this.user.uid, data));
+        promises.push(this._userService.updateUser(this.user.uid, data));
       }
 
       return Promise.all(promises);

@@ -13,7 +13,6 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from "@angular/material/dialog";
-import { DatabaseService } from "../database.service";
 import { MatIconModule, MatIcon } from "@angular/material/icon";
 
 @Component({
@@ -39,7 +38,6 @@ export class SpotRatingDialogComponent {
 
   constructor(
     public dialogref: MatDialogRef<SpotRatingDialogComponent>,
-    private _dbService: DatabaseService,
     @Inject(MAT_DIALOG_DATA) public data: SpotReview
   ) {}
 

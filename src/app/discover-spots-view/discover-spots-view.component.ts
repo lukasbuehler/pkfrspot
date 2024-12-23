@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { Spot } from "../../scripts/db/Spot";
-import { DatabaseService } from "../database.service";
 import { MatInput } from "@angular/material/input";
 import { MatFormField, MatLabel } from "@angular/material/form-field";
 import { SpotPreviewCardComponent } from "../spot-preview-card/spot-preview-card.component";
@@ -33,7 +32,7 @@ export class DiscoverSpotsViewComponent implements OnInit {
 
   discoverSpots: Spot.Class[] = [];
 
-  constructor(private _dbService: DatabaseService) {}
+  constructor() {}
 
   ngOnInit(): void {}
 

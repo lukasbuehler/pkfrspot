@@ -8,7 +8,7 @@ import {
   AmenitiesOrder,
 } from "./Interfaces";
 import { MapHelpers } from "../MapHelpers";
-import { DatabaseService } from "../../app/database.service";
+import { SpotsService } from "../../app/services/spots.service";
 import { StorageFolder, StorageService } from "../../app/storage.service";
 import { environment } from "../../environments/environment";
 import { GeoPoint } from "firebase/firestore";
@@ -316,7 +316,7 @@ export namespace Spot {
     }
 
     public addMedia(
-      _dbService: DatabaseService,
+      _dbService: SpotsService,
       src: string,
       type: MediaType,
       uid: string
@@ -331,7 +331,7 @@ export namespace Spot {
 
     public setMedia(
       media: ContributedMedia[],
-      _dbService: DatabaseService,
+      _dbService: SpotsService,
       _storageService: StorageService
     ) {
       for (let mediaObj of this._data.media) {
@@ -375,7 +375,7 @@ export namespace Spot {
       this._updateMedia(_dbService);
     }
 
-    private _updateMedia(_dbService: DatabaseService) {
+    private _updateMedia(_dbService: SpotsService) {
       _dbService.updateSpot(this._id, { media: this._data.media });
     }
 

@@ -1,3 +1,5 @@
+rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -9,12 +11,15 @@ service cloud.firestore {
       // TODO: In the future there should be a voting feature for changes on spots.
       // for now every authenticated user can write for every spot.
       allow write: if request.auth.uid != null 
-        && !('rating' in request.resource.data);
+        && !('rating' in request.resource.data || 'num_reviews' in request.resource.data || 'rating_histogram' in request.resource.data);
 
       match /reviews/{reviewId} {
         allow read: if true;
         allow write: if request.auth.uid != null
-          && request.auth.uid == request.resource.data.user.uid;
+          && request.auth.uid == request.resource.data.user.uid
+          && request.resource.data.rating is int 
+          && request.resource.data.rating >= 1 
+          && request.resource.data.rating <= 5;
       }
 
       // Spot Reports
@@ -41,12 +46,7 @@ service cloud.firestore {
       allow create: if request.auth.uid != null
         && !exists(/databases/$(database)/documents/spot_slugs/$(slug));
 
-        // Allow deletion (currently not only by an owner // TODO?)
-      allow delete: if request.auth.uid != null;
-        //&& request.auth.uid == resource.data.ownerUid;
-
-      // Disallow updates to prevent changing slug ownership
-      allow update: if false;
+      allow update, delete: if false;
     }
 
     match /posts/{post}
@@ -56,10 +56,10 @@ service cloud.firestore {
 
       // only authenticated users can create and edit posts and only create and edit it if it's their post. Also, they can't set the like_count variable.
       allow create, update: if request.auth.uid != null 
-        && request.auth.uid == request.resource.data.user.uid;
-        && !('like_count' in request.resource.data) 
+        && request.auth.uid == request.resource.data.user.uid
+        && !('like_count' in request.resource.data);
       allow delete: if request.auth.uid != null 
-        && request.auth.uid == resource.data.user.uid
+        && request.auth.uid == resource.data.user.uid;
 
       // match the subcollection likes
       match /likes/{userId} {

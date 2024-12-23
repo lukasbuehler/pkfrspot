@@ -6,7 +6,6 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
-import { DatabaseService } from "../../app/database.service";
 import { Post } from "../../scripts/db/Post";
 import { PostCollectionComponent } from "../post-collection/post-collection.component";
 import { MatDialog } from "@angular/material/dialog";
@@ -23,6 +22,7 @@ import { MatIcon } from "@angular/material/icon";
 import { MatFabButton } from "@angular/material/button";
 import { NgIf } from "@angular/common";
 import { MatTabGroup, MatTab } from "@angular/material/tabs";
+import { PostsService } from "../services/posts.service";
 
 @Component({
   selector: "app-home-page",
@@ -42,7 +42,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(LOCALE_ID) public locale: string,
     public authService: AuthenticationService,
-    private _dbService: DatabaseService,
+    private _postsService: PostsService,
     private _storageService: StorageService,
     public dialog: MatDialog
   ) {}
@@ -109,7 +109,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
         this._unsubscribeFromUpdates();
       }
 
-      this._updatesSubscription = this._dbService
+      this._updatesSubscription = this._postsService
         .getPostUpdates(userId)
         .subscribe(
           (changes: { type: DocumentChangeType; post: Post.Class }[]) => {
@@ -149,7 +149,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   getTodaysTopPosts() {
     this.loadingTodaysTopPosts = true;
-    this._dbService.getTodaysTopPosts().subscribe(
+    this._postsService.getTodaysTopPosts().subscribe(
       (postMap) => {
         for (let postId in postMap) {
           let docIndex = this.todaysTopPosts.findIndex((post, index, obj) => {
@@ -219,7 +219,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       user: {
         uid: this.authService.user.uid,
         display_name: this.authService.user.data.displayName,
-        ref: this._dbService.docRef("users/" + this.authService.user.uid),
+        ref: this._postsService.docRef("users/" + this.authService.user.uid),
       },
     };
 
@@ -234,7 +234,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
         name: spot.getName(this.locale),
         spot_location: new GeoPoint(lat, lng),
         image_src: spot.media && spot.media[0]?.src ? spot.media[0].src : "",
-        ref: this._dbService.docRef("spots/" + spot.id),
+        ref: this._postsService.docRef("spots/" + spot.id),
       };
     }
 
@@ -246,14 +246,14 @@ export class HomePageComponent implements OnInit, OnDestroy {
             type: mediaType,
             src: src,
           }),
-            this._dbService.addPost(post);
+            this._postsService.addPost(post);
         },
         (error) => {
           console.error(error);
         }
       );
     } else {
-      this._dbService.addPost(post);
+      this._postsService.addPost(post);
     }
   }
 }

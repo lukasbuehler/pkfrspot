@@ -20,7 +20,7 @@ import { Post } from "../../scripts/db/Post";
 import { Spot } from "../../scripts/db/Spot";
 
 import { StorageService, StorageFolder } from "../storage.service";
-import { DatabaseService } from "../database.service";
+import { PostsService } from "../services/posts.service";
 
 import {
   UntypedFormControl,
@@ -88,7 +88,7 @@ export class EditPostDialogComponent implements AfterViewInit {
     @Inject(MAT_DIALOG_DATA) public data: PostDialogData,
     public dialogRef: MatDialogRef<EditPostDialogComponent>,
     private _storageService: StorageService,
-    private _databaseService: DatabaseService
+    private _postsService: PostsService
   ) {
     this.isCreating = Boolean(data.isCreating);
   }

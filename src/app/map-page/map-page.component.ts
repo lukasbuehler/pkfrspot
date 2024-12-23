@@ -35,7 +35,7 @@ import {
 import { StorageService } from "../storage.service";
 import { GlobalVariables } from "../../scripts/global";
 import { SpotListComponent } from "../spot-list/spot-list.component";
-import { DatabaseService } from "../database.service";
+import { SpotsService } from "../services/spots.service";
 import { UserMenuContentComponent } from "../user-menu-content/user-menu-content.component";
 import { SpotDetailsComponent } from "../spot-details/spot-details.component";
 import { MatOption } from "@angular/material/core";
@@ -125,7 +125,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     public authService: AuthenticationService,
     public mapsService: MapsApiService,
     public storageService: StorageService,
-    private _dbService: DatabaseService,
+    // private _spotsService: SpotsService,
     private _searchService: SearchService,
     private router: Router,
     private location: Location,

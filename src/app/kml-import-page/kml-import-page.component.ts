@@ -29,7 +29,7 @@ import {
   MyRegex,
   RegexInputComponent,
 } from "../regex-input/regex-input.component";
-import { DatabaseService } from "../database.service";
+import { SpotsService } from "../services/spots.service";
 import { Spot } from "../../scripts/db/Spot";
 import { GeoPoint } from "firebase/firestore";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
@@ -137,7 +137,7 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
     @Inject(LOCALE_ID) public locale: string,
     public kmlParserService: KmlParserService,
     private _formBuilder: UntypedFormBuilder,
-    private _dbService: DatabaseService,
+    private _spotsService: SpotsService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -245,7 +245,7 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
         return spot.data;
       });
 
-      this._dbService.createMultipleSpots(spotsData).then(
+      this._spotsService.createMultipleSpots(spotsData).then(
         () => {
           // saving successful
           this._spotImportSuccessful();

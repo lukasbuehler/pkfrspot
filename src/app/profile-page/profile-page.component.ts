@@ -9,7 +9,6 @@ import { ActivatedRoute, RouterLink } from "@angular/router";
 import { Post } from "../../scripts/db/Post";
 import { User } from "../../scripts/db/User";
 import { AuthenticationService } from "../authentication.service";
-import { DatabaseService } from "../database.service";
 import { FollowListComponent } from "../follow-list/follow-list.component";
 import { StorageService } from "../storage.service";
 import { MatButton } from "@angular/material/button";
@@ -23,6 +22,9 @@ import {
   MatCardTitle,
 } from "@angular/material/card";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
+import { FollowingService } from "../services/following.service";
+import { UsersService } from "../services/users.service";
+import { PostsService } from "../services/posts.service";
 
 @Component({
   selector: "app-profile-page",
@@ -54,7 +56,9 @@ export class ProfilePageComponent implements OnInit {
   constructor(
     public followListDialog: MatDialog,
     private _authService: AuthenticationService,
-    private _databaseService: DatabaseService,
+    private _followingService: FollowingService,
+    private _usersService: UsersService,
+    private _postsService: PostsService,
     private _route: ActivatedRoute,
     private _snackbar: MatSnackBar,
     private _storageService: StorageService
@@ -121,7 +125,7 @@ export class ProfilePageComponent implements OnInit {
   }
 
   loadProfile(userId: string) {
-    this._databaseService.getUserById(userId).subscribe(
+    this._usersService.getUserById(userId).subscribe(
       (user) => {
         if (!user) {
           this.isLoading = false;
@@ -145,7 +149,7 @@ export class ProfilePageComponent implements OnInit {
         let myUserId = this._authService.user.uid;
         if (myUserId) {
           this.loadingFollowing = true;
-          this._databaseService.isFollowingUser(myUserId, userId).subscribe(
+          this._followingService.isFollowingUser(myUserId, userId).subscribe(
             (isFollowing) => {
               this.loadingFollowing = false;
               this.isFollowing = isFollowing;
@@ -172,7 +176,7 @@ export class ProfilePageComponent implements OnInit {
   }
 
   loadPostsForUser(userId: string) {
-    this._databaseService.getPostsFromUser(userId).subscribe(
+    this._postsService.getPostsFromUser(userId).subscribe(
       (postMap) => {
         for (let postId in postMap) {
           let docIndex = this.postsFromUser.findIndex((post, index, obj) => {
@@ -205,7 +209,7 @@ export class ProfilePageComponent implements OnInit {
     if (this.user && !this.isMyProfile) {
       if (this.isFollowing) {
         // Already following this user, unfollow
-        this._databaseService
+        this._followingService
           .unfollowUser(this._authService.user.uid, this.userId)
           .then(() => {
             this.isFollowing = false;
@@ -234,7 +238,7 @@ export class ProfilePageComponent implements OnInit {
           return;
         }
 
-        this._databaseService
+        this._followingService
           .followUser(
             this._authService.user.uid,
             this._authService.user.data,

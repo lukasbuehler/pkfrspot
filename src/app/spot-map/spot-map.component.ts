@@ -10,7 +10,6 @@ import {
   ViewChild,
 } from "@angular/core";
 import { Spot, SpotPreviewData } from "../../scripts/db/Spot";
-import { DatabaseService } from "../database.service";
 import { ActivatedRoute } from "@angular/router";
 import { GeoPoint } from "firebase/firestore";
 import { firstValueFrom, take, timeout } from "rxjs";
@@ -34,6 +33,7 @@ import {
   transition,
   trigger,
 } from "@angular/animations";
+import { SpotsService } from "../services/spots.service";
 
 /**
  * This interface is used to reference a spot in the loaded spots array.
@@ -128,7 +128,7 @@ export class SpotMapComponent implements AfterViewInit {
     public titleService: Title,
     @Inject(PLATFORM_ID) platformId: Object,
     private route: ActivatedRoute,
-    private _dbService: DatabaseService,
+    private _spotsService: SpotsService,
     private authService: AuthenticationService,
     private meta: Meta,
     private mapsAPIService: MapsApiService,
@@ -406,7 +406,7 @@ export class SpotMapComponent implements AfterViewInit {
     timeoutSeconds: number = 10
   ): Promise<void> {
     const spot: Spot.Class = await firstValueFrom(
-      this._dbService
+      this._spotsService
         .getSpotById(spotId)
         .pipe(take(1), timeout(timeoutSeconds * 1000))
     );
@@ -534,10 +534,10 @@ export class SpotMapComponent implements AfterViewInit {
     let saveSpotPromise: Promise<void | string>;
     if (spot.id) {
       // this is an old spot that is edited
-      saveSpotPromise = this._dbService.updateSpot(spot.id, spot.data);
+      saveSpotPromise = this._spotsService.updateSpot(spot.id, spot.data);
     } else {
       // this is a new spot
-      saveSpotPromise = this._dbService.createSpot(spot.data);
+      saveSpotPromise = this._spotsService.createSpot(spot.data);
     }
 
     saveSpotPromise
@@ -604,7 +604,7 @@ export class SpotMapComponent implements AfterViewInit {
     });
 
     // load the spots and add them
-    this._dbService.getSpotsForTileKeys(Array.from(tilesToLoad)).subscribe({
+    this._spotsService.getSpotsForTileKeys(Array.from(tilesToLoad)).subscribe({
       next: (spots) => {
         if (spots.length > 0) {
           spots.forEach((spot) => {
@@ -632,7 +632,7 @@ export class SpotMapComponent implements AfterViewInit {
   loadNewClusterTiles(tilesToLoad: Set<ClusterTileKey>) {
     if (tilesToLoad.size === 0) return;
 
-    this._dbService.getSpotClusterTiles(Array.from(tilesToLoad)).subscribe({
+    this._spotsService.getSpotClusterTiles(Array.from(tilesToLoad)).subscribe({
       next: (clusterTiles) => {
         if (clusterTiles.length > 0) {
           clusterTiles.forEach((clusterTile) => {

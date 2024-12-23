@@ -2,7 +2,6 @@ import { Component, Inject, OnInit, Pipe, PipeTransform } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogTitle } from "@angular/material/dialog";
 import { User } from "../../scripts/db/User";
 
-import { DatabaseService } from "../database.service";
 import { Observable } from "rxjs";
 import { humanTimeSince } from "../../scripts/Helpers";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
@@ -22,6 +21,7 @@ import {
   MatRow,
 } from "@angular/material/table";
 import { NgIf } from "@angular/common";
+import { FollowingService } from "../services/following.service.js";
 
 export interface FollowListDialogData {
   userId: string;
@@ -74,7 +74,7 @@ export class FollowDurationPipe implements PipeTransform {
 export class FollowListComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: FollowListDialogData,
-    private _databaseService: DatabaseService
+    private _followingService: FollowingService
   ) {}
 
   displayedColumns: string[] = ["user", "duration", "open"];
@@ -97,12 +97,12 @@ export class FollowListComponent implements OnInit {
 
     let obs: Observable<User.FollowingDataSchema[]>;
     if (this.data.type === "followers") {
-      obs = this._databaseService.getFollowersOfUser(
+      obs = this._followingService.getFollowersOfUser(
         this.data.userId,
         chunkSize
       );
     } else {
-      obs = this._databaseService.getFollowingsOfUser(
+      obs = this._followingService.getFollowingsOfUser(
         this.data.userId,
         chunkSize
       );

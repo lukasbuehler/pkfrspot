@@ -5,7 +5,7 @@ import { Spot } from "../scripts/db/Spot";
 import { MapHelpers } from "../scripts/MapHelpers";
 
 import { parseString } from "xml2js";
-import { DatabaseService } from "./database.service";
+import { SpotsService } from "./services/spots.service";
 import { MapsApiService } from "./maps-api.service";
 
 export interface KMLSetupInfo {
@@ -32,7 +32,7 @@ export interface KMLSpot {
 })
 export class KmlParserService {
   constructor(
-    private dbService: DatabaseService,
+    private spotsService: SpotsService,
     private mapAPIService: MapsApiService
   ) {}
 
@@ -174,7 +174,7 @@ export class KmlParserService {
 
     // load all the spots for the tiles to check for possible spot duplicates
     let spotsToCheckForDuplicates: Spot.Class[] = await firstValueFrom(
-      this.dbService.getSpotsForTiles(tilesToLoad)
+      this.spotsService.getSpotsForTiles(tilesToLoad)
     );
 
     // check for duplicates for each spot

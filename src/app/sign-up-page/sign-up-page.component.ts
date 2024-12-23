@@ -9,7 +9,6 @@ import {
 } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { AuthenticationService } from "../authentication.service";
-import { DatabaseService } from "../database.service";
 import { RecaptchaVerifier } from "firebase/auth";
 import { NgIf } from "@angular/common";
 import { MatCheckbox } from "@angular/material/checkbox";
@@ -44,7 +43,6 @@ export class SignUpPageComponent implements OnInit {
 
   constructor(
     private _authService: AuthenticationService,
-    private _databaseService: DatabaseService,
     private _formBuilder: UntypedFormBuilder,
     private _router: Router
   ) {}

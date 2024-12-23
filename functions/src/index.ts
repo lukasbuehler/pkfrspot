@@ -6,7 +6,7 @@ import {
   countFollowingOnWrite,
   countPostLikesOnWrite,
 } from "./postFunctions";
-import { updateAllSpotAddresses } from "./spotFunctions";
+import { computeRatingOnWrite, updateAllSpotAddresses } from "./spotFunctions";
 import {
   clusterAllSpotsOnRun,
   clusterAllSpotsOnSchedule,
@@ -20,7 +20,7 @@ admin.initializeApp();
 export { countFollowersOnWrite, countFollowingOnWrite, countPostLikesOnWrite };
 
 // spot functions
-export { updateAllSpotAddresses };
+export { updateAllSpotAddresses, computeRatingOnWrite };
 
 // spot clustering functions
 export { clusterAllSpotsOnRun, clusterAllSpotsOnSchedule };

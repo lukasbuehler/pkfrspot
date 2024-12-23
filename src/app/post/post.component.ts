@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
 import { Post } from "../../scripts/db/Post";
-import { DatabaseService } from "../database.service";
+import { PostsService } from "../services/posts.service";
 import { AuthenticationService } from "../authentication.service";
 import { MapHelpers } from "../../scripts/MapHelpers";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -60,7 +60,7 @@ export class PostComponent implements OnInit {
   maxHeightToWidthRatio: number = 0;
 
   constructor(
-    private _databaseService: DatabaseService,
+    private _postService: PostsService,
     private _authenticationService: AuthenticationService,
     private _snackbar: MatSnackBar,
     private _router: Router
@@ -77,7 +77,7 @@ export class PostComponent implements OnInit {
     if (this._authenticationService.user.uid) {
       this.currentlyAuthenticatedUserId = this._authenticationService.user.uid;
 
-      this._databaseService
+      this._postService
         .userHasLikedPost(this.post.id, this.currentlyAuthenticatedUserId)
         .then((bool) => {
           this.likedByUser = bool;
@@ -109,7 +109,7 @@ export class PostComponent implements OnInit {
           this.post.like();
 
           // save the like
-          this._databaseService
+          this._postService
             .addLike(this.post.id, this._authenticationService.user.uid, {
               time: Timestamp.now(),
               user: {
@@ -138,7 +138,7 @@ export class PostComponent implements OnInit {
           this.post.unlike();
 
           // save the unlike
-          this._databaseService
+          this._postService
             .removeLike(this.post.id, this._authenticationService.user.uid)
             .then(() => {
               console.log("Your like was removed successfully");
@@ -189,7 +189,7 @@ export class PostComponent implements OnInit {
   }
 
   deletePost() {
-    this._databaseService
+    this._postService
       .deletePost(this.post.id)
       .then(() => {
         this._snackbar.open("Your post was successfully deleted", "Dismiss", {

@@ -1,4 +1,3 @@
-import { resolve } from "@angular/compiler-cli/src/ngtsc/file_system";
 import { Injectable } from "@angular/core";
 import {
   Auth,
@@ -13,11 +12,9 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from "@angular/fire/auth";
-import { rejects } from "assert";
-import { Observable, Subject, firstValueFrom } from "rxjs";
-import { map, filter, tap } from "rxjs/operators";
+import { Subject, firstValueFrom } from "rxjs";
 import { User } from "../scripts/db/User";
-import { DatabaseService } from "./database.service";
+import { UsersService } from "./services/users.service";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
@@ -43,7 +40,7 @@ export class AuthenticationService {
 
   public auth = getAuth();
 
-  constructor(private _databaseService: DatabaseService) {
+  constructor(private _userService: UsersService) {
     this.auth.onAuthStateChanged(
       this.firebaseAuthChangeListener,
       this.firebaseAuthChangeError
@@ -83,7 +80,7 @@ export class AuthenticationService {
   };
 
   private _fetchUserData(uid, sendUpdate = true) {
-    this._databaseService.getUserById(uid).subscribe(
+    this._userService.getUserById(uid).subscribe(
       (_user) => {
         if (_user) {
           this.user.data = _user;
@@ -126,7 +123,7 @@ export class AuthenticationService {
     // check if the user exists in the database
     try {
       let user: User.Class | null = await firstValueFrom(
-        this._databaseService.getUserById(googleSignInResponse.user.uid)
+        this._userService.getUserById(googleSignInResponse.user.uid)
       );
       if (!user) {
         // This is a new user!
@@ -137,7 +134,7 @@ export class AuthenticationService {
         }
 
         // create a database entry for the user
-        this._databaseService.addUser(
+        this._userService.addUser(
           googleSignInResponse.user.uid,
           googleSignInResponse.user.displayName,
           {
@@ -183,7 +180,7 @@ export class AuthenticationService {
     });
 
     // create a database entry for the user
-    this._databaseService.addUser(firebaseAuthResponse.user.uid, displayName, {
+    this._userService.addUser(firebaseAuthResponse.user.uid, displayName, {
       verified_email: false,
       settings: this._defaultUserSettings,
     });
