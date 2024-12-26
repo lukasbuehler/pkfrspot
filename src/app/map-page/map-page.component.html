@@ -1,4 +1,6 @@
 <div class="map-container">
+  <!-- The spot map, defer loading to make sure it is not loaded on the server. -->
+  @defer(on immediate) {
   <app-spot-map
     #spotMap
     id="spotMap"
@@ -10,6 +12,7 @@
     (hightlightedSpotsChange)="highlightedSpots = $event"
     (hasGeolocationChange)="askedGeoPermission = true; hasGeolocation = $event"
   ></app-spot-map>
+  }
 
   <div class="search-group">
     <div class="d-flex flex-row gap-3">
@@ -20,7 +23,7 @@
         class="spot-search-field mat-elevation-z3"
         appearance="fill"
       >
-        @if(selectedSpot) {
+        @if(spotMap && selectedSpot) {
         <button
           mat-icon-button
           matSuffix
@@ -120,7 +123,7 @@
       </mat-form-field>
     </div>
 
-    @if(selectedSpot) {
+    @if(spotMap && selectedSpot) {
     <div class="info-panel d-none d-md-block spot-preview-container p-3 pt-4">
       <app-spot-details
         @fadeInOut
@@ -148,7 +151,7 @@
     </div>
     }
     <app-bottom-sheet #bottomSheet class="d-md-none flex-grow-1">
-      @if(selectedSpot) {
+      @if(spotMap && selectedSpot) {
       <div class="spot-preview-container">
         <app-spot-details
           @fadeInOut
@@ -188,6 +191,8 @@
   </mat-chip-listbox>
   } -->
 
+  @if(spotMap) {
+
   <button
     mat-mini-fab
     #mapStyleFab
@@ -218,7 +223,8 @@
     </mat-icon>
   </button>
 
-  @if(spotMap.mapZoom >= 16 && authService.isSignedIn && !isEditing) {
+  } @if(spotMap && spotMap.mapZoom >= 16 && authService.isSignedIn &&
+  !isEditing) {
   <!-- Add / import spots speed dial-->
   <!-- <app-speed-dial-fab
     #createSpotSpeedDial

@@ -94,8 +94,9 @@ import { MatDividerModule } from "@angular/material/divider";
     MatDividerModule,
   ],
 })
-export class MapPageComponent implements OnInit, AfterViewInit {
-  @ViewChild("spotMap", { static: true }) spotMap: SpotMapComponent;
+export class MapPageComponent implements AfterViewInit {
+  @ViewChild("spotMap", { static: true }) spotMap: SpotMapComponent | null =
+    null;
   @ViewChild("bottomSheet") bottomSheet: BottomSheetComponent;
 
   selectedSpot: Spot.Class = null;
@@ -144,25 +145,14 @@ export class MapPageComponent implements OnInit, AfterViewInit {
   async _getSpotIdFromRouteAndOpenSpot() {
     let spotId: string =
       this.route.snapshot.paramMap.get("id") ??
-      this.route.snapshot.paramMap.get("spotID") ??
+      this.route.snapshot.paramMap.get("spotId") ??
       this.route.snapshot.queryParamMap.get("spot") ??
       this.route.snapshot.queryParamMap.get("spotId") ??
       "";
 
-    if (spotId) {
+    if (spotId && this.spotMap) {
       await this.openSpotById(spotId);
     }
-  }
-
-  async ngOnInit() {
-    await this._getSpotIdFromRouteAndOpenSpot();
-
-    // subscribe to changes of the route
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationStart))
-      .subscribe(async (event: NavigationStart) => {
-        await this._getSpotIdFromRouteAndOpenSpot();
-      });
   }
 
   // Speed dial FAB //////////////////////////////////////////////////////////
@@ -211,7 +201,20 @@ export class MapPageComponent implements OnInit, AfterViewInit {
 
   // Initialization ///////////////////////////////////////////////////////////
 
-  ngAfterViewInit() {
+  async ngAfterViewInit() {
+    await this._getSpotIdFromRouteAndOpenSpot();
+
+    // subscribe to changes of the route
+    this.router.events
+      .pipe(
+        filter((event) => {
+          return event instanceof NavigationEnd;
+        })
+      )
+      .subscribe(async (event: NavigationEnd) => {
+        await this._getSpotIdFromRouteAndOpenSpot();
+      });
+
     // subscribe to the spot search control and update the search results
     this.spotSearchControl.valueChanges.subscribe((query) => {
       if (query) {
@@ -256,7 +259,6 @@ export class MapPageComponent implements OnInit, AfterViewInit {
         "Map page: openSpotById: Spot map is not defined at this time!"
       );
     }
-
     await this.spotMap.loadAndOpenSpotById(spotId);
   }
 

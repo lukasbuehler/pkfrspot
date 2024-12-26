@@ -60,7 +60,7 @@ import { SpotRatingComponent } from "../spot-rating/spot-rating.component";
 import { MatIcon } from "@angular/material/icon";
 import { MatTooltip } from "@angular/material/tooltip";
 import { MatIconButton, MatButton } from "@angular/material/button";
-import { NgIf, KeyValuePipe } from "@angular/common";
+import { NgIf, KeyValuePipe, LocationStrategy } from "@angular/common";
 import { MatChipListbox, MatChipsModule } from "@angular/material/chips";
 import { MatRipple, MatOption } from "@angular/material/core";
 import {
@@ -202,6 +202,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     public authenticationService: AuthenticationService,
     public reportDialog: MatDialog,
     public reviewDialog: MatDialog,
+    private _locationStrategy: LocationStrategy,
     private _element: ElementRef,
     private _spotsService: SpotsService,
     private _spotReportsService: SpotReportsService,
@@ -364,9 +365,12 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   async shareSpot() {
-    let baseUrl = "https://pkfrspot.com";
+    const url = "https://pkfrspot.com";
+    const baseUrl = this._locationStrategy.getBaseHref();
 
-    let link = baseUrl + "/map/" + this.spot.id;
+    // TODO use slug instead of id if available
+
+    const link = url + baseUrl + "map/" + this.spot.id;
 
     if (navigator["share"]) {
       try {
@@ -382,7 +386,9 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
         console.error(err);
       }
     } else {
-      navigator.clipboard.writeText(link);
+      navigator.clipboard.writeText(
+        `${this.spot.getName(this.locale)} - PKFR Spot\n${link}`
+      );
       this._snackbar.open("Link to spot copied to clipboard", "Dismiss", {
         duration: 3000,
         horizontalPosition: "center",

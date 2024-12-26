@@ -61,6 +61,34 @@ export class AppComponent implements OnInit {
 
   alainMode: boolean = false;
 
+  baseUrl = "https://pkfrspot.com";
+
+  languages: {
+    name: string;
+    url: string;
+  }[] = [
+    {
+      name: "English",
+      url: this.baseUrl + "/en/",
+    },
+    {
+      name: "Deutsch",
+      url: this.baseUrl + "/de/",
+    },
+    {
+      name: "Schwiizerdütsch",
+      url: this.baseUrl + "/de-CH/",
+    },
+    // {
+    //   name: "Français",
+    //   url: this.baseUrl + "/fr/",
+    // },
+    {
+      name: "Italiano",
+      url: this.baseUrl + "/it/",
+    },
+  ];
+
   @HostListener("window:resize", ["$event"])
   onResize(event) {
     this.enforceAlainMode();

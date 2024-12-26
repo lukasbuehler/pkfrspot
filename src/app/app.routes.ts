@@ -15,22 +15,13 @@ import { SettingsPageComponent } from "./settings-page/settings-page.component";
 import { ForgotPasswordPageComponent } from "./forgot-password-page/forgot-password-page.component";
 
 export const routes: Routes = [
-  // Home page and posts (displays posts and updates)
-  { path: "posts", component: HomePageComponent, data: { routeName: "Posts" } },
+  // Home page (redirects to spot map)
   { path: "", redirectTo: "map", pathMatch: "full" },
-  {
-    path: "p/:postID",
-    redirectTo: "post/:postID",
-  },
-  {
-    path: "post/:postID",
-    component: PostPageComponent,
-    data: { routeName: "Post" },
-  },
+
   // Map page
   { path: "map", component: MapPageComponent, data: { routeName: "Spot map" } },
   {
-    path: "map/:id",
+    path: "map/:spotId",
     component: MapPageComponent,
     data: { routeName: "Spot map" },
   },
@@ -44,6 +35,18 @@ export const routes: Routes = [
     component: KmlImportPageComponent,
     data: { routeName: "KML Import" },
   },
+
+  // Posts
+  // { path: "posts", component: HomePageComponent, data: { routeName: "Posts" } },
+  // {
+  //   path: "p/:postId",
+  //   redirectTo: "post/:postId",
+  // },
+  // {
+  //   path: "post/:postId",
+  //   component: PostPageComponent,
+  //   data: { routeName: "Post" },
+  // },
 
   // Community, Groups, Teams, Sessions
   //   {
@@ -107,11 +110,10 @@ export const routes: Routes = [
   },
   {
     path: "welcome",
-    redirectTo: "home",
+    redirectTo: "",
     pathMatch: "full",
     data: { routeName: "Welcome" },
   }, //component: WelcomePageComponent },
-  // { path: "landing", component: LandingPageComponent },
   {
     path: "terms_of_service",
     component: TermsOfServiceComponent,

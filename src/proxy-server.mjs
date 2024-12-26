@@ -3,7 +3,6 @@ import express from "express";
 
 const supportedLanguages = ["en", "de", "de-CH", "it"];
 const defaultLanguage = "en";
-const langSupportedPaths = ["map", "about"];
 
 const serverExpressApps = {};
 
@@ -13,9 +12,26 @@ for (const lang of supportedLanguages) {
 }
 
 function detectLanguage(req, res, next) {
+  console.log(JSON.stringify(req.path));
+
+  // Extract the first segment of the path (e.g., "en" from "/en/map")
+  const pathSegments = req.path.split("/").filter(Boolean);
+  const firstSegment = pathSegments[0];
+
+  // If the first segment is a valid language code, pass control to the next middleware
+  if (supportedLanguages.includes(firstSegment)) {
+    return next();
+  }
+
+  // Extract the preferred language from the Accept-Language header
+  const acceptLanguage = req.headers["accept-language"];
   let preferredLanguage = defaultLanguage;
 
-  const acceptLanguage = req.headers["accept-language"];
+  // TODO remove
+  console.log("preferredLanguage is", preferredLanguage);
+  console.log("pathSegments is", pathSegments.join(","));
+  console.log("first segment is", firstSegment);
+  console.log("path is", `${req.path}`);
 
   if (acceptLanguage) {
     const browserLanguages = acceptLanguage
@@ -40,23 +56,11 @@ function detectLanguage(req, res, next) {
       defaultLanguage;
   }
 
-  // Extract the first segment of the path (e.g., "en" from "/en/map")
-  const pathSegments = req.path.split("/").filter(Boolean);
-  const firstSegment = pathSegments[0];
-
-  // If the first segment is a valid language code, pass control to the next middleware
-  if (supportedLanguages.includes(firstSegment)) {
-    return next();
-  }
-
-  // Extract the first segment of the path for redirection handling
-  const requestPath = pathSegments[0];
-
-  if (langSupportedPaths.includes(requestPath)) {
-    return res.redirect(301, `/${preferredLanguage}/${requestPath}`);
+  if (req.path === "/") {
+    return res.redirect(301, `/${preferredLanguage}`);
   } else {
     // For other cases, redirect to the root of the detected language
-    return res.redirect(301, `/${preferredLanguage}/`);
+    return res.redirect(301, `/${preferredLanguage}${req.path}`);
   }
 }
 

@@ -8,12 +8,22 @@
       >{{ navbarConfig.logo.text }}</a
     >
     @for (button of navbarConfig.buttons; track button) {
-    <app-mat3-nav-button
-      [icon]="button.icon"
-      [label]="button.name"
-      [routerLink]="button.link"
-    ></app-mat3-nav-button>
+    <a [routerLink]="button.link">
+      <app-mat3-nav-button
+        [icon]="button.icon"
+        [label]="button.name"
+      ></app-mat3-nav-button>
+    </a>
     }
+    <div class="spacer"></div>
+    <app-mat3-nav-button
+      [matMenuTriggerFor]="langMenu"
+      icon="language"
+      i18n-label="
+        Language button label|The label of the change language
+        button@@lang_btn_label"
+      label="Language"
+    ></app-mat3-nav-button>
   </app-nav-rail>
   <app-nav-rail-content class="flex-col">
     <!-- This is where the pages content gets displayed -->
@@ -25,12 +35,21 @@
     <!-- Bottom navigation bar -->
     <mat-toolbar class="d-md-none mat-elevation-z1">
       @for (button of navbarConfig.buttons; track button){
-      <app-mat3-nav-button
-        [icon]="button.icon"
-        [label]="button.name"
-        [routerLink]="button.link"
-      ></app-mat3-nav-button>
+      <a [routerLink]="button.link">
+        <app-mat3-nav-button
+          [icon]="button.icon"
+          [label]="button.name"
+        ></app-mat3-nav-button
+      ></a>
       }
+      <app-mat3-nav-button
+        [matMenuTriggerFor]="langMenu"
+        icon="language"
+        i18n-label="
+          Language button label|The label of the change language
+          button@@lang_btn_label"
+        label="Language"
+      ></app-mat3-nav-button>
     </mat-toolbar>
     } @else {
     <!-- Menu button -->
@@ -42,7 +61,7 @@
     >
       <mat-icon>menu</mat-icon>
     </button>
-    <mat-menu #mainMenu>
+    <mat-menu #mainMenu="matMenu">
       @for(button of navbarConfig.buttons; track button) {
       <a [routerLink]="button.link">
         <button mat-menu-item>
@@ -50,10 +69,25 @@
           <span>{{ button.name }}</span>
         </button>
       </a>
-
       }
+      <button mat-menu-item [matMenuTriggerFor]="langMenu">
+        <mat-icon>language</mat-icon>
+        <span
+          i18n="
+            Language button label|The label of the change language
+            button@@lang_btn_label"
+          >Language</span
+        >
+      </button>
     </mat-menu>
     }
+
+    <!-- Language menu -->
+    <mat-menu #langMenu="matMenu">
+      @for(language of languages; track language ) {
+      <a mat-menu-item [href]="language.url">{{ language.name }}</a>
+      }
+    </mat-menu>
 
     <!-- User FAB -->
     <button

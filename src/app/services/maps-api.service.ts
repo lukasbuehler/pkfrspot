@@ -24,6 +24,8 @@ export class MapsApiService {
     new BehaviorSubject<boolean>(false);
   public isApiLoaded$: Observable<boolean> = this._isApiLoaded$;
 
+  private _isLoading: boolean = false;
+
   constructor(private http: HttpClient) {
     this.loadGoogleMapsApi();
   }
@@ -31,16 +33,24 @@ export class MapsApiService {
   loadGoogleMapsApi() {
     // Load the Google Maps API if it is not already loaded
     if (this._isApiLoaded$.value) return;
+    if (this._isLoading) return;
 
     if (typeof document === "undefined") return; // abort if not in browser (e.g. server-side rendering
 
+    this._isLoading = true;
+
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.keys.firebaseConfig.apiKey}&libraries=visualization,places`;
+    script.src =
+      `https://maps.googleapis.com/maps/api/js?key=${environment.keys.firebaseConfig.apiKey}` +
+      `&libraries=visualization,places&loading=async&callback=mapsCallback`;
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
-    script.onload = () => {
+
+    // add the callback function to the global scope
+    window["mapsCallback"] = () => {
       this._isApiLoaded$.next(true);
+      this._isLoading = false;
     };
   }
 

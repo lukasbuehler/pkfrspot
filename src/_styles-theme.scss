@@ -19,6 +19,10 @@
   .mat-mdc-dialog-surface {
     background-color: mat.get-theme-color($theme, surface-container-high);
   }
+
+  .mat-mdc-menu-panel {
+    background-color: mat.get-theme-color($theme, surface-container-highest);
+  }
 }
 
 @mixin typography($theme) {
