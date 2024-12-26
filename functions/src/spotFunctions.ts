@@ -1,6 +1,9 @@
 import { GeoPoint } from "firebase-admin/firestore";
 import * as admin from "firebase-admin";
-import { onDocumentCreated } from "firebase-functions/v2/firestore";
+import {
+  onDocumentCreated,
+  onDocumentWritten,
+} from "firebase-functions/v2/firestore";
 
 import { googleAPIKey } from "./secrets";
 
@@ -164,7 +167,7 @@ export const updateAllSpotAddresses = onDocumentCreated(
   }
 );
 
-export const computeRatingOnWrite = onDocumentCreated(
+export const computeRatingOnWrite = onDocumentWritten(
   "spots/{spotId}/reviews/{reviewId}",
   async (event) => {
     const spotId = event.params.spotId;

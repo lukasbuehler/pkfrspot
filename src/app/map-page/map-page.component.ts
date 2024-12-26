@@ -50,6 +50,7 @@ import { MatButtonModule, MatIconButton } from "@angular/material/button";
 import { MatFormField, MatSuffix } from "@angular/material/form-field";
 import { Title } from "@angular/platform-browser";
 import { MatDividerModule } from "@angular/material/divider";
+import { SlugsService } from "../services/firestore-services/slugs.service";
 
 @Component({
   selector: "app-map-page",
@@ -95,7 +96,7 @@ import { MatDividerModule } from "@angular/material/divider";
   ],
 })
 export class MapPageComponent implements AfterViewInit {
-  @ViewChild("spotMap", { static: true }) spotMap: SpotMapComponent | null =
+  @ViewChild("spotMap", { static: false }) spotMap: SpotMapComponent | null =
     null;
   @ViewChild("bottomSheet") bottomSheet: BottomSheetComponent;
 
@@ -128,6 +129,7 @@ export class MapPageComponent implements AfterViewInit {
     public storageService: StorageService,
     // private _spotsService: SpotsService,
     private _searchService: SearchService,
+    private _slugsService: SlugsService,
     private router: Router,
     private location: Location,
     private _snackbar: MatSnackBar,
@@ -143,15 +145,29 @@ export class MapPageComponent implements AfterViewInit {
   }
 
   async _getSpotIdFromRouteAndOpenSpot() {
-    let spotId: string =
-      this.route.snapshot.paramMap.get("id") ??
-      this.route.snapshot.paramMap.get("spotId") ??
-      this.route.snapshot.queryParamMap.get("spot") ??
-      this.route.snapshot.queryParamMap.get("spotId") ??
-      "";
+    let spotIdOrSlug: string = this.route.snapshot.paramMap.get("spot");
 
-    if (spotId && this.spotMap) {
-      await this.openSpotById(spotId);
+    if (!spotIdOrSlug && this.route.snapshot.queryParamMap.keys.length > 0) {
+      spotIdOrSlug =
+        this.route.snapshot.queryParamMap.get("id") ??
+        this.route.snapshot.queryParamMap.get("spot") ??
+        this.route.snapshot.queryParamMap.get("spotId") ??
+        this.route.snapshot.queryParamMap.get("slug") ??
+        "";
+    }
+
+    if (spotIdOrSlug) {
+      // first search for possible slugs
+      let spotId: string = "";
+      try {
+        spotId = await this._slugsService.getSpotIdFromSpotSlug(spotIdOrSlug);
+      } catch (e) {
+        // ignore error
+      } finally {
+        if (!spotId) spotId = spotIdOrSlug;
+
+        await this.openSpotById(spotId);
+      }
     }
   }
 
@@ -202,6 +218,14 @@ export class MapPageComponent implements AfterViewInit {
   // Initialization ///////////////////////////////////////////////////////////
 
   async ngAfterViewInit() {
+    // if (!this.spotMap) {
+    //   // wait 200ms then try again
+    //   setTimeout(() => {
+    //     this.ngAfterViewInit();
+    //   }, 2000);
+    //   return;
+    // }
+
     await this._getSpotIdFromRouteAndOpenSpot();
 
     // subscribe to changes of the route
@@ -255,7 +279,7 @@ export class MapPageComponent implements AfterViewInit {
 
   async openSpotById(spotId: string): Promise<void> {
     if (typeof this.spotMap === "undefined" || this.spotMap === null) {
-      throw new Error(
+      return Promise.reject(
         "Map page: openSpotById: Spot map is not defined at this time!"
       );
     }

@@ -55,7 +55,9 @@ service cloud.firestore {
       allow read: if true;
 
       allow create: if request.auth.uid != null
-        && !exists(/databases/$(database)/documents/spot_slugs/$(slug));
+        && slug.matches('^[a-z0-9-]+$')
+        && !exists(/databases/$(database)/documents/spot_slugs/$(slug))
+        && exists(/databases/$(database)/documents/spots/$(request.resource.data.spot_id));
 
       allow update, delete: if false;
     }

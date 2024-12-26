@@ -127,8 +127,8 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
   }
   set selectedVerificationSpot(value: KMLSpot | null) {
     this._selectedVerificationSpot = value;
-    if (this.spotMap)
-      this.spotMap.focusPoint(this._selectedVerificationSpot.spot.location);
+
+    this.spotMap.focusPoint(this._selectedVerificationSpot.spot.location);
   }
 
   languages: string[] = [

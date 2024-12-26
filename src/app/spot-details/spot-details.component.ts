@@ -370,7 +370,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
 
     // TODO use slug instead of id if available
 
-    const link = url + baseUrl + "map/" + this.spot.id;
+    const link = url + "/map/" + this.spot.id;
 
     if (navigator["share"]) {
       try {

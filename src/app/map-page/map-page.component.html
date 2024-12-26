@@ -23,7 +23,7 @@
         class="spot-search-field mat-elevation-z3"
         appearance="fill"
       >
-        @if(spotMap && selectedSpot) {
+        @if(selectedSpot) {
         <button
           mat-icon-button
           matSuffix
@@ -123,7 +123,7 @@
       </mat-form-field>
     </div>
 
-    @if(spotMap && selectedSpot) {
+    @if(selectedSpot) {
     <div class="info-panel d-none d-md-block spot-preview-container p-3 pt-4">
       <app-spot-details
         @fadeInOut
@@ -151,7 +151,7 @@
     </div>
     }
     <app-bottom-sheet #bottomSheet class="d-md-none flex-grow-1">
-      @if(spotMap && selectedSpot) {
+      @if(selectedSpot) {
       <div class="spot-preview-container">
         <app-spot-details
           @fadeInOut
@@ -191,8 +191,6 @@
   </mat-chip-listbox>
   } -->
 
-  @if(spotMap) {
-
   <button
     mat-mini-fab
     #mapStyleFab
@@ -223,8 +221,7 @@
     </mat-icon>
   </button>
 
-  } @if(spotMap && spotMap.mapZoom >= 16 && authService.isSignedIn &&
-  !isEditing) {
+  @if(authService.isSignedIn && !isEditing) {
   <!-- Add / import spots speed dial-->
   <!-- <app-speed-dial-fab
     #createSpotSpeedDial

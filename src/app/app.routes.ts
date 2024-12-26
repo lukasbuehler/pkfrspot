@@ -21,13 +21,14 @@ export const routes: Routes = [
   // Map page
   { path: "map", component: MapPageComponent, data: { routeName: "Spot map" } },
   {
-    path: "map/:spotId",
+    path: "map/:spot",
     component: MapPageComponent,
     data: { routeName: "Spot map" },
   },
   {
     path: "s/:slug",
-    component: MapPageComponent,
+    redirectTo: "map/:slug",
+    pathMatch: "full",
     data: { routeName: "Spot map" },
   },
   {
