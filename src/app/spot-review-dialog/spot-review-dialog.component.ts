@@ -64,7 +64,7 @@ export class SpotReviewDialogComponent {
 
   submitReview() {
     this._spotReviewsService
-      .addSpotReview(this.review)
+      .updateSpotReview(this.review)
       .then(() => {
         // this.dialogref.close();
       })

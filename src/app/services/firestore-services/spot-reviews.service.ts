@@ -11,6 +11,8 @@ import {
 } from "@angular/fire/firestore";
 import { SpotReview } from "../../../scripts/db/SpotReview";
 
+declare function plausible(eventName: string, options?: { props: any }): void;
+
 @Injectable({
   providedIn: "root",
 })
@@ -53,9 +55,15 @@ export class SpotReviewsService {
     });
   }
 
-  addSpotReview(review: SpotReview) {
+  updateSpotReview(review: SpotReview) {
     const spot_id: string = review.spot.id;
     const user_id: string = review.user.uid;
+
+    if (typeof plausible !== "undefined") {
+      plausible("Add/update Spot Review", {
+        props: { spotId: spot_id },
+      });
+    }
 
     return setDoc(
       doc(this.firestore, "spots", spot_id, "reviews", user_id),
