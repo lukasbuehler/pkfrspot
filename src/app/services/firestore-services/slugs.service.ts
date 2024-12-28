@@ -10,6 +10,7 @@ import {
   where,
 } from "@angular/fire/firestore";
 import { SpotSlug } from "../../../scripts/db/Interfaces";
+import { SpotId } from "../../../scripts/db/Spot";
 
 @Injectable({
   providedIn: "root",
@@ -45,14 +46,16 @@ export class SlugsService {
     });
   }
 
-  getSpotIdFromSpotSlug(slug: string): Promise<string> {
-    return getDoc(doc(this.firestore, "spot_slugs", slug))
+  getSpotIdFromSpotSlug(slug: SpotSlug): Promise<SpotId> {
+    const slugString: string = slug.toString();
+
+    return getDoc(doc(this.firestore, "spot_slugs", slugString))
       .then((snap) => {
         if (!snap.exists()) {
           return Promise.reject("No spot found for this slug.");
         }
         return snap.data() as SpotSlug;
       })
-      .then((data) => data.spotId);
+      .then((data) => data.spotId as SpotId);
   }
 }

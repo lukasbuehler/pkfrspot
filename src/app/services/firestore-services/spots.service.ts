@@ -14,7 +14,7 @@ import {
 } from "@angular/fire/firestore";
 import { Observable, forkJoin } from "rxjs";
 import { map, take } from "rxjs/operators";
-import { Spot } from "../../../scripts/db/Spot";
+import { Spot, SpotId } from "../../../scripts/db/Spot";
 import {
   ClusterTileKey,
   getDataFromClusterTileKey,
@@ -31,14 +31,14 @@ export class SpotsService {
     return doc(this.firestore, path);
   }
 
-  getSpotById(spotId: string): Observable<Spot.Class> {
+  getSpotById(spotId: SpotId): Observable<Spot.Class> {
     return new Observable<Spot.Class>((observer) => {
       return onSnapshot(
         doc(this.firestore, "spots", spotId),
         (snap) => {
           if (snap.exists) {
             const data = snap.data() as Spot.Schema;
-            let spot = new Spot.Class(snap.id, data);
+            let spot = new Spot.Class(snap.id as SpotId, data);
             observer.next(spot);
           } else {
             observer.error({ msg: "Error! This Spot does not exist." });
@@ -138,7 +138,7 @@ export class SpotsService {
       const data: any = doc.data();
       const spotData: Spot.Schema = data as Spot.Schema;
       if (spotData) {
-        let newSpot: Spot.Class = new Spot.Class(doc.id, spotData);
+        let newSpot: Spot.Class = new Spot.Class(doc.id as SpotId, spotData);
         newSpots.push(newSpot);
       } else {
         console.error("Spot could not be cast to Spot.Schema!");
@@ -147,16 +147,16 @@ export class SpotsService {
     return newSpots;
   }
 
-  createSpot(spotData: Spot.Schema): Promise<string> {
+  createSpot(spotData: Spot.Schema): Promise<SpotId> {
     return addDoc(collection(this.firestore, "spots"), spotData).then(
       (data) => {
-        return data.id;
+        return data.id as SpotId;
       }
     );
   }
 
   updateSpot(
-    spotId: string,
+    spotId: SpotId,
     spotUpdateData: Partial<Spot.Schema>
   ): Promise<void> {
     return updateDoc(doc(this.firestore, "spots", spotId), spotUpdateData);

@@ -21,6 +21,8 @@
       <app-spot-rating
         class="flex-shrink-0"
         [rating1to5]="spot.rating"
+        [showNumReviews]="true"
+        [numReviews]="spot.numReviews"
       ></app-spot-rating>
       } @if(spot.address) {
       <span class="text-truncate">{{ spot.getLocalityString() }}</span>
@@ -176,7 +178,10 @@
             [showRating]="false"
           ></app-spot-rating>
           @if(spot.numReviews) {
-          <span class="mat-body-medium">{{ spot.numReviews }} reviews</span>
+          <span class="mat-body-medium" i18n
+            >{spot.numReviews, plural, =0 {no reviews} =1 {1 review} other
+            {{{ spot.numReviews }} reviews}}</span
+          >
           }
         </div>
         @if(spot.normalizedRatingHistogram) {
@@ -218,10 +223,10 @@
         matTooltip="Review this spot"
         (click)="openSpotReviewDialog()"
         i18n="
-          Review spot button lable|Button to review the spot
+          Review spot button label|Button to review the spot
           label@@review_spot_button_label"
       >
-        Review this spot
+        Review spot
       </button>
       }
     </div>
@@ -230,7 +235,14 @@
     <!-- Spot Address or Location and action buttons -->
     <div class="d-flex justify-start mb-4 flex-column">
       @if(spot.address?.formatted) {
-      <h4 class="mat-title-small">Address</h4>
+      <h4
+        class="mat-title-small"
+        i18n="
+          Address subtitle|The address subtitle in the spot
+          details@@address_title"
+      >
+        Address
+      </h4>
       <p class="mat-body-large">{{ spot.address.formatted }}</p>
       } @else {
       <h4 class="mat-title-small">Location</h4>
@@ -260,6 +272,7 @@
           class="flex-grow-1 flex-basis-0"
           matTooltip="Navigate to this spot"
           (click)="openDirectionsInMaps()"
+          i18n="@@directions_spot_tooltip"
         >
           Navigate to spot
         </button>

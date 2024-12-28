@@ -157,7 +157,7 @@ async function _clusterAllSpots() {
 
         // only add the best spots to the cluster tile
         const numberOfClusterSpots = 1;
-        const iconicScore = 8;
+        const iconicScore = 4;
         const clusterSpots: SpotForClusterTile[] = smallerTileKeys
           .map((key) => {
             return (clusterTiles.get(key) as SpotClusterTile).spots;

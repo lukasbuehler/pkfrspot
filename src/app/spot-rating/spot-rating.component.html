@@ -1,16 +1,4 @@
-<div
-  class="rating-container d-flex align-items-center"
-  i18n-matTootltip
-  [matTooltip]="
-    rating1to5rounded +
-    '/5 or ' +
-    rating1to10rounded +
-    '/10 with ' +
-    numReviews +
-    ' reviews'
-  "
-  matTooltipPosition="above"
->
+<div class="rating-container d-flex align-items-center">
   @if(showRating) {
   <span class="pe-1">
     {{ rating1to5rounded }}

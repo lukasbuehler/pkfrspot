@@ -9,7 +9,7 @@ import {
   PLATFORM_ID,
   ViewChild,
 } from "@angular/core";
-import { Spot, SpotPreviewData } from "../../scripts/db/Spot";
+import { Spot, SpotId, SpotPreviewData } from "../../scripts/db/Spot";
 import { ActivatedRoute } from "@angular/router";
 import { GeoPoint } from "firebase/firestore";
 import { firstValueFrom, take, timeout } from "rxjs";
@@ -22,7 +22,6 @@ import {
   SpotClusterDot,
   SpotClusterTile,
 } from "../../scripts/db/SpotClusterTile";
-import { Meta, Title } from "@angular/platform-browser";
 import { MapsApiService } from "../services/maps-api.service";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
 import { isPlatformServer } from "@angular/common";
@@ -121,21 +120,14 @@ export class SpotMapComponent implements AfterViewInit {
   private _previousNorthEastTile: google.maps.Point | undefined;
   private _visibleTiles: Set<ClusterTileKey> = new Set<ClusterTileKey>();
 
-  isServer: boolean;
-
   constructor(
     @Inject(LOCALE_ID) public locale: string,
-    public titleService: Title,
-    @Inject(PLATFORM_ID) platformId: Object,
     private route: ActivatedRoute,
     private _spotsService: SpotsService,
     private authService: AuthenticationService,
-    private meta: Meta,
     private mapsAPIService: MapsApiService,
     private snackBar: MatSnackBar
-  ) {
-    this.isServer = isPlatformServer(platformId);
-  }
+  ) {}
 
   isInitiated: boolean = false;
 
@@ -401,70 +393,9 @@ export class SpotMapComponent implements AfterViewInit {
     this.hightlightedSpotsChange.emit(this.hightlightedSpots);
   }
 
-  async loadAndOpenSpotById(
-    spotId: string,
-    timeoutSeconds: number = 10
-  ): Promise<void> {
-    const spot: Spot.Class = await firstValueFrom(
-      this._spotsService
-        .getSpotById(spotId)
-        .pipe(take(1), timeout(timeoutSeconds * 1000))
-    );
-
-    this.openSpot(spot);
-  }
-
-  openSpot(spot: Spot.Class | SpotPreviewData | string) {
-    if (spot instanceof Spot.Class) {
-      this.setSpotMetaTags(spot);
-      this.setSelectedSpot(spot);
-
-      if (!this.isServer) {
-        this.focusSpot(spot);
-      }
-    } else {
-      const spotId: string = typeof spot === "string" ? spot : spot.id;
-      this.loadAndOpenSpotById(spotId).then(() => {});
-    }
-  }
-
-  setSpotMetaTags(spot: Spot.Class) {
-    const title: string = `${spot.getName(this.locale)} - PKFR Spot`;
-    const image_src: string = spot.previewImage;
-    const description: string =
-      $localize`:The text before the localized location of the spot. E.g. Spot in Wiedikon, Zurich, CH@@spot.locality.pretext:Spot in ` +
-      spot.getLocalityString(); // TODO change and localize
-
-    // Title
-    this.titleService.setTitle(title);
-    this.meta.updateTag({
-      property: "og:title",
-      content: title,
-    });
-    this.meta.updateTag({
-      name: "twitter:title",
-      content: title,
-    });
-
-    // Image
-    this.meta.updateTag({
-      property: "og:image",
-      content: image_src,
-    });
-    this.meta.updateTag({
-      name: "twitter:image",
-      content: image_src,
-    });
-
-    // Description
-    this.meta.updateTag({
-      property: "og:description",
-      content: description,
-    });
-    this.meta.updateTag({
-      name: "twitter:description",
-      content: description,
-    });
+  openSpot(spot: Spot.Class) {
+    this.setSelectedSpot(spot);
+    this.focusSpot(spot);
   }
 
   focusSpot(spot: Spot.Class) {
@@ -504,7 +435,7 @@ export class SpotMapComponent implements AfterViewInit {
 
     this.setSelectedSpot(
       new Spot.Class(
-        "", // The id needs to be empty for the spot to be recognized as new
+        "" as SpotId, // The id needs to be empty for the spot to be recognized as new
         {
           name: { [this.locale]: $localize`New Spot` }, // TODO change to user lang
           location: new GeoPoint(
@@ -531,7 +462,7 @@ export class SpotMapComponent implements AfterViewInit {
 
     // If the spot does not have an ID, it does not exist in the database yet.
 
-    let saveSpotPromise: Promise<void | string>;
+    let saveSpotPromise: Promise<void | SpotId>;
     if (spot.id) {
       // this is an old spot that is edited
       saveSpotPromise = this._spotsService.updateSpot(spot.id, spot.data);
@@ -541,7 +472,7 @@ export class SpotMapComponent implements AfterViewInit {
     }
 
     saveSpotPromise
-      .then((id: string | void) => {
+      .then((id: SpotId | void) => {
         if (id) {
           // add the new ID to the spot and update the loaded spots
           spot.updateId(id);
@@ -680,8 +611,6 @@ export class SpotMapComponent implements AfterViewInit {
 
     // unselect
     this.setSelectedSpot(null);
-
-    this.titleService.setTitle($localize`:@@pkfr.spotmap.title:PKFR Spot map`);
   }
 
   /**

@@ -7,7 +7,7 @@ import {
   PLATFORM_ID,
   LOCALE_ID,
 } from "@angular/core";
-import { Spot, SpotPreviewData } from "../../scripts/db/Spot";
+import { Spot, SpotId, SpotPreviewData } from "../../scripts/db/Spot";
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -51,6 +51,8 @@ import { MatFormField, MatSuffix } from "@angular/material/form-field";
 import { Title } from "@angular/platform-browser";
 import { MatDividerModule } from "@angular/material/divider";
 import { SlugsService } from "../services/firestore-services/slugs.service";
+import { SpotMetaInfoComponent } from "../spot-meta-info/spot-meta-info.component";
+import { SpotSlug } from "../../scripts/db/Interfaces.js";
 
 @Component({
   selector: "app-map-page",
@@ -93,14 +95,15 @@ import { SlugsService } from "../services/firestore-services/slugs.service";
     UserMenuContentComponent,
     AsyncPipe,
     MatDividerModule,
+    SpotMetaInfoComponent,
   ],
 })
-export class MapPageComponent implements AfterViewInit {
+export class MapPageComponent implements OnInit, AfterViewInit {
   @ViewChild("spotMap", { static: false }) spotMap: SpotMapComponent | null =
     null;
   @ViewChild("bottomSheet") bottomSheet: BottomSheetComponent;
 
-  selectedSpot: Spot.Class = null;
+  selectedSpot: Spot.Class | null = null;
   isEditing: boolean = false;
   mapStyle: string = "roadmap";
 
@@ -127,7 +130,7 @@ export class MapPageComponent implements AfterViewInit {
     public authService: AuthenticationService,
     public mapsService: MapsApiService,
     public storageService: StorageService,
-    // private _spotsService: SpotsService,
+    private _spotsService: SpotsService,
     private _searchService: SearchService,
     private _slugsService: SlugsService,
     private router: Router,
@@ -142,33 +145,6 @@ export class MapPageComponent implements AfterViewInit {
     this.isServer = isPlatformServer(platformId);
 
     this.titleService.setTitle($localize`:@@pkfr.spotmap.title:PKFR Spot map`);
-  }
-
-  async _getSpotIdFromRouteAndOpenSpot() {
-    let spotIdOrSlug: string = this.route.snapshot.paramMap.get("spot");
-
-    if (!spotIdOrSlug && this.route.snapshot.queryParamMap.keys.length > 0) {
-      spotIdOrSlug =
-        this.route.snapshot.queryParamMap.get("id") ??
-        this.route.snapshot.queryParamMap.get("spot") ??
-        this.route.snapshot.queryParamMap.get("spotId") ??
-        this.route.snapshot.queryParamMap.get("slug") ??
-        "";
-    }
-
-    if (spotIdOrSlug) {
-      // first search for possible slugs
-      let spotId: string = "";
-      try {
-        spotId = await this._slugsService.getSpotIdFromSpotSlug(spotIdOrSlug);
-      } catch (e) {
-        // ignore error
-      } finally {
-        if (!spotId) spotId = spotIdOrSlug;
-
-        await this.openSpotById(spotId);
-      }
-    }
   }
 
   // Speed dial FAB //////////////////////////////////////////////////////////
@@ -217,6 +193,11 @@ export class MapPageComponent implements AfterViewInit {
 
   // Initialization ///////////////////////////////////////////////////////////
 
+  async ngOnInit() {
+    const spotId = await this._getSpotIdFromRouteAndOpenSpot();
+    if (spotId) await this.loadSpotById(spotId);
+  }
+
   async ngAfterViewInit() {
     // if (!this.spotMap) {
     //   // wait 200ms then try again
@@ -226,8 +207,6 @@ export class MapPageComponent implements AfterViewInit {
     //   return;
     // }
 
-    await this._getSpotIdFromRouteAndOpenSpot();
-
     // subscribe to changes of the route
     this.router.events
       .pipe(
@@ -236,7 +215,8 @@ export class MapPageComponent implements AfterViewInit {
         })
       )
       .subscribe(async (event: NavigationEnd) => {
-        await this._getSpotIdFromRouteAndOpenSpot();
+        const spotId = await this._getSpotIdFromRouteAndOpenSpot();
+        await this.loadSpotById(spotId);
       });
 
     // subscribe to the spot search control and update the search results
@@ -263,11 +243,41 @@ export class MapPageComponent implements AfterViewInit {
     });
   }
 
+  async _getSpotIdFromRouteAndOpenSpot(): Promise<SpotId> {
+    let spotIdOrSlug: SpotId | SpotSlug = this.route.snapshot.paramMap.get(
+      "spot"
+    ) as SpotId | SpotSlug;
+
+    if (!spotIdOrSlug && this.route.snapshot.queryParamMap.keys.length > 0) {
+      spotIdOrSlug = (this.route.snapshot.queryParamMap.get("id") ??
+        this.route.snapshot.queryParamMap.get("spot") ??
+        this.route.snapshot.queryParamMap.get("spotId") ??
+        this.route.snapshot.queryParamMap.get("slug") ??
+        "") as SpotId | SpotSlug;
+    }
+
+    if (spotIdOrSlug) {
+      // first search for possible slugs
+      let spotId: SpotId = "" as SpotId;
+      try {
+        spotId = await this._slugsService.getSpotIdFromSpotSlug(
+          spotIdOrSlug as SpotSlug
+        );
+      } catch (e) {
+        // ignore error
+      } finally {
+        if (!spotId) spotId = spotIdOrSlug as SpotId;
+
+        return spotId;
+      }
+    }
+  }
+
   openSpotOrGooglePlace(value: { type: "place" | "spot"; id: string }) {
     if (value.type === "place") {
       this.openGooglePlaceById(value.id);
     } else {
-      this.openSpotById(value.id);
+      this.loadSpotById(value.id as SpotId);
     }
   }
 
@@ -277,13 +287,17 @@ export class MapPageComponent implements AfterViewInit {
     });
   }
 
-  async openSpotById(spotId: string): Promise<void> {
-    if (typeof this.spotMap === "undefined" || this.spotMap === null) {
-      return Promise.reject(
-        "Map page: openSpotById: Spot map is not defined at this time!"
-      );
-    }
-    await this.spotMap.loadAndOpenSpotById(spotId);
+  async loadSpotById(
+    spotId: SpotId,
+    timeoutSeconds: number = 10
+  ): Promise<void> {
+    const spot: Spot.Class = await firstValueFrom(
+      this._spotsService
+        .getSpotById(spotId)
+        .pipe(take(1), timeout(timeoutSeconds * 1000))
+    );
+
+    this.selectedSpot = spot;
   }
 
   updateMapURL() {

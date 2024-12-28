@@ -34,7 +34,7 @@ import {
   RegexInputComponent,
 } from "../regex-input/regex-input.component";
 import { SpotsService } from "../services/firestore-services/spots.service";
-import { Spot } from "../../scripts/db/Spot";
+import { Spot, SpotId } from "../../scripts/db/Spot";
 import { GeoPoint } from "firebase/firestore";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
 import { MatDivider } from "@angular/material/divider";
@@ -239,7 +239,7 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
 
     firstValueFrom(this.kmlParserService.spotsToImport$).then((kmlSpots) => {
       const spotsData: Spot.Schema[] = kmlSpots.map((kmlSpot: KMLSpot) => {
-        const spot = new Spot.Class("", {
+        const spot = new Spot.Class("" as SpotId, {
           name: { [this.locale]: kmlSpot.spot.name.trim() },
           location: new GeoPoint(
             kmlSpot.spot.location.lat,

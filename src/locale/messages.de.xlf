@@ -896,10 +896,10 @@
     <unit id="review_spot_button_label">
       <notes>
         <note category="description">Button to review the spot label</note>
-        <note category="meaning">Review spot button lable</note>
+        <note category="meaning">Review spot button label</note>
       </notes>
       <segment state="initial">
-        <source> Review this spot </source>
+        <source> Review spot </source>
         <target> Spot bewerten </target>
       </segment>
     </unit>
@@ -907,8 +907,8 @@
       <segment state="initial">
         <source>Review Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}" />
           &apos;</source>
-        <target>Review Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}" />
-          &apos;</target>
+        <target>Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}" />&apos;
+          bewerten</target>
       </segment>
     </unit>
     <unit id="6435282697411612190">
@@ -928,6 +928,24 @@
         <target> Bewertung <ph id="0" equiv="INTERPOLATION"
             disp="{{ isUpdate ? &quot;aktualisieren&quot; : &quot;hinzufügen&quot; }}" />
         </target>
+      </segment>
+    </unit>
+    <unit id="1115951775217164684">
+      <segment state="initial">
+        <source>{VAR_PLURAL, plural, =0 {no reviews} =1 {1 review} other {<ph id="0"
+            equiv="INTERPOLATION" /> reviews}}</source>
+        <target>{VAR_PLURAL, plural, =0 {Keine Bewertungen} =1 {1 Bewertung} other {<ph id="0"
+            equiv="INTERPOLATION" /> Bewertungen}}</target>
+      </segment>
+    </unit>
+    <unit id="address_title">
+      <notes>
+        <note category="description">The address subtitle in the spot details</note>
+        <note category="meaning">Address subtitle</note>
+      </notes>
+      <segment state="initial">
+        <source> Address </source>
+        <target> Adresse </target>
       </segment>
     </unit>
   </file>

@@ -35,13 +35,16 @@ export interface SpotPreviewData {
   rating?: number; // whole number 1-10
 }
 
+export type SpotId = string & { __brand: "SpotId" };
+export type SpotSlug = string & { __brand: "SpotSlug" };
+
 export namespace Spot {
   export class Class {
-    public get id(): string {
+    public get id(): SpotId {
       return this._id;
     }
 
-    updateId(newId: string) {
+    updateId(newId: SpotId) {
       this._id = newId;
     }
 
@@ -243,7 +246,7 @@ export namespace Spot {
     private _data: Schema;
     private _streetview: ContributedMedia;
 
-    constructor(private _id: string, _data: Partial<Schema>) {
+    constructor(private _id: SpotId, _data: Partial<Schema>) {
       this._data = _data as Schema;
 
       this._data.bounds = _data.bounds ?? [];
