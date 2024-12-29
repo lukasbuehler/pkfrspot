@@ -6,15 +6,15 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
-import { Post } from "../../scripts/db/Post";
+import { Post } from "../../db/Post";
 import { PostCollectionComponent } from "../post-collection/post-collection.component";
 import { MatDialog } from "@angular/material/dialog";
 import { MatDrawer } from "@angular/material/sidenav";
 import { EditPostDialogComponent } from "../edit-post-dialog/edit-post-dialog.component";
 import { StorageService } from "../services/storage.service";
 import { AuthenticationService } from "../services/authentication.service";
-import { Spot } from "../../scripts/db/Spot";
-import { MediaType } from "../../scripts/db/Interfaces";
+import { Spot } from "../../db/models/Spot";
+import { MediaType } from "../../db/models/Interfaces";
 import { DocumentChangeType } from "@angular/fire/compat/firestore";
 import { Observable, Subscription } from "rxjs";
 import { GeoPoint, Timestamp } from "firebase/firestore";
@@ -210,7 +210,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     body: string,
     mediaType: MediaType | null,
     location: google.maps.LatLngLiteral | null,
-    spot: Spot.Class | null
+    spot: Spot.Spot | null
   ) {
     let post: Post.Schema = {
       title: title,

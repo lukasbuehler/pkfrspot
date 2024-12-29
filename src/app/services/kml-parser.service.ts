@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import firebase from "firebase/compat";
 import { BehaviorSubject, Observable, firstValueFrom } from "rxjs";
-import { Spot } from "../../scripts/db/Spot";
+import { Spot } from "../../db/models/Spot";
 import { MapHelpers } from "../../scripts/MapHelpers";
 
 import { parseString } from "xml2js";
@@ -24,7 +24,7 @@ export interface KMLSpot {
   };
   folder?: string;
   language: string;
-  possibleDuplicateOf: Spot.Class[];
+  possibleDuplicateOf: Spot.Spot[];
 }
 
 @Injectable({
@@ -173,7 +173,7 @@ export class KmlParserService {
     });
 
     // load all the spots for the tiles to check for possible spot duplicates
-    let spotsToCheckForDuplicates: Spot.Class[] = await firstValueFrom(
+    let spotsToCheckForDuplicates: Spot.Spot[] = await firstValueFrom(
       this.spotsService.getSpotsForTiles(tilesToLoad)
     );
 

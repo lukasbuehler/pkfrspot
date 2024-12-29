@@ -1,5 +1,5 @@
 import { Component, Inject } from "@angular/core";
-import { SpotReview } from "../../scripts/db/SpotReview";
+import { SpotReview } from "../../db/SpotReview";
 import {
   MatButtonModule,
   MatButton,

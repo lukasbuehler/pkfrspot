@@ -13,7 +13,7 @@ import {
   updateProfile,
 } from "@angular/fire/auth";
 import { Subject, firstValueFrom } from "rxjs";
-import { User } from "../../scripts/db/User";
+import { User } from "../../db/User";
 import { UsersService } from "./firestore-services/users.service";
 
 declare function plausible(eventName: string, options?: { props: any }): void;

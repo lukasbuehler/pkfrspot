@@ -5,7 +5,7 @@ import {
   OnChanges,
   Output,
 } from "@angular/core";
-import { Spot, SpotPreviewData } from "../../scripts/db/Spot.js";
+import { Spot, SpotPreviewData } from "../../db/models/Spot.js";
 import { SpotPreviewCardComponent } from "../spot-preview-card/spot-preview-card.component";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatIconModule } from "@angular/material/icon";
@@ -25,10 +25,10 @@ import { RouterLink } from "@angular/router";
 })
 export class SpotListComponent implements OnChanges {
   @Input() highlightedSpots: SpotPreviewData[] = [];
-  @Input() spots: Spot.Class[];
+  @Input() spots: Spot.Spot[];
 
   // all spots minus the highlighted spots, set manually in ngOnChanges
-  remainingSpots: Spot.Class[] = [];
+  remainingSpots: Spot.Spot[] = [];
 
   // @Output() clickSpot: EventEmitter<Spot.Class> =
   //   new EventEmitter<Spot.Class>();

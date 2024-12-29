@@ -18,10 +18,10 @@ import {
   MatProgressBar,
   MatProgressBarModule,
 } from "@angular/material/progress-bar";
-import { Spot } from "../../scripts/db/Spot";
+import { Spot } from "../../db/models/Spot";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
 import { StorageService, StorageFolder } from "../services/storage.service";
-import { Post } from "../../scripts/db/Post";
+import { Post } from "../../db/Post";
 import { Observable, Subscription } from "rxjs";
 import { AuthenticationService } from "../services/authentication.service";
 import {
@@ -32,7 +32,7 @@ import {
   GeneralAmenities,
   ContributedMedia,
   MediaType,
-} from "../../scripts/db/Interfaces";
+} from "../../db/models/Interfaces";
 
 //import { MatTooltipModule } from "@angular/material/tooltip";
 
@@ -50,7 +50,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { SpotReportDialogComponent } from "../spot-report-dialog/spot-report-dialog.component";
 import { SpotReviewDialogComponent } from "../spot-review-dialog/spot-review-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
-import { SpotReport } from "../../scripts/db/SpotReport.js";
+import { SpotReport } from "../../db/SpotReport.js";
 import { MatSelect } from "@angular/material/select";
 import { MediaPreviewGridComponent } from "../media-preview-grid/media-preview-grid.component";
 import { MatInput } from "@angular/material/input";
@@ -76,7 +76,7 @@ import { MatDividerModule } from "@angular/material/divider";
 import { SpotsService } from "../services/firestore-services/spots.service";
 import { SpotReportsService } from "../services/firestore-services/spot-reports.service";
 import { PostsService } from "../services/firestore-services/posts.service";
-import { SpotReview } from "../../scripts/db/SpotReview.js";
+import { SpotReview } from "../../db/SpotReview.js";
 import { SpotReviewsService } from "../services/firestore-services/spot-reviews.service";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
@@ -139,7 +139,7 @@ export class ReversePipe implements PipeTransform {
   ],
 })
 export class SpotDetailsComponent implements AfterViewInit, OnChanges {
-  @Input() spot: Spot.Class;
+  @Input() spot: Spot.Spot;
   @Input() infoOnly: boolean = false;
   @Input() dismissable: boolean = false;
   @Input() flat: boolean = false;
@@ -152,8 +152,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   @Output() dismiss: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() addBoundsClick: EventEmitter<void> = new EventEmitter<void>();
   @Output() focusClick: EventEmitter<void> = new EventEmitter<void>();
-  @Output() saveClick: EventEmitter<Spot.Class> =
-    new EventEmitter<Spot.Class>();
+  @Output() saveClick: EventEmitter<Spot.Spot> = new EventEmitter<Spot.Spot>();
   @Output() discardClick: EventEmitter<void> = new EventEmitter<void>();
 
   @ViewChild(UploadMediaUiComponent) uploadMediaComp;

@@ -10,7 +10,7 @@ import {
   ViewChild,
   ViewChildren,
 } from "@angular/core";
-import { Spot, SpotPreviewData } from "../../scripts/db/Spot";
+import { Spot, SpotPreviewData } from "../../db/models/Spot";
 import {
   GoogleMap,
   MapPolygon,
@@ -24,7 +24,7 @@ import { MapsApiService } from "../services/maps-api.service";
 import {
   SpotClusterDot,
   SpotClusterTile,
-} from "../../scripts/db/SpotClusterTile.js";
+} from "../../db/models/SpotClusterTile.js";
 import { GeoPoint } from "firebase/firestore";
 import { NgIf, NgFor, AsyncPipe, NgClass } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
@@ -106,7 +106,7 @@ export class MapComponent implements OnInit {
   @Output() boundsChange = new EventEmitter<google.maps.LatLngBounds>();
   @Output() mapClick = new EventEmitter<google.maps.LatLngLiteral>();
   @Output() spotClick = new EventEmitter<
-    Spot.Class | SpotPreviewData | string
+    Spot.Spot | SpotPreviewData | string
   >();
   @Output() polygonChanged = new EventEmitter<{
     spotId: string;
@@ -114,10 +114,10 @@ export class MapComponent implements OnInit {
   }>();
   @Output() hasGeolocationChange = new EventEmitter<boolean>();
 
-  @Input() spots: Spot.Class[] = [];
+  @Input() spots: Spot.Spot[] = [];
   @Input() dots: SpotClusterDot[] = [];
 
-  @Input() selectedSpot: Spot.Class | null = null;
+  @Input() selectedSpot: Spot.Spot | null = null;
   @Input() isEditing: boolean = false;
   @Input() showGeolocation: boolean = false;
   @Input() markers: google.maps.LatLngLiteral[] = [];

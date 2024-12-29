@@ -178,7 +178,7 @@
             [showRating]="false"
           ></app-spot-rating>
           @if(spot.numReviews) {
-          <span class="mat-body-medium" i18n
+          <span class="mat-body-medium text-nowrap" i18n
             >{spot.numReviews, plural, =0 {no reviews} =1 {1 review} other
             {{{ spot.numReviews }} reviews}}</span
           >

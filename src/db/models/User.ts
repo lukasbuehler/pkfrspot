@@ -1,5 +1,5 @@
 import { DocumentReference, Timestamp } from "firebase/firestore";
-import { humanTimeSince } from "../Helpers";
+import { humanTimeSince } from "../scripts/Helpers";
 
 export namespace User {
   export class Class {

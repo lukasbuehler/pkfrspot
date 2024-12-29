@@ -9,7 +9,7 @@ import {
   PLATFORM_ID,
   ViewChild,
 } from "@angular/core";
-import { Spot, SpotId, SpotPreviewData } from "../../scripts/db/Spot";
+import { Spot, SpotId, SpotPreviewData } from "../../db/models/Spot";
 import { ActivatedRoute } from "@angular/router";
 import { GeoPoint } from "firebase/firestore";
 import { firstValueFrom, take, timeout } from "rxjs";
@@ -21,7 +21,7 @@ import {
   getClusterTileKey,
   SpotClusterDot,
   SpotClusterTile,
-} from "../../scripts/db/SpotClusterTile";
+} from "../../db/models/SpotClusterTile";
 import { MapsApiService } from "../services/maps-api.service";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
 import { isPlatformServer } from "@angular/common";
@@ -38,7 +38,7 @@ import { SpotsService } from "../services/firestore-services/spots.service";
  * This interface is used to reference a spot in the loaded spots array.
  */
 interface LoadedSpotReference {
-  spot: Spot.Class;
+  spot: Spot.Spot;
   tile: { x: number; y: number };
   indexInTileArray: number;
   indexInTotalArray: number;
@@ -55,10 +55,10 @@ interface LoadedSpotReference {
 export class SpotMapComponent implements AfterViewInit {
   @ViewChild("map") map: MapComponent;
 
-  @Input() selectedSpot: Spot.Class | null = null;
-  @Output() selectedSpotChange = new EventEmitter<Spot.Class | null>();
+  @Input() selectedSpot: Spot.Spot | null = null;
+  @Output() selectedSpotChange = new EventEmitter<Spot.Spot | null>();
 
-  setSelectedSpot(value: Spot.Class | null) {
+  setSelectedSpot(value: Spot.Spot | null) {
     if (value !== this.selectedSpot) {
       this.selectedSpot = value;
       this.selectedSpotChange.emit(value);
@@ -80,7 +80,7 @@ export class SpotMapComponent implements AfterViewInit {
 
   @Output() hasGeolocationChange = new EventEmitter<boolean>();
 
-  @Output() visibleSpotsChange = new EventEmitter<Spot.Class[]>();
+  @Output() visibleSpotsChange = new EventEmitter<Spot.Spot[]>();
   @Output() hightlightedSpotsChange = new EventEmitter<SpotPreviewData[]>();
 
   @Input() markers: google.maps.LatLngLiteral[] = [];
@@ -88,7 +88,7 @@ export class SpotMapComponent implements AfterViewInit {
 
   @Input() isClickable: boolean = true;
 
-  uneditedSpot: Spot.Class = null;
+  uneditedSpot: Spot.Spot = null;
 
   startZoom: number = 4;
   mapZoom: number = this.startZoom;
@@ -100,11 +100,11 @@ export class SpotMapComponent implements AfterViewInit {
   bounds: google.maps.LatLngBounds;
 
   //this is a map of tile keys to spot arrays
-  loadedSpots: Map<ClusterTileKey, Spot.Class[]> = new Map<
+  loadedSpots: Map<ClusterTileKey, Spot.Spot[]> = new Map<
     ClusterTileKey,
-    Spot.Class[]
+    Spot.Spot[]
   >();
-  visibleSpots: Spot.Class[] = [];
+  visibleSpots: Spot.Spot[] = [];
 
   loadedClusterTiles = new Map<ClusterTileKey, SpotClusterTile>();
   hightlightedSpots: SpotPreviewData[] = [];
@@ -287,7 +287,7 @@ export class SpotMapComponent implements AfterViewInit {
 
   // Spot loading /////////////////////////////////////////////////////////////
 
-  getAllLoadedSpots(): Spot.Class[] {
+  getAllLoadedSpots(): Spot.Spot[] {
     const values = [];
     for (const key of this.loadedSpots.keys()) {
       if (!key.includes("z16")) continue;
@@ -393,12 +393,12 @@ export class SpotMapComponent implements AfterViewInit {
     this.hightlightedSpotsChange.emit(this.hightlightedSpots);
   }
 
-  openSpot(spot: Spot.Class) {
+  openSpot(spot: Spot.Spot) {
     this.setSelectedSpot(spot);
     this.focusSpot(spot);
   }
 
-  focusSpot(spot: Spot.Class) {
+  focusSpot(spot: Spot.Spot) {
     this.focusPoint(spot.location);
   }
 
@@ -434,7 +434,7 @@ export class SpotMapComponent implements AfterViewInit {
     }
 
     this.setSelectedSpot(
-      new Spot.Class(
+      new Spot.Spot(
         "" as SpotId, // The id needs to be empty for the spot to be recognized as new
         {
           name: { [this.locale]: $localize`New Spot` }, // TODO change to user lang
@@ -450,7 +450,7 @@ export class SpotMapComponent implements AfterViewInit {
     this.setIsEditing(true);
   }
 
-  saveSpot(spot: Spot.Class) {
+  saveSpot(spot: Spot.Spot) {
     if (!spot) return;
 
     if (spot.hasBounds()) {
@@ -642,7 +642,7 @@ export class SpotMapComponent implements AfterViewInit {
     const allSpots = this.getAllLoadedSpots();
 
     // find the spot with no id
-    const spot: Spot.Class = allSpots.find((spot) => {
+    const spot: Spot.Spot = allSpots.find((spot) => {
       return spot.id === spotId;
     });
 
@@ -669,7 +669,7 @@ export class SpotMapComponent implements AfterViewInit {
    * Add a newly created spot (before first save) to the loaded spots for nice display. It can be identified by having its ID set to empty string
    * @param newSpot The newly created spot class.
    */
-  addOrUpdateNewSpotToLoadedSpotsAndUpdate(newSpot: Spot.Class) {
+  addOrUpdateNewSpotToLoadedSpotsAndUpdate(newSpot: Spot.Spot) {
     if (!newSpot.id) {
       throw new Error(
         "The spot has no ID. It needs to be saved before it can be added to the loaded spots."
@@ -712,7 +712,7 @@ export class SpotMapComponent implements AfterViewInit {
    * This function is used if the new spot was saved and now has an id. It replaces the first spot it finds with no ID with the newSaveSpot
    * @param newSavedSpot The new spot that replaces the unsaved new spot
    */
-  updateNewSpotIdOnLoadedSpotsAndUpdate(newSavedSpot: Spot.Class) {
+  updateNewSpotIdOnLoadedSpotsAndUpdate(newSavedSpot: Spot.Spot) {
     if (newSavedSpot.id) {
       // TODO
     } else {

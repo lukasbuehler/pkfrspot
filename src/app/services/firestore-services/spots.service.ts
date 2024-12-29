@@ -14,12 +14,12 @@ import {
 } from "@angular/fire/firestore";
 import { Observable, forkJoin } from "rxjs";
 import { map, take } from "rxjs/operators";
-import { Spot, SpotId } from "../../../scripts/db/Spot";
+import { Spot, SpotId } from "../../../db/models/Spot";
 import {
   ClusterTileKey,
   getDataFromClusterTileKey,
   SpotClusterTile,
-} from "../../../scripts/db/SpotClusterTile";
+} from "../../../db/models/SpotClusterTile";
 
 @Injectable({
   providedIn: "root",
@@ -31,14 +31,14 @@ export class SpotsService {
     return doc(this.firestore, path);
   }
 
-  getSpotById(spotId: SpotId): Observable<Spot.Class> {
-    return new Observable<Spot.Class>((observer) => {
+  getSpotById(spotId: SpotId): Observable<Spot.Spot> {
+    return new Observable<Spot.Spot>((observer) => {
       return onSnapshot(
         doc(this.firestore, "spots", spotId),
         (snap) => {
           if (snap.exists) {
-            const data = snap.data() as Spot.Schema;
-            let spot = new Spot.Class(snap.id as SpotId, data);
+            const data = snap.data() as Spot.SpotSchema;
+            let spot = new Spot.Spot(snap.id as SpotId, data);
             observer.next(spot);
           } else {
             observer.error({ msg: "Error! This Spot does not exist." });
@@ -54,16 +54,14 @@ export class SpotsService {
     });
   }
 
-  getSpotsForTileKeys(tileKeys: ClusterTileKey[]): Observable<Spot.Class[]> {
+  getSpotsForTileKeys(tileKeys: ClusterTileKey[]): Observable<Spot.Spot[]> {
     const tiles = tileKeys.map((key) => getDataFromClusterTileKey(key));
     return this.getSpotsForTiles(tiles);
   }
 
-  getSpotsForTiles(
-    tiles: { x: number; y: number }[]
-  ): Observable<Spot.Class[]> {
+  getSpotsForTiles(tiles: { x: number; y: number }[]): Observable<Spot.Spot[]> {
     const observables = tiles.map((tile) => {
-      return new Observable<Spot.Class[]>((observer) => {
+      return new Observable<Spot.Spot[]>((observer) => {
         const unsubscribe = onSnapshot(
           query(
             collection(this.firestore, "spots"),
@@ -84,10 +82,10 @@ export class SpotsService {
     });
 
     return forkJoin(observables).pipe(
-      map((arrays: Spot.Class[][]) => {
-        let allSpots = new Map<string, Spot.Class>();
-        arrays.forEach((spots: Spot.Class[]) => {
-          spots.forEach((spot: Spot.Class) => {
+      map((arrays: Spot.Spot[][]) => {
+        let allSpots = new Map<string, Spot.Spot>();
+        arrays.forEach((spots: Spot.Spot[]) => {
+          spots.forEach((spot: Spot.Spot) => {
             allSpots.set(spot.id, spot);
           });
         });
@@ -132,13 +130,13 @@ export class SpotsService {
     );
   }
 
-  private _parseSpots(snapshot: QuerySnapshot<DocumentData>): Spot.Class[] {
-    let newSpots: Spot.Class[] = [];
+  private _parseSpots(snapshot: QuerySnapshot<DocumentData>): Spot.Spot[] {
+    let newSpots: Spot.Spot[] = [];
     snapshot.forEach((doc) => {
       const data: any = doc.data();
-      const spotData: Spot.Schema = data as Spot.Schema;
+      const spotData: Spot.SpotSchema = data as Spot.SpotSchema;
       if (spotData) {
-        let newSpot: Spot.Class = new Spot.Class(doc.id as SpotId, spotData);
+        let newSpot: Spot.Spot = new Spot.Spot(doc.id as SpotId, spotData);
         newSpots.push(newSpot);
       } else {
         console.error("Spot could not be cast to Spot.Schema!");
@@ -147,7 +145,7 @@ export class SpotsService {
     return newSpots;
   }
 
-  createSpot(spotData: Spot.Schema): Promise<SpotId> {
+  createSpot(spotData: Spot.SpotSchema): Promise<SpotId> {
     return addDoc(collection(this.firestore, "spots"), spotData).then(
       (data) => {
         return data.id as SpotId;
@@ -157,12 +155,12 @@ export class SpotsService {
 
   updateSpot(
     spotId: SpotId,
-    spotUpdateData: Partial<Spot.Schema>
+    spotUpdateData: Partial<Spot.SpotSchema>
   ): Promise<void> {
     return updateDoc(doc(this.firestore, "spots", spotId), spotUpdateData);
   }
 
-  createMultipleSpots(spotData: Spot.Schema[]): Promise<void> {
+  createMultipleSpots(spotData: Spot.SpotSchema[]): Promise<void> {
     const batch = writeBatch(this.firestore);
     spotData.forEach((spot) => {
       const newSpotRef = doc(collection(this.firestore, "spots"));

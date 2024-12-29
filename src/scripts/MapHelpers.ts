@@ -1,3 +1,5 @@
+import { SpotSchema } from "../db/schemas/SpotSchema";
+
 export namespace MapHelpers {
   const TILE_SIZE = 256;
 
@@ -58,5 +60,22 @@ export namespace MapHelpers {
     return `${latDegrees}° ${latMinutes}' ${latSeconds}'' ${
       isNorth ? "N" : "S"
     }, ${lngDegrees}° ${lngMinutes}' ${lngSeconds}'' ${isEast ? "E" : "W"}`;
+  }
+
+  export function getTileCoordinates(
+    location: google.maps.LatLngLiteral
+  ): SpotSchema["tile_coordinates"] {
+    let tile_coordinates: Partial<SpotSchema["tile_coordinates"]> = {
+      z16: MapHelpers.getTileCoordinatesForLocationAndZoom(location, 16),
+    };
+
+    for (let zoom = 16; zoom >= 2; zoom -= 2) {
+      tile_coordinates[`z${zoom}` as keyof SpotSchema["tile_coordinates"]] = {
+        x: tile_coordinates.z16.x >> (16 - zoom),
+        y: tile_coordinates.z16.y >> (16 - zoom),
+      };
+    }
+
+    return tile_coordinates as SpotSchema["tile_coordinates"];
   }
 }

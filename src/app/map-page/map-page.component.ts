@@ -7,7 +7,7 @@ import {
   PLATFORM_ID,
   LOCALE_ID,
 } from "@angular/core";
-import { Spot, SpotId, SpotPreviewData } from "../../scripts/db/Spot";
+import { Spot, SpotId, SpotPreviewData } from "../../db/models/Spot";
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -52,7 +52,7 @@ import { Title } from "@angular/platform-browser";
 import { MatDividerModule } from "@angular/material/divider";
 import { SlugsService } from "../services/firestore-services/slugs.service";
 import { SpotMetaInfoComponent } from "../spot-meta-info/spot-meta-info.component";
-import { SpotSlug } from "../../scripts/db/Interfaces.js";
+import { SpotSlug } from "../../db/models/Interfaces.js";
 
 @Component({
   selector: "app-map-page",
@@ -103,14 +103,14 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     null;
   @ViewChild("bottomSheet") bottomSheet: BottomSheetComponent;
 
-  selectedSpot: Spot.Class | null = null;
+  selectedSpot: Spot.Spot | null = null;
   isEditing: boolean = false;
   mapStyle: string = "roadmap";
 
   askedGeoPermission: boolean = false;
   hasGeolocation: boolean = false;
 
-  visibleSpots: Spot.Class[] = [];
+  visibleSpots: Spot.Spot[] = [];
   highlightedSpots: SpotPreviewData[] = [];
 
   spotSearchControl = new FormControl();
@@ -164,7 +164,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     ],
   };
 
-  setVisibleSpots(spots: Spot.Class[], mapCenter: google.maps.LatLngLiteral) {
+  setVisibleSpots(spots: Spot.Spot[], mapCenter: google.maps.LatLngLiteral) {
     if (!spots || !mapCenter) return;
     spots.sort((a, b) => {
       return (
@@ -291,7 +291,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     spotId: SpotId,
     timeoutSeconds: number = 10
   ): Promise<void> {
-    const spot: Spot.Class = await firstValueFrom(
+    const spot: Spot.Spot = await firstValueFrom(
       this._spotsService
         .getSpotById(spotId)
         .pipe(take(1), timeout(timeoutSeconds * 1000))

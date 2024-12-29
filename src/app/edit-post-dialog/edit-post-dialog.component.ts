@@ -16,8 +16,8 @@ import {
   MatDialogClose,
 } from "@angular/material/dialog";
 
-import { Post } from "../../scripts/db/Post";
-import { Spot } from "../../scripts/db/Spot";
+import { Post } from "../../db/Post";
+import { Spot } from "../../db/models/Spot";
 
 import { StorageService, StorageFolder } from "../services/storage.service";
 import { PostsService } from "../services/firestore-services/posts.service";
@@ -31,7 +31,7 @@ import {
   MatAutocomplete,
   MatAutocompleteTrigger,
 } from "@angular/material/autocomplete";
-import { MediaType } from "../../scripts/db/Interfaces";
+import { MediaType } from "../../db/models/Interfaces";
 import { Observable } from "rxjs";
 import { MatButton } from "@angular/material/button";
 import { MatOption } from "@angular/material/core";
@@ -99,13 +99,13 @@ export class EditPostDialogComponent implements AfterViewInit {
 
   hasChanged = false;
 
-  filteredSpots: Spot.Class[] = [];
+  filteredSpots: Spot.Spot[] = [];
 
   postTitle = "";
   postBody = "";
   postImageSrc = "";
   postLocation = "";
-  postSpot: Spot.Class = null;
+  postSpot: Spot.Spot = null;
 
   // If this is false, then link is selected
   isUploadSelected = true;
@@ -185,7 +185,7 @@ export class EditPostDialogComponent implements AfterViewInit {
   makePostToReturn(): {
     title: string;
     body?: string;
-    spot?: Spot.Class;
+    spot?: Spot.Spot;
     location?: google.maps.LatLngLiteral | null;
     mediaType?: MediaType;
   } {

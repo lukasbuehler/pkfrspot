@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
-import { Post } from "../../scripts/db/Post";
+import { Post } from "../../db/Post";
 import { PostsService } from "../services/firestore-services/posts.service";
 import { AuthenticationService } from "../services/authentication.service";
 import { MapHelpers } from "../../scripts/MapHelpers";

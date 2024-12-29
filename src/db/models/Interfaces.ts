@@ -1,24 +1,22 @@
+import { languageCodes } from "../../scripts/Languages";
+
+export type LocaleCode = keyof typeof languageCodes;
+
+export interface LocaleMap {
+  user_provided?: { [langCode in LocaleCode]?: string };
+  translated?: {
+    [langCode in LocaleCode]?: {
+      text: string;
+      service: string;
+      timestamp: Date;
+      lang_from: string;
+    };
+  };
+}
+
 export type SpotSlug = {
   spotId: string;
 };
-
-export type SupportedLanguage =
-  | "en"
-  | "en-US"
-  | "en-GB"
-  | "de"
-  | "de-CH"
-  | "de-DE";
-// TODO Fix this
-
-// LangMap maps keys of SUPPORTED_LANGUAGES to strings
-type LangMap = {
-  [key in SupportedLanguage]?: string;
-};
-
-export interface LocaleMap extends LangMap {
-  google_translate?: LangMap;
-}
 
 export enum MediaType {
   Video = "video",

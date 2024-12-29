@@ -6,7 +6,7 @@ import {
   Inject,
   PLATFORM_ID,
 } from "@angular/core";
-import { ContributedMedia } from "../../scripts/db/Interfaces";
+import { ContributedMedia } from "../../db/models/Interfaces";
 import { MatRippleModule } from "@angular/material/core";
 import { MatButtonModule, MatIconButton } from "@angular/material/button";
 import { MatIcon } from "@angular/material/icon";

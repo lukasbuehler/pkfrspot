@@ -6,8 +6,8 @@ import {
 } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, RouterLink } from "@angular/router";
-import { Post } from "../../scripts/db/Post";
-import { User } from "../../scripts/db/User";
+import { Post } from "../../db/Post";
+import { User } from "../../db/User";
 import { AuthenticationService } from "../services/authentication.service";
 import { FollowListComponent } from "../follow-list/follow-list.component";
 import { StorageService } from "../services/storage.service";

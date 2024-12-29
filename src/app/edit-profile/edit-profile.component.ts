@@ -6,7 +6,7 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import { User } from "../../scripts/db/User";
+import { User } from "../../db/User";
 import { AuthenticationService } from "../services/authentication.service";
 import Croppie from "croppie";
 import { StorageFolder, StorageService } from "../services/storage.service";

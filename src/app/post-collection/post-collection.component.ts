@@ -11,7 +11,7 @@ import {
   trigger,
 } from "@angular/animations";
 
-import { Post } from "../../scripts/db/Post";
+import { Post } from "../../db/Post";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
 import { PostComponent } from "../post/post.component";
 import { NgIf, NgFor } from "@angular/common";

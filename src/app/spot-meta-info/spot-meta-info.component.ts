@@ -11,7 +11,7 @@ import {
   SimpleChanges,
 } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
-import { Spot } from "../../scripts/db/Spot";
+import { Spot } from "../../db/models/Spot";
 
 @Component({
   selector: "app-spot-meta-info",
@@ -21,7 +21,7 @@ import { Spot } from "../../scripts/db/Spot";
   styleUrl: "./spot-meta-info.component.scss",
 })
 export class SpotMetaInfoComponent implements OnInit, OnChanges {
-  spot: InputSignal<Spot.Class> = input<Spot.Class>();
+  spot: InputSignal<Spot.Spot> = input<Spot.Spot>();
 
   isServer: boolean;
 

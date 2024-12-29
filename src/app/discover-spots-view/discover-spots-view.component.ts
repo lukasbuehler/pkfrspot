@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
-import { Spot } from "../../scripts/db/Spot";
+import { Spot } from "../../db/models/Spot";
 import { MatInput } from "@angular/material/input";
 import { MatFormField, MatLabel } from "@angular/material/form-field";
 import { SpotPreviewCardComponent } from "../spot-preview-card/spot-preview-card.component";
@@ -27,10 +27,9 @@ import { MatTabGroup, MatTab, MatTabLabel } from "@angular/material/tabs";
 })
 export class DiscoverSpotsViewComponent implements OnInit {
   @Output() close: EventEmitter<void> = new EventEmitter<void>();
-  @Output() spotClick: EventEmitter<Spot.Class> =
-    new EventEmitter<Spot.Class>();
+  @Output() spotClick: EventEmitter<Spot.Spot> = new EventEmitter<Spot.Spot>();
 
-  discoverSpots: Spot.Class[] = [];
+  discoverSpots: Spot.Spot[] = [];
 
   constructor() {}
 

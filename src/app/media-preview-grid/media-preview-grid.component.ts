@@ -15,11 +15,7 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import {
-  ContributedMedia,
-  Media,
-  MediaType,
-} from "../../scripts/db/Interfaces";
+import { ContributedMedia, Media, MediaType } from "../../db/models/Interfaces";
 import { MatIcon } from "@angular/material/icon";
 import { MatIconButton } from "@angular/material/button";
 import { NgIf, NgFor } from "@angular/common";

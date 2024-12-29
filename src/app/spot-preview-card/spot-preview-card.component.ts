@@ -9,7 +9,7 @@ import {
   OnChanges,
 } from "@angular/core";
 import { Router } from "@angular/router";
-import { Spot, SpotPreviewData } from "../../scripts/db/Spot";
+import { Spot, SpotPreviewData } from "../../db/models/Spot";
 import { StorageService } from "../services/storage.service";
 import { MatCardModule } from "@angular/material/card";
 import { MatRippleModule } from "@angular/material/core";
@@ -31,7 +31,7 @@ import { SpotRatingComponent } from "../spot-rating/spot-rating.component";
   ],
 })
 export class SpotPreviewCardComponent implements OnChanges {
-  @Input() spot: Spot.Class | SpotPreviewData;
+  @Input() spot: Spot.Spot | SpotPreviewData;
   @Input() infoOnly: boolean = false;
   @Input() clickable: boolean = false;
   @Input() isCompact: boolean = false;
@@ -54,7 +54,7 @@ export class SpotPreviewCardComponent implements OnChanges {
 
   ngOnChanges() {
     if (this.spot) {
-      if (this.spot instanceof Spot.Class) {
+      if (this.spot instanceof Spot.Spot) {
         this.spotName = this.spot.getName(this.locale);
         this.spotLocality = this.spot.getLocalityString();
         this.spotImage = this.spot.previewImage;

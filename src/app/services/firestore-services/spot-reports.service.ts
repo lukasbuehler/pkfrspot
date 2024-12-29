@@ -10,7 +10,7 @@ import {
   where,
   collectionGroup,
 } from "@angular/fire/firestore";
-import { SpotReport } from "../../../scripts/db/SpotReport";
+import { SpotReport } from "../../../db/SpotReport";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
