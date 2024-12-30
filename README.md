@@ -12,22 +12,23 @@ Discover spots <strike>and fellow athletes, plan training sessions with your fri
 
 For the detailed progress please refer to the following GitHub project: [PKFR Spot Updates](https://github.com/users/lukasbuehler/projects/1/views/8)
 
-| Non-binding time estimate | Features                                                                                                                                                                                              |
-| :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Q4 2024                   | **Spot map update**: Spot ratings, spot features, add corresponding Google Places, bookmark and mark as visited, performance improvements, more languages (French, Italian, Swiss-German), Angular 19 |
-| Q1 2025                   | **Integration update**: Let websites embed PKFR Spots or the PKFR Spot map and more quality of life improvements.                                                                                     |
-| Q2 2025                   | **Post Update**: Posts (Image, Video, Link), Profile pages, Link posts to spots, ...                                                                                                                  |
-| Q3 2025                   | **Training Update**: Plan and share training sessions and jams, organize teams and groups, ...                                                                                                        |
-| ...                       | ...                                                                                                                                                                                                   |
+| Non-binding time estimate | Features                                                                                          |
+| :------------------------ | :------------------------------------------------------------------------------------------------ |
+| Q1 2025                   | Spot Map Update leftovers: Link Google places, drinking water and WC's on map, Angular 19, French |
+| End of Q1 2025            | **Integration update**: Let websites embed PKFR Spots or the PKFR Spot map.                       |
+| Q2 2025                   | **Post Update**: Posts (Image, Video, Link), Profile pages, Link posts to spots, ...              |
+| Q3 2025                   | **Training Update**: Plan and share training sessions and jams, organize teams and groups, ...    |
+| ...                       | ...                                                                                               |
 
 ### Past Updates
 
-| Date              | Features                                                        | Last Commit                                                                                         |
-| :---------------- | :-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------- |
-| 8. September 2024 | Added locality (region, city, country) to spots                 | [8170d25](https://github.com/lukasbuehler/pkfrspot/commit/8170d25a558ff160b39de69095f928d0a44fd5a9) |
-| 28. August 2024   | Multilanguage (English, German), SSR, link previews, Angular 18 | [504d587](https://github.com/lukasbuehler/pkfrspot/commit/504d58743607b84a3932c98ee9e6ef5073d77c41) |
-| Spring 2024       | Mobile (web) UI/UX enhancements                                 |                                                                                                     |
-| Spring 2024       | Spot and places full-text search                                |                                                                                                     |
+| Date              | Features                                                                                                                                                                             | Last Commit                                                                                                                                                               |
+| :---------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 27. December 2024 | **Spot map update**: Improvements to spot clustering, Highlighted spots, Spot ratings, spot features and amenities, performance improvements, more languages (Italian, Swiss-German) | [209dcbe](https://github.com/lukasbuehler/pkfrspot/commit/209dcbe7649289aee0813403b991e96f7c54b61b#diff-0cdfa2a1ed45e76b091a17632ec22c4c45b9642c15b03c26cd7e38756546201e) |
+| 8. September 2024 | Added locality (region, city, country) to spots                                                                                                                                      | [8170d25](https://github.com/lukasbuehler/pkfrspot/commit/8170d25a558ff160b39de69095f928d0a44fd5a9)                                                                       |
+| 28. August 2024   | Multilanguage (English, German), SSR, link previews, Angular 18                                                                                                                      | [504d587](https://github.com/lukasbuehler/pkfrspot/commit/504d58743607b84a3932c98ee9e6ef5073d77c41)                                                                       |
+| Spring 2024       | Mobile (web) UI/UX enhancements                                                                                                                                                      |                                                                                                                                                                           |
+| Spring 2024       | Spot and places full-text search                                                                                                                                                     |                                                                                                                                                                           |
 
 ## Collaborating
 
@@ -37,6 +38,7 @@ after making your changes, create a pull-request with your changes.
 ### Bug reports
 
 For bug reports, please open an issue in this GitHub repository.
+Or reach out directly on Discord, or directly (e.g. E-mail [contact@lukasbuehler.ch](mailto:contact@lukasbuehler.ch))
 
 ### Feature requests
 
