@@ -1,4 +1,4 @@
-<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en" trgLang="de">
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en" trgLang="it">
   <file id="ngi18n" original="ng.template">
     <unit id="1940752772695642659">
       <segment state="initial">
@@ -546,7 +546,8 @@
       <segment state="initial">
         <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT"
             equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms
-          of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT"
+            of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT"
+            equivEnd="CLOSE_BOLD_TEXT"
             type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacy declaration</pc> and agree
           to both.</source>
         <target>Ho letto e compreso i <pc id="0" equivStart="START_BOLD_TEXT"
@@ -946,6 +947,48 @@
       <segment state="initial">
         <source> Address </source>
         <target>Indirizzo</target>
+      </segment>
+    </unit>
+    <unit id="3687194426938367329">
+      <segment state="initial">
+        <source>Partners</source>
+        <target>Partner</target>
+      </segment>
+    </unit>
+    <unit id="5729418620241283277">
+      <segment state="initial">
+        <source>Events</source>
+        <target>Eventi</target>
+      </segment>
+    </unit>
+    <unit id="8151017381798767627">
+      <segment state="initial">
+        <source>Embed</source>
+        <target>Incorpora</target>
+      </segment>
+    </unit>
+    <unit id="5837993987248997726">
+      <segment state="initial">
+        <source>Embedding Preferences</source>
+        <target>Preferenze di incorporamento</target>
+      </segment>
+    </unit>
+    <unit id="7049904563073707059">
+      <segment state="initial">
+        <source>Show satellite toggle</source>
+        <target>Mostra interruttore satellitare</target>
+      </segment>
+    </unit>
+    <unit id="7344847855829755220">
+      <segment state="initial">
+        <source>Show geolocation</source>
+        <target>Mostra geolocalizzazione</target>
+      </segment>
+    </unit>
+    <unit id="403853342752104901">
+      <segment state="initial">
+        <source>Spots at this event</source>
+        <target>Spot in questo evento</target>
       </segment>
     </unit>
   </file>

@@ -766,5 +766,40 @@
         <source> Address </source>
       </segment>
     </unit>
+    <unit id="3687194426938367329">
+      <segment>
+        <source>Partners</source>
+      </segment>
+    </unit>
+    <unit id="403853342752104901">
+      <segment>
+        <source>Spots at this event</source>
+      </segment>
+    </unit>
+    <unit id="5729418620241283277">
+      <segment>
+        <source>Events</source>
+      </segment>
+    </unit>
+    <unit id="5837993987248997726">
+      <segment>
+        <source>Embedding Preferences</source>
+      </segment>
+    </unit>
+    <unit id="7049904563073707059">
+      <segment>
+        <source>Show satellite toggle</source>
+      </segment>
+    </unit>
+    <unit id="7344847855829755220">
+      <segment>
+        <source>Show geolocation</source>
+      </segment>
+    </unit>
+    <unit id="8151017381798767627">
+      <segment>
+        <source>Embed</source>
+      </segment>
+    </unit>
   </file>
 </xliff>

@@ -36,6 +36,7 @@ button.menuButton.selected {
 #saveSpeedDial {
   position: absolute;
   z-index: 2;
+  right: 50px;
 
   @media (max-width: 599px) {
     // small screen
@@ -45,5 +46,4 @@ button.menuButton.selected {
     // desktop (large screen)
     bottom: calc(30px);
   }
-  right: 50px;
 }
