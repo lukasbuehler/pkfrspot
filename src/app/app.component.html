@@ -1,3 +1,4 @@
+@if(!isEmbedded()) {
 <app-nav-rail-container>
   <app-nav-rail class="mat-elevation-z3 d-none d-md-block">
     <a
@@ -117,3 +118,22 @@
     </mat-menu>
   </app-nav-rail-content>
 </app-nav-rail-container>
+} @else {
+<div class="d-flex flex-column h-100">
+  <div
+    class="w-100 text-center d-flex align-items-center justify-content-center flex-shrink-1"
+    style="height: 60px"
+  >
+    <a
+      href="https://pkfrspot.com"
+      class="d-none d-md-block text-decoration-none text-center text-light text-wrap p-2 {{
+        navbarConfig.logo.class
+      }}"
+      >{{ navbarConfig.logo.text }}</a
+    >
+  </div>
+  <div class="flex-grow-1">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+}

@@ -1,11 +1,17 @@
-import { Component, HostListener, OnInit } from "@angular/core";
+import {
+  Component,
+  HostListener,
+  OnInit,
+  signal,
+  WritableSignal,
+} from "@angular/core";
 import {
   Router,
   RoutesRecognized,
   RouterLink,
   RouterOutlet,
 } from "@angular/router";
-import { filter, map } from "rxjs/operators";
+import { filter, map, tap } from "rxjs/operators";
 import { AuthenticationService } from "./services/authentication.service";
 import { StorageService } from "./services/storage.service";
 import { GlobalVariables } from "../scripts/global";
@@ -54,12 +60,12 @@ export class AppComponent implements OnInit {
     this.enforceAlainMode();
   }
 
-  currentPageName = "";
-
   hasAds = false;
   userId: string = "";
 
   alainMode: boolean = false;
+
+  isEmbedded: WritableSignal<boolean> = signal(false);
 
   baseUrl = "https://pkfrspot.com";
 
@@ -135,13 +141,9 @@ export class AppComponent implements OnInit {
     // get the route name
     this.router.events
       .pipe(filter((event) => event instanceof RoutesRecognized))
-      .pipe(
-        map((event: RoutesRecognized) => {
-          return event.state.root.firstChild.data["routeName"] || "";
-        })
-      )
-      .subscribe((routeName) => {
-        this.currentPageName = routeName;
+      .subscribe((event: RoutesRecognized) => {
+        const isEmbedded = event.url.split("/")[1] === "embedded";
+        this.isEmbedded.set(isEmbedded);
       });
   }
 
