@@ -32,25 +32,24 @@ import { NgIf } from "@angular/common";
 import { UsersService } from "../services/firestore-services/users.service";
 
 @Component({
-  selector: "app-edit-profile",
-  templateUrl: "./edit-profile.component.html",
-  styleUrls: ["./edit-profile.component.scss"],
-  standalone: true,
-  imports: [
-    NgIf,
-    MatBadge,
-    UploadMediaUiComponent,
-    MatButton,
-    MatFormField,
-    MatLabel,
-    MatInput,
-    MatDatepickerInput,
-    MatDatepickerToggle,
-    MatSuffix,
-    MatDatepicker,
-    MatHint,
-    MatProgressSpinner,
-  ],
+    selector: "app-edit-profile",
+    templateUrl: "./edit-profile.component.html",
+    styleUrls: ["./edit-profile.component.scss"],
+    imports: [
+        NgIf,
+        MatBadge,
+        UploadMediaUiComponent,
+        MatButton,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatDatepickerInput,
+        MatDatepickerToggle,
+        MatSuffix,
+        MatDatepicker,
+        MatHint,
+        MatProgressSpinner,
+    ]
 })
 export class EditProfileComponent implements OnInit {
   @ViewChild("croppie") croppie: ElementRef;

@@ -17,22 +17,21 @@ import { MatFormField, MatLabel, MatError } from "@angular/material/form-field";
 import { PageHeaderComponent } from "../page-header/page-header.component";
 
 @Component({
-  selector: "app-forgot-password-page",
-  templateUrl: "./forgot-password-page.component.html",
-  styleUrls: ["./forgot-password-page.component.scss"],
-  standalone: true,
-  imports: [
-    PageHeaderComponent,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormField,
-    MatLabel,
-    MatInput,
-    NgIf,
-    MatError,
-    MatButton,
-    MatIcon,
-  ],
+    selector: "app-forgot-password-page",
+    templateUrl: "./forgot-password-page.component.html",
+    styleUrls: ["./forgot-password-page.component.scss"],
+    imports: [
+        PageHeaderComponent,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        NgIf,
+        MatError,
+        MatButton,
+        MatIcon,
+    ]
 })
 export class ForgotPasswordPageComponent implements OnInit {
   forgotPasswordForm: UntypedFormGroup;

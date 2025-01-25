@@ -15,21 +15,20 @@ import { MatRadioModule } from "@angular/material/radio";
 import { FormsModule } from "@angular/forms";
 import { SpotReportsService } from "../services/firestore-services/spot-reports.service.js";
 @Component({
-  selector: "app-spot-report-dialog",
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
-    MatRadioModule,
-    FormsModule,
-  ],
-  templateUrl: "./spot-report-dialog.component.html",
-  styleUrl: "./spot-report-dialog.component.scss",
+    selector: "app-spot-report-dialog",
+    imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatDialogClose,
+        MatRadioModule,
+        FormsModule,
+    ],
+    templateUrl: "./spot-report-dialog.component.html",
+    styleUrl: "./spot-report-dialog.component.scss"
 })
 export class SpotReportDialogComponent {
   constructor(

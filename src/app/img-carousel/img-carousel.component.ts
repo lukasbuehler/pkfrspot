@@ -26,11 +26,10 @@ Swiper.use([Navigation, Pagination]);
 import { isPlatformBrowser, NgOptimizedImage } from "@angular/common";
 
 @Component({
-  selector: "app-img-carousel",
-  standalone: true,
-  imports: [MatRippleModule, NgOptimizedImage],
-  templateUrl: "./img-carousel.component.html",
-  styleUrl: "./img-carousel.component.scss",
+    selector: "app-img-carousel",
+    imports: [MatRippleModule, NgOptimizedImage],
+    templateUrl: "./img-carousel.component.html",
+    styleUrl: "./img-carousel.component.scss"
 })
 export class ImgCarouselComponent {
   @Input() media: ContributedMedia[];
@@ -60,8 +59,8 @@ export class ImgCarouselComponent {
 }
 
 @Component({
-  selector: "swiper-dialog",
-  template: `
+    selector: "swiper-dialog",
+    template: `
     <div id="swiper" class="swiper">
       <div class="swiper-wrapper">
         @for (mediaObj of data.media; track $index) { @if(mediaObj.type ===
@@ -98,10 +97,9 @@ export class ImgCarouselComponent {
       </button>
     </div>
   `,
-  standalone: true,
-  imports: [MatDialogModule, MatButtonModule, MatIconButton, MatIcon],
-  styles: [
-    `
+    imports: [MatDialogModule, MatButtonModule, MatIconButton, MatIcon],
+    styles: [
+        `
       :host {
         display: flex;
         aspect-ratio: 1;
@@ -113,8 +111,8 @@ export class ImgCarouselComponent {
         object-fit: contain;
       }
     `,
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SwiperDialogComponent implements AfterViewInit {
   swiper: Swiper = null;

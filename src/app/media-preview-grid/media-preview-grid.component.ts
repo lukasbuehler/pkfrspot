@@ -25,19 +25,18 @@ import { MatIconButton } from "@angular/material/button";
 import { NgIf, NgFor } from "@angular/common";
 
 @Component({
-  selector: "app-media-preview-grid",
-  templateUrl: "./media-preview-grid.component.html",
-  styleUrls: ["./media-preview-grid.component.scss"],
-  standalone: true,
-  imports: [
-    NgIf,
-    CdkDropListGroup,
-    NgFor,
-    CdkDropList,
-    CdkDrag,
-    MatIconButton,
-    MatIcon,
-  ],
+    selector: "app-media-preview-grid",
+    templateUrl: "./media-preview-grid.component.html",
+    styleUrls: ["./media-preview-grid.component.scss"],
+    imports: [
+        NgIf,
+        CdkDropListGroup,
+        NgFor,
+        CdkDropList,
+        CdkDrag,
+        MatIconButton,
+        MatIcon,
+    ]
 })
 export class MediaPreviewGridComponent implements OnInit {
   @Input() media: (Media | ContributedMedia)[] = null;

@@ -45,12 +45,11 @@ interface LoadedSpotReference {
 }
 
 @Component({
-  selector: "app-spot-map",
-  templateUrl: "./spot-map.component.html",
-  styleUrls: ["./spot-map.component.scss"],
-  standalone: true,
-  imports: [MapComponent, MatSnackBarModule],
-  animations: [],
+    selector: "app-spot-map",
+    templateUrl: "./spot-map.component.html",
+    styleUrls: ["./spot-map.component.scss"],
+    imports: [MapComponent, MatSnackBarModule],
+    animations: []
 })
 export class SpotMapComponent implements AfterViewInit {
   @ViewChild("map") map: MapComponent;

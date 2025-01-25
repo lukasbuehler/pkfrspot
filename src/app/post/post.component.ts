@@ -23,27 +23,26 @@ import {
 import { NgIf } from "@angular/common";
 
 @Component({
-  selector: "app-post",
-  templateUrl: "./post.component.html",
-  styleUrls: ["./post.component.scss"],
-  standalone: true,
-  imports: [
-    NgIf,
-    MatCard,
-    MatCardHeader,
-    MatCardTitle,
-    MatCardSubtitle,
-    RouterLink,
-    VgCoreModule,
-    MatCardContent,
-    MatCardActions,
-    MatIconButton,
-    MatIcon,
-    FancyCounterComponent,
-    MatMenuTrigger,
-    MatMenu,
-    MatMenuItem,
-  ],
+    selector: "app-post",
+    templateUrl: "./post.component.html",
+    styleUrls: ["./post.component.scss"],
+    imports: [
+        NgIf,
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatCardSubtitle,
+        RouterLink,
+        VgCoreModule,
+        MatCardContent,
+        MatCardActions,
+        MatIconButton,
+        MatIcon,
+        FancyCounterComponent,
+        MatMenuTrigger,
+        MatMenu,
+        MatMenuItem,
+    ]
 })
 export class PostComponent implements OnInit {
   @Input() post: Post.Class;

@@ -5,11 +5,10 @@ import { Meta, Title } from "@angular/platform-browser";
 import { NgOptimizedImage } from "@angular/common";
 
 @Component({
-  selector: "app-about-page",
-  templateUrl: "./about-page.component.html",
-  styleUrls: ["./about-page.component.scss"],
-  standalone: true,
-  imports: [MatAnchor, MatIcon, NgOptimizedImage],
+    selector: "app-about-page",
+    templateUrl: "./about-page.component.html",
+    styleUrls: ["./about-page.component.scss"],
+    imports: [MatAnchor, MatIcon, NgOptimizedImage]
 })
 export class AboutPageComponent implements OnInit {
   constructor(private titleService: Title, private meta: Meta) {

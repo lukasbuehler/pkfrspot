@@ -29,29 +29,28 @@ import { MatIcon } from "@angular/material/icon";
 import { MatButton } from "@angular/material/button";
 
 @Component({
-  selector: "app-settings-page",
-  templateUrl: "./settings-page.component.html",
-  styleUrls: ["./settings-page.component.scss"],
-  standalone: true,
-  imports: [
-    NgFor,
-    MatButton,
-    NgClass,
-    MatIcon,
-    MatBadge,
-    NgSwitch,
-    MatDivider,
-    EditProfileComponent,
-    NgSwitchCase,
-    MatFormField,
-    MatLabel,
-    MatInput,
-    NgIf,
-    MatSuffix,
-    MatTooltip,
-    MatHint,
-    SpeedDialFabComponent,
-  ],
+    selector: "app-settings-page",
+    templateUrl: "./settings-page.component.html",
+    styleUrls: ["./settings-page.component.scss"],
+    imports: [
+        NgFor,
+        MatButton,
+        NgClass,
+        MatIcon,
+        MatBadge,
+        NgSwitch,
+        MatDivider,
+        EditProfileComponent,
+        NgSwitchCase,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        NgIf,
+        MatSuffix,
+        MatTooltip,
+        MatHint,
+        SpeedDialFabComponent,
+    ]
 })
 export class SettingsPageComponent implements OnInit {
   @ViewChild("editProfileComponent") editProfileComponent: EditProfileComponent;

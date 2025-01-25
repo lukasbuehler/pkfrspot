@@ -55,48 +55,47 @@ import { SpotMetaInfoComponent } from "../spot-meta-info/spot-meta-info.componen
 import { SpotSlug } from "../../scripts/db/Interfaces.js";
 
 @Component({
-  selector: "app-map-page",
-  templateUrl: "./map-page.component.html",
-  styleUrls: ["./map-page.component.scss"],
-  animations: [
-    trigger("fadeInOut", [
-      transition(":enter", [
-        style({ opacity: 0, scale: 0.8 }),
-        animate("0.3s ease-out", style({ opacity: 1, scale: 1 })),
-      ]),
-      transition(":leave", [
-        style({ opacity: 1, scale: 1 }),
-        animate("0.3s ease-in", style({ opacity: 0, scale: 0.8 })),
-      ]),
-    ]),
-  ],
-  standalone: true,
-  imports: [
-    SpotMapComponent,
-    MatFormField,
-    NgIf,
-    MatIconButton,
-    MatButtonModule,
-    MatSuffix,
-    MatMenuTrigger,
-    MatIconModule,
-    MatIcon,
-    MatInput,
-    FormsModule,
-    MatAutocompleteTrigger,
-    ReactiveFormsModule,
-    MatAutocomplete,
-    NgFor,
-    MatOption,
-    SpotDetailsComponent,
-    SpotListComponent,
-    BottomSheetComponent,
-    MatMenu,
-    UserMenuContentComponent,
-    AsyncPipe,
-    MatDividerModule,
-    SpotMetaInfoComponent,
-  ],
+    selector: "app-map-page",
+    templateUrl: "./map-page.component.html",
+    styleUrls: ["./map-page.component.scss"],
+    animations: [
+        trigger("fadeInOut", [
+            transition(":enter", [
+                style({ opacity: 0, scale: 0.8 }),
+                animate("0.3s ease-out", style({ opacity: 1, scale: 1 })),
+            ]),
+            transition(":leave", [
+                style({ opacity: 1, scale: 1 }),
+                animate("0.3s ease-in", style({ opacity: 0, scale: 0.8 })),
+            ]),
+        ]),
+    ],
+    imports: [
+        SpotMapComponent,
+        MatFormField,
+        NgIf,
+        MatIconButton,
+        MatButtonModule,
+        MatSuffix,
+        MatMenuTrigger,
+        MatIconModule,
+        MatIcon,
+        MatInput,
+        FormsModule,
+        MatAutocompleteTrigger,
+        ReactiveFormsModule,
+        MatAutocomplete,
+        NgFor,
+        MatOption,
+        SpotDetailsComponent,
+        SpotListComponent,
+        BottomSheetComponent,
+        MatMenu,
+        UserMenuContentComponent,
+        AsyncPipe,
+        MatDividerModule,
+        SpotMetaInfoComponent,
+    ]
 })
 export class MapPageComponent implements OnInit, AfterViewInit {
   @ViewChild("spotMap", { static: false }) spotMap: SpotMapComponent | null =

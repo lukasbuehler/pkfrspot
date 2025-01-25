@@ -7,11 +7,10 @@ import { RouterLink } from "@angular/router";
 import { NgIf } from "@angular/common";
 
 @Component({
-  selector: "app-user-menu-content",
-  templateUrl: "./user-menu-content.component.html",
-  styleUrls: ["./user-menu-content.component.scss"],
-  standalone: true,
-  imports: [NgIf, RouterLink, MatMenuItem, MatIcon],
+    selector: "app-user-menu-content",
+    templateUrl: "./user-menu-content.component.html",
+    styleUrls: ["./user-menu-content.component.scss"],
+    imports: [NgIf, RouterLink, MatMenuItem, MatIcon]
 })
 export class UserMenuContentComponent {
   constructor(

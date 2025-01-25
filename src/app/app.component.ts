@@ -29,27 +29,26 @@ import { NavRailContainerComponent } from "./nav-rail-container/nav-rail-contain
 declare function plausible(eventName: string, options?: { props: any }): void;
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"],
-  standalone: true,
-  imports: [
-    NavRailContainerComponent,
-    NavRailComponent,
-    RouterLink,
-    NavRailContentComponent,
-    RouterOutlet,
-    MatToolbar,
-    MatMenuTrigger,
-    MatMenu,
-    MatMenuItem,
-    MatIcon,
-    MatFabButton,
-    NgIf,
-    UserMenuContentComponent,
-    Mat3NavButtonComponent,
-    NgOptimizedImage,
-  ],
+    selector: "app-root",
+    templateUrl: "./app.component.html",
+    styleUrls: ["./app.component.scss"],
+    imports: [
+        NavRailContainerComponent,
+        NavRailComponent,
+        RouterLink,
+        NavRailContentComponent,
+        RouterOutlet,
+        MatToolbar,
+        MatMenuTrigger,
+        MatMenu,
+        MatMenuItem,
+        MatIcon,
+        MatFabButton,
+        NgIf,
+        UserMenuContentComponent,
+        Mat3NavButtonComponent,
+        NgOptimizedImage,
+    ]
 })
 export class AppComponent implements OnInit {
   constructor(

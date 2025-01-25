@@ -27,23 +27,22 @@ import { UsersService } from "../services/firestore-services/users.service";
 import { PostsService } from "../services/firestore-services/posts.service";
 
 @Component({
-  selector: "app-profile-page",
-  templateUrl: "./profile-page.component.html",
-  styleUrls: ["./profile-page.component.scss"],
-  standalone: true,
-  imports: [
-    MatProgressSpinner,
-    MatCard,
-    MatCardContent,
-    NgIf,
-    MatChipSet,
-    MatChip,
-    FancyCounterComponent,
-    MatButton,
-    RouterLink,
-    MatCardHeader,
-    MatCardTitle,
-  ],
+    selector: "app-profile-page",
+    templateUrl: "./profile-page.component.html",
+    styleUrls: ["./profile-page.component.scss"],
+    imports: [
+        MatProgressSpinner,
+        MatCard,
+        MatCardContent,
+        NgIf,
+        MatChipSet,
+        MatChip,
+        FancyCounterComponent,
+        MatButton,
+        RouterLink,
+        MatCardHeader,
+        MatCardTitle,
+    ]
 })
 export class ProfilePageComponent implements OnInit {
   userId: string = "";

@@ -68,17 +68,16 @@ export function regexValidator(): ValidatorFn {
 }
 
 @Component({
-  selector: "app-regex-input",
-  templateUrl: "./regex-input.component.html",
-  styleUrls: ["./regex-input.component.scss"],
-  providers: [
-    { provide: MatFormFieldControl, useExisting: RegexInputComponent },
-  ],
-  host: {
-    "(change)": "_onChange($event.target.value)",
-  },
-  standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+    selector: "app-regex-input",
+    templateUrl: "./regex-input.component.html",
+    styleUrls: ["./regex-input.component.scss"],
+    providers: [
+        { provide: MatFormFieldControl, useExisting: RegexInputComponent },
+    ],
+    host: {
+        "(change)": "_onChange($event.target.value)",
+    },
+    imports: [FormsModule, ReactiveFormsModule]
 })
 export class RegexInputComponent
   implements

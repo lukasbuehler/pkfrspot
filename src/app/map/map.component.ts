@@ -31,34 +31,33 @@ import { MatIconModule } from "@angular/material/icon";
 import { trigger, transition, style, animate } from "@angular/animations";
 
 @Component({
-  selector: "app-map",
-  templateUrl: "./map.component.html",
-  styleUrls: ["./map.component.scss"],
-  standalone: true,
-  imports: [
-    NgIf,
-    GoogleMap,
-    MapCircle,
-    MapPolygon,
-    MapAdvancedMarker,
-    MatIconModule,
-    NgFor,
-    NgClass,
-    AsyncPipe,
-    // MapHeatmapLayer,
-  ],
-  animations: [
-    trigger("fadeInOut", [
-      transition(":enter", [
-        style({ opacity: 0, scale: 0.8 }),
-        animate("0.3s ease-out", style({ opacity: 1, scale: 1 })),
-      ]),
-      transition(":leave", [
-        style({ opacity: 1, scale: 1 }),
-        animate("0.3s ease-in", style({ opacity: 0, scale: 0.8 })),
-      ]),
-    ]),
-  ],
+    selector: "app-map",
+    templateUrl: "./map.component.html",
+    styleUrls: ["./map.component.scss"],
+    imports: [
+        NgIf,
+        GoogleMap,
+        MapCircle,
+        MapPolygon,
+        MapAdvancedMarker,
+        MatIconModule,
+        NgFor,
+        NgClass,
+        AsyncPipe,
+        // MapHeatmapLayer,
+    ],
+    animations: [
+        trigger("fadeInOut", [
+            transition(":enter", [
+                style({ opacity: 0, scale: 0.8 }),
+                animate("0.3s ease-out", style({ opacity: 1, scale: 1 })),
+            ]),
+            transition(":leave", [
+                style({ opacity: 1, scale: 1 }),
+                animate("0.3s ease-in", style({ opacity: 0, scale: 0.8 })),
+            ]),
+        ]),
+    ]
 })
 export class MapComponent implements OnInit {
   @ViewChild("googleMap") googleMap: GoogleMap;

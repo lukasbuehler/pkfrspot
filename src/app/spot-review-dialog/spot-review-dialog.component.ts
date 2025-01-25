@@ -20,26 +20,25 @@ import { FormsModule } from "@angular/forms";
 import { MatInput, MatInputModule } from "@angular/material/input";
 
 @Component({
-  selector: "app-spot-review-dialog",
-  standalone: true,
-  imports: [
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
-    MatButtonModule,
-    MatIconModule,
-    MatIconButton,
-    MatIcon,
-    MatButton,
-    MatFormFieldModule,
-    MatFormField,
-    MatInputModule,
-    MatInput,
-    FormsModule,
-  ],
-  templateUrl: "./spot-review-dialog.component.html",
-  styleUrl: "./spot-review-dialog.component.scss",
+    selector: "app-spot-review-dialog",
+    imports: [
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatDialogClose,
+        MatButtonModule,
+        MatIconModule,
+        MatIconButton,
+        MatIcon,
+        MatButton,
+        MatFormFieldModule,
+        MatFormField,
+        MatInputModule,
+        MatInput,
+        FormsModule,
+    ],
+    templateUrl: "./spot-review-dialog.component.html",
+    styleUrl: "./spot-review-dialog.component.scss"
 })
 export class SpotReviewDialogComponent {
   hoverRating: number = 0;

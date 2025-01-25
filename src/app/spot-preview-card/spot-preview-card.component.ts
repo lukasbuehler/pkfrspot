@@ -18,17 +18,16 @@ import { NgOptimizedImage } from "@angular/common";
 import { SpotRatingComponent } from "../spot-rating/spot-rating.component";
 
 @Component({
-  selector: "app-spot-preview-card",
-  templateUrl: "./spot-preview-card.component.html",
-  styleUrls: ["./spot-preview-card.component.scss"],
-  standalone: true,
-  imports: [
-    MatCardModule,
-    MatRippleModule,
-    MatIconModule,
-    NgOptimizedImage,
-    SpotRatingComponent,
-  ],
+    selector: "app-spot-preview-card",
+    templateUrl: "./spot-preview-card.component.html",
+    styleUrls: ["./spot-preview-card.component.scss"],
+    imports: [
+        MatCardModule,
+        MatRippleModule,
+        MatIconModule,
+        NgOptimizedImage,
+        SpotRatingComponent,
+    ]
 })
 export class SpotPreviewCardComponent implements OnChanges {
   @Input() spot: Spot.Class | SpotPreviewData;

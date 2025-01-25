@@ -16,23 +16,22 @@ import { MatFormField, MatLabel, MatError } from "@angular/material/form-field";
 import { PageHeaderComponent } from "../page-header/page-header.component";
 
 @Component({
-  selector: "app-sign-in-page",
-  templateUrl: "./sign-in-page.component.html",
-  styleUrls: ["./sign-in-page.component.scss"],
-  standalone: true,
-  imports: [
-    PageHeaderComponent,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormField,
-    MatLabel,
-    MatInput,
-    NgIf,
-    MatError,
-    MatButton,
-    RouterLink,
-    MatDivider,
-  ],
+    selector: "app-sign-in-page",
+    templateUrl: "./sign-in-page.component.html",
+    styleUrls: ["./sign-in-page.component.scss"],
+    imports: [
+        PageHeaderComponent,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        NgIf,
+        MatError,
+        MatButton,
+        RouterLink,
+        MatDivider,
+    ]
 })
 export class SignInPageComponent implements OnInit {
   signInForm: UntypedFormGroup;

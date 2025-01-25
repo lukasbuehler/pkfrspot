@@ -14,11 +14,10 @@ import { Meta, Title } from "@angular/platform-browser";
 import { Spot } from "../../scripts/db/Spot";
 
 @Component({
-  selector: "app-spot-meta-info",
-  standalone: true,
-  imports: [],
-  templateUrl: "./spot-meta-info.component.html",
-  styleUrl: "./spot-meta-info.component.scss",
+    selector: "app-spot-meta-info",
+    imports: [],
+    templateUrl: "./spot-meta-info.component.html",
+    styleUrl: "./spot-meta-info.component.scss"
 })
 export class SpotMetaInfoComponent implements OnInit, OnChanges {
   spot: InputSignal<Spot.Class> = input<Spot.Class>();

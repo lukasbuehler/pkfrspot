@@ -34,7 +34,6 @@ export interface SpeedDialFabButtonConfig {
     templateUrl: "./speed-dial-fab.component.html",
     styleUrls: ["./speed-dial-fab.component.scss"],
     animations: speedDialFabAnimations,
-    standalone: true,
     imports: [
         MatFabButton,
         MatTooltip,
@@ -42,7 +41,7 @@ export interface SpeedDialFabButtonConfig {
         NgIf,
         NgFor,
         MatMiniFabButton,
-    ],
+    ]
 })
 export class SpeedDialFabComponent implements OnInit {
   @ViewChild("fabContainer") fabContainer: ElementRef;

@@ -25,8 +25,7 @@ import { NgFor } from "@angular/common";
             ], { params: { decrementMinus: "" } }),
         ]),
     ],
-    standalone: true,
-    imports: [NgFor],
+    imports: [NgFor]
 })
 export class FancyCounterComponent implements OnInit {
   private _number: number = 0;

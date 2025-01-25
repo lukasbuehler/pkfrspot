@@ -25,18 +25,17 @@ import { MatTabGroup, MatTab } from "@angular/material/tabs";
 import { PostsService } from "../services/firestore-services/posts.service";
 
 @Component({
-  selector: "app-home-page",
-  templateUrl: "./home-page.component.html",
-  styleUrls: ["./home-page.component.scss"],
-  standalone: true,
-  imports: [
-    MatTabGroup,
-    NgIf,
-    MatTab,
-    PostCollectionComponent,
-    MatFabButton,
-    MatIcon,
-  ],
+    selector: "app-home-page",
+    templateUrl: "./home-page.component.html",
+    styleUrls: ["./home-page.component.scss"],
+    imports: [
+        MatTabGroup,
+        NgIf,
+        MatTab,
+        PostCollectionComponent,
+        MatFabButton,
+        MatIcon,
+    ]
 })
 export class HomePageComponent implements OnInit, OnDestroy {
   constructor(

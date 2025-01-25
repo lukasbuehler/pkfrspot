@@ -46,30 +46,29 @@ export class FollowDurationPipe implements PipeTransform {
 }
 
 @Component({
-  selector: "app-follow-list",
-  templateUrl: "./follow-list.component.html",
-  styleUrls: ["./follow-list.component.scss"],
-  standalone: true,
-  imports: [
-    MatDialogTitle,
-    NgIf,
-    MatTable,
-    MatColumnDef,
-    MatHeaderCellDef,
-    MatHeaderCell,
-    MatCellDef,
-    MatCell,
-    MatIconButton,
-    RouterLink,
-    MatIcon,
-    MatHeaderRowDef,
-    MatHeaderRow,
-    MatRowDef,
-    MatRow,
-    MatProgressSpinner,
-    MatButton,
-    FollowDurationPipe,
-  ],
+    selector: "app-follow-list",
+    templateUrl: "./follow-list.component.html",
+    styleUrls: ["./follow-list.component.scss"],
+    imports: [
+        MatDialogTitle,
+        NgIf,
+        MatTable,
+        MatColumnDef,
+        MatHeaderCellDef,
+        MatHeaderCell,
+        MatCellDef,
+        MatCell,
+        MatIconButton,
+        RouterLink,
+        MatIcon,
+        MatHeaderRowDef,
+        MatHeaderRow,
+        MatRowDef,
+        MatRow,
+        MatProgressSpinner,
+        MatButton,
+        FollowDurationPipe,
+    ]
 })
 export class FollowListComponent implements OnInit {
   constructor(
