@@ -15,7 +15,8 @@
 @use "./../app/app.component-theme" as app;
 @use "../styles-theme" as styles;
 
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
 // Note: Color palettes are generated from primary: #2b51d5, secondary: #246c18, tertiary: #75546E
 $_palettes: (

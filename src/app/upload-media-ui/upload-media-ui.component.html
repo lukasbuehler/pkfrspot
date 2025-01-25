@@ -13,7 +13,7 @@
     hidden="true"
     type="file"
     [accept]="acceptString ?? allowedMimeTypes.join(',')"
-    onclick="this.value=null"
+    onclick="value=null"
     (change)="onSelectFile($event.target.files)"
     formControlName="input"
     required
