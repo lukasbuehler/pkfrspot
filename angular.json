@@ -89,15 +89,13 @@
                 }
               ],
               "outputHashing": "none",
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": true,
-                  "inlineCritical": false
-                },
-                "fonts": true
-              },
-              "sourceMap": true,
+              "optimization": false,
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": false,
+              "statsJson": false,
+              "progress": false,
               "localize": ["de-CH"],
               "baseHref": "/de-CH/"
             },

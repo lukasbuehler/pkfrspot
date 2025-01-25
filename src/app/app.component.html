@@ -6,8 +6,13 @@
       class="d-none d-md-block text-decoration-none text-center text-light text-wrap p-2 {{
         navbarConfig.logo.class
       }}"
-      >{{ navbarConfig.logo.text }}</a
     >
+      <img
+        src="/assets/logos/pkfrspot/pkfrspot_logo_stacked_dark.png"
+        alt="PKFR Spot"
+        class="mw-100"
+      />
+    </a>
     @for (button of navbarConfig.buttons; track button) {
     <a [routerLink]="button.link">
       <app-mat3-nav-button
