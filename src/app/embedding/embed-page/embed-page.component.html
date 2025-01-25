@@ -1,10 +1,27 @@
-<div class="p-5">
-  <h2 class="mat-title-large" i18n>Embed</h2>
-
-  <iframe
-    class="bg-black shadow-lg"
-    src="https://pkfrspot.com/en/embedded/map"
-    width="800px"
-    height="600px"
-  ></iframe>
+<div class="container p-5">
+  <div class="row my-5">
+    <div class="col-md-12">
+      <h2 class="mat-heading-large" i18n>Embed</h2>
+    </div>
+  </div>
+  <div class="row my-5">
+    <div class="col-md-6">
+      <h3 class="mat-title-large">Embedding Preferences</h3>
+    </div>
+    <div class="col-md-6">
+      <iframe
+        class="bg-black shadow-lg w-100"
+        src="http://localhost:4200/de-CH/embedded/map"
+        height="600px"
+      ></iframe>
+    </div>
+  </div>
+  <div class="row my-5">
+    <div class="col-md-12">
+      <pre>
+        {{"\<iframesrc=\"https:\/\/pkfrspot.com\/en\/embedded\/map\"\>\</iframe\>"}}
+      </pre>
+    </div>
+  </div>
 </div>
+
