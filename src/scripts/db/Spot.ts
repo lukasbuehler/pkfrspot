@@ -392,7 +392,7 @@ export namespace Spot {
     }
 
     public hasBounds() {
-      return !!(this._data.bounds?.length > 0);
+      return !!(this._data?.bounds?.length > 0);
     }
 
     private _generateTileCoordinates(

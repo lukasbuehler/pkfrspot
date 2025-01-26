@@ -6,16 +6,16 @@
   </div>
   <div class="row my-5">
     <div class="col-md-6">
-      <h3 class="mat-title-large">Embedding Preferences</h3>
+      <h3 class="mat-title-large" i18n>Embedding Preferences</h3>
       <div class="p-3">
-        <mat-slide-toggle [(ngModel)]="showSatelliteToggle">Show satellite toggle</mat-slide-toggle>
-        <mat-slide-toggle [(ngModel)]="showGeolocation">Show geolocation</mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="showSatelliteToggle" i18n>Show satellite toggle</mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="showGeolocation" i18n>Show geolocation</mat-slide-toggle>
       </div>
     </div>
     <div class="col-md-6">
       <iframe
         class="bg-black shadow-lg w-100 border"
-        src="http://localhost:4200/de-CH/embedded/map"
+        [src]="'http://localhost:4200/de-CH/embedded/map?gps='+ showGeolocation ? 1 : 0"
         height="600px"
       ></iframe>
     </div>

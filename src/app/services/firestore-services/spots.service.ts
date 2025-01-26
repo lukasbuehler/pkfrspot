@@ -159,6 +159,22 @@ export class SpotsService {
     spotId: SpotId,
     spotUpdateData: Partial<Spot.Schema>
   ): Promise<void> {
+    // remove the reviews, review_histogram and review_count fields
+    const fieldsToRemove = [
+      "rating",
+      "num_reviews",
+      "rating_histogram",
+      "highlighted_reviews",
+    ];
+
+    for (let field of fieldsToRemove) {
+      if (spotUpdateData[field]) {
+        delete spotUpdateData[field];
+      }
+    }
+
+    console.log("Updating spot with data: ", spotUpdateData);
+
     return updateDoc(doc(this.firestore, "spots", spotId), spotUpdateData);
   }
 

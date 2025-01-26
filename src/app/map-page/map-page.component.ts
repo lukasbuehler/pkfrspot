@@ -73,11 +73,9 @@ import { SpotSlug } from "../../scripts/db/Interfaces.js";
   imports: [
     SpotMapComponent,
     MatFormField,
-    NgIf,
     MatIconButton,
     MatButtonModule,
     MatSuffix,
-    MatMenuTrigger,
     MatIconModule,
     MatIcon,
     MatInput,
@@ -90,7 +88,6 @@ import { SpotSlug } from "../../scripts/db/Interfaces.js";
     SpotDetailsComponent,
     SpotListComponent,
     BottomSheetComponent,
-    MatMenu,
     // UserMenuContentComponent,
     AsyncPipe,
     MatDividerModule,
@@ -215,7 +212,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
       )
       .subscribe(async (event: NavigationEnd) => {
         const spotId = await this._getSpotIdFromRouteAndOpenSpot();
-        await this.loadSpotById(spotId);
+        if (spotId) await this.loadSpotById(spotId);
       });
 
     // subscribe to the spot search control and update the search results
@@ -242,10 +239,12 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  async _getSpotIdFromRouteAndOpenSpot(): Promise<SpotId> {
+  async _getSpotIdFromRouteAndOpenSpot(): Promise<SpotId | void> {
     let spotIdOrSlug: SpotId | SpotSlug = this.route.snapshot.paramMap.get(
       "spot"
     ) as SpotId | SpotSlug;
+
+    if (["null", "undefined"].includes(spotIdOrSlug as string)) return;
 
     if (!spotIdOrSlug && this.route.snapshot.queryParamMap.keys.length > 0) {
       spotIdOrSlug = (this.route.snapshot.queryParamMap.get("id") ??
@@ -276,7 +275,9 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     if (value.type === "place") {
       this.openGooglePlaceById(value.id);
     } else {
-      this.loadSpotById(value.id as SpotId);
+      this.loadSpotById(value.id as SpotId).then(() => {
+        this.spotMap.focusSpot(this.selectedSpot);
+      });
     }
   }
 

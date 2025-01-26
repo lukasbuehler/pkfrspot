@@ -16,20 +16,20 @@
       "i18n": {
         "sourceLocale": {
           "code": "en",
-          "baseHref": "/en/"
+          "subPath": "en"
         },
         "locales": {
           "de": {
             "translation": "src/locale/messages.de.xlf",
-            "baseHref": "/de/"
+            "subPath": "de"
           },
           "de-CH": {
             "translation": "src/locale/messages.de-CH.xlf",
-            "baseHref": "/de-CH/"
+            "subPath": "de-CH"
           },
           "it": {
             "translation": "src/locale/messages.it.xlf",
-            "baseHref": "/it/"
+            "subPath": "it"
           }
         }
       },
@@ -81,7 +81,7 @@
             }
           },
           "configurations": {
-            "development": {
+            "dev-fast": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -96,6 +96,24 @@
               "extractLicenses": false,
               "statsJson": false,
               "progress": false,
+              "localize": ["de-CH"],
+              "baseHref": "/de-CH/"
+            },
+            "dev-debug": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ],
+              "outputHashing": "none",
+              "optimization": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "aot": true,
+              "extractLicenses": false,
+              "statsJson": true,
+              "progress": true,
               "localize": ["de-CH"],
               "baseHref": "/de-CH/"
             },
@@ -148,8 +166,11 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
-            "development": {
-              "buildTarget": "pkfrspot:build:development"
+            "dev-fast": {
+              "buildTarget": "pkfrspot:build:dev-fast"
+            },
+            "dev-debug": {
+              "buildTarget": "pkfrspot:build:dev-debug"
             },
             "staging": {
               "buildTarget": "pkfrspot:build:staging"
@@ -158,7 +179,7 @@
               "buildTarget": "pkfrspot:build:production"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "production"
         },
         "extract-i18n": {
           "builder": "ng-extract-i18n-merge:ng-extract-i18n-merge",

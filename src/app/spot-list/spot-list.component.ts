@@ -12,19 +12,19 @@ import { MatIconModule } from "@angular/material/icon";
 import { RouterLink } from "@angular/router";
 
 @Component({
-    selector: "app-spot-list",
-    imports: [
-        SpotPreviewCardComponent,
-        MatButtonToggleModule,
-        MatIconModule,
-        RouterLink,
-    ],
-    templateUrl: "./spot-list.component.html",
-    styleUrl: "./spot-list.component.scss"
+  selector: "app-spot-list",
+  imports: [
+    SpotPreviewCardComponent,
+    MatButtonToggleModule,
+    MatIconModule,
+    RouterLink,
+  ],
+  templateUrl: "./spot-list.component.html",
+  styleUrl: "./spot-list.component.scss",
 })
 export class SpotListComponent implements OnChanges {
   @Input() highlightedSpots: SpotPreviewData[] = [];
-  @Input() spots: Spot.Class[];
+  @Input() spots: Spot.Class[] = [];
 
   // all spots minus the highlighted spots, set manually in ngOnChanges
   remainingSpots: Spot.Class[] = [];

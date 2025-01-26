@@ -13,6 +13,6 @@
   (spotClick)="isClickable ? openSpot($event) : null"
   (centerChange)="mapCenter = $event"
   [isEditing]="isEditing"
-  [showGeolocation]="true"
+  [showGeolocation]="showGeolocation"
   (hasGeolocationChange)="hasGeolocationChange.emit($event)"
 ></app-map>

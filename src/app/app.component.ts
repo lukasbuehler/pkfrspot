@@ -16,7 +16,7 @@ import { AuthenticationService } from "./services/authentication.service";
 import { StorageService } from "./services/storage.service";
 import { GlobalVariables } from "../scripts/global";
 import { UserMenuContentComponent } from "./user-menu-content/user-menu-content.component";
-import { NgIf, NgOptimizedImage } from "@angular/common";
+import { NgOptimizedImage } from "@angular/common";
 import { MatFabButton } from "@angular/material/button";
 import { MatIcon } from "@angular/material/icon";
 import { MatMenuTrigger, MatMenu, MatMenuItem } from "@angular/material/menu";
@@ -44,7 +44,6 @@ declare function plausible(eventName: string, options?: { props: any }): void;
     MatMenuItem,
     MatIcon,
     MatFabButton,
-    NgIf,
     UserMenuContentComponent,
     Mat3NavButtonComponent,
     NgOptimizedImage,

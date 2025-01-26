@@ -24,15 +24,14 @@
         appearance="fill"
       >
         @if(selectedSpot) {
-        <!-- <button
+        <button
           mat-icon-button
           matSuffix
-          [matMenuTriggerFor]="searchUserMatMenu"
           (click)="$event.stopPropagation(); spotMap.closeSpot()"
           class="me-2"
         >
           <mat-icon>close</mat-icon>
-        </button> -->
+        </button>
         } @else {
         <mat-icon matSuffix>search</mat-icon>
         }
