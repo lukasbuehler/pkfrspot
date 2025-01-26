@@ -3,9 +3,7 @@
   <app-nav-rail class="mat-elevation-z3 d-none d-md-block">
     <a
       routerLink="/"
-      class="d-none d-md-block text-decoration-none text-center text-light text-wrap p-2 {{
-        navbarConfig.logo.class
-      }}"
+      class="d-none d-md-block text-decoration-none text-center text-light text-wrap p-2 logo"
     >
       <img
         src="/assets/logos/pkfrspot/pkfrspot_logo_stacked_dark.png"
@@ -96,7 +94,7 @@
     </mat-menu>
 
     <!-- User FAB -->
-    <button
+    <!-- <button
       mat-fab
       color="primary"
       class="profile-icon-button login-fab d-none d-md-block"
@@ -116,7 +114,7 @@
         width="56"
         height="56"
       />
-    </button>
+    </button> -->
 
     <mat-menu #navUserMenu="matMenu">
       <app-user-menu-content></app-user-menu-content>
@@ -130,12 +128,17 @@
     style="height: 60px"
   >
     <a
+      target="_blank"
       href="https://pkfrspot.com"
-      class="d-none d-md-block text-decoration-none text-center text-light text-wrap p-2 {{
-        navbarConfig.logo.class
-      }}"
-      >{{ navbarConfig.logo.text }}</a
+      class="text-decoration-none text-center text-light text-wrap p-2"
     >
+      <img
+        src="/assets/logos/pkfrspot/pkfrspot_logo_oneline_dark.png"
+        alt="PKFR Spot"
+        class="mw-100 mh-100"
+        style="width: 200px"
+      />
+    </a>
   </div>
   <div class="flex-grow-1">
     <router-outlet></router-outlet>

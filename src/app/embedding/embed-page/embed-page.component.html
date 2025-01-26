@@ -7,10 +7,14 @@
   <div class="row my-5">
     <div class="col-md-6">
       <h3 class="mat-title-large">Embedding Preferences</h3>
+      <div class="p-3">
+        <mat-slide-toggle [(ngModel)]="showSatelliteToggle">Show satellite toggle</mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="showGeolocation">Show geolocation</mat-slide-toggle>
+      </div>
     </div>
     <div class="col-md-6">
       <iframe
-        class="bg-black shadow-lg w-100"
+        class="bg-black shadow-lg w-100 border"
         src="http://localhost:4200/de-CH/embedded/map"
         height="600px"
       ></iframe>
@@ -19,7 +23,7 @@
   <div class="row my-5">
     <div class="col-md-12">
       <pre>
-        {{"\<iframesrc=\"https:\/\/pkfrspot.com\/en\/embedded\/map\"\>\</iframe\>"}}
+        {{"\<iframe src=\"https:\/\/pkfrspot.com\/en\/embedded\/map\"\>\</iframe\>"}}
       </pre>
     </div>
   </div>
