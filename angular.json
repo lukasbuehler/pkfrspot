@@ -14,10 +14,7 @@
         }
       },
       "i18n": {
-        "sourceLocale": {
-          "code": "en",
-          "subPath": "en"
-        },
+        "sourceLocale": "en",
         "locales": {
           "de": {
             "translation": "src/locale/messages.de.xlf",
@@ -179,12 +176,12 @@
               "buildTarget": "pkfrspot:build:production"
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "dev-debug"
         },
         "extract-i18n": {
           "builder": "ng-extract-i18n-merge:ng-extract-i18n-merge",
           "options": {
-            "buildTarget": "pkfrspot:build",
+            "buildTarget": "pkfrspot:build:production",
             "format": "xlf2",
             "outputPath": "src/locale",
             "targetFiles": [

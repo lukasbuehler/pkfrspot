@@ -189,7 +189,7 @@ export class AppComponent implements OnInit {
       {
         name: $localize`Events`,
         link: "/events",
-        icon: "event", // local_activity, calendar_month
+        icon: "local_activity", // or event, local_activity, calendar_month
       },
       {
         name: $localize`:About page navbar button label|A very short label for the navbar about page button:About`,

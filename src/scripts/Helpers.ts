@@ -1,12 +1,3 @@
-import countries from "i18n-iso-countries";
-import en from "i18n-iso-countries/langs/en.json";
-import de from "i18n-iso-countries/langs/de.json";
-import fr from "i18n-iso-countries/langs/fr.json";
-
-countries.registerLocale(en);
-countries.registerLocale(de);
-countries.registerLocale(fr);
-
 export function humanTimeSince(date: Date): string {
   var seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
   var interval = seconds / 31536000;
@@ -68,37 +59,6 @@ export function isoCountryCodeToFlagEmoji(country: string) {
   return String.fromCodePoint(
     ...[...country.toUpperCase()].map((c) => c.charCodeAt(0) + 0x1f1a5)
   );
-}
-
-export function getCountryNameInLanguage(countryCode, languageCode = "fr") {
-  return countries.getName(countryCode, languageCode, { select: "official" });
-}
-
-function getCountryMapForLanguageCode(langCode = "en") {
-  return countries.getNames(langCode, { select: "official" });
-}
-
-export function getCountriesList(
-  language = "en"
-): { code: string; name: string; emoji: string }[] {
-  let countryMap = getCountryMapForLanguageCode("de");
-  let countryList = Object.keys(countryMap).sort((a, b) => {
-    if (countryMap[a] > countryMap[b]) {
-      return 1;
-    } else if (countryMap[a] < countryMap[b]) {
-      return -1;
-    } else {
-      return 0;
-    }
-  });
-
-  return countryList.map((code) => {
-    return {
-      code: code,
-      name: countryMap[code],
-      emoji: isoCountryCodeToFlagEmoji(code),
-    };
-  });
 }
 
 export function isMobileDevice() {

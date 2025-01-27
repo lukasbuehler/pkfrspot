@@ -6,7 +6,7 @@
       class="d-none d-md-block text-decoration-none text-center text-light text-wrap p-2 logo"
     >
       <img
-        src="/assets/logos/pkfrspot/pkfrspot_logo_stacked_dark.png"
+        ngSrc="/assets/logos/pkfrspot/pkfrspot_logo_stacked_dark.png"
         alt="PKFR Spot"
         class="mw-100"
       />
@@ -28,6 +28,11 @@
         button@@lang_btn_label"
       label="Language"
     ></app-mat3-nav-button>
+    <!-- <app-mat3-nav-button
+      [matMenuTriggerFor]="navUserMenu"
+      icon="person"
+      label="Log in"
+    ></app-mat3-nav-button> -->
   </app-nav-rail>
   <app-nav-rail-content class="flex-col">
     <!-- This is where the pages content gets displayed -->
@@ -54,6 +59,13 @@
           button@@lang_btn_label"
         label="Language"
       ></app-mat3-nav-button>
+
+      <!-- Profile button -->
+      <!-- <app-mat3-nav-button
+        [matMenuTriggerFor]="navUserMenu"
+        icon="person"
+        label="Log in"
+      ></app-mat3-nav-button> -->
     </mat-toolbar>
     } @else {
     <!-- Menu button -->
@@ -74,6 +86,8 @@
         </button>
       </a>
       }
+
+      <!-- Language button -->
       <button mat-menu-item [matMenuTriggerFor]="langMenu">
         <mat-icon>language</mat-icon>
         <span
@@ -83,6 +97,12 @@
           >Language</span
         >
       </button>
+
+      <!-- Profile button -->
+      <!-- <button mat-menu-item [matMenuTriggerFor]="navUserMenu">
+        <mat-icon>person</mat-icon>
+        <span i18n>Log in</span>
+      </button> -->
     </mat-menu>
     }
 

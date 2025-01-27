@@ -38,8 +38,6 @@ import {
 
 import {
   isoCountryCodeToFlagEmoji,
-  getCountryNameInLanguage,
-  getCountriesList,
   isMobileDevice,
 } from "../../scripts/Helpers";
 import { UntypedFormControl, FormsModule } from "@angular/forms";
@@ -92,46 +90,50 @@ export class ReversePipe implements PipeTransform {
 }
 
 @Component({
-    selector: "app-spot-details",
-    templateUrl: "./spot-details.component.html",
-    styleUrls: ["./spot-details.component.scss"],
-    animations: [
-        trigger("grow", [
-            transition("void <=> *", []),
-            transition("* <=> *", [style({ height: "{{startHeight}}px" }), animate(".3s ease")], { params: { startHeight: 0 } }),
-        ]),
-    ],
-    imports: [
-        MatCard,
-        MatRipple,
-        MatCardHeader,
-        MatCardTitle,
-        MatCardSubtitle,
-        MatChipsModule,
-        NgIf,
-        MatIconButton,
-        MatTooltip,
-        MatIcon,
-        MatCardContent,
-        ImgCarouselComponent,
-        MatButton,
-        FormsModule,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        MediaPreviewGridComponent,
-        UploadMediaUiComponent,
-        // MatSelect,
-        // NgFor,
-        // MatOption,
-        MatChipListbox,
-        MatCardActions,
-        SpotRatingComponent,
-        MatDividerModule,
-        MatProgressBarModule,
-        KeyValuePipe,
-        ReversePipe,
-    ]
+  selector: "app-spot-details",
+  templateUrl: "./spot-details.component.html",
+  styleUrls: ["./spot-details.component.scss"],
+  animations: [
+    trigger("grow", [
+      transition("void <=> *", []),
+      transition(
+        "* <=> *",
+        [style({ height: "{{startHeight}}px" }), animate(".3s ease")],
+        { params: { startHeight: 0 } }
+      ),
+    ]),
+  ],
+  imports: [
+    MatCard,
+    MatRipple,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardSubtitle,
+    MatChipsModule,
+    NgIf,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    MatCardContent,
+    ImgCarouselComponent,
+    MatButton,
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MediaPreviewGridComponent,
+    UploadMediaUiComponent,
+    // MatSelect,
+    // NgFor,
+    // MatOption,
+    MatChipListbox,
+    MatCardActions,
+    SpotRatingComponent,
+    MatDividerModule,
+    MatProgressBarModule,
+    KeyValuePipe,
+    ReversePipe,
+  ],
 })
 export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   @Input() spot: Spot.Class;
@@ -216,8 +218,6 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit() {
-    this.countries = getCountriesList("en"); // TODO wtf to do about this
-
     this.isAppleMaps = this._mapsApiService.isMacOSOriOS();
   }
 
@@ -450,10 +450,6 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
 
     console.log("Unsubscribing...");
     this.postSubscription.unsubscribe();
-  }
-
-  getCountryNameFromShortCode(shortCountryCode) {
-    return getCountryNameInLanguage(shortCountryCode);
   }
 
   getCountryEmojiFromAlpha2(countryAlpha2Code) {
