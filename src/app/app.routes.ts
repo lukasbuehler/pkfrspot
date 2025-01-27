@@ -17,6 +17,7 @@ import { EmbedPageComponent } from "./embedding/embed-page/embed-page.component"
 import { EventPageComponent } from "./event-page/event-page.component";
 import { EmbeddedSpotPageComponent } from "./embedding/embedded-spot-page/embedded-spot-page.component";
 import { EmbeddedMapPageComponent } from "./embedding/embedded-map-page/embedded-map-page.component";
+import { EventsPageComponent } from "./events-page/events-page.component";
 
 export const routes: Routes = [
   // Home page (redirects to spot map)
@@ -72,7 +73,13 @@ export const routes: Routes = [
 
   // Events
   {
-    path: "events/:eventID",
+    path: "events",
+    component: EventsPageComponent,
+    data: { routeName: "Events" },
+  },
+  {
+    // path: "events/:eventID",
+    path: "events/swissjam25",
     component: EventPageComponent,
     data: { routeName: "Event" },
   },

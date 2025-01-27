@@ -31,33 +31,33 @@ import { MatIconModule } from "@angular/material/icon";
 import { trigger, transition, style, animate } from "@angular/animations";
 
 @Component({
-    selector: "app-map",
-    templateUrl: "./map.component.html",
-    styleUrls: ["./map.component.scss"],
-    imports: [
-        NgIf,
-        GoogleMap,
-        MapCircle,
-        MapPolygon,
-        MapAdvancedMarker,
-        MatIconModule,
-        NgFor,
-        NgClass,
-        AsyncPipe,
-        // MapHeatmapLayer,
-    ],
-    animations: [
-        trigger("fadeInOut", [
-            transition(":enter", [
-                style({ opacity: 0, scale: 0.8 }),
-                animate("0.3s ease-out", style({ opacity: 1, scale: 1 })),
-            ]),
-            transition(":leave", [
-                style({ opacity: 1, scale: 1 }),
-                animate("0.3s ease-in", style({ opacity: 0, scale: 0.8 })),
-            ]),
-        ]),
-    ]
+  selector: "app-map",
+  templateUrl: "./map.component.html",
+  styleUrls: ["./map.component.scss"],
+  imports: [
+    NgIf,
+    GoogleMap,
+    MapCircle,
+    MapPolygon,
+    MapAdvancedMarker,
+    MatIconModule,
+    NgFor,
+    NgClass,
+    AsyncPipe,
+    // MapHeatmapLayer,
+  ],
+  animations: [
+    trigger("fadeInOut", [
+      transition(":enter", [
+        style({ opacity: 0, scale: 0.8 }),
+        animate("0.3s ease-out", style({ opacity: 1, scale: 1 })),
+      ]),
+      transition(":leave", [
+        style({ opacity: 1, scale: 1 }),
+        animate("0.3s ease-in", style({ opacity: 0, scale: 0.8 })),
+      ]),
+    ]),
+  ],
 })
 export class MapComponent implements OnInit {
   @ViewChild("googleMap") googleMap: GoogleMap;
@@ -122,6 +122,19 @@ export class MapComponent implements OnInit {
   @Input() markers: google.maps.LatLngLiteral[] = [];
   @Input() selectedMarker: google.maps.LatLngLiteral | null = null;
 
+  @Input() boundRestriction: {
+    north: number;
+    south: number;
+    west: number;
+    east: number;
+  } | null = null;
+  @Input() minZoom: number = 4;
+
+  @Input() mapTypeId:
+    | google.maps.MapTypeId.SATELLITE
+    | google.maps.MapTypeId.ROADMAP =
+    "roadmap" as google.maps.MapTypeId.ROADMAP;
+
   constructor(
     private cdr: ChangeDetectorRef,
     public mapsApiService: MapsApiService
@@ -133,7 +146,6 @@ export class MapComponent implements OnInit {
     // }
   }
 
-  mapStyle = "roadmap";
   isDarkMode: boolean = true; // should be false if mapStyle is roadmap and the dark map is used
 
   ngOnInit() {
@@ -143,6 +155,12 @@ export class MapComponent implements OnInit {
         this.initGeolocation();
       }
     });
+
+    this.mapOptions.restriction = {
+      latLngBounds: this.boundRestriction,
+      strictBounds: false,
+    };
+    this.mapOptions.minZoom = this.minZoom;
   }
 
   initMap(): void {
@@ -252,55 +270,8 @@ export class MapComponent implements OnInit {
     backgroundColor: "#000000",
     clickableIcons: false,
     gestureHandling: "greedy",
-    mapTypeId: this.mapStyle,
     disableDefaultUI: true,
-    // styles: this.mapStylesConfig,
   };
-  mapTypeId: string = "roadmap";
-
-  //   heatmapDarkOptions: google.maps.visualization.HeatmapLayerOptions = {
-  //     radius: 20,
-  //     gradient: ["rgba(184,196,255,0)", "rgba(184,196,255,1)"],
-  //     dissipating: true,
-  //     maxIntensity: 1,
-  //     opacity: 0.6,
-  //   };
-
-  //   selectedSpotMarkerDarkOptions: google.maps.marker.AdvancedMarkerElementOptions =
-  //     {
-  //       gmpDraggable: false,
-  //       gmpClickable: false,
-  //       //   icon: {
-  //       //     url: "assets/icons/marker-primary-dark.png",
-  //       //   },
-  //       //   opacity: 1,
-  //     };
-  //   selectedSpotMarkerLightOptions: google.maps.marker.AdvancedMarkerElementOptions =
-  //     {
-  //       //   ...this.selectedSpotMarkerDarkOptions.anchorPoint,
-  //       //   icon: {
-  //       //     url: "assets/icons/marker-primary-light.png",
-  //       //   },
-  //     };
-  //   selectedSpotMarkerOptions: google.maps.marker.AdvancedMarkerElementOptions =
-  //     this.selectedSpotMarkerDarkOptions;
-  //   selectedSpotMarkerEditingOptions: google.maps.marker.AdvancedMarkerElementOptions =
-  //     {
-  //       gmpDraggable: true,
-  //       gmpClickable: false,
-  //       //   crossOnDrag: true,
-  //       //   icon: {
-  //       //     url: "assets/icons/marker-primary-dark.png",
-  //       //   },
-  //       //   opacity: 1,
-  //     };
-  //   tertiaryMarkerOptions: google.maps.marker.AdvancedMarkerElementOptions = {
-  //     gmpDraggable: false,
-  //     gmpClickable: false,
-  //     // icon: {
-  //     //   url: "assets/icons/marker-tertiary-dark.png",
-  //     // },
-  //   };
 
   spotCircleDarkOptions: google.maps.CircleOptions = {
     fillColor: "#b8c4ff",

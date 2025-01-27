@@ -90,6 +90,14 @@ export class SpotMapComponent implements AfterViewInit {
   @Input() isClickable: boolean = true;
 
   @Input() showGeolocation: boolean = true;
+  @Input() showSatteliteToggle: boolean = false;
+  @Input() minZoom: number = 4;
+  @Input() boundRestriction: {
+    north: number;
+    south: number;
+    west: number;
+    east: number;
+  } | null = null;
 
   uneditedSpot: Spot.Class = null;
 
