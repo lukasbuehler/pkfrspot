@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from "@angular/core";
+import { Component, afterNextRender } from "@angular/core";
 import { CountdownComponent } from "../countdown/countdown.component";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
 import { NgOptimizedImage } from "@angular/common";
@@ -18,7 +18,7 @@ import { lastValueFrom, take, timeout } from "rxjs";
   templateUrl: "./event-page.component.html",
   styleUrl: "./event-page.component.scss",
 })
-export class EventPageComponent implements AfterViewInit {
+export class EventPageComponent {
   name: string = "Swiss Jam 2025";
   start: Date = new Date("2025-05-17T09:00:00+01:00");
 
@@ -30,15 +30,16 @@ export class EventPageComponent implements AfterViewInit {
 
   spots: Spot.Class[] = [];
 
-  constructor(private _spotService: SpotsService) {}
-
-  async ngAfterViewInit() {
-    this.spots = await Promise.all(
-      this.swissJamSpotIds.map(async (spotId) => {
-        return await lastValueFrom(
-          this._spotService.getSpotById(spotId).pipe(take(1), timeout(10000))
-        );
-      })
-    );
+  constructor(private _spotService: SpotsService) {
+    afterNextRender(() => {
+      this.swissJamSpotIds.forEach((spotId) => {
+        this._spotService
+          .getSpotById(spotId)
+          .pipe(take(1), timeout(10000))
+          .subscribe((spot) => {
+            this.spots.push(spot);
+          });
+      });
+    });
   }
 }

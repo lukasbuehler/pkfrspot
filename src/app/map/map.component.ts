@@ -156,11 +156,15 @@ export class MapComponent implements OnInit {
       }
     });
 
-    this.mapOptions.restriction = {
-      latLngBounds: this.boundRestriction,
-      strictBounds: false,
-    };
-    this.mapOptions.minZoom = this.minZoom;
+    if (this.boundRestriction) {
+      this.mapOptions.restriction = {
+        latLngBounds: this.boundRestriction,
+        strictBounds: false,
+      };
+    }
+    if (this.minZoom) {
+      this.mapOptions.minZoom = this.minZoom;
+    }
   }
 
   initMap(): void {

@@ -1,5 +1,3 @@
-/// <reference types="@angular/localize" />
-
 import { enableProdMode } from "@angular/core";
 
 import { appConfig } from "./app/app.config";
@@ -7,6 +5,7 @@ import { environment } from "./environments/environment";
 import { AppComponent } from "./app/app.component";
 
 import { bootstrapApplication } from "@angular/platform-browser";
+import "@angular/localize/init";
 
 if (environment.production) {
   enableProdMode();

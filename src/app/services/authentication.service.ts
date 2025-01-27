@@ -124,7 +124,7 @@ export class AuthenticationService {
     try {
       let user: User.Class | null = await firstValueFrom(
         this._userService.getUserById(googleSignInResponse.user.uid)
-      );
+      ); // TODO check out of context
       if (!user) {
         // This is a new user!
         if (typeof plausible !== "undefined") {

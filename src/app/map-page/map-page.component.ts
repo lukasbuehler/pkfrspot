@@ -191,7 +191,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     const spotId = await this._getSpotIdFromRouteAndOpenSpot();
-    if (spotId) await this.loadSpotById(spotId);
+    if (spotId) await this.loadSpotById(spotId); // TODO out of context
   }
 
   async ngAfterViewInit() {
@@ -212,7 +212,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
       )
       .subscribe(async (event: NavigationEnd) => {
         const spotId = await this._getSpotIdFromRouteAndOpenSpot();
-        if (spotId) await this.loadSpotById(spotId);
+        if (spotId) await this.loadSpotById(spotId); // TODO out of context
       });
 
     // subscribe to the spot search control and update the search results

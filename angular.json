@@ -103,14 +103,8 @@
                   "with": "src/environments/environment.development.ts"
                 }
               ],
-              "outputHashing": "none",
               "optimization": false,
               "sourceMap": true,
-              "namedChunks": true,
-              "aot": true,
-              "extractLicenses": false,
-              "statsJson": true,
-              "progress": true,
               "localize": ["de-CH"],
               "baseHref": "/de-CH/"
             },
@@ -143,6 +137,7 @@
                 }
               ],
               "outputHashing": "all",
+              "aot": false,
               "budgets": [
                 {
                   "type": "initial",
@@ -181,7 +176,7 @@
         "extract-i18n": {
           "builder": "ng-extract-i18n-merge:ng-extract-i18n-merge",
           "options": {
-            "buildTarget": "pkfrspot:build:production",
+            "buildTarget": "pkfrspot:build",
             "format": "xlf2",
             "outputPath": "src/locale",
             "targetFiles": [
