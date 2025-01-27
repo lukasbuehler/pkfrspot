@@ -9,33 +9,39 @@
     style="object-fit: cover"
   />
 </div>
-<div class="container p-5">
-  <div class="row mb-5">
-    <div class="col-md-12">
+<div class="container p-3">
+  <div class="row">
+    <div class="col-md-12 pb-3">
       <h2 class="mat-heading-large">{{ name }}</h2>
       @defer{
       <p>Starts in: <app-countdown [timestamp]="start"></app-countdown></p>
       }
     </div>
   </div>
-  <div class="row my-3">
-    <div class="col-md-6">
+  <div class="row">
+    <div class="col-md-6 pb-5">
       <h3 class="mat-title-large">Spots</h3>
       @if(spots?.length > 0) {
-      <app-spot-list [spots]="spots"></app-spot-list>
+      <app-spot-list
+        [spots]="spots"
+        text="Spots at this event"
+        i18n-text
+      ></app-spot-list>
       }
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 pb-5">
       <h3 class="mat-title-large">Map</h3>
       <app-spot-map
         #spotMap
         id="spotMap"
         [isClickable]="true"
         [showGeolocation]="false"
+        class="w-100"
+        style="height: 400px; display: inline-block"
       ></app-spot-map>
     </div>
   </div>
-  <div class="row my-5">
+  <div class="row">
     <div class="col-md-12"></div>
   </div>
 </div>

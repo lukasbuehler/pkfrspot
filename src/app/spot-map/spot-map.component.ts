@@ -85,6 +85,8 @@ export class SpotMapComponent implements AfterViewInit {
   @Input() markers: google.maps.LatLngLiteral[] = [];
   @Input() selectedMarker: google.maps.LatLngLiteral | null = null;
 
+  @Input() focusZoom: number = 17;
+
   @Input() isClickable: boolean = true;
 
   @Input() showGeolocation: boolean = true;
@@ -403,7 +405,7 @@ export class SpotMapComponent implements AfterViewInit {
     this.focusPoint(spot.location);
   }
 
-  focusPoint(point: google.maps.LatLngLiteral, zoom: number = 17) {
+  focusPoint(point: google.maps.LatLngLiteral, zoom: number = this.focusZoom) {
     this.map.googleMap.panTo(point);
     if (this.mapZoom < zoom) {
       this.mapZoom = zoom;

@@ -26,6 +26,8 @@ export class SpotListComponent implements OnChanges {
   @Input() highlightedSpots: SpotPreviewData[] = [];
   @Input() spots: Spot.Class[] = [];
 
+  @Input() text: string = $localize`Spots in this area`;
+
   // all spots minus the highlighted spots, set manually in ngOnChanges
   remainingSpots: Spot.Class[] = [];
 
