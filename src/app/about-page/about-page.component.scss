@@ -7,6 +7,18 @@
   width: 80%;
 }
 
+.partner-grid {
+  display: grid;
+  gap: 20px;
+
+  @media (max-width: 767px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .credit-grid {
   display: grid;
   gap: 10px;

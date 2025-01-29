@@ -159,7 +159,7 @@ export class AppComponent implements OnInit {
       //     tooltip: "",
       //   },
       {
-        name: $localize`:Spot map navbar button label|A very short label for the navbar spot map label:Spot map`,
+        name: $localize`:Spot map navbar button label|A very short label for the navbar spot map label@@spot_map_label:Spot map`,
         link: "/map",
         icon: "map",
         badge: {

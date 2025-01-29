@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
   <file id="ngi18n" original="ng.template">
-    <unit id="1479415597449651120">
+    <unit id="spot_map_label">
       <notes>
         <note category="description">A very short label for the navbar spot map label</note>
         <note category="meaning">Spot map navbar button label</note>
@@ -12,7 +12,9 @@
     </unit>
     <unit id="1563251428514246752">
       <segment>
-        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">receipt_long</pc> View License </source>
+        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
+            type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">receipt_long</pc>
+          View License </source>
       </segment>
     </unit>
     <unit id="1940752772695642659">
@@ -32,12 +34,15 @@
     </unit>
     <unit id="3733695846697223562">
       <segment>
-        <source> Discover spots and fellow athletes, plan training sessions with your friends and share achievements and memories with them and the world. </source>
+        <source> Discover spots and fellow athletes, plan training sessions with your friends and
+          share achievements and memories with them and the world. </source>
       </segment>
     </unit>
     <unit id="5825310972408482968">
       <segment>
-        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">sports_esports</pc> Discord </source>
+        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
+            type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">sports_esports</pc>
+          Discord </source>
       </segment>
     </unit>
     <unit id="6034013755958678236">
@@ -64,19 +69,17 @@
         <source>Contributors</source>
       </segment>
     </unit>
-    <unit id="7217756648427967816">
-      <segment>
-        <source>Supporters</source>
-      </segment>
-    </unit>
     <unit id="7411379953853971507">
       <segment>
-        <source> This project is Open-Source! Our code is licensed under the <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT License</pc>. </source>
+        <source> This project is Open-Source! Our code is licensed under the <pc id="0"
+            equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;"
+            dispEnd="&lt;/b&gt;">MIT License</pc>. </source>
       </segment>
     </unit>
     <unit id="8062277427231117545">
       <segment>
-        <source> Join our community of Parkour and Freerunning enthusiasts! Contribute your ideas, report bugs, and provide feedback to help us improve this platform together! </source>
+        <source> Join our community of Parkour and Freerunning enthusiasts! Contribute your ideas,
+          report bugs, and provide feedback to help us improve this platform together! </source>
       </segment>
     </unit>
     <unit id="8985868511640294928">
@@ -104,7 +107,9 @@
         <note category="meaning">Open in maps button</note>
       </notes>
       <segment>
-        <source> Open in <ph id="0" equiv="INTERPOLATION" disp="{{ isUsingAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}"/> </source>
+        <source> Open in <ph id="0" equiv="INTERPOLATION"
+            disp="{{ isUsingAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}" />
+        </source>
       </segment>
     </unit>
     <unit id="3699896649941451869">
@@ -229,7 +234,8 @@
     </unit>
     <unit id="2123282629077022668">
       <segment>
-        <source> You can edit your public profile here. The information on your public profile can be seen by everyone, even unauthenticated visitors. </source>
+        <source> You can edit your public profile here. The information on your public profile can
+          be seen by everyone, even unauthenticated visitors. </source>
       </segment>
     </unit>
     <unit id="2818862099235102080">
@@ -248,7 +254,8 @@
     </unit>
     <unit id="4248798592595704576">
       <segment>
-        <source> Your login information. Your E-mail address here is used for your login. You can add the same E-mail address or a different one to your contact information. </source>
+        <source> Your login information. Your E-mail address here is used for your login. You can
+          add the same E-mail address or a different one to your contact information. </source>
       </segment>
     </unit>
     <unit id="4930506384627295710">
@@ -417,7 +424,11 @@
     </unit>
     <unit id="6956729575928529796">
       <segment>
-        <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacy declaration</pc> and agree to both.</source>
+        <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT"
+            equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms
+          of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT"
+            type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacy declaration</pc> and agree
+          to both.</source>
       </segment>
     </unit>
     <unit id="6969445338945867053">
@@ -457,7 +468,8 @@
     </unit>
     <unit id="906351267490856003">
       <segment>
-        <source> Don&apos;t have an account yet? Simply sign in with your Google account or sign up below. </source>
+        <source> Don&apos;t have an account yet? Simply sign in with your Google account or sign up
+          below. </source>
       </segment>
     </unit>
     <unit id="947995176992343811">
@@ -512,7 +524,8 @@
     </unit>
     <unit id="5176788475731011723">
       <segment>
-        <source>This spot was reported as &quot;<ph id="0" equiv="INTERPOLATION" disp="{{ report.reason }}"/>&quot;</source>
+        <source>This spot was reported as &quot;<ph id="0" equiv="INTERPOLATION"
+            disp="{{ report.reason }}" />&quot;</source>
       </segment>
     </unit>
     <unit id="8011758699583016596">
@@ -542,7 +555,8 @@
     </unit>
     <unit id="4411046525037051458">
       <segment>
-        <source> Note: Spot reports are public and will be displayed on the spot itself together with your profile and user name. </source>
+        <source> Note: Spot reports are public and will be displayed on the spot itself together
+          with your profile and user name. </source>
       </segment>
     </unit>
     <unit id="4430765953319659794">
@@ -562,7 +576,8 @@
     </unit>
     <unit id="6024008212258429928">
       <segment>
-        <source>Report Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ data.spot?.name }}"/>&apos;</source>
+        <source>Report Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ data.spot?.name }}" />
+          &apos;</source>
       </segment>
     </unit>
     <unit id="6590727333456499202">
@@ -670,7 +685,8 @@
     </unit>
     <unit id="spot.locality.pretext">
       <notes>
-        <note category="description">The text before the localized location of the spot. E.g. Spot in Wiedikon, Zurich, CH</note>
+        <note category="description">The text before the localized location of the spot. E.g. Spot
+          in Wiedikon, Zurich, CH</note>
       </notes>
       <segment>
         <source>Spot in </source>
@@ -681,7 +697,8 @@
         <note category="description">The text in the spot list panel if no spots are found/displayed</note>
       </notes>
       <segment>
-        <source> There are no highlighted spots for this area, zoom in on dots in the map to discover other spots. </source>
+        <source> There are no highlighted spots for this area, zoom in on dots in the map to
+          discover other spots. </source>
       </segment>
     </unit>
     <unit id="regular_spots_text">
@@ -717,12 +734,15 @@
         <note category="meaning">review button label</note>
       </notes>
       <segment>
-        <source> <ph id="0" equiv="INTERPOLATION" disp="{{ isUpdate ? &quot;Update&quot; : &quot;&quot; }}"/> Review </source>
+        <source>
+          <ph id="0" equiv="INTERPOLATION" disp="{{ isUpdate ? &quot;Update&quot; : &quot;&quot; }}" />
+          Review </source>
       </segment>
     </unit>
     <unit id="9074160907730350759">
       <segment>
-        <source>Review Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}"/>&apos;</source>
+        <source>Review Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}" />
+          &apos;</source>
       </segment>
     </unit>
     <unit id="lang_btn_label">
@@ -754,7 +774,8 @@
     </unit>
     <unit id="1115951775217164684">
       <segment>
-        <source>{VAR_PLURAL, plural, =0 {no reviews} =1 {1 review} other {<ph id="0" equiv="INTERPOLATION"/> reviews}}</source>
+        <source>{VAR_PLURAL, plural, =0 {no reviews} =1 {1 review} other {<ph id="0"
+            equiv="INTERPOLATION" /> reviews}}</source>
       </segment>
     </unit>
     <unit id="address_title">
@@ -799,6 +820,16 @@
     <unit id="8151017381798767627">
       <segment>
         <source>Embed</source>
+      </segment>
+    </unit>
+    <unit id="6280644973525534466">
+      <segment>
+        <source>Starts in:</source>
+      </segment>
+    </unit>
+    <unit id="date_tba">
+      <segment>
+        <source>Exact Date TBA</source>
       </segment>
     </unit>
   </file>

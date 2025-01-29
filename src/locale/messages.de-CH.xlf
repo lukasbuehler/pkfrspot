@@ -25,7 +25,7 @@
         <source> This project is Open-Source! Our code is licensed under the <pc id="0"
             equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;"
             dispEnd="&lt;/b&gt;">MIT License</pc>. </source>
-        <target> Das Projekt isch Open-Source! Unser Code ist lizenziert unter der <pc id="0"
+        <target> Das Projekt isch Open-Source! Euse Code isch lizenziert under de <pc id="0"
             equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;"
             dispEnd="&lt;/b&gt;">MIT Lizenz</pc>. </target>
       </segment>
@@ -38,12 +38,6 @@
         <target><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
             type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;"> receipt_long</pc>
           Lizenz ahluege </target>
-      </segment>
-    </unit>
-    <unit id="7217756648427967816">
-      <segment state="initial">
-        <source>Supporters</source>
-        <target>Unterstützer</target>
       </segment>
     </unit>
     <unit id="6511882108366913037">
@@ -88,7 +82,7 @@
           Discord </target>
       </segment>
     </unit>
-    <unit id="1479415597449651120">
+    <unit id="spot_map_label">
       <notes>
         <note category="description">A very short label for the navbar spot map label</note>
         <note category="meaning">Spot map navbar button label</note>
@@ -543,8 +537,7 @@
       <segment state="initial">
         <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT"
             equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms
-            of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT"
-            equivEnd="CLOSE_BOLD_TEXT"
+          of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT"
             type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacy declaration</pc> and agree
           to both.</source>
         <target>Ich ha d&apos;<pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT"
@@ -987,6 +980,18 @@
       <segment state="initial">
         <source>Spots at this event</source>
         <target>Spots a dem Event</target>
+      </segment>
+    </unit>
+    <unit id="date_tba">
+      <segment state="initial">
+        <source>Exact Date TBA</source>
+        <target>Exact Date TBA</target>
+      </segment>
+    </unit>
+    <unit id="6280644973525534466">
+      <segment state="initial">
+        <source>Starts in:</source>
+        <target>Starts in:</target>
       </segment>
     </unit>
   </file>
