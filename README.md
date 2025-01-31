@@ -2,7 +2,7 @@
 
 **The spot for Parkour and Freerunning.**
 
-Discover spots <strike>and fellow athletes, plan training sessions with your friends and share achievements and memories with them and the world.</strike>
+Discover spots, <strike>challenges, events, and fellow athletes, plan training sessions with your friends and share achievements and memories with them and the world.</strike>
 
 (Strike-through features are in development.)
 

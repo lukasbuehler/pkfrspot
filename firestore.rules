@@ -45,6 +45,14 @@ service cloud.firestore {
           && request.auth.uid == request.resource.data.user.uid;
         allow update, delete: if false;
       }
+
+      // Spot Challenges
+      match /challenges/{challengeId}
+      {
+        allow read: if true;
+        allow write: if request.auth.uid != null 
+          && request.auth.uid == request.resource.data.user.uid;
+      }
     }
 
     match /spot_clusters/{cluster}
@@ -60,6 +68,17 @@ service cloud.firestore {
         && slug.matches('^[a-z0-9-]+$')
         && !exists(/databases/$(database)/documents/spot_slugs/$(slug))
         && exists(/databases/$(database)/documents/spots/$(request.resource.data.spot_id));
+
+      allow update, delete: if false;
+    }
+
+    match /event_slugs/{slug} {
+      allow read: if true;
+
+      allow create: if request.auth.uid != null
+        && slug.matches('^[a-z0-9-]+$')
+        && !exists(/databases/$(database)/documents/event_slugs/$(slug))
+        && exists(/databases/$(database)/documents/events/$(request.resource.data.event_id));
 
       allow update, delete: if false;
     }
@@ -110,6 +129,11 @@ service cloud.firestore {
         allow write: if request.auth.uid != null && 
         request.auth.uid == otherUserId && request.auth.uid != userId;
       }
+    }
+
+    match /events/{eventId} {
+      allow read: if true;
+      allow write: if false;
     }
   }
 }

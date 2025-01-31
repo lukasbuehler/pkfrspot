@@ -48,28 +48,33 @@ export const routes: Routes = [
     component: EmbedPageComponent,
     data: { routeName: "Embed" },
   },
+  // {
+  //   path: "embed/spot",
+  //   redirectTo: "embed",
+  //   pathMatch: "full",
+  //   data: { routeName: "Embed" },
+  // },
+  // {
+  //   path: "embed/map",
+  //   redirectTo: "embed",
+  //   pathMatch: "full",
+  //   data: { routeName: "Embed" },
+  // },
+  // {
+  //   path: "embedded/spot/:spot",
+  //   component: EmbeddedSpotPageComponent,
+  //   data: { routeName: "Embedded Spot" },
+  // },
   {
-    path: "embed/spot",
-    redirectTo: "embed",
-    pathMatch: "full",
-    data: { routeName: "Embed" },
+    path: "embedded/event/:eventID",
+    component: EventPageComponent,
+    data: { routeName: "Embedded Event" },
   },
-  {
-    path: "embed/map",
-    redirectTo: "embed",
-    pathMatch: "full",
-    data: { routeName: "Embed" },
-  },
-  {
-    path: "embedded/spot/:spot",
-    component: EmbeddedSpotPageComponent,
-    data: { routeName: "Embedded Spot" },
-  },
-  {
-    path: "embedded/map",
-    component: EmbeddedMapPageComponent,
-    data: { routeName: "Embedded Map" },
-  },
+  // {
+  //   path: "embedded/map",
+  //   component: EmbeddedMapPageComponent,
+  //   data: { routeName: "Embedded Map" },
+  // },
 
   // Events
   {
@@ -81,6 +86,12 @@ export const routes: Routes = [
     // path: "events/:eventID",
     path: "events/swissjam25",
     component: EventPageComponent,
+    data: { routeName: "Event" },
+  },
+  {
+    path: "e/:slug",
+    redirectTo: "events/:slug",
+    pathMatch: "full",
     data: { routeName: "Event" },
   },
 

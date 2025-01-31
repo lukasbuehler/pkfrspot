@@ -20,7 +20,8 @@ import { lastValueFrom, take, timeout } from "rxjs";
 })
 export class EventPageComponent {
   name: string = "Swiss Jam 2025";
-  start: Date = new Date("2025-05-17T09:00:00+01:00");
+  start: Date = new Date("2025-05-24T09:00:00+01:00");
+  end: Date = new Date("2025-05-25T16:00:00+01:00");
 
   private swissJamSpotIds: SpotId[] = [
     "yhRsQmaXABRQVrbtgQ7D" as SpotId,
