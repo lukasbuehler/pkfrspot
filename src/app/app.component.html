@@ -35,6 +35,15 @@
       icon="person"
       label="Log in"
     ></app-mat3-nav-button> -->
+
+    <!-- terms  -->
+    <span
+      class="mat-body-small d-flex align-items-center flex-row mb-0 pb-1"
+      style="justify-content: space-evenly; width: 100%; font-size: 10px"
+    >
+      <a routerLink="/terms-of-service">Terms</a>
+      <a routerLink="/privacy-policy">Policy</a>
+    </span>
   </app-nav-rail>
   <app-nav-rail-content class="flex-col">
     <!-- This is where the pages content gets displayed -->
@@ -141,8 +150,20 @@
     <mat-menu #navUserMenu="matMenu">
       <app-user-menu-content></app-user-menu-content>
     </mat-menu>
+
+    <!-- Terms and Privacy -->
+
+    <div
+      class="d-flex d-md-none w-100 pt-1 px-3 mat-body-small justify-content-end align-items-center flex-row mb-0 pb-1 gap-3"
+      style="background-color: #1f1f23; font-size: 10px"
+    >
+      <a routerLink="/terms-of-service">Terms of Service</a>
+      <a routerLink="/privacy-policy">Policy Policy</a>
+      <span>©2025 Lukas Bühler</span>
+    </div>
   </app-nav-rail-content>
 </app-nav-rail-container>
+
 } @else {
 <div class="d-flex flex-column h-100">
   <div

@@ -174,16 +174,16 @@ export const routes: Routes = [
     data: { routeName: "Welcome" },
   }, //component: WelcomePageComponent },
   {
-    path: "terms_of_service",
+    path: "terms-of-service",
     component: TermsOfServiceComponent,
-    data: { routeName: "Terms of Service" },
+    data: { routeName: "Terms of Service", acceptanceFree: true },
   },
-  { path: "tos", redirectTo: "terms_of_service", pathMatch: "full" },
+  { path: "tos", redirectTo: "terms-of-service", pathMatch: "full" },
   {
-    path: "privacy_policy",
+    path: "privacy-policy",
     component: PrivacyPolicyComponent,
-    data: { routeName: "Privacy Policy" },
+    data: { routeName: "Privacy Policy", acceptanceFree: true },
   },
-  { path: "pp", redirectTo: "privacy_policy", pathMatch: "full" },
+  { path: "pp", redirectTo: "privacy-policy", pathMatch: "full" },
   { path: "**", component: NotFoundPageComponent },
 ];

@@ -1,6 +1,7 @@
 import {
   Component,
   HostListener,
+  inject,
   OnInit,
   signal,
   WritableSignal,
@@ -10,6 +11,8 @@ import {
   RoutesRecognized,
   RouterLink,
   RouterOutlet,
+  ActivatedRoute,
+  NavigationEnd,
 } from "@angular/router";
 import { filter, map, tap } from "rxjs/operators";
 import { AuthenticationService } from "./services/authentication.service";
@@ -25,6 +28,8 @@ import { NavRailContentComponent } from "./nav-rail-content/nav-rail-content.com
 import { Mat3NavButtonComponent } from "./mat3-nav-button/mat3-nav-button.component";
 import { NavRailComponent } from "./nav-rail/nav-rail.component";
 import { NavRailContainerComponent } from "./nav-rail-container/nav-rail-container.component";
+import { WelcomeDialogComponent } from "./welcome-dialog/welcome-dialog.component";
+import { MatDialog } from "@angular/material/dialog";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
@@ -50,10 +55,13 @@ declare function plausible(eventName: string, options?: { props: any }): void;
   ],
 })
 export class AppComponent implements OnInit {
+  readonly welcomeDialog = inject(MatDialog);
+
   constructor(
     public router: Router,
     public authService: AuthenticationService,
-    public storageService: StorageService
+    public storageService: StorageService,
+    private route: ActivatedRoute
   ) {
     this.enforceAlainMode();
   }
@@ -113,6 +121,44 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    const isABot = navigator.userAgent.match(
+      /bot|googlebot|crawler|spider|robot|crawling/i
+    );
+
+    const acceptedVersion = localStorage.getItem("acceptedVersion");
+
+    if (
+      !isABot &&
+      acceptedVersion !== "1.0.0" &&
+      this.welcomeDialog.openDialogs.length === 0
+    ) {
+      this.router.events
+        .pipe(filter((event) => event instanceof NavigationEnd))
+        .subscribe(() => {
+          this.route.firstChild.data.subscribe((data) => {
+            // open welcome dialog if the user has not accepted the terms of service
+            if (typeof window !== "undefined" && acceptedVersion !== "1.0.0") {
+              // get the acceptanceFree variable from the route data
+              console.log("routeData", data);
+              const acceptanceFree = data["acceptanceFree"] || false;
+
+              console.log("acceptanceFree", acceptanceFree);
+
+              if (!acceptanceFree) {
+                this.welcomeDialog.open(WelcomeDialogComponent, {
+                  data: { version: "1.0.0" },
+                  hasBackdrop: true,
+                  disableClose: true,
+                });
+              } else {
+                // if the dialog was already open, close it now
+                this.welcomeDialog.closeAll();
+              }
+            }
+          });
+        });
+    }
+
     this.authService.authState$.subscribe(
       (user) => {
         let isAuthenticated: boolean = false;
@@ -189,7 +235,7 @@ export class AppComponent implements OnInit {
       {
         name: $localize`Events`,
         link: "/events",
-        icon: "local_activity", // or event, local_activity, calendar_month
+        icon: "calendar_month", // or event, local_activity, calendar_month
       },
       {
         name: $localize`:About page navbar button label|A very short label for the navbar about page button:About`,
