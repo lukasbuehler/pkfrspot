@@ -121,42 +121,45 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    const isABot = navigator.userAgent.match(
-      /bot|googlebot|crawler|spider|robot|crawling/i
-    );
+    let isABot: boolean = false;
+    if (typeof window !== "undefined") {
+      isABot =
+        navigator.userAgent.match(
+          /bot|googlebot|crawler|spider|robot|crawling/i
+        ) !== null;
+      const acceptedVersion = localStorage.getItem("acceptedVersion");
 
-    const acceptedVersion = localStorage.getItem("acceptedVersion");
+      if (
+        !isABot &&
+        acceptedVersion !== "1.0.0" &&
+        this.welcomeDialog.openDialogs.length === 0
+      ) {
+        this.router.events
+          .pipe(filter((event) => event instanceof NavigationEnd))
+          .subscribe(() => {
+            this.route.firstChild.data.subscribe((data) => {
+              // open welcome dialog if the user has not accepted the terms of service
+              if (acceptedVersion !== "1.0.0") {
+                // get the acceptanceFree variable from the route data
+                console.log("routeData", data);
+                const acceptanceFree = data["acceptanceFree"] || false;
 
-    if (
-      !isABot &&
-      acceptedVersion !== "1.0.0" &&
-      this.welcomeDialog.openDialogs.length === 0
-    ) {
-      this.router.events
-        .pipe(filter((event) => event instanceof NavigationEnd))
-        .subscribe(() => {
-          this.route.firstChild.data.subscribe((data) => {
-            // open welcome dialog if the user has not accepted the terms of service
-            if (typeof window !== "undefined" && acceptedVersion !== "1.0.0") {
-              // get the acceptanceFree variable from the route data
-              console.log("routeData", data);
-              const acceptanceFree = data["acceptanceFree"] || false;
+                console.log("acceptanceFree", acceptanceFree);
 
-              console.log("acceptanceFree", acceptanceFree);
-
-              if (!acceptanceFree) {
-                this.welcomeDialog.open(WelcomeDialogComponent, {
-                  data: { version: "1.0.0" },
-                  hasBackdrop: true,
-                  disableClose: true,
-                });
-              } else {
-                // if the dialog was already open, close it now
-                this.welcomeDialog.closeAll();
+                if (!acceptanceFree) {
+                  this.welcomeDialog.open(WelcomeDialogComponent, {
+                    data: { version: "1.0.0" },
+                    hasBackdrop: true,
+                    disableClose: true,
+                  });
+                } else {
+                  // if the dialog was already open, close it now
+                  this.welcomeDialog.closeAll();
+                }
               }
-            }
+            });
           });
-        });
+      }
     }
 
     this.authService.authState$.subscribe(

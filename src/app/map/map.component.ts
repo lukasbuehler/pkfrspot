@@ -10,7 +10,7 @@ import {
   ViewChild,
   ViewChildren,
 } from "@angular/core";
-import { Spot, SpotPreviewData } from "../../scripts/db/Spot";
+import { Spot, SpotId, SpotPreviewData } from "../../scripts/db/Spot";
 import {
   GoogleMap,
   MapPolygon,
@@ -105,7 +105,7 @@ export class MapComponent implements OnInit {
   @Output() boundsChange = new EventEmitter<google.maps.LatLngBounds>();
   @Output() mapClick = new EventEmitter<google.maps.LatLngLiteral>();
   @Output() spotClick = new EventEmitter<
-    Spot.Class | SpotPreviewData | string
+    Spot.Class | SpotPreviewData | SpotId
   >();
   @Output() polygonChanged = new EventEmitter<{
     spotId: string;
@@ -389,7 +389,7 @@ export class MapComponent implements OnInit {
 
   clickOnDot(dot: SpotClusterDot) {
     if (dot.spot_id) {
-      this.spotClick.emit(dot.spot_id);
+      this.spotClick.emit(dot.spot_id as SpotId);
     } else {
       const location: google.maps.LatLng = new google.maps.LatLng(
         dot.location.latitude,

@@ -8,11 +8,11 @@
   [class.rounded]="true"
 >
   <mat-card-header class="pb-2">
-    <mat-card-title class="text-truncate mw-100 pt-2">
+    <mat-card-title class="text-truncate mw-100 pt-2 mat-title-medium">
       {{ spotName }}
     </mat-card-title>
     <!-- @if(isCompact) { -->
-    <mat-card-subtitle class="d-flex flex-row gap-2">
+    <mat-card-subtitle class="d-flex flex-row gap-2 mat-title-small">
       @if(spot.rating) {
       <app-spot-rating
         [rating1to5]="spot.rating"

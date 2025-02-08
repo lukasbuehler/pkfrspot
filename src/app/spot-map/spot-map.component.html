@@ -15,7 +15,7 @@
   (boundsChange)="mapBoundsChanged($event, mapZoom)"
   (zoomChange)="zoomChanged($event)"
   (mapClick)="isClickable ? mapClick($event) : null"
-  (spotClick)="isClickable ? openSpot($event) : null"
+  (spotClick)="isClickable ? openSpotByWhateverMeansNecessary($event) : null"
   (centerChange)="mapCenter = $event"
   (hasGeolocationChange)="hasGeolocationChange.emit($event)"
 ></app-map>

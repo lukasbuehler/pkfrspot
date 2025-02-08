@@ -405,6 +405,47 @@ export class SpotMapComponent implements AfterViewInit {
     this.hightlightedSpotsChange.emit(this.hightlightedSpots);
   }
 
+  openSpotByWhateverMeansNecessary(
+    spot: Spot.Class | SpotPreviewData | SpotId
+  ) {
+    console.debug("Opening spot by whatever means necessary:", spot);
+
+    if (spot instanceof Spot.Class) {
+      this.openSpot(spot);
+    }
+    let spotId: SpotId;
+
+    if (typeof spot === "string") {
+      spotId = spot;
+    } else if ("id" in spot) {
+      spotId = spot.id as SpotId;
+      if ("location" in spot) {
+        this.focusPoint(spot.location);
+      }
+    } else {
+      console.error("Invalid spot data provided:", spot);
+      return;
+    }
+
+    this.openSpotById(spotId);
+  }
+
+  openSpotById(spotId: SpotId) {
+    if (!spotId) {
+      console.error("No spot ID provided to open spot by ID");
+      return;
+    }
+
+    console.log("Opening spot by ID", spotId);
+    firstValueFrom(this._spotsService.getSpotById(spotId)).then((spot) => {
+      if (spot) {
+        this.openSpot(spot);
+      } else {
+        console.error("Spot with ID", spotId, "not found");
+      }
+    });
+  }
+
   openSpot(spot: Spot.Class) {
     this.setSelectedSpot(spot);
     this.focusSpot(spot);
