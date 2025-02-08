@@ -4,7 +4,7 @@
     We strive to be the place for Parkour and Freerunning on the internet.
   </p>
 
-  <p class="mat-title-small">
+  <p class="mat-title-small" i18n>
     By continuing you agree to our
     <a routerLink="/terms-of-service">terms of service</a> and
     <a routerLink="/privacy-policy">Privacy policy</a>.
@@ -20,12 +20,7 @@
 <mat-dialog-actions
   class="d-flex flex-row flex-nowrap justify-content-end p-3 gap-5"
 >
-  <button
-    mat-flat-button
-    color="primary"
-    (click)="agreeAndContinue()"
-    i18n="report button label|"
-  >
+  <button mat-flat-button color="primary" (click)="agreeAndContinue()" i18n>
     Agree and Continue
   </button>
 </mat-dialog-actions>

@@ -535,13 +535,14 @@
         <target> Privacy policy </target>
       </segment>
     </unit>
-    <unit id="6956729575928529796">
+    <unit id="3289630490580318568">
       <segment state="initial">
         <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT"
             equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms
-          of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT"
-            type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacy declaration</pc> and agree
-          to both.</source>
+            of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT"
+            equivEnd="CLOSE_BOLD_TEXT"
+            type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Privacy Policy</pc> and agree to
+          both.</source>
         <target>Ich habe die <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT"
             type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms of Service</pc> und die <pc
             id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt"
@@ -994,6 +995,40 @@
       <segment state="initial">
         <source>Starts in:</source>
         <target>Starts in:</target>
+      </segment>
+    </unit>
+    <unit id="7592898427091935996">
+      <segment state="initial">
+        <source>Welcome to PKFR Spot!</source>
+        <target>Willkommen bei PKFR Spot!</target>
+      </segment>
+    </unit>
+    <unit id="6057300581494484950">
+      <segment state="initial">
+        <source> We strive to be the place for Parkour and Freerunning on the internet. </source>
+        <target> Wir wollen den Ort für Parkour und Freerunning im Internet sein. </target>
+      </segment>
+    </unit>
+    <unit id="5017020353117149527">
+      <segment state="initial">
+        <source> Agree and Continue </source>
+        <target> Zustimmen und Weiter </target>
+      </segment>
+    </unit>
+    <unit id="2533448254858698082">
+      <segment state="initial">
+        <source> By continuing you agree to our <pc id="0" equivStart="START_LINK"
+            equivEnd="CLOSE_LINK" type="link"
+            dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">terms
+          of service</pc> and <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK" type="link"
+            dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;">Privacy
+          policy</pc>. </source>
+        <target> Durch das weiterfahren stimmen Sie unseren <pc id="0" equivStart="START_LINK"
+            equivEnd="CLOSE_LINK" type="link"
+            dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">terms
+          of service</pc> und <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK" type="link"
+            dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;">Privacy
+          policy</pc> zu. </target>
       </segment>
     </unit>
   </file>

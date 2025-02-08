@@ -7,6 +7,8 @@ import {
 } from "@angular/material/dialog";
 import { RouterLink } from "@angular/router";
 
+declare function plausible(eventName: string, options?: { props: any }): void;
+
 @Component({
   selector: "app-welcome-dialog",
   imports: [MatDialogModule, MatButtonModule, RouterLink],
@@ -27,5 +29,8 @@ export class WelcomeDialogComponent {
     // store the accepted version of the terms of service in browser local storage
     localStorage.setItem("acceptedVersion", this.data.version);
     this.dialogRef.close();
+    plausible("Visitor Agreed to Terms", {
+      props: {},
+    });
   }
 }

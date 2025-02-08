@@ -422,13 +422,13 @@
         <source>E-Mail and password</source>
       </segment>
     </unit>
-    <unit id="6956729575928529796">
+    <unit id="3289630490580318568">
       <segment>
         <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT"
             equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms
           of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT"
-            type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacy declaration</pc> and agree
-          to both.</source>
+            type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Privacy Policy</pc> and agree to
+          both.</source>
       </segment>
     </unit>
     <unit id="6969445338945867053">
@@ -830,6 +830,31 @@
     <unit id="date_tba">
       <segment>
         <source>Exact Date TBA</source>
+      </segment>
+    </unit>
+    <unit id="5017020353117149527">
+      <segment>
+        <source> Agree and Continue </source>
+      </segment>
+    </unit>
+    <unit id="6057300581494484950">
+      <segment>
+        <source> We strive to be the place for Parkour and Freerunning on the internet. </source>
+      </segment>
+    </unit>
+    <unit id="7592898427091935996">
+      <segment>
+        <source>Welcome to PKFR Spot!</source>
+      </segment>
+    </unit>
+    <unit id="2533448254858698082">
+      <segment>
+        <source> By continuing you agree to our <pc id="0" equivStart="START_LINK"
+            equivEnd="CLOSE_LINK" type="link"
+            dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">terms
+          of service</pc> and <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK" type="link"
+            dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;">Privacy
+          policy</pc>. </source>
       </segment>
     </unit>
   </file>
