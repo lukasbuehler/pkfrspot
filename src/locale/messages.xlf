@@ -1,30 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
   <file id="ngi18n" original="ng.template">
-    <unit id="spot_map_label">
-      <notes>
-        <note category="description">A very short label for the navbar spot map label</note>
-        <note category="meaning">Spot map navbar button label</note>
-      </notes>
-      <segment>
-        <source>Spot map</source>
-      </segment>
-    </unit>
-    <unit id="1563251428514246752">
-      <segment>
-        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
-            type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">receipt_long</pc>
-          View License </source>
-      </segment>
-    </unit>
     <unit id="1940752772695642659">
       <segment>
         <source> The spot for Parkour and Freerunning. </source>
-      </segment>
-    </unit>
-    <unit id="2405554561656775177">
-      <segment>
-        <source>Lead developer</source>
       </segment>
     </unit>
     <unit id="3710111609881776947">
@@ -34,34 +13,22 @@
     </unit>
     <unit id="3733695846697223562">
       <segment>
-        <source> Discover spots and fellow athletes, plan training sessions with your friends and
-          share achievements and memories with them and the world. </source>
+        <source> Discover spots and fellow athletes, plan training sessions with your friends and share achievements and memories with them and the world. </source>
       </segment>
     </unit>
-    <unit id="5825310972408482968">
+    <unit id="7411379953853971507">
       <segment>
-        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
-            type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">sports_esports</pc>
-          Discord </source>
+        <source> This project is Open-Source! Our code is licensed under the <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT License</pc>. </source>
       </segment>
     </unit>
-    <unit id="6034013755958678236">
+    <unit id="1563251428514246752">
       <segment>
-        <source> Testing, UI/UX Advisor </source>
+        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">receipt_long</pc> View License </source>
       </segment>
     </unit>
-    <unit id="6058033902089935749">
+    <unit id="3687194426938367329">
       <segment>
-        <source>Find spots and places</source>
-      </segment>
-    </unit>
-    <unit id="6493290522598468378">
-      <notes>
-        <note category="description">A very short label for the navbar about page button</note>
-        <note category="meaning">About page navbar button label</note>
-      </notes>
-      <segment>
-        <source>About</source>
+        <source>Partners</source>
       </segment>
     </unit>
     <unit id="6511882108366913037">
@@ -69,17 +36,9 @@
         <source>Contributors</source>
       </segment>
     </unit>
-    <unit id="7411379953853971507">
+    <unit id="2405554561656775177">
       <segment>
-        <source> This project is Open-Source! Our code is licensed under the <pc id="0"
-            equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;"
-            dispEnd="&lt;/b&gt;">MIT License</pc>. </source>
-      </segment>
-    </unit>
-    <unit id="8062277427231117545">
-      <segment>
-        <source> Join our community of Parkour and Freerunning enthusiasts! Contribute your ideas,
-          report bugs, and provide feedback to help us improve this platform together! </source>
+        <source>Lead developer</source>
       </segment>
     </unit>
     <unit id="8985868511640294928">
@@ -87,662 +46,24 @@
         <source>Testing</source>
       </segment>
     </unit>
-    <unit id="2066444621746625793">
+    <unit id="6034013755958678236">
       <segment>
-        <source>Edit this spot</source>
+        <source> Testing, UI/UX Advisor </source>
       </segment>
     </unit>
-    <unit id="3228321309780982411">
-      <notes>
-        <note category="description">Label of the button to report the spot</note>
-        <note category="meaning">report button label</note>
-      </notes>
+    <unit id="8062277427231117545">
       <segment>
-        <source> Report </source>
+        <source> Join our community of Parkour and Freerunning enthusiasts! Contribute your ideas, report bugs, and provide feedback to help us improve this platform together! </source>
       </segment>
     </unit>
-    <unit id="open_maps_button_label">
-      <notes>
-        <note category="description">Button to open the spot in maps</note>
-        <note category="meaning">Open in maps button</note>
-      </notes>
+    <unit id="5825310972408482968">
       <segment>
-        <source> Open in <ph id="0" equiv="INTERPOLATION"
-            disp="{{ isUsingAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}" />
-        </source>
-      </segment>
-    </unit>
-    <unit id="3699896649941451869">
-      <segment>
-        <source>Example icon button with a share icon</source>
-      </segment>
-    </unit>
-    <unit id="4470656372477479316">
-      <notes>
-        <note category="description">Label of the button to discard changes</note>
-        <note category="meaning">Discard changes button label</note>
-      </notes>
-      <segment>
-        <source> Discard changes </source>
-      </segment>
-    </unit>
-    <unit id="4902817035128594900">
-      <segment>
-        <source>Description</source>
-      </segment>
-    </unit>
-    <unit id="open_maps_tooltip">
-      <notes>
-        <note category="description">Tooltip of button to open the spot in maps</note>
-        <note category="meaning">Open in maps button tooltip</note>
-      </notes>
-      <segment>
-        <source>Open the location of this spot in Maps</source>
-      </segment>
-    </unit>
-    <unit id="5447579510411800451">
-      <notes>
-        <note category="description">Label of the button to upload a spot image</note>
-        <note category="meaning">Upload spot image button label</note>
-      </notes>
-      <segment>
-        <source> Upload Spot Image </source>
-      </segment>
-    </unit>
-    <unit id="6417858746273147766">
-      <notes>
-        <note category="description">Placeholder of the spot name in the edit form</note>
-        <note category="meaning">spot name placeholder</note>
-      </notes>
-      <segment>
-        <source>Spot name</source>
-      </segment>
-    </unit>
-    <unit id="6876434298853499564">
-      <notes>
-        <note category="description">Label of the button to add bounds to a spot</note>
-        <note category="meaning">Add bounds button label</note>
-      </notes>
-      <segment>
-        <source> Add bounds </source>
-      </segment>
-    </unit>
-    <unit id="7649443828660758780">
-      <notes>
-        <note category="description">Label of the button to edit the spot</note>
-        <note category="meaning">Edit button label</note>
-      </notes>
-      <segment>
-        <source> Edit </source>
-      </segment>
-    </unit>
-    <unit id="7970470041734812503">
-      <segment>
-        <source>Report this spot</source>
-      </segment>
-    </unit>
-    <unit id="8126459137636028145">
-      <notes>
-        <note category="description">The header for the spot description</note>
-        <note category="meaning">description header</note>
-      </notes>
-      <segment>
-        <source> Description </source>
-      </segment>
-    </unit>
-    <unit id="8486228314424763172">
-      <notes>
-        <note category="description">Label of the button to save changes</note>
-        <note category="meaning">Save changes button label</note>
-      </notes>
-      <segment>
-        <source> Save changes </source>
-      </segment>
-    </unit>
-    <unit id="8942517704279686805">
-      <notes>
-        <note category="description">Placeholder of the spot description edit field</note>
-        <note category="meaning">Spot description edit field placeholder</note>
-      </notes>
-      <segment>
-        <source>Description of the spot, its features and more...</source>
-      </segment>
-    </unit>
-    <unit id="1237816927659510577">
-      <notes>
-        <note category="description">The profile dropdown menu label for &apos;my profile&apos;</note>
-        <note category="meaning">my profile label</note>
-      </notes>
-      <segment>
-        <source>My Profile</source>
-      </segment>
-    </unit>
-    <unit id="1347241542439262355">
-      <segment>
-        <source>General settings</source>
-      </segment>
-    </unit>
-    <unit id="1431416938026210429">
-      <segment>
-        <source>Password</source>
-      </segment>
-    </unit>
-    <unit id="3934298777794632654">
-      <segment>
-        <source> Change E-mail address </source>
-      </segment>
-    </unit>
-    <unit id="2123282629077022668">
-      <segment>
-        <source> You can edit your public profile here. The information on your public profile can
-          be seen by everyone, even unauthenticated visitors. </source>
-      </segment>
-    </unit>
-    <unit id="2818862099235102080">
-      <segment>
-        <source> Resend verification E-mail </source>
-      </segment>
-    </unit>
-    <unit id="339940386378543699">
-      <notes>
-        <note category="description">The profile dropdown menu label to logout</note>
-        <note category="meaning">logout label</note>
-      </notes>
-      <segment>
-        <source>Logout</source>
-      </segment>
-    </unit>
-    <unit id="4248798592595704576">
-      <segment>
-        <source> Your login information. Your E-mail address here is used for your login. You can
-          add the same E-mail address or a different one to your contact information. </source>
-      </segment>
-    </unit>
-    <unit id="4930506384627295710">
-      <segment>
-        <source>Settings</source>
-      </segment>
-    </unit>
-    <unit id="5060391165154083287">
-      <notes>
-        <note category="description">The profile dropdown menu label for the settings</note>
-        <note category="meaning">settings label</note>
-      </notes>
-      <segment>
-        <source>Settings</source>
-      </segment>
-    </unit>
-    <unit id="5207635742003539443">
-      <segment>
-        <source>Sign in</source>
-      </segment>
-    </unit>
-    <unit id="5464118521750361406">
-      <segment>
-        <source>Public profile</source>
-      </segment>
-    </unit>
-    <unit id="5563672453089263696">
-      <segment>
-        <source>Changing this E-mail will change your login information</source>
-      </segment>
-    </unit>
-    <unit id="5830520205989474611">
-      <segment>
-        <source>E-mail address</source>
-      </segment>
-    </unit>
-    <unit id="5851560788527570644">
-      <segment>
-        <source>Notifications</source>
-      </segment>
-    </unit>
-    <unit id="6471548761726956967">
-      <segment>
-        <source> General settings to tune your experience on PKFR Spot. </source>
-      </segment>
-    </unit>
-    <unit id="6815507474406960450">
-      <segment>
-        <source>E-Mail address</source>
-      </segment>
-    </unit>
-    <unit id="7008130086784868968">
-      <segment>
-        <source>Login information</source>
-      </segment>
-    </unit>
-    <unit id="7028204981963450021">
-      <segment>
-        <source>Sign up</source>
-      </segment>
-    </unit>
-    <unit id="8626615958100222841">
-      <segment>
-        <source> Change password </source>
-      </segment>
-    </unit>
-    <unit id="133789173523080152">
-      <segment>
-        <source>Your E-mail is verified</source>
-      </segment>
-    </unit>
-    <unit id="3539941729807255231">
-      <segment>
-        <source>Your E-mail has not been verified!</source>
-      </segment>
-    </unit>
-    <unit id="1221014007346917816">
-      <segment>
-        <source>You can also sign in with:</source>
-      </segment>
-    </unit>
-    <unit id="149974019994124409">
-      <segment>
-        <source> Create Account </source>
-      </segment>
-    </unit>
-    <unit id="1948163304836345687">
-      <segment>
-        <source>You need to agree to the terms and conditions!</source>
-      </segment>
-    </unit>
-    <unit id="3013055597615607317">
-      <segment>
-        <source>Display Name</source>
-      </segment>
-    </unit>
-    <unit id="3028950182768355353">
-      <segment>
-        <source> Privacy policy </source>
-      </segment>
-    </unit>
-    <unit id="3601523967492159201">
-      <segment>
-        <source>Could not create account!</source>
-      </segment>
-    </unit>
-    <unit id="3865137547467472091">
-      <segment>
-        <source>The password field is empty!</source>
-      </segment>
-    </unit>
-    <unit id="4056337625566966411">
-      <segment>
-        <source> Forgot password </source>
-      </segment>
-    </unit>
-    <unit id="427922060915202050">
-      <segment>
-        <source>The password is invalid!</source>
-      </segment>
-    </unit>
-    <unit id="5726791725186220555">
-      <segment>
-        <source>The E-mail address is invalid!</source>
-      </segment>
-    </unit>
-    <unit id="4541118533130714111">
-      <segment>
-        <source>Repeat Password</source>
-      </segment>
-    </unit>
-    <unit id="4815152070613902062">
-      <segment>
-        <source> Sign up here </source>
-      </segment>
-    </unit>
-    <unit id="5261342889229534364">
-      <segment>
-        <source>The repeated password needs to match the password entered.</source>
-      </segment>
-    </unit>
-    <unit id="5664264029355272360">
-      <segment>
-        <source>Don&apos;t worry, the display name can be changed later.</source>
-      </segment>
-    </unit>
-    <unit id="6858563845386603352">
-      <segment>
-        <source>The e-mail address needs to be verified later.</source>
-      </segment>
-    </unit>
-    <unit id="6464436780502674570">
-      <segment>
-        <source>Password and repeated password don&apos;t match</source>
-      </segment>
-    </unit>
-    <unit id="6663783128602596673">
-      <segment>
-        <source> Sign in </source>
-      </segment>
-    </unit>
-    <unit id="6735606153713625905">
-      <segment>
-        <source>E-Mail and password</source>
-      </segment>
-    </unit>
-    <unit id="3289630490580318568">
-      <segment>
-        <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT"
-            equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms
-          of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT"
-            type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Privacy Policy</pc> and agree to
-          both.</source>
-      </segment>
-    </unit>
-    <unit id="6969445338945867053">
-      <segment>
-        <source>Create a new account</source>
-      </segment>
-    </unit>
-    <unit id="7323901917278002498">
-      <segment>
-        <source>Sign in instead?</source>
-      </segment>
-    </unit>
-    <unit id="7486528540316266957">
-      <segment>
-        <source>Choose a strong password.</source>
-      </segment>
-    </unit>
-    <unit id="7571375880734710634">
-      <segment>
-        <source> Terms of Service </source>
-      </segment>
-    </unit>
-    <unit id="7733953409417762446">
-      <segment>
-        <source>An unknown error has occured on sign in. Please try again.</source>
-      </segment>
-    </unit>
-    <unit id="2978266456005156211">
-      <segment>
-        <source>The E-mail address and password do not match for any existing user.</source>
-      </segment>
-    </unit>
-    <unit id="7931009175244499164">
-      <segment>
-        <source>OAuth providers</source>
-      </segment>
-    </unit>
-    <unit id="906351267490856003">
-      <segment>
-        <source> Don&apos;t have an account yet? Simply sign in with your Google account or sign up
-          below. </source>
-      </segment>
-    </unit>
-    <unit id="947995176992343811">
-      <segment>
-        <source>This E-Mail address is not valid!</source>
-      </segment>
-    </unit>
-    <unit id="directions_spot_aria_label">
-      <notes>
-        <note category="description">The aria label of the directions spot icon button</note>
-        <note category="meaning">Spot directions aria label</note>
-      </notes>
-      <segment>
-        <source>Icon button with a directions icon</source>
-      </segment>
-    </unit>
-    <unit id="directions_spot_tooltip">
-      <notes>
-        <note category="description">The tooltip of the directions spot icon button</note>
-        <note category="meaning">Directions spot tooltip</note>
-      </notes>
-      <segment>
-        <source>Directions to spot</source>
-      </segment>
-    </unit>
-    <unit id="share_spot_aria_label">
-      <notes>
-        <note category="description">The aria label of the share spot icon button</note>
-        <note category="meaning">Share spot aria label</note>
-      </notes>
-      <segment>
-        <source>Icon button with a share icon</source>
-      </segment>
-    </unit>
-    <unit id="share_spot_tooltip">
-      <notes>
-        <note category="description">The tootltip of the share spot icon button</note>
-        <note category="meaning">Share spot tooltip</note>
-      </notes>
-      <segment>
-        <source>Share this spot</source>
-      </segment>
-    </unit>
-    <unit id="6807040359477339777">
-      <notes>
-        <note category="description">The header for the spot features and amenities</note>
-        <note category="meaning">amenities header</note>
-      </notes>
-      <segment>
-        <source> Features and amenities </source>
-      </segment>
-    </unit>
-    <unit id="5176788475731011723">
-      <segment>
-        <source>This spot was reported as &quot;<ph id="0" equiv="INTERPOLATION"
-            disp="{{ report.reason }}" />&quot;</source>
-      </segment>
-    </unit>
-    <unit id="8011758699583016596">
-      <segment>
-        <source>Spots in this area</source>
-      </segment>
-    </unit>
-    <unit id="1536087519743707362">
-      <segment>
-        <source>Dismiss</source>
-      </segment>
-    </unit>
-    <unit id="2029717048910432760">
-      <segment>
-        <source>Spot</source>
-      </segment>
-    </unit>
-    <unit id="3278358550418950949">
-      <segment>
-        <source> Duplicate </source>
-      </segment>
-    </unit>
-    <unit id="4178793080892122578">
-      <segment>
-        <source>Torn down</source>
-      </segment>
-    </unit>
-    <unit id="4411046525037051458">
-      <segment>
-        <source> Note: Spot reports are public and will be displayed on the spot itself together
-          with your profile and user name. </source>
-      </segment>
-    </unit>
-    <unit id="4430765953319659794">
-      <segment>
-        <source>It&apos;s a private spot and should not be on this spot map.</source>
-      </segment>
-    </unit>
-    <unit id="4965889425715950321">
-      <segment>
-        <source>Which spot is this spot a duplicate of?</source>
-      </segment>
-    </unit>
-    <unit id="5749021803913348721">
-      <segment>
-        <source>Spot saved successfully</source>
-      </segment>
-    </unit>
-    <unit id="6024008212258429928">
-      <segment>
-        <source>Report Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ data.spot?.name }}" />
-          &apos;</source>
-      </segment>
-    </unit>
-    <unit id="6590727333456499202">
-      <segment>
-        <source>New Spot</source>
-      </segment>
-    </unit>
-    <unit id="6957965842552679691">
-      <segment>
-        <source>Error saving spot</source>
-      </segment>
-    </unit>
-    <unit id="8374523856907728400">
-      <segment>
-        <source>Does not exist</source>
-      </segment>
-    </unit>
-    <unit id="8425796083769561052">
-      <segment>
-        <source>What would you like to report this spot for?</source>
-      </segment>
-    </unit>
-    <unit id="8693603235657020323">
-      <segment>
-        <source>Other</source>
-      </segment>
-    </unit>
-    <unit id="2330577642930707695">
-      <notes>
-        <note category="description">cancel button label</note>
-      </notes>
-      <segment>
-        <source> Cancel </source>
+        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">sports_esports</pc> Discord </source>
       </segment>
     </unit>
     <unit id="about.title">
       <segment>
         <source>About PKFR Spot</source>
-      </segment>
-    </unit>
-    <unit id="amenities.changing_room">
-      <segment>
-        <source>Changing room</source>
-      </segment>
-    </unit>
-    <unit id="amenities.covered">
-      <segment>
-        <source>Covered</source>
-      </segment>
-    </unit>
-    <unit id="amenities.drinking_water">
-      <segment>
-        <source>Drinking water</source>
-      </segment>
-    </unit>
-    <unit id="amenities.entry_fee">
-      <segment>
-        <source>Entry fee</source>
-      </segment>
-    </unit>
-    <unit id="amenities.indoor">
-      <segment>
-        <source>Indoor</source>
-      </segment>
-    </unit>
-    <unit id="amenities.lighting">
-      <segment>
-        <source>Lighting</source>
-      </segment>
-    </unit>
-    <unit id="amenities.lockers">
-      <segment>
-        <source>Lockers</source>
-      </segment>
-    </unit>
-    <unit id="amenities.maybe_overgrown">
-      <segment>
-        <source>Maybe overgrown</source>
-      </segment>
-    </unit>
-    <unit id="amenities.outdoor">
-      <segment>
-        <source>Outdoor</source>
-      </segment>
-    </unit>
-    <unit id="amenities.parking_on_site">
-      <segment>
-        <source>Parking on site</source>
-      </segment>
-    </unit>
-    <unit id="amenities.power_outlets">
-      <segment>
-        <source>Power outlets</source>
-      </segment>
-    </unit>
-    <unit id="amenities.wc">
-      <segment>
-        <source>WC</source>
-      </segment>
-    </unit>
-    <unit id="pkfr.spotmap.title">
-      <segment>
-        <source>PKFR Spot map</source>
-      </segment>
-    </unit>
-    <unit id="spot.locality.pretext">
-      <notes>
-        <note category="description">The text before the localized location of the spot. E.g. Spot
-          in Wiedikon, Zurich, CH</note>
-      </notes>
-      <segment>
-        <source>Spot in </source>
-      </segment>
-    </unit>
-    <unit id="no_spots_text">
-      <notes>
-        <note category="description">The text in the spot list panel if no spots are found/displayed</note>
-      </notes>
-      <segment>
-        <source> There are no highlighted spots for this area, zoom in on dots in the map to
-          discover other spots. </source>
-      </segment>
-    </unit>
-    <unit id="regular_spots_text">
-      <segment>
-        <source>Spots</source>
-      </segment>
-    </unit>
-    <unit id="spot_highlights">
-      <notes>
-        <note category="description">Title for the spot highlights, spots is clear from the context</note>
-      </notes>
-      <segment>
-        <source> Highlights </source>
-      </segment>
-    </unit>
-    <unit id="3651210692254714604">
-      <segment>
-        <source>This spot has no reviews yet, be the first to leave one!</source>
-      </segment>
-    </unit>
-    <unit id="5583221507916400426">
-      <segment>
-        <source>Rating and user reviews</source>
-      </segment>
-    </unit>
-    <unit id="6435282697411612190">
-      <segment>
-        <source>What would you rate this spot from one to five stars?</source>
-      </segment>
-    </unit>
-    <unit id="6715455427777949206">
-      <notes>
-        <note category="meaning">review button label</note>
-      </notes>
-      <segment>
-        <source>
-          <ph id="0" equiv="INTERPOLATION" disp="{{ isUpdate ? &quot;Update&quot; : &quot;&quot; }}" />
-          Review </source>
-      </segment>
-    </unit>
-    <unit id="9074160907730350759">
-      <segment>
-        <source>Review Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}" />
-          &apos;</source>
       </segment>
     </unit>
     <unit id="lang_btn_label">
@@ -754,52 +75,32 @@
         <source>Language</source>
       </segment>
     </unit>
-    <unit id="review_spot_button_label">
+    <unit id="spot_map_label">
       <notes>
-        <note category="description">Button to review the spot label</note>
-        <note category="meaning">Review spot button label</note>
+        <note category="description">A very short label for the navbar spot map label</note>
+        <note category="meaning">Spot map navbar button label</note>
       </notes>
       <segment>
-        <source> Review spot </source>
-      </segment>
-    </unit>
-    <unit id="review_spot_tooltip">
-      <notes>
-        <note category="description">Tooltip of button to review the spot</note>
-        <note category="meaning">Review this spot button tooltip</note>
-      </notes>
-      <segment>
-        <source>Review this spot</source>
-      </segment>
-    </unit>
-    <unit id="1115951775217164684">
-      <segment>
-        <source>{VAR_PLURAL, plural, =0 {no reviews} =1 {1 review} other {<ph id="0"
-            equiv="INTERPOLATION" /> reviews}}</source>
-      </segment>
-    </unit>
-    <unit id="address_title">
-      <notes>
-        <note category="description">The address subtitle in the spot details</note>
-        <note category="meaning">Address subtitle</note>
-      </notes>
-      <segment>
-        <source> Address </source>
-      </segment>
-    </unit>
-    <unit id="3687194426938367329">
-      <segment>
-        <source>Partners</source>
-      </segment>
-    </unit>
-    <unit id="403853342752104901">
-      <segment>
-        <source>Spots at this event</source>
+        <source>Spot map</source>
       </segment>
     </unit>
     <unit id="5729418620241283277">
       <segment>
         <source>Events</source>
+      </segment>
+    </unit>
+    <unit id="6493290522598468378">
+      <notes>
+        <note category="description">A very short label for the navbar about page button</note>
+        <note category="meaning">About page navbar button label</note>
+      </notes>
+      <segment>
+        <source>About</source>
+      </segment>
+    </unit>
+    <unit id="8151017381798767627">
+      <segment>
+        <source>Embed</source>
       </segment>
     </unit>
     <unit id="5837993987248997726">
@@ -817,44 +118,717 @@
         <source>Show geolocation</source>
       </segment>
     </unit>
-    <unit id="8151017381798767627">
-      <segment>
-        <source>Embed</source>
-      </segment>
-    </unit>
-    <unit id="6280644973525534466">
-      <segment>
-        <source>Starts in:</source>
-      </segment>
-    </unit>
     <unit id="date_tba">
       <segment>
         <source>Exact Date TBA</source>
       </segment>
     </unit>
-    <unit id="5017020353117149527">
+    <unit id="6044258067304510448">
       <segment>
-        <source> Agree and Continue </source>
+        <source>Starts in: </source>
       </segment>
     </unit>
-    <unit id="6057300581494484950">
+    <unit id="403853342752104901">
       <segment>
-        <source> We strive to be the place for Parkour and Freerunning on the internet. </source>
+        <source>Spots at this event</source>
       </segment>
     </unit>
-    <unit id="7592898427091935996">
+    <unit id="6058033902089935749">
+      <segment>
+        <source>Find spots and places</source>
+      </segment>
+    </unit>
+    <unit id="pkfr.spotmap.title">
+      <segment>
+        <source>PKFR Spot map</source>
+      </segment>
+    </unit>
+    <unit id="spot.locality.pretext">
+      <notes>
+        <note category="description">The text before the localized location of the spot. E.g. Spot in Wiedikon, Zurich, CH</note>
+      </notes>
+      <segment>
+        <source>Spot in </source>
+      </segment>
+    </unit>
+    <unit id="4930506384627295710">
+      <segment>
+        <source>Settings</source>
+      </segment>
+    </unit>
+    <unit id="5464118521750361406">
+      <segment>
+        <source>Public profile</source>
+      </segment>
+    </unit>
+    <unit id="2123282629077022668">
+      <segment>
+        <source> You can edit your public profile here. The information on your public profile can be seen by everyone, even unauthenticated visitors. </source>
+      </segment>
+    </unit>
+    <unit id="7008130086784868968">
+      <segment>
+        <source>Login information</source>
+      </segment>
+    </unit>
+    <unit id="4248798592595704576">
+      <segment>
+        <source> Your login information. Your E-mail address here is used for your login. You can add the same E-mail address or a different one to your contact information. </source>
+      </segment>
+    </unit>
+    <unit id="6815507474406960450">
+      <segment>
+        <source>E-Mail address</source>
+      </segment>
+    </unit>
+    <unit id="5830520205989474611">
+      <segment>
+        <source>E-mail address</source>
+      </segment>
+    </unit>
+    <unit id="3539941729807255231">
+      <segment>
+        <source>Your E-mail has not been verified!</source>
+      </segment>
+    </unit>
+    <unit id="133789173523080152">
+      <segment>
+        <source>Your E-mail is verified</source>
+      </segment>
+    </unit>
+    <unit id="5563672453089263696">
+      <segment>
+        <source>Changing this E-mail will change your login information</source>
+      </segment>
+    </unit>
+    <unit id="3934298777794632654">
+      <segment>
+        <source> Change E-mail address </source>
+      </segment>
+    </unit>
+    <unit id="2818862099235102080">
+      <segment>
+        <source> Resend verification E-mail </source>
+      </segment>
+    </unit>
+    <unit id="1431416938026210429">
+      <segment>
+        <source>Password</source>
+      </segment>
+    </unit>
+    <unit id="8626615958100222841">
+      <segment>
+        <source> Change password </source>
+      </segment>
+    </unit>
+    <unit id="1347241542439262355">
+      <segment>
+        <source>General settings</source>
+      </segment>
+    </unit>
+    <unit id="6471548761726956967">
+      <segment>
+        <source> General settings to tune your experience on PKFR Spot. </source>
+      </segment>
+    </unit>
+    <unit id="5851560788527570644">
+      <segment>
+        <source>Notifications</source>
+      </segment>
+    </unit>
+    <unit id="6735606153713625905">
+      <segment>
+        <source>E-Mail and password</source>
+      </segment>
+    </unit>
+    <unit id="947995176992343811">
+      <segment>
+        <source>This E-Mail address is not valid!</source>
+      </segment>
+    </unit>
+    <unit id="3865137547467472091">
+      <segment>
+        <source>The password field is empty!</source>
+      </segment>
+    </unit>
+    <unit id="6663783128602596673">
+      <segment>
+        <source> Sign in </source>
+      </segment>
+    </unit>
+    <unit id="4056337625566966411">
+      <segment>
+        <source> Forgot password </source>
+      </segment>
+    </unit>
+    <unit id="7931009175244499164">
+      <segment>
+        <source>OAuth providers</source>
+      </segment>
+    </unit>
+    <unit id="1221014007346917816">
+      <segment>
+        <source>You can also sign in with:</source>
+      </segment>
+    </unit>
+    <unit id="906351267490856003">
+      <segment>
+        <source> Don&apos;t have an account yet? Simply sign in with your Google account or sign up below. </source>
+      </segment>
+    </unit>
+    <unit id="4815152070613902062">
+      <segment>
+        <source> Sign up here </source>
+      </segment>
+    </unit>
+    <unit id="5726791725186220555">
+      <segment>
+        <source>The E-mail address is invalid!</source>
+      </segment>
+    </unit>
+    <unit id="427922060915202050">
+      <segment>
+        <source>The password is invalid!</source>
+      </segment>
+    </unit>
+    <unit id="2978266456005156211">
+      <segment>
+        <source>The E-mail address and password do not match for any existing user.</source>
+      </segment>
+    </unit>
+    <unit id="7733953409417762446">
+      <segment>
+        <source>An unknown error has occured on sign in. Please try again.</source>
+      </segment>
+    </unit>
+    <unit id="7323901917278002498">
+      <segment>
+        <source>Sign in instead?</source>
+      </segment>
+    </unit>
+    <unit id="6969445338945867053">
+      <segment>
+        <source>Create a new account</source>
+      </segment>
+    </unit>
+    <unit id="3013055597615607317">
+      <segment>
+        <source>Display Name</source>
+      </segment>
+    </unit>
+    <unit id="5664264029355272360">
+      <segment>
+        <source>Don&apos;t worry, the display name can be changed later.</source>
+      </segment>
+    </unit>
+    <unit id="6858563845386603352">
+      <segment>
+        <source>The e-mail address needs to be verified later.</source>
+      </segment>
+    </unit>
+    <unit id="7486528540316266957">
+      <segment>
+        <source>Choose a strong password.</source>
+      </segment>
+    </unit>
+    <unit id="4541118533130714111">
+      <segment>
+        <source>Repeat Password</source>
+      </segment>
+    </unit>
+    <unit id="5261342889229534364">
+      <segment>
+        <source>The repeated password needs to match the password entered.</source>
+      </segment>
+    </unit>
+    <unit id="7571375880734710634">
+      <segment>
+        <source> Terms of Service </source>
+      </segment>
+    </unit>
+    <unit id="3028950182768355353">
+      <segment>
+        <source> Privacy policy </source>
+      </segment>
+    </unit>
+    <unit id="3289630490580318568">
+      <segment>
+        <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Privacy Policy</pc> and agree to both.</source>
+      </segment>
+    </unit>
+    <unit id="149974019994124409">
+      <segment>
+        <source> Create Account </source>
+      </segment>
+    </unit>
+    <unit id="6464436780502674570">
+      <segment>
+        <source>Password and repeated password don&apos;t match</source>
+      </segment>
+    </unit>
+    <unit id="1948163304836345687">
+      <segment>
+        <source>You need to agree to the terms and conditions!</source>
+      </segment>
+    </unit>
+    <unit id="3601523967492159201">
+      <segment>
+        <source>Could not create account!</source>
+      </segment>
+    </unit>
+    <unit id="share_spot_tooltip">
+      <notes>
+        <note category="description">The tootltip of the share spot icon button</note>
+        <note category="meaning">Share spot tooltip</note>
+      </notes>
+      <segment>
+        <source>Share this spot</source>
+      </segment>
+    </unit>
+    <unit id="share_spot_aria_label">
+      <notes>
+        <note category="description">The aria label of the share spot icon button</note>
+        <note category="meaning">Share spot aria label</note>
+      </notes>
+      <segment>
+        <source>Icon button with a share icon</source>
+      </segment>
+    </unit>
+    <unit id="directions_spot_tooltip">
+      <notes>
+        <note category="description">The tooltip of the directions spot icon button</note>
+        <note category="meaning">Directions spot tooltip</note>
+      </notes>
+      <segment>
+        <source>Directions to spot</source>
+      </segment>
+    </unit>
+    <unit id="directions_spot_aria_label">
+      <notes>
+        <note category="description">The aria label of the directions spot icon button</note>
+        <note category="meaning">Spot directions aria label</note>
+      </notes>
+      <segment>
+        <source>Icon button with a directions icon</source>
+      </segment>
+    </unit>
+    <unit id="5176788475731011723">
+      <segment>
+        <source>This spot was reported as &quot;<ph id="0" equiv="INTERPOLATION" disp="{{ report.reason }}"/>&quot;</source>
+      </segment>
+    </unit>
+    <unit id="8126459137636028145">
+      <notes>
+        <note category="description">The header for the spot description</note>
+        <note category="meaning">description header</note>
+      </notes>
+      <segment>
+        <source> Description </source>
+      </segment>
+    </unit>
+    <unit id="6807040359477339777">
+      <notes>
+        <note category="description">The header for the spot features and amenities</note>
+        <note category="meaning">amenities header</note>
+      </notes>
+      <segment>
+        <source> Features and amenities </source>
+      </segment>
+    </unit>
+    <unit id="5583221507916400426">
+      <segment>
+        <source>Rating and user reviews</source>
+      </segment>
+    </unit>
+    <unit id="1115951775217164684">
+      <segment>
+        <source>{VAR_PLURAL, plural, =0 {no reviews} =1 {1 review} other {<ph id="0" equiv="INTERPOLATION"/> reviews}}</source>
+      </segment>
+    </unit>
+    <unit id="3651210692254714604">
+      <segment>
+        <source>This spot has no reviews yet, be the first to leave one!</source>
+      </segment>
+    </unit>
+    <unit id="review_spot_tooltip">
+      <notes>
+        <note category="description">Tooltip of button to review the spot</note>
+        <note category="meaning">Review this spot button tooltip</note>
+      </notes>
+      <segment>
+        <source>Review this spot</source>
+      </segment>
+    </unit>
+    <unit id="review_spot_button_label">
+      <notes>
+        <note category="description">Button to review the spot label</note>
+        <note category="meaning">Review spot button label</note>
+      </notes>
+      <segment>
+        <source> Review spot </source>
+      </segment>
+    </unit>
+    <unit id="address_title">
+      <notes>
+        <note category="description">The address subtitle in the spot details</note>
+        <note category="meaning">Address subtitle</note>
+      </notes>
+      <segment>
+        <source> Address </source>
+      </segment>
+    </unit>
+    <unit id="open_maps_tooltip">
+      <notes>
+        <note category="description">Tooltip of button to open the spot in maps</note>
+        <note category="meaning">Open in maps button tooltip</note>
+      </notes>
+      <segment>
+        <source>Open the location of this spot in Maps</source>
+      </segment>
+    </unit>
+    <unit id="open_maps_button_label">
+      <notes>
+        <note category="description">Button to open the spot in maps</note>
+        <note category="meaning">Open in maps button</note>
+      </notes>
+      <segment>
+        <source> Open in <ph id="0" equiv="INTERPOLATION" disp="{{ isUsingAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}"/> </source>
+      </segment>
+    </unit>
+    <unit id="3148120434799119252">
+      <segment>
+        <source>Challenges</source>
+      </segment>
+    </unit>
+    <unit id="2066444621746625793">
+      <segment>
+        <source>Edit this spot</source>
+      </segment>
+    </unit>
+    <unit id="3699896649941451869">
+      <segment>
+        <source>Example icon button with a share icon</source>
+      </segment>
+    </unit>
+    <unit id="7649443828660758780">
+      <notes>
+        <note category="description">Label of the button to edit the spot</note>
+        <note category="meaning">Edit button label</note>
+      </notes>
+      <segment>
+        <source> Edit </source>
+      </segment>
+    </unit>
+    <unit id="7970470041734812503">
+      <segment>
+        <source>Report this spot</source>
+      </segment>
+    </unit>
+    <unit id="3228321309780982411">
+      <notes>
+        <note category="description">Label of the button to report the spot</note>
+        <note category="meaning">report button label</note>
+      </notes>
+      <segment>
+        <source> Report </source>
+      </segment>
+    </unit>
+    <unit id="6417858746273147766">
+      <notes>
+        <note category="description">Placeholder of the spot name in the edit form</note>
+        <note category="meaning">spot name placeholder</note>
+      </notes>
+      <segment>
+        <source>Spot name</source>
+      </segment>
+    </unit>
+    <unit id="5447579510411800451">
+      <notes>
+        <note category="description">Label of the button to upload a spot image</note>
+        <note category="meaning">Upload spot image button label</note>
+      </notes>
+      <segment>
+        <source> Upload Spot Image </source>
+      </segment>
+    </unit>
+    <unit id="4902817035128594900">
+      <segment>
+        <source>Description</source>
+      </segment>
+    </unit>
+    <unit id="8942517704279686805">
+      <notes>
+        <note category="description">Placeholder of the spot description edit field</note>
+        <note category="meaning">Spot description edit field placeholder</note>
+      </notes>
+      <segment>
+        <source>Description of the spot, its features and more...</source>
+      </segment>
+    </unit>
+    <unit id="6876434298853499564">
+      <notes>
+        <note category="description">Label of the button to add bounds to a spot</note>
+        <note category="meaning">Add bounds button label</note>
+      </notes>
+      <segment>
+        <source> Add bounds </source>
+      </segment>
+    </unit>
+    <unit id="4470656372477479316">
+      <notes>
+        <note category="description">Label of the button to discard changes</note>
+        <note category="meaning">Discard changes button label</note>
+      </notes>
+      <segment>
+        <source> Discard changes </source>
+      </segment>
+    </unit>
+    <unit id="8486228314424763172">
+      <notes>
+        <note category="description">Label of the button to save changes</note>
+        <note category="meaning">Save changes button label</note>
+      </notes>
+      <segment>
+        <source> Save changes </source>
+      </segment>
+    </unit>
+    <unit id="spot_highlights">
+      <notes>
+        <note category="description">Title for the spot highlights, spots is clear from the context</note>
+      </notes>
+      <segment>
+        <source> Highlights </source>
+      </segment>
+    </unit>
+    <unit id="regular_spots_text">
+      <segment>
+        <source>Spots</source>
+      </segment>
+    </unit>
+    <unit id="no_spots_text">
+      <notes>
+        <note category="description">The text in the spot list panel if no spots are found/displayed</note>
+      </notes>
+      <segment>
+        <source> There are no highlighted spots for this area, zoom in on dots in the map to discover other spots. </source>
+      </segment>
+    </unit>
+    <unit id="8011758699583016596">
+      <segment>
+        <source>Spots in this area</source>
+      </segment>
+    </unit>
+    <unit id="6590727333456499202">
+      <segment>
+        <source>New Spot</source>
+      </segment>
+    </unit>
+    <unit id="5749021803913348721">
+      <segment>
+        <source>Spot saved successfully</source>
+      </segment>
+    </unit>
+    <unit id="1536087519743707362">
+      <segment>
+        <source>Dismiss</source>
+      </segment>
+    </unit>
+    <unit id="6957965842552679691">
+      <segment>
+        <source>Error saving spot</source>
+      </segment>
+    </unit>
+    <unit id="6024008212258429928">
+      <segment>
+        <source>Report Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ data.spot?.name }}"/>&apos;</source>
+      </segment>
+    </unit>
+    <unit id="8425796083769561052">
+      <segment>
+        <source>What would you like to report this spot for?</source>
+      </segment>
+    </unit>
+    <unit id="3278358550418950949">
+      <segment>
+        <source> Duplicate </source>
+      </segment>
+    </unit>
+    <unit id="4178793080892122578">
+      <segment>
+        <source>Torn down</source>
+      </segment>
+    </unit>
+    <unit id="8374523856907728400">
+      <segment>
+        <source>Does not exist</source>
+      </segment>
+    </unit>
+    <unit id="4430765953319659794">
+      <segment>
+        <source>It&apos;s a private spot and should not be on this spot map.</source>
+      </segment>
+    </unit>
+    <unit id="8693603235657020323">
+      <segment>
+        <source>Other</source>
+      </segment>
+    </unit>
+    <unit id="4965889425715950321">
+      <segment>
+        <source>Which spot is this spot a duplicate of?</source>
+      </segment>
+    </unit>
+    <unit id="2029717048910432760">
+      <segment>
+        <source>Spot</source>
+      </segment>
+    </unit>
+    <unit id="4411046525037051458">
+      <segment>
+        <source> Note: Spot reports are public and will be displayed on the spot itself together with your profile and user name. </source>
+      </segment>
+    </unit>
+    <unit id="2330577642930707695">
+      <notes>
+        <note category="description">cancel button label</note>
+      </notes>
+      <segment>
+        <source> Cancel </source>
+      </segment>
+    </unit>
+    <unit id="9074160907730350759">
+      <segment>
+        <source>Review Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}"/>&apos;</source>
+      </segment>
+    </unit>
+    <unit id="6435282697411612190">
+      <segment>
+        <source>What would you rate this spot from one to five stars?</source>
+      </segment>
+    </unit>
+    <unit id="6715455427777949206">
+      <notes>
+        <note category="meaning">review button label</note>
+      </notes>
+      <segment>
+        <source> <ph id="0" equiv="INTERPOLATION" disp="{{ isUpdate ? &quot;Update&quot; : &quot;&quot; }}"/> Review </source>
+      </segment>
+    </unit>
+    <unit id="5207635742003539443">
+      <segment>
+        <source>Sign in</source>
+      </segment>
+    </unit>
+    <unit id="7028204981963450021">
+      <segment>
+        <source>Sign up</source>
+      </segment>
+    </unit>
+    <unit id="1237816927659510577">
+      <notes>
+        <note category="description">The profile dropdown menu label for &apos;my profile&apos;</note>
+        <note category="meaning">my profile label</note>
+      </notes>
+      <segment>
+        <source>My Profile</source>
+      </segment>
+    </unit>
+    <unit id="5060391165154083287">
+      <notes>
+        <note category="description">The profile dropdown menu label for the settings</note>
+        <note category="meaning">settings label</note>
+      </notes>
+      <segment>
+        <source>Settings</source>
+      </segment>
+    </unit>
+    <unit id="339940386378543699">
+      <notes>
+        <note category="description">The profile dropdown menu label to logout</note>
+        <note category="meaning">logout label</note>
+      </notes>
+      <segment>
+        <source>Logout</source>
+      </segment>
+    </unit>
+    <unit id="welcomeDialogTitle">
       <segment>
         <source>Welcome to PKFR Spot!</source>
       </segment>
     </unit>
-    <unit id="2533448254858698082">
+    <unit id="welcomeDialogText">
       <segment>
-        <source> By continuing you agree to our <pc id="0" equivStart="START_LINK"
-            equivEnd="CLOSE_LINK" type="link"
-            dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">terms
-          of service</pc> and <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK" type="link"
-            dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;">Privacy
-          policy</pc>. </source>
+        <source> Explore spots, posts, and more from our Parkour and Freerunning community. To access our content, please agree to our Terms of Service and Privacy Policy. We value your privacy and don&apos;t store cookies. 🍪 </source>
+      </segment>
+    </unit>
+    <unit id="welcomeDialogButtonInfo">
+      <segment>
+        <source> By clicking &quot;Agree and continue&quot;, you accept our <pc id="0" equivStart="START_LINK" equivEnd="CLOSE_LINK" type="link" dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">Terms of Service</pc> and <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK" type="link" dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;">Privacy Policy</pc>. </source>
+      </segment>
+    </unit>
+    <unit id="agreeAndContinueLabel">
+      <segment>
+        <source> Agree and Continue </source>
+      </segment>
+    </unit>
+    <unit id="amenities.covered">
+      <segment>
+        <source>Covered</source>
+      </segment>
+    </unit>
+    <unit id="amenities.outdoor">
+      <segment>
+        <source>Outdoor</source>
+      </segment>
+    </unit>
+    <unit id="amenities.indoor">
+      <segment>
+        <source>Indoor</source>
+      </segment>
+    </unit>
+    <unit id="amenities.lighting">
+      <segment>
+        <source>Lighting</source>
+      </segment>
+    </unit>
+    <unit id="amenities.wc">
+      <segment>
+        <source>WC</source>
+      </segment>
+    </unit>
+    <unit id="amenities.changing_room">
+      <segment>
+        <source>Changing room</source>
+      </segment>
+    </unit>
+    <unit id="amenities.lockers">
+      <segment>
+        <source>Lockers</source>
+      </segment>
+    </unit>
+    <unit id="amenities.entry_fee">
+      <segment>
+        <source>Entry fee</source>
+      </segment>
+    </unit>
+    <unit id="amenities.drinking_water">
+      <segment>
+        <source>Drinking water</source>
+      </segment>
+    </unit>
+    <unit id="amenities.parking_on_site">
+      <segment>
+        <source>Parking on site</source>
+      </segment>
+    </unit>
+    <unit id="amenities.power_outlets">
+      <segment>
+        <source>Power outlets</source>
+      </segment>
+    </unit>
+    <unit id="amenities.maybe_overgrown">
+      <segment>
+        <source>Maybe overgrown</source>
       </segment>
     </unit>
   </file>

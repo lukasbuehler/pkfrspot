@@ -1,13 +1,15 @@
-<h2 mat-dialog-title i18n>Welcome to PKFR Spot!</h2>
+<h2 mat-dialog-title i18n="@@welcomeDialogTitle">Welcome to PKFR Spot!</h2>
 <mat-dialog-content>
-  <p i18n>
-    We strive to be the place for Parkour and Freerunning on the internet.
+  <p class="mat-body-medium" i18n="@@welcomeDialogText">
+    Explore spots, posts, and more from our Parkour and Freerunning community.
+    To access our content, please agree to our Terms of Service and Privacy
+    Policy. We value your privacy and don't store cookies. 🍪
   </p>
 
-  <p class="mat-title-small" i18n>
-    By continuing you agree to our
-    <a routerLink="/terms-of-service">terms of service</a> and
-    <a routerLink="/privacy-policy">privacy policy</a>.
+  <p class="mat-title-small" i18n="@@welcomeDialogButtonInfo">
+    By clicking "Agree and continue", you accept our
+    <a routerLink="/terms-of-service">Terms of Service</a> and
+    <a routerLink="/privacy-policy">Privacy Policy</a>.
   </p>
 
   <!-- <div class="d-flex flex-row justify-content-evenly">
@@ -20,7 +22,12 @@
 <mat-dialog-actions
   class="d-flex flex-row flex-nowrap justify-content-end p-3 gap-5"
 >
-  <button mat-flat-button color="primary" (click)="agreeAndContinue()" i18n>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="agreeAndContinue()"
+    i18n="@@agreeAndContinueLabel"
+  >
     Agree and Continue
   </button>
 </mat-dialog-actions>

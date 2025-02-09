@@ -91,13 +91,21 @@ export class AppComponent implements OnInit {
       name: "Schwiizerdütsch",
       url: this.baseUrl + "/de-CH/",
     },
-    // {
-    //   name: "Français",
-    //   url: this.baseUrl + "/fr/",
-    // },
+    {
+      name: "Français",
+      url: this.baseUrl + "/fr/",
+    },
     {
       name: "Italiano",
       url: this.baseUrl + "/it/",
+    },
+    {
+      name: "Español",
+      url: this.baseUrl + "/es/",
+    },
+    {
+      name: "Nederlands",
+      url: this.baseUrl + "/nl/",
     },
   ];
 
@@ -152,7 +160,7 @@ export class AppComponent implements OnInit {
 
                 if (!acceptanceFree) {
                   this.welcomeDialog.open(WelcomeDialogComponent, {
-                    data: { version: "1.0.0" },
+                    data: { version: currentTermsVersion },
                     hasBackdrop: true,
                     disableClose: true,
                   });

@@ -34,6 +34,14 @@
           "fr": {
             "translation": "src/locale/messages.fr.xlf",
             "subPath": "fr"
+          },
+          "es": {
+            "translation": "src/locale/messages.es.xlf",
+            "subPath": "es"
+          },
+          "nl": {
+            "translation": "src/locale/messages.nl.xlf",
+            "subPath": "nl"
           }
         }
       },
@@ -46,7 +54,7 @@
                 "inlineCritical": false
               }
             },
-            "localize": ["en", "de", "de-CH", "it", "fr"],
+            "localize": ["en", "de", "de-CH", "it", "fr", "es", "nl"],
             "outputPath": "dist/pkfrspot",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -106,8 +114,8 @@
               "extractLicenses": false,
               "statsJson": false,
               "progress": false,
-              "localize": ["de-CH"],
-              "baseHref": "/de-CH/"
+              "localize": ["de"],
+              "baseHref": "/de/"
             },
             "dev-debug": {
               "fileReplacements": [
@@ -117,8 +125,8 @@
                 }
               ],
               "optimization": false,
-              "localize": ["de-CH"],
-              "baseHref": "/de-CH/"
+              "localize": ["de"],
+              "baseHref": "/de/"
             },
             "staging": {
               "fileReplacements": [
@@ -193,7 +201,10 @@
             "targetFiles": [
               "messages.de.xlf",
               "messages.de-CH.xlf",
-              "messages.it.xlf"
+              "messages.it.xlf",
+              "messages.fr.xlf",
+              "messages.es.xlf",
+              "messages.nl.xlf"
             ]
           }
         }

@@ -61,7 +61,12 @@ import { SpotRatingComponent } from "../spot-rating/spot-rating.component";
 import { MatIcon } from "@angular/material/icon";
 import { MatTooltip } from "@angular/material/tooltip";
 import { MatIconButton, MatButton } from "@angular/material/button";
-import { NgIf, KeyValuePipe, LocationStrategy } from "@angular/common";
+import {
+  NgIf,
+  KeyValuePipe,
+  LocationStrategy,
+  NgOptimizedImage,
+} from "@angular/common";
 import { MatChipListbox, MatChipsModule } from "@angular/material/chips";
 import { MatRipple, MatOption } from "@angular/material/core";
 import {
@@ -136,6 +141,7 @@ export class ReversePipe implements PipeTransform {
     MatProgressBarModule,
     KeyValuePipe,
     ReversePipe,
+    NgOptimizedImage,
   ],
 })
 export class SpotDetailsComponent implements AfterViewInit, OnChanges {

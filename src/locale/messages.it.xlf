@@ -540,8 +540,7 @@
       <segment state="initial">
         <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT"
             equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms
-            of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT"
-            equivEnd="CLOSE_BOLD_TEXT"
+          of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT"
             type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Privacy Policy</pc> and agree to
           both.</source>
         <target>Ho letto e compreso i <pc id="0" equivStart="START_BOLD_TEXT"
@@ -988,48 +987,57 @@
     <unit id="date_tba">
       <segment state="initial">
         <source>Exact Date TBA</source>
-        <target>Exact Date TBA</target>
+        <target>Data esatta da definire</target>
       </segment>
     </unit>
-    <unit id="6280644973525534466">
+    <unit id="6044258067304510448">
       <segment state="initial">
-        <source>Starts in:</source>
-        <target>Starts in:</target>
+        <source>Starts in: </source>
+        <target>Inizia tra: </target>
       </segment>
     </unit>
-    <unit id="7592898427091935996">
+    <unit id="welcomeDialogTitle">
       <segment state="initial">
         <source>Welcome to PKFR Spot!</source>
         <target>Benvenuto su PKFR Spot!</target>
       </segment>
     </unit>
-    <unit id="6057300581494484950">
-      <segment state="initial">
-        <source> We strive to be the place for Parkour and Freerunning on the internet. </source>
-        <target> Ci sforziamo di essere il luogo per Parkour e Freerunning su internet. </target>
-      </segment>
-    </unit>
-    <unit id="5017020353117149527">
+    <unit id="agreeAndContinueLabel">
       <segment state="initial">
         <source> Agree and Continue </source>
         <target> Accetta e Continua </target>
       </segment>
     </unit>
-    <unit id="2533448254858698082">
+    <unit id="welcomeDialogButtonInfo">
       <segment state="initial">
-        <source> By continuing you agree to our <pc id="0" equivStart="START_LINK"
-            equivEnd="CLOSE_LINK" type="link"
-            dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">terms
-          of service</pc> and <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK" type="link"
+        <source> By clicking &quot;Agree and continue&quot;, you accept our <pc id="0"
+            equivStart="START_LINK" equivEnd="CLOSE_LINK" type="link"
+            dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">Terms
+          of Service</pc> and <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK" type="link"
             dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;">Privacy
-          policy</pc>. </source>
-        <target> Continuando accetti i nostri <pc id="0" equivStart="START_LINK"
+          Policy</pc>. </source>
+        <target>Continuando, accetti i nostri <pc id="0" equivStart="START_LINK"
             equivEnd="CLOSE_LINK" type="link"
             dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">termini
           di servizio</pc> e la <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK"
-            type="link"
-            dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;">politica
-          sulla privacy</pc>. </target>
+            type="link" dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;"
+            dispEnd="&lt;/a&gt;">politica sulla privacy</pc>. </target>
+      </segment>
+    </unit>
+    <unit id="3148120434799119252">
+      <segment state="initial">
+        <source>Challenges</source>
+        <target>Challenges</target>
+      </segment>
+    </unit>
+    <unit id="welcomeDialogText">
+      <segment state="initial">
+        <source> Explore spots, posts, and more from our Parkour and Freerunning community. To
+          access our content, please agree to our Terms of Service and Privacy Policy. We value your
+          privacy and don&apos;t store cookies. 🍪 </source>
+        <target>Esplora spot, post e altro dalla nostra comunità di Parkour e Freerunning. Per
+          accedere ai nostri contenuti, accetta i nostri Termini di Servizio e la Politica sulla
+          Privacy. Apprezziamo la tua privacy e non utilizziamo cookie. 🍪</target>
       </segment>
     </unit>
   </file>

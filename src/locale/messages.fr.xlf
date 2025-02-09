@@ -1,63 +1,63 @@
-<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en" trgLang="de">
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en" trgLang="fr">
   <file id="ngi18n" original="ng.template">
     <unit id="1940752772695642659">
       <segment state="initial">
         <source> The spot for Parkour and Freerunning. </source>
-        <target> Der Spot für Parkour und Freerunning. </target>
+        <target> Le spot pour le parkour et le freerunning. </target>
       </segment>
     </unit>
     <unit id="3710111609881776947">
       <segment state="initial">
         <source>Discover, Train, Share.</source>
-        <target>Entdecken, Trainieren, Teilen.</target>
+        <target>Découvrez, entraînez-vous, partagez.</target>
       </segment>
     </unit>
     <unit id="3733695846697223562">
       <segment state="initial">
         <source> Discover spots and fellow athletes, plan training sessions with your friends and share achievements and memories with them and the world. </source>
-        <target> Entdecke Spots und Athleten, plane gemeinsame Trainings mit deinen Freunden und teile deine Erfolge und Erinnerungen mit ihnen und der Welt. </target>
+        <target> Découvrez des spots et des athlètes, planifiez des séances d’entraînement avec vos amis et partagez vos réussites et souvenirs avec eux et le monde entier. </target>
       </segment>
     </unit>
     <unit id="7411379953853971507">
       <segment state="initial">
         <source> This project is Open-Source! Our code is licensed under the <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT License</pc>. </source>
-        <target> Dieses Projekt ist Open-Source! Unser Code ist lizenziert unter der <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT Lizenz</pc>. </target>
+        <target> Ce projet est open-source ! Notre code est sous licence <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT License</pc>. </target>
       </segment>
     </unit>
     <unit id="1563251428514246752">
       <segment state="initial">
         <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">receipt_long</pc> View License </source>
-        <target><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;"> receipt_long</pc> Lizenz ansehen </target>
+        <target><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">receipt_long</pc> Voir la licence </target>
       </segment>
     </unit>
     <unit id="6511882108366913037">
       <segment state="initial">
         <source>Contributors</source>
-        <target>Mitwirkende</target>
+        <target>Contributeurs</target>
       </segment>
     </unit>
     <unit id="2405554561656775177">
       <segment state="initial">
         <source>Lead developer</source>
-        <target>Haupt-Entwickler</target>
+        <target>Développeur principal</target>
       </segment>
     </unit>
     <unit id="8985868511640294928">
       <segment state="initial">
         <source>Testing</source>
-        <target>Tester</target>
+        <target>Tests</target>
       </segment>
     </unit>
     <unit id="6034013755958678236">
       <segment state="initial">
         <source> Testing, UI/UX Advisor </source>
-        <target> Tester, UI/UX Berater </target>
+        <target> Tests, conseiller UI/UX </target>
       </segment>
     </unit>
     <unit id="8062277427231117545">
       <segment state="initial">
         <source> Join our community of Parkour and Freerunning enthusiasts! Contribute your ideas, report bugs, and provide feedback to help us improve this platform together! </source>
-        <target> Tritt unserer Community von Parkour und Freerunning Enthusiasten bei! Bringe deine Ideen ein, melde Bugs und teile Feedback, um uns zu helfen, diese Plattform gemeinsam zu verbessern! </target>
+        <target> Rejoignez notre communauté d’enthousiastes de parkour et freerunning ! Apportez vos idées, signalez des bugs et donnez votre avis pour nous aider à améliorer cette plateforme ensemble ! </target>
       </segment>
     </unit>
     <unit id="5825310972408482968">
@@ -73,7 +73,7 @@
       </notes>
       <segment state="initial">
         <source>Spot map</source>
-        <target>Spot Karte</target>
+        <target>Carte Spot</target>
       </segment>
     </unit>
     <unit id="6493290522598468378">
@@ -83,13 +83,13 @@
       </notes>
       <segment state="initial">
         <source>About</source>
-        <target>Über uns</target>
+        <target>À propos</target>
       </segment>
     </unit>
     <unit id="6058033902089935749">
       <segment state="initial">
         <source>Find spots and places</source>
-        <target>Finde Spots und Orte</target>
+        <target>Trouvez des spots et des endroits</target>
       </segment>
     </unit>
     <unit id="8126459137636028145">
@@ -99,7 +99,7 @@
       </notes>
       <segment state="initial">
         <source> Description </source>
-        <target> Beschreibung </target>
+        <target> Description </target>
       </segment>
     </unit>
     <unit id="open_maps_tooltip">
@@ -109,7 +109,7 @@
       </notes>
       <segment state="initial">
         <source>Open the location of this spot in Maps</source>
-        <target>Diesen Spot in Karten öffnen</target>
+        <target>Ouvrir cet emplacement dans Maps</target>
       </segment>
     </unit>
     <unit id="open_maps_button_label">
@@ -119,19 +119,19 @@
       </notes>
       <segment state="initial">
         <source> Open in <ph id="0" equiv="INTERPOLATION" disp="{{ isUsingAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}"/> </source>
-        <target> In <ph id="0" equiv="INTERPOLATION" disp="{{ isUsingAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}"/> öffnen </target>
+        <target> Ouvrir dans <ph id="0" equiv="INTERPOLATION" disp="{{ isUsingAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}"/> </target>
       </segment>
     </unit>
     <unit id="2066444621746625793">
       <segment state="initial">
         <source>Edit this spot</source>
-        <target>Diesen Spot bearbeiten</target>
+        <target>Modifier ce spot</target>
       </segment>
     </unit>
     <unit id="3699896649941451869">
       <segment state="initial">
         <source>Example icon button with a share icon</source>
-        <target>Beispiel Bild-Knopf mit &apos;teilen&apos; Grafik</target>
+        <target>Exemple de bouton d’icône avec une icône de partage</target>
       </segment>
     </unit>
     <unit id="7649443828660758780">
@@ -141,13 +141,13 @@
       </notes>
       <segment state="initial">
         <source> Edit </source>
-        <target> Bearbeiten </target>
+        <target> Modifier </target>
       </segment>
     </unit>
     <unit id="7970470041734812503">
       <segment state="initial">
         <source>Report this spot</source>
-        <target>Diesen Spot melden</target>
+        <target>Signaler ce spot</target>
       </segment>
     </unit>
     <unit id="3228321309780982411">
@@ -157,7 +157,7 @@
       </notes>
       <segment state="initial">
         <source> Report </source>
-        <target> Melden </target>
+        <target> Signaler </target>
       </segment>
     </unit>
     <unit id="6417858746273147766">
@@ -167,7 +167,7 @@
       </notes>
       <segment state="initial">
         <source>Spot name</source>
-        <target>Spot Name</target>
+        <target>Nom du spot</target>
       </segment>
     </unit>
     <unit id="5447579510411800451">
@@ -177,13 +177,13 @@
       </notes>
       <segment state="initial">
         <source> Upload Spot Image </source>
-        <target> Spot Bild hochladen </target>
+        <target> Télécharger une image du spot </target>
       </segment>
     </unit>
     <unit id="4902817035128594900">
       <segment state="initial">
         <source>Description</source>
-        <target>Beschreibung</target>
+        <target>Description</target>
       </segment>
     </unit>
     <unit id="8942517704279686805">
@@ -193,7 +193,7 @@
       </notes>
       <segment state="initial">
         <source>Description of the spot, its features and more...</source>
-        <target>Beschreibung des Spots, den Eigenschaften und mehr...</target>
+        <target>Description du spot, ses caractéristiques et plus encore...</target>
       </segment>
     </unit>
     <unit id="6876434298853499564">
@@ -203,7 +203,7 @@
       </notes>
       <segment state="initial">
         <source> Add bounds </source>
-        <target> Grundriß hinzufügen </target>
+        <target> Ajouter des limites </target>
       </segment>
     </unit>
     <unit id="4470656372477479316">
@@ -213,7 +213,7 @@
       </notes>
       <segment state="initial">
         <source> Discard changes </source>
-        <target> Änderungen verwerfen </target>
+        <target> Annuler les modifications </target>
       </segment>
     </unit>
     <unit id="8486228314424763172">
@@ -223,109 +223,109 @@
       </notes>
       <segment state="initial">
         <source> Save changes </source>
-        <target> Änderungen speichern </target>
+        <target> Enregistrer les modifications </target>
       </segment>
     </unit>
     <unit id="4930506384627295710">
       <segment state="initial">
         <source>Settings</source>
-        <target>Einstellungen</target>
+        <target>Paramètres</target>
       </segment>
     </unit>
     <unit id="5464118521750361406">
       <segment state="initial">
         <source>Public profile</source>
-        <target>Öffentliches Profil</target>
+        <target>Profil public</target>
       </segment>
     </unit>
     <unit id="2123282629077022668">
       <segment state="initial">
         <source> You can edit your public profile here. The information on your public profile can be seen by everyone, even unauthenticated visitors. </source>
-        <target> Hier kannst du dein öffentliches Profil bearbeiten. Diese Informationen von deinem öffentlichen Profil können von allen eingesehen werden, auch unauthentifizierten Benutzer. </target>
+        <target> Vous pouvez modifier votre profil public ici. Les informations de votre profil public peuvent être vues par tout le monde, même par les visiteurs non authentifiés. </target>
       </segment>
     </unit>
     <unit id="7008130086784868968">
       <segment state="initial">
         <source>Login information</source>
-        <target>Login Information</target>
+        <target>Informations de connexion</target>
       </segment>
     </unit>
     <unit id="4248798592595704576">
       <segment state="initial">
         <source> Your login information. Your E-mail address here is used for your login. You can add the same E-mail address or a different one to your contact information. </source>
-        <target> Deine Login-Informationen. Diese E-Mail Adresse wird für das Login verwendet. Du kannst die selbe oder eine andere E-Mail Adresse für deine Kontaktinformation angeben. </target>
+        <target> Vos informations de connexion. L’adresse e-mail indiquée ici est utilisée pour la connexion. Vous pouvez ajouter la même adresse ou une autre à vos informations de contact. </target>
       </segment>
     </unit>
     <unit id="6815507474406960450">
       <segment state="initial">
         <source>E-Mail address</source>
-        <target>E-Mail Adresse</target>
+        <target>Adresse e-mail</target>
       </segment>
     </unit>
     <unit id="5830520205989474611">
       <segment state="initial">
         <source>E-mail address</source>
-        <target>E-Mail Adresse</target>
+        <target>Adresse e-mail</target>
       </segment>
     </unit>
     <unit id="5563672453089263696">
       <segment state="initial">
         <source>Changing this E-mail will change your login information</source>
-        <target>Das ändern dieser E-Mail Adresse ändert deine Login-Informationen</target>
+        <target>Modifier cette adresse e-mail changera vos informations de connexion</target>
       </segment>
     </unit>
     <unit id="3934298777794632654">
       <segment state="initial">
         <source> Change E-mail address </source>
-        <target> E-Mail Adresse ändern </target>
+        <target> Changer d’adresse e-mail </target>
       </segment>
     </unit>
     <unit id="2818862099235102080">
       <segment state="initial">
         <source> Resend verification E-mail </source>
-        <target> Verifikations E-mail erneut senden </target>
+        <target> Renvoyer l’e-mail de vérification </target>
       </segment>
     </unit>
     <unit id="1431416938026210429">
       <segment state="initial">
         <source>Password</source>
-        <target>Passwort</target>
+        <target>Mot de passe</target>
       </segment>
     </unit>
     <unit id="8626615958100222841">
       <segment state="initial">
         <source> Change password </source>
-        <target> Password ändern </target>
+        <target> Changer de mot de passe </target>
       </segment>
     </unit>
     <unit id="1347241542439262355">
       <segment state="initial">
         <source>General settings</source>
-        <target>Allgemeine Einstellungen</target>
+        <target>Paramètres généraux</target>
       </segment>
     </unit>
     <unit id="6471548761726956967">
       <segment state="initial">
         <source> General settings to tune your experience on PKFR Spot. </source>
-        <target> Deine allgemeinen Einstellungen für PKFR Spot </target>
+        <target> Paramètres généraux pour personnaliser votre expérience sur PKFR Spot. </target>
       </segment>
     </unit>
     <unit id="5851560788527570644">
       <segment state="initial">
         <source>Notifications</source>
-        <target>Benachrichtungen</target>
+        <target>Notifications</target>
       </segment>
     </unit>
     <unit id="5207635742003539443">
       <segment state="initial">
         <source>Sign in</source>
-        <target>Anmelden</target>
+        <target>Se connecter</target>
       </segment>
     </unit>
     <unit id="7028204981963450021">
       <segment state="initial">
         <source>Sign up</source>
-        <target>Registrieren</target>
+        <target>S’inscrire</target>
       </segment>
     </unit>
     <unit id="1237816927659510577">
@@ -335,7 +335,7 @@
       </notes>
       <segment state="initial">
         <source>My Profile</source>
-        <target>Mein Profil</target>
+        <target>Mon profil</target>
       </segment>
     </unit>
     <unit id="5060391165154083287">
@@ -345,7 +345,7 @@
       </notes>
       <segment state="initial">
         <source>Settings</source>
-        <target>Einstellungen</target>
+        <target>Paramètres</target>
       </segment>
     </unit>
     <unit id="339940386378543699">
@@ -355,187 +355,187 @@
       </notes>
       <segment state="initial">
         <source>Logout</source>
-        <target>Abmelden</target>
+        <target>Se déconnecter</target>
       </segment>
     </unit>
     <unit id="3539941729807255231">
       <segment state="initial">
         <source>Your E-mail has not been verified!</source>
-        <target>Deine E-Mail wurde noch nicht verifiziert!</target>
+        <target>Votre e-mail n’a pas été vérifié !</target>
       </segment>
     </unit>
     <unit id="133789173523080152">
       <segment state="initial">
         <source>Your E-mail is verified</source>
-        <target>Deine E-Mail ist verifiziert</target>
+        <target>Votre e-mail est vérifié</target>
       </segment>
     </unit>
     <unit id="6735606153713625905">
       <segment state="initial">
         <source>E-Mail and password</source>
-        <target>E-Mail und Passwort</target>
+        <target>Adresse e-mail et mot de passe</target>
       </segment>
     </unit>
     <unit id="947995176992343811">
       <segment state="initial">
         <source>This E-Mail address is not valid!</source>
-        <target>Diese E-Mail Adresse ist ungültig!</target>
+        <target>Cette adresse e-mail n’est pas valide !</target>
       </segment>
     </unit>
     <unit id="3865137547467472091">
       <segment state="initial">
         <source>The password field is empty!</source>
-        <target>Das Passwort Feld ist leer!</target>
+        <target>Le champ du mot de passe est vide !</target>
       </segment>
     </unit>
     <unit id="6663783128602596673">
       <segment state="initial">
         <source> Sign in </source>
-        <target> Anmelden </target>
+        <target> Se connecter </target>
       </segment>
     </unit>
     <unit id="4056337625566966411">
       <segment state="initial">
         <source> Forgot password </source>
-        <target> Passwort vergessen </target>
+        <target> Mot de passe oublié </target>
       </segment>
     </unit>
     <unit id="7931009175244499164">
       <segment state="initial">
         <source>OAuth providers</source>
-        <target>OAuth Anbieter</target>
+        <target>Fournisseurs OAuth</target>
       </segment>
     </unit>
     <unit id="1221014007346917816">
       <segment state="initial">
         <source>You can also sign in with:</source>
-        <target>Du kannst dich auch anmelden mit:</target>
+        <target>Vous pouvez aussi vous connecter avec :</target>
       </segment>
     </unit>
     <unit id="906351267490856003">
       <segment state="initial">
         <source> Don&apos;t have an account yet? Simply sign in with your Google account or sign up below. </source>
-        <target> Du hast keinen Account? Melde dich einfach mit Google an oder regestriere dich unten. </target>
+        <target> Vous n’avez pas encore de compte ? Connectez-vous simplement avec votre compte Google ou inscrivez-vous ci-dessous. </target>
       </segment>
     </unit>
     <unit id="4815152070613902062">
       <segment state="initial">
         <source> Sign up here </source>
-        <target> Hier registrieren </target>
+        <target> Inscrivez-vous ici </target>
       </segment>
     </unit>
     <unit id="5726791725186220555">
       <segment state="initial">
         <source>The E-mail address is invalid!</source>
-        <target>Diese E-Mail Adresse ist ungültig!</target>
+        <target>Cette adresse e-mail est invalide !</target>
       </segment>
     </unit>
     <unit id="427922060915202050">
       <segment state="initial">
         <source>The password is invalid!</source>
-        <target>Das Passwort ist ungültig!</target>
+        <target>Le mot de passe est invalide !</target>
       </segment>
     </unit>
     <unit id="2978266456005156211">
       <segment state="initial">
         <source>The E-mail address and password do not match for any existing user.</source>
-        <target>Für diese E-Mail Adresse und Passwort Kombination gibt es keinen Benutzer.</target>
+        <target>Aucun utilisateur ne correspond à cette combinaison d’adresse e-mail et de mot de passe.</target>
       </segment>
     </unit>
     <unit id="7733953409417762446">
       <segment state="initial">
         <source>An unknown error has occured on sign in. Please try again.</source>
-        <target>Ein unbekannter Fehler ist aufgetrete bei der Anmeldung. Bitte versueche es erneut.</target>
+        <target>Une erreur inconnue s’est produite lors de la connexion. Veuillez réessayer.</target>
       </segment>
     </unit>
     <unit id="7323901917278002498">
       <segment state="initial">
         <source>Sign in instead?</source>
-        <target>Lieber anmelden?</target>
+        <target>Se connecter à la place ?</target>
       </segment>
     </unit>
     <unit id="6969445338945867053">
       <segment state="initial">
         <source>Create a new account</source>
-        <target>Neuen Account erstellen</target>
+        <target>Créer un nouveau compte</target>
       </segment>
     </unit>
     <unit id="3013055597615607317">
       <segment state="initial">
         <source>Display Name</source>
-        <target>Anzeigename</target>
+        <target>Nom d’affichage</target>
       </segment>
     </unit>
     <unit id="5664264029355272360">
       <segment state="initial">
         <source>Don&apos;t worry, the display name can be changed later.</source>
-        <target>Keine sorge, der Anzeigename kann später geändert werden.</target>
+        <target>Ne vous inquiétez pas, le nom d’affichage peut être modifié plus tard.</target>
       </segment>
     </unit>
     <unit id="6858563845386603352">
       <segment state="initial">
         <source>The e-mail address needs to be verified later.</source>
-        <target>Die E-Mail Adresse muss später verifiziert werden.</target>
+        <target>L’adresse e-mail devra être vérifiée ultérieurement.</target>
       </segment>
     </unit>
     <unit id="7486528540316266957">
       <segment state="initial">
         <source>Choose a strong password.</source>
-        <target>Wähle ein starkes Passwort.</target>
+        <target>Choisissez un mot de passe fort.</target>
       </segment>
     </unit>
     <unit id="4541118533130714111">
       <segment state="initial">
         <source>Repeat Password</source>
-        <target>Passwort wiederholen</target>
+        <target>Répétez le mot de passe</target>
       </segment>
     </unit>
     <unit id="5261342889229534364">
       <segment state="initial">
         <source>The repeated password needs to match the password entered.</source>
-        <target>Das wiederholte Passwort muss dem ersten entsprechen.</target>
+        <target>Le mot de passe répété doit correspondre au premier mot de passe saisi.</target>
       </segment>
     </unit>
     <unit id="7571375880734710634">
       <segment state="initial">
         <source> Terms of Service </source>
-        <target> Terms of Service </target>
+        <target> Conditions d’utilisation </target>
       </segment>
     </unit>
     <unit id="3028950182768355353">
       <segment state="initial">
         <source> Privacy policy </source>
-        <target> Privacy policy </target>
+        <target> Politique de confidentialité </target>
       </segment>
     </unit>
     <unit id="3289630490580318568">
       <segment state="initial">
         <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Privacy Policy</pc> and agree to both.</source>
-        <target>Ich habe die <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms of Service</pc> und die <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacy declaration</pc> gelesen und verstanden und stimme beiden zu.</target>
+        <target>J’ai lu et compris les <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Conditions d’utilisation</pc> et la <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">politique de confidentialité</pc>, et j’y adhère.</target>
       </segment>
     </unit>
     <unit id="149974019994124409">
       <segment state="initial">
         <source> Create Account </source>
-        <target> Account erstellen </target>
+        <target> Créer un compte </target>
       </segment>
     </unit>
     <unit id="6464436780502674570">
       <segment state="initial">
         <source>Password and repeated password don&apos;t match</source>
-        <target>Die Passwörter stimmen nicht überein.</target>
+        <target>Le mot de passe et sa répétition ne correspondent pas</target>
       </segment>
     </unit>
     <unit id="1948163304836345687">
       <segment state="initial">
         <source>You need to agree to the terms and conditions!</source>
-        <target>Du musst den Terms and Conditions zustimmen.</target>
+        <target>Vous devez accepter les conditions d’utilisation !</target>
       </segment>
     </unit>
     <unit id="3601523967492159201">
       <segment state="initial">
         <source>Could not create account!</source>
-        <target>Account konnte nicht erstellt werden.</target>
+        <target>Impossible de créer le compte !</target>
       </segment>
     </unit>
     <unit id="share_spot_tooltip">
@@ -545,7 +545,7 @@
       </notes>
       <segment state="initial">
         <source>Share this spot</source>
-        <target>Spot teilen</target>
+        <target>Partager ce spot</target>
       </segment>
     </unit>
     <unit id="share_spot_aria_label">
@@ -555,7 +555,7 @@
       </notes>
       <segment state="initial">
         <source>Icon button with a share icon</source>
-        <target>Knopf mit &apos;Teilen&apos; Grafik</target>
+        <target>Bouton avec une icône de partage</target>
       </segment>
     </unit>
     <unit id="directions_spot_tooltip">
@@ -565,7 +565,7 @@
       </notes>
       <segment state="initial">
         <source>Directions to spot</source>
-        <target>Zu Spot navigieren</target>
+        <target>Itinéraire vers le spot</target>
       </segment>
     </unit>
     <unit id="directions_spot_aria_label">
@@ -575,13 +575,13 @@
       </notes>
       <segment state="initial">
         <source>Icon button with a directions icon</source>
-        <target>Knopf mit &apos;Navigation&apos; Grafik</target>
+        <target>Bouton avec une icône d’itinéraire</target>
       </segment>
     </unit>
     <unit id="5176788475731011723">
       <segment state="initial">
         <source>This spot was reported as &quot;<ph id="0" equiv="INTERPOLATION" disp="{{ report.reason }}"/>&quot;</source>
-        <target>Dieser Spot wurde gemeldet als &quot;<ph id="0" equiv="INTERPOLATION" disp="{{ report.reason }}"/>&quot;</target>
+        <target>Ce spot a été signalé comme &quot;<ph id="0" equiv="INTERPOLATION" disp="{{ report.reason }}"/>&quot;</target>
       </segment>
     </unit>
     <unit id="6807040359477339777">
@@ -591,85 +591,85 @@
       </notes>
       <segment state="initial">
         <source> Features and amenities </source>
-        <target>Eigenschaften und Annehmlichkeiten</target>
+        <target> Caractéristiques et équipements </target>
       </segment>
     </unit>
     <unit id="8011758699583016596">
       <segment state="initial">
         <source>Spots in this area</source>
-        <target>Spots in dieser Umgebung</target>
+        <target>Spots dans cette zone</target>
       </segment>
     </unit>
     <unit id="6590727333456499202">
       <segment state="initial">
         <source>New Spot</source>
-        <target>Neuer Spot</target>
+        <target>Nouveau spot</target>
       </segment>
     </unit>
     <unit id="5749021803913348721">
       <segment state="initial">
         <source>Spot saved successfully</source>
-        <target>Spot erfolgreich gespeichert</target>
+        <target>Spot enregistré avec succès</target>
       </segment>
     </unit>
     <unit id="1536087519743707362">
       <segment state="initial">
         <source>Dismiss</source>
-        <target>Ignorieren</target>
+        <target>Ignorer</target>
       </segment>
     </unit>
     <unit id="6957965842552679691">
       <segment state="initial">
         <source>Error saving spot</source>
-        <target>Fehler beim Speichern des Spots</target>
+        <target>Erreur lors de l’enregistrement du spot</target>
       </segment>
     </unit>
     <unit id="6024008212258429928">
       <segment state="initial">
         <source>Report Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ data.spot?.name }}"/>&apos;</source>
-        <target>Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ data.spot?.name }}"/>&apos; melden</target>
+        <target>Signaler le spot « <ph id="0" equiv="INTERPOLATION" disp="{{ data.spot?.name }}"/>  »</target>
       </segment>
     </unit>
     <unit id="8425796083769561052">
       <segment state="initial">
         <source>What would you like to report this spot for?</source>
-        <target>Wieso möchtest du diesen Spot melden?</target>
+        <target>Pour quelle raison souhaitez-vous signaler ce spot ?</target>
       </segment>
     </unit>
     <unit id="3278358550418950949">
       <segment state="initial">
         <source> Duplicate </source>
-        <target> Duplikat </target>
+        <target> Doublon </target>
       </segment>
     </unit>
     <unit id="4178793080892122578">
       <segment state="initial">
         <source>Torn down</source>
-        <target>Abgerissen</target>
+        <target>Démoli</target>
       </segment>
     </unit>
     <unit id="8374523856907728400">
       <segment state="initial">
         <source>Does not exist</source>
-        <target>Existiert nicht</target>
+        <target>N’existe pas</target>
       </segment>
     </unit>
     <unit id="4430765953319659794">
       <segment state="initial">
         <source>It&apos;s a private spot and should not be on this spot map.</source>
-        <target>Es ist ein privater Spot und er sollte nicht auf der Spot Karte sein.</target>
+        <target>C’est un spot privé et il ne devrait pas figurer sur cette carte.</target>
       </segment>
     </unit>
     <unit id="8693603235657020323">
       <segment state="initial">
         <source>Other</source>
-        <target>Anderes</target>
+        <target>Autre</target>
       </segment>
     </unit>
     <unit id="4965889425715950321">
       <segment state="initial">
         <source>Which spot is this spot a duplicate of?</source>
-        <target>Von welchem Spot ist dieser ein Duplikat?</target>
+        <target>De quel spot s’agit-il d’un doublon ?</target>
       </segment>
     </unit>
     <unit id="2029717048910432760">
@@ -681,7 +681,7 @@
     <unit id="4411046525037051458">
       <segment state="initial">
         <source> Note: Spot reports are public and will be displayed on the spot itself together with your profile and user name. </source>
-        <target> Anmerkung: Spot Meldungen sind öffentlich und werden auf dem Spot angezeigt, zusammen mit deinem Benutzerprofil. </target>
+        <target> Remarque : Les signalements de spots sont publics et seront affichés sur le spot lui-même, avec votre profil et nom d’utilisateur. </target>
       </segment>
     </unit>
     <unit id="2330577642930707695">
@@ -690,43 +690,43 @@
       </notes>
       <segment state="initial">
         <source> Cancel </source>
-        <target> Abbrechen </target>
+        <target> Annuler </target>
       </segment>
     </unit>
     <unit id="about.title">
       <segment state="initial">
         <source>About PKFR Spot</source>
-        <target>Über PKFR Spot</target>
+        <target>À propos de PKFR Spot</target>
       </segment>
     </unit>
     <unit id="pkfr.spotmap.title">
       <segment state="initial">
         <source>PKFR Spot map</source>
-        <target>PKFR Spot Karte</target>
+        <target>Carte PKFR Spot</target>
       </segment>
     </unit>
     <unit id="amenities.covered">
       <segment state="initial">
         <source>Covered</source>
-        <target>Gedeckt</target>
+        <target>Couvert</target>
       </segment>
     </unit>
     <unit id="amenities.outdoor">
       <segment state="initial">
         <source>Outdoor</source>
-        <target>Im Freien</target>
+        <target>Extérieur</target>
       </segment>
     </unit>
     <unit id="amenities.indoor">
       <segment state="initial">
         <source>Indoor</source>
-        <target>Innenbereich</target>
+        <target>Intérieur</target>
       </segment>
     </unit>
     <unit id="amenities.lighting">
       <segment state="initial">
         <source>Lighting</source>
-        <target>Beleuchtung</target>
+        <target>Éclairage</target>
       </segment>
     </unit>
     <unit id="amenities.wc">
@@ -738,43 +738,43 @@
     <unit id="amenities.changing_room">
       <segment state="initial">
         <source>Changing room</source>
-        <target>Umkleidekabinen</target>
+        <target>Vestiaires</target>
       </segment>
     </unit>
     <unit id="amenities.lockers">
       <segment state="initial">
         <source>Lockers</source>
-        <target>Schließfächer</target>
+        <target>Consignes</target>
       </segment>
     </unit>
     <unit id="amenities.entry_fee">
       <segment state="initial">
         <source>Entry fee</source>
-        <target>Kostenpflichtig</target>
+        <target>Frais d’entrée</target>
       </segment>
     </unit>
     <unit id="amenities.drinking_water">
       <segment state="initial">
         <source>Drinking water</source>
-        <target>Trinkwasser</target>
+        <target>Eau potable</target>
       </segment>
     </unit>
     <unit id="amenities.parking_on_site">
       <segment state="initial">
         <source>Parking on site</source>
-        <target>Parkplätze</target>
+        <target>Parking disponible</target>
       </segment>
     </unit>
     <unit id="amenities.power_outlets">
       <segment state="initial">
         <source>Power outlets</source>
-        <target>Steckdosen</target>
+        <target>Prises électriques</target>
       </segment>
     </unit>
     <unit id="amenities.maybe_overgrown">
       <segment state="initial">
         <source>Maybe overgrown</source>
-        <target>Vielleicht überwuchert</target>
+        <target>Possiblement envahi par la végétation</target>
       </segment>
     </unit>
     <unit id="spot.locality.pretext">
@@ -783,7 +783,7 @@
       </notes>
       <segment state="initial">
         <source>Spot in </source>
-        <target>Spot in </target>
+        <target>Spot à </target>
       </segment>
     </unit>
     <unit id="spot_highlights">
@@ -792,7 +792,7 @@
       </notes>
       <segment state="initial">
         <source> Highlights </source>
-        <target> Highlights </target>
+        <target> Points forts </target>
       </segment>
     </unit>
     <unit id="regular_spots_text">
@@ -807,7 +807,7 @@
       </notes>
       <segment state="initial">
         <source> There are no highlighted spots for this area, zoom in on dots in the map to discover other spots. </source>
-        <target> Es gibt keine Highlights für diese Region, zoom rein auf Punkte in der Karte um weitere Spots zu entdecken. </target>
+        <target> Il n’y a aucun point fort pour cette région ; zoomez sur les points de la carte pour découvrir d’autres spots. </target>
       </segment>
     </unit>
     <unit id="lang_btn_label">
@@ -817,19 +817,19 @@
       </notes>
       <segment state="initial">
         <source>Language</source>
-        <target>Sprache</target>
+        <target>Langue</target>
       </segment>
     </unit>
     <unit id="5583221507916400426">
       <segment state="initial">
         <source>Rating and user reviews</source>
-        <target>Bewertung und user Rezensionen</target>
+        <target>Évaluation et avis des utilisateurs</target>
       </segment>
     </unit>
     <unit id="3651210692254714604">
       <segment state="initial">
         <source>This spot has no reviews yet, be the first to leave one!</source>
-        <target>Dieser Spot hat noch keine Rezensionen, sei die erste Person die diesen Spot bewertet!</target>
+        <target>Ce spot n’a pas encore d’avis ; soyez le premier à en laisser un !</target>
       </segment>
     </unit>
     <unit id="review_spot_tooltip">
@@ -839,7 +839,7 @@
       </notes>
       <segment state="initial">
         <source>Review this spot</source>
-        <target>Diesen Spot bewerten</target>
+        <target>Évaluer ce spot</target>
       </segment>
     </unit>
     <unit id="review_spot_button_label">
@@ -849,19 +849,19 @@
       </notes>
       <segment state="initial">
         <source> Review spot </source>
-        <target> Spot bewerten </target>
+        <target> Évaluer ce spot </target>
       </segment>
     </unit>
     <unit id="9074160907730350759">
       <segment state="initial">
         <source>Review Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}"/>&apos;</source>
-        <target>Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}"/>&apos; bewerten</target>
+        <target>Évaluer le spot « <ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}"/>  »</target>
       </segment>
     </unit>
     <unit id="6435282697411612190">
       <segment state="initial">
         <source>What would you rate this spot from one to five stars?</source>
-        <target>Was würdest du diesem Spot von eins bis fünf Sterne geben?</target>
+        <target>Quelle note donneriez-vous à ce spot, de une à cinq étoiles ?</target>
       </segment>
     </unit>
     <unit id="6715455427777949206">
@@ -870,13 +870,13 @@
       </notes>
       <segment state="initial">
         <source> <ph id="0" equiv="INTERPOLATION" disp="{{ isUpdate ? &quot;Update&quot; : &quot;&quot; }}"/> Review </source>
-        <target> Bewertung <ph id="0" equiv="INTERPOLATION" disp="{{ isUpdate ? &quot;aktualisieren&quot; : &quot;hinzufügen&quot; }}"/> </target>
+        <target> <ph id="0" equiv="INTERPOLATION" disp="{{ isUpdate ? &quot;Mettre à jour&quot; : &quot;&quot; }}"/> Évaluation </target>
       </segment>
     </unit>
     <unit id="1115951775217164684">
       <segment state="initial">
         <source>{VAR_PLURAL, plural, =0 {no reviews} =1 {1 review} other {<ph id="0" equiv="INTERPOLATION"/> reviews}}</source>
-        <target>{VAR_PLURAL, plural, =0 {Keine Bewertungen} =1 {1 Bewertung} other {<ph id="0" equiv="INTERPOLATION"/> Bewertungen}}</target>
+        <target>{VAR_PLURAL, plural, =0 {Aucun avis} =1 {1 avis} other {<ph id="0" equiv="INTERPOLATION"/> avis}}</target>
       </segment>
     </unit>
     <unit id="address_title">
@@ -892,73 +892,73 @@
     <unit id="3687194426938367329">
       <segment state="initial">
         <source>Partners</source>
-        <target>Partner</target>
+        <target>Partenaires</target>
       </segment>
     </unit>
     <unit id="5729418620241283277">
       <segment state="initial">
         <source>Events</source>
-        <target>Events</target>
+        <target>Événements</target>
       </segment>
     </unit>
     <unit id="8151017381798767627">
       <segment state="initial">
         <source>Embed</source>
-        <target>Einbetten</target>
+        <target>Intégrer</target>
       </segment>
     </unit>
     <unit id="5837993987248997726">
       <segment state="initial">
         <source>Embedding Preferences</source>
-        <target>Einbettungs Einstellungen</target>
+        <target>Préférences d’intégration</target>
       </segment>
     </unit>
     <unit id="7049904563073707059">
       <segment state="initial">
         <source>Show satellite toggle</source>
-        <target>Satelliten-Karten Schalter anzeigen</target>
+        <target>Afficher le bouton satellite</target>
       </segment>
     </unit>
     <unit id="7344847855829755220">
       <segment state="initial">
         <source>Show geolocation</source>
-        <target>Geo-Standort anzeigen</target>
+        <target>Afficher la géolocalisation</target>
       </segment>
     </unit>
     <unit id="403853342752104901">
       <segment state="initial">
         <source>Spots at this event</source>
-        <target>Spots an diesem Event</target>
+        <target>Spots lors de cet événement</target>
       </segment>
     </unit>
     <unit id="date_tba">
       <segment state="initial">
         <source>Exact Date TBA</source>
-        <target>Exaktes Datum wird noch bekannt gegeben,</target>
+        <target>Date exacte à confirmer</target>
       </segment>
     </unit>
     <unit id="6044258067304510448">
       <segment state="initial">
         <source>Starts in: </source>
-        <target>Beginnt in: </target>
+        <target>Commence dans : </target>
       </segment>
     </unit>
     <unit id="welcomeDialogTitle">
       <segment state="initial">
         <source>Welcome to PKFR Spot!</source>
-        <target>Willkommen bei PKFR Spot!</target>
+        <target>Bienvenue sur PKFR Spot !</target>
       </segment>
     </unit>
     <unit id="agreeAndContinueLabel">
       <segment state="initial">
         <source> Agree and Continue </source>
-        <target> Zustimmen und Weiter </target>
+        <target> Accepter et continuer </target>
       </segment>
     </unit>
     <unit id="welcomeDialogButtonInfo">
       <segment state="initial">
         <source> By clicking &quot;Agree and continue&quot;, you accept our <pc id="0" equivStart="START_LINK" equivEnd="CLOSE_LINK" type="link" dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">Terms of Service</pc> and <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK" type="link" dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;">Privacy Policy</pc>. </source>
-        <target> Beim klicken auf &apos;Zustimmen und Weiter&apos;, stimmen sie unseren <pc id="0" equivStart="START_LINK" equivEnd="CLOSE_LINK" type="link" dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">Terms of Service</pc> und unserer <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK" type="link" dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;">Privacy Policy</pc> zu. </target>
+        <target> En continuant, vous acceptez nos <pc id="0" equivStart="START_LINK" equivEnd="CLOSE_LINK" type="link" dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">conditions d&apos;utilisation</pc> et notre <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK" type="link" dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;">politique de confidentialité</pc>. </target>
       </segment>
     </unit>
     <unit id="3148120434799119252">
@@ -970,7 +970,7 @@
     <unit id="welcomeDialogText">
       <segment state="initial">
         <source> Explore spots, posts, and more from our Parkour and Freerunning community. To access our content, please agree to our Terms of Service and Privacy Policy. We value your privacy and don&apos;t store cookies. 🍪 </source>
-        <target> Entdecke Spots, Beiträge und mehr aus unserer Parkour- und Freerunning-Community. Um auf unsere Inhalte zuzugreifen, stimme bitte unseren Nutzungsbedingungen und Datenschutzrichtlinien zu. Wir schätzen deine Privatsphäre und speichern keine Cookies. 🍪 </target>
+        <target> Explorez des spots, des publications et bien plus encore de notre communauté de parkour et de freerunning. Pour accéder à notre contenu, veuillez accepter nos Conditions d&apos;utilisation et notre Politique de confidentialité. Nous accordons une grande importance à votre vie privée et nous ne stockons pas de cookies. 🍪 </target>
       </segment>
     </unit>
   </file>
