@@ -3,30 +3,40 @@ import { Component, Input, OnInit } from "@angular/core";
 import { NgFor } from "@angular/common";
 
 @Component({
-    selector: "app-fancy-counter",
-    templateUrl: "./fancy-counter.component.html",
-    styleUrls: ["./fancy-counter.component.scss"],
-    animations: [
-        trigger("digitChange", [
-            transition(":enter", [
-                style({
-                    opacity: 0,
-                    transform: "translateY({{incrementMinus}}1em)",
-                }),
-                animate("200ms ease", style({ opacity: 1, transform: "none" })),
-            ], { params: { incrementMinus: "-" } }),
-            transition(":leave", [
-                style({ position: "absolute" }),
-                animate("50ms ease", style({
-                    opacity: 0,
-                    //transform: "scale(0)",
-                    //transform: "translateY({{decrementMinus}}1em)",
-                })),
-            ], { params: { decrementMinus: "" } }),
-        ]),
-    ],
-    standalone: true,
-    imports: [NgFor],
+  selector: "app-fancy-counter",
+  templateUrl: "./fancy-counter.component.html",
+  styleUrls: ["./fancy-counter.component.scss"],
+  animations: [
+    trigger("digitChange", [
+      transition(
+        ":enter",
+        [
+          style({
+            opacity: 0,
+            transform: "translateY({{incrementMinus}}1rem)",
+          }),
+          animate("200ms ease", style({ opacity: 1, transform: "none" })),
+        ],
+        { params: { incrementMinus: "-" } }
+      ),
+      transition(
+        ":leave",
+        [
+          style({ position: "absolute" }),
+          animate(
+            "50ms ease",
+            style({
+              opacity: 0,
+              //transform: "scale(0)",
+              //transform: "translateY({{decrementMinus}}1rem)",
+            })
+          ),
+        ],
+        { params: { decrementMinus: "" } }
+      ),
+    ]),
+  ],
+  imports: [NgFor],
 })
 export class FancyCounterComponent implements OnInit {
   private _number: number = 0;

@@ -6,15 +6,15 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
-import { Post } from "../../db/Post";
+import { Post } from "../../db/models/Post";
 import { PostCollectionComponent } from "../post-collection/post-collection.component";
 import { MatDialog } from "@angular/material/dialog";
 import { MatDrawer } from "@angular/material/sidenav";
 import { EditPostDialogComponent } from "../edit-post-dialog/edit-post-dialog.component";
-import { StorageService } from "../services/storage.service";
-import { AuthenticationService } from "../services/authentication.service";
 import { Spot } from "../../db/models/Spot";
 import { MediaType } from "../../db/models/Interfaces";
+import { StorageService } from "../services/firebase/storage.service";
+import { AuthenticationService } from "../services/firebase/authentication.service";
 import { DocumentChangeType } from "@angular/fire/compat/firestore";
 import { Observable, Subscription } from "rxjs";
 import { GeoPoint, Timestamp } from "firebase/firestore";
@@ -22,13 +22,12 @@ import { MatIcon } from "@angular/material/icon";
 import { MatFabButton } from "@angular/material/button";
 import { NgIf } from "@angular/common";
 import { MatTabGroup, MatTab } from "@angular/material/tabs";
-import { PostsService } from "../services/firestore-services/posts.service";
+import { PostsService } from "../services/firebase/firestore/posts.service";
 
 @Component({
   selector: "app-home-page",
   templateUrl: "./home-page.component.html",
   styleUrls: ["./home-page.component.scss"],
-  standalone: true,
   imports: [
     MatTabGroup,
     NgIf,
@@ -210,7 +209,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     body: string,
     mediaType: MediaType | null,
     location: google.maps.LatLngLiteral | null,
-    spot: Spot.Spot | null
+    spot: Spot | null
   ) {
     let post: Post.Schema = {
       title: title,
@@ -228,10 +227,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
 
     if (spot) {
-      const lat = spot.location.lat;
-      const lng = spot.location.lng;
+      const lat = spot.location().lat;
+      const lng = spot.location().lng;
       post.spot = {
-        name: spot.getName(this.locale),
+        name: spot.name,
         spot_location: new GeoPoint(lat, lng),
         image_src: spot.media && spot.media[0]?.src ? spot.media[0].src : "",
         ref: this._postsService.docRef("spots/" + spot.id),

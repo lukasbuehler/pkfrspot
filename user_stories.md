@@ -6,11 +6,12 @@
 
 - [ ] As a Freerunner, I want to see clips from other Freerunners as inspiration.
 
-### Discovering Spots
+### Discovering Spots and Challenges
 
 - [x] As a practicing Freerunner before a training, I want to see spots in an area so I can train at new spots.
-- [x] As a Parkour Athlete, I have heard about a spot and I want to be able to find information about it.
-- [ ] As a Parkour Athlete, I want to see the best spots in a region.
+- [x] As a Parkour athlete, I have heard about a spot and I want to be able to find information about it.
+- [ ] As a Parkour athlete, I want to see the best spots in a region.
+- [ ] As a Parkour athlete I want to see Challenges a spot offers and add missing ones.
 
 ### Planning Trainings
 
@@ -35,6 +36,7 @@
 
 - [ ] As a Freerunner after a training session, I want to share photos and videos of said training with the other participants.
 - [ ] As a Freerunner after a training session, I want to post my best line for others to see.
+- [ ] As a Parkour athlete after completing a challenge, I want to create a post and link it to the corresponding spot challenge for all to see.
 
 ### Tracking progress
 

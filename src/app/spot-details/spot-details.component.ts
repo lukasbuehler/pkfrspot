@@ -20,10 +20,13 @@ import {
 } from "@angular/material/progress-bar";
 import { Spot } from "../../db/models/Spot";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
-import { StorageService, StorageFolder } from "../services/storage.service";
-import { Post } from "../../db/Post";
+import { Post } from "../../db/models/Post";
+import {
+  StorageService,
+  StorageFolder,
+} from "../services/firebase/storage.service";
 import { Observable, Subscription } from "rxjs";
-import { AuthenticationService } from "../services/authentication.service";
+import { AuthenticationService } from "../services/firebase/authentication.service";
 import {
   AmenityIcons,
   AmenityNames,
@@ -38,8 +41,6 @@ import {
 
 import {
   isoCountryCodeToFlagEmoji,
-  getCountryNameInLanguage,
-  getCountriesList,
   isMobileDevice,
 } from "../../scripts/Helpers";
 import { UntypedFormControl, FormsModule } from "@angular/forms";
@@ -60,7 +61,12 @@ import { SpotRatingComponent } from "../spot-rating/spot-rating.component";
 import { MatIcon } from "@angular/material/icon";
 import { MatTooltip } from "@angular/material/tooltip";
 import { MatIconButton, MatButton } from "@angular/material/button";
-import { NgIf, KeyValuePipe, LocationStrategy } from "@angular/common";
+import {
+  NgIf,
+  KeyValuePipe,
+  LocationStrategy,
+  NgOptimizedImage,
+} from "@angular/common";
 import { MatChipListbox, MatChipsModule } from "@angular/material/chips";
 import { MatRipple, MatOption } from "@angular/material/core";
 import {
@@ -73,11 +79,11 @@ import {
 } from "@angular/material/card";
 import { create } from "core-js/core/object";
 import { MatDividerModule } from "@angular/material/divider";
-import { SpotsService } from "../services/firestore-services/spots.service";
-import { SpotReportsService } from "../services/firestore-services/spot-reports.service";
-import { PostsService } from "../services/firestore-services/posts.service";
-import { SpotReview } from "../../db/SpotReview.js";
-import { SpotReviewsService } from "../services/firestore-services/spot-reviews.service";
+import { SpotsService } from "../services/firebase/firestore/spots.service";
+import { SpotReportsService } from "../services/firebase/firestore/spot-reports.service";
+import { PostsService } from "../services/firebase/firestore/posts.service";
+import { SpotReview } from "../../db/models/SpotReview";
+import { SpotReviewsService } from "../services/firebase/firestore/spot-reviews.service";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
@@ -105,7 +111,6 @@ export class ReversePipe implements PipeTransform {
       ),
     ]),
   ],
-  standalone: true,
   imports: [
     MatCard,
     MatRipple,
@@ -136,6 +141,7 @@ export class ReversePipe implements PipeTransform {
     MatProgressBarModule,
     KeyValuePipe,
     ReversePipe,
+    NgOptimizedImage,
   ],
 })
 export class SpotDetailsComponent implements AfterViewInit, OnChanges {
@@ -220,8 +226,6 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit() {
-    this.countries = getCountriesList("en"); // TODO wtf to do about this
-
     this.isAppleMaps = this._mapsApiService.isMacOSOriOS();
   }
 
@@ -454,10 +458,6 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
 
     console.log("Unsubscribing...");
     this.postSubscription.unsubscribe();
-  }
-
-  getCountryNameFromShortCode(shortCountryCode) {
-    return getCountryNameInLanguage(shortCountryCode);
   }
 
   getCountryEmojiFromAlpha2(countryAlpha2Code) {

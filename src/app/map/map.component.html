@@ -156,6 +156,7 @@
   </div> } -->
 
   <!-- Geolocation -->
+  @if(showGeolocation) {
   <div #geolocationMarker class="geolocation-marker"></div>
   <map-advanced-marker
     *ngIf="geolocation$ | async"
@@ -171,6 +172,7 @@
     [radius]="(geolocation$ | async).accuracy"
     [options]="geolocationCircleOptions"
   ></map-circle>
+  }
 
   <!-- Markers -->
   <map-advanced-marker

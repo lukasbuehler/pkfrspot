@@ -250,11 +250,11 @@
         {{ spot.getReadableLocation() }}
       </p>
       }
-      <div class="d-flex flex-row gap-2">
+      <div class="d-flex flex-column flex-xl-row gap-2">
         <button
           mat-stroked-button
           color="primary"
-          class="flex-grow-1 flex-basis-0"
+          class="flex-grow-1 flex-basis-0 py-2"
           i18n-matTooltip="
             Open in maps button tooltip|Tooltip of button to open the spot in
             maps@@open_maps_tooltip"
@@ -269,7 +269,7 @@
         <button
           mat-stroked-button
           color="primary"
-          class="flex-grow-1 flex-basis-0"
+          class="flex-grow-1 flex-basis-0 py-2"
           matTooltip="Navigate to this spot"
           (click)="openDirectionsInMaps()"
           i18n="@@directions_spot_tooltip"
@@ -278,6 +278,30 @@
         </button>
       </div>
     </div>
+
+    <!-- Spot Challenges -->
+    <!-- <mat-divider></mat-divider> -->
+    <!-- <div class="mb-4">
+      <h4 class="mat-title-small mt-3" i18n>Challenges</h4>
+      <div class="challenge-preview-grid">
+        @for(challenge of [].constructor(3); track challenge) {
+        <div class="d-flex flex-column">
+          <div
+            class="rounded w-100 overflow-hidden position-relative"
+            style="aspect-ratio: 1; background-color: #2c2d31"
+          >
+            <img
+              ngSrc="/assets/no_media.png"
+              fill
+              class="w-100 h-100"
+              style="object-fit: cover"
+            />
+          </div>
+          <span>Challenge</span>
+        </div>
+        }
+      </div>
+    </div> -->
 
     <!-- Action buttons -->
     @if(authenticationService.isSignedIn) {

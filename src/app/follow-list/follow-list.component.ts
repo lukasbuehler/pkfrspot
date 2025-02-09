@@ -21,7 +21,7 @@ import {
   MatRow,
 } from "@angular/material/table";
 import { NgIf } from "@angular/common";
-import { FollowingService } from "../services/firestore-services/following.service.js";
+import { FollowingService } from "../services/firebase/firestore/following.service.js";
 
 export interface FollowListDialogData {
   userId: string;
@@ -49,7 +49,6 @@ export class FollowDurationPipe implements PipeTransform {
   selector: "app-follow-list",
   templateUrl: "./follow-list.component.html",
   styleUrls: ["./follow-list.component.scss"],
-  standalone: true,
   imports: [
     MatDialogTitle,
     NgIf,

@@ -13,10 +13,9 @@ import { MatInputModule } from "@angular/material/input";
 import { SpotReport, SpotReportReason } from "../../db/SpotReport";
 import { MatRadioModule } from "@angular/material/radio";
 import { FormsModule } from "@angular/forms";
-import { SpotReportsService } from "../services/firestore-services/spot-reports.service.js";
+import { SpotReportsService } from "../services/firebase/firestore/spot-reports.service.js";
 @Component({
   selector: "app-spot-report-dialog",
-  standalone: true,
   imports: [
     MatFormFieldModule,
     MatInputModule,

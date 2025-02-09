@@ -14,7 +14,7 @@ import { ActivatedRoute } from "@angular/router";
 import { GeoPoint } from "firebase/firestore";
 import { firstValueFrom, take, timeout } from "rxjs";
 import { MapHelpers } from "../../scripts/MapHelpers";
-import { AuthenticationService } from "../services/authentication.service";
+import { AuthenticationService } from "../services/firebase/authentication.service";
 import { MapComponent } from "../map/map.component";
 import {
   ClusterTileKey,
@@ -32,7 +32,7 @@ import {
   transition,
   trigger,
 } from "@angular/animations";
-import { SpotsService } from "../services/firestore-services/spots.service";
+import { SpotsService } from "../services/firebase/firestore/spots.service";
 
 /**
  * This interface is used to reference a spot in the loaded spots array.
@@ -48,7 +48,6 @@ interface LoadedSpotReference {
   selector: "app-spot-map",
   templateUrl: "./spot-map.component.html",
   styleUrls: ["./spot-map.component.scss"],
-  standalone: true,
   imports: [MapComponent, MatSnackBarModule],
   animations: [],
 })
@@ -86,9 +85,22 @@ export class SpotMapComponent implements AfterViewInit {
   @Input() markers: google.maps.LatLngLiteral[] = [];
   @Input() selectedMarker: google.maps.LatLngLiteral | null = null;
 
+  @Input() focusZoom: number = 17;
+
   @Input() isClickable: boolean = true;
 
-  uneditedSpot: Spot.Spot = null;
+  @Input() showGeolocation: boolean = true;
+  @Input() showSatelliteToggle: boolean = false;
+  @Input() minZoom: number = 4;
+  @Input() boundRestriction: {
+    north: number;
+    south: number;
+    west: number;
+    east: number;
+  } | null = null;
+  @Input() spots: Spot[] = [];
+
+  uneditedSpot: Spot = null;
 
   startZoom: number = 4;
   mapZoom: number = this.startZoom;
@@ -393,7 +405,46 @@ export class SpotMapComponent implements AfterViewInit {
     this.hightlightedSpotsChange.emit(this.hightlightedSpots);
   }
 
-  openSpot(spot: Spot.Spot) {
+  openSpotByWhateverMeansNecessary(spot: Spot | SpotPreviewData | SpotId) {
+    console.debug("Opening spot by whatever means necessary:", spot);
+
+    if (spot instanceof Spot) {
+      this.openSpot(spot);
+    }
+    let spotId: SpotId;
+
+    if (typeof spot === "string") {
+      spotId = spot;
+    } else if ("id" in spot) {
+      spotId = spot.id as SpotId;
+      if ("location" in spot) {
+        this.focusPoint(spot.location());
+      }
+    } else {
+      console.error("Invalid spot data provided:", spot);
+      return;
+    }
+
+    this.openSpotById(spotId);
+  }
+
+  openSpotById(spotId: SpotId) {
+    if (!spotId) {
+      console.error("No spot ID provided to open spot by ID");
+      return;
+    }
+
+    console.log("Opening spot by ID", spotId);
+    firstValueFrom(this._spotsService.getSpotById$(spotId)).then((spot) => {
+      if (spot) {
+        this.openSpot(spot);
+      } else {
+        console.error("Spot with ID", spotId, "not found");
+      }
+    });
+  }
+
+  openSpot(spot: Spot.Class) {
     this.setSelectedSpot(spot);
     this.focusSpot(spot);
   }
@@ -402,7 +453,7 @@ export class SpotMapComponent implements AfterViewInit {
     this.focusPoint(spot.location);
   }
 
-  focusPoint(point: google.maps.LatLngLiteral, zoom: number = 17) {
+  focusPoint(point: google.maps.LatLngLiteral, zoom: number = this.focusZoom) {
     this.map.googleMap.panTo(point);
     if (this.mapZoom < zoom) {
       this.mapZoom = zoom;

@@ -10,7 +10,7 @@ import {
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { Spot, SpotPreviewData } from "../../db/models/Spot";
-import { StorageService } from "../services/storage.service";
+import { StorageService } from "../services/firebase/storage.service";
 import { MatCardModule } from "@angular/material/card";
 import { MatRippleModule } from "@angular/material/core";
 import { MatIconModule } from "@angular/material/icon";
@@ -21,7 +21,6 @@ import { SpotRatingComponent } from "../spot-rating/spot-rating.component";
   selector: "app-spot-preview-card",
   templateUrl: "./spot-preview-card.component.html",
   styleUrls: ["./spot-preview-card.component.scss"],
-  standalone: true,
   imports: [
     MatCardModule,
     MatRippleModule,

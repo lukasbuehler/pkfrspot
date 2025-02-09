@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { AuthenticationService } from "../services/authentication.service";
+import { AuthenticationService } from "../services/firebase/authentication.service";
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -19,7 +19,6 @@ import { PageHeaderComponent } from "../page-header/page-header.component";
   selector: "app-sign-in-page",
   templateUrl: "./sign-in-page.component.html",
   styleUrls: ["./sign-in-page.component.scss"],
-  standalone: true,
   imports: [
     PageHeaderComponent,
     FormsModule,

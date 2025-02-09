@@ -16,20 +16,32 @@
       "i18n": {
         "sourceLocale": {
           "code": "en",
-          "baseHref": "/en/"
+          "subPath": "en"
         },
         "locales": {
           "de": {
             "translation": "src/locale/messages.de.xlf",
-            "baseHref": "/de/"
+            "subPath": "de"
           },
           "de-CH": {
             "translation": "src/locale/messages.de-CH.xlf",
-            "baseHref": "/de-CH/"
+            "subPath": "de-CH"
           },
           "it": {
             "translation": "src/locale/messages.it.xlf",
-            "baseHref": "/it/"
+            "subPath": "it"
+          },
+          "fr": {
+            "translation": "src/locale/messages.fr.xlf",
+            "subPath": "fr"
+          },
+          "es": {
+            "translation": "src/locale/messages.es.xlf",
+            "subPath": "es"
+          },
+          "nl": {
+            "translation": "src/locale/messages.nl.xlf",
+            "subPath": "nl"
           }
         }
       },
@@ -37,12 +49,18 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "localize": ["en", "de", "de-CH", "it"],
+            "optimization": {
+              "styles": {
+                "inlineCritical": false
+              }
+            },
+            "localize": ["en", "de", "de-CH", "it", "fr", "es", "nl"],
             "outputPath": "dist/pkfrspot",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js", "@angular/localize/init"],
             "tsConfig": "tsconfig.app.json",
+            "sourceMap": true,
             "assets": [
               "src/favicon.ico",
               "src/assets",
@@ -81,7 +99,7 @@
             }
           },
           "configurations": {
-            "development": {
+            "dev-fast": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -89,17 +107,26 @@
                 }
               ],
               "outputHashing": "none",
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": true,
-                  "inlineCritical": false
-                },
-                "fonts": true
-              },
-              "sourceMap": true,
-              "localize": ["de-CH"],
-              "baseHref": "/de-CH/"
+              "optimization": false,
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": false,
+              "statsJson": false,
+              "progress": false,
+              "localize": ["de"],
+              "baseHref": "/de/"
+            },
+            "dev-debug": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ],
+              "optimization": false,
+              "localize": ["de"],
+              "baseHref": "/de/"
             },
             "staging": {
               "fileReplacements": [
@@ -129,7 +156,7 @@
                   "with": "src/environments/environment.production.ts"
                 }
               ],
-              "outputHashing": "all",
+              "optimization": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -148,10 +175,13 @@
         },
 
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "configurations": {
-            "development": {
-              "buildTarget": "pkfrspot:build:development"
+            "dev-fast": {
+              "buildTarget": "pkfrspot:build:dev-fast"
+            },
+            "dev-debug": {
+              "buildTarget": "pkfrspot:build:dev-debug"
             },
             "staging": {
               "buildTarget": "pkfrspot:build:staging"
@@ -160,18 +190,21 @@
               "buildTarget": "pkfrspot:build:production"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "dev-debug"
         },
         "extract-i18n": {
           "builder": "ng-extract-i18n-merge:ng-extract-i18n-merge",
           "options": {
-            "buildTarget": "pkfrspot:build",
+            "buildTarget": "pkfrspot:build:dev-debug",
             "format": "xlf2",
             "outputPath": "src/locale",
             "targetFiles": [
               "messages.de.xlf",
               "messages.de-CH.xlf",
-              "messages.it.xlf"
+              "messages.it.xlf",
+              "messages.fr.xlf",
+              "messages.es.xlf",
+              "messages.nl.xlf"
             ]
           }
         }

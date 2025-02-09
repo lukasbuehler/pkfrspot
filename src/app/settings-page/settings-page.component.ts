@@ -9,7 +9,7 @@ import {
   NgSwitchCase,
   NgIf,
 } from "@angular/common";
-import { AuthenticationService } from "../services/authentication.service";
+import { AuthenticationService } from "../services/firebase/authentication.service";
 import { EditProfileComponent } from "../edit-profile/edit-profile.component";
 import {
   SpeedDialFabButtonConfig,
@@ -32,7 +32,6 @@ import { MatButton } from "@angular/material/button";
   selector: "app-settings-page",
   templateUrl: "./settings-page.component.html",
   styleUrls: ["./settings-page.component.scss"],
-  standalone: true,
   imports: [
     NgFor,
     MatButton,

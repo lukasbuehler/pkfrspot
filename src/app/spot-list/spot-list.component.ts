@@ -13,7 +13,6 @@ import { RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-spot-list",
-  standalone: true,
   imports: [
     SpotPreviewCardComponent,
     MatButtonToggleModule,
@@ -25,10 +24,12 @@ import { RouterLink } from "@angular/router";
 })
 export class SpotListComponent implements OnChanges {
   @Input() highlightedSpots: SpotPreviewData[] = [];
-  @Input() spots: Spot.Spot[];
+  @Input() spots: Spot[] = [];
+
+  @Input() text: string = $localize`Spots in this area`;
 
   // all spots minus the highlighted spots, set manually in ngOnChanges
-  remainingSpots: Spot.Spot[] = [];
+  remainingSpots: Spot[] = [];
 
   // @Output() clickSpot: EventEmitter<Spot.Class> =
   //   new EventEmitter<Spot.Class>();

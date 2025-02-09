@@ -5,7 +5,7 @@ import { Spot } from "../../db/models/Spot";
 import { MapHelpers } from "../../scripts/MapHelpers";
 
 import { parseString } from "xml2js";
-import { SpotsService } from "./firestore-services/spots.service";
+import { SpotsService } from "./firebase/firestore/spots.service";
 import { MapsApiService } from "./maps-api.service";
 
 export interface KMLSetupInfo {

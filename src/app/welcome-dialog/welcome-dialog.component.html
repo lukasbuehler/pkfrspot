@@ -1,0 +1,33 @@
+<h2 mat-dialog-title i18n="@@welcomeDialogTitle">Welcome to PKFR Spot!</h2>
+<mat-dialog-content>
+  <p class="mat-body-medium" i18n="@@welcomeDialogText">
+    Explore spots, posts, and more from our Parkour and Freerunning community.
+    To access our content, please agree to our Terms of Service and Privacy
+    Policy. We value your privacy and don't store cookies. 🍪
+  </p>
+
+  <p class="mat-title-small" i18n="@@welcomeDialogButtonInfo">
+    By clicking "Agree and continue", you accept our
+    <a routerLink="/terms-of-service">Terms of Service</a> and
+    <a routerLink="/privacy-policy">Privacy Policy</a>.
+  </p>
+
+  <!-- <div class="d-flex flex-row justify-content-evenly">
+    <a mat-stroked-button i18n routerLink="/terms-of-service">
+      Terms of Service
+    </a>
+    <a mat-stroked-button i18n routerLink="/privacy-policy">Privacy Policy</a>
+  </div> -->
+</mat-dialog-content>
+<mat-dialog-actions
+  class="d-flex flex-row flex-nowrap justify-content-end p-3 gap-5"
+>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="agreeAndContinue()"
+    i18n="@@agreeAndContinueLabel"
+  >
+    Agree and Continue
+  </button>
+</mat-dialog-actions>

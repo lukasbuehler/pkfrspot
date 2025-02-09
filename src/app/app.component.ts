@@ -1,16 +1,25 @@
-import { Component, HostListener, OnInit } from "@angular/core";
+import {
+  Component,
+  HostListener,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal,
+} from "@angular/core";
 import {
   Router,
   RoutesRecognized,
   RouterLink,
   RouterOutlet,
+  ActivatedRoute,
+  NavigationEnd,
 } from "@angular/router";
-import { filter, map } from "rxjs/operators";
-import { AuthenticationService } from "./services/authentication.service";
-import { StorageService } from "./services/storage.service";
+import { filter, map, tap } from "rxjs/operators";
+import { AuthenticationService } from "./services/firebase/authentication.service";
+import { StorageService } from "./services/firebase/storage.service";
 import { GlobalVariables } from "../scripts/global";
 import { UserMenuContentComponent } from "./user-menu-content/user-menu-content.component";
-import { NgIf, NgOptimizedImage } from "@angular/common";
+import { NgOptimizedImage } from "@angular/common";
 import { MatFabButton } from "@angular/material/button";
 import { MatIcon } from "@angular/material/icon";
 import { MatMenuTrigger, MatMenu, MatMenuItem } from "@angular/material/menu";
@@ -19,6 +28,8 @@ import { NavRailContentComponent } from "./nav-rail-content/nav-rail-content.com
 import { Mat3NavButtonComponent } from "./mat3-nav-button/mat3-nav-button.component";
 import { NavRailComponent } from "./nav-rail/nav-rail.component";
 import { NavRailContainerComponent } from "./nav-rail-container/nav-rail-container.component";
+import { WelcomeDialogComponent } from "./welcome-dialog/welcome-dialog.component";
+import { MatDialog } from "@angular/material/dialog";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
@@ -26,7 +37,6 @@ declare function plausible(eventName: string, options?: { props: any }): void;
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
-  standalone: true,
   imports: [
     NavRailContainerComponent,
     NavRailComponent,
@@ -39,27 +49,29 @@ declare function plausible(eventName: string, options?: { props: any }): void;
     MatMenuItem,
     MatIcon,
     MatFabButton,
-    NgIf,
     UserMenuContentComponent,
     Mat3NavButtonComponent,
     NgOptimizedImage,
   ],
 })
 export class AppComponent implements OnInit {
+  readonly welcomeDialog = inject(MatDialog);
+
   constructor(
     public router: Router,
     public authService: AuthenticationService,
-    public storageService: StorageService
+    public storageService: StorageService,
+    private route: ActivatedRoute
   ) {
     this.enforceAlainMode();
   }
-
-  currentPageName = "";
 
   hasAds = false;
   userId: string = "";
 
   alainMode: boolean = false;
+
+  isEmbedded: WritableSignal<boolean> = signal(false);
 
   baseUrl = "https://pkfrspot.com";
 
@@ -79,13 +91,21 @@ export class AppComponent implements OnInit {
       name: "Schwiizerdütsch",
       url: this.baseUrl + "/de-CH/",
     },
-    // {
-    //   name: "Français",
-    //   url: this.baseUrl + "/fr/",
-    // },
+    {
+      name: "Français",
+      url: this.baseUrl + "/fr/",
+    },
     {
       name: "Italiano",
       url: this.baseUrl + "/it/",
+    },
+    {
+      name: "Español",
+      url: this.baseUrl + "/es/",
+    },
+    {
+      name: "Nederlands",
+      url: this.baseUrl + "/nl/",
     },
   ];
 
@@ -109,6 +129,51 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    const currentTermsVersion = "1";
+
+    let isABot: boolean = false;
+    if (typeof window !== "undefined") {
+      isABot =
+        navigator.userAgent.match(
+          /bot|googlebot|crawler|spider|robot|crawling/i
+        ) !== null;
+      let acceptedVersion = localStorage.getItem("acceptedVersion");
+
+      if (
+        !isABot &&
+        acceptedVersion !== currentTermsVersion &&
+        this.welcomeDialog.openDialogs.length === 0
+      ) {
+        this.router.events
+          .pipe(filter((event) => event instanceof NavigationEnd))
+          .subscribe(() => {
+            this.route.firstChild.data.subscribe((data) => {
+              // open welcome dialog if the user has not accepted the terms of service
+              acceptedVersion = localStorage.getItem("acceptedVersion");
+
+              if (acceptedVersion !== currentTermsVersion) {
+                // get the acceptanceFree variable from the route data
+                console.log("routeData", data);
+                const acceptanceFree = data["acceptanceFree"] || false;
+
+                console.log("acceptanceFree", acceptanceFree);
+
+                if (!acceptanceFree) {
+                  this.welcomeDialog.open(WelcomeDialogComponent, {
+                    data: { version: currentTermsVersion },
+                    hasBackdrop: true,
+                    disableClose: true,
+                  });
+                } else {
+                  // if the dialog was already open, close it now
+                  this.welcomeDialog.closeAll();
+                }
+              }
+            });
+          });
+      }
+    }
+
     this.authService.authState$.subscribe(
       (user) => {
         let isAuthenticated: boolean = false;
@@ -135,22 +200,14 @@ export class AppComponent implements OnInit {
     // get the route name
     this.router.events
       .pipe(filter((event) => event instanceof RoutesRecognized))
-      .pipe(
-        map((event: RoutesRecognized) => {
-          return event.state.root.firstChild.data["routeName"] || "";
-        })
-      )
-      .subscribe((routeName) => {
-        this.currentPageName = routeName;
+      .subscribe((event: RoutesRecognized) => {
+        const isEmbedded = event.url.split("/")[1] === "embedded";
+        this.isEmbedded.set(isEmbedded);
       });
   }
 
   navbarConfig = {
     color: "primary",
-    logo: {
-      text: "PkFr Spot",
-      class: "logo",
-    },
     buttons: [
       //   {
       //     name: "Posts",
@@ -163,7 +220,7 @@ export class AppComponent implements OnInit {
       //     tooltip: "",
       //   },
       {
-        name: $localize`:Spot map navbar button label|A very short label for the navbar spot map label:Spot map`,
+        name: $localize`:Spot map navbar button label|A very short label for the navbar spot map label@@spot_map_label:Spot map`,
         link: "/map",
         icon: "map",
         badge: {
@@ -190,6 +247,11 @@ export class AppComponent implements OnInit {
         },
         tooltip: "",
       },*/
+      {
+        name: $localize`Events`,
+        link: "/events",
+        icon: "calendar_month", // or event, local_activity, calendar_month
+      },
       {
         name: $localize`:About page navbar button label|A very short label for the navbar about page button:About`,
         link: "/about",

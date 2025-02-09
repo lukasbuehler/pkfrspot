@@ -1,7 +1,7 @@
 import path from "node:path";
 import express from "express";
 
-const supportedLanguages = ["en", "de", "de-CH", "it"];
+const supportedLanguages = ["en", "de", "it", "de-CH", "fr", "es", "nl"];
 const defaultLanguage = "en";
 
 const serverExpressApps = {};

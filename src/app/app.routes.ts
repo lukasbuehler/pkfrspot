@@ -13,6 +13,11 @@ import { TermsOfServiceComponent } from "./terms-of-service/terms-of-service.com
 import { PrivacyPolicyComponent } from "./privacy-policy/privacy-policy.component";
 import { SettingsPageComponent } from "./settings-page/settings-page.component";
 import { ForgotPasswordPageComponent } from "./forgot-password-page/forgot-password-page.component";
+import { EmbedPageComponent } from "./embedding/embed-page/embed-page.component";
+import { EventPageComponent } from "./event-page/event-page.component";
+import { EmbeddedSpotPageComponent } from "./embedding/embedded-spot-page/embedded-spot-page.component";
+import { EmbeddedMapPageComponent } from "./embedding/embedded-map-page/embedded-map-page.component";
+import { EventsPageComponent } from "./events-page/events-page.component";
 
 export const routes: Routes = [
   // Home page (redirects to spot map)
@@ -35,6 +40,59 @@ export const routes: Routes = [
     path: "kml-import",
     component: KmlImportPageComponent,
     data: { routeName: "KML Import" },
+  },
+
+  // Embedded stuff
+  {
+    path: "embed",
+    component: EmbedPageComponent,
+    data: { routeName: "Embed" },
+  },
+  // {
+  //   path: "embed/spot",
+  //   redirectTo: "embed",
+  //   pathMatch: "full",
+  //   data: { routeName: "Embed" },
+  // },
+  // {
+  //   path: "embed/map",
+  //   redirectTo: "embed",
+  //   pathMatch: "full",
+  //   data: { routeName: "Embed" },
+  // },
+  // {
+  //   path: "embedded/spot/:spot",
+  //   component: EmbeddedSpotPageComponent,
+  //   data: { routeName: "Embedded Spot" },
+  // },
+  {
+    path: "embedded/event/:eventID",
+    component: EventPageComponent,
+    data: { routeName: "Embedded Event" },
+  },
+  // {
+  //   path: "embedded/map",
+  //   component: EmbeddedMapPageComponent,
+  //   data: { routeName: "Embedded Map" },
+  // },
+
+  // Events
+  {
+    path: "events",
+    component: EventsPageComponent,
+    data: { routeName: "Events" },
+  },
+  {
+    // path: "events/:eventID",
+    path: "events/swissjam25",
+    component: EventPageComponent,
+    data: { routeName: "Event" },
+  },
+  {
+    path: "e/:slug",
+    redirectTo: "events/:slug",
+    pathMatch: "full",
+    data: { routeName: "Event" },
   },
 
   // Posts
@@ -116,16 +174,16 @@ export const routes: Routes = [
     data: { routeName: "Welcome" },
   }, //component: WelcomePageComponent },
   {
-    path: "terms_of_service",
+    path: "terms-of-service",
     component: TermsOfServiceComponent,
-    data: { routeName: "Terms of Service" },
+    data: { routeName: "Terms of Service", acceptanceFree: true },
   },
-  { path: "tos", redirectTo: "terms_of_service", pathMatch: "full" },
+  { path: "tos", redirectTo: "terms-of-service", pathMatch: "full" },
   {
-    path: "privacy_policy",
+    path: "privacy-policy",
     component: PrivacyPolicyComponent,
-    data: { routeName: "Privacy Policy" },
+    data: { routeName: "Privacy Policy", acceptanceFree: true },
   },
-  { path: "pp", redirectTo: "privacy_policy", pathMatch: "full" },
+  { path: "pp", redirectTo: "privacy-policy", pathMatch: "full" },
   { path: "**", component: NotFoundPageComponent },
 ];

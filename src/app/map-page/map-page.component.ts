@@ -15,7 +15,7 @@ import {
   Router,
 } from "@angular/router";
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
-import { AuthenticationService } from "../services/authentication.service";
+import { AuthenticationService } from "../services/firebase/authentication.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MapsApiService } from "../services/maps-api.service";
 import { BehaviorSubject, filter, firstValueFrom, take, timeout } from "rxjs";
@@ -32,11 +32,11 @@ import {
   AsyncPipe,
   isPlatformServer,
 } from "@angular/common";
-import { StorageService } from "../services/storage.service";
+import { StorageService } from "../services/firebase/storage.service";
 import { GlobalVariables } from "../../scripts/global";
 import { SpotListComponent } from "../spot-list/spot-list.component";
-import { SpotsService } from "../services/firestore-services/spots.service";
-import { UserMenuContentComponent } from "../user-menu-content/user-menu-content.component";
+import { SpotsService } from "../services/firebase/firestore/spots.service";
+// import { UserMenuContentComponent } from "../user-menu-content/user-menu-content.component";
 import { SpotDetailsComponent } from "../spot-details/spot-details.component";
 import { MatOption } from "@angular/material/core";
 import {
@@ -50,9 +50,9 @@ import { MatButtonModule, MatIconButton } from "@angular/material/button";
 import { MatFormField, MatSuffix } from "@angular/material/form-field";
 import { Title } from "@angular/platform-browser";
 import { MatDividerModule } from "@angular/material/divider";
-import { SlugsService } from "../services/firestore-services/slugs.service";
-import { SpotMetaInfoComponent } from "../spot-meta-info/spot-meta-info.component";
-import { SpotSlug } from "../../db/models/Interfaces.js";
+import { SpotSlug } from "../../db/models/Interfaces";
+import { SlugsService } from "../services/firebase/firestore/slugs.service";
+import { MetaInfoService } from "../services/meta-info.service";
 
 @Component({
   selector: "app-map-page",
@@ -70,15 +70,12 @@ import { SpotSlug } from "../../db/models/Interfaces.js";
       ]),
     ]),
   ],
-  standalone: true,
   imports: [
     SpotMapComponent,
     MatFormField,
-    NgIf,
     MatIconButton,
     MatButtonModule,
     MatSuffix,
-    MatMenuTrigger,
     MatIconModule,
     MatIcon,
     MatInput,
@@ -91,11 +88,9 @@ import { SpotSlug } from "../../db/models/Interfaces.js";
     SpotDetailsComponent,
     SpotListComponent,
     BottomSheetComponent,
-    MatMenu,
-    UserMenuContentComponent,
+    // UserMenuContentComponent,
     AsyncPipe,
     MatDividerModule,
-    SpotMetaInfoComponent,
   ],
 })
 export class MapPageComponent implements OnInit, AfterViewInit {
@@ -130,6 +125,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     public authService: AuthenticationService,
     public mapsService: MapsApiService,
     public storageService: StorageService,
+    private metaInfoService: MetaInfoService,
     private _spotsService: SpotsService,
     private _searchService: SearchService,
     private _slugsService: SlugsService,
@@ -193,9 +189,23 @@ export class MapPageComponent implements OnInit, AfterViewInit {
 
   // Initialization ///////////////////////////////////////////////////////////
 
-  async ngOnInit() {
-    const spotId = await this._getSpotIdFromRouteAndOpenSpot();
-    if (spotId) await this.loadSpotById(spotId);
+  ngOnInit() {
+    console.log("MapPageComponent ngOnInit");
+    this._getSpotIdFromRoute()
+      .then((spotId) => {
+        if (spotId) {
+          console.log("got spotId from route", spotId, "loading now");
+          return this.loadSpotById(spotId);
+        }
+        return Promise.reject();
+      })
+      .then(() => {
+        console.log("loaded spot");
+      })
+      .catch((err) => {
+        if (!err) return; // ignore, because no spotId was found in route
+        console.error("Error loading spot", err);
+      });
   }
 
   async ngAfterViewInit() {
@@ -215,8 +225,8 @@ export class MapPageComponent implements OnInit, AfterViewInit {
         })
       )
       .subscribe(async (event: NavigationEnd) => {
-        const spotId = await this._getSpotIdFromRouteAndOpenSpot();
-        await this.loadSpotById(spotId);
+        const spotId = await this._getSpotIdFromRoute();
+        if (spotId) await this.loadSpotById(spotId); // TODO out of context
       });
 
     // subscribe to the spot search control and update the search results
@@ -243,10 +253,12 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  async _getSpotIdFromRouteAndOpenSpot(): Promise<SpotId> {
+  async _getSpotIdFromRoute(): Promise<SpotId | void> {
     let spotIdOrSlug: SpotId | SpotSlug = this.route.snapshot.paramMap.get(
       "spot"
     ) as SpotId | SpotSlug;
+
+    if (["null", "undefined"].includes(spotIdOrSlug as string)) return;
 
     if (!spotIdOrSlug && this.route.snapshot.queryParamMap.keys.length > 0) {
       spotIdOrSlug = (this.route.snapshot.queryParamMap.get("id") ??
@@ -260,7 +272,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
       // first search for possible slugs
       let spotId: SpotId = "" as SpotId;
       try {
-        spotId = await this._slugsService.getSpotIdFromSpotSlug(
+        spotId = await this._slugsService.getSpotIdFromSpotSlugHttp(
           spotIdOrSlug as SpotSlug
         );
       } catch (e) {
@@ -277,7 +289,9 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     if (value.type === "place") {
       this.openGooglePlaceById(value.id);
     } else {
-      this.loadSpotById(value.id as SpotId);
+      this.loadSpotById(value.id as SpotId).then(() => {
+        this.spotMap.focusSpot(this.selectedSpot);
+      });
     }
   }
 
@@ -287,17 +301,11 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  async loadSpotById(
-    spotId: SpotId,
-    timeoutSeconds: number = 10
-  ): Promise<void> {
-    const spot: Spot.Spot = await firstValueFrom(
-      this._spotsService
-        .getSpotById(spotId)
-        .pipe(take(1), timeout(timeoutSeconds * 1000))
-    );
-
+  async loadSpotById(spotId: SpotId): Promise<void> {
+    const spot: Spot = await this._spotsService.getSpotByIdHttp(spotId);
     this.selectedSpot = spot;
+    this.setSpotMetaTags();
+    console.log("is selected spot now");
   }
 
   updateMapURL() {
@@ -306,5 +314,28 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     } else {
       this.location.go(`/map`);
     }
+  }
+
+  setSpotMetaTags() {
+    const spot = this.selectedSpot;
+
+    if (spot === null) {
+      this.clearTitleAndMetaTags();
+      return;
+    }
+
+    const title: string = `${spot.getName(this.locale)} - PKFR Spot`;
+    const image_src: string = spot.previewImage;
+    const description: string =
+      $localize`:The text before the localized location of the spot. E.g. Spot in Wiedikon, Zurich, CH@@spot.locality.pretext:Spot in ` +
+      spot.getLocalityString(); // TODO change and localize
+
+    this.metaInfoService.setMetaTags(title, image_src, description);
+
+    console.debug("Set meta tags for spot", spot.getName(this.locale));
+  }
+
+  clearTitleAndMetaTags() {
+    this.titleService.setTitle($localize`:@@pkfr.spotmap.title:PKFR Spot map`);
   }
 }

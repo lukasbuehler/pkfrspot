@@ -1,4 +1,4 @@
-<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en" trgLang="de">
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en" trgLang="it">
   <file id="ngi18n" original="ng.template">
     <unit id="1940752772695642659">
       <segment state="initial">
@@ -38,12 +38,6 @@
         <target><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
             type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;"> receipt_long</pc>
           Visualizza Licenza </target>
-      </segment>
-    </unit>
-    <unit id="7217756648427967816">
-      <segment state="initial">
-        <source>Supporters</source>
-        <target>Sostenitori</target>
       </segment>
     </unit>
     <unit id="6511882108366913037">
@@ -89,7 +83,7 @@
           Discord </target>
       </segment>
     </unit>
-    <unit id="1479415597449651120">
+    <unit id="spot_map_label">
       <notes>
         <note category="description">A very short label for the navbar spot map label</note>
         <note category="meaning">Spot map navbar button label</note>
@@ -542,13 +536,13 @@
         <target> Politica sulla privacy </target>
       </segment>
     </unit>
-    <unit id="6956729575928529796">
+    <unit id="3289630490580318568">
       <segment state="initial">
         <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT"
             equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms
           of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT"
-            type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacy declaration</pc> and agree
-          to both.</source>
+            type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Privacy Policy</pc> and agree to
+          both.</source>
         <target>Ho letto e compreso i <pc id="0" equivStart="START_BOLD_TEXT"
             equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Termini
           di servizio</pc> e la <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT"
@@ -946,6 +940,104 @@
       <segment state="initial">
         <source> Address </source>
         <target>Indirizzo</target>
+      </segment>
+    </unit>
+    <unit id="3687194426938367329">
+      <segment state="initial">
+        <source>Partners</source>
+        <target>Partner</target>
+      </segment>
+    </unit>
+    <unit id="5729418620241283277">
+      <segment state="initial">
+        <source>Events</source>
+        <target>Eventi</target>
+      </segment>
+    </unit>
+    <unit id="8151017381798767627">
+      <segment state="initial">
+        <source>Embed</source>
+        <target>Incorpora</target>
+      </segment>
+    </unit>
+    <unit id="5837993987248997726">
+      <segment state="initial">
+        <source>Embedding Preferences</source>
+        <target>Preferenze di incorporamento</target>
+      </segment>
+    </unit>
+    <unit id="7049904563073707059">
+      <segment state="initial">
+        <source>Show satellite toggle</source>
+        <target>Mostra interruttore satellitare</target>
+      </segment>
+    </unit>
+    <unit id="7344847855829755220">
+      <segment state="initial">
+        <source>Show geolocation</source>
+        <target>Mostra geolocalizzazione</target>
+      </segment>
+    </unit>
+    <unit id="403853342752104901">
+      <segment state="initial">
+        <source>Spots at this event</source>
+        <target>Spot in questo evento</target>
+      </segment>
+    </unit>
+    <unit id="date_tba">
+      <segment state="initial">
+        <source>Exact Date TBA</source>
+        <target>Data esatta da definire</target>
+      </segment>
+    </unit>
+    <unit id="6044258067304510448">
+      <segment state="initial">
+        <source>Starts in: </source>
+        <target>Inizia tra: </target>
+      </segment>
+    </unit>
+    <unit id="welcomeDialogTitle">
+      <segment state="initial">
+        <source>Welcome to PKFR Spot!</source>
+        <target>Benvenuto su PKFR Spot!</target>
+      </segment>
+    </unit>
+    <unit id="agreeAndContinueLabel">
+      <segment state="initial">
+        <source> Agree and Continue </source>
+        <target> Accetta e Continua </target>
+      </segment>
+    </unit>
+    <unit id="welcomeDialogButtonInfo">
+      <segment state="initial">
+        <source> By clicking &quot;Agree and continue&quot;, you accept our <pc id="0"
+            equivStart="START_LINK" equivEnd="CLOSE_LINK" type="link"
+            dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">Terms
+          of Service</pc> and <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK" type="link"
+            dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;">Privacy
+          Policy</pc>. </source>
+        <target>Continuando, accetti i nostri <pc id="0" equivStart="START_LINK"
+            equivEnd="CLOSE_LINK" type="link"
+            dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">termini
+          di servizio</pc> e la <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK"
+            type="link" dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;"
+            dispEnd="&lt;/a&gt;">politica sulla privacy</pc>. </target>
+      </segment>
+    </unit>
+    <unit id="3148120434799119252">
+      <segment state="initial">
+        <source>Challenges</source>
+        <target>Challenges</target>
+      </segment>
+    </unit>
+    <unit id="welcomeDialogText">
+      <segment state="initial">
+        <source> Explore spots, posts, and more from our Parkour and Freerunning community. To
+          access our content, please agree to our Terms of Service and Privacy Policy. We value your
+          privacy and don&apos;t store cookies. 🍪 </source>
+        <target>Esplora spot, post e altro dalla nostra comunità di Parkour e Freerunning. Per
+          accedere ai nostri contenuti, accetta i nostri Termini di Servizio e la Politica sulla
+          Privacy. Apprezziamo la tua privacy e non utilizziamo cookie. 🍪</target>
       </segment>
     </unit>
   </file>

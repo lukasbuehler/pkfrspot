@@ -1,0 +1,977 @@
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en" trgLang="nl">
+  <file id="ngi18n" original="ng.template">
+    <unit id="1940752772695642659">
+      <segment state="initial">
+        <source> The spot for Parkour and Freerunning. </source>
+        <target> De spot voor parkour en freerunning. </target>
+      </segment>
+    </unit>
+    <unit id="3710111609881776947">
+      <segment state="initial">
+        <source>Discover, Train, Share.</source>
+        <target>Ontdek, train, deel.</target>
+      </segment>
+    </unit>
+    <unit id="3733695846697223562">
+      <segment state="initial">
+        <source> Discover spots and fellow athletes, plan training sessions with your friends and share achievements and memories with them and the world. </source>
+        <target> Ontdek spots en mede-atleten, plan trainingssessies met je vrienden en deel prestaties en herinneringen met hen en de wereld. </target>
+      </segment>
+    </unit>
+    <unit id="7411379953853971507">
+      <segment state="initial">
+        <source> This project is Open-Source! Our code is licensed under the <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT License</pc>. </source>
+        <target> Dit project is open-source! Onze code is gelicentieerd onder de <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT-licentie</pc>. </target>
+      </segment>
+    </unit>
+    <unit id="1563251428514246752">
+      <segment state="initial">
+        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">receipt_long</pc> View License </source>
+        <target><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">receipt_long</pc> Licentie bekijken </target>
+      </segment>
+    </unit>
+    <unit id="6511882108366913037">
+      <segment state="initial">
+        <source>Contributors</source>
+        <target>Bijdragers</target>
+      </segment>
+    </unit>
+    <unit id="2405554561656775177">
+      <segment state="initial">
+        <source>Lead developer</source>
+        <target>Hoofdontwikkelaar</target>
+      </segment>
+    </unit>
+    <unit id="8985868511640294928">
+      <segment state="initial">
+        <source>Testing</source>
+        <target>Testen</target>
+      </segment>
+    </unit>
+    <unit id="6034013755958678236">
+      <segment state="initial">
+        <source> Testing, UI/UX Advisor </source>
+        <target> Testen, UI/UX-adviseur </target>
+      </segment>
+    </unit>
+    <unit id="8062277427231117545">
+      <segment state="initial">
+        <source> Join our community of Parkour and Freerunning enthusiasts! Contribute your ideas, report bugs, and provide feedback to help us improve this platform together! </source>
+        <target> Word lid van onze gemeenschap van parkour- en freerunningliefhebbers! Draag je ideeën bij, meld bugs en geef feedback om ons te helpen dit platform samen te verbeteren! </target>
+      </segment>
+    </unit>
+    <unit id="5825310972408482968">
+      <segment state="initial">
+        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">sports_esports</pc> Discord </source>
+        <target><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">sports_esports</pc> Discord </target>
+      </segment>
+    </unit>
+    <unit id="spot_map_label">
+      <notes>
+        <note category="description">A very short label for the navbar spot map label</note>
+        <note category="meaning">Spot map navbar button label</note>
+      </notes>
+      <segment state="initial">
+        <source>Spot map</source>
+        <target>Spot-kaart</target>
+      </segment>
+    </unit>
+    <unit id="6493290522598468378">
+      <notes>
+        <note category="description">A very short label for the navbar about page button</note>
+        <note category="meaning">About page navbar button label</note>
+      </notes>
+      <segment state="initial">
+        <source>About</source>
+        <target>Over</target>
+      </segment>
+    </unit>
+    <unit id="6058033902089935749">
+      <segment state="initial">
+        <source>Find spots and places</source>
+        <target>Zoek spots en locaties</target>
+      </segment>
+    </unit>
+    <unit id="8126459137636028145">
+      <notes>
+        <note category="description">The header for the spot description</note>
+        <note category="meaning">description header</note>
+      </notes>
+      <segment state="initial">
+        <source> Description </source>
+        <target> Beschrijving </target>
+      </segment>
+    </unit>
+    <unit id="open_maps_tooltip">
+      <notes>
+        <note category="description">Tooltip of button to open the spot in maps</note>
+        <note category="meaning">Open in maps button tooltip</note>
+      </notes>
+      <segment state="initial">
+        <source>Open the location of this spot in Maps</source>
+        <target>Open de locatie van deze spot in Kaarten</target>
+      </segment>
+    </unit>
+    <unit id="open_maps_button_label">
+      <notes>
+        <note category="description">Button to open the spot in maps</note>
+        <note category="meaning">Open in maps button</note>
+      </notes>
+      <segment state="initial">
+        <source> Open in <ph id="0" equiv="INTERPOLATION" disp="{{ isUsingAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}"/> </source>
+        <target> Openen in <ph id="0" equiv="INTERPOLATION" disp="{{ isUsingAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}"/> </target>
+      </segment>
+    </unit>
+    <unit id="2066444621746625793">
+      <segment state="initial">
+        <source>Edit this spot</source>
+        <target>Bewerk deze spot</target>
+      </segment>
+    </unit>
+    <unit id="3699896649941451869">
+      <segment state="initial">
+        <source>Example icon button with a share icon</source>
+        <target>Voorbeeld van een pictogramknop met deel-icoon</target>
+      </segment>
+    </unit>
+    <unit id="7649443828660758780">
+      <notes>
+        <note category="description">Label of the button to edit the spot</note>
+        <note category="meaning">Edit button label</note>
+      </notes>
+      <segment state="initial">
+        <source> Edit </source>
+        <target> Bewerken </target>
+      </segment>
+    </unit>
+    <unit id="7970470041734812503">
+      <segment state="initial">
+        <source>Report this spot</source>
+        <target>Meld deze spot</target>
+      </segment>
+    </unit>
+    <unit id="3228321309780982411">
+      <notes>
+        <note category="description">Label of the button to report the spot</note>
+        <note category="meaning">report button label</note>
+      </notes>
+      <segment state="initial">
+        <source> Report </source>
+        <target> Melden </target>
+      </segment>
+    </unit>
+    <unit id="6417858746273147766">
+      <notes>
+        <note category="description">Placeholder of the spot name in the edit form</note>
+        <note category="meaning">spot name placeholder</note>
+      </notes>
+      <segment state="initial">
+        <source>Spot name</source>
+        <target>Naam van de spot</target>
+      </segment>
+    </unit>
+    <unit id="5447579510411800451">
+      <notes>
+        <note category="description">Label of the button to upload a spot image</note>
+        <note category="meaning">Upload spot image button label</note>
+      </notes>
+      <segment state="initial">
+        <source> Upload Spot Image </source>
+        <target> Spotafbeelding uploaden </target>
+      </segment>
+    </unit>
+    <unit id="4902817035128594900">
+      <segment state="initial">
+        <source>Description</source>
+        <target>Beschrijving</target>
+      </segment>
+    </unit>
+    <unit id="8942517704279686805">
+      <notes>
+        <note category="description">Placeholder of the spot description edit field</note>
+        <note category="meaning">Spot description edit field placeholder</note>
+      </notes>
+      <segment state="initial">
+        <source>Description of the spot, its features and more...</source>
+        <target>Beschrijving van de spot, de kenmerken en meer...</target>
+      </segment>
+    </unit>
+    <unit id="6876434298853499564">
+      <notes>
+        <note category="description">Label of the button to add bounds to a spot</note>
+        <note category="meaning">Add bounds button label</note>
+      </notes>
+      <segment state="initial">
+        <source> Add bounds </source>
+        <target> Grenzen toevoegen </target>
+      </segment>
+    </unit>
+    <unit id="4470656372477479316">
+      <notes>
+        <note category="description">Label of the button to discard changes</note>
+        <note category="meaning">Discard changes button label</note>
+      </notes>
+      <segment state="initial">
+        <source> Discard changes </source>
+        <target> Wijzigingen annuleren </target>
+      </segment>
+    </unit>
+    <unit id="8486228314424763172">
+      <notes>
+        <note category="description">Label of the button to save changes</note>
+        <note category="meaning">Save changes button label</note>
+      </notes>
+      <segment state="initial">
+        <source> Save changes </source>
+        <target> Wijzigingen opslaan </target>
+      </segment>
+    </unit>
+    <unit id="4930506384627295710">
+      <segment state="initial">
+        <source>Settings</source>
+        <target>Instellingen</target>
+      </segment>
+    </unit>
+    <unit id="5464118521750361406">
+      <segment state="initial">
+        <source>Public profile</source>
+        <target>Openbaar profiel</target>
+      </segment>
+    </unit>
+    <unit id="2123282629077022668">
+      <segment state="initial">
+        <source> You can edit your public profile here. The information on your public profile can be seen by everyone, even unauthenticated visitors. </source>
+        <target> Je kunt hier je openbare profiel bewerken. De informatie op je openbare profiel kan door iedereen worden gezien, zelfs niet-geregistreerde bezoekers. </target>
+      </segment>
+    </unit>
+    <unit id="7008130086784868968">
+      <segment state="initial">
+        <source>Login information</source>
+        <target>Inloggegevens</target>
+      </segment>
+    </unit>
+    <unit id="4248798592595704576">
+      <segment state="initial">
+        <source> Your login information. Your E-mail address here is used for your login. You can add the same E-mail address or a different one to your contact information. </source>
+        <target> Dit zijn je inloggegevens. Het e-mailadres dat je hier opgeeft, wordt gebruikt voor je login. Je kunt hetzelfde of een ander e-mailadres toevoegen aan je contactgegevens. </target>
+      </segment>
+    </unit>
+    <unit id="6815507474406960450">
+      <segment state="initial">
+        <source>E-Mail address</source>
+        <target>E-mailadres</target>
+      </segment>
+    </unit>
+    <unit id="5830520205989474611">
+      <segment state="initial">
+        <source>E-mail address</source>
+        <target>E-mailadres</target>
+      </segment>
+    </unit>
+    <unit id="5563672453089263696">
+      <segment state="initial">
+        <source>Changing this E-mail will change your login information</source>
+        <target>Door dit e-mailadres te wijzigen, verander je je inloggegevens</target>
+      </segment>
+    </unit>
+    <unit id="3934298777794632654">
+      <segment state="initial">
+        <source> Change E-mail address </source>
+        <target> E-mailadres wijzigen </target>
+      </segment>
+    </unit>
+    <unit id="2818862099235102080">
+      <segment state="initial">
+        <source> Resend verification E-mail </source>
+        <target> Verificatie-e-mail opnieuw verzenden </target>
+      </segment>
+    </unit>
+    <unit id="1431416938026210429">
+      <segment state="initial">
+        <source>Password</source>
+        <target>Wachtwoord</target>
+      </segment>
+    </unit>
+    <unit id="8626615958100222841">
+      <segment state="initial">
+        <source> Change password </source>
+        <target> Wachtwoord wijzigen </target>
+      </segment>
+    </unit>
+    <unit id="1347241542439262355">
+      <segment state="initial">
+        <source>General settings</source>
+        <target>Algemene instellingen</target>
+      </segment>
+    </unit>
+    <unit id="6471548761726956967">
+      <segment state="initial">
+        <source> General settings to tune your experience on PKFR Spot. </source>
+        <target> Algemene instellingen om je ervaring op PKFR Spot aan te passen. </target>
+      </segment>
+    </unit>
+    <unit id="5851560788527570644">
+      <segment state="initial">
+        <source>Notifications</source>
+        <target>Meldingen</target>
+      </segment>
+    </unit>
+    <unit id="5207635742003539443">
+      <segment state="initial">
+        <source>Sign in</source>
+        <target>Inloggen</target>
+      </segment>
+    </unit>
+    <unit id="7028204981963450021">
+      <segment state="initial">
+        <source>Sign up</source>
+        <target>Registreren</target>
+      </segment>
+    </unit>
+    <unit id="1237816927659510577">
+      <notes>
+        <note category="description">The profile dropdown menu label for &apos;my profile&apos;</note>
+        <note category="meaning">my profile label</note>
+      </notes>
+      <segment state="initial">
+        <source>My Profile</source>
+        <target>Mijn profiel</target>
+      </segment>
+    </unit>
+    <unit id="5060391165154083287">
+      <notes>
+        <note category="description">The profile dropdown menu label for the settings</note>
+        <note category="meaning">settings label</note>
+      </notes>
+      <segment state="initial">
+        <source>Settings</source>
+        <target>Instellingen</target>
+      </segment>
+    </unit>
+    <unit id="339940386378543699">
+      <notes>
+        <note category="description">The profile dropdown menu label to logout</note>
+        <note category="meaning">logout label</note>
+      </notes>
+      <segment state="initial">
+        <source>Logout</source>
+        <target>Uitloggen</target>
+      </segment>
+    </unit>
+    <unit id="3539941729807255231">
+      <segment state="initial">
+        <source>Your E-mail has not been verified!</source>
+        <target>Je e-mailadres is nog niet geverifieerd!</target>
+      </segment>
+    </unit>
+    <unit id="133789173523080152">
+      <segment state="initial">
+        <source>Your E-mail is verified</source>
+        <target>Je e-mailadres is geverifieerd</target>
+      </segment>
+    </unit>
+    <unit id="6735606153713625905">
+      <segment state="initial">
+        <source>E-Mail and password</source>
+        <target>E-mailadres en wachtwoord</target>
+      </segment>
+    </unit>
+    <unit id="947995176992343811">
+      <segment state="initial">
+        <source>This E-Mail address is not valid!</source>
+        <target>Dit e-mailadres is niet geldig!</target>
+      </segment>
+    </unit>
+    <unit id="3865137547467472091">
+      <segment state="initial">
+        <source>The password field is empty!</source>
+        <target>Het wachtwoordveld is leeg!</target>
+      </segment>
+    </unit>
+    <unit id="6663783128602596673">
+      <segment state="initial">
+        <source> Sign in </source>
+        <target> Inloggen </target>
+      </segment>
+    </unit>
+    <unit id="4056337625566966411">
+      <segment state="initial">
+        <source> Forgot password </source>
+        <target> Wachtwoord vergeten </target>
+      </segment>
+    </unit>
+    <unit id="7931009175244499164">
+      <segment state="initial">
+        <source>OAuth providers</source>
+        <target>OAuth-aanbieders</target>
+      </segment>
+    </unit>
+    <unit id="1221014007346917816">
+      <segment state="initial">
+        <source>You can also sign in with:</source>
+        <target>Je kunt ook inloggen met:</target>
+      </segment>
+    </unit>
+    <unit id="906351267490856003">
+      <segment state="initial">
+        <source> Don&apos;t have an account yet? Simply sign in with your Google account or sign up below. </source>
+        <target> Heb je nog geen account? Log gewoon in met je Google-account of registreer je hieronder. </target>
+      </segment>
+    </unit>
+    <unit id="4815152070613902062">
+      <segment state="initial">
+        <source> Sign up here </source>
+        <target> Hier registreren </target>
+      </segment>
+    </unit>
+    <unit id="5726791725186220555">
+      <segment state="initial">
+        <source>The E-mail address is invalid!</source>
+        <target>Dit e-mailadres is ongeldig!</target>
+      </segment>
+    </unit>
+    <unit id="427922060915202050">
+      <segment state="initial">
+        <source>The password is invalid!</source>
+        <target>Het wachtwoord is ongeldig!</target>
+      </segment>
+    </unit>
+    <unit id="2978266456005156211">
+      <segment state="initial">
+        <source>The E-mail address and password do not match for any existing user.</source>
+        <target>Er bestaat geen gebruiker met deze combinatie van e-mailadres en wachtwoord.</target>
+      </segment>
+    </unit>
+    <unit id="7733953409417762446">
+      <segment state="initial">
+        <source>An unknown error has occured on sign in. Please try again.</source>
+        <target>Er is een onbekende fout opgetreden bij het inloggen. Probeer het alstublieft opnieuw.</target>
+      </segment>
+    </unit>
+    <unit id="7323901917278002498">
+      <segment state="initial">
+        <source>Sign in instead?</source>
+        <target>In plaats daarvan inloggen?</target>
+      </segment>
+    </unit>
+    <unit id="6969445338945867053">
+      <segment state="initial">
+        <source>Create a new account</source>
+        <target>Maak een nieuw account aan</target>
+      </segment>
+    </unit>
+    <unit id="3013055597615607317">
+      <segment state="initial">
+        <source>Display Name</source>
+        <target>Weergavenaam</target>
+      </segment>
+    </unit>
+    <unit id="5664264029355272360">
+      <segment state="initial">
+        <source>Don&apos;t worry, the display name can be changed later.</source>
+        <target>Maak je geen zorgen, de weergavenaam kan later worden gewijzigd.</target>
+      </segment>
+    </unit>
+    <unit id="6858563845386603352">
+      <segment state="initial">
+        <source>The e-mail address needs to be verified later.</source>
+        <target>Het e-mailadres moet later worden geverifieerd.</target>
+      </segment>
+    </unit>
+    <unit id="7486528540316266957">
+      <segment state="initial">
+        <source>Choose a strong password.</source>
+        <target>Kies een sterk wachtwoord.</target>
+      </segment>
+    </unit>
+    <unit id="4541118533130714111">
+      <segment state="initial">
+        <source>Repeat Password</source>
+        <target>Herhaal wachtwoord</target>
+      </segment>
+    </unit>
+    <unit id="5261342889229534364">
+      <segment state="initial">
+        <source>The repeated password needs to match the password entered.</source>
+        <target>Het herhaalde wachtwoord moet overeenkomen met het ingevoerde wachtwoord.</target>
+      </segment>
+    </unit>
+    <unit id="7571375880734710634">
+      <segment state="initial">
+        <source> Terms of Service </source>
+        <target> Servicevoorwaarden </target>
+      </segment>
+    </unit>
+    <unit id="3028950182768355353">
+      <segment state="initial">
+        <source> Privacy policy </source>
+        <target> Privacybeleid </target>
+      </segment>
+    </unit>
+    <unit id="3289630490580318568">
+      <segment state="initial">
+        <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Privacy Policy</pc> and agree to both.</source>
+        <target>Ik heb de <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Servicevoorwaarden</pc> en het <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">privacybeleid</pc> gelezen en begrepen, en ga met beide akkoord.</target>
+      </segment>
+    </unit>
+    <unit id="149974019994124409">
+      <segment state="initial">
+        <source> Create Account </source>
+        <target> Account aanmaken </target>
+      </segment>
+    </unit>
+    <unit id="6464436780502674570">
+      <segment state="initial">
+        <source>Password and repeated password don&apos;t match</source>
+        <target>Het wachtwoord en het herhaalde wachtwoord komen niet overeen</target>
+      </segment>
+    </unit>
+    <unit id="1948163304836345687">
+      <segment state="initial">
+        <source>You need to agree to the terms and conditions!</source>
+        <target>Je moet akkoord gaan met de voorwaarden!</target>
+      </segment>
+    </unit>
+    <unit id="3601523967492159201">
+      <segment state="initial">
+        <source>Could not create account!</source>
+        <target>Kan geen account aanmaken!</target>
+      </segment>
+    </unit>
+    <unit id="share_spot_tooltip">
+      <notes>
+        <note category="description">The tootltip of the share spot icon button</note>
+        <note category="meaning">Share spot tooltip</note>
+      </notes>
+      <segment state="initial">
+        <source>Share this spot</source>
+        <target>Deze spot delen</target>
+      </segment>
+    </unit>
+    <unit id="share_spot_aria_label">
+      <notes>
+        <note category="description">The aria label of the share spot icon button</note>
+        <note category="meaning">Share spot aria label</note>
+      </notes>
+      <segment state="initial">
+        <source>Icon button with a share icon</source>
+        <target>Knop met een deel-icoon</target>
+      </segment>
+    </unit>
+    <unit id="directions_spot_tooltip">
+      <notes>
+        <note category="description">The tooltip of the directions spot icon button</note>
+        <note category="meaning">Directions spot tooltip</note>
+      </notes>
+      <segment state="initial">
+        <source>Directions to spot</source>
+        <target>Route naar de spot</target>
+      </segment>
+    </unit>
+    <unit id="directions_spot_aria_label">
+      <notes>
+        <note category="description">The aria label of the directions spot icon button</note>
+        <note category="meaning">Spot directions aria label</note>
+      </notes>
+      <segment state="initial">
+        <source>Icon button with a directions icon</source>
+        <target>Knop met een route-icoon</target>
+      </segment>
+    </unit>
+    <unit id="5176788475731011723">
+      <segment state="initial">
+        <source>This spot was reported as &quot;<ph id="0" equiv="INTERPOLATION" disp="{{ report.reason }}"/>&quot;</source>
+        <target>Deze spot is gemeld als &quot;<ph id="0" equiv="INTERPOLATION" disp="{{ report.reason }}"/>&quot;</target>
+      </segment>
+    </unit>
+    <unit id="6807040359477339777">
+      <notes>
+        <note category="description">The header for the spot features and amenities</note>
+        <note category="meaning">amenities header</note>
+      </notes>
+      <segment state="initial">
+        <source> Features and amenities </source>
+        <target> Kenmerken en voorzieningen </target>
+      </segment>
+    </unit>
+    <unit id="8011758699583016596">
+      <segment state="initial">
+        <source>Spots in this area</source>
+        <target>Spots in dit gebied</target>
+      </segment>
+    </unit>
+    <unit id="6590727333456499202">
+      <segment state="initial">
+        <source>New Spot</source>
+        <target>Nieuwe Spot</target>
+      </segment>
+    </unit>
+    <unit id="5749021803913348721">
+      <segment state="initial">
+        <source>Spot saved successfully</source>
+        <target>Spot met succes opgeslagen</target>
+      </segment>
+    </unit>
+    <unit id="1536087519743707362">
+      <segment state="initial">
+        <source>Dismiss</source>
+        <target>Negeren</target>
+      </segment>
+    </unit>
+    <unit id="6957965842552679691">
+      <segment state="initial">
+        <source>Error saving spot</source>
+        <target>Fout bij het opslaan van de spot</target>
+      </segment>
+    </unit>
+    <unit id="6024008212258429928">
+      <segment state="initial">
+        <source>Report Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ data.spot?.name }}"/>&apos;</source>
+        <target>Spot melden: &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ data.spot?.name }}"/> &apos;</target>
+      </segment>
+    </unit>
+    <unit id="8425796083769561052">
+      <segment state="initial">
+        <source>What would you like to report this spot for?</source>
+        <target>Waarom wil je deze spot melden?</target>
+      </segment>
+    </unit>
+    <unit id="3278358550418950949">
+      <segment state="initial">
+        <source> Duplicate </source>
+        <target> Duplicaat </target>
+      </segment>
+    </unit>
+    <unit id="4178793080892122578">
+      <segment state="initial">
+        <source>Torn down</source>
+        <target>Afgebroken</target>
+      </segment>
+    </unit>
+    <unit id="8374523856907728400">
+      <segment state="initial">
+        <source>Does not exist</source>
+        <target>Bestaat niet</target>
+      </segment>
+    </unit>
+    <unit id="4430765953319659794">
+      <segment state="initial">
+        <source>It&apos;s a private spot and should not be on this spot map.</source>
+        <target>Het is een privé spot en zou niet op deze spot-kaart moeten staan.</target>
+      </segment>
+    </unit>
+    <unit id="8693603235657020323">
+      <segment state="initial">
+        <source>Other</source>
+        <target>Overig</target>
+      </segment>
+    </unit>
+    <unit id="4965889425715950321">
+      <segment state="initial">
+        <source>Which spot is this spot a duplicate of?</source>
+        <target>Van welke spot is dit een duplicaat?</target>
+      </segment>
+    </unit>
+    <unit id="2029717048910432760">
+      <segment state="initial">
+        <source>Spot</source>
+        <target>Spot</target>
+      </segment>
+    </unit>
+    <unit id="4411046525037051458">
+      <segment state="initial">
+        <source> Note: Spot reports are public and will be displayed on the spot itself together with your profile and user name. </source>
+        <target> Opmerking: Spot-meldingen zijn openbaar en worden bij de spot zelf getoond, samen met je profiel en gebruikersnaam. </target>
+      </segment>
+    </unit>
+    <unit id="2330577642930707695">
+      <notes>
+        <note category="description">cancel button label</note>
+      </notes>
+      <segment state="initial">
+        <source> Cancel </source>
+        <target> Annuleren </target>
+      </segment>
+    </unit>
+    <unit id="about.title">
+      <segment state="initial">
+        <source>About PKFR Spot</source>
+        <target>Over PKFR Spot</target>
+      </segment>
+    </unit>
+    <unit id="pkfr.spotmap.title">
+      <segment state="initial">
+        <source>PKFR Spot map</source>
+        <target>PKFR Spot-kaart</target>
+      </segment>
+    </unit>
+    <unit id="amenities.covered">
+      <segment state="initial">
+        <source>Covered</source>
+        <target>Overdekt</target>
+      </segment>
+    </unit>
+    <unit id="amenities.outdoor">
+      <segment state="initial">
+        <source>Outdoor</source>
+        <target>Buiten</target>
+      </segment>
+    </unit>
+    <unit id="amenities.indoor">
+      <segment state="initial">
+        <source>Indoor</source>
+        <target>Binnen</target>
+      </segment>
+    </unit>
+    <unit id="amenities.lighting">
+      <segment state="initial">
+        <source>Lighting</source>
+        <target>Verlichting</target>
+      </segment>
+    </unit>
+    <unit id="amenities.wc">
+      <segment state="initial">
+        <source>WC</source>
+        <target>WC</target>
+      </segment>
+    </unit>
+    <unit id="amenities.changing_room">
+      <segment state="initial">
+        <source>Changing room</source>
+        <target>Kleedkamers</target>
+      </segment>
+    </unit>
+    <unit id="amenities.lockers">
+      <segment state="initial">
+        <source>Lockers</source>
+        <target>Kluisjes</target>
+      </segment>
+    </unit>
+    <unit id="amenities.entry_fee">
+      <segment state="initial">
+        <source>Entry fee</source>
+        <target>Toegangsprijs</target>
+      </segment>
+    </unit>
+    <unit id="amenities.drinking_water">
+      <segment state="initial">
+        <source>Drinking water</source>
+        <target>Drinkwater</target>
+      </segment>
+    </unit>
+    <unit id="amenities.parking_on_site">
+      <segment state="initial">
+        <source>Parking on site</source>
+        <target>Parkeren ter plaatse</target>
+      </segment>
+    </unit>
+    <unit id="amenities.power_outlets">
+      <segment state="initial">
+        <source>Power outlets</source>
+        <target>Stopcontacten</target>
+      </segment>
+    </unit>
+    <unit id="amenities.maybe_overgrown">
+      <segment state="initial">
+        <source>Maybe overgrown</source>
+        <target>Mogelijk overwoekerd</target>
+      </segment>
+    </unit>
+    <unit id="spot.locality.pretext">
+      <notes>
+        <note category="description">The text before the localized location of the spot. E.g. Spot in Wiedikon, Zurich, CH</note>
+      </notes>
+      <segment state="initial">
+        <source>Spot in </source>
+        <target>Spot in </target>
+      </segment>
+    </unit>
+    <unit id="spot_highlights">
+      <notes>
+        <note category="description">Title for the spot highlights, spots is clear from the context</note>
+      </notes>
+      <segment state="initial">
+        <source> Highlights </source>
+        <target> Hoogtepunten </target>
+      </segment>
+    </unit>
+    <unit id="regular_spots_text">
+      <segment state="initial">
+        <source>Spots</source>
+        <target>Spots</target>
+      </segment>
+    </unit>
+    <unit id="no_spots_text">
+      <notes>
+        <note category="description">The text in the spot list panel if no spots are found/displayed</note>
+      </notes>
+      <segment state="initial">
+        <source> There are no highlighted spots for this area, zoom in on dots in the map to discover other spots. </source>
+        <target> Er zijn geen hoogtepunten voor dit gebied. Zoom in op de punten op de kaart om andere spots te ontdekken. </target>
+      </segment>
+    </unit>
+    <unit id="lang_btn_label">
+      <notes>
+        <note category="description">The label of the change language button</note>
+        <note category="meaning">Language button label</note>
+      </notes>
+      <segment state="initial">
+        <source>Language</source>
+        <target>Taal</target>
+      </segment>
+    </unit>
+    <unit id="5583221507916400426">
+      <segment state="initial">
+        <source>Rating and user reviews</source>
+        <target>Beoordeling en gebruikersrecensies</target>
+      </segment>
+    </unit>
+    <unit id="3651210692254714604">
+      <segment state="initial">
+        <source>This spot has no reviews yet, be the first to leave one!</source>
+        <target>Deze spot heeft nog geen recensies, wees de eerste om er een achter te laten!</target>
+      </segment>
+    </unit>
+    <unit id="review_spot_tooltip">
+      <notes>
+        <note category="description">Tooltip of button to review the spot</note>
+        <note category="meaning">Review this spot button tooltip</note>
+      </notes>
+      <segment state="initial">
+        <source>Review this spot</source>
+        <target>Evalueer deze spot</target>
+      </segment>
+    </unit>
+    <unit id="review_spot_button_label">
+      <notes>
+        <note category="description">Button to review the spot label</note>
+        <note category="meaning">Review spot button label</note>
+      </notes>
+      <segment state="initial">
+        <source> Review spot </source>
+        <target> Spot evalueren </target>
+      </segment>
+    </unit>
+    <unit id="9074160907730350759">
+      <segment state="initial">
+        <source>Review Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}"/>&apos;</source>
+        <target>Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}"/>&apos; evalueren</target>
+      </segment>
+    </unit>
+    <unit id="6435282697411612190">
+      <segment state="initial">
+        <source>What would you rate this spot from one to five stars?</source>
+        <target>Hoeveel sterren (van één tot vijf) zou je deze spot geven?</target>
+      </segment>
+    </unit>
+    <unit id="6715455427777949206">
+      <notes>
+        <note category="meaning">review button label</note>
+      </notes>
+      <segment state="initial">
+        <source> <ph id="0" equiv="INTERPOLATION" disp="{{ isUpdate ? &quot;Update&quot; : &quot;&quot; }}"/> Review </source>
+        <target> <ph id="0" equiv="INTERPOLATION" disp="{{ isUpdate ? &quot;Bijwerken&quot; : &quot;&quot; }}"/> Recensie </target>
+      </segment>
+    </unit>
+    <unit id="1115951775217164684">
+      <segment state="initial">
+        <source>{VAR_PLURAL, plural, =0 {no reviews} =1 {1 review} other {<ph id="0" equiv="INTERPOLATION"/> reviews}}</source>
+        <target>{VAR_PLURAL, plural, =0 {geen recensies} =1 {1 recensie} other {<ph id="0" equiv="INTERPOLATION"/> recensies}}</target>
+      </segment>
+    </unit>
+    <unit id="address_title">
+      <notes>
+        <note category="description">The address subtitle in the spot details</note>
+        <note category="meaning">Address subtitle</note>
+      </notes>
+      <segment state="initial">
+        <source> Address </source>
+        <target> Adres </target>
+      </segment>
+    </unit>
+    <unit id="3687194426938367329">
+      <segment state="initial">
+        <source>Partners</source>
+        <target>Partners</target>
+      </segment>
+    </unit>
+    <unit id="5729418620241283277">
+      <segment state="initial">
+        <source>Events</source>
+        <target>Evenementen</target>
+      </segment>
+    </unit>
+    <unit id="8151017381798767627">
+      <segment state="initial">
+        <source>Embed</source>
+        <target>Inbedden</target>
+      </segment>
+    </unit>
+    <unit id="5837993987248997726">
+      <segment state="initial">
+        <source>Embedding Preferences</source>
+        <target>Voorkeuren voor inbedden</target>
+      </segment>
+    </unit>
+    <unit id="7049904563073707059">
+      <segment state="initial">
+        <source>Show satellite toggle</source>
+        <target>Satellietoptie weergeven</target>
+      </segment>
+    </unit>
+    <unit id="7344847855829755220">
+      <segment state="initial">
+        <source>Show geolocation</source>
+        <target>Geolocatie weergeven</target>
+      </segment>
+    </unit>
+    <unit id="403853342752104901">
+      <segment state="initial">
+        <source>Spots at this event</source>
+        <target>Spots bij dit evenement</target>
+      </segment>
+    </unit>
+    <unit id="date_tba">
+      <segment state="initial">
+        <source>Exact Date TBA</source>
+        <target>Exacte datum wordt later bekendgemaakt</target>
+      </segment>
+    </unit>
+    <unit id="6044258067304510448">
+      <segment state="initial">
+        <source>Starts in: </source>
+        <target>Begint over: </target>
+      </segment>
+    </unit>
+    <unit id="welcomeDialogTitle">
+      <segment state="initial">
+        <source>Welcome to PKFR Spot!</source>
+        <target>Welkom bij PKFR Spot!</target>
+      </segment>
+    </unit>
+    <unit id="agreeAndContinueLabel">
+      <segment state="initial">
+        <source> Agree and Continue </source>
+        <target> Akkoord en doorgaan </target>
+      </segment>
+    </unit>
+    <unit id="welcomeDialogButtonInfo">
+      <segment state="initial">
+        <source> By clicking &quot;Agree and continue&quot;, you accept our <pc id="0" equivStart="START_LINK" equivEnd="CLOSE_LINK" type="link" dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">Terms of Service</pc> and <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK" type="link" dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;">Privacy Policy</pc>. </source>
+        <target> Door door te gaan, ga je akkoord met onze <pc id="0" equivStart="START_LINK" equivEnd="CLOSE_LINK" type="link" dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;"> servicevoorwaarden</pc> en ons <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK" type="link" dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;"> privacybeleid</pc>. </target>
+      </segment>
+    </unit>
+    <unit id="3148120434799119252">
+      <segment state="initial">
+        <source>Challenges</source>
+        <target>Challenges</target>
+      </segment>
+    </unit>
+    <unit id="welcomeDialogText">
+      <segment state="initial">
+        <source> Explore spots, posts, and more from our Parkour and Freerunning community. To access our content, please agree to our Terms of Service and Privacy Policy. We value your privacy and don&apos;t store cookies. 🍪 </source>
+        <target> Ontdek spots, berichten en meer van onze Parkour- en Freerunning community. Om toegang te krijgen tot onze inhoud, ga je akkoord met onze Servicevoorwaarden en ons Privacybeleid. Wij hechten waarde aan je privacy en slaan geen cookies op. 🍪 </target>
+      </segment>
+    </unit>
+  </file>
+</xliff>

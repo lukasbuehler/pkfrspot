@@ -19,8 +19,11 @@ import {
 import { Post } from "../../db/Post";
 import { Spot } from "../../db/models/Spot";
 
-import { StorageService, StorageFolder } from "../services/storage.service";
-import { PostsService } from "../services/firestore-services/posts.service";
+import {
+  StorageService,
+  StorageFolder,
+} from "../services/firebase/storage.service";
+import { PostsService } from "../services/firebase/firestore/posts.service";
 
 import {
   UntypedFormControl,
@@ -56,7 +59,6 @@ export interface PostDialogData {
   selector: "app-edit-post-dialog",
   templateUrl: "./edit-post-dialog.component.html",
   styleUrls: ["./edit-post-dialog.component.scss"],
-  standalone: true,
   imports: [
     MatDialogTitle,
     MatDialogContent,

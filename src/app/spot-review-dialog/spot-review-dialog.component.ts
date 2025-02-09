@@ -14,14 +14,13 @@ import {
   MatDialogClose,
 } from "@angular/material/dialog";
 import { MatIconModule, MatIcon } from "@angular/material/icon";
-import { SpotReviewsService } from "../services/firestore-services/spot-reviews.service";
+import { SpotReviewsService } from "../services/firebase/firestore/spot-reviews.service";
 import { MatFormField, MatFormFieldModule } from "@angular/material/form-field";
 import { FormsModule } from "@angular/forms";
 import { MatInput, MatInputModule } from "@angular/material/input";
 
 @Component({
   selector: "app-spot-review-dialog",
-  standalone: true,
   imports: [
     MatDialogTitle,
     MatDialogContent,

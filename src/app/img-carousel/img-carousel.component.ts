@@ -16,7 +16,7 @@ import {
   MatDialog,
   MatDialogModule,
 } from "@angular/material/dialog";
-import { StorageService } from "../services/storage.service";
+import { StorageService } from "../services/firebase/storage.service";
 
 // Swiper
 import Swiper from "swiper";
@@ -27,7 +27,6 @@ import { isPlatformBrowser, NgOptimizedImage } from "@angular/common";
 
 @Component({
   selector: "app-img-carousel",
-  standalone: true,
   imports: [MatRippleModule, NgOptimizedImage],
   templateUrl: "./img-carousel.component.html",
   styleUrl: "./img-carousel.component.scss",
@@ -98,7 +97,6 @@ export class ImgCarouselComponent {
       </button>
     </div>
   `,
-  standalone: true,
   imports: [MatDialogModule, MatButtonModule, MatIconButton, MatIcon],
   styles: [
     `

@@ -18,6 +18,7 @@ html {
 
   overscroll-behavior-y: contain;
   position: relative;
+  background-color: var(--mat-app-background-color);
 }
 
 // Removes blue google maps iframe border

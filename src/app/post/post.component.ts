@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
-import { Post } from "../../db/Post";
-import { PostsService } from "../services/firestore-services/posts.service";
-import { AuthenticationService } from "../services/authentication.service";
+import { Post } from "../../db/models/Post";
+import { PostsService } from "../services/firebase/firestore/posts.service";
+import { AuthenticationService } from "../services/firebase/authentication.service";
 import { MapHelpers } from "../../scripts/MapHelpers";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router, RouterLink } from "@angular/router";
@@ -26,7 +26,6 @@ import { NgIf } from "@angular/common";
   selector: "app-post",
   templateUrl: "./post.component.html",
   styleUrls: ["./post.component.scss"],
-  standalone: true,
   imports: [
     NgIf,
     MatCard,

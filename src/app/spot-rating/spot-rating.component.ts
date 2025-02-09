@@ -1,13 +1,11 @@
 import { Component, Input, OnChanges } from "@angular/core";
 import { MatIcon } from "@angular/material/icon";
-import { MatTooltip } from "@angular/material/tooltip";
 
 @Component({
   selector: "app-spot-rating",
   templateUrl: "./spot-rating.component.html",
   styleUrls: ["./spot-rating.component.scss"],
-  standalone: true,
-  imports: [MatTooltip, MatIcon],
+  imports: [MatIcon],
 })
 export class SpotRatingComponent implements OnChanges {
   @Input() rating1to5: number; // floating point number between 1 and 5

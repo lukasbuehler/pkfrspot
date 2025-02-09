@@ -34,7 +34,6 @@ import { trigger, transition, style, animate } from "@angular/animations";
   selector: "app-map",
   templateUrl: "./map.component.html",
   styleUrls: ["./map.component.scss"],
-  standalone: true,
   imports: [
     NgIf,
     GoogleMap,
@@ -105,23 +104,34 @@ export class MapComponent implements OnInit {
 
   @Output() boundsChange = new EventEmitter<google.maps.LatLngBounds>();
   @Output() mapClick = new EventEmitter<google.maps.LatLngLiteral>();
-  @Output() spotClick = new EventEmitter<
-    Spot.Spot | SpotPreviewData | string
-  >();
+  @Output() spotClick = new EventEmitter<Spot | SpotPreviewData | string>();
   @Output() polygonChanged = new EventEmitter<{
     spotId: string;
     path: google.maps.LatLngLiteral[][];
   }>();
   @Output() hasGeolocationChange = new EventEmitter<boolean>();
 
-  @Input() spots: Spot.Spot[] = [];
+  @Input() spots: Spot[] = [];
   @Input() dots: SpotClusterDot[] = [];
 
-  @Input() selectedSpot: Spot.Spot | null = null;
+  @Input() selectedSpot: Spot | null = null;
   @Input() isEditing: boolean = false;
   @Input() showGeolocation: boolean = false;
   @Input() markers: google.maps.LatLngLiteral[] = [];
   @Input() selectedMarker: google.maps.LatLngLiteral | null = null;
+
+  @Input() boundRestriction: {
+    north: number;
+    south: number;
+    west: number;
+    east: number;
+  } | null = null;
+  @Input() minZoom: number = 4;
+
+  @Input() mapTypeId:
+    | google.maps.MapTypeId.SATELLITE
+    | google.maps.MapTypeId.ROADMAP =
+    "roadmap" as google.maps.MapTypeId.ROADMAP;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -134,7 +144,6 @@ export class MapComponent implements OnInit {
     // }
   }
 
-  mapStyle = "roadmap";
   isDarkMode: boolean = true; // should be false if mapStyle is roadmap and the dark map is used
 
   ngOnInit() {
@@ -144,6 +153,16 @@ export class MapComponent implements OnInit {
         this.initGeolocation();
       }
     });
+
+    if (this.boundRestriction) {
+      this.mapOptions.restriction = {
+        latLngBounds: this.boundRestriction,
+        strictBounds: false,
+      };
+    }
+    if (this.minZoom) {
+      this.mapOptions.minZoom = this.minZoom;
+    }
   }
 
   initMap(): void {
@@ -253,55 +272,8 @@ export class MapComponent implements OnInit {
     backgroundColor: "#000000",
     clickableIcons: false,
     gestureHandling: "greedy",
-    mapTypeId: this.mapStyle,
     disableDefaultUI: true,
-    // styles: this.mapStylesConfig,
   };
-  mapTypeId: string = "roadmap";
-
-  //   heatmapDarkOptions: google.maps.visualization.HeatmapLayerOptions = {
-  //     radius: 20,
-  //     gradient: ["rgba(184,196,255,0)", "rgba(184,196,255,1)"],
-  //     dissipating: true,
-  //     maxIntensity: 1,
-  //     opacity: 0.6,
-  //   };
-
-  //   selectedSpotMarkerDarkOptions: google.maps.marker.AdvancedMarkerElementOptions =
-  //     {
-  //       gmpDraggable: false,
-  //       gmpClickable: false,
-  //       //   icon: {
-  //       //     url: "assets/icons/marker-primary-dark.png",
-  //       //   },
-  //       //   opacity: 1,
-  //     };
-  //   selectedSpotMarkerLightOptions: google.maps.marker.AdvancedMarkerElementOptions =
-  //     {
-  //       //   ...this.selectedSpotMarkerDarkOptions.anchorPoint,
-  //       //   icon: {
-  //       //     url: "assets/icons/marker-primary-light.png",
-  //       //   },
-  //     };
-  //   selectedSpotMarkerOptions: google.maps.marker.AdvancedMarkerElementOptions =
-  //     this.selectedSpotMarkerDarkOptions;
-  //   selectedSpotMarkerEditingOptions: google.maps.marker.AdvancedMarkerElementOptions =
-  //     {
-  //       gmpDraggable: true,
-  //       gmpClickable: false,
-  //       //   crossOnDrag: true,
-  //       //   icon: {
-  //       //     url: "assets/icons/marker-primary-dark.png",
-  //       //   },
-  //       //   opacity: 1,
-  //     };
-  //   tertiaryMarkerOptions: google.maps.marker.AdvancedMarkerElementOptions = {
-  //     gmpDraggable: false,
-  //     gmpClickable: false,
-  //     // icon: {
-  //     //   url: "assets/icons/marker-tertiary-dark.png",
-  //     // },
-  //   };
 
   spotCircleDarkOptions: google.maps.CircleOptions = {
     fillColor: "#b8c4ff",
@@ -415,7 +387,7 @@ export class MapComponent implements OnInit {
 
   clickOnDot(dot: SpotClusterDot) {
     if (dot.spot_id) {
-      this.spotClick.emit(dot.spot_id);
+      this.spotClick.emit(dot.spot_id as SpotId);
     } else {
       const location: google.maps.LatLng = new google.maps.LatLng(
         dot.location.latitude,

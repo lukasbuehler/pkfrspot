@@ -1,12 +1,18 @@
+@if(!isEmbedded()) {
 <app-nav-rail-container>
   <app-nav-rail class="mat-elevation-z3 d-none d-md-block">
     <a
       routerLink="/"
-      class="d-none d-md-block text-decoration-none text-center text-light text-wrap p-2 {{
-        navbarConfig.logo.class
-      }}"
-      >{{ navbarConfig.logo.text }}</a
+      class="d-none d-md-block text-decoration-none text-center text-light text-wrap p-2 logo"
     >
+      <img
+        ngSrc="/assets/logos/pkfrspot/pkfrspot_logo_stacked_dark.png"
+        alt="PKFR Spot"
+        class="mw-100"
+        width="74"
+        height="48.5"
+      />
+    </a>
     @for (button of navbarConfig.buttons; track button) {
     <a [routerLink]="button.link">
       <app-mat3-nav-button
@@ -24,6 +30,20 @@
         button@@lang_btn_label"
       label="Language"
     ></app-mat3-nav-button>
+    <!-- <app-mat3-nav-button
+      [matMenuTriggerFor]="navUserMenu"
+      icon="person"
+      label="Log in"
+    ></app-mat3-nav-button> -->
+
+    <!-- terms  -->
+    <span
+      class="mat-body-small d-flex align-items-center flex-row mb-0 pb-1"
+      style="justify-content: space-evenly; width: 100%; font-size: 10px"
+    >
+      <a routerLink="/terms-of-service">Terms</a>
+      <a routerLink="/privacy-policy">Policy</a>
+    </span>
   </app-nav-rail>
   <app-nav-rail-content class="flex-col">
     <!-- This is where the pages content gets displayed -->
@@ -50,6 +70,13 @@
           button@@lang_btn_label"
         label="Language"
       ></app-mat3-nav-button>
+
+      <!-- Profile button -->
+      <!-- <app-mat3-nav-button
+        [matMenuTriggerFor]="navUserMenu"
+        icon="person"
+        label="Log in"
+      ></app-mat3-nav-button> -->
     </mat-toolbar>
     } @else {
     <!-- Menu button -->
@@ -70,6 +97,8 @@
         </button>
       </a>
       }
+
+      <!-- Language button -->
       <button mat-menu-item [matMenuTriggerFor]="langMenu">
         <mat-icon>language</mat-icon>
         <span
@@ -79,6 +108,12 @@
           >Language</span
         >
       </button>
+
+      <!-- Profile button -->
+      <!-- <button mat-menu-item [matMenuTriggerFor]="navUserMenu">
+        <mat-icon>person</mat-icon>
+        <span i18n>Log in</span>
+      </button> -->
     </mat-menu>
     }
 
@@ -90,7 +125,7 @@
     </mat-menu>
 
     <!-- User FAB -->
-    <button
+    <!-- <button
       mat-fab
       color="primary"
       class="profile-icon-button login-fab d-none d-md-block"
@@ -110,10 +145,47 @@
         width="56"
         height="56"
       />
-    </button>
+    </button> -->
 
     <mat-menu #navUserMenu="matMenu">
       <app-user-menu-content></app-user-menu-content>
     </mat-menu>
+
+    <!-- Terms and Privacy -->
+
+    <!-- <div
+      class="d-flex d-md-none w-100 pt-1 px-3 mat-body-small justify-content-end align-items-center flex-row mb-0 pb-1 gap-3"
+      style="background-color: #1f1f23; font-size: 10px"
+    >
+      <a routerLink="/terms-of-service">Terms of Service</a>
+      <a routerLink="/privacy-policy">Policy Policy</a>
+      <span>©2025 Lukas Bühler</span>
+    </div> -->
   </app-nav-rail-content>
 </app-nav-rail-container>
+
+} @else {
+<div class="d-flex flex-column h-100">
+  <div
+    class="w-100 text-center d-flex align-items-center justify-content-center flex-shrink-1"
+    style="height: 60px"
+  >
+    <a
+      target="_blank"
+      href="https://pkfrspot.com"
+      class="text-decoration-none text-center text-light text-wrap p-2"
+    >
+      <img
+        ngSrc="/assets/logos/pkfrspot/pkfrspot_logo_oneline_dark.png"
+        alt="PKFR Spot"
+        class="mw-100 mh-100"
+        width="200"
+        height="28.64"
+      />
+    </a>
+  </div>
+  <div class="flex-grow-1">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+}

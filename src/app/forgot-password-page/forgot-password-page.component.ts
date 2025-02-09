@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
 } from "@angular/forms";
 import { Router } from "@angular/router";
-import { AuthenticationService } from "../services/authentication.service";
+import { AuthenticationService } from "../services/firebase/authentication.service";
 import { RecaptchaVerifier, sendPasswordResetEmail } from "firebase/auth";
 import { MatIcon } from "@angular/material/icon";
 import { MatButton } from "@angular/material/button";
@@ -20,7 +20,6 @@ import { PageHeaderComponent } from "../page-header/page-header.component";
   selector: "app-forgot-password-page",
   templateUrl: "./forgot-password-page.component.html",
   styleUrls: ["./forgot-password-page.component.scss"],
-  standalone: true,
   imports: [
     PageHeaderComponent,
     FormsModule,

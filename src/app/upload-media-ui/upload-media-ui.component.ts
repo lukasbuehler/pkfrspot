@@ -12,7 +12,6 @@ import { MatMiniFabButton } from "@angular/material/button";
     selector: "app-upload-media-ui",
     templateUrl: "./upload-media-ui.component.html",
     styleUrls: ["./upload-media-ui.component.scss"],
-    standalone: true,
     imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -25,7 +24,7 @@ import { MatMiniFabButton } from "@angular/material/button";
         NgIf,
         MatHint,
         MatError,
-    ],
+    ]
 })
 export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
   @Input() required: boolean = false;

@@ -33,8 +33,8 @@ import {
   MyRegex,
   RegexInputComponent,
 } from "../regex-input/regex-input.component";
-import { SpotsService } from "../services/firestore-services/spots.service";
 import { Spot, SpotId } from "../../db/models/Spot";
+import { SpotsService } from "../services/firebase/firestore/spots.service";
 import { GeoPoint } from "firebase/firestore";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
 import { MatDivider } from "@angular/material/divider";
@@ -76,7 +76,6 @@ import { locale } from "core-js";
       useValue: { displayDefaultIndicatorType: false },
     },
   ],
-  standalone: true,
   imports: [
     MatStepper,
     MatStepperIcon,
