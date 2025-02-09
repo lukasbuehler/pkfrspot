@@ -31,9 +31,6 @@ export class SpotListComponent implements OnChanges {
   // all spots minus the highlighted spots, set manually in ngOnChanges
   remainingSpots: Spot[] = [];
 
-  // @Output() clickSpot: EventEmitter<Spot.Class> =
-  //   new EventEmitter<Spot.Class>();
-
   ngOnChanges() {
     this.filterOutHighlightedSpotsFromOtherSpots();
   }

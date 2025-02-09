@@ -24,7 +24,7 @@ export interface KMLSpot {
   };
   folder?: string;
   language: string;
-  possibleDuplicateOf: Spot.Spot[];
+  possibleDuplicateOf: Spot[];
 }
 
 @Injectable({
@@ -173,7 +173,7 @@ export class KmlParserService {
     });
 
     // load all the spots for the tiles to check for possible spot duplicates
-    let spotsToCheckForDuplicates: Spot.Spot[] = await firstValueFrom(
+    let spotsToCheckForDuplicates: Spot[] = await firstValueFrom(
       this.spotsService.getSpotsForTiles(tilesToLoad)
     );
 

@@ -27,9 +27,9 @@ import { MatTabGroup, MatTab, MatTabLabel } from "@angular/material/tabs";
 })
 export class DiscoverSpotsViewComponent implements OnInit {
   @Output() close: EventEmitter<void> = new EventEmitter<void>();
-  @Output() spotClick: EventEmitter<Spot.Spot> = new EventEmitter<Spot.Spot>();
+  @Output() spotClick: EventEmitter<Spot> = new EventEmitter<Spot>();
 
-  discoverSpots: Spot.Spot[] = [];
+  discoverSpots: Spot[] = [];
 
   constructor() {}
 

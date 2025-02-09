@@ -1,5 +1,5 @@
 import { User } from "./User";
-import { Media, MediaType } from "./models/Interfaces";
+import { Media, MediaType } from "./Interfaces";
 import { DocumentReference, GeoPoint, Timestamp } from "firebase/firestore";
 
 export namespace Post {

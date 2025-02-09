@@ -1,8 +1,11 @@
 import path from "node:path";
 import express from "express";
+import compression from "compression";
 
 const supportedLanguages = ["en", "de", "it", "de-CH", "fr", "es", "nl"];
 const defaultLanguage = "en";
+
+const LAST_MODIFIED = "Fri, 08 Feb 2025 15:00:00 GMT";
 
 const serverExpressApps = {};
 
@@ -67,6 +70,29 @@ function detectLanguage(req, res, next) {
 function run() {
   const port = process.env.PORT || 8080;
   const server = express();
+
+  server.use(compression());
+
+  // Global caching middleware that sets Cache-Control and Last-Modified,
+  // and checks for a conditional GET request.
+  server.use((req, res, next) => {
+    // Set cache header so browsers revalidate before using the cache.
+    res.setHeader("Cache-Control", "public, max-age=0, must-revalidate");
+    res.setHeader("Last-Modified", LAST_MODIFIED);
+
+    // Only apply this logic to GET requests.
+    if (req.method === "GET") {
+      const ifModifiedSince = req.headers["if-modified-since"];
+      if (
+        ifModifiedSince &&
+        new Date(ifModifiedSince) >= new Date(LAST_MODIFIED)
+      ) {
+        // Client has the latest version.
+        return res.status(304).end();
+      }
+    }
+    next();
+  });
 
   server.get("/robots.txt", (req, res) => {
     const __dirname = path.dirname(new URL(import.meta.url).pathname);

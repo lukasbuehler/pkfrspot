@@ -238,7 +238,7 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
 
     firstValueFrom(this.kmlParserService.spotsToImport$).then((kmlSpots) => {
       const spotsData: Spot.SpotSchema[] = kmlSpots.map((kmlSpot: KMLSpot) => {
-        const spot = new Spot.Spot("" as SpotId, {
+        const spot = new Spot("" as SpotId, {
           name: { [this.locale]: kmlSpot.spot.name.trim() },
           location: new GeoPoint(
             kmlSpot.spot.location.lat,

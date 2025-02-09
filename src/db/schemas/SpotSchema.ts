@@ -21,7 +21,7 @@ export interface SpotSchema {
 
   location: GeoPoint;
 
-  tile_coordinates: {
+  tile_coordinates?: {
     z2: { x: number; y: number };
     z4: { x: number; y: number };
     z6: { x: number; y: number };

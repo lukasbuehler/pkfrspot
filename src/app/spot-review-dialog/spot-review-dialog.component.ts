@@ -1,5 +1,5 @@
 import { Component, Inject } from "@angular/core";
-import { SpotReview } from "../../db/SpotReview";
+import { SpotReviewSchema } from "../../db/schemas/SpotReviewSchema";
 import {
   MatButtonModule,
   MatButton,
@@ -43,13 +43,13 @@ import { MatInput, MatInputModule } from "@angular/material/input";
 export class SpotReviewDialogComponent {
   hoverRating: number = 0;
   isHovering: boolean = false;
-  review: SpotReview;
+  review: SpotReviewSchema;
   isUpdate: boolean;
 
   constructor(
     public dialogref: MatDialogRef<SpotReviewDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { review: SpotReview; isUpdate: boolean },
+    public data: { review: SpotReviewSchema; isUpdate: boolean },
     private _spotReviewsService: SpotReviewsService
   ) {
     this.review = data.review;

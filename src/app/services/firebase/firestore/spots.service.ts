@@ -91,14 +91,14 @@ export class SpotsService {
     });
   }
 
-  getSpotsForTileKeys(tileKeys: ClusterTileKey[]): Observable<Spot.Spot[]> {
+  getSpotsForTileKeys(tileKeys: ClusterTileKey[]): Observable<Spot[]> {
     const tiles = tileKeys.map((key) => getDataFromClusterTileKey(key));
     return this.getSpotsForTiles(tiles);
   }
 
-  getSpotsForTiles(tiles: { x: number; y: number }[]): Observable<Spot.Spot[]> {
+  getSpotsForTiles(tiles: { x: number; y: number }[]): Observable<Spot[]> {
     const observables = tiles.map((tile) => {
-      return new Observable<Spot.Spot[]>((observer) => {
+      return new Observable<Spot[]>((observer) => {
         const unsubscribe = onSnapshot(
           query(
             collection(this.firestore, "spots"),
@@ -119,10 +119,10 @@ export class SpotsService {
     });
 
     return forkJoin(observables).pipe(
-      map((arrays: Spot.Spot[][]) => {
-        let allSpots = new Map<string, Spot.Spot>();
-        arrays.forEach((spots: Spot.Spot[]) => {
-          spots.forEach((spot: Spot.Spot) => {
+      map((arrays: Spot[][]) => {
+        let allSpots = new Map<string, Spot>();
+        arrays.forEach((spots: Spot[]) => {
+          spots.forEach((spot: Spot) => {
             allSpots.set(spot.id, spot);
           });
         });
@@ -167,13 +167,13 @@ export class SpotsService {
     );
   }
 
-  private _parseSpots(snapshot: QuerySnapshot<DocumentData>): Spot.Spot[] {
-    let newSpots: Spot.Spot[] = [];
+  private _parseSpots(snapshot: QuerySnapshot<DocumentData>): Spot[] {
+    let newSpots: Spot[] = [];
     snapshot.forEach((doc) => {
       const data: any = doc.data();
       const spotData: Spot.SpotSchema = data as Spot.SpotSchema;
       if (spotData) {
-        let newSpot: Spot.Spot = new Spot.Spot(doc.id as SpotId, spotData);
+        let newSpot: Spot = new Spot(doc.id as SpotId, spotData);
         newSpots.push(newSpot);
       } else {
         console.error("Spot could not be cast to Spot.Schema!");

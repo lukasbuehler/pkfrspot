@@ -101,13 +101,13 @@ export class EditPostDialogComponent implements AfterViewInit {
 
   hasChanged = false;
 
-  filteredSpots: Spot.Spot[] = [];
+  filteredSpots: Spot[] = [];
 
   postTitle = "";
   postBody = "";
   postImageSrc = "";
   postLocation = "";
-  postSpot: Spot.Spot = null;
+  postSpot: Spot = null;
 
   // If this is false, then link is selected
   isUploadSelected = true;
@@ -187,7 +187,7 @@ export class EditPostDialogComponent implements AfterViewInit {
   makePostToReturn(): {
     title: string;
     body?: string;
-    spot?: Spot.Spot;
+    spot?: Spot;
     location?: google.maps.LatLngLiteral | null;
     mediaType?: MediaType;
   } {

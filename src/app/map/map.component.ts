@@ -214,16 +214,6 @@ export class MapComponent implements OnInit {
     });
   }
 
-  //   buildAdvancedMarkerContent(spot: Spot.Class): HTMLDivElement {
-  //     const content = document.createElement("div");
-  //     content.classList.add("advanced-spot-marker");
-  //     content.innerHTML = `
-  //       <div>${spot.rating ?? 7}</div>
-  //     `; // TODO remove 7
-
-  //     return content;
-  //   }
-
   useGeolocation() {
     if (this.showGeolocation) {
       let geolocationWatchId = navigator.geolocation.watchPosition(
