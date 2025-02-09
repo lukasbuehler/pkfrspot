@@ -30,7 +30,7 @@ import { SpotRatingComponent } from "../spot-rating/spot-rating.component";
   ],
 })
 export class SpotPreviewCardComponent implements OnChanges {
-  @Input() spot: Spot.Spot | SpotPreviewData;
+  @Input() spot: Spot | SpotPreviewData;
   @Input() infoOnly: boolean = false;
   @Input() clickable: boolean = false;
   @Input() isCompact: boolean = false;
@@ -53,10 +53,10 @@ export class SpotPreviewCardComponent implements OnChanges {
 
   ngOnChanges() {
     if (this.spot) {
-      if (this.spot instanceof Spot.Spot) {
-        this.spotName = this.spot.getName(this.locale);
-        this.spotLocality = this.spot.getLocalityString();
-        this.spotImage = this.spot.previewImage;
+      if (this.spot instanceof Spot) {
+        this.spotName = this.spot.name();
+        this.spotLocality = this.spot.localityString();
+        this.spotImage = this.spot.previewImageSrc();
       } else {
         this.spotName = this.spot.name;
         this.spotLocality = this.spot.locality;

@@ -4,7 +4,7 @@ import {
   ContributedMedia,
   AmenitiesMap,
 } from "../models/Interfaces";
-import { SpotReviewSchema } from "../models/SpotReview";
+import { SpotReviewSchema } from "./SpotReviewSchema";
 
 export interface SpotAddressSchema {
   sublocality?: string;
@@ -17,7 +17,7 @@ export interface SpotAddressSchema {
 }
 
 export interface SpotSchema {
-  name: string;
+  name: LocaleMap;
 
   location: GeoPoint;
 

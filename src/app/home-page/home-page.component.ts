@@ -230,7 +230,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       const lat = spot.location().lat;
       const lng = spot.location().lng;
       post.spot = {
-        name: spot.name,
+        name: spot.name(),
         spot_location: new GeoPoint(lat, lng),
         image_src: spot.media && spot.media[0]?.src ? spot.media[0].src : "",
         ref: this._postsService.docRef("spots/" + spot.id),

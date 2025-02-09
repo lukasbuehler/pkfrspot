@@ -98,14 +98,14 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     null;
   @ViewChild("bottomSheet") bottomSheet: BottomSheetComponent;
 
-  selectedSpot: Spot.Spot | null = null;
+  selectedSpot: Spot | null = null;
   isEditing: boolean = false;
   mapStyle: string = "roadmap";
 
   askedGeoPermission: boolean = false;
   hasGeolocation: boolean = false;
 
-  visibleSpots: Spot.Spot[] = [];
+  visibleSpots: Spot[] = [];
   highlightedSpots: SpotPreviewData[] = [];
 
   spotSearchControl = new FormControl();
@@ -160,13 +160,13 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     ],
   };
 
-  setVisibleSpots(spots: Spot.Spot[], mapCenter: google.maps.LatLngLiteral) {
+  setVisibleSpots(spots: Spot[], mapCenter: google.maps.LatLngLiteral) {
     if (!spots || !mapCenter) return;
     spots.sort((a, b) => {
       return (
-        Math.sqrt(a.location.lat ** 2 + a.location.lng ** 2) -
+        Math.sqrt(a.location().lat ** 2 + a.location().lng ** 2) -
         Math.sqrt(mapCenter.lat ** 2 + mapCenter.lng ** 2) -
-        (Math.sqrt(b.location.lat ** 2 + b.location.lng ** 2) -
+        (Math.sqrt(b.location().lat ** 2 + b.location().lng ** 2) -
           Math.sqrt(mapCenter.lat ** 2 + mapCenter.lng ** 2))
       );
     });
@@ -324,15 +324,15 @@ export class MapPageComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const title: string = `${spot.getName(this.locale)} - PKFR Spot`;
-    const image_src: string = spot.previewImage;
+    const title: string = `${spot.name} - PKFR Spot`;
+    const image_src: string = spot.previewImageSrc();
     const description: string =
       $localize`:The text before the localized location of the spot. E.g. Spot in Wiedikon, Zurich, CH@@spot.locality.pretext:Spot in ` +
-      spot.getLocalityString(); // TODO change and localize
+      spot.localityString();
 
     this.metaInfoService.setMetaTags(title, image_src, description);
 
-    console.debug("Set meta tags for spot", spot.getName(this.locale));
+    console.debug("Set meta tags for spot", spot.name());
   }
 
   clearTitleAndMetaTags() {

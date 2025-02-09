@@ -2,7 +2,7 @@ import { Component, afterNextRender } from "@angular/core";
 import { CountdownComponent } from "../countdown/countdown.component";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
 import { NgOptimizedImage } from "@angular/common";
-import { Spot, SpotId } from "../../scripts/db/Spot";
+import { Spot, SpotId } from "../../db/models/Spot";
 import { SpotListComponent } from "../spot-list/spot-list.component";
 import { SpotsService } from "../services/firebase/firestore/spots.service";
 import { lastValueFrom, take, timeout } from "rxjs";
@@ -29,7 +29,7 @@ export class EventPageComponent {
     "EcI4adxBhMYZOXT8tPe3" as SpotId,
   ];
 
-  spots: Spot.Class[] = [];
+  spots: Spot[] = [];
 
   constructor(private _spotService: SpotsService) {
     afterNextRender(() => {

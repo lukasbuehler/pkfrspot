@@ -9,11 +9,6 @@ import {
   LocaleCode,
 } from "./Interfaces";
 import { MapHelpers } from "../../scripts/MapHelpers";
-import { SpotsService } from "../../app/services/firestore-services/spots.service";
-import {
-  StorageFolder,
-  StorageService,
-} from "../../app/services/storage.service";
 import { environment } from "../../environments/environment";
 import { GeoPoint } from "firebase/firestore";
 import { SpotAddressSchema, SpotSchema } from "../schemas/SpotSchema";
@@ -25,7 +20,7 @@ import {
   WritableSignal,
 } from "@angular/core";
 import { defaultSpotNames } from "../../../functions/src/spotHelpers";
-import { SpotReviewSchema } from "./SpotReview";
+import { SpotReviewSchema } from "../schemas/SpotReviewSchema";
 
 export interface SpotPreviewData {
   name: string;
@@ -40,12 +35,15 @@ export type SpotId = string & { __brand: "SpotId" };
 export type SpotSlug = string & { __brand: "SpotSlug" };
 
 export class LocalSpot {
-  name: string;
+  names: WritableSignal<LocaleMap>;
+  name: Signal<string>;
+
   location: WritableSignal<google.maps.LatLngLiteral>;
   locationString: Signal<string>;
 
   readonly tileCoordinates: SpotSchema["tile_coordinates"];
-  description?: LocaleMap;
+  descriptions?: WritableSignal<LocaleMap>;
+  description?: Signal<string>;
 
   // Media stuff
   userMedia: WritableSignal<ContributedMedia[]>;
@@ -84,8 +82,17 @@ export class LocalSpot {
 
   paths?: google.maps.LatLngLiteral[][];
 
-  constructor(data: SpotSchema) {
-    this.name = data.name;
+  constructor(data: SpotSchema, readonly locale: LocaleCode) {
+    this.names = signal(data.name);
+    this.name = computed(() => {
+      if (this.names()[locale]) {
+        return this.names()[locale];
+      } else {
+        // return the first name if the locale doesn't exist
+        return this.names()[Object.keys(this.names())[0]];
+      }
+    });
+
     this.location = signal({
       lat: data.location.latitude,
       lng: data.location.longitude,
@@ -95,7 +102,15 @@ export class LocalSpot {
       return MapHelpers.getDisplayCoordinates(this.location());
     });
 
-    this.description = data.description;
+    this.descriptions = signal(data.description);
+    this.description = computed(() => {
+      if (this.descriptions()[locale]) {
+        return this.descriptions()[locale];
+      } else {
+        // return the first description if the locale doesn't exist
+        return this.descriptions()[Object.keys(this.descriptions())[0]];
+      }
+    });
 
     this.userMedia = signal(data.media ?? []);
     // initilize media signal with streetview
@@ -212,10 +227,10 @@ export class LocalSpot {
     const location = this.location();
 
     const data: SpotSchema = {
-      name: this.name,
+      name: this.names(),
       location: new GeoPoint(location.lat, location.lng),
       tile_coordinates: MapHelpers.getTileCoordinates(location),
-      description: this.description,
+      description: this.descriptions(),
       media: this.userMedia(),
       is_iconic: this.isIconic,
       rating: this.rating,
@@ -232,30 +247,13 @@ export class LocalSpot {
     return data;
   }
 
-  public getDescription(locale: string): string {
-    if (this.description) {
-      if (
-        this.description.user_provided &&
-        this.description.user_provided[locale]
-      ) {
-        return this.description.user_provided[locale];
-      } else if (
-        this.description.translated &&
-        this.description.translated[locale]
-      ) {
-        return this.description.translated[locale];
-      }
-    }
-    return "";
-  }
-
   public setDescription(newDescription: string, locale: LocaleCode) {
-    if (!this.description || !this.description.user_provided) {
-      this.description = {
+    if (!this.description || !this.descriptions().user_provided) {
+      this.descriptions.set({
         user_provided: {},
-      };
+      });
     }
-    this.description.user_provided[locale] = newDescription;
+    this.descriptions().user_provided[locale] = newDescription;
   }
 
   public hasBounds() {
@@ -335,7 +333,7 @@ export class LocalSpot {
 
   public clone(): LocalSpot {
     const dataCopy: SpotSchema = JSON.parse(JSON.stringify(this.data()));
-    return new LocalSpot(dataCopy);
+    return new LocalSpot(dataCopy, this.locale);
   }
 
   private _makePathsFromBounds(
@@ -405,14 +403,14 @@ export class LocalSpot {
 export class Spot extends LocalSpot {
   readonly id: SpotId;
 
-  constructor(private _id: SpotId, _data: SpotSchema) {
-    super(_data);
+  constructor(private _id: SpotId, _data: SpotSchema, locale: LocaleCode) {
+    super(_data, locale);
     this.id = _id;
   }
 
   public override clone(): Spot {
     const dataCopy = JSON.parse(JSON.stringify(this.data()));
-    return new Spot(this.id, dataCopy);
+    return new Spot(this.id, dataCopy, this.locale);
   }
 }
 

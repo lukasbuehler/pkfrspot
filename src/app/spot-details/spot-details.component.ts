@@ -51,7 +51,8 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { SpotReportDialogComponent } from "../spot-report-dialog/spot-report-dialog.component";
 import { SpotReviewDialogComponent } from "../spot-review-dialog/spot-review-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
-import { SpotReport } from "../../db/SpotReport.js";
+import { SpotReport } from "../../db/models/SpotReport";
+import { Types, Areas, SpotAddressSchema } from "../../db/schemas/SpotSchema";
 import { MatSelect } from "@angular/material/select";
 import { MediaPreviewGridComponent } from "../media-preview-grid/media-preview-grid.component";
 import { MatInput } from "@angular/material/input";
@@ -82,7 +83,7 @@ import { MatDividerModule } from "@angular/material/divider";
 import { SpotsService } from "../services/firebase/firestore/spots.service";
 import { SpotReportsService } from "../services/firebase/firestore/spot-reports.service";
 import { PostsService } from "../services/firebase/firestore/posts.service";
-import { SpotReview } from "../../db/models/SpotReview";
+import { SpotReviewSchema } from "../../db/schemas/SpotReviewSchema";
 import { SpotReviewsService } from "../services/firebase/firestore/spot-reviews.service";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
@@ -145,7 +146,7 @@ export class ReversePipe implements PipeTransform {
   ],
 })
 export class SpotDetailsComponent implements AfterViewInit, OnChanges {
-  @Input() spot: Spot.Spot;
+  @Input() spot: Spot;
   @Input() infoOnly: boolean = false;
   @Input() dismissable: boolean = false;
   @Input() flat: boolean = false;
@@ -158,7 +159,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   @Output() dismiss: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() addBoundsClick: EventEmitter<void> = new EventEmitter<void>();
   @Output() focusClick: EventEmitter<void> = new EventEmitter<void>();
-  @Output() saveClick: EventEmitter<Spot.Spot> = new EventEmitter<Spot.Spot>();
+  @Output() saveClick: EventEmitter<Spot> = new EventEmitter<Spot>();
   @Output() discardClick: EventEmitter<void> = new EventEmitter<void>();
 
   @ViewChild(UploadMediaUiComponent) uploadMediaComp;
@@ -174,8 +175,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   visited: boolean = false;
   bookmarked: boolean = false;
 
-  spotTypes = Object.values(Spot.Types);
-  spotAreas = Object.values(Spot.Areas);
+  spotTypes = Object.values(Types);
+  spotAreas = Object.values(Areas);
 
   newSpotImage: File = null;
 
@@ -313,9 +314,9 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     this.visited = !this.visited;
   }
 
-  addressChanged(newAddress) {
-    this.spot.address.formatted = newAddress;
-  }
+  // addressChanged(newAddress: SpotAddressSchema) {
+  //   this.spot.address.set(newAddress);
+  // }
 
   setSpotImage(file: File) {
     console.log("setting image");
@@ -327,44 +328,41 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   uploadImage() {
-    if (!this.newSpotImage) {
-      console.error("No file selected or passed to this component");
-    }
-
-    if (this.uploadMediaComp) {
-      if (this.uploadMediaComp.isImageSelected()) {
-        let observable = this._storageService.setUploadToStorage(
-          this.newSpotImage,
-          StorageFolder.SpotPictures
-        );
-
-        observable.then(
-          (imageLink) => {
-            this.spot.addMedia(
-              this._spotsService,
-              imageLink,
-              MediaType.Image,
-              this.authenticationService.user.uid
-            );
-
-            if (typeof plausible !== "undefined") {
-              plausible("Upload Spot Image", {
-                props: { spotId: this.spot.id },
-              });
-            }
-          },
-          (error) => {}
-        );
-      } else {
-        console.error("Selected media is not an image");
-      }
-    } else {
-      console.error("The upload media is not even loaded");
-    }
+    // if (!this.newSpotImage) {
+    //   console.error("No file selected or passed to this component");
+    // }
+    // if (this.uploadMediaComp) {
+    //   if (this.uploadMediaComp.isImageSelected()) {
+    //     let observable = this._storageService.setUploadToStorage(
+    //       this.newSpotImage,
+    //       StorageFolder.SpotPictures
+    //     );
+    //     observable.then(
+    //       (imageLink) => {
+    //         this.spot.addMedia(
+    //           this._spotsService,
+    //           imageLink,
+    //           MediaType.Image,
+    //           this.authenticationService.user.uid
+    //         );
+    //         if (typeof plausible !== "undefined") {
+    //           plausible("Upload Spot Image", {
+    //             props: { spotId: this.spot.id },
+    //           });
+    //         }
+    //       },
+    //       (error) => {}
+    //     );
+    //   } else {
+    //     console.error("Selected media is not an image");
+    //   }
+    // } else {
+    //   console.error("The upload media is not even loaded");
+    // }
   }
 
   mediaChanged(newSpotMedia) {
-    this.spot.setMedia(newSpotMedia, this._spotsService, this._storageService);
+    // this.spot.setMedia(newSpotMedia, this._spotsService, this._storageService);
   }
 
   async shareSpot() {
@@ -378,8 +376,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     if (navigator["share"]) {
       try {
         const shareData = {
-          title: "Spot: " + this.spot.getName(this.locale),
-          text: `PKFR Spot: ${this.spot.getName(this.locale)}`,
+          title: "Spot: " + this.spot.name(),
+          text: `PKFR Spot: ${this.spot.name()}`,
           url: link,
         };
 
@@ -389,9 +387,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
         console.error(err);
       }
     } else {
-      navigator.clipboard.writeText(
-        `${this.spot.getName(this.locale)} - PKFR Spot\n${link}`
-      );
+      navigator.clipboard.writeText(`${this.spot.name()} - PKFR Spot\n${link}`);
       this._snackbar.open("Link to spot copied to clipboard", "Dismiss", {
         duration: 3000,
         horizontalPosition: "center",
@@ -408,14 +404,14 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     if (typeof plausible !== "undefined") {
       plausible("Opening in Maps", { props: { spotId: this.spot.id } });
     }
-    this._mapsApiService.openLatLngInMaps(this.spot.location);
+    this._mapsApiService.openLatLngInMaps(this.spot.location());
   }
 
   openDirectionsInMaps() {
     if (typeof plausible !== "undefined") {
       plausible("Opening in Google Maps", { props: { spotId: this.spot.id } });
     }
-    this._mapsApiService.openDirectionsInMaps(this.spot.location);
+    this._mapsApiService.openDirectionsInMaps(this.spot.location());
   }
 
   loadReportForSpot() {
@@ -472,7 +468,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     const spotReportData: SpotReport = {
       spot: {
         id: this.spot.id,
-        name: this.spot.data.name.en ?? this.spot.getName(this.locale),
+        name: this.spot.name(),
       },
       user: {
         uid: this.authenticationService.user.uid,
@@ -490,7 +486,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     const spotId = this.spot.id;
     let isUpdate: boolean = false;
 
-    let review: SpotReview = null;
+    let review: SpotReviewSchema = null;
 
     // TODO somehow show that we are loading the review
 
@@ -509,7 +505,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
         if (!review) {
           review = {
             spot: {
-              name: this.spot.getName(this.locale),
+              name: this.spot.name(),
               id: spotId,
             },
             user: {

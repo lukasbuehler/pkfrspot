@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, Pipe, PipeTransform } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogTitle } from "@angular/material/dialog";
-import { User } from "../../db/User";
+import { User } from "../../db/models/User";
 
 import { Observable } from "rxjs";
 import { humanTimeSince } from "../../scripts/Helpers";
