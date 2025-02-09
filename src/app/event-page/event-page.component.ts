@@ -4,7 +4,7 @@ import { SpotMapComponent } from "../spot-map/spot-map.component";
 import { NgOptimizedImage } from "@angular/common";
 import { Spot, SpotId } from "../../scripts/db/Spot";
 import { SpotListComponent } from "../spot-list/spot-list.component";
-import { SpotsService } from "../services/firestore-services/spots.service";
+import { SpotsService } from "../services/firebase/firestore/spots.service";
 import { lastValueFrom, take, timeout } from "rxjs";
 
 @Component({

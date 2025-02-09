@@ -15,8 +15,8 @@ import {
   NavigationEnd,
 } from "@angular/router";
 import { filter, map, tap } from "rxjs/operators";
-import { AuthenticationService } from "./services/authentication.service";
-import { StorageService } from "./services/storage.service";
+import { AuthenticationService } from "./services/firebase/authentication.service";
+import { StorageService } from "./services/firebase/storage.service";
 import { GlobalVariables } from "../scripts/global";
 import { UserMenuContentComponent } from "./user-menu-content/user-menu-content.component";
 import { NgOptimizedImage } from "@angular/common";

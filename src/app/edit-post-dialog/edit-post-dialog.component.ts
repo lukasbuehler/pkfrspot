@@ -19,8 +19,11 @@ import {
 import { Post } from "../../scripts/db/Post";
 import { Spot } from "../../scripts/db/Spot";
 
-import { StorageService, StorageFolder } from "../services/storage.service";
-import { PostsService } from "../services/firestore-services/posts.service";
+import {
+  StorageService,
+  StorageFolder,
+} from "../services/firebase/storage.service";
+import { PostsService } from "../services/firebase/firestore/posts.service";
 
 import {
   UntypedFormControl,
@@ -53,33 +56,33 @@ export interface PostDialogData {
 }
 
 @Component({
-    selector: "app-edit-post-dialog",
-    templateUrl: "./edit-post-dialog.component.html",
-    styleUrls: ["./edit-post-dialog.component.scss"],
-    imports: [
-        MatDialogTitle,
-        MatDialogContent,
-        FormsModule,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        MatTabGroup,
-        MatTab,
-        UploadMediaUiComponent,
-        ReactiveFormsModule,
-        MatIcon,
-        MatSuffix,
-        MatHint,
-        NgIf,
-        MatError,
-        MatAutocompleteTrigger,
-        MatAutocomplete,
-        NgFor,
-        MatOption,
-        MatDialogActions,
-        MatButton,
-        MatDialogClose,
-    ]
+  selector: "app-edit-post-dialog",
+  templateUrl: "./edit-post-dialog.component.html",
+  styleUrls: ["./edit-post-dialog.component.scss"],
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatTabGroup,
+    MatTab,
+    UploadMediaUiComponent,
+    ReactiveFormsModule,
+    MatIcon,
+    MatSuffix,
+    MatHint,
+    NgIf,
+    MatError,
+    MatAutocompleteTrigger,
+    MatAutocomplete,
+    NgFor,
+    MatOption,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+  ],
 })
 export class EditPostDialogComponent implements AfterViewInit {
   constructor(

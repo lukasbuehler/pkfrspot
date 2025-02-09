@@ -8,11 +8,11 @@ import {
   AmenitiesOrder,
 } from "./Interfaces";
 import { MapHelpers } from "../MapHelpers";
-import { SpotsService } from "../../app/services/firestore-services/spots.service";
+import { SpotsService } from "../../app/services/firebase/firestore/spots.service";
 import {
   StorageFolder,
   StorageService,
-} from "../../app/services/storage.service";
+} from "../../app/services/firebase/storage.service";
 import { environment } from "../../environments/environment";
 import { GeoPoint } from "firebase/firestore";
 import { SpotReview } from "./SpotReview.js";

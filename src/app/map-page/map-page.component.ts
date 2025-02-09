@@ -15,7 +15,7 @@ import {
   Router,
 } from "@angular/router";
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
-import { AuthenticationService } from "../services/authentication.service";
+import { AuthenticationService } from "../services/firebase/authentication.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MapsApiService } from "../services/maps-api.service";
 import { BehaviorSubject, filter, firstValueFrom, take, timeout } from "rxjs";
@@ -32,10 +32,10 @@ import {
   AsyncPipe,
   isPlatformServer,
 } from "@angular/common";
-import { StorageService } from "../services/storage.service";
+import { StorageService } from "../services/firebase/storage.service";
 import { GlobalVariables } from "../../scripts/global";
 import { SpotListComponent } from "../spot-list/spot-list.component";
-import { SpotsService } from "../services/firestore-services/spots.service";
+import { SpotsService } from "../services/firebase/firestore/spots.service";
 // import { UserMenuContentComponent } from "../user-menu-content/user-menu-content.component";
 import { SpotDetailsComponent } from "../spot-details/spot-details.component";
 import { MatOption } from "@angular/material/core";
@@ -50,7 +50,7 @@ import { MatButtonModule, MatIconButton } from "@angular/material/button";
 import { MatFormField, MatSuffix } from "@angular/material/form-field";
 import { Title } from "@angular/platform-browser";
 import { MatDividerModule } from "@angular/material/divider";
-import { SlugsService } from "../services/firestore-services/slugs.service";
+import { SlugsService } from "../services/firebase/firestore/slugs.service";
 import { SpotSlug } from "../../scripts/db/Interfaces.js";
 import { MetaInfoService } from "../services/meta-info.service";
 

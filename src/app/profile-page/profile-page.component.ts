@@ -8,9 +8,9 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { Post } from "../../scripts/db/Post";
 import { User } from "../../scripts/db/User";
-import { AuthenticationService } from "../services/authentication.service";
+import { AuthenticationService } from "../services/firebase/authentication.service";
 import { FollowListComponent } from "../follow-list/follow-list.component";
-import { StorageService } from "../services/storage.service";
+import { StorageService } from "../services/firebase/storage.service";
 import { MatButton } from "@angular/material/button";
 import { FancyCounterComponent } from "../fancy-counter/fancy-counter.component";
 import { MatChipSet, MatChip } from "@angular/material/chips";
@@ -22,27 +22,27 @@ import {
   MatCardTitle,
 } from "@angular/material/card";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
-import { FollowingService } from "../services/firestore-services/following.service";
-import { UsersService } from "../services/firestore-services/users.service";
-import { PostsService } from "../services/firestore-services/posts.service";
+import { FollowingService } from "../services/firebase/firestore/following.service";
+import { UsersService } from "../services/firebase/firestore/users.service";
+import { PostsService } from "../services/firebase/firestore/posts.service";
 
 @Component({
-    selector: "app-profile-page",
-    templateUrl: "./profile-page.component.html",
-    styleUrls: ["./profile-page.component.scss"],
-    imports: [
-        MatProgressSpinner,
-        MatCard,
-        MatCardContent,
-        NgIf,
-        MatChipSet,
-        MatChip,
-        FancyCounterComponent,
-        MatButton,
-        RouterLink,
-        MatCardHeader,
-        MatCardTitle,
-    ]
+  selector: "app-profile-page",
+  templateUrl: "./profile-page.component.html",
+  styleUrls: ["./profile-page.component.scss"],
+  imports: [
+    MatProgressSpinner,
+    MatCard,
+    MatCardContent,
+    NgIf,
+    MatChipSet,
+    MatChip,
+    FancyCounterComponent,
+    MatButton,
+    RouterLink,
+    MatCardHeader,
+    MatCardTitle,
+  ],
 })
 export class ProfilePageComponent implements OnInit {
   userId: string = "";

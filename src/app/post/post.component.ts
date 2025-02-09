@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
 import { Post } from "../../scripts/db/Post";
-import { PostsService } from "../services/firestore-services/posts.service";
-import { AuthenticationService } from "../services/authentication.service";
+import { PostsService } from "../services/firebase/firestore/posts.service";
+import { AuthenticationService } from "../services/firebase/authentication.service";
 import { MapHelpers } from "../../scripts/MapHelpers";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router, RouterLink } from "@angular/router";
@@ -23,26 +23,26 @@ import {
 import { NgIf } from "@angular/common";
 
 @Component({
-    selector: "app-post",
-    templateUrl: "./post.component.html",
-    styleUrls: ["./post.component.scss"],
-    imports: [
-        NgIf,
-        MatCard,
-        MatCardHeader,
-        MatCardTitle,
-        MatCardSubtitle,
-        RouterLink,
-        VgCoreModule,
-        MatCardContent,
-        MatCardActions,
-        MatIconButton,
-        MatIcon,
-        FancyCounterComponent,
-        MatMenuTrigger,
-        MatMenu,
-        MatMenuItem,
-    ]
+  selector: "app-post",
+  templateUrl: "./post.component.html",
+  styleUrls: ["./post.component.scss"],
+  imports: [
+    NgIf,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardSubtitle,
+    RouterLink,
+    VgCoreModule,
+    MatCardContent,
+    MatCardActions,
+    MatIconButton,
+    MatIcon,
+    FancyCounterComponent,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+  ],
 })
 export class PostComponent implements OnInit {
   @Input() post: Post.Class;

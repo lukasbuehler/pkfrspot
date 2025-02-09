@@ -9,8 +9,8 @@ import {
   setDoc,
   where,
 } from "@angular/fire/firestore";
-import { SpotSlug } from "../../../scripts/db/Interfaces";
-import { SpotId } from "../../../scripts/db/Spot";
+import { SpotSlug } from "../../../../scripts/db/Interfaces";
+import { SpotId } from "../../../../scripts/db/Spot";
 
 @Injectable({
   providedIn: "root",
@@ -18,14 +18,13 @@ import { SpotId } from "../../../scripts/db/Spot";
 export class SlugsService {
   constructor(private firestore: Firestore) {}
 
-  addEvent() {
+  addEvent() {}
 
-  }
+  getEventById() {}
 
-  getEventById() {
-  }
-
-  getEvents(sortByNext: boolean = true, location?: any, pageSize: number = 10) {
-
-  }
+  getEvents(
+    sortByNext: boolean = true,
+    location?: any,
+    pageSize: number = 10
+  ) {}
 }

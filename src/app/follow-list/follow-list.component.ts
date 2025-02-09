@@ -21,7 +21,7 @@ import {
   MatRow,
 } from "@angular/material/table";
 import { NgIf } from "@angular/common";
-import { FollowingService } from "../services/firestore-services/following.service.js";
+import { FollowingService } from "../services/firebase/firestore/following.service.js";
 
 export interface FollowListDialogData {
   userId: string;
@@ -46,29 +46,29 @@ export class FollowDurationPipe implements PipeTransform {
 }
 
 @Component({
-    selector: "app-follow-list",
-    templateUrl: "./follow-list.component.html",
-    styleUrls: ["./follow-list.component.scss"],
-    imports: [
-        MatDialogTitle,
-        NgIf,
-        MatTable,
-        MatColumnDef,
-        MatHeaderCellDef,
-        MatHeaderCell,
-        MatCellDef,
-        MatCell,
-        MatIconButton,
-        RouterLink,
-        MatIcon,
-        MatHeaderRowDef,
-        MatHeaderRow,
-        MatRowDef,
-        MatRow,
-        MatProgressSpinner,
-        MatButton,
-        FollowDurationPipe,
-    ]
+  selector: "app-follow-list",
+  templateUrl: "./follow-list.component.html",
+  styleUrls: ["./follow-list.component.scss"],
+  imports: [
+    MatDialogTitle,
+    NgIf,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatIconButton,
+    RouterLink,
+    MatIcon,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    MatProgressSpinner,
+    MatButton,
+    FollowDurationPipe,
+  ],
 })
 export class FollowListComponent implements OnInit {
   constructor(

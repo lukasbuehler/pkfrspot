@@ -9,8 +9,8 @@ import {
   setDoc,
   where,
 } from "@angular/fire/firestore";
-import { SpotSlug } from "../../../scripts/db/Interfaces";
-import { SpotId } from "../../../scripts/db/Spot";
+import { SpotSlug } from "../../../../scripts/db/Interfaces";
+import { SpotId } from "../../../../scripts/db/Spot";
 
 @Injectable({
   providedIn: "root",

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { generateUUID } from "../../scripts/Helpers";
+import { generateUUID } from "../../../scripts/Helpers";
 
 import { getDownloadURL, getStorage } from "@angular/fire/storage";
 import { deleteObject, ref, uploadBytes } from "firebase/storage";

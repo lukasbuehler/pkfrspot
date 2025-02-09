@@ -9,7 +9,7 @@ import {
   NgSwitchCase,
   NgIf,
 } from "@angular/common";
-import { AuthenticationService } from "../services/authentication.service";
+import { AuthenticationService } from "../services/firebase/authentication.service";
 import { EditProfileComponent } from "../edit-profile/edit-profile.component";
 import {
   SpeedDialFabButtonConfig,
@@ -29,28 +29,28 @@ import { MatIcon } from "@angular/material/icon";
 import { MatButton } from "@angular/material/button";
 
 @Component({
-    selector: "app-settings-page",
-    templateUrl: "./settings-page.component.html",
-    styleUrls: ["./settings-page.component.scss"],
-    imports: [
-        NgFor,
-        MatButton,
-        NgClass,
-        MatIcon,
-        MatBadge,
-        NgSwitch,
-        MatDivider,
-        EditProfileComponent,
-        NgSwitchCase,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        NgIf,
-        MatSuffix,
-        MatTooltip,
-        MatHint,
-        SpeedDialFabComponent,
-    ]
+  selector: "app-settings-page",
+  templateUrl: "./settings-page.component.html",
+  styleUrls: ["./settings-page.component.scss"],
+  imports: [
+    NgFor,
+    MatButton,
+    NgClass,
+    MatIcon,
+    MatBadge,
+    NgSwitch,
+    MatDivider,
+    EditProfileComponent,
+    NgSwitchCase,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    NgIf,
+    MatSuffix,
+    MatTooltip,
+    MatHint,
+    SpeedDialFabComponent,
+  ],
 })
 export class SettingsPageComponent implements OnInit {
   @ViewChild("editProfileComponent") editProfileComponent: EditProfileComponent;

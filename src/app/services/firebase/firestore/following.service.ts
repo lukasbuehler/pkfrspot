@@ -11,7 +11,7 @@ import {
   limit,
 } from "@angular/fire/firestore";
 import { Observable } from "rxjs";
-import { User } from "../../../scripts/db/User";
+import { User } from "../../../../scripts/db/User";
 import { Timestamp } from "firebase/firestore";
 
 @Injectable({

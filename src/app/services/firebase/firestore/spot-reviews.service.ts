@@ -9,7 +9,7 @@ import {
   where,
   setDoc,
 } from "@angular/fire/firestore";
-import { SpotReview } from "../../../scripts/db/SpotReview";
+import { SpotReview } from "../../../../scripts/db/SpotReview";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 

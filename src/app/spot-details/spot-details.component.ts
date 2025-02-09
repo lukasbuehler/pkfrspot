@@ -20,10 +20,13 @@ import {
 } from "@angular/material/progress-bar";
 import { Spot } from "../../scripts/db/Spot";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
-import { StorageService, StorageFolder } from "../services/storage.service";
+import {
+  StorageService,
+  StorageFolder,
+} from "../services/firebase/storage.service";
 import { Post } from "../../scripts/db/Post";
 import { Observable, Subscription } from "rxjs";
-import { AuthenticationService } from "../services/authentication.service";
+import { AuthenticationService } from "../services/firebase/authentication.service";
 import {
   AmenityIcons,
   AmenityNames,
@@ -71,11 +74,11 @@ import {
 } from "@angular/material/card";
 import { create } from "core-js/core/object";
 import { MatDividerModule } from "@angular/material/divider";
-import { SpotsService } from "../services/firestore-services/spots.service";
-import { SpotReportsService } from "../services/firestore-services/spot-reports.service";
-import { PostsService } from "../services/firestore-services/posts.service";
+import { SpotsService } from "../services/firebase/firestore/spots.service";
+import { SpotReportsService } from "../services/firebase/firestore/spot-reports.service";
+import { PostsService } from "../services/firebase/firestore/posts.service";
 import { SpotReview } from "../../scripts/db/SpotReview.js";
-import { SpotReviewsService } from "../services/firestore-services/spot-reviews.service";
+import { SpotReviewsService } from "../services/firebase/firestore/spot-reviews.service";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 

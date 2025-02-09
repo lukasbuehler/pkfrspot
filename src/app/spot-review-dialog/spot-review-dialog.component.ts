@@ -14,31 +14,31 @@ import {
   MatDialogClose,
 } from "@angular/material/dialog";
 import { MatIconModule, MatIcon } from "@angular/material/icon";
-import { SpotReviewsService } from "../services/firestore-services/spot-reviews.service";
+import { SpotReviewsService } from "../services/firebase/firestore/spot-reviews.service";
 import { MatFormField, MatFormFieldModule } from "@angular/material/form-field";
 import { FormsModule } from "@angular/forms";
 import { MatInput, MatInputModule } from "@angular/material/input";
 
 @Component({
-    selector: "app-spot-review-dialog",
-    imports: [
-        MatDialogTitle,
-        MatDialogContent,
-        MatDialogActions,
-        MatDialogClose,
-        MatButtonModule,
-        MatIconModule,
-        MatIconButton,
-        MatIcon,
-        MatButton,
-        MatFormFieldModule,
-        MatFormField,
-        MatInputModule,
-        MatInput,
-        FormsModule,
-    ],
-    templateUrl: "./spot-review-dialog.component.html",
-    styleUrl: "./spot-review-dialog.component.scss"
+  selector: "app-spot-review-dialog",
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatButtonModule,
+    MatIconModule,
+    MatIconButton,
+    MatIcon,
+    MatButton,
+    MatFormFieldModule,
+    MatFormField,
+    MatInputModule,
+    MatInput,
+    FormsModule,
+  ],
+  templateUrl: "./spot-review-dialog.component.html",
+  styleUrl: "./spot-review-dialog.component.scss",
 })
 export class SpotReviewDialogComponent {
   hoverRating: number = 0;

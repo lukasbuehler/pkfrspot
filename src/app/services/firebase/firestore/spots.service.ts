@@ -15,13 +15,13 @@ import {
 } from "@angular/fire/firestore";
 import { Observable, forkJoin } from "rxjs";
 import { map, take } from "rxjs/operators";
-import { Spot, SpotId } from "../../../scripts/db/Spot";
+import { Spot, SpotId } from "../../../../scripts/db/Spot";
 import {
   ClusterTileKey,
   getDataFromClusterTileKey,
   SpotClusterTile,
-} from "../../../scripts/db/SpotClusterTile";
-import { transformFirestoreData as transformFirestoreRESTData } from "../../../scripts/Helpers";
+} from "../../../../scripts/db/SpotClusterTile";
+import { transformFirestoreData as transformFirestoreRESTData } from "../../../../scripts/Helpers";
 
 @Injectable({
   providedIn: "root",

@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { AuthenticationService } from "../services/authentication.service";
+import { AuthenticationService } from "../services/firebase/authentication.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MatIcon } from "@angular/material/icon";
 import { MatMenuItem } from "@angular/material/menu";
@@ -7,10 +7,10 @@ import { RouterLink } from "@angular/router";
 import { NgIf } from "@angular/common";
 
 @Component({
-    selector: "app-user-menu-content",
-    templateUrl: "./user-menu-content.component.html",
-    styleUrls: ["./user-menu-content.component.scss"],
-    imports: [NgIf, RouterLink, MatMenuItem, MatIcon]
+  selector: "app-user-menu-content",
+  templateUrl: "./user-menu-content.component.html",
+  styleUrls: ["./user-menu-content.component.scss"],
+  imports: [NgIf, RouterLink, MatMenuItem, MatIcon],
 })
 export class UserMenuContentComponent {
   constructor(

@@ -8,7 +8,7 @@ import {
   ReactiveFormsModule,
 } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
-import { AuthenticationService } from "../services/authentication.service";
+import { AuthenticationService } from "../services/firebase/authentication.service";
 import { RecaptchaVerifier } from "firebase/auth";
 import { NgIf } from "@angular/common";
 import { MatCheckbox } from "@angular/material/checkbox";
@@ -18,22 +18,22 @@ import { MatButton } from "@angular/material/button";
 import { PageHeaderComponent } from "../page-header/page-header.component";
 
 @Component({
-    selector: "app-sign-up-page",
-    templateUrl: "./sign-up-page.component.html",
-    styleUrls: ["./sign-up-page.component.scss"],
-    imports: [
-        PageHeaderComponent,
-        MatButton,
-        RouterLink,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        MatHint,
-        MatCheckbox,
-        NgIf,
-    ]
+  selector: "app-sign-up-page",
+  templateUrl: "./sign-up-page.component.html",
+  styleUrls: ["./sign-up-page.component.scss"],
+  imports: [
+    PageHeaderComponent,
+    MatButton,
+    RouterLink,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatHint,
+    MatCheckbox,
+    NgIf,
+  ],
 })
 export class SignUpPageComponent implements OnInit {
   createAccountForm: UntypedFormGroup;
