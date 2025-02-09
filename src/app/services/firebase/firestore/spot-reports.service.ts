@@ -32,6 +32,7 @@ export class SpotReportsService {
   }
 
   getSpotReportsBySpotId(spotId: string): Promise<SpotReport[]> {
+    console.log("getting all reports for a spot");
     return getDocs(
       query(collection(this.firestore, "spots", spotId, "reports"))
     ).then((snap) => {
@@ -43,6 +44,7 @@ export class SpotReportsService {
   }
 
   getSpotReportsByUserId(userId: string): Promise<SpotReport> {
+    console.log("getting all reports for a user");
     return getDocs(
       query(
         collectionGroup(this.firestore, "reports"),

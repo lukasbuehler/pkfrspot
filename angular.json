@@ -30,6 +30,10 @@
           "it": {
             "translation": "src/locale/messages.it.xlf",
             "subPath": "it"
+          },
+          "fr": {
+            "translation": "src/locale/messages.fr.xlf",
+            "subPath": "fr"
           }
         }
       },
@@ -42,7 +46,7 @@
                 "inlineCritical": false
               }
             },
-            "localize": ["en", "de", "de-CH", "it"],
+            "localize": ["en", "de", "de-CH", "it", "fr"],
             "outputPath": "dist/pkfrspot",
             "index": "src/index.html",
             "browser": "src/main.ts",

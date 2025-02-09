@@ -31,6 +31,7 @@ export class SpotReviewsService {
   }
 
   getSpotReviewsBySpotId(spotId: string): Promise<SpotReview[]> {
+    console.log("getting all reviews for a spot");
     return getDocs(
       query(collection(this.firestore, "spots", spotId, "reviews"))
     ).then((snap) => {
@@ -42,6 +43,7 @@ export class SpotReviewsService {
   }
 
   getSpotReviewsByUserId(userId: string): Promise<SpotReview> {
+    console.log("getting all reviews for a user");
     return getDocs(
       query(
         collection(this.firestore, "reviews"),

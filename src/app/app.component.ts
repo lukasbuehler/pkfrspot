@@ -121,17 +121,19 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    const currentTermsVersion = "1";
+
     let isABot: boolean = false;
     if (typeof window !== "undefined") {
       isABot =
         navigator.userAgent.match(
           /bot|googlebot|crawler|spider|robot|crawling/i
         ) !== null;
-      const acceptedVersion = localStorage.getItem("acceptedVersion");
+      let acceptedVersion = localStorage.getItem("acceptedVersion");
 
       if (
         !isABot &&
-        acceptedVersion !== "1.0.0" &&
+        acceptedVersion !== currentTermsVersion &&
         this.welcomeDialog.openDialogs.length === 0
       ) {
         this.router.events
@@ -139,7 +141,9 @@ export class AppComponent implements OnInit {
           .subscribe(() => {
             this.route.firstChild.data.subscribe((data) => {
               // open welcome dialog if the user has not accepted the terms of service
-              if (acceptedVersion !== "1.0.0") {
+              acceptedVersion = localStorage.getItem("acceptedVersion");
+
+              if (acceptedVersion !== currentTermsVersion) {
                 // get the acceptanceFree variable from the route data
                 console.log("routeData", data);
                 const acceptanceFree = data["acceptanceFree"] || false;

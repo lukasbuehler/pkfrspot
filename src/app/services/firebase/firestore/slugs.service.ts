@@ -33,6 +33,7 @@ export class SlugsService {
   }
 
   getAllSlugsForASpot(spotId: string): Promise<string[]> {
+    console.log("getting all slugs for a spot");
     return getDocs(
       query(
         collection(this.firestore, "spot_slugs"),
