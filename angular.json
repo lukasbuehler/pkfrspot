@@ -37,6 +37,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "optimization": {
+              "styles": {
+                "inlineCritical": false
+              }
+            },
             "localize": ["en", "de", "de-CH", "it"],
             "outputPath": "dist/pkfrspot",
             "index": "src/index.html",

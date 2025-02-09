@@ -250,11 +250,11 @@
         {{ spot.getReadableLocation() }}
       </p>
       }
-      <div class="d-flex flex-row gap-2">
+      <div class="d-flex flex-column flex-xl-row gap-2">
         <button
           mat-stroked-button
           color="primary"
-          class="flex-grow-1 flex-basis-0"
+          class="flex-grow-1 flex-basis-0 py-2"
           i18n-matTooltip="
             Open in maps button tooltip|Tooltip of button to open the spot in
             maps@@open_maps_tooltip"
@@ -269,7 +269,7 @@
         <button
           mat-stroked-button
           color="primary"
-          class="flex-grow-1 flex-basis-0"
+          class="flex-grow-1 flex-basis-0 py-2"
           matTooltip="Navigate to this spot"
           (click)="openDirectionsInMaps()"
           i18n="@@directions_spot_tooltip"

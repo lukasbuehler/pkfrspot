@@ -58,4 +58,17 @@ export class SlugsService {
       })
       .then((data) => data.spotId as SpotId);
   }
+
+  getSpotIdFromSpotSlugHttp(slug: SpotSlug): Promise<SpotId> {
+    return fetch(
+      `https://firestore.googleapis.com/v1/projects/parkour-base-project/databases/(default)/documents/spot_slugs/${slug}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data.fields) {
+          return Promise.reject("No spot found for this slug.");
+        }
+        return data.fields.spotId.stringValue as SpotId;
+      });
+  }
 }

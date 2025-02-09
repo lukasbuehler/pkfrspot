@@ -51,8 +51,8 @@ import { MatFormField, MatSuffix } from "@angular/material/form-field";
 import { Title } from "@angular/platform-browser";
 import { MatDividerModule } from "@angular/material/divider";
 import { SlugsService } from "../services/firestore-services/slugs.service";
-import { SpotMetaInfoComponent } from "../spot-meta-info/spot-meta-info.component";
 import { SpotSlug } from "../../scripts/db/Interfaces.js";
+import { MetaInfoService } from "../services/meta-info.service";
 
 @Component({
   selector: "app-map-page",
@@ -91,7 +91,6 @@ import { SpotSlug } from "../../scripts/db/Interfaces.js";
     // UserMenuContentComponent,
     AsyncPipe,
     MatDividerModule,
-    SpotMetaInfoComponent,
   ],
 })
 export class MapPageComponent implements OnInit, AfterViewInit {
@@ -126,6 +125,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     public authService: AuthenticationService,
     public mapsService: MapsApiService,
     public storageService: StorageService,
+    private metaInfoService: MetaInfoService,
     private _spotsService: SpotsService,
     private _searchService: SearchService,
     private _slugsService: SlugsService,
@@ -189,9 +189,23 @@ export class MapPageComponent implements OnInit, AfterViewInit {
 
   // Initialization ///////////////////////////////////////////////////////////
 
-  async ngOnInit() {
-    const spotId = await this._getSpotIdFromRouteAndOpenSpot();
-    if (spotId) await this.loadSpotById(spotId); // TODO out of context
+  ngOnInit() {
+    console.log("MapPageComponent ngOnInit");
+    this._getSpotIdFromRoute()
+      .then((spotId) => {
+        if (spotId) {
+          console.log("got spotId from route", spotId, "loading now");
+          return this.loadSpotById(spotId);
+        }
+        return Promise.reject();
+      })
+      .then(() => {
+        console.log("loaded spot");
+      })
+      .catch((err) => {
+        if (!err) return; // ignore, because no spotId was found in route
+        console.error("Error loading spot", err);
+      });
   }
 
   async ngAfterViewInit() {
@@ -211,7 +225,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
         })
       )
       .subscribe(async (event: NavigationEnd) => {
-        const spotId = await this._getSpotIdFromRouteAndOpenSpot();
+        const spotId = await this._getSpotIdFromRoute();
         if (spotId) await this.loadSpotById(spotId); // TODO out of context
       });
 
@@ -239,7 +253,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  async _getSpotIdFromRouteAndOpenSpot(): Promise<SpotId | void> {
+  async _getSpotIdFromRoute(): Promise<SpotId | void> {
     let spotIdOrSlug: SpotId | SpotSlug = this.route.snapshot.paramMap.get(
       "spot"
     ) as SpotId | SpotSlug;
@@ -258,7 +272,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
       // first search for possible slugs
       let spotId: SpotId = "" as SpotId;
       try {
-        spotId = await this._slugsService.getSpotIdFromSpotSlug(
+        spotId = await this._slugsService.getSpotIdFromSpotSlugHttp(
           spotIdOrSlug as SpotSlug
         );
       } catch (e) {
@@ -287,17 +301,11 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  async loadSpotById(
-    spotId: SpotId,
-    timeoutSeconds: number = 10
-  ): Promise<void> {
-    const spot: Spot.Class = await firstValueFrom(
-      this._spotsService
-        .getSpotById(spotId)
-        .pipe(take(1), timeout(timeoutSeconds * 1000))
-    );
-
+  async loadSpotById(spotId: SpotId): Promise<void> {
+    const spot: Spot.Class = await this._spotsService.getSpotByIdHttp(spotId);
     this.selectedSpot = spot;
+    this.setSpotMetaTags();
+    console.log("is selected spot now");
   }
 
   updateMapURL() {
@@ -306,5 +314,28 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     } else {
       this.location.go(`/map`);
     }
+  }
+
+  setSpotMetaTags() {
+    const spot = this.selectedSpot;
+
+    if (spot === null) {
+      this.clearTitleAndMetaTags();
+      return;
+    }
+
+    const title: string = `${spot.getName(this.locale)} - PKFR Spot`;
+    const image_src: string = spot.previewImage;
+    const description: string =
+      $localize`:The text before the localized location of the spot. E.g. Spot in Wiedikon, Zurich, CH@@spot.locality.pretext:Spot in ` +
+      spot.getLocalityString(); // TODO change and localize
+
+    this.metaInfoService.setMetaTags(title, image_src, description);
+
+    console.debug("Set meta tags for spot", spot.getName(this.locale));
+  }
+
+  clearTitleAndMetaTags() {
+    this.titleService.setTitle($localize`:@@pkfr.spotmap.title:PKFR Spot map`);
   }
 }

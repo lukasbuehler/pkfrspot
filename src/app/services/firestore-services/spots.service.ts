@@ -3,6 +3,7 @@ import {
   Firestore,
   doc,
   addDoc,
+  getDoc,
   collection,
   onSnapshot,
   where,
@@ -20,6 +21,7 @@ import {
   getDataFromClusterTileKey,
   SpotClusterTile,
 } from "../../../scripts/db/SpotClusterTile";
+import { transformFirestoreData as transformFirestoreRESTData } from "../../../scripts/Helpers";
 
 @Injectable({
   providedIn: "root",
@@ -31,7 +33,43 @@ export class SpotsService {
     return doc(this.firestore, path);
   }
 
-  getSpotById(spotId: SpotId): Observable<Spot.Class> {
+  getSpotById(spotId: SpotId): Promise<Spot.Class> {
+    return getDoc(doc(this.firestore, "spots", spotId)).then((snap) => {
+      if (snap.exists()) {
+        const data = snap.data() as Spot.Schema;
+        return new Spot.Class(snap.id as SpotId, data);
+      } else {
+        throw new Error("Error! This Spot does not exist.");
+      }
+    });
+  }
+
+  getSpotByIdHttp(spotId: SpotId): Promise<Spot.Class> {
+    return fetch(
+      `https://firestore.googleapis.com/v1/projects/parkour-base-project/databases/(default)/documents/spots/${spotId}`
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (!data.fields) {
+          throw new Error("No 'fields' property in JSON response");
+        }
+
+        const spotData = transformFirestoreRESTData(data.fields) as Spot.Schema;
+
+        return new Spot.Class(spotId, spotData);
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+        throw error;
+      });
+  }
+
+  getSpotById$(spotId: SpotId): Observable<Spot.Class> {
     return new Observable<Spot.Class>((observer) => {
       return onSnapshot(
         doc(this.firestore, "spots", spotId),

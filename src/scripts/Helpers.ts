@@ -1,3 +1,62 @@
+export function transformFirestoreData(data: any): any {
+  if (data === null || data === undefined) return data;
+  if (typeof data !== "object") return data;
+
+  if ("fields" in data) {
+    data = data.fields;
+  }
+
+  // Assume data is an object of key -> FirestoreValue
+  const result: any = {};
+  for (const key of Object.keys(data)) {
+    result[key] = transformFirestoreField(data[key]);
+  }
+  return result;
+}
+
+function transformFirestoreField(field: any): any {
+  if (field === null || field === undefined) return field;
+
+  if ("stringValue" in field) {
+    return field.stringValue;
+  }
+  if ("integerValue" in field) {
+    return parseInt(field.integerValue, 10);
+  }
+  if ("doubleValue" in field) {
+    return field.doubleValue;
+  }
+  if ("booleanValue" in field) {
+    return field.booleanValue;
+  }
+  if ("geoPointValue" in field) {
+    return {
+      latitude: field.geoPointValue.latitude,
+      longitude: field.geoPointValue.longitude,
+    };
+  }
+  if ("arrayValue" in field) {
+    const values = field.arrayValue.values || [];
+    // Build a new array from scratch
+    const arr: any[] = [];
+    for (const item of values) {
+      arr.push(transformFirestoreField(item));
+    }
+    return arr;
+  }
+  if ("mapValue" in field) {
+    const fields = field.mapValue.fields || {};
+    // Build a new object from scratch
+    const obj: any = {};
+    for (const subKey of Object.keys(fields)) {
+      obj[subKey] = transformFirestoreField(fields[subKey]);
+    }
+    return obj;
+  }
+  // If none of the above keys are present, return the field as is.
+  return field;
+}
+
 export function humanTimeSince(date: Date): string {
   var seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
   var interval = seconds / 31536000;

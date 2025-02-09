@@ -415,7 +415,7 @@ export namespace Spot {
     private _makePathsFromBounds(
       bounds: GeoPoint[]
     ): Array<Array<google.maps.LatLngLiteral>> {
-      if (!bounds) return [];
+      if (!bounds || bounds.length === 0) return [];
 
       return [
         bounds.map((point) => {

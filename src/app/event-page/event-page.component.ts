@@ -35,7 +35,7 @@ export class EventPageComponent {
     afterNextRender(() => {
       this.swissJamSpotIds.forEach((spotId) => {
         this._spotService
-          .getSpotById(spotId)
+          .getSpotById$(spotId)
           .pipe(take(1), timeout(10000))
           .subscribe((spot) => {
             this.spots.push(spot);

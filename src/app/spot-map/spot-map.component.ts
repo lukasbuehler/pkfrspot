@@ -437,7 +437,7 @@ export class SpotMapComponent implements AfterViewInit {
     }
 
     console.log("Opening spot by ID", spotId);
-    firstValueFrom(this._spotsService.getSpotById(spotId)).then((spot) => {
+    firstValueFrom(this._spotsService.getSpotById$(spotId)).then((spot) => {
       if (spot) {
         this.openSpot(spot);
       } else {

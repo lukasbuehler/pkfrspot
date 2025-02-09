@@ -13,7 +13,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "serve:ssr:pkfrspot": "node dist/pkfrspot/server/server.mjs",
+    "serve:ssr": "node dist/pkfrspot/server/server.mjs",
     "deploy:test:rules": "firebase use test && firebase deploy --only firestore:rules",
     "deploy:prod:rules": "firebase use prod && firebase deploy --only firestore:rules",
     "deploy:test:functions": "firebase use test && cd ../functions && npm run build && firebase deploy --only functions",

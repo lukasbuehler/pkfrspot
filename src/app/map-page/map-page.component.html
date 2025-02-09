@@ -1,6 +1,6 @@
 <div class="map-container">
   <!-- The spot map, defer loading to make sure it is not loaded on the server. -->
-  @defer(on immediate) {
+  @defer {
   <app-spot-map
     #spotMap
     id="spotMap"
@@ -245,6 +245,4 @@
   <!-- <mat-menu #searchUserMatMenu="matMenu">
     <app-user-menu-content></app-user-menu-content>
   </mat-menu> -->
-
-  <app-spot-meta-info [spot]="selectedSpot"></app-spot-meta-info>
 </div>
