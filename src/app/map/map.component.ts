@@ -16,7 +16,9 @@ import {
   model,
   ModelSignal,
 } from "@angular/core";
-import { LocalSpot, Spot, SpotId, SpotPreviewData } from "../../db/models/Spot";
+import { LocalSpot, Spot, SpotId } from "../../db/models/Spot";
+import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
+
 import {
   GoogleMap,
   MapPolygon,
@@ -28,9 +30,9 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { environment } from "../../environments/environment";
 import { MapsApiService } from "../services/maps-api.service";
 import {
-  SpotClusterDot,
-  SpotClusterTile,
-} from "../../db/models/SpotClusterTile.js";
+  SpotClusterDotSchema,
+  SpotClusterTileSchema,
+} from "../../db/schemas/SpotClusterTile.js";
 import { GeoPoint } from "firebase/firestore";
 import { NgIf, NgFor, AsyncPipe, NgClass } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
@@ -118,7 +120,7 @@ export class MapComponent implements OnInit {
   @Output() hasGeolocationChange = new EventEmitter<boolean>();
 
   @Input() spots: Spot[] = [];
-  @Input() dots: SpotClusterDot[] = [];
+  @Input() dots: SpotClusterDotSchema[] = [];
 
   @Input() selectedSpot: Spot | LocalSpot = null;
   @Input() isEditing: boolean = false;
@@ -382,7 +384,7 @@ export class MapComponent implements OnInit {
     return { lat: geoPoint.latitude, lng: geoPoint.longitude };
   }
 
-  clickOnDot(dot: SpotClusterDot) {
+  clickOnDot(dot: SpotClusterDotSchema) {
     if (dot.spot_id) {
       this.spotClick.emit(dot.spot_id as SpotId);
     } else {

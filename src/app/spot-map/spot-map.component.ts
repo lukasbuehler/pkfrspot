@@ -9,29 +9,23 @@ import {
   PLATFORM_ID,
   ViewChild,
 } from "@angular/core";
-import { LocalSpot, Spot, SpotId, SpotPreviewData } from "../../db/models/Spot";
+import { LocalSpot, Spot, SpotId } from "../../db/models/Spot";
+import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
 import { ActivatedRoute } from "@angular/router";
 import { GeoPoint } from "firebase/firestore";
-import { firstValueFrom, take, timeout } from "rxjs";
+import { firstValueFrom } from "rxjs";
 import { MapHelpers } from "../../scripts/MapHelpers";
 import { AuthenticationService } from "../services/firebase/authentication.service";
 import { MapComponent } from "../map/map.component";
 import {
   ClusterTileKey,
   getClusterTileKey,
-  SpotClusterDot,
-  SpotClusterTile,
-} from "../../db/models/SpotClusterTile";
+  SpotClusterDotSchema,
+  SpotClusterTileSchema,
+} from "../../db/schemas/SpotClusterTile";
 import { MapsApiService } from "../services/maps-api.service";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
 import { isPlatformServer } from "@angular/common";
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from "@angular/animations";
 import { SpotsService } from "../services/firebase/firestore/spots.service";
 import { LocaleCode } from "../../db/models/Interfaces";
 
@@ -116,9 +110,9 @@ export class SpotMapComponent implements AfterViewInit {
   loadedSpots: Map<ClusterTileKey, Spot[]> = new Map<ClusterTileKey, Spot[]>();
   visibleSpots: Spot[] = [];
 
-  loadedClusterTiles = new Map<ClusterTileKey, SpotClusterTile>();
+  loadedClusterTiles = new Map<ClusterTileKey, SpotClusterTileSchema>();
   hightlightedSpots: SpotPreviewData[] = [];
-  visibleDots: SpotClusterDot[] = [];
+  visibleDots: SpotClusterDotSchema[] = [];
 
   // the current tile coordinates for zoom level 16, can be easily converted to other zoom levels by bit shifting
   private _northEastTileCoordsZ16: { x: number; y: number };
@@ -394,7 +388,7 @@ export class SpotMapComponent implements AfterViewInit {
 
     for (let tileKey of visibleTiles) {
       if (this.loadedClusterTiles.has(tileKey)) {
-        const clusterTiles: SpotClusterTile =
+        const clusterTiles: SpotClusterTileSchema =
           this.loadedClusterTiles.get(tileKey);
         this.visibleDots = this.visibleDots.concat(clusterTiles.dots);
         this.hightlightedSpots = this.hightlightedSpots.concat(

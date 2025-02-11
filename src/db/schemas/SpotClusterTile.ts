@@ -1,20 +1,20 @@
 import { GeoPoint } from "firebase/firestore";
-import { SpotPreviewData } from "./Spot";
+import { SpotPreviewData } from "./SpotPreviewData";
 
-export interface SpotClusterDot {
+export interface SpotClusterDotSchema {
   location: GeoPoint; // on DB
   weight: number;
   spot_id?: string;
 }
 
-export interface SpotClusterTile {
+export interface SpotClusterTileSchema {
   // the zoom level the tile should be loaded and displayed at.
   zoom: number;
   x: number;
   y: number;
 
   // the array of cluster points with their corresponding weights.
-  dots: SpotClusterDot[];
+  dots: SpotClusterDotSchema[];
 
   spots: SpotPreviewData[];
 }

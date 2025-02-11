@@ -1,4 +1,4 @@
-import { User } from "./User";
+import { User } from "../models/User";
 
 interface SpotData {
   name: string; // english name
@@ -9,7 +9,7 @@ export enum SpotReportReason {
   Duplicate = "duplicate",
 }
 
-export interface SpotReport {
+export interface SpotReportSchema {
   spot: SpotData;
   reason: SpotReportReason | string;
   duplicateOf?: SpotData;

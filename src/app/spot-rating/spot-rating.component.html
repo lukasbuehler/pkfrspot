@@ -5,14 +5,14 @@
   </span>
   } @if(isCompact) {
   <mat-icon style="width: 1em; height: 1em; font-size: 1em"> star </mat-icon>
-  } @else { @for(item of [].constructor(numFullStars); track item) {
+  } @else { @for(item of [].constructor(numFullStars); track $index) {
   <mat-icon style="width: 1em; height: 1em; font-size: 1em"> star </mat-icon>
   } @if(showHalfStar) {
   <mat-icon style="width: 1em; height: 1em; font-size: 1em">
     star_half
   </mat-icon>
   } @if(showEmptyStars && numEmptyStars > 0) { @for(item of
-  [].constructor(numEmptyStars); track item) {
+  [].constructor(numEmptyStars); track $index) {
   <mat-icon style="width: 1em; height: 1em; font-size: 1em">
     star_border
   </mat-icon>

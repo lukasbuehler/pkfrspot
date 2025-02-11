@@ -39,7 +39,8 @@
     </mat-card-subtitle> -->
 
     <!-- Icon buttons in header -->
-    <div class="spot-button-row" *ngIf="!isEditing">
+    @if(!isEditing) {
+    <div class="spot-button-row">
       @if(authenticationService.isSignedIn) { @if (!visited) {
       <button
         mat-icon-button
@@ -96,6 +97,7 @@
         <!-- <mat-icon>share_location</mat-icon> -->
       </button>
     </div>
+    }
   </mat-card-header>
   } @if(report) {
   <div class="report-info">
@@ -107,28 +109,29 @@
   <mat-card-content>
     @if(!isEditing) {
     <!-- spot media carousel  -->
-    @if(spot.media && spot.media.length > 0) {
+    @if(spot.media() && spot.media().length > 0) {
     <app-img-carousel class="mb-2 mt-1" [media]="spot.media()">
     </app-img-carousel>
     }
 
-    <!-- <swiper-container
+    <!-- Spot Description -->
+    @if(spot.media() && spot.media().length > 0) {
+    <swiper-container
       class="spot-media-swiper"
-      *ngIf="spot.media && spot.media.length > 0"
       [navigation]="true"
       [pagination]="{ clickable: true }"
     >
-      <swiper-slide *ngFor="let mediaObj of spot.media"
-        ><img
-          *ngIf="mediaObj.type === 'image'"
-          src="{{ mediaObj.src }}"
-          class="spot-img"
-        />
+      @for(mediaObj of spot.media(); track mediaObj) {
+      <swiper-slide
+        ><img ngSrc="{{ mediaObj.src }}" class="spot-img" />
       </swiper-slide>
-    </swiper-container> -->
+      }
+    </swiper-container>
+    }
 
     <!-- Spot Description -->
-    <div *ngIf="spot.description()">
+    @if(spot.description()) {
+    <div>
       <h4
         class="mat-title-small"
         i18n="description header|The header for the spot description"
@@ -139,6 +142,7 @@
         {{ spot.description() }}
       </p>
     </div>
+    }
 
     <!-- Freatures -->
     @if(spot.amentitiesArray()?.length > 0) {
@@ -199,7 +203,7 @@
             style="margin-top: -2px"
           ></mat-progress-bar>
           <div class="grid-item mat-label-medium">
-            ({{ spot.ratingHistogram[item.key] }})
+            ({{ spot.ratingHistogram()[item.key] }})
           </div>
           }
         </div>
@@ -234,7 +238,7 @@
 
     <!-- Spot Address or Location and action buttons -->
     <div class="d-flex justify-start mb-4 flex-column">
-      @if(spot.address().formatted) {
+      @if(spot.address()?.formatted) {
       <h4
         class="mat-title-small"
         i18n="
@@ -490,9 +494,9 @@
     </mat-form-field>
 
     <div class="my-3 d-flex justify-start">
+      @if(!isNewSpot && !hasBounds()) {
       <button
         mat-stroked-button
-        *ngIf="!isNewSpot && !hasBounds()"
         (click)="addBoundsClicked()"
         i18n="
           Add bounds button label|Label of the button to add bounds to a spot
@@ -500,15 +504,16 @@
       >
         Add bounds
       </button>
+      }
     </div>
     }
   </mat-card-content>
   @if(isEditing) {
   <mat-card-actions class="mt-3 gap-2">
+    @if(editable) {
     <button
       mat-stroked-button
       color="warn"
-      *ngIf="editable"
       (click)="discardButtonClick()"
       class="flex-grow-1 flex-basis-0"
       i18n="Discard changes button label|Label of the button to discard changes"
@@ -518,13 +523,13 @@
     <button
       mat-stroked-button
       color="primary"
-      *ngIf="editable"
       (click)="saveButtonClick()"
       class="flex-grow-1 flex-basis-0"
       i18n="Save changes button label|Label of the button to save changes"
     >
       Save changes
     </button>
+    }
   </mat-card-actions>
   }
 </mat-card>

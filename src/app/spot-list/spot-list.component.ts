@@ -5,7 +5,8 @@ import {
   OnChanges,
   Output,
 } from "@angular/core";
-import { Spot, SpotPreviewData } from "../../db/models/Spot.js";
+import { Spot } from "../../db/models/Spot";
+import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
 import { SpotPreviewCardComponent } from "../spot-preview-card/spot-preview-card.component";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatIconModule } from "@angular/material/icon";

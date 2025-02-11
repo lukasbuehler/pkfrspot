@@ -4,7 +4,7 @@
   <div
     class="d-flex flex-row justify-content-center align-items-center p-3 mb-3"
   >
-    @for(star of [1, 2, 3, 4, 5]; track star) {
+    @for(star of [1, 2, 3, 4, 5]; track $index) {
     <button
       mat-icon-button
       (mouseover)="hoverRating = star; isHovering = true"

@@ -13,6 +13,7 @@ import {
   AfterViewInit,
   Pipe,
   PipeTransform,
+  CUSTOM_ELEMENTS_SCHEMA,
 } from "@angular/core";
 import {
   MatProgressBar,
@@ -52,7 +53,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { SpotReportDialogComponent } from "../spot-report-dialog/spot-report-dialog.component";
 import { SpotReviewDialogComponent } from "../spot-review-dialog/spot-review-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
-import { SpotReport } from "../../db/models/SpotReport";
+import { SpotReportSchema } from "../../db/schemas/SpotReportSchema";
 import { Types, Areas, SpotAddressSchema } from "../../db/schemas/SpotSchema";
 import { MatSelect } from "@angular/material/select";
 import { MediaPreviewGridComponent } from "../media-preview-grid/media-preview-grid.component";
@@ -64,7 +65,6 @@ import { MatIcon } from "@angular/material/icon";
 import { MatTooltip } from "@angular/material/tooltip";
 import { MatIconButton, MatButton } from "@angular/material/button";
 import {
-  NgIf,
   KeyValuePipe,
   LocationStrategy,
   NgOptimizedImage,
@@ -121,7 +121,6 @@ export class ReversePipe implements PipeTransform {
     MatCardTitle,
     MatCardSubtitle,
     MatChipsModule,
-    NgIf,
     MatIconButton,
     MatTooltip,
     MatIcon,
@@ -135,7 +134,6 @@ export class ReversePipe implements PipeTransform {
     MediaPreviewGridComponent,
     UploadMediaUiComponent,
     // MatSelect,
-    // NgFor,
     // MatOption,
     MatChipListbox,
     MatCardActions,
@@ -146,6 +144,7 @@ export class ReversePipe implements PipeTransform {
     ReversePipe,
     NgOptimizedImage,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   @Input() spot: Spot | LocalSpot;
@@ -191,7 +190,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   filteredCountries: Observable<any[]>;
   stateCtrl = new UntypedFormControl();
 
-  report: SpotReport | null = null;
+  report: SpotReportSchema | null = null;
 
   automaticallyDetermineAddress: boolean = true;
 
@@ -486,7 +485,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   openSpotReportDialog() {
     if (!(this.spot instanceof Spot)) return;
 
-    const spotReportData: SpotReport = {
+    const spotReportData: SpotReportSchema = {
       spot: {
         id: this.spot.id,
         name: this.spot.name(),

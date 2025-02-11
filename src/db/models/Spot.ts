@@ -12,24 +12,9 @@ import { MapHelpers } from "../../scripts/MapHelpers";
 import { environment } from "../../environments/environment";
 import { GeoPoint } from "firebase/firestore";
 import { SpotAddressSchema, SpotSchema } from "../schemas/SpotSchema";
-import {
-  computed,
-  effect,
-  Signal,
-  signal,
-  WritableSignal,
-} from "@angular/core";
+import { computed, Signal, signal, WritableSignal } from "@angular/core";
 import { defaultSpotNames } from "../../../functions/src/spotHelpers";
 import { SpotReviewSchema } from "../schemas/SpotReviewSchema";
-
-export interface SpotPreviewData {
-  name: string;
-  id: string;
-  locality: string;
-  imageSrc: string;
-  isIconic: boolean;
-  rating?: number; // whole number 1-10
-}
 
 export type SpotId = string & { __brand: "SpotId" };
 export type SpotSlug = string & { __brand: "SpotSlug" };
@@ -97,6 +82,7 @@ export class LocalSpot {
       lat: data.location.latitude,
       lng: data.location.longitude,
     });
+    this.tileCoordinates = data.tile_coordinates;
 
     this.locationString = computed(() => {
       return MapHelpers.getDisplayCoordinates(this.location());
@@ -104,11 +90,13 @@ export class LocalSpot {
 
     this.descriptions = signal(data.description);
     this.description = computed(() => {
-      if (this.descriptions()[locale]) {
-        return this.descriptions()[locale];
-      } else {
-        // return the first description if the locale doesn't exist
-        return this.descriptions()[Object.keys(this.descriptions())[0]];
+      if (this.descriptions()) {
+        if (this.descriptions()[locale]) {
+          return this.descriptions()[locale];
+        } else {
+          // return the first description if the locale doesn't exist
+          return this.descriptions()[Object.keys(this.descriptions())[0]];
+        }
       }
     });
 
@@ -118,16 +106,26 @@ export class LocalSpot {
       this._streetview = signal(streetview);
     });
 
-    // Update the media signal when the location, or user media changes
-    effect(async () => {
-      const location = this.location();
-      const streetview = await this._loadStreetviewForLocation(location);
-      const arr = [].concat(this.media(), streetview ?? []);
-      this.userMedia.set(arr);
+    // effect(() => {
+    // const location = this.location();
+    // const streetview = await this._loadStreetviewForLocation(location);
+    // const arr = [].concat(this.media(), streetview ?? []);
+    // this.media.set(arr);
+    // });
+
+    this.media = computed(() => {
+      const userMedia = this.userMedia();
+      // const streetview = this._streetview();
+      // if (streetview) {
+      //   return [streetview, ...userMedia];
+      // } else {
+      //   return userMedia;
+      return userMedia;
     });
 
     this.hasMedia = computed(() => {
-      return this.media().length > 0;
+      const media = this.media();
+      return media.length > 0;
     });
 
     this.previewImageSrc = computed(() => {
@@ -261,7 +259,7 @@ export class LocalSpot {
   }
 
   public hasBounds() {
-    return !!(this.paths?.length > 0);
+    return !!(this.paths?.length > 0 && this.paths[0].length > 0);
   }
 
   public getMediaByIndex(index: number): ContributedMedia {

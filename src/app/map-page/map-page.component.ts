@@ -7,7 +7,8 @@ import {
   PLATFORM_ID,
   LOCALE_ID,
 } from "@angular/core";
-import { LocalSpot, Spot, SpotId, SpotPreviewData } from "../../db/models/Spot";
+import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
+import { LocalSpot, Spot, SpotId } from "../../db/models/Spot";
 import {
   ActivatedRoute,
   NavigationEnd,

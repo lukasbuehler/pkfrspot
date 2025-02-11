@@ -9,7 +9,8 @@ import {
   OnChanges,
 } from "@angular/core";
 import { Router } from "@angular/router";
-import { Spot, SpotPreviewData } from "../../db/models/Spot";
+import { Spot } from "../../db/models/Spot";
+import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
 import { StorageService } from "../services/firebase/storage.service";
 import { MatCardModule } from "@angular/material/card";
 import { MatRippleModule } from "@angular/material/core";

@@ -19,8 +19,8 @@ import { Spot, SpotId } from "../../../../db/models/Spot";
 import {
   ClusterTileKey,
   getDataFromClusterTileKey,
-  SpotClusterTile,
-} from "../../../../db/models/SpotClusterTile";
+  SpotClusterTileSchema,
+} from "../../../../db/schemas/SpotClusterTile";
 import { SpotSchema } from "../../../../db/schemas/SpotSchema";
 import { LocaleCode } from "../../../../db/models/Interfaces";
 import { transformFirestoreData } from "../../../../scripts/Helpers";
@@ -140,14 +140,16 @@ export class SpotsService {
     );
   }
 
-  getSpotClusterTiles(tiles: ClusterTileKey[]): Observable<SpotClusterTile[]> {
+  getSpotClusterTiles(
+    tiles: ClusterTileKey[]
+  ): Observable<SpotClusterTileSchema[]> {
     const observables = tiles.map((tile) => {
-      return new Observable<SpotClusterTile[]>((observer) => {
+      return new Observable<SpotClusterTileSchema[]>((observer) => {
         const unsubscribe = onSnapshot(
           doc(this.firestore, "spot_clusters", tile),
           (snap) => {
             if (snap.exists()) {
-              observer.next([snap.data() as SpotClusterTile]);
+              observer.next([snap.data() as SpotClusterTileSchema]);
             } else {
               observer.next([]);
             }
@@ -164,10 +166,10 @@ export class SpotsService {
     });
 
     return forkJoin(observables).pipe(
-      map((arrays: SpotClusterTile[][]) => {
-        let allTiles = new Array<SpotClusterTile>();
-        arrays.forEach((tiles: SpotClusterTile[]) => {
-          tiles.forEach((tile: SpotClusterTile) => {
+      map((arrays: SpotClusterTileSchema[][]) => {
+        let allTiles = new Array<SpotClusterTileSchema>();
+        arrays.forEach((tiles: SpotClusterTileSchema[]) => {
+          tiles.forEach((tile: SpotClusterTileSchema) => {
             allTiles.push(tile);
           });
         });
