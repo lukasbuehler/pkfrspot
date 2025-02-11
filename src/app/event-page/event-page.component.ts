@@ -1,4 +1,4 @@
-import { Component, afterNextRender } from "@angular/core";
+import { Component, Inject, LOCALE_ID, afterNextRender } from "@angular/core";
 import { CountdownComponent } from "../countdown/countdown.component";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
 import { NgOptimizedImage } from "@angular/common";
@@ -6,6 +6,7 @@ import { Spot, SpotId } from "../../db/models/Spot";
 import { SpotListComponent } from "../spot-list/spot-list.component";
 import { SpotsService } from "../services/firebase/firestore/spots.service";
 import { lastValueFrom, take, timeout } from "rxjs";
+import { LocaleCode } from "../../db/models/Interfaces";
 
 @Component({
   selector: "app-event-page",
@@ -31,11 +32,16 @@ export class EventPageComponent {
 
   spots: Spot[] = [];
 
-  constructor(private _spotService: SpotsService) {
+  mapStyle: google.maps.MapTypeId.SATELLITE = google.maps.MapTypeId.SATELLITE;
+
+  constructor(
+    @Inject(LOCALE_ID) public locale: LocaleCode,
+    private _spotService: SpotsService
+  ) {
     afterNextRender(() => {
       this.swissJamSpotIds.forEach((spotId) => {
         this._spotService
-          .getSpotById$(spotId)
+          .getSpotById$(spotId, this.locale)
           .pipe(take(1), timeout(10000))
           .subscribe((spot) => {
             this.spots.push(spot);

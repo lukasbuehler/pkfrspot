@@ -7,7 +7,7 @@ import {
   PLATFORM_ID,
   LOCALE_ID,
 } from "@angular/core";
-import { Spot, SpotId, SpotPreviewData } from "../../db/models/Spot";
+import { LocalSpot, Spot, SpotId, SpotPreviewData } from "../../db/models/Spot";
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -50,7 +50,7 @@ import { MatButtonModule, MatIconButton } from "@angular/material/button";
 import { MatFormField, MatSuffix } from "@angular/material/form-field";
 import { Title } from "@angular/platform-browser";
 import { MatDividerModule } from "@angular/material/divider";
-import { SpotSlug } from "../../db/models/Interfaces";
+import { LocaleCode, SpotSlug } from "../../db/models/Interfaces";
 import { SlugsService } from "../services/firebase/firestore/slugs.service";
 import { MetaInfoService } from "../services/meta-info.service";
 
@@ -98,9 +98,9 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     null;
   @ViewChild("bottomSheet") bottomSheet: BottomSheetComponent;
 
-  selectedSpot: Spot | null = null;
+  selectedSpot: Spot | LocalSpot = null;
   isEditing: boolean = false;
-  mapStyle: string = "roadmap";
+  mapStyle: "roadmap" | "satellite" = "roadmap";
 
   askedGeoPermission: boolean = false;
   hasGeolocation: boolean = false;
@@ -119,7 +119,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
   isServer: boolean;
 
   constructor(
-    @Inject(LOCALE_ID) public locale: string,
+    @Inject(LOCALE_ID) public locale: LocaleCode,
     @Inject(PLATFORM_ID) platformId: Object,
     public route: ActivatedRoute,
     public authService: AuthenticationService,
@@ -302,14 +302,17 @@ export class MapPageComponent implements OnInit, AfterViewInit {
   }
 
   async loadSpotById(spotId: SpotId): Promise<void> {
-    const spot: Spot = await this._spotsService.getSpotByIdHttp(spotId);
+    const spot: Spot = await this._spotsService.getSpotByIdHttp(
+      spotId,
+      this.locale
+    );
     this.selectedSpot = spot;
     this.setSpotMetaTags();
     console.log("is selected spot now");
   }
 
   updateMapURL() {
-    if (this.selectedSpot) {
+    if (this.selectedSpot && this.selectedSpot instanceof Spot) {
       this.location.go(`/map/${this.selectedSpot.id}`);
     } else {
       this.location.go(`/map`);

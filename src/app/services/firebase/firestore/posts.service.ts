@@ -16,7 +16,7 @@ import {
 import { Observable } from "rxjs";
 import { Post } from "../../../../db/models/Post";
 import { Spot } from "../../../../db/models/Spot";
-import { Like } from "../../../../db/models/Like";
+import { LikeSchema } from "../../../../db/schemas/LikeSchema";
 
 @Injectable({
   providedIn: "root",
@@ -156,11 +156,7 @@ export class PostsService {
     });
   }
 
-  addLike(
-    postId: string,
-    userUID: string,
-    newLike: Like.Schema
-  ): Promise<void> {
+  addLike(postId: string, userUID: string, newLike: LikeSchema): Promise<void> {
     if (userUID !== newLike.user.uid) {
       return Promise.reject("The User ID and User ID on the like don't match!");
     }

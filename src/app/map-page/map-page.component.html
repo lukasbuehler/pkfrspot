@@ -49,8 +49,7 @@
           #spotAutocomplete="matAutocomplete"
           (optionSelected)="
             openSpotOrGooglePlace($event.option.value);
-            spotSearchControl.setValue('');
-            ($event.stopPropagation)
+            spotSearchControl.setValue('')
           "
           class="mt-2 rounded"
         >

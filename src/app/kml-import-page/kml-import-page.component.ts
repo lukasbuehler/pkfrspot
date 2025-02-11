@@ -33,7 +33,7 @@ import {
   MyRegex,
   RegexInputComponent,
 } from "../regex-input/regex-input.component";
-import { Spot, SpotId } from "../../db/models/Spot";
+import { LocalSpot, Spot, SpotId } from "../../db/models/Spot";
 import { SpotsService } from "../services/firebase/firestore/spots.service";
 import { GeoPoint } from "firebase/firestore";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
@@ -65,6 +65,8 @@ import { MatButton } from "@angular/material/button";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
 import { MatIcon } from "@angular/material/icon";
 import { locale } from "core-js";
+import { LocaleCode } from "../../db/models/Interfaces";
+import { SpotSchema } from "../../db/schemas/SpotSchema";
 
 @Component({
   selector: "app-kml-import-page",
@@ -130,14 +132,10 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
     this.spotMap.focusPoint(this._selectedVerificationSpot.spot.location);
   }
 
-  languages: string[] = [
-    "English (en)",
-    "Deutsch (de)",
-    "Schwiizerdütsch (de-CH)",
-  ];
+  languages: LocaleCode[] = ["en", "de", "de-CH"]; // TODO make readable
 
   constructor(
-    @Inject(LOCALE_ID) public locale: string,
+    @Inject(LOCALE_ID) public locale: LocaleCode,
     public kmlParserService: KmlParserService,
     private _formBuilder: UntypedFormBuilder,
     private _spotsService: SpotsService,
@@ -237,15 +235,18 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
     this.stepperHorizontal.next();
 
     firstValueFrom(this.kmlParserService.spotsToImport$).then((kmlSpots) => {
-      const spotsData: Spot.SpotSchema[] = kmlSpots.map((kmlSpot: KMLSpot) => {
-        const spot = new Spot("" as SpotId, {
-          name: { [this.locale]: kmlSpot.spot.name.trim() },
-          location: new GeoPoint(
-            kmlSpot.spot.location.lat,
-            kmlSpot.spot.location.lng
-          ),
-        });
-        return spot.data;
+      const spotsData: SpotSchema[] = kmlSpots.map((kmlSpot: KMLSpot) => {
+        const spot = new LocalSpot(
+          {
+            name: { [this.locale]: kmlSpot.spot.name.trim() },
+            location: new GeoPoint(
+              kmlSpot.spot.location.lat,
+              kmlSpot.spot.location.lng
+            ),
+          },
+          this.locale
+        );
+        return spot.data();
       });
 
       this._spotsService.createMultipleSpots(spotsData).then(

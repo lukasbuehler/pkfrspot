@@ -21,8 +21,8 @@
     #matCardMedia
     id="matCardMedia"
     class="mat-card-media"
-    (resized)="onResized($event)"
   >
+    <!-- (resized)="onResized($event)" -->
     <img
       *ngIf="post.mediaSrc && post.mediaIsImage"
       src="{{ post.mediaSrc }}"
@@ -33,9 +33,9 @@
       *ngIf="!post.mediaIsImage && post.mediaSrc"
       class="mat-card-video fill"
     >
-      <video [vgMedia]="media" #media id="singleVideo" preload="auto" controls>
+      <!-- <video [vgMedia]="media" #media id="singleVideo" preload="auto" controls>
         <source [src]="post.mediaSrc" type="video/mp4" />
-      </video>
+      </video> -->
     </vg-player>
     <div *ngIf="false" class="youtube-video-container">
       <iframe
@@ -93,7 +93,7 @@
   <mat-card-content class="text-left">{{ post.body }}</mat-card-content>
   <mat-card-actions>
     <div class="mr-2">
-      <button mat-icon-button (click)="likeButtonPress(post)">
+      <button mat-icon-button (click)="likeButtonPress()">
         <mat-icon [color]="likedByUser ? 'primary' : ''"> thumb_up </mat-icon>
       </button>
       <strong class="mat-b"
@@ -105,7 +105,7 @@
       <button mat-icon-button>
         <mat-icon>comment</mat-icon>
       </button>
-      <span>{{ post.commentCount || 0 }}</span>
+      <span>{{ 0 }}</span>
     </div>
 
     <button *ngIf="false" mat-icon-button>

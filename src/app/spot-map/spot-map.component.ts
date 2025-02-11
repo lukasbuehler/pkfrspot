@@ -75,7 +75,7 @@ export class SpotMapComponent implements AfterViewInit {
     }
   }
 
-  @Input() mapStyle: string = "roadmap";
+  @Input() mapStyle: "roadmap" | "satellite" = "roadmap";
   @Output() mapStyleChange = new EventEmitter<string>();
 
   @Output() hasGeolocationChange = new EventEmitter<boolean>();
@@ -131,7 +131,7 @@ export class SpotMapComponent implements AfterViewInit {
   private _visibleTiles: Set<ClusterTileKey> = new Set<ClusterTileKey>();
 
   constructor(
-    @Inject(LOCALE_ID) public locale: string,
+    @Inject(LOCALE_ID) public locale: LocaleCode,
     private route: ActivatedRoute,
     private _spotsService: SpotsService,
     private authService: AuthenticationService,
@@ -165,7 +165,7 @@ export class SpotMapComponent implements AfterViewInit {
     this.mapZoom = zoom;
   }
 
-  mapClick(event: google.maps.MapMouseEvent) {
+  mapClick(event: google.maps.LatLngLiteral) {
     /**
      * When the map is clicked with a spot open, the spot is
      * closed and the bottom panel cloes as well.
@@ -371,7 +371,10 @@ export class SpotMapComponent implements AfterViewInit {
     if (this.selectedSpot) {
       const selectedSpotIndexInVisibleSpots: number =
         this.visibleSpots.findIndex((spot) => {
-          return this.selectedSpot.id === spot.id;
+          return (
+            this.selectedSpot instanceof Spot &&
+            this.selectedSpot.id === spot.id
+          );
         });
       if (selectedSpotIndexInVisibleSpots >= 0) {
         // The selected spot is visible, reference the instance from the visible
@@ -433,21 +436,23 @@ export class SpotMapComponent implements AfterViewInit {
     }
 
     console.log("Opening spot by ID", spotId);
-    firstValueFrom(this._spotsService.getSpotById$(spotId)).then((spot) => {
-      if (spot) {
-        this.openSpot(spot);
-      } else {
-        console.error("Spot with ID", spotId, "not found");
+    firstValueFrom(this._spotsService.getSpotById$(spotId, this.locale)).then(
+      (spot) => {
+        if (spot) {
+          this.openSpot(spot);
+        } else {
+          console.error("Spot with ID", spotId, "not found");
+        }
       }
-    });
+    );
   }
 
-  openSpot(spot: Spot) {
+  openSpot(spot: Spot | LocalSpot) {
     this.setSelectedSpot(spot);
     this.focusSpot(spot);
   }
 
-  focusSpot(spot: Spot) {
+  focusSpot(spot: Spot | LocalSpot) {
     this.focusPoint(spot.location());
   }
 
@@ -499,37 +504,36 @@ export class SpotMapComponent implements AfterViewInit {
     this.setIsEditing(true);
   }
 
-  saveSpot(spot: Spot) {
+  saveSpot(spot: Spot | LocalSpot) {
     if (!spot) return;
 
-    if (spot.hasBounds()) {
-      let editedPaths = this.map.getPolygonPathForSpot(spot.id);
-      if (editedPaths) {
-        spot.paths = editedPaths;
-      }
-    }
+    // if (spot.hasBounds()) {
+    //   let editedPaths = this.map.getPolygonPathForSpot(spot.id);
+    //   if (editedPaths) {
+    //     spot.paths = editedPaths;
+    //   }
+    // }
 
     // If the spot does not have an ID, it does not exist in the database yet.
 
-    let saveSpotPromise: Promise<void | SpotId>;
-    if (spot.id) {
+    let saveSpotPromise: Promise<void>;
+    if (spot instanceof Spot) {
       // this is an old spot that is edited
-      saveSpotPromise = this._spotsService.updateSpot(spot.id, spot.data);
+      saveSpotPromise = this._spotsService.updateSpot(spot.id, spot.data());
     } else {
-      // this is a new spot
-      saveSpotPromise = this._spotsService.createSpot(spot.data);
+      // this is a new (local) spot
+      saveSpotPromise = this._spotsService
+        .createSpot(spot.data())
+        .then((id: SpotId) => {
+          // replace the LocalSpot with a Spot
+          spot = new Spot(id, spot.data(), this.locale);
+          return;
+        });
     }
 
     saveSpotPromise
-      .then((id: SpotId | void) => {
-        if (id) {
-          // add the new ID to the spot and update the loaded spots
-          if (spot instanceof Spot) {
-            spot.id = id;
-          }
-        }
-
-        this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spot);
+      .then(() => {
+        this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spot as Spot);
 
         // Successfully updated
         this.setIsEditing(false);
@@ -586,29 +590,31 @@ export class SpotMapComponent implements AfterViewInit {
     });
 
     // load the spots and add them
-    this._spotsService.getSpotsForTileKeys(Array.from(tilesToLoad)).subscribe({
-      next: (spots) => {
-        if (spots.length > 0) {
-          spots.forEach((spot) => {
-            const spotTile = spot.tileCoordinates.z16;
-            const key: ClusterTileKey = getClusterTileKey(
-              16,
-              spotTile.x,
-              spotTile.y
-            );
-            if (this.loadedSpots.has(key)) {
-              this.loadedSpots.get(key).push(spot);
-            } else {
-              console.warn("aahhh");
-            }
-          });
-          this.updateVisibleSpots();
-        }
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
+    this._spotsService
+      .getSpotsForTileKeys(Array.from(tilesToLoad), this.locale)
+      .subscribe({
+        next: (spots) => {
+          if (spots.length > 0) {
+            spots.forEach((spot) => {
+              const spotTile = spot.tileCoordinates.z16;
+              const key: ClusterTileKey = getClusterTileKey(
+                16,
+                spotTile.x,
+                spotTile.y
+              );
+              if (this.loadedSpots.has(key)) {
+                this.loadedSpots.get(key).push(spot);
+              } else {
+                console.warn("aahhh");
+              }
+            });
+            this.updateVisibleSpots();
+          }
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
   }
 
   loadNewClusterTiles(tilesToLoad: Set<ClusterTileKey>) {

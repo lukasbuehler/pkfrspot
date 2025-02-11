@@ -12,7 +12,7 @@ import {
 import { speedDialFabAnimations } from "./speed-dial-fab.animations";
 import { NgIf, NgFor } from "@angular/common";
 import { MatIcon } from "@angular/material/icon";
-import { MatTooltip } from "@angular/material/tooltip";
+import { MatTooltip, TooltipPosition } from "@angular/material/tooltip";
 import { MatFabButton, MatMiniFabButton } from "@angular/material/button";
 
 export interface SpeedDialFabButtonConfig {
@@ -22,7 +22,7 @@ export interface SpeedDialFabButtonConfig {
     color?: string;
   };
   miniButtonColor: string;
-  tooltipPosition?: string;
+  tooltipPosition?: TooltipPosition;
   miniButtons: {
     icon: string;
     tooltip?: string;
@@ -30,18 +30,11 @@ export interface SpeedDialFabButtonConfig {
 }
 
 @Component({
-    selector: "app-speed-dial-fab",
-    templateUrl: "./speed-dial-fab.component.html",
-    styleUrls: ["./speed-dial-fab.component.scss"],
-    animations: speedDialFabAnimations,
-    imports: [
-        MatFabButton,
-        MatTooltip,
-        MatIcon,
-        NgIf,
-        NgFor,
-        MatMiniFabButton,
-    ]
+  selector: "app-speed-dial-fab",
+  templateUrl: "./speed-dial-fab.component.html",
+  styleUrls: ["./speed-dial-fab.component.scss"],
+  animations: speedDialFabAnimations,
+  imports: [MatFabButton, MatTooltip, MatIcon, NgIf, NgFor, MatMiniFabButton],
 })
 export class SpeedDialFabComponent implements OnInit {
   @ViewChild("fabContainer") fabContainer: ElementRef;
@@ -53,6 +46,8 @@ export class SpeedDialFabComponent implements OnInit {
   mainFabClick: EventEmitter<void> = new EventEmitter<void>();
   @Output("miniFabClick")
   miniFabClick: EventEmitter<number> = new EventEmitter<number>();
+
+  defaultTootltipPosition: TooltipPosition = "left";
 
   /**
    * Whether the speed dial is open or closed.

@@ -21,6 +21,9 @@ import {
   getDataFromClusterTileKey,
   SpotClusterTile,
 } from "../../../../db/models/SpotClusterTile";
+import { SpotSchema } from "../../../../db/schemas/SpotSchema";
+import { LocaleCode } from "../../../../db/models/Interfaces";
+import { transformFirestoreData } from "../../../../scripts/Helpers";
 
 @Injectable({
   providedIn: "root",
@@ -32,18 +35,18 @@ export class SpotsService {
     return doc(this.firestore, path);
   }
 
-  getSpotById(spotId: SpotId): Promise<Spot> {
+  getSpotById(spotId: SpotId, locale: LocaleCode): Promise<Spot> {
     return getDoc(doc(this.firestore, "spots", spotId)).then((snap) => {
       if (snap.exists()) {
         const data = snap.data() as SpotSchema;
-        return new Spot(snap.id as SpotId, data);
+        return new Spot(snap.id as SpotId, data, locale);
       } else {
         throw new Error("Error! This Spot does not exist.");
       }
     });
   }
 
-  getSpotByIdHttp(spotId: SpotId): Promise<Spot> {
+  getSpotByIdHttp(spotId: SpotId, locale: LocaleCode): Promise<Spot> {
     return fetch(
       `https://firestore.googleapis.com/v1/projects/parkour-base-project/databases/(default)/documents/spots/${spotId}`
     )
@@ -58,9 +61,9 @@ export class SpotsService {
           throw new Error("No 'fields' property in JSON response");
         }
 
-        const spotData = transformFirestoreRESTData(data.fields) as SpotSchema;
+        const spotData = transformFirestoreData(data.fields) as SpotSchema;
 
-        return new Spot(spotId, spotData);
+        return new Spot(spotId, spotData, locale);
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
@@ -68,14 +71,14 @@ export class SpotsService {
       });
   }
 
-  getSpotById$(spotId: SpotId): Observable<Spot> {
+  getSpotById$(spotId: SpotId, locale: LocaleCode): Observable<Spot> {
     return new Observable<Spot>((observer) => {
       return onSnapshot(
         doc(this.firestore, "spots", spotId),
         (snap) => {
           if (snap.exists) {
             const data = snap.data() as SpotSchema;
-            let spot = new Spot(snap.id as SpotId, data);
+            let spot = new Spot(snap.id as SpotId, data, locale);
             observer.next(spot);
           } else {
             observer.error({ msg: "Error! This Spot does not exist." });
@@ -91,12 +94,18 @@ export class SpotsService {
     });
   }
 
-  getSpotsForTileKeys(tileKeys: ClusterTileKey[]): Observable<Spot[]> {
+  getSpotsForTileKeys(
+    tileKeys: ClusterTileKey[],
+    locale: LocaleCode
+  ): Observable<Spot[]> {
     const tiles = tileKeys.map((key) => getDataFromClusterTileKey(key));
-    return this.getSpotsForTiles(tiles);
+    return this.getSpotsForTiles(tiles, locale);
   }
 
-  getSpotsForTiles(tiles: { x: number; y: number }[]): Observable<Spot[]> {
+  getSpotsForTiles(
+    tiles: { x: number; y: number }[],
+    locale: LocaleCode
+  ): Observable<Spot[]> {
     const observables = tiles.map((tile) => {
       return new Observable<Spot[]>((observer) => {
         const unsubscribe = onSnapshot(
@@ -106,7 +115,7 @@ export class SpotsService {
             where("tile_coordinates.z16.y", "==", tile.y)
           ),
           (snap) => {
-            observer.next(this._parseSpots(snap));
+            observer.next(this._parseSpots(snap, locale));
           },
           (error) => {
             observer.error(error);
@@ -167,13 +176,16 @@ export class SpotsService {
     );
   }
 
-  private _parseSpots(snapshot: QuerySnapshot<DocumentData>): Spot[] {
+  private _parseSpots(
+    snapshot: QuerySnapshot<DocumentData>,
+    locale: LocaleCode
+  ): Spot[] {
     let newSpots: Spot[] = [];
     snapshot.forEach((doc) => {
       const data: any = doc.data();
-      const spotData: Spot.SpotSchema = data as Spot.SpotSchema;
+      const spotData: SpotSchema = data as SpotSchema;
       if (spotData) {
-        let newSpot: Spot = new Spot(doc.id as SpotId, spotData);
+        let newSpot: Spot = new Spot(doc.id as SpotId, spotData, locale);
         newSpots.push(newSpot);
       } else {
         console.error("Spot could not be cast to Spot.Schema!");
@@ -182,7 +194,7 @@ export class SpotsService {
     return newSpots;
   }
 
-  createSpot(spotData: Spot.SpotSchema): Promise<SpotId> {
+  createSpot(spotData: SpotSchema): Promise<SpotId> {
     return addDoc(collection(this.firestore, "spots"), spotData).then(
       (data) => {
         return data.id as SpotId;
@@ -192,7 +204,7 @@ export class SpotsService {
 
   updateSpot(
     spotId: SpotId,
-    spotUpdateData: Partial<Spot.SpotSchema>
+    spotUpdateData: Partial<SpotSchema>
   ): Promise<void> {
     // remove the reviews, review_histogram and review_count fields
     const fieldsToRemove = [
@@ -213,7 +225,7 @@ export class SpotsService {
     return updateDoc(doc(this.firestore, "spots", spotId), spotUpdateData);
   }
 
-  createMultipleSpots(spotData: Spot.SpotSchema[]): Promise<void> {
+  createMultipleSpots(spotData: SpotSchema[]): Promise<void> {
     const batch = writeBatch(this.firestore);
     spotData.forEach((spot) => {
       const newSpotRef = doc(collection(this.firestore, "spots"));

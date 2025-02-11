@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Inject, Injectable, LOCALE_ID } from "@angular/core";
 import firebase from "firebase/compat";
 import { BehaviorSubject, Observable, firstValueFrom } from "rxjs";
 import { Spot } from "../../db/models/Spot";
@@ -7,10 +7,12 @@ import { MapHelpers } from "../../scripts/MapHelpers";
 import { parseString } from "xml2js";
 import { SpotsService } from "./firebase/firestore/spots.service";
 import { MapsApiService } from "./maps-api.service";
+import { LocaleCode } from "../../db/models/Interfaces";
+import { locale } from "core-js";
 
 export interface KMLSetupInfo {
   name?: string;
-  lang?: string;
+  lang?: LocaleCode;
   description?: string;
   spotCount: number;
   folders: { name: string; spotCount: number; import: boolean }[];
@@ -23,7 +25,7 @@ export interface KMLSpot {
     location: google.maps.LatLngLiteral;
   };
   folder?: string;
-  language: string;
+  language: LocaleCode;
   possibleDuplicateOf: Spot[];
 }
 
@@ -32,6 +34,7 @@ export interface KMLSpot {
 })
 export class KmlParserService {
   constructor(
+    @Inject(LOCALE_ID) private locale: LocaleCode,
     private spotsService: SpotsService,
     private mapAPIService: MapsApiService
   ) {}
@@ -45,7 +48,7 @@ export class KmlParserService {
     name: "Unnamed KML",
     description: "",
     spotCount: 0,
-    lang: "",
+    lang: this.locale || "en",
     folders: [],
     regex: null,
   };
@@ -75,7 +78,7 @@ export class KmlParserService {
             name: "Unnamed KML",
             description: "",
             spotCount: 0,
-            lang: "",
+            lang: this.locale || "en",
             folders: [],
             regex: null,
           };
@@ -150,7 +153,7 @@ export class KmlParserService {
     let tilesToLoad: google.maps.Point[] = [];
 
     this.setupInfo.folders.forEach((folder, folderIndex) => {
-      let spotsInFolder = this._spotFolders[folderIndex];
+      let spotsInFolder: KMLSpot[] = this._spotFolders[folderIndex];
 
       if (folder.import) {
         spotsInFolder.forEach((spot) => {
@@ -174,7 +177,7 @@ export class KmlParserService {
 
     // load all the spots for the tiles to check for possible spot duplicates
     let spotsToCheckForDuplicates: Spot[] = await firstValueFrom(
-      this.spotsService.getSpotsForTiles(tilesToLoad)
+      this.spotsService.getSpotsForTiles(tilesToLoad, this.locale)
     );
 
     // check for duplicates for each spot
@@ -188,8 +191,11 @@ export class KmlParserService {
 
         this._spotFolders[folderIndex][spotIndex].possibleDuplicateOf =
           spotsToCheckForDuplicates.filter((spot) => {
-            if (spot.location.lat > minlat && spot.location.lat < maxLat) {
-              if (spot.location.lng > minLng && spot.location.lng < maxLng) {
+            if (spot.location().lat > minlat && spot.location().lat < maxLat) {
+              if (
+                spot.location().lng > minLng &&
+                spot.location().lng < maxLng
+              ) {
                 return true;
               }
             }

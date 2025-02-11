@@ -12,7 +12,9 @@
     "
     [matTooltipDisabled]="!buttonConfig?.mainButton?.tooltip || !openOnHover"
     [matTooltip]="buttonConfig?.mainButton?.tooltip || ''"
-    [matTooltipPosition]="buttonConfig?.tooltipPosition || 'left'"
+    [matTooltipPosition]="
+      buttonConfig?.tooltipPosition || defaultTootltipPosition
+    "
     (click)="onMainClick()"
   >
     <mat-icon

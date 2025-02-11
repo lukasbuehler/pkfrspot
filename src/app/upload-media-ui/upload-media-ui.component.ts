@@ -1,30 +1,45 @@
 import { Optional, Self } from "@angular/core";
 import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
-import { ControlValueAccessor, UntypedFormControl, FormControlName, UntypedFormGroup, NgControl, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {
+  ControlValueAccessor,
+  UntypedFormControl,
+  FormControlName,
+  UntypedFormGroup,
+  NgControl,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from "@angular/forms";
 import { humanFileSize } from "./../../scripts/Helpers";
 import { NgIf } from "@angular/common";
 import { MatInput } from "@angular/material/input";
-import { MatFormField, MatLabel, MatSuffix, MatHint, MatError } from "@angular/material/form-field";
+import {
+  MatFormField,
+  MatLabel,
+  MatSuffix,
+  MatHint,
+  MatError,
+} from "@angular/material/form-field";
 import { MatIcon } from "@angular/material/icon";
 import { MatMiniFabButton } from "@angular/material/button";
 
 @Component({
-    selector: "app-upload-media-ui",
-    templateUrl: "./upload-media-ui.component.html",
-    styleUrls: ["./upload-media-ui.component.scss"],
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        MatMiniFabButton,
-        MatIcon,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        MatSuffix,
-        NgIf,
-        MatHint,
-        MatError,
-    ]
+  selector: "app-upload-media-ui",
+  templateUrl: "./upload-media-ui.component.html",
+  styleUrls: ["./upload-media-ui.component.scss"],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatMiniFabButton,
+    MatIcon,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatSuffix,
+    NgIf,
+    MatHint,
+    MatError,
+  ],
 })
 export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
   @Input() required: boolean = false;
@@ -66,7 +81,13 @@ export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
     return this.uploadFile.type.includes("image");
   }
 
-  onSelectFile(files: FileList) {
+  onSelectFile(eventTarget: EventTarget) {
+    const files = (eventTarget as HTMLInputElement).files;
+
+    if (!files || files.length === 0) {
+      return;
+    }
+
     this.hasError = false;
     let type = files.item(0).type;
 

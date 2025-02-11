@@ -12,7 +12,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatDrawer } from "@angular/material/sidenav";
 import { EditPostDialogComponent } from "../edit-post-dialog/edit-post-dialog.component";
 import { Spot } from "../../db/models/Spot";
-import { MediaType } from "../../db/models/Interfaces";
+import { LocaleCode, MediaType } from "../../db/models/Interfaces";
 import { StorageService } from "../services/firebase/storage.service";
 import { AuthenticationService } from "../services/firebase/authentication.service";
 import { DocumentChangeType } from "@angular/fire/compat/firestore";
@@ -39,7 +39,7 @@ import { PostsService } from "../services/firebase/firestore/posts.service";
 })
 export class HomePageComponent implements OnInit, OnDestroy {
   constructor(
-    @Inject(LOCALE_ID) public locale: string,
+    @Inject(LOCALE_ID) public locale: LocaleCode,
     public authService: AuthenticationService,
     private _postsService: PostsService,
     private _storageService: StorageService,

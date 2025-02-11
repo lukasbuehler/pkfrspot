@@ -25,12 +25,7 @@
                   {{ user.displayName }}
                 </h1>
                 <mat-chip-set class="d-flex pb-2 ml-3">
-                  <mat-chip
-                    color="accent"
-                    *ngIf="isMyProfile"
-                    [selectable]="false"
-                    >You</mat-chip
-                  >
+                  <mat-chip color="accent" *ngIf="isMyProfile">You</mat-chip>
                   <mat-chip *ngIf="!isMyProfile && false">Follows you</mat-chip>
                 </mat-chip-set>
               </div>

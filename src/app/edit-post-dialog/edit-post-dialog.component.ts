@@ -16,7 +16,7 @@ import {
   MatDialogClose,
 } from "@angular/material/dialog";
 
-import { Post } from "../../db/Post";
+import { Post } from "../../db/models/Post";
 import { Spot } from "../../db/models/Spot";
 
 import {
@@ -34,7 +34,7 @@ import {
   MatAutocomplete,
   MatAutocompleteTrigger,
 } from "@angular/material/autocomplete";
-import { MediaType } from "../../db/models/Interfaces";
+import { LocaleCode, MediaType } from "../../db/models/Interfaces";
 import { Observable } from "rxjs";
 import { MatButton } from "@angular/material/button";
 import { MatOption } from "@angular/material/core";
@@ -50,6 +50,7 @@ import {
   MatHint,
   MatError,
 } from "@angular/material/form-field";
+import { getValueFromEventTarget } from "../../scripts/Helpers";
 
 export interface PostDialogData {
   isCreating: string;
@@ -86,7 +87,7 @@ export interface PostDialogData {
 })
 export class EditPostDialogComponent implements AfterViewInit {
   constructor(
-    @Inject(LOCALE_ID) public locale: string,
+    @Inject(LOCALE_ID) public locale: LocaleCode,
     @Inject(MAT_DIALOG_DATA) public data: PostDialogData,
     public dialogRef: MatDialogRef<EditPostDialogComponent>,
     private _storageService: StorageService,
@@ -96,6 +97,8 @@ export class EditPostDialogComponent implements AfterViewInit {
   }
 
   isCreating: boolean = false;
+
+  getValueFromEventTarget = getValueFromEventTarget;
 
   uploadFile: File = null;
 
@@ -249,7 +252,7 @@ export class EditPostDialogComponent implements AfterViewInit {
         return spot.id === spotId;
       });
       if (findSpot) {
-        return findSpot.getName(this.locale);
+        return findSpot.name();
       }
     }
 

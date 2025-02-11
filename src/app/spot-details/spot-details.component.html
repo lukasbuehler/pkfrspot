@@ -13,8 +13,8 @@
 >
   @if(!isEditing) {
   <mat-card-header class="pb-2">
-    <mat-card-title [matTooltip]="spot.getName(locale)">
-      {{ spot.getName(locale) }}
+    <mat-card-title [matTooltip]="spot.name()">
+      {{ spot.name() }}
     </mat-card-title>
     <mat-card-subtitle class="d-flex flex-column">
       @if(spot.rating) {
@@ -25,7 +25,7 @@
         [numReviews]="spot.numReviews"
       ></app-spot-rating>
       } @if(spot.address) {
-      <span class="text-truncate">{{ spot.getLocalityString() }}</span>
+      <span class="text-truncate">{{ spot.localityString() }}</span>
       }
     </mat-card-subtitle>
     <!-- <mat-card-subtitle class="pt-2 d-flex flex-row">
@@ -108,7 +108,7 @@
     @if(!isEditing) {
     <!-- spot media carousel  -->
     @if(spot.media && spot.media.length > 0) {
-    <app-img-carousel class="mb-2 mt-1" [media]="spot.media">
+    <app-img-carousel class="mb-2 mt-1" [media]="spot.media()">
     </app-img-carousel>
     }
 
@@ -128,7 +128,7 @@
     </swiper-container> -->
 
     <!-- Spot Description -->
-    <div *ngIf="spot.getDescription(locale)">
+    <div *ngIf="spot.description()">
       <h4
         class="mat-title-small"
         i18n="description header|The header for the spot description"
@@ -136,12 +136,12 @@
         Description
       </h4>
       <p>
-        {{ spot.getDescription(locale) }}
+        {{ spot.description() }}
       </p>
     </div>
 
     <!-- Freatures -->
-    @if(spot.amenitiesArray?.length > 0) {
+    @if(spot.amentitiesArray()?.length > 0) {
     <div class="mb-4">
       <h4
         i18n="amenities header|The header for the spot features and amenities"
@@ -150,7 +150,7 @@
         Features and amenities
       </h4>
       <mat-chip-set aria-label="Dog selection">
-        @for(amenity of spot.amenitiesArray; track amenity) {
+        @for(amenity of spot.amentitiesArray(); track amenity) {
         <mat-chip>
           <mat-icon matChipAvatar>{{ amenity.icon }}</mat-icon>
           {{ amenity.name }}
@@ -186,7 +186,7 @@
         </div>
         @if(spot.normalizedRatingHistogram) {
         <div class="flex-grow-1 hist-grid-container">
-          @for(item of spot.normalizedRatingHistogram | keyvalue | reverse;
+          @for(item of spot.normalizedRatingHistogram() | keyvalue | reverse;
           track item) {
           <!-- row -->
           <div class="grid-item mat-label-medium">
@@ -234,7 +234,7 @@
 
     <!-- Spot Address or Location and action buttons -->
     <div class="d-flex justify-start mb-4 flex-column">
-      @if(spot.address?.formatted) {
+      @if(spot.address().formatted) {
       <h4
         class="mat-title-small"
         i18n="
@@ -243,11 +243,11 @@
       >
         Address
       </h4>
-      <p class="mat-body-large">{{ spot.address.formatted }}</p>
+      <p class="mat-body-large">{{ spot.address().formatted }}</p>
       } @else {
       <h4 class="mat-title-small">Location</h4>
       <p class="mat-body-large">
-        {{ spot.getReadableLocation() }}
+        {{ spot.locationString() }}
       </p>
       }
       <div class="d-flex flex-column flex-xl-row gap-2">
@@ -264,7 +264,7 @@
             Open in maps button|Button to open the spot in
             maps@@open_maps_button_label"
         >
-          Open in {{ isUsingAppleMaps ? "Apple Maps" : "Google Maps" }}
+          Open in {{ isAppleMaps ? "Apple Maps" : "Google Maps" }}
         </button>
         <button
           mat-stroked-button
@@ -346,15 +346,17 @@
         <input
           #spotNameInput
           matInput
-          [value]="spot?.getName(locale)"
-          (change)="spot.setName($event.target.value, locale)"
+          [value]="spot?.name()"
+          (change)="
+            spot.setName(getValueFromEventTarget($event.target), locale)
+          "
         />
       </mat-form-field>
     </form>
 
     <!-- Media preview grid -->
     <app-media-preview-grid
-      [media]="spot.editableMedia"
+      [media]="spot.userMedia()"
       (mediaChanged)="mediaChanged($event)"
     ></app-media-preview-grid>
 
@@ -414,41 +416,41 @@
 
     <mat-chip-listbox class="">
       <mat-chip-option
-        [selected]="spot.data.amenities.indoor"
+        [selected]="spot.amenities().indoor"
         (selectionChange)="
-          spot.data.amenities.indoor = $event.selected;
-          spot.data.amenities.outdoor = !$event.selected
+          spot.amenities().indoor = $event.selected;
+          spot.amenities().outdoor = !$event.selected
         "
         ><mat-icon matChipAvatar>{{ AmenityIcons["indoor"] }}</mat-icon
         >{{ AmenityNames["indoor"] }}</mat-chip-option
       >
       <mat-chip-option
-        [selected]="spot.data.amenities.outdoor"
+        [selected]="spot.amenities().outdoor"
         (selectionChange)="
-          spot.data.amenities.outdoor = $event.selected;
-          spot.data.amenities.indoor = !$event.selected
+          spot.amenities().outdoor = $event.selected;
+          spot.amenities().indoor = !$event.selected
         "
         ><mat-icon matChipAvatar>{{ AmenityIcons["outdoor"] }}</mat-icon
         >{{ AmenityNames["outdoor"] }}</mat-chip-option
       >
     </mat-chip-listbox>
-    @if(spot.data.amenities.indoor) {
+    @if(spot.amenities().indoor) {
     <mat-chip-set>
       @for(amenity of IndoorAmenities; track amenity) {
       <mat-chip-option
-        [selected]="spot.data.amenities[amenity]"
-        (selectionChange)="spot.data.amenities[amenity] = $event.selected"
+        [selected]="spot.amenities()[amenity]"
+        (selectionChange)="spot.amenities()[amenity] = $event.selected"
         ><mat-icon matChipAvatar>{{ AmenityIcons[amenity] }}</mat-icon
         >{{ AmenityNames[amenity] }}</mat-chip-option
       >
       }
     </mat-chip-set>
-    } @if(spot.data.amenities.outdoor) {
+    } @if(spot.amenities().outdoor) {
     <mat-chip-set>
       @for(amenity of OutdoorAmenities; track amenity) {
       <mat-chip-option
-        [selected]="spot.data.amenities[amenity]"
-        (selectionChange)="spot.data.amenities[amenity] = $event.selected"
+        [selected]="spot.amenities()[amenity]"
+        (selectionChange)="spot.amenities()[amenity] = $event.selected"
         ><mat-icon matChipAvatar>{{ AmenityIcons[amenity] }}</mat-icon
         >{{ AmenityNames[amenity] }}</mat-chip-option
       >
@@ -458,8 +460,8 @@
     <mat-chip-set>
       @for(amenity of GeneralAmenities; track amenity) {
       <mat-chip-option
-        [selected]="spot.data.amenities[amenity]"
-        (selectionChange)="spot.data.amenities[amenity] = $event.selected"
+        [selected]="spot.amenities()[amenity]"
+        (selectionChange)="spot.amenities()[amenity] = $event.selected"
         ><mat-icon matChipAvatar>{{ AmenityIcons[amenity] }}</mat-icon
         >{{ AmenityNames[amenity] }}</mat-chip-option
       >
@@ -482,15 +484,15 @@
           description edit field
         "
         placeholder="Description of the spot, its features and more..."
-        [value]="spot?.getDescription(locale) ?? ''"
-        (change)="spot.setDescription($event.target.value, locale)"
+        [value]="spot?.description() ?? ''"
+        (change)="descriptionTextChanged(spot, $event.target)"
       ></textarea>
     </mat-form-field>
 
     <div class="my-3 d-flex justify-start">
       <button
         mat-stroked-button
-        *ngIf="spot.id && !hasBounds()"
+        *ngIf="!isNewSpot && !hasBounds()"
         (click)="addBoundsClicked()"
         i18n="
           Add bounds button label|Label of the button to add bounds to a spot

@@ -33,6 +33,7 @@ import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.compo
 import { MatBadge } from "@angular/material/badge";
 import { NgIf } from "@angular/common";
 import { UsersService } from "../services/firebase/firestore/users.service";
+import { getValueFromEventTarget } from "../../scripts/Helpers";
 
 @Component({
   selector: "app-edit-profile",
@@ -69,6 +70,8 @@ export class EditProfileComponent implements OnInit {
   newProfilePictureSrc: string = "";
   croppieObj: Croppie = null;
   isUpdatingProfilePicture: boolean = false;
+
+  getValueFromEventTarget = getValueFromEventTarget;
 
   constructor(
     public authService: AuthenticationService,
@@ -131,7 +134,7 @@ export class EditProfileComponent implements OnInit {
     this.detectIfChanges();
   }
 
-  private saveNewProfilePicture() {
+  saveNewProfilePicture() {
     this._handleProfilePictureUploadAndSave()
       .then(() => {
         this._snackbar.open(

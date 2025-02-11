@@ -48,8 +48,8 @@ const expressionFlagsChars = {
 };
 
 export interface MyRegex {
-  regularExpression: RegExp;
-  expressionFlags: ExpressionFlags;
+  regularExpression: string;
+  expressionFlags: string;
 }
 
 export function regexValidator(): ValidatorFn {
@@ -68,16 +68,16 @@ export function regexValidator(): ValidatorFn {
 }
 
 @Component({
-    selector: "app-regex-input",
-    templateUrl: "./regex-input.component.html",
-    styleUrls: ["./regex-input.component.scss"],
-    providers: [
-        { provide: MatFormFieldControl, useExisting: RegexInputComponent },
-    ],
-    host: {
-        "(change)": "_onChange($event.target.value)",
-    },
-    imports: [FormsModule, ReactiveFormsModule]
+  selector: "app-regex-input",
+  templateUrl: "./regex-input.component.html",
+  styleUrls: ["./regex-input.component.scss"],
+  providers: [
+    { provide: MatFormFieldControl, useExisting: RegexInputComponent },
+  ],
+  host: {
+    "(change)": "_onChange($event.target.value)",
+  },
+  imports: [FormsModule, ReactiveFormsModule],
 })
 export class RegexInputComponent
   implements
@@ -124,8 +124,8 @@ export class RegexInputComponent
       expressionFlags: string;
     } = this.parts.value;
     if (parts.regularExpression) {
-      let regex = new RegExp(parts.regularExpression);
-      let flags = this._makeExpressionFlags(parts.expressionFlags);
+      let regex = parts.regularExpression;
+      let flags = parts.expressionFlags;
 
       return { regularExpression: regex, expressionFlags: flags };
     }
@@ -144,7 +144,7 @@ export class RegexInputComponent
 
   @Output() valueChange = new EventEmitter<MyRegex>();
 
-  @Input() get flags(): ExpressionFlags {
+  @Input() get flags(): string {
     return this.value.expressionFlags;
   }
   set flags(flags: ExpressionFlags) {

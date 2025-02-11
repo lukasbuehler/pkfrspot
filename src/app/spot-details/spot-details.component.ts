@@ -18,7 +18,7 @@ import {
   MatProgressBar,
   MatProgressBarModule,
 } from "@angular/material/progress-bar";
-import { Spot } from "../../db/models/Spot";
+import { LocalSpot, Spot } from "../../db/models/Spot";
 import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
 import { Post } from "../../db/models/Post";
 import {
@@ -35,6 +35,7 @@ import {
   GeneralAmenities,
   ContributedMedia,
   MediaType,
+  LocaleCode,
 } from "../../db/models/Interfaces";
 
 //import { MatTooltipModule } from "@angular/material/tooltip";
@@ -85,6 +86,7 @@ import { SpotReportsService } from "../services/firebase/firestore/spot-reports.
 import { PostsService } from "../services/firebase/firestore/posts.service";
 import { SpotReviewSchema } from "../../db/schemas/SpotReviewSchema";
 import { SpotReviewsService } from "../services/firebase/firestore/spot-reviews.service";
+import { getValueFromEventTarget } from "../../scripts/Helpers";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
@@ -146,7 +148,7 @@ export class ReversePipe implements PipeTransform {
   ],
 })
 export class SpotDetailsComponent implements AfterViewInit, OnChanges {
-  @Input() spot: Spot;
+  @Input() spot: Spot | LocalSpot;
   @Input() infoOnly: boolean = false;
   @Input() dismissable: boolean = false;
   @Input() flat: boolean = false;
@@ -163,6 +165,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   @Output() discardClick: EventEmitter<void> = new EventEmitter<void>();
 
   @ViewChild(UploadMediaUiComponent) uploadMediaComp;
+
+  getValueFromEventTarget = getValueFromEventTarget;
 
   isSaving: boolean = false;
 
@@ -194,7 +198,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   isAppleMaps: boolean = false;
 
   get isNewSpot() {
-    return this.spot && !this.spot.id;
+    return this.spot instanceof LocalSpot;
   }
 
   startHeight: number = 0;
@@ -204,7 +208,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   constructor(
-    @Inject(LOCALE_ID) public locale: string,
+    @Inject(LOCALE_ID) public locale: LocaleCode,
     public authenticationService: AuthenticationService,
     public reportDialog: MatDialog,
     public reviewDialog: MatDialog,
@@ -273,7 +277,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   saveButtonClick() {
     this.isSaving = true;
 
-    this.saveClick.emit(this.spot);
+    this.saveClick.emit(this.spot as Spot);
   }
   discardButtonClick() {
     this.discardClick.emit();
@@ -286,8 +290,14 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     }
   }
 
+  descriptionTextChanged(spot: LocalSpot | Spot, eventTarget: EventTarget) {
+    const value = (eventTarget as HTMLInputElement).value;
+
+    spot.setDescription(value, this.locale);
+  }
+
   addBoundsClicked() {
-    if (!this.spot.id) {
+    if (this.spot instanceof LocalSpot) {
       console.error("the spot needs to be saved first before adding bounds");
     }
     if (!this.isEditing) {
@@ -366,6 +376,11 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   async shareSpot() {
+    if (!(this.spot instanceof Spot)) {
+      console.error("Cannot share a spot that hasn't been saved yet");
+      return;
+    }
+
     const url = "https://pkfrspot.com";
     const baseUrl = this._locationStrategy.getBaseHref();
 
@@ -401,20 +416,22 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   openSpotInMaps() {
-    if (typeof plausible !== "undefined") {
+    if (typeof plausible !== "undefined" && this.spot instanceof Spot) {
       plausible("Opening in Maps", { props: { spotId: this.spot.id } });
     }
     this._mapsApiService.openLatLngInMaps(this.spot.location());
   }
 
   openDirectionsInMaps() {
-    if (typeof plausible !== "undefined") {
+    if (typeof plausible !== "undefined" && this.spot instanceof Spot) {
       plausible("Opening in Google Maps", { props: { spotId: this.spot.id } });
     }
     this._mapsApiService.openDirectionsInMaps(this.spot.location());
   }
 
   loadReportForSpot() {
+    if (!(this.spot instanceof Spot)) return;
+
     this._spotReportsService
       .getSpotReportsBySpotId(this.spot.id)
       .then((reports) => {
@@ -431,6 +448,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   loadSpotPosts() {
+    if (!(this.spot instanceof Spot)) return;
+
     console.log("Loading posts");
     this.postSubscription = this._postsService
       .getPostsFromSpot(this.spot)
@@ -465,6 +484,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   openSpotReportDialog() {
+    if (!(this.spot instanceof Spot)) return;
+
     const spotReportData: SpotReport = {
       spot: {
         id: this.spot.id,
@@ -482,6 +503,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   openSpotReviewDialog() {
+    if (!(this.spot instanceof Spot)) return;
+
     const uid = this.authenticationService.user.uid;
     const spotId = this.spot.id;
     let isUpdate: boolean = false;

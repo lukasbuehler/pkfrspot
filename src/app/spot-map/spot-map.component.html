@@ -11,7 +11,7 @@
   [showGeolocation]="showGeolocation"
   [boundRestriction]="boundRestriction"
   [minZoom]="minZoom"
-  [mapTypeId]="mapStyle"
+  [mapStyle]="mapStyle"
   (boundsChange)="mapBoundsChanged($event, mapZoom)"
   (zoomChange)="zoomChanged($event)"
   (mapClick)="isClickable ? mapClick($event) : null"

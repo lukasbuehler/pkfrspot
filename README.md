@@ -30,6 +30,32 @@ For the detailed progress please refer to the following GitHub project: [PKFR Sp
 | Spring 2024       | Mobile (web) UI/UX enhancements                                                                                                                                                      |                                                                                                                                                                           |
 | Spring 2024       | Spot and places full-text search                                                                                                                                                     |                                                                                                                                                                           |
 
+## Local Installation
+
+Prerequisites: Node.js and NPM (or equivalent).
+
+Install packages from this root direcory with:
+
+```
+npm install
+```
+
+Then you are ready to already build!
+
+```
+npm run build
+```
+
+To start locally developing, you need to define the development environment variables in `src/environments/`.
+Clone the `environment.production.ts` file as `environment.development.ts` and change all the variables for your development environment.
+(Without changing them, Google Maps will not work, since the key is configured to only work on the production domain, as well as other problems that might occur.)
+
+Start a development server with
+
+```
+npm run dev
+```
+
 ## Collaborating
 
 To collaborate on the code of this project, you will need to create a pull-request on GitHub. To get started you should for this repository, and

@@ -16,6 +16,7 @@ import { MatRippleModule } from "@angular/material/core";
 import { MatIconModule } from "@angular/material/icon";
 import { NgOptimizedImage } from "@angular/common";
 import { SpotRatingComponent } from "../spot-rating/spot-rating.component";
+import { LocaleCode } from "../../db/models/Interfaces";
 
 @Component({
   selector: "app-spot-preview-card",
@@ -46,7 +47,7 @@ export class SpotPreviewCardComponent implements OnChanges {
   visited = false;
 
   constructor(
-    @Inject(LOCALE_ID) public locale: string,
+    @Inject(LOCALE_ID) public locale: LocaleCode,
     private _router: Router,
     public storageService: StorageService
   ) {}

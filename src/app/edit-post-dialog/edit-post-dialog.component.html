@@ -35,7 +35,7 @@
             matInput
             name="link"
             type="text"
-            (input)="onLinkUpdate($event.target.value)"
+            (input)="onLinkUpdate(getValueFromEventTarget($event.target))"
             [formControl]="linkInputFormControl"
           />
           <mat-icon matSuffix>link</mat-icon>
@@ -83,10 +83,15 @@
           *ngFor="let spot of filteredSpots"
           [value]="spot.id"
         >
-          <img *ngIf="spot.previewImage" [src]="spot.previewImage" alt="Img" />
-          <span>{{ spot.getName(locale) }}</span> |
+          <img
+            *ngIf="spot.hasMedia()"
+            [src]="spot.previewImageSrc()"
+            alt="Img"
+          />
+          <span>{{ spot.name() }}</span> |
           <small
-            >Location: {{ spot.location.lat }}, {{ spot.location.lng }}</small
+            >Location: {{ spot.location().lat }},
+            {{ spot.location().lng }}</small
           >
         </mat-option>
       </mat-autocomplete>

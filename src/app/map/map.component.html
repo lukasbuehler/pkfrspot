@@ -5,8 +5,8 @@
   [center]="center"
   [zoom]="zoom"
   [options]="mapOptions"
-  [mapTypeId]="mapTypeId"
-  (mapClick)="mapClick.emit($event)"
+  [mapTypeId]="mapTypeId()"
+  (mapClick)="mapClick.emit()"
   (boundsChanged)="emitBoundsChanged()"
   (centerChanged)="emitCenterChanged()"
   (zoomChanged)="getAndEmitChangedZoom()"
@@ -32,7 +32,6 @@
   ></div>
   <map-advanced-marker
     [position]="geopointToLatLngLiteral(dot.location)"
-    [options]="primaryDotMarkerOptions"
     [content]="smallDot"
     (mapClick)="clickOnDot(dot)"
     [zIndex]="dot.weight"
@@ -43,7 +42,7 @@
   @if (zoom >= 16) { @for(spot of spots; track $index) { @if(!spot?.hasBounds())
   {
   <map-circle
-    [center]="spot.location"
+    [center]="spot.location()"
     [radius]="10"
     [options]="spotCircleOptions"
     (circleClick)="spotClick.emit(spot)"
@@ -52,22 +51,17 @@
   } @else {
   <map-polygon
     [id]="'polygon-' + spot.id"
-    [options]="
-      spot === selectedSpot && isEditing
-        ? spotPolygonEditingOptions
-        : spotPolygonOptions
-    "
-    [paths]="spot.paths"
+    [options]="spotPolygonOptions"
+    [paths]="spot.paths[0]"
     (polygonClick)="spotClick.emit(spot)"
   ></map-polygon>
-  } } }
-
+  } } } ß
   <!-- selected spot marker -->
   @if(selectedSpot) {
   <map-advanced-marker
     #selectedSpotMarker
     id="selectedSpotMarker"
-    [position]="selectedSpot.location"
+    [position]="selectedSpot.location()"
     [draggable]="isEditing"
     (mapDragend)="editingSpotPositionChanged($event.latLng)"
     [content]="selectedSpotMarkerNode"
@@ -78,7 +72,6 @@
     class="pin-marker"
     #selectedSpotMarkerNode
     id="selectedSpotMarkerNode"
-    [rating]="selectedSpot.rating"
   >
     <div
       class="mat-label-large"
@@ -161,7 +154,6 @@
   <map-advanced-marker
     *ngIf="geolocation$ | async"
     [position]="(geolocation$ | async).location"
-    [options]="geolocationMarkerOptions"
     [content]="geolocationMarker"
     [zIndex]="1000000"
   >
@@ -178,11 +170,9 @@
   <map-advanced-marker
     *ngFor="let marker of markers"
     [position]="marker"
-    [options]="teriaryDotMarkerOptions"
   ></map-advanced-marker>
   <map-advanced-marker
     *ngIf="selectedMarker"
     [position]="selectedMarker"
-    [options]="tertiaryMarkerOptions"
   ></map-advanced-marker>
 </google-map>

@@ -1,3 +1,7 @@
+export function getValueFromEventTarget(eventTarget: EventTarget): string {
+  return (eventTarget as HTMLInputElement).value;
+}
+
 export function transformFirestoreData(data: any): any {
   if (data === null || data === undefined) return data;
   if (typeof data !== "object") return data;

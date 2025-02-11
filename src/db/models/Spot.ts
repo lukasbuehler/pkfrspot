@@ -247,6 +247,10 @@ export class LocalSpot {
     return data;
   }
 
+  public setName(newName: string, locale: LocaleCode) {
+    this.names.set({ [locale]: newName });
+  }
+
   public setDescription(newDescription: string, locale: LocaleCode) {
     if (!this.description || !this.descriptions().user_provided) {
       this.descriptions.set({

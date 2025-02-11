@@ -9,8 +9,14 @@ import {
   QueryList,
   ViewChild,
   ViewChildren,
+  computed,
+  input,
+  InputSignal,
+  Signal,
+  model,
+  ModelSignal,
 } from "@angular/core";
-import { Spot, SpotPreviewData } from "../../db/models/Spot";
+import { LocalSpot, Spot, SpotId, SpotPreviewData } from "../../db/models/Spot";
 import {
   GoogleMap,
   MapPolygon,
@@ -104,7 +110,7 @@ export class MapComponent implements OnInit {
 
   @Output() boundsChange = new EventEmitter<google.maps.LatLngBounds>();
   @Output() mapClick = new EventEmitter<google.maps.LatLngLiteral>();
-  @Output() spotClick = new EventEmitter<Spot | SpotPreviewData | string>();
+  @Output() spotClick = new EventEmitter<Spot | SpotPreviewData | SpotId>();
   @Output() polygonChanged = new EventEmitter<{
     spotId: string;
     path: google.maps.LatLngLiteral[][];
@@ -114,7 +120,7 @@ export class MapComponent implements OnInit {
   @Input() spots: Spot[] = [];
   @Input() dots: SpotClusterDot[] = [];
 
-  @Input() selectedSpot: Spot | null = null;
+  @Input() selectedSpot: Spot | LocalSpot = null;
   @Input() isEditing: boolean = false;
   @Input() showGeolocation: boolean = false;
   @Input() markers: google.maps.LatLngLiteral[] = [];
@@ -128,10 +134,18 @@ export class MapComponent implements OnInit {
   } | null = null;
   @Input() minZoom: number = 4;
 
-  @Input() mapTypeId:
-    | google.maps.MapTypeId.SATELLITE
-    | google.maps.MapTypeId.ROADMAP =
-    "roadmap" as google.maps.MapTypeId.ROADMAP;
+  mapStyle: ModelSignal<string> = model("roadmap");
+
+  mapTypeId: Signal<google.maps.MapTypeId> = computed(() => {
+    switch (this.mapStyle()) {
+      case "roadmap":
+        return google.maps.MapTypeId.ROADMAP;
+      case "satellite":
+        return google.maps.MapTypeId.SATELLITE;
+      default:
+        return google.maps.MapTypeId.ROADMAP;
+    }
+  });
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -253,10 +267,6 @@ export class MapComponent implements OnInit {
 
   //spotDotZoomRadii: number[] = Array<number>(16);
 
-  //mapStyle: google.maps.MapTypeId = google.maps.MapTypeId.ROADMAP;
-
-  //   mapStylesConfig = map_style;
-
   mapOptions: google.maps.MapOptions = {
     mapId: environment.mapId,
     backgroundColor: "#000000",
@@ -320,16 +330,13 @@ export class MapComponent implements OnInit {
   };
 
   toggleMapStyle() {
-    if (
-      this.mapTypeId.toLowerCase() ===
-      google.maps.MapTypeId.ROADMAP.toLowerCase()
-    ) {
+    if (this.mapStyle() === "roadmap") {
       // if it is equal to roadmap, toggle to satellite
-      this.mapTypeId = google.maps.MapTypeId.SATELLITE;
+      this.mapStyle.set("satellite");
       this.setLightMode();
     } else {
       // otherwise toggle back to roadmap
-      this.mapTypeId = google.maps.MapTypeId.ROADMAP;
+      this.mapStyle.set("roadmap");
       this.setDarkMode();
     }
   }
@@ -364,7 +371,7 @@ export class MapComponent implements OnInit {
   }
 
   editingSpotPositionChanged(position: google.maps.LatLng) {
-    this.selectedSpot.location = position.toJSON();
+    this.selectedSpot.location.set(position.toJSON());
   }
 
   geopointToLatLngLiteral(geoPoint: GeoPoint): google.maps.LatLngLiteral {
