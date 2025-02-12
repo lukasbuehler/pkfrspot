@@ -27,42 +27,42 @@ export class LocalSpot {
   locationString: Signal<string>;
 
   readonly tileCoordinates: SpotSchema["tile_coordinates"];
-  descriptions?: WritableSignal<LocaleMap>;
-  description?: Signal<string>;
+  descriptions: WritableSignal<LocaleMap | undefined>;
+  description: Signal<string>;
 
   // Media stuff
   userMedia: WritableSignal<ContributedMedia[]>;
-  private _streetview?: Signal<ContributedMedia>; // signal that is computed from location
+  private _streetview?: Signal<ContributedMedia | undefined>; // signal that is computed from location
   readonly media: Signal<ContributedMedia[]>;
   readonly hasMedia: Signal<boolean>;
   readonly previewImageSrc: Signal<string>;
 
-  isIconic: boolean;
-  rating?: number; // from 1 to 5, set by cloud function.
-  numReviews?: number; // integer
-  ratingHistogram?: WritableSignal<{
-    1: number;
-    2: number;
-    3: number;
-    4: number;
-    5: number;
+  isIconic: boolean = false;
+  rating: number | null = null; // from 1 to 5, set by cloud function.
+  numReviews: number; // integer
+  ratingHistogram: WritableSignal<{
+    "1": number;
+    "2": number;
+    "3": number;
+    "4": number;
+    "5": number;
   }>;
-  normalizedRatingHistogram?: Signal<{
-    1: number;
-    2: number;
-    3: number;
-    4: number;
-    5: number;
+  normalizedRatingHistogram: Signal<{
+    "1": number;
+    "2": number;
+    "3": number;
+    "4": number;
+    "5": number;
   }>;
   readonly highlightedReviews?: SpotReviewSchema[];
 
-  address?: WritableSignal<SpotAddressSchema>;
+  address: WritableSignal<SpotAddressSchema | null>;
   formattedAddress: Signal<string>;
   localityString: Signal<string>;
 
   type?: string;
   area?: string;
-  amenities?: WritableSignal<AmenitiesMap>;
+  amenities: WritableSignal<AmenitiesMap>;
   amentitiesArray;
 
   paths?: google.maps.LatLngLiteral[][];
@@ -70,11 +70,12 @@ export class LocalSpot {
   constructor(data: SpotSchema, readonly locale: LocaleCode) {
     this.names = signal(data.name);
     this.name = computed(() => {
-      if (this.names()[locale]) {
-        return this.names()[locale];
+      const namesMap = this.names() as Record<string, string>;
+      if (namesMap[locale]) {
+        return namesMap[locale];
       } else {
         // return the first name if the locale doesn't exist
-        return this.names()[Object.keys(this.names())[0]];
+        return namesMap[Object.keys(namesMap)[0]];
       }
     });
 
@@ -88,16 +89,19 @@ export class LocalSpot {
       return MapHelpers.getDisplayCoordinates(this.location());
     });
 
-    this.descriptions = signal(data.description);
+    this.descriptions = signal(data.description ?? {});
     this.description = computed(() => {
-      if (this.descriptions()) {
-        if (this.descriptions()[locale]) {
-          return this.descriptions()[locale];
+      const descriptionsObj = this.descriptions() as Record<string, string>;
+      if (descriptionsObj && Object.keys(descriptionsObj).length > 0) {
+        if (descriptionsObj[locale]) {
+          return descriptionsObj[locale];
         } else {
           // return the first description if the locale doesn't exist
-          return this.descriptions()[Object.keys(this.descriptions())[0]];
+          const firstKey = Object.keys(descriptionsObj)[0];
+          return descriptionsObj[firstKey];
         }
       }
+      return "";
     });
 
     this.userMedia = signal(data.media ?? []);
@@ -149,20 +153,30 @@ export class LocalSpot {
     });
 
     this.isIconic = data.is_iconic ?? false;
-    this.rating = data.rating;
-    this.numReviews = data.num_reviews;
-    this.ratingHistogram = signal(data.rating_histogram);
+    this.rating = data.rating ?? null;
+    this.numReviews = data.num_reviews ?? 0;
+    this.ratingHistogram = signal(
+      data.rating_histogram ?? {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+      }
+    );
 
     this.normalizedRatingHistogram = computed(() => {
       const hist = this.ratingHistogram();
-      if (!hist) return null;
-
       // get the maximum number of reviews for a single rating
       let maxNumReviews = 0;
-      for (let key in hist) {
+      for (const key of Object.keys(hist) as unknown as (keyof typeof hist)[]) {
         if (hist[key] > maxNumReviews) {
           maxNumReviews = hist[key];
         }
+      }
+
+      if (maxNumReviews === 0) {
+        return hist;
       }
 
       // divide every histogram value by the max
@@ -179,7 +193,7 @@ export class LocalSpot {
 
     this.highlightedReviews = data.highlighted_reviews;
 
-    this.address = signal(data.address);
+    this.address = signal(data.address ?? null);
     this.formattedAddress = computed(() => this.address()?.formatted ?? "");
     this.localityString = computed(() => {
       const address = this.address();
@@ -209,12 +223,12 @@ export class LocalSpot {
       if (!amenities) return [];
 
       return AmenitiesOrder.map((key) => {
-        if (!amenities[key]) return null;
+        if (!amenities[key as keyof AmenitiesMap]) return null;
         return { name: AmenityNames[key], icon: AmenityIcons[key] };
       }).filter((val) => val !== null);
     });
 
-    this.paths = this._makePathsFromBounds(data.bounds);
+    this.paths = this._makePathsFromBounds(data.bounds ?? []);
   }
 
   /**
@@ -231,35 +245,40 @@ export class LocalSpot {
       description: this.descriptions(),
       media: this.userMedia(),
       is_iconic: this.isIconic,
-      rating: this.rating,
+      rating: this.rating ?? undefined,
       num_reviews: this.numReviews,
       rating_histogram: this.ratingHistogram(),
       highlighted_reviews: this.highlightedReviews,
-      address: this.address(),
+      address: this.address() ?? undefined,
       type: this.type,
       area: this.area,
       amenities: this.amenities(),
-      bounds: this._makeBoundsFromPaths(this.paths),
+      bounds: this._makeBoundsFromPaths(this.paths ?? []),
     };
 
     return data;
   }
 
-  public setName(newName: string, locale: LocaleCode) {
+  public setName(newName: string | undefined, locale: LocaleCode) {
+    if (!newName) {
+      return;
+    }
+
     this.names.set({ [locale]: newName });
   }
 
   public setDescription(newDescription: string, locale: LocaleCode) {
-    if (!this.description || !this.descriptions().user_provided) {
-      this.descriptions.set({
-        user_provided: {},
-      });
+    let descriptions = this.descriptions() ?? {};
+    if (!descriptions?.user_provided) {
+      descriptions.user_provided = {};
     }
-    this.descriptions().user_provided[locale] = newDescription;
+    descriptions.user_provided[locale] = newDescription;
+
+    this.descriptions.set(descriptions);
   }
 
   public hasBounds() {
-    return !!(this.paths?.length > 0 && this.paths[0].length > 0);
+    return !!(this.paths && this.paths.length > 0 && this.paths[0].length > 0);
   }
 
   public getMediaByIndex(index: number): ContributedMedia {
@@ -355,8 +374,8 @@ export class LocalSpot {
 
   private _makeBoundsFromPaths(
     paths: Array<Array<google.maps.LatLngLiteral>>
-  ): GeoPoint[] {
-    if (!paths || paths.length === 0) return [];
+  ): GeoPoint[] | undefined {
+    if (!paths || paths.length === 0) return undefined;
 
     return paths[0].map((point) => {
       return new GeoPoint(point.lat, point.lng);
@@ -366,7 +385,7 @@ export class LocalSpot {
   // TODO move this to maps api service
   private async _loadStreetviewForLocation(
     location: google.maps.LatLngLiteral
-  ): Promise<ContributedMedia> {
+  ): Promise<ContributedMedia | undefined> {
     // street view metadata
     return fetch(
       `https://maps.googleapis.com/maps/api/streetview/metadata?size=800x800&location=${

@@ -6,14 +6,14 @@ export namespace Post {
   export class Class {
     id: string = "";
     title: string = "";
-    user: User.ReferenceSchema = null;
+    user: User.ReferenceSchema | null = null;
     body: string = "";
     mediaSrc: string = "";
     mediaIsImage: boolean = false;
-    location: google.maps.LatLngLiteral = null;
-    spot = null;
+    location: google.maps.LatLngLiteral | null = null;
+    spot: Schema["spot"] | null = null;
     likeCount: number = 0;
-    timePosted: Date = null;
+    timePosted: Date | null = null;
 
     constructor(private _id: string, private _data: Post.Schema) {
       this.id = _id;
@@ -51,7 +51,7 @@ export namespace Post {
         this.spot = data.spot;
       }
 
-      this.likeCount = data.like_count;
+      this.likeCount = data.like_count ?? 0;
 
       if (data.time_posted) {
         this.timePosted = new Date(data.time_posted.seconds * 1000);

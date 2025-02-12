@@ -52,7 +52,6 @@ export interface AmenitiesMap {
 }
 
 export const AmenitiesOrder = [
-  "entry_fee",
   "indoor",
   "outdoor",
   "covered",
@@ -64,22 +63,24 @@ export const AmenitiesOrder = [
   "parking_on_site",
   "power_outlets",
   "maybe_overgrown",
-];
+] as (keyof AmenitiesMap)[];
 
 export const IndoorAmenities = [
-  "wc",
   "changing_room",
   "lockers",
   "power_outlets",
-];
+] as (keyof AmenitiesMap)[];
 
 export const GeneralAmenities = [
   "entry_fee",
+  "wc",
   "drinking_water",
   "parking_on_site",
-];
+] as (keyof AmenitiesMap)[];
 
-export const OutdoorAmenities = ["covered", "lighting", "maybe_overgrown"];
+export const OutdoorAmenities = ["covered", "lighting", "maybe_overgrown"] as (
+  | keyof AmenitiesMap
+)[];
 
 export const AmenityNames: { [key in keyof AmenitiesMap]: string } = {
   covered: $localize`:@@amenities.covered:Covered`,

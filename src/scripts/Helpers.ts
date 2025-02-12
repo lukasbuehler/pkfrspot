@@ -1,4 +1,8 @@
-export function getValueFromEventTarget(eventTarget: EventTarget): string {
+export function getValueFromEventTarget(
+  eventTarget: EventTarget | null | undefined
+): string | undefined {
+  if (!eventTarget) return undefined;
+
   return (eventTarget as HTMLInputElement).value;
 }
 

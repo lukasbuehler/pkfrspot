@@ -1,4 +1,4 @@
-import { Component, Inject } from "@angular/core";
+import { Component, Inject, LOCALE_ID, WritableSignal } from "@angular/core";
 import { SpotReviewSchema } from "../../db/schemas/SpotReviewSchema";
 import {
   MatButtonModule,
@@ -18,6 +18,7 @@ import { SpotReviewsService } from "../services/firebase/firestore/spot-reviews.
 import { MatFormField, MatFormFieldModule } from "@angular/material/form-field";
 import { FormsModule } from "@angular/forms";
 import { MatInput, MatInputModule } from "@angular/material/input";
+import { LocaleCode } from "../../db/models/Interfaces";
 
 @Component({
   selector: "app-spot-review-dialog",
@@ -46,15 +47,20 @@ export class SpotReviewDialogComponent {
   review: SpotReviewSchema;
   isUpdate: boolean;
 
+  reviewComment: WritableSignal<string>;
+
   constructor(
     public dialogref: MatDialogRef<SpotReviewDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
     public data: { review: SpotReviewSchema; isUpdate: boolean },
+    @Inject(LOCALE_ID) public locale: LocaleCode,
     private _spotReviewsService: SpotReviewsService
   ) {
     this.review = data.review;
     this.isUpdate = data.isUpdate;
     this.hoverRating = this.review.rating;
+
+    this.reviewComment = signal(this.review.comment?.text ?? "");
   }
 
   onNoClick(): void {
@@ -62,6 +68,11 @@ export class SpotReviewDialogComponent {
   }
 
   submitReview() {
+    this.review.comment = {
+      text: this.reviewComment(),
+      locale: this.locale,
+    };
+
     this._spotReviewsService
       .updateSpotReview(this.review)
       .then(() => {
@@ -71,4 +82,7 @@ export class SpotReviewDialogComponent {
         console.error(err);
       });
   }
+}
+function signal(arg0: string): WritableSignal<string> {
+  throw new Error("Function not implemented.");
 }

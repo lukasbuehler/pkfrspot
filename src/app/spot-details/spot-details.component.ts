@@ -100,6 +100,13 @@ export class ReversePipe implements PipeTransform {
   }
 }
 
+@Pipe({ name: "asRatingKey" })
+export class AsRatingKeyPipe implements PipeTransform {
+  transform(value: any): "1" | "2" | "3" | "4" | "5" {
+    return value.toString() as "1" | "2" | "3" | "4" | "5";
+  }
+}
+
 @Component({
   selector: "app-spot-details",
   templateUrl: "./spot-details.component.html",
@@ -142,12 +149,13 @@ export class ReversePipe implements PipeTransform {
     MatProgressBarModule,
     KeyValuePipe,
     ReversePipe,
+    AsRatingKeyPipe,
     NgOptimizedImage,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SpotDetailsComponent implements AfterViewInit, OnChanges {
-  @Input() spot: Spot | LocalSpot;
+  @Input() spot: Spot | LocalSpot | null = null;
   @Input() infoOnly: boolean = false;
   @Input() dismissable: boolean = false;
   @Input() flat: boolean = false;
@@ -163,7 +171,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   @Output() saveClick: EventEmitter<Spot> = new EventEmitter<Spot>();
   @Output() discardClick: EventEmitter<void> = new EventEmitter<void>();
 
-  @ViewChild(UploadMediaUiComponent) uploadMediaComp;
+  @ViewChild(UploadMediaUiComponent)
+  uploadMediaComp: UploadMediaUiComponent | null = null;
 
   getValueFromEventTarget = getValueFromEventTarget;
 
@@ -181,10 +190,10 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   spotTypes = Object.values(Types);
   spotAreas = Object.values(Areas);
 
-  newSpotImage: File = null;
+  newSpotImage: File | null = null;
 
   spotPosts: Post.Class[] = [];
-  postSubscription: Subscription;
+  postSubscription: Subscription | null = null;
 
   countries: any[] = [];
   filteredCountries: Observable<any[]>;
@@ -289,8 +298,13 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     }
   }
 
-  descriptionTextChanged(spot: LocalSpot | Spot, eventTarget: EventTarget) {
-    const value = (eventTarget as HTMLInputElement).value;
+  descriptionTextChanged(
+    spot: LocalSpot | Spot,
+    eventTarget: EventTarget | null
+  ) {
+    const value = getValueFromEventTarget(eventTarget);
+
+    if (!value) return;
 
     spot.setDescription(value, this.locale);
   }
@@ -329,7 +343,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
 
   setSpotImage(file: File) {
     console.log("setting image");
-    if (file && this.uploadMediaComp.isImageSelected()) {
+    if (file && this.uploadMediaComp?.isImageSelected()) {
       this.newSpotImage = file;
     } else {
       this.newSpotImage = null;
@@ -370,9 +384,9 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     // }
   }
 
-  mediaChanged(newSpotMedia) {
-    // this.spot.setMedia(newSpotMedia, this._spotsService, this._storageService);
-  }
+  // mediaChanged(newSpotMedia) {
+  // this.spot.setMedia(newSpotMedia, this._spotsService, this._storageService);
+  // }
 
   async shareSpot() {
     if (!(this.spot instanceof Spot)) {
@@ -418,14 +432,16 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     if (typeof plausible !== "undefined" && this.spot instanceof Spot) {
       plausible("Opening in Maps", { props: { spotId: this.spot.id } });
     }
-    this._mapsApiService.openLatLngInMaps(this.spot.location());
+    if (this.spot) this._mapsApiService.openLatLngInMaps(this.spot.location());
   }
 
   openDirectionsInMaps() {
     if (typeof plausible !== "undefined" && this.spot instanceof Spot) {
       plausible("Opening in Google Maps", { props: { spotId: this.spot.id } });
     }
-    this._mapsApiService.openDirectionsInMaps(this.spot.location());
+
+    if (this.spot)
+      this._mapsApiService.openDirectionsInMaps(this.spot.location());
   }
 
   loadReportForSpot() {
@@ -447,22 +463,21 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   loadSpotPosts() {
-    if (!(this.spot instanceof Spot)) return;
-
-    console.log("Loading posts");
-    this.postSubscription = this._postsService
-      .getPostsFromSpot(this.spot)
-      .subscribe(
-        (postsSchemaMap) => {
-          console.log(postsSchemaMap);
-          this.spotPosts = [];
-          for (let id in postsSchemaMap) {
-            this.spotPosts.push(new Post.Class(id, postsSchemaMap[id]));
-          }
-        },
-        (error) => {},
-        () => {}
-      );
+    // if (!(this.spot instanceof Spot)) return;
+    // console.log("Loading posts");
+    // this.postSubscription = this._postsService
+    //   .getPostsFromSpot(this.spot)
+    //   .subscribe(
+    //     (postsSchemaMap) => {
+    //       console.log(postsSchemaMap);
+    //       this.spotPosts = [];
+    //       for (let id in postsSchemaMap) {
+    //         this.spotPosts.push(new Post.Class(id, postsSchemaMap[id]));
+    //       }
+    //     },
+    //     (error) => {},
+    //     () => {}
+    //   );
   }
 
   unsubscribeFromSpotPosts() {
@@ -474,16 +489,15 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     this.postSubscription.unsubscribe();
   }
 
-  getCountryEmojiFromAlpha2(countryAlpha2Code) {
-    return isoCountryCodeToFlagEmoji(countryAlpha2Code);
-  }
-
-  automaticallyDetermineCountryAndAddressToggleChanged(change) {
-    this.automaticallyDetermineAddress = change.checked;
-  }
-
   openSpotReportDialog() {
     if (!(this.spot instanceof Spot)) return;
+
+    if (
+      !this.authenticationService.isSignedIn ||
+      !this.authenticationService.user.uid ||
+      !this.authenticationService.user.data
+    )
+      return;
 
     const spotReportData: SpotReportSchema = {
       spot: {
@@ -506,9 +520,14 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
 
     const uid = this.authenticationService.user.uid;
     const spotId = this.spot.id;
-    let isUpdate: boolean = false;
 
-    let review: SpotReviewSchema = null;
+    if (!uid) {
+      console.error("User not signed in, cannot open review dialog");
+      return;
+    }
+
+    let isUpdate: boolean = false;
+    let review: SpotReviewSchema;
 
     // TODO somehow show that we are loading the review
 
@@ -523,6 +542,16 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
         console.error(err);
       })
       .finally(() => {
+        if (!this.spot) {
+          console.warn("Spot has been unselected after opening review dialog");
+          this.reviewDialog.closeAll();
+          return;
+        }
+        if (!this.authenticationService.user.data?.displayName) {
+          console.error("User data is missing, cannot open review dialog");
+          return;
+        }
+
         // otherwise create an empty review
         if (!review) {
           review = {

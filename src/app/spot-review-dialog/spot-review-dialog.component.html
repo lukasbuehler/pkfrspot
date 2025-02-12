@@ -1,4 +1,4 @@
-<h2 mat-dialog-title i18n>Review Spot '{{ review.spot?.name }}'</h2>
+<h2 mat-dialog-title i18n>Review Spot '{{ review.spot.name }}'</h2>
 <mat-dialog-content>
   <p i18n>What would you rate this spot from one to five stars?</p>
   <div
@@ -22,8 +22,8 @@
   </div>
   <mat-form-field appearance="outline" class="w-100">
     <mat-label>Comment</mat-label>
-    <textarea matInput [(ngModel)]="review.comment.text" rows="4"></textarea>
-    <mat-hint>Language: {{ review.comment.locale }}</mat-hint>
+    <textarea matInput [(ngModel)]="reviewComment" rows="4"></textarea>
+    <mat-hint>Language: {{ review.comment?.locale }}</mat-hint>
   </mat-form-field>
   <!-- // TODO Make it possible to toggle the language or something -->
 </mat-dialog-content>

@@ -3,16 +3,16 @@ import { humanTimeSince } from "../../scripts/Helpers";
 
 export namespace User {
   export class Class {
-    public uid: string = "";
+    public uid: string;
     public displayName: string = "";
     public biography: string = "";
     public profilePicture: string = "";
-    public startTimeDiffString: string = "";
-    public startDate: Date;
+    public startTimeDiffString: string | null = null;
+    public startDate: Date | null = null;
     public followerCount: number = 0;
-    public settings: UserSettingsSchema;
+    public settings: UserSettingsSchema | null = null;
 
-    public data: User.Schema = null;
+    public data: User.Schema | null = null;
 
     constructor(private _uid: string, private _data: User.Schema) {
       this.uid = this._uid;
@@ -30,13 +30,17 @@ export namespace User {
     }
 
     private _updateData() {
-      this.displayName = this._data.display_name;
-      this.biography = this._data.biography;
-      this.profilePicture = this._data.profile_picture;
-      this.settings = this._data.settings;
+      this.displayName = this._data.display_name ?? "";
+      this.biography = this._data.biography ?? "";
+      this.profilePicture = this._data.profile_picture ?? "";
+      this.settings = this._data.settings ?? {};
 
       // Start date
-      this.startTimeDiffString = humanTimeSince(this._data.start_date.toDate());
+      if (this._data.start_date) {
+        this.startTimeDiffString = humanTimeSince(
+          this._data.start_date.toDate()
+        );
+      }
 
       // Followers
       if (this._data.follower_count) {

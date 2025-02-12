@@ -32,7 +32,7 @@ import { LocaleCode } from "../../db/models/Interfaces";
   ],
 })
 export class SpotPreviewCardComponent implements OnChanges {
-  @Input() spot: Spot | SpotPreviewData;
+  @Input() spot: Spot | SpotPreviewData | null = null;
   @Input() infoOnly: boolean = false;
   @Input() clickable: boolean = false;
   @Input() isCompact: boolean = false;
@@ -40,9 +40,9 @@ export class SpotPreviewCardComponent implements OnChanges {
   @Output() dismiss: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() edit: EventEmitter<any> = new EventEmitter<any>();
 
-  spotName: string;
-  spotLocality: string;
-  spotImage: string;
+  spotName?: string;
+  spotLocality?: string;
+  spotImage?: string;
 
   bookmarked = false;
   visited = false;
@@ -72,7 +72,7 @@ export class SpotPreviewCardComponent implements OnChanges {
   }
 
   onClick() {
-    if (this.clickable) {
+    if (this.clickable && this.spot) {
       // open the spot in the spot map
       this._router.navigateByUrl(`/map/${this.spot.id}`);
     }

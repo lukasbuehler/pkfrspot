@@ -11,7 +11,7 @@
   [class.mat-elevation-z0]="flat"
   [class.clickable]="clickable"
 >
-  @if(!isEditing) {
+  @if(spot) {@if(!isEditing) {
   <mat-card-header class="pb-2">
     <mat-card-title [matTooltip]="spot.name()">
       {{ spot.name() }}
@@ -24,7 +24,7 @@
         [showNumReviews]="true"
         [numReviews]="spot.numReviews"
       ></app-spot-rating>
-      } @if(spot.address) {
+      } @if(spot.address()) {
       <span class="text-truncate">{{ spot.localityString() }}</span>
       }
     </mat-card-subtitle>
@@ -145,7 +145,7 @@
     }
 
     <!-- Freatures -->
-    @if(spot.amentitiesArray()?.length > 0) {
+    @if(spot.amentitiesArray() && spot.amentitiesArray().length > 0) {
     <div class="mb-4">
       <h4
         i18n="amenities header|The header for the spot features and amenities"
@@ -188,7 +188,7 @@
           >
           }
         </div>
-        @if(spot.normalizedRatingHistogram) {
+        @if(spot.normalizedRatingHistogram()) {
         <div class="flex-grow-1 hist-grid-container">
           @for(item of spot.normalizedRatingHistogram() | keyvalue | reverse;
           track item) {
@@ -203,7 +203,7 @@
             style="margin-top: -2px"
           ></mat-progress-bar>
           <div class="grid-item mat-label-medium">
-            ({{ spot.ratingHistogram()[item.key] }})
+            ({{ spot.ratingHistogram()[item.key | asRatingKey] }})
           </div>
           }
         </div>
@@ -247,7 +247,7 @@
       >
         Address
       </h4>
-      <p class="mat-body-large">{{ spot.address().formatted }}</p>
+      <p class="mat-body-large">{{ spot.address()?.formatted }}</p>
       } @else {
       <h4 class="mat-title-small">Location</h4>
       <p class="mat-body-large">
@@ -350,7 +350,7 @@
         <input
           #spotNameInput
           matInput
-          [value]="spot?.name()"
+          [value]="spot.name()"
           (change)="
             spot.setName(getValueFromEventTarget($event.target), locale)
           "
@@ -359,10 +359,10 @@
     </form>
 
     <!-- Media preview grid -->
-    <app-media-preview-grid
+    <!-- <app-media-preview-grid
       [media]="spot.userMedia()"
       (mediaChanged)="mediaChanged($event)"
-    ></app-media-preview-grid>
+    ></app-media-preview-grid> -->
 
     <!-- Image upload  -->
     <div class="upload-spot-image-box">
@@ -488,7 +488,7 @@
           description edit field
         "
         placeholder="Description of the spot, its features and more..."
-        [value]="spot?.description() ?? ''"
+        [value]="spot.description()"
         (change)="descriptionTextChanged(spot, $event.target)"
       ></textarea>
     </mat-form-field>
@@ -531,5 +531,5 @@
     </button>
     }
   </mat-card-actions>
-  }
+  } }
 </mat-card>

@@ -12,7 +12,7 @@
     #fileInput
     hidden="true"
     type="file"
-    [accept]="acceptString ?? allowedMimeTypes.join(',')"
+    [accept]="acceptString ?? allowedMimeTypes?.join(',')"
     onclick="value=null"
     (change)="onSelectFile($event.target)"
     formControlName="input"
@@ -31,7 +31,7 @@
       [value]="uploadFileName"
     />
     <mat-icon matSuffix>cloud_upload</mat-icon>
-    <mat-hint *ngIf="!hasError || formGroup.get('input').invalid">{{
+    <mat-hint *ngIf="!hasError || formGroup.get('input')?.invalid">{{
       uploadFile
         ? "Size: " + uploadFileSizeString + ", Type: " + uploadFile.type
         : "Click to select a file"

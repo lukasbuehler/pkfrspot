@@ -43,13 +43,13 @@ import { MatMiniFabButton } from "@angular/material/button";
 })
 export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
   @Input() required: boolean = false;
-  @Input() maximumSizeInBytes: number = null;
-  @Input() allowedMimeTypes: string[] = null;
-  @Input() acceptString: string = null;
+  @Input() maximumSizeInBytes: number | null = null;
+  @Input() allowedMimeTypes: string[] | null = null;
+  @Input() acceptString: string | null = null;
   @Output() changed = new EventEmitter<void>();
   @Output() uploadMedia = new EventEmitter<File>();
 
-  uploadFile: File = null;
+  uploadFile: File | null = null;
   uploadFileName: string = "";
   uploadFileSizeString: string = "";
 
@@ -61,13 +61,13 @@ export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
     return this._errorMessage;
   }
 
-  constructor() {}
-
-  ngOnInit() {
+  constructor() {
     this.formGroup = new UntypedFormGroup({
       input: new UntypedFormControl("", [Validators.required]),
     });
   }
+
+  ngOnInit() {}
 
   writeValue() {}
 
@@ -78,23 +78,25 @@ export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
   setDisabledState?(isDisabled: boolean) {}
 
   public isImageSelected(): boolean {
-    return this.uploadFile.type.includes("image");
+    return this.uploadFile?.type.includes("image") ?? false;
   }
 
-  onSelectFile(eventTarget: EventTarget) {
+  onSelectFile(eventTarget: EventTarget | null) {
     const files = (eventTarget as HTMLInputElement).files;
 
-    if (!files || files.length === 0) {
+    const file = files?.item(0);
+
+    if (!file) {
       return;
     }
 
     this.hasError = false;
-    let type = files.item(0).type;
+    let type = file.type;
 
     if (this.allowedMimeTypes && this.allowedMimeTypes.includes(type)) {
       if (
         this.maximumSizeInBytes !== null &&
-        files.item(0).size > this.maximumSizeInBytes
+        file.size > this.maximumSizeInBytes
       ) {
         // The selected file is too large
         console.log(
@@ -114,7 +116,9 @@ export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
           "Mimetype of selected file is '" +
           type +
           "', allowed mime types are: " +
-          this.allowedMimeTypes.join(", ") +
+          (this.allowedMimeTypes
+            ? this.allowedMimeTypes.join(", ")
+            : "undefined") +
           "\n"
       );
       this._errorMessage = "The type of this file is not allowed";
@@ -122,7 +126,7 @@ export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
       return;
     }
 
-    this.uploadFile = files.item(0);
+    this.uploadFile = file;
     this.uploadFileName = this.uploadFile.name;
     this.uploadFileSizeString = humanFileSize(this.uploadFile.size, true);
 

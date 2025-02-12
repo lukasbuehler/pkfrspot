@@ -13,9 +13,9 @@
     </mat-card-title>
     <!-- @if(isCompact) { -->
     <mat-card-subtitle class="d-flex flex-row gap-2 mat-title-small">
-      @if(spot.rating) {
+      @if(spot?.rating) {
       <app-spot-rating
-        [rating1to5]="spot.rating"
+        [rating1to5]="spot?.rating ?? null"
         [showEmptyStars]="false"
         [isCompact]="true"
       ></app-spot-rating>

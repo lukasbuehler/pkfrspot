@@ -65,17 +65,47 @@ export namespace MapHelpers {
   export function getTileCoordinates(
     location: google.maps.LatLngLiteral
   ): SpotSchema["tile_coordinates"] {
-    let tile_coordinates: Partial<SpotSchema["tile_coordinates"]> = {
-      z16: MapHelpers.getTileCoordinatesForLocationAndZoom(location, 16),
+    let tile_coordinates_16: { x: number; y: number } =
+      MapHelpers.getTileCoordinatesForLocationAndZoom(location, 16);
+    let tile_coordinates: SpotSchema["tile_coordinates"] = {
+      z16: tile_coordinates_16,
+      z2: {
+        x: 0,
+        y: 0,
+      },
+      z4: {
+        x: 0,
+        y: 0,
+      },
+      z6: {
+        x: 0,
+        y: 0,
+      },
+      z8: {
+        x: 0,
+        y: 0,
+      },
+      z10: {
+        x: 0,
+        y: 0,
+      },
+      z12: {
+        x: 0,
+        y: 0,
+      },
+      z14: {
+        x: 0,
+        y: 0,
+      },
     };
 
     for (let zoom = 16; zoom >= 2; zoom -= 2) {
-      tile_coordinates[`z${zoom}` as keyof SpotSchema["tile_coordinates"]] = {
-        x: tile_coordinates.z16.x >> (16 - zoom),
-        y: tile_coordinates.z16.y >> (16 - zoom),
+      (tile_coordinates as any)[`z${zoom}`] = {
+        x: tile_coordinates_16.x >> (16 - zoom),
+        y: tile_coordinates_16.y >> (16 - zoom),
       };
     }
 
-    return tile_coordinates as SpotSchema["tile_coordinates"];
+    return tile_coordinates;
   }
 }
