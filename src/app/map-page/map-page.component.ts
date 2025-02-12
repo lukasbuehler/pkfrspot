@@ -244,12 +244,10 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
     // subscribe to the spot search control and update the search results
     this.spotSearchControl.valueChanges.subscribe((query) => {
       if (query) {
-        this._searchService
-          .searchSpotsAndGeocodePlaces(query)
-          .then((results) => {
-            this.spotAndPlaceSearchResults$.next(results);
-            console.log("results", results);
-          });
+        this._searchService.searchSpotsAndPlaces(query).then((results) => {
+          this.spotAndPlaceSearchResults$.next(results);
+          console.log("results", results);
+        });
       } else {
         this.spotAndPlaceSearchResults$.next(null);
       }

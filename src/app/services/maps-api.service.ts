@@ -48,7 +48,7 @@ export class MapsApiService {
     document.body.appendChild(script);
 
     // add the callback function to the global scope
-    window["mapsCallback"] = () => {
+    (window as any)["mapsCallback"] = () => {
       this._isApiLoaded$.next(true);
       this._isLoading = false;
     };
@@ -73,7 +73,7 @@ export class MapsApiService {
   }
 
   isMacOSOriOS(): boolean {
-    if (typeof window === "undefined") return; // abort if not in browser
+    if (typeof window === "undefined") return false; // abort if not in browser
 
     const appleDevices = [
       "iPad Simulator",
@@ -156,7 +156,11 @@ export class MapsApiService {
             return;
           }
 
-          resolve(predictions);
+          if (predictions) {
+            resolve(predictions);
+          } else {
+            resolve([]);
+          }
         }
       );
     });
@@ -179,7 +183,9 @@ export class MapsApiService {
             return;
           }
 
-          resolve(place);
+          if (place) {
+            resolve(place);
+          }
         }
       );
     });
@@ -207,7 +213,9 @@ export class MapsApiService {
             return;
           }
 
-          resolve(results[0]);
+          if (results) {
+            resolve(results[0]);
+          }
         }
       );
     });

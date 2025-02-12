@@ -28,7 +28,17 @@ export class SearchService {
     page: 1,
   };
 
-  public async searchSpotsAndGeocodePlaces(query: string) {
+  public async searchEverything(query: string) {
+    // Search for spots
+    // Search for places
+    // Search for challenges
+    // Search for users
+    // Search for events
+    // Search for posts
+    // TODO: Implement this
+  }
+
+  public async searchSpotsAndPlaces(query: string) {
     let searchParams: SearchParams = { ...this.spotSearchParameters, q: query };
 
     const typesenseSpotSearchResults = this.client

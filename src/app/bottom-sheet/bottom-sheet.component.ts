@@ -18,21 +18,24 @@ export class BottomSheetComponent {
   headerHeight: number = 170;
   minimumSpeedToSlide: number = 5;
 
-  @ViewChild("bottomSheet", { static: true }) bottomSheet: ElementRef;
+  @ViewChild("bottomSheet", { static: true }) bottomSheet:
+    | ElementRef
+    | undefined;
 
   constructor(private renderer: Renderer2) {}
 
   ngAfterViewInit() {
     this.renderer.listen(
-      this.bottomSheet.nativeElement,
+      this.bottomSheet?.nativeElement,
       "dragstart",
-      (event) => {
+      (event: DragEvent) => {
         event.preventDefault();
       }
     );
 
-    const startDrag = (event) => {
+    const startDrag = (event: MouseEvent | TouchEvent) => {
       if (typeof window === "undefined") return; // abort if not in browser
+      if (!this.bottomSheet) return;
 
       let lastY = 0;
       let speed = 0;
@@ -45,7 +48,7 @@ export class BottomSheetComponent {
       let bottomHeightOffset = alwaysVisibleHeight;
 
       let isScrollableUp = false;
-      let target = event.target;
+      let target: HTMLElement = event.target as HTMLElement;
 
       let isAtTop: boolean = this.bottomSheet.nativeElement.offsetTop === 0;
 
@@ -66,17 +69,21 @@ export class BottomSheetComponent {
               break;
             }
           }
-          target = target.parentElement;
+          target = target.parentElement as HTMLElement;
         }
       }
 
       let clientY =
-        event.type === "touchstart" ? event.touches[0].clientY : event.clientY;
+        event.type === "touchstart"
+          ? (event as TouchEvent).touches[0].clientY
+          : (event as MouseEvent).clientY;
       let shiftY = clientY - this.bottomSheet.nativeElement.offsetTop;
 
-      const moveAt = (event) => {
+      const moveAt = (event: TouchEvent | MouseEvent) => {
+        if (!this.bottomSheet) return;
+
         let pageY =
-          event.type === "touchmove" ? event.touches[0].pageY : event.pageY;
+          event instanceof TouchEvent ? event.touches[0].pageY : event.pageY;
 
         const isScrollingUp = pageY - shiftY > 0;
         if (isScrollingUp && isScrollableUp) {
@@ -107,14 +114,16 @@ export class BottomSheetComponent {
         moveAt
       );
 
-      const stopDrag = (event) => {
+      const stopDrag = (event: MouseEvent | TouchEvent) => {
+        if (!this.bottomSheet) return;
+
         mouseMoveListener();
         touchMoveListener();
 
         let pageY =
           event.type === "touchend"
-            ? event.changedTouches[0].pageY
-            : event.pageY;
+            ? (event as TouchEvent).changedTouches[0].pageY
+            : (event as MouseEvent).pageY;
 
         let targetOffset = bottomHeightOffset; // default closed
 
@@ -145,8 +154,8 @@ export class BottomSheetComponent {
         let distance = targetOffset - offset;
 
         // Start the easing
-        let start = null;
-        const step = (timestamp) => {
+        let start: number = 0;
+        const step = (timestamp: number) => {
           if (!start) start = timestamp;
           let progress = timestamp - start;
 
@@ -158,7 +167,7 @@ export class BottomSheetComponent {
             animationSteps
           );
 
-          this.bottomSheet.nativeElement.style.top = current + "px";
+          this.bottomSheet!.nativeElement.style.top = current + "px";
 
           // Continue the easing if not at the target position
           if (progress < animationSteps) {
@@ -174,6 +183,8 @@ export class BottomSheetComponent {
       //   this.renderer.listen("window", "blur", stopDrag);
     };
 
+    if (!this.bottomSheet) return;
+
     this.renderer.listen(
       this.bottomSheet.nativeElement,
       "mousedown",
@@ -186,7 +197,7 @@ export class BottomSheetComponent {
     );
   }
 
-  easeOutCubic(t, b, c, d) {
+  easeOutCubic(t: number, b: number, c: number, d: number): number {
     t /= d;
     t--;
     return c * (t * t * t + 1) + b;

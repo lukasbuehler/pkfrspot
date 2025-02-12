@@ -47,6 +47,7 @@
         />
         <mat-autocomplete
           #spotAutocomplete="matAutocomplete"
+          [autoActiveFirstOption]="true"
           (optionSelected)="
             openSpotOrGooglePlace($event.option.value);
             spotSearchControl.setValue('')
