@@ -1,0 +1,79 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+
+@mixin color($theme) {
+  .pin-primary {
+    > div {
+      border-color: #dde1ff; // var(--mat-sys-on-primary-container);
+      background-color: #0037b9; // var(--mat-sys-primary-container);
+      color: #dde1ff;
+    }
+    > svg {
+      fill: #dde1ff;
+    }
+  }
+  .pin-secondary {
+    > div {
+      border-color: #a7f690; // var(--mat-sys-on-secondary-container);
+      background-color: #055300; // var(--mat-sys-secondary-container);
+      color: #a7f690;
+    }
+    > svg {
+      fill: #a7f690;
+    }
+  }
+  .pin-tertiary {
+    > div {
+      border-color: #ffd7f4; // var(--mat-sys-on-tertiary-container);
+      background-color: #5c3d56; // var(--mat-sys-tertiary-container);
+      color: #ffd7f4;
+    }
+    > svg {
+      fill: #ffd7f4;
+    }
+  }
+  .pin-iconic {
+    > div {
+      border-color: white;
+      background-color: #eaab0a;
+      color: white;
+    }
+    > svg {
+      fill: white;
+    }
+  }
+
+  // .marker-primary-light {
+  //   @extend .marker !optional;
+  //   background-color: #0037b9;
+  //   border-color: mat.get-theme-color($theme, primary);
+  // }
+
+  // .marker-primary-dark {
+  //   @extend .marker !optional;
+  //   background-color: mat.get-theme-color($theme, primary);
+  //   border-color: #0037b9;
+  // }
+
+  // .marker-secondary-dark {
+  //   @extend .marker !optional;
+  //   background-color: mat.get-theme-color($theme, secondary);
+  // }
+  // .marker-tertiary-dark {
+  //   @extend .marker !optional;
+  //   background-color: mat.get-theme-color($theme, tertiary);
+  // }
+}
+
+@mixin typography($theme) {
+}
+
+@mixin theme($theme) {
+  @if mat.theme-has($theme, color) {
+    @include color($theme);
+  }
+
+  @if mat.theme-has($theme, typography) {
+    @include typography($theme);
+  }
+}

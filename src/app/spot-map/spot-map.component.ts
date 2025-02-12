@@ -33,6 +33,7 @@ import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
 import { isPlatformServer } from "@angular/common";
 import { SpotsService } from "../services/firebase/firestore/spots.service";
 import { LocaleCode } from "../../db/models/Interfaces";
+import { MarkerSchema } from "../marker/marker.component";
 
 /**
  * This interface is used to reference a spot in the loaded spots array.
@@ -57,13 +58,10 @@ export class SpotMapComponent implements AfterViewInit {
   selectedSpot = model<Spot | LocalSpot | null>(null); // input and output signal
   isEditing = model<boolean>(false);
   mapStyle = model<"roadmap" | "satellite">("roadmap");
-
-  @Input() markers: google.maps.LatLngLiteral[] = [];
-  @Input() selectedMarker: google.maps.LatLngLiteral | null = null;
-
-  @Input() focusZoom: number = 17;
-
-  @Input() isClickable: boolean = true;
+  markers = input<MarkerSchema[]>([]);
+  selectedMarker = input<google.maps.LatLngLiteral | null>(null);
+  focusZoom = input<number>(17);
+  isClickable = input<boolean>(true);
 
   @Input() showGeolocation: boolean = true;
   @Input() showSatelliteToggle: boolean = false;
@@ -451,12 +449,15 @@ export class SpotMapComponent implements AfterViewInit {
   }
 
   focusSpot(spot: Spot | LocalSpot) {
-    const zoom = Math.max(this.mapZoom, this.focusZoom);
+    const zoom = Math.max(this.mapZoom, this.focusZoom());
 
     this.focusPoint(spot.location(), zoom);
   }
 
-  focusPoint(point: google.maps.LatLngLiteral, zoom: number = this.focusZoom) {
+  focusPoint(
+    point: google.maps.LatLngLiteral,
+    zoom: number = this.focusZoom()
+  ) {
     this.map?.googleMap?.panTo(point);
     this.mapZoom = zoom;
   }

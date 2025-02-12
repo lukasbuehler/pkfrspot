@@ -15,7 +15,7 @@ export class MetaInfoService {
     this.isServer = isPlatformServer(this.platformId);
   }
 
-  public setMetaTags(title, image_src, description) {
+  public setMetaTags(title: string, image_src: string, description: string) {
     // Title
     this.titleService.setTitle(title);
     this.meta.updateTag({

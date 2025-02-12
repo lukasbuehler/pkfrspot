@@ -330,7 +330,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const title: string = `${spot.name} - PKFR Spot`;
+    const title: string = `${spot.name()} - PKFR Spot`;
     const image_src: string = spot.previewImageSrc();
     const description: string =
       $localize`:The text before the localized location of the spot. E.g. Spot in Wiedikon, Zurich, CH@@spot.locality.pretext:Spot in ` +

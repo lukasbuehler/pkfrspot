@@ -37,6 +37,7 @@ import { GeoPoint } from "firebase/firestore";
 import { NgIf, NgFor, AsyncPipe, NgClass } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
 import { trigger, transition, style, animate } from "@angular/animations";
+import { MarkerComponent, MarkerSchema } from "../marker/marker.component";
 
 @Component({
   selector: "app-map",
@@ -52,7 +53,7 @@ import { trigger, transition, style, animate } from "@angular/animations";
     NgFor,
     NgClass,
     AsyncPipe,
-    // MapHeatmapLayer,
+    MarkerComponent,
   ],
   animations: [
     trigger("fadeInOut", [
@@ -78,6 +79,7 @@ export class MapComponent implements OnInit {
   sqrt = Math.sqrt;
 
   isDarkMode = input<boolean>(true); // should be false if mapStyle is roadmap and the dark map is used
+  markers = input<MarkerSchema[]>([]);
 
   private _center: google.maps.LatLngLiteral | undefined;
   @Input() set center(coords: google.maps.LatLngLiteral) {
@@ -128,7 +130,6 @@ export class MapComponent implements OnInit {
   @Input() selectedSpot: Spot | LocalSpot | null = null;
   @Input() isEditing: boolean = false;
   @Input() showGeolocation: boolean = false;
-  @Input() markers: google.maps.LatLngLiteral[] = [];
   @Input() selectedMarker: google.maps.LatLngLiteral | null = null;
 
   @Input() boundRestriction: {

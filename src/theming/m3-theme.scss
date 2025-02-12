@@ -12,6 +12,7 @@
 @use "./../app/nav-rail/nav-rail.component-theme" as nav-rail;
 @use "./../app/map-page/map-page.component-theme" as map-page;
 @use "./../app/map/map.component-theme" as map-component;
+@use "./../app/marker/marker.component-theme" as marker;
 @use "./../app/app.component-theme" as app;
 @use "../styles-theme" as styles;
 
@@ -187,6 +188,7 @@ html {
   @include app.theme($dark-theme);
   @include styles.theme($dark-theme);
   @include map-component.theme($dark-theme);
+  @include marker.theme($dark-theme);
   //   @media (prefers-color-scheme: light) {
   //     @include mat.all-component-colors($light-theme);
   //     @include mat3-nav-button.theme($light-theme);

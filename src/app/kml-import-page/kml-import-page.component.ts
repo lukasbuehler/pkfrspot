@@ -67,6 +67,7 @@ import { MatIcon } from "@angular/material/icon";
 import { locale } from "core-js";
 import { LocaleCode } from "../../db/models/Interfaces";
 import { SpotSchema } from "../../db/schemas/SpotSchema";
+import { MarkerSchema } from "../marker/marker.component";
 
 @Component({
   selector: "app-kml-import-page",
@@ -114,8 +115,8 @@ import { SpotSchema } from "../../db/schemas/SpotSchema";
   ],
 })
 export class KmlImportPageComponent implements OnInit, AfterViewInit {
-  @ViewChild("stepperHorizontal") stepperHorizontal: MatStepper;
-  @ViewChild("spotMap") spotMap;
+  @ViewChild("stepperHorizontal") stepperHorizontal: MatStepper | undefined;
+  @ViewChild("spotMap") spotMap: SpotMapComponent | undefined;
 
   uploadFormGroup: UntypedFormGroup;
   setupFormGroup: UntypedFormGroup;
@@ -128,6 +129,8 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
   }
   set selectedVerificationSpot(value: KMLSpot | null) {
     this._selectedVerificationSpot = value;
+
+    if (!this.spotMap) return;
 
     this.spotMap.focusPoint(this._selectedVerificationSpot.spot.location);
   }
@@ -178,6 +181,15 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
 
   getSpotLocations(spots: KMLSpot[]): google.maps.LatLngLiteral[] {
     return spots.map((spot) => spot.spot.location);
+  }
+
+  getSpotMarkers(spots: KMLSpot[]): MarkerSchema[] {
+    return spots.map((spot) => {
+      return {
+        color: "tertiary",
+        location: spot.spot.location,
+      };
+    });
   }
 
   continueToSetup() {

@@ -9,33 +9,6 @@
   transition: background-color 1s ease, border-color 1s ease;
 }
 
-.pin-marker {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  > div {
-    padding: 5px;
-    // padding-right: 8px;
-    // padding-left: 8px;
-    display: flex;
-    flex-direction: row;
-    border-style: solid;
-    border-width: 4px;
-    border-radius: 9999px;
-    justify-content: center;
-    align-items: center;
-    font-weight: 800;
-  }
-  > svg {
-    z-index: -1;
-    margin-top: -7px;
-    // background-color: white;
-    // height: 5px;
-    // width: 5px;
-  }
-}
-
 .geolocation-marker {
   height: 20px;
   width: 20px;
