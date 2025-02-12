@@ -68,16 +68,16 @@ import { trigger, transition, style, animate } from "@angular/animations";
   ],
 })
 export class MapComponent implements OnInit {
-  @ViewChild("googleMap") googleMap: GoogleMap;
-  @ViewChildren(MapPolygon) polygons: QueryList<MapPolygon>;
+  @ViewChild("googleMap") googleMap: GoogleMap | undefined;
+  @ViewChildren(MapPolygon) polygons: QueryList<MapPolygon> | undefined;
   @ViewChildren(MapPolygon, { read: ElementRef })
-  polygonElements: QueryList<ElementRef>;
-  @ViewChild("selectedSpotMarkerNode") selectedSpotMarkerNode: Node;
+  polygonElements: QueryList<ElementRef> | undefined;
+  @ViewChild("selectedSpotMarkerNode") selectedSpotMarkerNode: Node | undefined;
 
   // add math function to markup
   sqrt = Math.sqrt;
 
-  private _center: google.maps.LatLngLiteral;
+  private _center: google.maps.LatLngLiteral | undefined;
   @Input() set center(coords: google.maps.LatLngLiteral) {
     this._center = coords;
     if (this.googleMap) {
@@ -85,7 +85,7 @@ export class MapComponent implements OnInit {
     }
   }
   @Output() centerChange = new EventEmitter<google.maps.LatLngLiteral>();
-  get center() {
+  get center(): google.maps.LatLngLiteral | undefined {
     return this._center;
   }
 

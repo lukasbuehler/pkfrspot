@@ -47,7 +47,7 @@ interface LoadedSpotReference {
   animations: [],
 })
 export class SpotMapComponent implements AfterViewInit {
-  @ViewChild("map") map: MapComponent;
+  @ViewChild("map") map: MapComponent | undefined;
 
   @Input() selectedSpot: Spot | LocalSpot | null = null;
   @Output() selectedSpotChange = new EventEmitter<Spot | LocalSpot | null>();
@@ -95,7 +95,7 @@ export class SpotMapComponent implements AfterViewInit {
   } | null = null;
   @Input() spots: Spot[] = [];
 
-  uneditedSpot: Spot | LocalSpot = null;
+  uneditedSpot: Spot | LocalSpot | null = null;
 
   startZoom: number = 4;
   mapZoom: number = this.startZoom;

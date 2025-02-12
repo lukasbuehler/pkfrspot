@@ -110,7 +110,7 @@ export class AppComponent implements OnInit {
   ];
 
   @HostListener("window:resize", ["$event"])
-  onResize(event) {
+  onResize(event: Event) {
     this.enforceAlainMode();
   }
 
@@ -147,7 +147,7 @@ export class AppComponent implements OnInit {
         this.router.events
           .pipe(filter((event) => event instanceof NavigationEnd))
           .subscribe(() => {
-            this.route.firstChild.data.subscribe((data) => {
+            this.route.firstChild?.data.subscribe((data) => {
               // open welcome dialog if the user has not accepted the terms of service
               acceptedVersion = localStorage.getItem("acceptedVersion");
 
@@ -177,9 +177,9 @@ export class AppComponent implements OnInit {
     this.authService.authState$.subscribe(
       (user) => {
         let isAuthenticated: boolean = false;
-        if (user) {
+        if (user && user.uid) {
           if (user.uid !== this.userId) {
-            this.userId = user.uid; // TODO check whyyy
+            this.userId = user.uid;
           }
           isAuthenticated = true;
         }
@@ -194,7 +194,7 @@ export class AppComponent implements OnInit {
     );
 
     if (typeof window !== "undefined") {
-      this.hasAds = window["canRunAds"];
+      this.hasAds = (window as any)["canRunAds"] ?? false;
     }
 
     // get the route name

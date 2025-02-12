@@ -32,7 +32,7 @@ import { isPlatformBrowser, NgOptimizedImage } from "@angular/common";
   styleUrl: "./img-carousel.component.scss",
 })
 export class ImgCarouselComponent {
-  @Input() media: ContributedMedia[];
+  @Input() media: ContributedMedia[] | undefined;
 
   constructor(
     public dialog: MatDialog,
@@ -50,6 +50,7 @@ export class ImgCarouselComponent {
       maxWidth: "95vw",
       maxHeight: "95vh",
       panelClass: "square",
+      height: "100%",
     });
 
     // dialogRef.afterClosed().subscribe((result) => {
@@ -61,19 +62,25 @@ export class ImgCarouselComponent {
 @Component({
   selector: "swiper-dialog",
   template: `
-    <div id="swiper" class="swiper">
+    <div id="swiper" class="swiper w-100">
       <div class="swiper-wrapper">
         @for (mediaObj of data.media; track $index) { @if(mediaObj.type ===
         'image') {
         <div class="swiper-slide">
           @if(mediaObj.origin !== 'streetview') {
           <!-- if the media is not a street view image, use the 800x800 size -->
-          <img
-            src="{{ this.storageService.getSpotMediaURL(mediaObj.src, 800) }}"
-          />
+          <div class="swiper-img-container">
+            <img
+              ngSrc="{{
+                this.storageService.getSpotMediaURL(mediaObj.src, 800)
+              }}"
+              fill
+            />
+          </div>
+
           } @else {
           <!-- if the media is a streetview image, or link show the source directly -->
-          <img src="{{ mediaObj.src }}" />
+          <img ngSrc="{{ mediaObj.src }}" />
           }
         </div>
         } }
@@ -97,7 +104,13 @@ export class ImgCarouselComponent {
       </button>
     </div>
   `,
-  imports: [MatDialogModule, MatButtonModule, MatIconButton, MatIcon],
+  imports: [
+    MatDialogModule,
+    MatButtonModule,
+    MatIconButton,
+    MatIcon,
+    NgOptimizedImage,
+  ],
   styles: [
     `
       :host {
@@ -105,17 +118,21 @@ export class ImgCarouselComponent {
         aspect-ratio: 1;
       }
 
-      img {
+      .swiper-img-container {
+        position: relative;
         width: 100%;
         height: 100%;
-        object-fit: contain;
+
+        > img {
+          object-fit: contain;
+        }
       }
     `,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SwiperDialogComponent implements AfterViewInit {
-  swiper: Swiper = null;
+  swiper: Swiper | null = null;
   isBroswer: boolean = false;
 
   constructor(
