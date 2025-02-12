@@ -6,6 +6,7 @@ import {
   Inject,
   PLATFORM_ID,
   LOCALE_ID,
+  OnDestroy,
 } from "@angular/core";
 import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
 import { LocalSpot, Spot, SpotId } from "../../db/models/Spot";
@@ -14,12 +15,20 @@ import {
   NavigationEnd,
   NavigationStart,
   Router,
+  RouterEvent,
 } from "@angular/router";
 import { SpeedDialFabButtonConfig } from "../speed-dial-fab/speed-dial-fab.component";
 import { AuthenticationService } from "../services/firebase/authentication.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MapsApiService } from "../services/maps-api.service";
-import { BehaviorSubject, filter, firstValueFrom, take, timeout } from "rxjs";
+import {
+  BehaviorSubject,
+  filter,
+  firstValueFrom,
+  Subscription,
+  take,
+  timeout,
+} from "rxjs";
 import { animate, style, transition, trigger } from "@angular/animations";
 import { BottomSheetComponent } from "../bottom-sheet/bottom-sheet.component";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -94,7 +103,7 @@ import { MetaInfoService } from "../services/meta-info.service";
     MatDividerModule,
   ],
 })
-export class MapPageComponent implements OnInit, AfterViewInit {
+export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("spotMap", { static: false }) spotMap: SpotMapComponent | null =
     null;
   @ViewChild("bottomSheet") bottomSheet: BottomSheetComponent | undefined;
@@ -118,6 +127,8 @@ export class MapPageComponent implements OnInit, AfterViewInit {
   alainMode: boolean = false;
 
   isServer: boolean;
+
+  _routerSubscription?: Subscription;
 
   constructor(
     @Inject(LOCALE_ID) public locale: LocaleCode,
@@ -219,7 +230,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
     // }
 
     // subscribe to changes of the route
-    this.router.events
+    this._routerSubscription = this.router.events
       .pipe(
         filter((event) => {
           return event instanceof NavigationEnd;
@@ -330,7 +341,7 @@ export class MapPageComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const title: string = `${spot.name()} - PKFR Spot`;
+    const title: string = `${spot.name()} | PKFR Spot`;
     const image_src: string = spot.previewImageSrc();
     const description: string =
       $localize`:The text before the localized location of the spot. E.g. Spot in Wiedikon, Zurich, CH@@spot.locality.pretext:Spot in ` +
@@ -343,5 +354,10 @@ export class MapPageComponent implements OnInit, AfterViewInit {
 
   clearTitleAndMetaTags() {
     this.titleService.setTitle($localize`:@@pkfr.spotmap.title:PKFR Spot map`);
+  }
+
+  ngOnDestroy() {
+    this.spotAndPlaceSearchResults$.complete();
+    this._routerSubscription?.unsubscribe();
   }
 }

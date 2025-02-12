@@ -1,4 +1,10 @@
-import { Component, Inject, LOCALE_ID, afterNextRender } from "@angular/core";
+import {
+  Component,
+  inject,
+  LOCALE_ID,
+  afterNextRender,
+  OnInit,
+} from "@angular/core";
 import { CountdownComponent } from "../countdown/countdown.component";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
 import { NgOptimizedImage } from "@angular/common";
@@ -8,6 +14,7 @@ import { SpotsService } from "../services/firebase/firestore/spots.service";
 import { lastValueFrom, take, timeout } from "rxjs";
 import { LocaleCode } from "../../db/models/Interfaces";
 import { MarkerSchema } from "../marker/marker.component";
+import { MetaInfoService } from "../services/meta-info.service";
 
 @Component({
   selector: "app-event-page",
@@ -20,8 +27,14 @@ import { MarkerSchema } from "../marker/marker.component";
   templateUrl: "./event-page.component.html",
   styleUrl: "./event-page.component.scss",
 })
-export class EventPageComponent {
+export class EventPageComponent implements OnInit {
+  metaInfoService = inject(MetaInfoService);
+  locale = inject<LocaleCode>(LOCALE_ID);
+  private _spotService = inject(SpotsService);
+
   name: string = "Swiss Jam 2025";
+  bannerImageSrc: string = "/assets/swissjam.jpg";
+  localityString: string = "Zurich, Switzerland";
   start: Date = new Date("2025-05-24T09:00:00+01:00");
   end: Date = new Date("2025-05-25T16:00:00+01:00");
 
@@ -80,10 +93,7 @@ export class EventPageComponent {
 
   mapStyle: "roadmap" | "satellite" = "satellite";
 
-  constructor(
-    @Inject(LOCALE_ID) public locale: LocaleCode,
-    private _spotService: SpotsService
-  ) {
+  constructor() {
     afterNextRender(() => {
       this.swissJamSpotIds.forEach((spotId) => {
         this._spotService
@@ -94,5 +104,21 @@ export class EventPageComponent {
           });
       });
     });
+  }
+
+  ngOnInit() {
+    this.metaInfoService.setMetaTags(
+      this.name, //+ " | PKFR Spot",
+      this.bannerImageSrc,
+      $localize`Event in ` +
+        this.localityString +
+        ", (" +
+        (this.start.toLocaleDateString() === this.end.toLocaleDateString()
+          ? this.start.toLocaleDateString()
+          : this.start.toLocaleDateString() +
+            " - " +
+            this.end.toLocaleDateString()) +
+        ")"
+    );
   }
 }

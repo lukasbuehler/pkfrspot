@@ -1,41 +1,24 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { MatIcon } from "@angular/material/icon";
 import { MatAnchor } from "@angular/material/button";
 import { Meta, Title } from "@angular/platform-browser";
 import { NgOptimizedImage } from "@angular/common";
+import { MetaInfoService } from "../services/meta-info.service";
 
 @Component({
-    selector: "app-about-page",
-    templateUrl: "./about-page.component.html",
-    styleUrls: ["./about-page.component.scss"],
-    imports: [MatAnchor, MatIcon, NgOptimizedImage]
+  selector: "app-about-page",
+  templateUrl: "./about-page.component.html",
+  styleUrls: ["./about-page.component.scss"],
+  imports: [MatAnchor, MatIcon, NgOptimizedImage],
 })
 export class AboutPageComponent implements OnInit {
-  constructor(private titleService: Title, private meta: Meta) {
-    // update the meta tags
+  private _metaInfoService = inject(MetaInfoService);
 
-    this.titleService.setTitle($localize`:@@about.title:About PKFR Spot`);
-
-    this.meta.updateTag({
-      property: "og:title",
-      content: $localize`:@@about.title:About PKFR Spot`,
-    });
-    this.meta.updateTag({
-      name: "twitter:title",
-      content: $localize`:@@about.title:About PKFR Spot`,
-    });
-
-    this.meta.updateTag({
-      property: "og:image",
-      content: "assets/banner_1200x630.png",
-    });
-    this.meta.updateTag({
-      name: "twitter:image",
-      content: "assets/banner_1200x630.png",
-    });
-
-    // this.meta.updateTag({ name: 'description', content: 'About PKFR Spot' });
+  ngOnInit(): void {
+    this._metaInfoService.setMetaTags(
+      $localize`:@@about.title:About PKFR Spot`,
+      "assets/banner_1200x630.png",
+      $localize`:@@about.description:About PKFR Spot`
+    );
   }
-
-  ngOnInit(): void {}
 }
