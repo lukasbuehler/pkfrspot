@@ -1,10 +1,15 @@
 import {
   AfterViewInit,
   Component,
+  effect,
   EventEmitter,
   Inject,
+  input,
   Input,
+  InputSignal,
   LOCALE_ID,
+  model,
+  ModelSignal,
   Output,
   PLATFORM_ID,
   ViewChild,
@@ -49,33 +54,9 @@ interface LoadedSpotReference {
 export class SpotMapComponent implements AfterViewInit {
   @ViewChild("map") map: MapComponent | undefined;
 
-  @Input() selectedSpot: Spot | LocalSpot | null = null;
-  @Output() selectedSpotChange = new EventEmitter<Spot | LocalSpot | null>();
-
-  setSelectedSpot(value: Spot | LocalSpot | null) {
-    if (value !== this.selectedSpot) {
-      this.selectedSpot = value;
-      this.selectedSpotChange.emit(value);
-    }
-  }
-
-  @Input() isEditing: boolean = false;
-  @Output() isEditingChange = new EventEmitter<boolean>();
-
-  setIsEditing(value: boolean) {
-    if (value !== this.isEditing) {
-      this.isEditing = value;
-      this.isEditingChange.emit(value);
-    }
-  }
-
-  @Input() mapStyle: "roadmap" | "satellite" = "roadmap";
-  @Output() mapStyleChange = new EventEmitter<string>();
-
-  @Output() hasGeolocationChange = new EventEmitter<boolean>();
-
-  @Output() visibleSpotsChange = new EventEmitter<Spot[]>();
-  @Output() hightlightedSpotsChange = new EventEmitter<SpotPreviewData[]>();
+  selectedSpot = model<Spot | LocalSpot | null>(null); // input and output signal
+  isEditing = model<boolean>(false);
+  mapStyle = model<"roadmap" | "satellite">("roadmap");
 
   @Input() markers: google.maps.LatLngLiteral[] = [];
   @Input() selectedMarker: google.maps.LatLngLiteral | null = null;
@@ -86,7 +67,7 @@ export class SpotMapComponent implements AfterViewInit {
 
   @Input() showGeolocation: boolean = true;
   @Input() showSatelliteToggle: boolean = false;
-  @Input() minZoom: number = 4;
+  @Input() minZoom: number = 2;
   @Input() boundRestriction: {
     north: number;
     south: number;
@@ -95,7 +76,11 @@ export class SpotMapComponent implements AfterViewInit {
   } | null = null;
   @Input() spots: Spot[] = [];
 
-  uneditedSpot: Spot | LocalSpot | null = null;
+  @Output() hasGeolocationChange = new EventEmitter<boolean>();
+  @Output() visibleSpotsChange = new EventEmitter<Spot[]>();
+  @Output() hightlightedSpotsChange = new EventEmitter<SpotPreviewData[]>();
+
+  uneditedSpot?: Spot | LocalSpot;
 
   startZoom: number = 4;
   mapZoom: number = this.startZoom;
@@ -103,8 +88,8 @@ export class SpotMapComponent implements AfterViewInit {
     lat: 48.6270939,
     lng: 2.4305363,
   };
-  mapCenter: google.maps.LatLngLiteral;
-  bounds: google.maps.LatLngBounds;
+  mapCenter?: google.maps.LatLngLiteral;
+  bounds?: google.maps.LatLngBounds;
 
   //this is a map of tile keys to spot arrays
   loadedSpots: Map<ClusterTileKey, Spot[]> = new Map<ClusterTileKey, Spot[]>();
@@ -115,8 +100,8 @@ export class SpotMapComponent implements AfterViewInit {
   visibleDots: SpotClusterDotSchema[] = [];
 
   // the current tile coordinates for zoom level 16, can be easily converted to other zoom levels by bit shifting
-  private _northEastTileCoordsZ16: { x: number; y: number };
-  private _southWestTileCoordsZ16: { x: number; y: number };
+  private _northEastTileCoordsZ16?: { x: number; y: number };
+  private _southWestTileCoordsZ16?: { x: number; y: number };
 
   // previous tile coordinates used to check if the visible tiles have changed
   private _previousTileZoom: 4 | 8 | 12 | 16 | undefined;
@@ -131,7 +116,14 @@ export class SpotMapComponent implements AfterViewInit {
     private authService: AuthenticationService,
     private mapsAPIService: MapsApiService,
     private snackBar: MatSnackBar
-  ) {}
+  ) {
+    effect(() => {
+      const spot = this.selectedSpot();
+      if (spot) {
+        this.focusSpot(spot);
+      }
+    });
+  }
 
   isInitiated: boolean = false;
 
@@ -141,12 +133,14 @@ export class SpotMapComponent implements AfterViewInit {
       this.mapsAPIService
         .loadLastLocationAndZoom()
         .then((lastLocationAndZoom) => {
-          if (lastLocationAndZoom) {
-            this.map.center = lastLocationAndZoom.location;
-            this.mapZoom = lastLocationAndZoom.zoom;
-          } else {
-            this.map.center = this.mapCenterStart;
-            this.mapZoom = this.startZoom;
+          if (this.map) {
+            if (lastLocationAndZoom) {
+              this.map.center = lastLocationAndZoom.location;
+              this.mapZoom = lastLocationAndZoom.zoom;
+            } else {
+              this.map.center = this.mapCenterStart;
+              this.mapZoom = this.startZoom;
+            }
           }
           this.isInitiated = true;
         });
@@ -164,12 +158,14 @@ export class SpotMapComponent implements AfterViewInit {
      * When the map is clicked with a spot open, the spot is
      * closed and the bottom panel cloes as well.
      */
-    if (this.selectedSpot) {
+    if (this.selectedSpot()) {
       this.closeSpot();
     }
   }
 
   focusOnGeolocation() {
+    if (!this.map) return;
+
     this.map.useGeolocation();
     this.map.focusOnGeolocation();
   }
@@ -201,6 +197,10 @@ export class SpotMapComponent implements AfterViewInit {
       lng: bounds.getSouthWest().lng(),
     };
     this._updateCornerTileCoordinatesForZ16(northEastPoint, southWestPoint);
+    if (!this._northEastTileCoordsZ16 || !this._southWestTileCoordsZ16) {
+      console.error("Tile coordinates not set");
+      return;
+    }
 
     // compute the tiles for this zoom level
     // that is only 4, 8, 12 and 16 since we are only loading spots and dots for these zoom levels
@@ -226,8 +226,8 @@ export class SpotMapComponent implements AfterViewInit {
     // compare these tile corners to the previous tile corners and abort if they are the same
     if (
       this._previousTileZoom === tileZoom &&
-      this._previousSouthWestTile.equals(southWestTile) &&
-      this._previousNorthEastTile.equals(northEastTile)
+      this._previousSouthWestTile?.equals(southWestTile) &&
+      this._previousNorthEastTile?.equals(northEastTile)
     ) {
       // abort, nothing needs to change since the tiles stayed the same...
       return;
@@ -292,13 +292,17 @@ export class SpotMapComponent implements AfterViewInit {
   // Spot loading /////////////////////////////////////////////////////////////
 
   getAllLoadedSpots(): Spot[] {
-    const values = [];
+    const allSpots: Spot[] = [];
     for (const key of this.loadedSpots.keys()) {
       if (!key.includes("z16")) continue;
-      values.push(this.loadedSpots.get(key));
+
+      const loadedSpots = this.loadedSpots.get(key);
+      if (!loadedSpots) continue;
+
+      allSpots.concat(loadedSpots);
     }
 
-    return [].concat.apply([], values);
+    return allSpots;
   }
 
   /**
@@ -350,6 +354,8 @@ export class SpotMapComponent implements AfterViewInit {
    * @param southWestLiteral
    */
   updateVisibleSpots(visibleTiles: Set<ClusterTileKey> = this._visibleTiles) {
+    console.log("Updating visible spots");
+
     // clear visible spots
     this.visibleSpots = [];
 
@@ -360,6 +366,7 @@ export class SpotMapComponent implements AfterViewInit {
       }
     });
     this.visibleSpotsChange.emit(this.visibleSpots);
+    console.log("Visible spots updated");
 
     // If the selected spot is visible reference the instance from the visible spots
     if (this.selectedSpot) {
@@ -373,7 +380,7 @@ export class SpotMapComponent implements AfterViewInit {
       if (selectedSpotIndexInVisibleSpots >= 0) {
         // The selected spot is visible, reference the instance from the visible
         // spots instead of the one from the database
-        this.setSelectedSpot(
+        this.selectedSpot.set(
           this.visibleSpots[selectedSpotIndexInVisibleSpots]
         );
       }
@@ -388,8 +395,10 @@ export class SpotMapComponent implements AfterViewInit {
 
     for (let tileKey of visibleTiles) {
       if (this.loadedClusterTiles.has(tileKey)) {
-        const clusterTiles: SpotClusterTileSchema =
+        const clusterTiles: SpotClusterTileSchema | undefined =
           this.loadedClusterTiles.get(tileKey);
+        if (!clusterTiles) continue;
+
         this.visibleDots = this.visibleDots.concat(clusterTiles.dots);
         this.hightlightedSpots = this.hightlightedSpots.concat(
           clusterTiles.spots
@@ -404,7 +413,7 @@ export class SpotMapComponent implements AfterViewInit {
     console.debug("Opening spot by whatever means necessary:", spot);
 
     if (spot instanceof Spot) {
-      this.openSpot(spot);
+      this.selectedSpot.set(spot);
     }
     let spotId: SpotId;
 
@@ -433,7 +442,7 @@ export class SpotMapComponent implements AfterViewInit {
     firstValueFrom(this._spotsService.getSpotById$(spotId, this.locale)).then(
       (spot) => {
         if (spot) {
-          this.openSpot(spot);
+          this.selectedSpot.set(spot);
         } else {
           console.error("Spot with ID", spotId, "not found");
         }
@@ -441,28 +450,31 @@ export class SpotMapComponent implements AfterViewInit {
     );
   }
 
-  openSpot(spot: Spot | LocalSpot) {
-    this.setSelectedSpot(spot);
-    this.focusSpot(spot);
-  }
-
   focusSpot(spot: Spot | LocalSpot) {
-    this.focusPoint(spot.location());
+    const zoom = Math.max(this.mapZoom, this.focusZoom);
+
+    this.focusPoint(spot.location(), zoom);
   }
 
   focusPoint(point: google.maps.LatLngLiteral, zoom: number = this.focusZoom) {
-    this.map.googleMap.panTo(point);
-    if (this.mapZoom < zoom) {
-      this.mapZoom = zoom;
-    }
+    this.map?.googleMap?.panTo(point);
+    this.mapZoom = zoom;
   }
 
   focusBounds(bounds: google.maps.LatLngBounds) {
-    this.map.fitBounds(bounds);
+    this.map?.fitBounds(bounds);
   }
 
   toggleMapStyle() {
-    this.map.toggleMapStyle();
+    if (this.mapStyle() === "roadmap") {
+      // if it is equal to roadmap, toggle to satellite
+      this.mapStyle.set("satellite");
+      // this.setLightMode();
+    } else {
+      // otherwise toggle back to roadmap
+      this.mapStyle.set("roadmap");
+      // this.setDarkMode();
+    }
   }
 
   createSpot() {
@@ -472,16 +484,17 @@ export class SpotMapComponent implements AfterViewInit {
       return;
     }
 
-    let center_coordinates: google.maps.LatLngLiteral = this.map.googleMap
-      .getCenter()
-      ?.toJSON();
+    if (!this.map || !this.map.googleMap) return;
+
+    let center_coordinates: google.maps.LatLngLiteral | undefined =
+      this.map.googleMap.getCenter()?.toJSON();
 
     if (!center_coordinates) {
       console.error("Could not get center coordinates of the map");
       return;
     }
 
-    this.setSelectedSpot(
+    this.selectedSpot.set(
       new LocalSpot(
         {
           name: { [this.locale]: $localize`New Spot` }, // TODO change to user lang
@@ -495,7 +508,7 @@ export class SpotMapComponent implements AfterViewInit {
     );
 
     // sets the map and the spot to edit mode
-    this.setIsEditing(true);
+    this.isEditing.set(true);
   }
 
   saveSpot(spot: Spot | LocalSpot) {
@@ -530,42 +543,41 @@ export class SpotMapComponent implements AfterViewInit {
         this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spot as Spot);
 
         // Successfully updated
-        this.setIsEditing(false);
+        this.isEditing.set(false);
         this.snackBar.open(
           $localize`Spot saved successfully`,
           $localize`Dismiss`
         );
 
         // update the selected spot so that it is displayed in the URL
-        this.setSelectedSpot(null);
-        this.openSpot(spot);
+        this.selectedSpot.set(null);
+        this.selectedSpot.set(spot);
       })
       .catch((error) => {
-        this.setIsEditing(false);
+        this.isEditing.set(false);
         console.error("Error saving spot:", error);
         this.snackBar.open($localize`Error saving spot`, $localize`Dismiss`);
       });
   }
 
   startEdit() {
-    this.setIsEditing(true);
+    this.isEditing.set(true);
 
-    this.uneditedSpot = this.selectedSpot.clone();
+    this.uneditedSpot = this.selectedSpot()?.clone();
   }
 
   discardEdit() {
     // reset paths of editing polygon
-    this.setIsEditing(false);
+    this.isEditing.set(false);
 
     if (!this.uneditedSpot) {
       // there is no backup unedited spot of the selected spot, therefore this is a newly created spot
       // delete local newly created spots
       //this.removeNewSpotFromLoadedSpotsAndUpdate();
-      this.setSelectedSpot(null);
+      this.selectedSpot.set(null);
     } else {
       // set the selected spot to be the backup unedited spot
-      this.setSelectedSpot(this.uneditedSpot);
-      this.selectedSpot.paths = this.uneditedSpot.paths; // ?
+      this.selectedSpot.set(this.uneditedSpot);
 
       delete this.uneditedSpot;
 
@@ -590,6 +602,8 @@ export class SpotMapComponent implements AfterViewInit {
         next: (spots) => {
           if (spots.length > 0) {
             spots.forEach((spot) => {
+              if (!spot.tileCoordinates) return;
+
               const spotTile = spot.tileCoordinates.z16;
               const key: ClusterTileKey = getClusterTileKey(
                 16,
@@ -597,7 +611,7 @@ export class SpotMapComponent implements AfterViewInit {
                 spotTile.y
               );
               if (this.loadedSpots.has(key)) {
-                this.loadedSpots.get(key).push(spot);
+                this.loadedSpots.get(key)?.push(spot);
               } else {
                 console.warn("aahhh");
               }
@@ -638,8 +652,8 @@ export class SpotMapComponent implements AfterViewInit {
 
   spotMarkerMoved(event: { coords: google.maps.LatLngLiteral }) {
     if (this.selectedSpot) {
-      this.selectedSpot.location.set(event.coords);
-      this.selectedSpot.location.set(event.coords); // reflect move on map
+      this.selectedSpot()?.location.set(event.coords);
+      this.selectedSpot()?.location.set(event.coords); // reflect move on map
     } else {
       console.error(
         "User somehow could change the spot marker position without having a spot selected"
@@ -651,7 +665,7 @@ export class SpotMapComponent implements AfterViewInit {
    * Unselect the spot and close the bottom panel
    */
   closeSpot() {
-    if (this.isEditing) {
+    if (this.isEditing()) {
       // TODO show dialog
       alert(
         "You are currently editing a spot. Please save or discard your changes before closing the spot."
@@ -661,23 +675,25 @@ export class SpotMapComponent implements AfterViewInit {
     }
 
     // unselect
-    this.setSelectedSpot(null);
+    this.selectedSpot.set(null);
   }
 
   /**
    * Add the first bounds to a spot. This can be used if the spot has no bounds attached to it.
    */
   addBounds() {
-    if (!("id" in this.selectedSpot)) {
+    if (this.selectedSpot instanceof LocalSpot) {
       console.error(
         "The spot has no ID. It needs to be saved before bounds can be added to it."
       );
       return;
     }
 
+    const location = this.selectedSpot()?.location();
+    if (!location) return;
+
     // TODO fix with mercator projection (this brakes at the poles)
     const dist = 0.0001;
-    const location: google.maps.LatLngLiteral = this.selectedSpot.location();
     let _paths: Array<Array<google.maps.LatLngLiteral>> = [
       [
         { lat: location.lat + dist, lng: location.lng + dist },
@@ -686,22 +702,27 @@ export class SpotMapComponent implements AfterViewInit {
         { lat: location.lat + dist, lng: location.lng - dist },
       ],
     ];
-    this.selectedSpot.paths = _paths;
+    this.selectedSpot.update((spot) => {
+      if (!spot) return spot;
+      spot.paths = _paths;
+      return spot;
+    });
   }
 
   getReferenceToLoadedSpotById(spotId: string): LoadedSpotReference | null {
     const allSpots = this.getAllLoadedSpots();
 
     // find the spot with no id
-    const spot: Spot = allSpots.find((spot) => {
+    const spot: Spot | undefined = allSpots.find((spot) => {
       return spot.id === spotId;
     });
 
     if (spot) {
-      const tile = spot?.tileCoordinates?.z16;
+      const tile = spot?.tileCoordinates?.z16!;
+
       const indexInTileArray = this.loadedSpots
         .get(getClusterTileKey(16, tile.x, tile.y))
-        .indexOf(spot);
+        ?.indexOf(spot)!;
 
       const loadedSpotRef: LoadedSpotReference = {
         spot: spot,
@@ -733,7 +754,7 @@ export class SpotMapComponent implements AfterViewInit {
     if (ref?.spot && ref.indexInTileArray >= 0 && ref.tile) {
       // The spot exists and should be updated
       // Update the spot
-      this.loadedSpots.get(getClusterTileKey(16, ref.tile.x, ref.tile.y))[
+      this.loadedSpots.get(getClusterTileKey(16, ref.tile.x, ref.tile.y))![
         ref.indexInTileArray
       ] = newSpot;
     } else {

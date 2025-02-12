@@ -97,9 +97,9 @@ import { MetaInfoService } from "../services/meta-info.service";
 export class MapPageComponent implements OnInit, AfterViewInit {
   @ViewChild("spotMap", { static: false }) spotMap: SpotMapComponent | null =
     null;
-  @ViewChild("bottomSheet") bottomSheet: BottomSheetComponent;
+  @ViewChild("bottomSheet") bottomSheet: BottomSheetComponent | undefined;
 
-  selectedSpot: Spot | LocalSpot = null;
+  selectedSpot: Spot | LocalSpot | null = null;
   isEditing: boolean = false;
   mapStyle: "roadmap" | "satellite" = "roadmap";
 
@@ -110,12 +110,12 @@ export class MapPageComponent implements OnInit, AfterViewInit {
   highlightedSpots: SpotPreviewData[] = [];
 
   spotSearchControl = new FormControl();
-  spotAndPlaceSearchResults$: BehaviorSubject<{
+  spotAndPlaceSearchResults$ = new BehaviorSubject<{
     places: google.maps.places.AutocompletePrediction[] | null;
     spots: SearchResponse<any> | null;
-  }> = new BehaviorSubject(null);
+  } | null>(null);
 
-  alainMode: boolean;
+  alainMode: boolean = false;
 
   isServer: boolean;
 
@@ -291,14 +291,16 @@ export class MapPageComponent implements OnInit, AfterViewInit {
       this.openGooglePlaceById(value.id);
     } else {
       this.loadSpotById(value.id as SpotId).then(() => {
-        this.spotMap.focusSpot(this.selectedSpot);
+        if (!this.selectedSpot) return;
+        this.spotMap?.focusSpot(this.selectedSpot);
       });
     }
   }
 
   openGooglePlaceById(id: string) {
     this.mapsService.getGooglePlaceById(id).then((place) => {
-      this.spotMap.focusBounds(place.geometry.viewport);
+      if (!place?.geometry?.viewport) return;
+      this.spotMap?.focusBounds(place.geometry.viewport);
     });
   }
 

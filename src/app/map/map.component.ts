@@ -77,6 +77,8 @@ export class MapComponent implements OnInit {
   // add math function to markup
   sqrt = Math.sqrt;
 
+  isDarkMode = input<boolean>(true); // should be false if mapStyle is roadmap and the dark map is used
+
   private _center: google.maps.LatLngLiteral | undefined;
   @Input() set center(coords: google.maps.LatLngLiteral) {
     this._center = coords;
@@ -98,7 +100,7 @@ export class MapComponent implements OnInit {
   }
   @Output() zoomChange = new EventEmitter<number>();
   get zoom() {
-    return this._zoom ?? 4;
+    return this._zoom;
   }
   setZoom(newZoom: number) {
     this.zoom = newZoom;
@@ -106,7 +108,8 @@ export class MapComponent implements OnInit {
   }
 
   getAndEmitChangedZoom() {
-    this._zoom = this.googleMap.getZoom();
+    if (!this.googleMap) return;
+    this._zoom = this.googleMap.getZoom()!;
     this.zoomChange.emit(this._zoom);
   }
 
@@ -122,7 +125,7 @@ export class MapComponent implements OnInit {
   @Input() spots: Spot[] = [];
   @Input() dots: SpotClusterDotSchema[] = [];
 
-  @Input() selectedSpot: Spot | LocalSpot = null;
+  @Input() selectedSpot: Spot | LocalSpot | null = null;
   @Input() isEditing: boolean = false;
   @Input() showGeolocation: boolean = false;
   @Input() markers: google.maps.LatLngLiteral[] = [];
@@ -136,7 +139,7 @@ export class MapComponent implements OnInit {
   } | null = null;
   @Input() minZoom: number = 4;
 
-  mapStyle: ModelSignal<string> = model("roadmap");
+  mapStyle = input<"roadmap" | "satellite">("roadmap");
 
   mapTypeId: Signal<google.maps.MapTypeId> = computed(() => {
     switch (this.mapStyle()) {
@@ -160,8 +163,6 @@ export class MapComponent implements OnInit {
     // }
   }
 
-  isDarkMode: boolean = true; // should be false if mapStyle is roadmap and the dark map is used
-
   ngOnInit() {
     this.mapsApiService.isApiLoaded$.subscribe((isLoaded) => {
       if (isLoaded) {
@@ -179,6 +180,8 @@ export class MapComponent implements OnInit {
     if (this.minZoom) {
       this.mapOptions.minZoom = this.minZoom;
     }
+
+    this.setZoom(this._zoom);
   }
 
   initMap(): void {
@@ -259,13 +262,10 @@ export class MapComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  geolocation$: BehaviorSubject<{
+  geolocation$ = new BehaviorSubject<{
     location: google.maps.LatLngLiteral;
     accuracy: number;
-  } | null> = new BehaviorSubject<{
-    location: google.maps.LatLngLiteral;
-    accuracy: number;
-  }>(null);
+  } | null>(null);
 
   //spotDotZoomRadii: number[] = Array<number>(16);
 
@@ -331,48 +331,43 @@ export class MapComponent implements OnInit {
     strokeWeight: 0,
   };
 
-  toggleMapStyle() {
-    if (this.mapStyle() === "roadmap") {
-      // if it is equal to roadmap, toggle to satellite
-      this.mapStyle.set("satellite");
-      this.setLightMode();
-    } else {
-      // otherwise toggle back to roadmap
-      this.mapStyle.set("roadmap");
-      this.setDarkMode();
-    }
-  }
-
-  setLightMode() {
-    this.isDarkMode = false;
-    //     this.heatmapOptions = this.heatmapLightOptions;
-    this.spotCircleOptions = this.spotCircleLightOptions;
-    this.spotPolygonOptions = this.spotPolygonLightOptions;
-    //     this.selectedSpotMarkerOptions = this.selectedSpotMarkerLightOptions;
-  }
-  setDarkMode() {
-    this.isDarkMode = true;
-    //     this.heatmapOptions = this.heatmapDarkOptions;
-    this.spotCircleOptions = this.spotCircleDarkOptions;
-    this.spotPolygonOptions = this.spotPolygonDarkOptions;
-    //     this.selectedSpotMarkerOptions = this.selectedSpotMarkerDarkOptions;
-  }
+  // convert options to computed signals
+  // setLightMode() {
+  //   this.isDarkMode = false;
+  //   //     this.heatmapOptions = this.heatmapLightOptions;
+  //   this.spotCircleOptions = this.spotCircleLightOptions;
+  //   this.spotPolygonOptions = this.spotPolygonLightOptions;
+  //   //     this.selectedSpotMarkerOptions = this.selectedSpotMarkerLightOptions;
+  // }
+  // setDarkMode() {
+  //   this.isDarkMode = true;
+  //   //     this.heatmapOptions = this.heatmapDarkOptions;
+  //   this.spotCircleOptions = this.spotCircleDarkOptions;
+  //   this.spotPolygonOptions = this.spotPolygonDarkOptions;
+  //   //     this.selectedSpotMarkerOptions = this.selectedSpotMarkerDarkOptions;
+  // }
 
   emitBoundsChanged() {
-    const bounds = this.googleMap.getBounds();
+    if (!this.googleMap) return;
+    const bounds = this.googleMap.getBounds()!;
     this.boundsChange.emit(bounds);
   }
 
   emitCenterChanged() {
-    const center = this.googleMap.getCenter();
+    if (!this.googleMap) return;
+    const center = this.googleMap.getCenter()!;
     this.centerChange.emit(center.toJSON());
   }
 
   fitBounds(bounds: google.maps.LatLngBounds) {
+    if (!this.googleMap) return;
+
     this.googleMap.fitBounds(bounds);
   }
 
   editingSpotPositionChanged(position: google.maps.LatLng) {
+    if (!this.selectedSpot) return;
+
     this.selectedSpot.location.set(position.toJSON());
   }
 
@@ -400,6 +395,8 @@ export class MapComponent implements OnInit {
     location: google.maps.LatLngLiteral | google.maps.LatLng,
     zoom: number = 17
   ) {
+    if (!this.googleMap) return;
+
     if (!location) {
       console.warn("No or invalid location provided to focus on", location);
       console.trace();
@@ -419,44 +416,44 @@ export class MapComponent implements OnInit {
     }
   }
 
-  private _getPolygonBySpotId(spotId: string): MapPolygon | undefined {
-    console.log(this.polygonElements.toArray());
-    console.log(this.polygons.toArray());
+  // private _getPolygonBySpotId(spotId: string): MapPolygon | undefined {
+  //   console.log(this.polygonElements?.toArray());
+  //   console.log(this.polygons?.toArray());
 
-    const elementRef = this.polygonElements.find(
-      (element) => element.nativeElement.id === "polygon-" + spotId
-    );
-    if (elementRef) {
-      const index = this.polygonElements.toArray().indexOf(elementRef);
-      return this.polygons.toArray()[index];
-    }
-    return undefined;
-  }
+  //   const elementRef = this.polygonElements.find(
+  //     (element) => element.nativeElement.id === "polygon-" + spotId
+  //   );
+  //   if (elementRef) {
+  //     const index = this.polygonElements.toArray().indexOf(elementRef);
+  //     return this.polygons.toArray()[index];
+  //   }
+  //   return undefined;
+  // }
 
-  public getPolygonPathForSpot(
-    spotId: string
-  ): google.maps.LatLngLiteral[][] | undefined {
-    let polygon = this._getPolygonBySpotId(spotId);
+  // public getPolygonPathForSpot(
+  //   spotId: string
+  // ): google.maps.LatLngLiteral[][] | undefined {
+  //   let polygon = this._getPolygonBySpotId(spotId);
 
-    if (polygon) {
-      const newPaths: google.maps.MVCArray<
-        google.maps.MVCArray<google.maps.LatLng>
-      > = polygon.getPaths();
-      console.log("new paths", newPaths);
+  //   if (polygon) {
+  //     const newPaths: google.maps.MVCArray<
+  //       google.maps.MVCArray<google.maps.LatLng>
+  //     > = polygon.getPaths();
+  //     console.log("new paths", newPaths);
 
-      // Convert LatLng[][] to LatLngLiteral[][]
-      let literalNewPaths: Array<Array<google.maps.LatLngLiteral>> = [];
-      literalNewPaths[0] = newPaths
-        .getAt(0)
-        .getArray()
-        .map((v, i, arr) => {
-          return { lat: v.lat(), lng: v.lng() };
-        });
+  //     // Convert LatLng[][] to LatLngLiteral[][]
+  //     let literalNewPaths: Array<Array<google.maps.LatLngLiteral>> = [];
+  //     literalNewPaths[0] = newPaths
+  //       .getAt(0)
+  //       .getArray()
+  //       .map((v, i, arr) => {
+  //         return { lat: v.lat(), lng: v.lng() };
+  //       });
 
-      return literalNewPaths;
-    } else {
-      console.error("No polygon found for spot with id: " + spotId);
-      return;
-    }
-  }
+  //     return literalNewPaths;
+  //   } else {
+  //     console.error("No polygon found for spot with id: " + spotId);
+  //     return;
+  //   }
+  // }
 }

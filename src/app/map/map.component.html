@@ -3,7 +3,7 @@
   #googleMap
   id="googleMap"
   [center]="center"
-  [zoom]="zoom"
+  [zoom]="_zoom"
   [options]="mapOptions"
   [mapTypeId]="mapTypeId()"
   (mapClick)="mapClick.emit()"

@@ -115,7 +115,7 @@
     }
 
     <!-- Spot Description -->
-    @if(spot.media() && spot.media().length > 0) {
+    <!-- @if(spot.media() && spot.media().length > 0) {
     <swiper-container
       class="spot-media-swiper"
       [navigation]="true"
@@ -123,11 +123,11 @@
     >
       @for(mediaObj of spot.media(); track mediaObj) {
       <swiper-slide
-        ><img ngSrc="{{ mediaObj.src }}" class="spot-img" />
+        ><img ngSrc="{{ mediaObj.src }}" class="spot-img" fill />
       </swiper-slide>
       }
     </swiper-container>
-    }
+    } -->
 
     <!-- Spot Description -->
     @if(spot.description()) {
