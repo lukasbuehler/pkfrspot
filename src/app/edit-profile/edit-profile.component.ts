@@ -60,7 +60,7 @@ export class EditProfileComponent implements OnInit {
   @Output("changes")
   changes: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  user: User.Class = null;
+  user: User.Class | null = null;
   // user properties
   displayName: string;
   biography: string;

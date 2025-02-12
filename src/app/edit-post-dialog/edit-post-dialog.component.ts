@@ -17,7 +17,7 @@ import {
 } from "@angular/material/dialog";
 
 import { Post } from "../../db/models/Post";
-import { Spot } from "../../db/models/Spot";
+import { Spot, SpotId } from "../../db/models/Spot";
 
 import {
   StorageService,
@@ -100,7 +100,7 @@ export class EditPostDialogComponent implements AfterViewInit {
 
   getValueFromEventTarget = getValueFromEventTarget;
 
-  uploadFile: File = null;
+  uploadFile: File | null = null;
 
   hasChanged = false;
 
@@ -110,7 +110,7 @@ export class EditPostDialogComponent implements AfterViewInit {
   postBody = "";
   postImageSrc = "";
   postLocation = "";
-  postSpot: Spot = null;
+  postSpot: Spot | null = null;
 
   // If this is false, then link is selected
   isUploadSelected = true;
@@ -183,7 +183,7 @@ export class EditPostDialogComponent implements AfterViewInit {
     }
   }
 
-  onUploadMediaSelect(file) {
+  onUploadMediaSelect(file: File) {
     this.uploadFile = file;
   }
 
@@ -209,8 +209,8 @@ export class EditPostDialogComponent implements AfterViewInit {
 
         return {
           title: this.postTitle,
-          body: this.postBody || "",
-          spot: this.postSpot || null,
+          body: this.postBody,
+          spot: this.postSpot ?? undefined,
         };
       }
 
@@ -223,9 +223,9 @@ export class EditPostDialogComponent implements AfterViewInit {
 
     return {
       title: this.postTitle,
-      body: this.postBody || "",
-      spot: this.postSpot || null,
-      mediaType: mediaType,
+      body: this.postBody,
+      spot: this.postSpot ?? undefined,
+      mediaType: mediaType ?? undefined,
     };
   }
 
@@ -246,7 +246,7 @@ export class EditPostDialogComponent implements AfterViewInit {
     this.postSpot = null;
   }
 
-  getSpotNameFromId = (spotId) => {
+  getSpotNameFromId = (spotId: SpotId) => {
     if (this.filteredSpots && this.filteredSpots.length > 0) {
       let findSpot = this.filteredSpots.find((spot) => {
         return spot.id === spotId;

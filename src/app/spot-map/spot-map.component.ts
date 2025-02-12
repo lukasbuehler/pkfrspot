@@ -1,8 +1,10 @@
 import {
   AfterViewInit,
   Component,
+  computed,
   effect,
   EventEmitter,
+  inject,
   Inject,
   input,
   Input,
@@ -10,8 +12,10 @@ import {
   LOCALE_ID,
   model,
   ModelSignal,
+  OnChanges,
   Output,
   PLATFORM_ID,
+  Signal,
   ViewChild,
 } from "@angular/core";
 import { LocalSpot, Spot, SpotId } from "../../db/models/Spot";
@@ -25,6 +29,7 @@ import { MapComponent } from "../map/map.component";
 import {
   ClusterTileKey,
   getClusterTileKey,
+  getDataFromClusterTileKey,
   SpotClusterDotSchema,
   SpotClusterTileSchema,
 } from "../../db/schemas/SpotClusterTile";
@@ -34,6 +39,7 @@ import { isPlatformServer } from "@angular/common";
 import { SpotsService } from "../services/firebase/firestore/spots.service";
 import { LocaleCode } from "../../db/models/Interfaces";
 import { MarkerSchema } from "../marker/marker.component";
+import { OsmDataService } from "../services/osm-data.service";
 
 /**
  * This interface is used to reference a spot in the loaded spots array.
@@ -55,6 +61,8 @@ interface LoadedSpotReference {
 export class SpotMapComponent implements AfterViewInit {
   @ViewChild("map") map: MapComponent | undefined;
 
+  osmDataService = inject(OsmDataService);
+
   selectedSpot = model<Spot | LocalSpot | null>(null); // input and output signal
   isEditing = model<boolean>(false);
   mapStyle = model<"roadmap" | "satellite">("roadmap");
@@ -62,6 +70,8 @@ export class SpotMapComponent implements AfterViewInit {
   selectedMarker = input<google.maps.LatLngLiteral | null>(null);
   focusZoom = input<number>(17);
   isClickable = input<boolean>(true);
+  showWater = input<boolean>(false);
+  showToilets = input<boolean>(false);
 
   @Input() showGeolocation: boolean = true;
   @Input() showSatelliteToggle: boolean = false;
@@ -93,6 +103,36 @@ export class SpotMapComponent implements AfterViewInit {
   loadedSpots: Map<ClusterTileKey, Spot[]> = new Map<ClusterTileKey, Spot[]>();
   visibleSpots: Spot[] = [];
 
+  // markers for water and toilets
+  loadedInputMarkers: Signal<Map<ClusterTileKey, MarkerSchema[]>> = computed(
+    () => {
+      const map = new Map<ClusterTileKey, MarkerSchema[]>();
+
+      if (this.markers.length > 0) {
+        this.markers().forEach((marker) => {
+          const tile = MapHelpers.getTileCoordinatesForLocationAndZoom(
+            marker.location,
+            16
+          );
+          const key = getClusterTileKey(16, tile.x, tile.y);
+          if (map.has(key)) {
+            map.get(key)?.push(marker);
+          } else {
+            map.set(key, [marker]);
+          }
+        });
+      }
+
+      return map;
+    }
+  );
+  loadedAmenityMarkers: Map<ClusterTileKey, MarkerSchema[]> = new Map<
+    ClusterTileKey,
+    MarkerSchema[]
+  >();
+  visibleAmenityMarkers: MarkerSchema[] = [];
+  visibleMarkers: MarkerSchema[] = [];
+
   loadedClusterTiles = new Map<ClusterTileKey, SpotClusterTileSchema>();
   hightlightedSpots: SpotPreviewData[] = [];
   visibleDots: SpotClusterDotSchema[] = [];
@@ -109,7 +149,6 @@ export class SpotMapComponent implements AfterViewInit {
 
   constructor(
     @Inject(LOCALE_ID) public locale: LocaleCode,
-    private route: ActivatedRoute,
     private _spotsService: SpotsService,
     private authService: AuthenticationService,
     private mapsAPIService: MapsApiService,
@@ -253,12 +292,15 @@ export class SpotMapComponent implements AfterViewInit {
       this.visibleDots = [];
       // TODO what happens to the highlighted spots? they just stay the same until zoom is 16 or smaller again
 
-      this.updateVisibleSpots(visibleTiles);
+      this.updateVisibleSpotsAndMarkers(visibleTiles);
 
       const tilesToLoad: Set<ClusterTileKey> =
         this.getUnloadedVisibleZ16Tiles(visibleTiles);
 
       this.loadSpotsForTiles(tilesToLoad);
+
+      this.loadAmeinitesForTiles(visibleTiles);
+      this.loadToiletsForTiles(visibleTiles);
     } else {
       // show clustered dots instead of spots
 
@@ -351,20 +393,40 @@ export class SpotMapComponent implements AfterViewInit {
    * @param northEastLiteral
    * @param southWestLiteral
    */
-  updateVisibleSpots(visibleTiles: Set<ClusterTileKey> = this._visibleTiles) {
-    console.log("Updating visible spots");
+  updateVisibleSpotsAndMarkers(
+    visibleTiles: Set<ClusterTileKey> = this._visibleTiles
+  ) {
+    // console.log("Updating visible spots");
 
     // clear visible spots
     this.visibleSpots = [];
+
+    // clear visible markers
+    this.visibleMarkers = [];
 
     visibleTiles.forEach((tileKey) => {
       const spots = this.loadedSpots.get(tileKey);
       if (spots && spots.length > 0) {
         this.visibleSpots.push(...spots);
       }
+
+      if (this.mapZoom >= 18) {
+        const tileData16 = getDataFromClusterTileKey(tileKey);
+        const tile14 = getClusterTileKey(
+          14,
+          tileData16.x >> 2,
+          tileData16.y >> 2
+        );
+        const amenityMarkers = this.loadedAmenityMarkers.get(tile14);
+        // console.log("Amenity markers", amenityMarkers);
+        if (amenityMarkers && amenityMarkers.length > 0) {
+          this.visibleMarkers.push(...amenityMarkers);
+          // console.log("Visible markers", this.visibleMarkers);
+        }
+      }
     });
     this.visibleSpotsChange.emit(this.visibleSpots);
-    console.log("Visible spots updated");
+    // console.log("Visible spots updated");
 
     // If the selected spot is visible reference the instance from the visible spots
     if (this.selectedSpot) {
@@ -617,7 +679,7 @@ export class SpotMapComponent implements AfterViewInit {
                 console.warn("aahhh");
               }
             });
-            this.updateVisibleSpots();
+            this.updateVisibleSpotsAndMarkers();
           }
         },
         error: (error) => {
@@ -642,7 +704,7 @@ export class SpotMapComponent implements AfterViewInit {
           });
 
           this.updateVisibleDotsAndHighlightedSpots();
-          if (this.mapZoom === 16) this.updateVisibleSpots();
+          if (this.mapZoom === 16) this.updateVisibleSpotsAndMarkers();
         }
       },
       error: (error) => {
@@ -650,6 +712,79 @@ export class SpotMapComponent implements AfterViewInit {
       },
     });
   }
+
+  loadAmeinitesForTiles(tiles16: Set<ClusterTileKey>) {
+    if (tiles16.size === 0) return;
+
+    // make 12 tiles from the 16 tiles
+    const tiles = new Set<ClusterTileKey>();
+    tiles16.forEach((tile16) => {
+      const { zoom, x, y } = getDataFromClusterTileKey(tile16);
+      const tile14 = getClusterTileKey(14, x >> 2, y >> 2);
+      tiles.add(tile14);
+    });
+
+    // add an empty array for the tiles that water markers will be loaded for
+    tiles.forEach((tileKey) => {
+      if (!this.loadedAmenityMarkers.has(tileKey)) {
+        this.loadedAmenityMarkers.set(tileKey, []);
+
+        // get the bounds for the tile
+        const { zoom, x, y } = getDataFromClusterTileKey(tileKey);
+        const bounds = MapHelpers.getBoundsForTile(zoom, x, y);
+
+        // load the water markers and add them
+        this.osmDataService.getDrinkingWaterAndToilets(bounds).subscribe({
+          next: (data) => {
+            const markers = data.elements
+              .map((element) => {
+                if (element.tags.amenity === "drinking_water") {
+                  const marker: MarkerSchema = {
+                    location: {
+                      lat: element.lat,
+                      lng: element.lon,
+                    },
+                    icon: "water_drop", // local_drink
+                    name:
+                      element.tags.name +
+                      (element.tags.operator
+                        ? ` (${element.tags.operator})`
+                        : ""),
+                    color: "primary",
+                  };
+                  return marker;
+                } else if (element.tags.amenity === "toilets") {
+                  const marker: MarkerSchema = {
+                    location: {
+                      lat: element.lat,
+                      lng: element.lon,
+                    },
+                    icon: "wc",
+                    name:
+                      element.tags.name +
+                      (element.tags.operator
+                        ? ` (${element.tags.operator})`
+                        : ""),
+                    color: "primary",
+                  };
+                  return marker;
+                }
+              })
+              .filter((marker) => marker !== undefined);
+
+            // console.log("Amenity markers", markers);
+            this.loadedAmenityMarkers.set(tileKey, markers);
+            this.updateVisibleSpotsAndMarkers();
+          },
+          error: (error) => {
+            console.error(error);
+          },
+        });
+      }
+    });
+  }
+
+  loadToiletsForTiles(tiles: Set<ClusterTileKey>) {}
 
   spotMarkerMoved(event: { coords: google.maps.LatLngLiteral }) {
     if (this.selectedSpot) {
@@ -778,7 +913,7 @@ export class SpotMapComponent implements AfterViewInit {
       this.loadedSpots.set(getClusterTileKey(16, tile.x, tile.y), spots);
     }
     // update the map to show the new spot on the loaded spots array.
-    this.updateVisibleSpots();
+    this.updateVisibleSpotsAndMarkers();
   }
 
   /**

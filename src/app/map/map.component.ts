@@ -15,6 +15,7 @@ import {
   Signal,
   model,
   ModelSignal,
+  OnChanges,
 } from "@angular/core";
 import { LocalSpot, Spot, SpotId } from "../../db/models/Spot";
 import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
@@ -68,7 +69,7 @@ import { MarkerComponent, MarkerSchema } from "../marker/marker.component";
     ]),
   ],
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnChanges {
   @ViewChild("googleMap") googleMap: GoogleMap | undefined;
   @ViewChildren(MapPolygon) polygons: QueryList<MapPolygon> | undefined;
   @ViewChildren(MapPolygon, { read: ElementRef })
@@ -181,8 +182,10 @@ export class MapComponent implements OnInit {
     if (this.minZoom) {
       this.mapOptions.minZoom = this.minZoom;
     }
+  }
 
-    this.setZoom(this._zoom);
+  ngOnChanges() {
+    // console.log("markers in map", this.markers());
   }
 
   initMap(): void {

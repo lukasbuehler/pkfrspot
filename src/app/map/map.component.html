@@ -71,7 +71,7 @@
     @fadeInOut
     #selectedSpotMarkerNode
     id="selectedSpotMarkerNode"
-    [icon]="selectedSpot.isIconic ? 'star' : 'zoom_in_map'"
+    [icon]="selectedSpot.isIconic ? 'star' : 'trip_origin'"
     [isIconic]="selectedSpot.isIconic"
   >
   </app-marker>
@@ -145,7 +145,7 @@
   }
 
   <!-- Additional Markers -->
-  @for(marker of markers(); track marker) {
+  @for(marker of markers(); track $index) {
   <map-advanced-marker
     [position]="marker.location"
     [content]="markerComp.elementRef.nativeElement"

@@ -3,6 +3,29 @@ import { SpotSchema } from "../db/schemas/SpotSchema";
 export namespace MapHelpers {
   const TILE_SIZE = 256;
 
+  export function getBoundsForTile(
+    zoom: number,
+    x: number,
+    y: number
+  ): google.maps.LatLngBoundsLiteral {
+    const scale = 1 << zoom;
+    let southWest = inverseMercatorProjection(
+      (x * TILE_SIZE) / scale,
+      ((y + 1) * TILE_SIZE) / scale
+    );
+    let northEast = inverseMercatorProjection(
+      ((x + 1) * TILE_SIZE) / scale,
+      (y * TILE_SIZE) / scale
+    );
+
+    return {
+      south: southWest.lat,
+      west: southWest.lng,
+      north: northEast.lat,
+      east: northEast.lng,
+    };
+  }
+
   export function mercatorProjection(latLng: google.maps.LatLngLiteral): {
     x: number;
     y: number;
@@ -16,6 +39,22 @@ export namespace MapHelpers {
     return {
       x: TILE_SIZE * (0.5 + latLng.lng / 360),
       y: TILE_SIZE * (0.5 - Math.log((1 + siny) / (1 - siny)) / (4 * Math.PI)),
+    };
+  }
+
+  export function inverseMercatorProjection(
+    x: number,
+    y: number
+  ): google.maps.LatLngLiteral {
+    var lng = (x / TILE_SIZE - 0.5) * 360;
+
+    var lat =
+      (Math.asin(Math.tanh((0.5 - y / TILE_SIZE) * (2 * Math.PI))) * 180) /
+      Math.PI;
+
+    return {
+      lat: lat,
+      lng: lng,
     };
   }
 
