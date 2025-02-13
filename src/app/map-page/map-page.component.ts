@@ -7,6 +7,7 @@ import {
   PLATFORM_ID,
   LOCALE_ID,
   OnDestroy,
+  signal,
 } from "@angular/core";
 import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
 import { LocalSpot, Spot, SpotId } from "../../db/models/Spot";
@@ -63,6 +64,7 @@ import { MatDividerModule } from "@angular/material/divider";
 import { LocaleCode, SpotSlug } from "../../db/models/Interfaces";
 import { SlugsService } from "../services/firebase/firestore/slugs.service";
 import { MetaInfoService } from "../services/meta-info.service";
+import { MatChipsModule } from "@angular/material/chips";
 
 @Component({
   selector: "app-map-page",
@@ -90,6 +92,7 @@ import { MetaInfoService } from "../services/meta-info.service";
     MatIcon,
     MatInput,
     FormsModule,
+    MatChipsModule,
     MatAutocompleteTrigger,
     ReactiveFormsModule,
     MatAutocomplete,
@@ -127,6 +130,8 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
   alainMode: boolean = false;
 
   isServer: boolean;
+
+  showAmenities = signal<boolean>(false);
 
   _routerSubscription?: Subscription;
 

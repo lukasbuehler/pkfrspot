@@ -208,19 +208,19 @@ app-bottom-sheet {
   }
 }
 
-#mapStyleFab {
+.mini-fabs {
+  display: flex;
+  flex-direction: column;
   position: absolute;
   z-index: 1;
-
-  right: 28px;
-  top: 95px;
-}
-
-#geolocationFab {
-  position: absolute;
-  z-index: 1;
-  right: 28px;
-  top: 150px;
+  right: 20px;
+  gap: 10px;
+  @media (max-width: 767px) {
+    top: 100px;
+  }
+  @media (min-width: 768px) {
+    top: 20px;
+  }
 }
 
 mat-chip-listbox.search-option-chips {

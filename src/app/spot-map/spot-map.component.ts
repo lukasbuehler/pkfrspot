@@ -70,8 +70,7 @@ export class SpotMapComponent implements AfterViewInit {
   selectedMarker = input<google.maps.LatLngLiteral | null>(null);
   focusZoom = input<number>(17);
   isClickable = input<boolean>(true);
-  showWater = input<boolean>(false);
-  showToilets = input<boolean>(false);
+  showAmenities = input<boolean>(false);
 
   @Input() showGeolocation: boolean = true;
   @Input() showSatelliteToggle: boolean = false;
@@ -410,7 +409,7 @@ export class SpotMapComponent implements AfterViewInit {
         this.visibleSpots.push(...spots);
       }
 
-      if (this.mapZoom >= 18) {
+      if (this.showAmenities()) {
         const tileData16 = getDataFromClusterTileKey(tileKey);
         const tile14 = getClusterTileKey(
           14,
@@ -744,13 +743,14 @@ export class SpotMapComponent implements AfterViewInit {
                       lat: element.lat,
                       lng: element.lon,
                     },
-                    icon: "water_drop", // local_drink
+                    icon: "local_drink", // water_drop
                     name:
                       element.tags.name +
                       (element.tags.operator
                         ? ` (${element.tags.operator})`
                         : ""),
-                    color: "primary",
+                    color:
+                      element.tags.fee === "yes" ? "tertiary" : "secondary",
                   };
                   return marker;
                 } else if (element.tags.amenity === "toilets") {
@@ -765,7 +765,28 @@ export class SpotMapComponent implements AfterViewInit {
                       (element.tags.operator
                         ? ` (${element.tags.operator})`
                         : ""),
-                    color: "primary",
+                    color:
+                      element.tags.drinking_water === "yes"
+                        ? "secondary"
+                        : "tertiary",
+                  };
+                  return marker;
+                } else if (element.tags.amenity === "fountain") {
+                  const marker: MarkerSchema = {
+                    location: {
+                      lat: element.lat,
+                      lng: element.lon,
+                    },
+                    icon: "water_drop",
+                    name:
+                      element.tags.name +
+                      (element.tags.operator
+                        ? ` (${element.tags.operator})`
+                        : ""),
+                    color:
+                      element.tags.drinking_water === "yes"
+                        ? "secondary"
+                        : "tertiary",
                   };
                   return marker;
                 }

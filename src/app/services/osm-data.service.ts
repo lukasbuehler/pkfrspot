@@ -10,6 +10,8 @@ export interface NodeTags {
   charge?: string;
   bottle?: "yes" | "no";
   opening_hours?: string;
+  level?: number;
+  drinking_water?: "yes" | "no";
 }
 
 export interface OverpassResponse {
@@ -83,7 +85,7 @@ export class OsmDataService {
     const query = `
       [out:json];
       (
-      node["amenity"~"(toilets|drinking_water)"](${bboxStr});
+      node["amenity"~"(toilets|drinking_water|fountain)"](${bboxStr});
       );
       out body;
     `;

@@ -8,6 +8,7 @@
     (selectedSpotChange)="selectedSpot = $event; updateMapURL()"
     [(isEditing)]="isEditing"
     [(mapStyle)]="mapStyle"
+    [showAmenities]="showAmenities()"
     (visibleSpotsChange)="setVisibleSpots($event, spotMap.map.center)"
     (hightlightedSpotsChange)="highlightedSpots = $event"
     (hasGeolocationChange)="askedGeoPermission = true; hasGeolocation = $event"
@@ -189,35 +190,50 @@
   </mat-chip-listbox>
   } -->
 
-  <button
-    mat-mini-fab
-    #mapStyleFab
-    id="mapStyleFab"
-    (click)="spotMap.toggleMapStyle()"
-    color="primary"
-  >
-    <mat-icon>
-      {{ mapStyle === "roadmap" ? "terrain" : "map" }}
-    </mat-icon>
-  </button>
+  <div class="mini-fabs">
+    <button
+      mat-mini-fab
+      #mapStyleFab
+      id="mapStyleFab"
+      (click)="spotMap.toggleMapStyle()"
+      color="primary"
+    >
+      <mat-icon>
+        {{ mapStyle === "roadmap" ? "terrain" : "map" }}
+      </mat-icon>
+    </button>
 
-  <button
-    mat-mini-fab
-    #geolocationFab
-    id="geolocationFab"
-    color="primary"
-    (click)="spotMap.focusOnGeolocation()"
-  >
-    <mat-icon>
-      {{
-        askedGeoPermission
-          ? hasGeolocation
-            ? "my_location"
-            : "location_disabled"
-          : "location_searching"
-      }}
-    </mat-icon>
-  </button>
+    <button
+      mat-mini-fab
+      #geolocationFab
+      id="geolocationFab"
+      color="primary"
+      (click)="spotMap.focusOnGeolocation()"
+    >
+      <mat-icon>
+        {{
+          askedGeoPermission
+            ? hasGeolocation
+              ? "my_location"
+              : "location_disabled"
+            : "location_searching"
+        }}
+      </mat-icon>
+    </button>
+
+    <button
+      mat-mini-fab
+      #amenitiesFab
+      id="amenitiesFab"
+      color="primary"
+      (click)="showAmenities.set(!showAmenities())"
+      [disabled]="spotMap?.mapZoom < 16"
+    >
+      <mat-icon>
+        {{ showAmenities() ? "location_off" : "location_on" }}
+      </mat-icon>
+    </button>
+  </div>
 
   @if(authService.isSignedIn && !isEditing) {
   <!-- Add / import spots speed dial-->
