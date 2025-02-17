@@ -14,20 +14,30 @@
     </unit>
     <unit id="3733695846697223562">
       <segment state="initial">
-        <source> Discover spots and fellow athletes, plan training sessions with your friends and share achievements and memories with them and the world. </source>
-        <target> Découvrez des spots et des athlètes, planifiez des séances d’entraînement avec vos amis et partagez vos réussites et souvenirs avec eux et le monde entier. </target>
+        <source> Discover spots and fellow athletes, plan training sessions with your friends and
+          share achievements and memories with them and the world. </source>
+        <target> Découvrez des spots et des athlètes, planifiez des séances d’entraînement avec vos
+          amis et partagez vos réussites et souvenirs avec eux et le monde entier. </target>
       </segment>
     </unit>
     <unit id="7411379953853971507">
       <segment state="initial">
-        <source> This project is Open-Source! Our code is licensed under the <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT License</pc>. </source>
-        <target> Ce projet est open-source ! Notre code est sous licence <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">MIT License</pc>. </target>
+        <source> This project is Open-Source! Our code is licensed under the <pc id="0"
+            equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;"
+            dispEnd="&lt;/b&gt;">MIT License</pc>. </source>
+        <target> Ce projet est open-source ! Notre code est sous licence <pc id="0"
+            equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;"
+            dispEnd="&lt;/b&gt;">MIT License</pc>. </target>
       </segment>
     </unit>
     <unit id="1563251428514246752">
       <segment state="initial">
-        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">receipt_long</pc> View License </source>
-        <target><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">receipt_long</pc> Voir la licence </target>
+        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
+            type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">receipt_long</pc>
+          View License </source>
+        <target><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
+            type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">receipt_long</pc>
+          Voir la licence </target>
       </segment>
     </unit>
     <unit id="6511882108366913037">
@@ -56,14 +66,21 @@
     </unit>
     <unit id="8062277427231117545">
       <segment state="initial">
-        <source> Join our community of Parkour and Freerunning enthusiasts! Contribute your ideas, report bugs, and provide feedback to help us improve this platform together! </source>
-        <target> Rejoignez notre communauté d’enthousiastes de parkour et freerunning ! Apportez vos idées, signalez des bugs et donnez votre avis pour nous aider à améliorer cette plateforme ensemble ! </target>
+        <source> Join our community of Parkour and Freerunning enthusiasts! Contribute your ideas,
+          report bugs, and provide feedback to help us improve this platform together! </source>
+        <target> Rejoignez notre communauté d’enthousiastes de parkour et freerunning ! Apportez vos
+          idées, signalez des bugs et donnez votre avis pour nous aider à améliorer cette plateforme
+          ensemble ! </target>
       </segment>
     </unit>
     <unit id="5825310972408482968">
       <segment state="initial">
-        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">sports_esports</pc> Discord </source>
-        <target><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON" type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">sports_esports</pc> Discord </target>
+        <source><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
+            type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">sports_esports</pc>
+          Discord </source>
+        <target><pc id="0" equivStart="START_TAG_MAT_ICON" equivEnd="CLOSE_TAG_MAT_ICON"
+            type="other" dispStart="&lt;mat-icon&gt;" dispEnd="&lt;/mat-icon&gt;">sports_esports</pc>
+          Discord </target>
       </segment>
     </unit>
     <unit id="spot_map_label">
@@ -118,8 +135,12 @@
         <note category="meaning">Open in maps button</note>
       </notes>
       <segment state="initial">
-        <source> Open in <ph id="0" equiv="INTERPOLATION" disp="{{ isUsingAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}"/> </source>
-        <target> Ouvrir dans <ph id="0" equiv="INTERPOLATION" disp="{{ isUsingAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}"/> </target>
+        <source> Open in <ph id="0" equiv="INTERPOLATION"
+            disp="{{ isAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}" />
+        </source>
+        <target> Ouvrir dans <ph id="0" equiv="INTERPOLATION"
+            disp="{{ isAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}" />
+        </target>
       </segment>
     </unit>
     <unit id="2066444621746625793">
@@ -240,8 +261,10 @@
     </unit>
     <unit id="2123282629077022668">
       <segment state="initial">
-        <source> You can edit your public profile here. The information on your public profile can be seen by everyone, even unauthenticated visitors. </source>
-        <target> Vous pouvez modifier votre profil public ici. Les informations de votre profil public peuvent être vues par tout le monde, même par les visiteurs non authentifiés. </target>
+        <source> You can edit your public profile here. The information on your public profile can
+          be seen by everyone, even unauthenticated visitors. </source>
+        <target> Vous pouvez modifier votre profil public ici. Les informations de votre profil
+          public peuvent être vues par tout le monde, même par les visiteurs non authentifiés. </target>
       </segment>
     </unit>
     <unit id="7008130086784868968">
@@ -252,8 +275,10 @@
     </unit>
     <unit id="4248798592595704576">
       <segment state="initial">
-        <source> Your login information. Your E-mail address here is used for your login. You can add the same E-mail address or a different one to your contact information. </source>
-        <target> Vos informations de connexion. L’adresse e-mail indiquée ici est utilisée pour la connexion. Vous pouvez ajouter la même adresse ou une autre à vos informations de contact. </target>
+        <source> Your login information. Your E-mail address here is used for your login. You can
+          add the same E-mail address or a different one to your contact information. </source>
+        <target> Vos informations de connexion. L’adresse e-mail indiquée ici est utilisée pour la
+          connexion. Vous pouvez ajouter la même adresse ou une autre à vos informations de contact. </target>
       </segment>
     </unit>
     <unit id="6815507474406960450">
@@ -414,8 +439,10 @@
     </unit>
     <unit id="906351267490856003">
       <segment state="initial">
-        <source> Don&apos;t have an account yet? Simply sign in with your Google account or sign up below. </source>
-        <target> Vous n’avez pas encore de compte ? Connectez-vous simplement avec votre compte Google ou inscrivez-vous ci-dessous. </target>
+        <source> Don&apos;t have an account yet? Simply sign in with your Google account or sign up
+          below. </source>
+        <target> Vous n’avez pas encore de compte ? Connectez-vous simplement avec votre compte
+          Google ou inscrivez-vous ci-dessous. </target>
       </segment>
     </unit>
     <unit id="4815152070613902062">
@@ -439,7 +466,8 @@
     <unit id="2978266456005156211">
       <segment state="initial">
         <source>The E-mail address and password do not match for any existing user.</source>
-        <target>Aucun utilisateur ne correspond à cette combinaison d’adresse e-mail et de mot de passe.</target>
+        <target>Aucun utilisateur ne correspond à cette combinaison d’adresse e-mail et de mot de
+          passe.</target>
       </segment>
     </unit>
     <unit id="7733953409417762446">
@@ -510,8 +538,16 @@
     </unit>
     <unit id="3289630490580318568">
       <segment state="initial">
-        <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Privacy Policy</pc> and agree to both.</source>
-        <target>J’ai lu et compris les <pc id="0" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Conditions d’utilisation</pc> et la <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">politique de confidentialité</pc>, et j’y adhère.</target>
+        <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT"
+            equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms
+          of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT"
+            type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Privacy Policy</pc> and agree to
+          both.</source>
+        <target>J’ai lu et compris les <pc id="0" equivStart="START_BOLD_TEXT"
+            equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Conditions
+          d’utilisation</pc> et la <pc id="1" equivStart="START_BOLD_TEXT"
+            equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">politique
+          de confidentialité</pc>, et j’y adhère.</target>
       </segment>
     </unit>
     <unit id="149974019994124409">
@@ -580,8 +616,10 @@
     </unit>
     <unit id="5176788475731011723">
       <segment state="initial">
-        <source>This spot was reported as &quot;<ph id="0" equiv="INTERPOLATION" disp="{{ report.reason }}"/>&quot;</source>
-        <target>Ce spot a été signalé comme &quot;<ph id="0" equiv="INTERPOLATION" disp="{{ report.reason }}"/>&quot;</target>
+        <source>This spot was reported as &quot;<ph id="0" equiv="INTERPOLATION"
+            disp="{{ report.reason }}" />&quot;</source>
+        <target>Ce spot a été signalé comme &quot;<ph id="0" equiv="INTERPOLATION"
+            disp="{{ report.reason }}" />&quot;</target>
       </segment>
     </unit>
     <unit id="6807040359477339777">
@@ -626,8 +664,10 @@
     </unit>
     <unit id="6024008212258429928">
       <segment state="initial">
-        <source>Report Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ data.spot?.name }}"/>&apos;</source>
-        <target>Signaler le spot « <ph id="0" equiv="INTERPOLATION" disp="{{ data.spot?.name }}"/>  »</target>
+        <source>Report Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ data.spot?.name }}" />
+          &apos;</source>
+        <target>Signaler le spot « <ph id="0" equiv="INTERPOLATION" disp="{{ data.spot?.name }}" />
+           »</target>
       </segment>
     </unit>
     <unit id="8425796083769561052">
@@ -680,8 +720,10 @@
     </unit>
     <unit id="4411046525037051458">
       <segment state="initial">
-        <source> Note: Spot reports are public and will be displayed on the spot itself together with your profile and user name. </source>
-        <target> Remarque : Les signalements de spots sont publics et seront affichés sur le spot lui-même, avec votre profil et nom d’utilisateur. </target>
+        <source> Note: Spot reports are public and will be displayed on the spot itself together
+          with your profile and user name. </source>
+        <target> Remarque : Les signalements de spots sont publics et seront affichés sur le spot
+          lui-même, avec votre profil et nom d’utilisateur. </target>
       </segment>
     </unit>
     <unit id="2330577642930707695">
@@ -779,7 +821,8 @@
     </unit>
     <unit id="spot.locality.pretext">
       <notes>
-        <note category="description">The text before the localized location of the spot. E.g. Spot in Wiedikon, Zurich, CH</note>
+        <note category="description">The text before the localized location of the spot. E.g. Spot
+          in Wiedikon, Zurich, CH</note>
       </notes>
       <segment state="initial">
         <source>Spot in </source>
@@ -806,8 +849,10 @@
         <note category="description">The text in the spot list panel if no spots are found/displayed</note>
       </notes>
       <segment state="initial">
-        <source> There are no highlighted spots for this area, zoom in on dots in the map to discover other spots. </source>
-        <target> Il n’y a aucun point fort pour cette région ; zoomez sur les points de la carte pour découvrir d’autres spots. </target>
+        <source> There are no highlighted spots for this area, zoom in on dots in the map to
+          discover other spots. </source>
+        <target> Il n’y a aucun point fort pour cette région ; zoomez sur les points de la carte
+          pour découvrir d’autres spots. </target>
       </segment>
     </unit>
     <unit id="lang_btn_label">
@@ -854,8 +899,10 @@
     </unit>
     <unit id="9074160907730350759">
       <segment state="initial">
-        <source>Review Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}"/>&apos;</source>
-        <target>Évaluer le spot « <ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}"/>  »</target>
+        <source>Review Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ review.spot.name }}" />
+          &apos;</source>
+        <target>Évaluer le spot « <ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}" />
+           »</target>
       </segment>
     </unit>
     <unit id="6435282697411612190">
@@ -869,14 +916,20 @@
         <note category="meaning">review button label</note>
       </notes>
       <segment state="initial">
-        <source> <ph id="0" equiv="INTERPOLATION" disp="{{ isUpdate ? &quot;Update&quot; : &quot;&quot; }}"/> Review </source>
-        <target> <ph id="0" equiv="INTERPOLATION" disp="{{ isUpdate ? &quot;Mettre à jour&quot; : &quot;&quot; }}"/> Évaluation </target>
+        <source>
+          <ph id="0" equiv="INTERPOLATION" disp="{{ isUpdate ? &quot;Update&quot; : &quot;&quot; }}" />
+          Review </source>
+        <target>
+          <ph id="0" equiv="INTERPOLATION"
+            disp="{{ isUpdate ? &quot;Mettre à jour&quot; : &quot;&quot; }}" /> Évaluation </target>
       </segment>
     </unit>
     <unit id="1115951775217164684">
       <segment state="initial">
-        <source>{VAR_PLURAL, plural, =0 {no reviews} =1 {1 review} other {<ph id="0" equiv="INTERPOLATION"/> reviews}}</source>
-        <target>{VAR_PLURAL, plural, =0 {Aucun avis} =1 {1 avis} other {<ph id="0" equiv="INTERPOLATION"/> avis}}</target>
+        <source>{VAR_PLURAL, plural, =0 {no reviews} =1 {1 review} other {<ph id="0"
+            equiv="INTERPOLATION" /> reviews}}</source>
+        <target>{VAR_PLURAL, plural, =0 {Aucun avis} =1 {1 avis} other {<ph id="0"
+            equiv="INTERPOLATION" /> avis}}</target>
       </segment>
     </unit>
     <unit id="address_title">
@@ -893,12 +946,6 @@
       <segment state="initial">
         <source>Partners</source>
         <target>Partenaires</target>
-      </segment>
-    </unit>
-    <unit id="5729418620241283277">
-      <segment state="initial">
-        <source>Events</source>
-        <target>Événements</target>
       </segment>
     </unit>
     <unit id="8151017381798767627">
@@ -957,20 +1004,48 @@
     </unit>
     <unit id="welcomeDialogButtonInfo">
       <segment state="initial">
-        <source> By clicking &quot;Agree and continue&quot;, you accept our <pc id="0" equivStart="START_LINK" equivEnd="CLOSE_LINK" type="link" dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">Terms of Service</pc> and <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK" type="link" dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;">Privacy Policy</pc>. </source>
-        <target> En continuant, vous acceptez nos <pc id="0" equivStart="START_LINK" equivEnd="CLOSE_LINK" type="link" dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">conditions d&apos;utilisation</pc> et notre <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK" type="link" dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;">politique de confidentialité</pc>. </target>
-      </segment>
-    </unit>
-    <unit id="3148120434799119252">
-      <segment state="initial">
-        <source>Challenges</source>
-        <target>Challenges</target>
+        <source> By clicking &quot;Agree and continue&quot;, you accept our <pc id="0"
+            equivStart="START_LINK" equivEnd="CLOSE_LINK" type="link"
+            dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">Terms
+          of Service</pc> and <pc id="1" equivStart="START_LINK_1" equivEnd="CLOSE_LINK" type="link"
+            dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;">Privacy
+          Policy</pc>. </source>
+        <target> En continuant, vous acceptez nos <pc id="0" equivStart="START_LINK"
+            equivEnd="CLOSE_LINK" type="link"
+            dispStart="&lt;a routerLink=&quot;/terms-of-service&quot;&gt;" dispEnd="&lt;/a&gt;">conditions
+          d&apos;utilisation</pc> et notre <pc id="1" equivStart="START_LINK_1"
+            equivEnd="CLOSE_LINK" type="link"
+            dispStart="&lt;a routerLink=&quot;/privacy-policy&quot;&gt;" dispEnd="&lt;/a&gt;">politique
+          de confidentialité</pc>. </target>
       </segment>
     </unit>
     <unit id="welcomeDialogText">
       <segment state="initial">
-        <source> Explore spots, posts, and more from our Parkour and Freerunning community. To access our content, please agree to our Terms of Service and Privacy Policy. We value your privacy and don&apos;t store cookies. 🍪 </source>
-        <target> Explorez des spots, des publications et bien plus encore de notre communauté de parkour et de freerunning. Pour accéder à notre contenu, veuillez accepter nos Conditions d&apos;utilisation et notre Politique de confidentialité. Nous accordons une grande importance à votre vie privée et nous ne stockons pas de cookies. 🍪 </target>
+        <source> Explore spots, posts, and more from our Parkour and Freerunning community. To
+          access our content, please agree to our Terms of Service and Privacy Policy. We value your
+          privacy and don&apos;t store cookies. 🍪 </source>
+        <target> Explorez des spots, des publications et bien plus encore de notre communauté de
+          parkour et de freerunning. Pour accéder à notre contenu, veuillez accepter nos Conditions
+          d&apos;utilisation et notre Politique de confidentialité. Nous accordons une grande
+          importance à votre vie privée et nous ne stockons pas de cookies. 🍪 </target>
+      </segment>
+    </unit>
+    <unit id="about.description">
+      <segment state="initial">
+        <source>About PKFR Spot</source>
+        <target>À propos de PKFR Spot</target>
+      </segment>
+    </unit>
+    <unit id="7629436164719717851">
+      <segment state="initial">
+        <source>Event in </source>
+        <target>Événement à </target>
+      </segment>
+    </unit>
+    <unit id="events.title">
+      <segment state="initial">
+        <source>Events</source>
+        <target>Événements</target>
       </segment>
     </unit>
   </file>

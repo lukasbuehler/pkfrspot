@@ -17,7 +17,7 @@ export class EventsPageComponent implements OnInit {
     this.metaInfoService.setMetaTags(
       $localize`:@@events.title:Events` + " | PKFR Spot",
       "assets/banner_1200x630.png",
-      $localize`:@@events.description:Events`
+      $localize`:@@events.title:Events`
     );
   }
 }

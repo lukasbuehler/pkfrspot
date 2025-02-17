@@ -136,10 +136,10 @@
       </notes>
       <segment state="initial">
         <source> Open in <ph id="0" equiv="INTERPOLATION"
-            disp="{{ isUsingAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}" />
+            disp="{{ isAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}" />
         </source>
         <target> Abrir en <ph id="0" equiv="INTERPOLATION"
-            disp="{{ isUsingAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}" />
+            disp="{{ isAppleMaps ? &quot;Apple Maps&quot; : &quot;Google Maps&quot; }}" />
         </target>
       </segment>
     </unit>
@@ -898,7 +898,7 @@
     </unit>
     <unit id="9074160907730350759">
       <segment state="initial">
-        <source>Review Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}" />
+        <source>Review Spot &apos;<ph id="0" equiv="INTERPOLATION" disp="{{ review.spot.name }}" />
           &apos;</source>
         <target>Evaluar el spot «<ph id="0" equiv="INTERPOLATION" disp="{{ review.spot?.name }}" />»</target>
       </segment>
@@ -944,12 +944,6 @@
       <segment state="initial">
         <source>Partners</source>
         <target>Socios</target>
-      </segment>
-    </unit>
-    <unit id="5729418620241283277">
-      <segment state="initial">
-        <source>Events</source>
-        <target>Eventos</target>
       </segment>
     </unit>
     <unit id="8151017381798767627">
@@ -1022,12 +1016,6 @@
             dispEnd="&lt;/a&gt;">política de privacidad</pc>. </target>
       </segment>
     </unit>
-    <unit id="3148120434799119252">
-      <segment state="initial">
-        <source>Challenges</source>
-        <target>Challenges</target>
-      </segment>
-    </unit>
     <unit id="welcomeDialogText">
       <segment state="initial">
         <source> Explore spots, posts, and more from our Parkour and Freerunning community. To
@@ -1036,6 +1024,24 @@
         <target> Explora spots, publicaciones y más de nuestra comunidad de parkour y freerunning.
           Para acceder a nuestro contenido, por favor acepta nuestros Términos de Servicio y
           Política de Privacidad. Valoramos tu privacidad y no almacenamos cookies. 🍪 </target>
+      </segment>
+    </unit>
+    <unit id="about.description">
+      <segment state="initial">
+        <source>About PKFR Spot</source>
+        <target>Acerca de PKFR Spot</target>
+      </segment>
+    </unit>
+    <unit id="7629436164719717851">
+      <segment state="initial">
+        <source>Event in </source>
+        <target>Evento en </target>
+      </segment>
+    </unit>
+    <unit id="events.title">
+      <segment state="initial">
+        <source>Events</source>
+        <target>Eventos</target>
       </segment>
     </unit>
   </file>
