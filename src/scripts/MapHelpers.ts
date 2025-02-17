@@ -72,7 +72,7 @@ export namespace MapHelpers {
     };
   }
 
-  export function getDisplayCoordinates(
+  export function getHumanReadableCoordinates(
     coordinates: google.maps.LatLngLiteral
   ): string {
     let lat: number = coordinates.lat;

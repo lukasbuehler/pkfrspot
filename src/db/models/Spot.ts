@@ -86,7 +86,7 @@ export class LocalSpot {
     this.tileCoordinates = data.tile_coordinates;
 
     this.locationString = computed(() => {
-      return MapHelpers.getDisplayCoordinates(this.location());
+      return MapHelpers.getHumanReadableCoordinates(this.location());
     });
 
     this.descriptions = signal(data.description ?? {});

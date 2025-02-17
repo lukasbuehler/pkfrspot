@@ -16,6 +16,7 @@ import {
   model,
   ModelSignal,
   OnChanges,
+  signal,
 } from "@angular/core";
 import { LocalSpot, Spot, SpotId } from "../../db/models/Spot";
 import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
@@ -25,6 +26,7 @@ import {
   MapPolygon,
   MapCircle,
   MapAdvancedMarker,
+  MapRectangle,
   //   MapHeatmapLayer,
 } from "@angular/google-maps";
 import { BehaviorSubject, Observable } from "rxjs";
@@ -39,6 +41,14 @@ import { NgIf, NgFor, AsyncPipe, NgClass } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
 import { trigger, transition, style, animate } from "@angular/animations";
 import { MarkerComponent, MarkerSchema } from "../marker/marker.component";
+import { MapHelpers } from "../../scripts/MapHelpers";
+
+export interface TilesObject {
+  zoom: number;
+  tiles: { x: number; y: number }[];
+  ne: { x: number; y: number };
+  sw: { x: number; y: number };
+}
 
 @Component({
   selector: "app-map",
@@ -49,6 +59,7 @@ import { MarkerComponent, MarkerSchema } from "../marker/marker.component";
     GoogleMap,
     MapCircle,
     MapPolygon,
+    MapRectangle,
     MapAdvancedMarker,
     MatIconModule,
     NgFor,
@@ -79,6 +90,8 @@ export class MapComponent implements OnInit, OnChanges {
   // add math function to markup
   sqrt = Math.sqrt;
 
+  isDebug = input<boolean>(true);
+
   isDarkMode = input<boolean>(true); // should be false if mapStyle is roadmap and the dark map is used
   markers = input<MarkerSchema[]>([]);
 
@@ -94,29 +107,30 @@ export class MapComponent implements OnInit, OnChanges {
     return this._center;
   }
 
-  _zoom: number = 4;
+  _zoom = signal<number>(4);
   @Input() set zoom(newZoom: number) {
-    this._zoom = newZoom;
+    this._zoom.set(newZoom);
     if (this.googleMap) {
       this.googleMap.zoom = newZoom;
     }
   }
   @Output() zoomChange = new EventEmitter<number>();
   get zoom() {
-    return this._zoom;
+    return this._zoom();
   }
   setZoom(newZoom: number) {
     this.zoom = newZoom;
-    this.zoomChange.emit(this._zoom);
+    this.zoomChange.emit(this._zoom());
   }
 
   getAndEmitChangedZoom() {
     if (!this.googleMap) return;
-    this._zoom = this.googleMap.getZoom()!;
-    this.zoomChange.emit(this._zoom);
+    this._zoom.set(this.googleMap.getZoom()!);
+    this.zoomChange.emit(this._zoom());
   }
 
   @Output() boundsChange = new EventEmitter<google.maps.LatLngBounds>();
+  @Output() visibleTilesChange = new EventEmitter<TilesObject>();
   @Output() mapClick = new EventEmitter<google.maps.LatLngLiteral>();
   @Output() spotClick = new EventEmitter<Spot | SpotPreviewData | SpotId>();
   @Output() polygonChanged = new EventEmitter<{
@@ -152,6 +166,64 @@ export class MapComponent implements OnInit, OnChanges {
       default:
         return google.maps.MapTypeId.ROADMAP;
     }
+  });
+
+  boundsToRender = signal<google.maps.LatLngBounds | null>(null);
+
+  private _previouslyVisibleTiles: TilesObject | null = null;
+  visibleTiles = computed<TilesObject | null>(() => {
+    const zoom = this._zoom();
+    const boundsToRender = this.boundsToRender();
+
+    if (!boundsToRender) {
+      return null;
+    }
+
+    const neTile = MapHelpers.getTileCoordinatesForLocationAndZoom(
+      boundsToRender.getNorthEast().toJSON(),
+      zoom
+    );
+    const swTile = MapHelpers.getTileCoordinatesForLocationAndZoom(
+      boundsToRender.getSouthWest().toJSON(),
+      zoom
+    );
+
+    // if the previously visible tiles are empty, we need to render the new tiles
+    if (
+      this._previouslyVisibleTiles &&
+      this._previouslyVisibleTiles.tiles?.length > 0
+    ) {
+      // abort if the neTile and swTile are the same as before
+      const prevNeTile = this._previouslyVisibleTiles.ne;
+      const prevSwTile = this._previouslyVisibleTiles.sw;
+
+      if (
+        this._previouslyVisibleTiles.zoom === zoom &&
+        prevNeTile.x === neTile.x &&
+        prevNeTile.y === neTile.y &&
+        prevSwTile.x === swTile.x &&
+        prevSwTile.y === swTile.y
+      ) {
+        return this._previouslyVisibleTiles;
+      }
+    }
+
+    // make an array of all the tiles between (and including) the NE and SW tiles
+    const tilesObj: TilesObject = {
+      zoom: zoom,
+      tiles: [],
+      ne: neTile,
+      sw: swTile,
+    };
+    for (let x = swTile.x; x <= neTile.x; x++) {
+      for (let y = neTile.y; y <= swTile.y; y++) {
+        tilesObj.tiles.push({ x: x, y: y });
+      }
+    }
+
+    this._previouslyVisibleTiles = tilesObj;
+    this.visibleTilesChange.emit(tilesObj);
+    return tilesObj;
   });
 
   constructor(
@@ -229,6 +301,10 @@ export class MapComponent implements OnInit, OnChanges {
       : null;
   }
 
+  getBoundsForTile(tile: { zoom: number; x: number; y: number }) {
+    return MapHelpers.getBoundsForTile(tile.zoom, tile.x, tile.y);
+  }
+
   initGeolocation() {
     navigator.permissions.query({ name: "geolocation" }).then((permission) => {
       if (permission.state == "granted") {
@@ -248,13 +324,13 @@ export class MapComponent implements OnInit, OnChanges {
             },
             accuracy: _location.coords.accuracy,
           };
-          this.geolocation$.next(locObj);
+          this.geolocation.set(locObj);
           this.hasGeolocationChange.emit(true);
         },
         (error) => {
           console.error(error);
           navigator.geolocation.clearWatch(geolocationWatchId);
-          this.geolocation$.complete();
+          this.geolocation.set(null);
           this.hasGeolocationChange.emit(false);
         },
         {
@@ -266,7 +342,7 @@ export class MapComponent implements OnInit, OnChanges {
     this.cdr.detectChanges();
   }
 
-  geolocation$ = new BehaviorSubject<{
+  geolocation = signal<{
     location: google.maps.LatLngLiteral;
     accuracy: number;
   } | null>(null);
@@ -351,13 +427,34 @@ export class MapComponent implements OnInit, OnChanges {
   //   //     this.selectedSpotMarkerOptions = this.selectedSpotMarkerDarkOptions;
   // }
 
-  emitBoundsChanged() {
+  boundsChanged() {
     if (!this.googleMap) return;
     const bounds = this.googleMap.getBounds()!;
+
+    // set the bounds to render
+    // TODO remove: for debugging set it to half the actual bounds now
+    const boundsCenter = bounds.getCenter();
+    const halvedBoundsLiteral: google.maps.LatLngBoundsLiteral = {
+      north:
+        boundsCenter.lat() +
+        (bounds.getNorthEast().lat() - boundsCenter.lat()) / 2,
+      south:
+        boundsCenter.lat() +
+        (bounds.getSouthWest().lat() - boundsCenter.lat()) / 2,
+      east:
+        boundsCenter.lng() +
+        (bounds.getNorthEast().lng() - boundsCenter.lng()) / 2,
+      west:
+        boundsCenter.lng() +
+        (bounds.getSouthWest().lng() - boundsCenter.lng()) / 2,
+    };
+    const halvedBounds = new google.maps.LatLngBounds(halvedBoundsLiteral);
+    this.boundsToRender.set(halvedBounds);
+
     this.boundsChange.emit(bounds);
   }
 
-  emitCenterChanged() {
+  centerChanged() {
     if (!this.googleMap) return;
     const center = this.googleMap.getCenter()!;
     this.centerChange.emit(center.toJSON());
@@ -412,7 +509,7 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   focusOnGeolocation() {
-    let geolocation = this.geolocation$.value;
+    const geolocation = this.geolocation();
     if (geolocation) {
       this.focusOnLocation(geolocation.location);
     } else {

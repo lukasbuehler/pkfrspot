@@ -22,10 +22,10 @@ import { LocalSpot, Spot, SpotId } from "../../db/models/Spot";
 import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
 import { ActivatedRoute } from "@angular/router";
 import { GeoPoint } from "firebase/firestore";
-import { firstValueFrom } from "rxjs";
+import { firstValueFrom, retry } from "rxjs";
 import { MapHelpers } from "../../scripts/MapHelpers";
 import { AuthenticationService } from "../services/firebase/authentication.service";
-import { MapComponent } from "../map/map.component";
+import { MapComponent, TilesObject } from "../map/map.component";
 import {
   ClusterTileKey,
   getClusterTileKey,
@@ -136,10 +136,6 @@ export class SpotMapComponent implements AfterViewInit {
   hightlightedSpots: SpotPreviewData[] = [];
   visibleDots: SpotClusterDotSchema[] = [];
 
-  // the current tile coordinates for zoom level 16, can be easily converted to other zoom levels by bit shifting
-  private _northEastTileCoordsZ16?: { x: number; y: number };
-  private _southWestTileCoordsZ16?: { x: number; y: number };
-
   // previous tile coordinates used to check if the visible tiles have changed
   private _previousTileZoom: 4 | 8 | 12 | 16 | undefined;
   private _previousSouthWestTile: google.maps.Point | undefined;
@@ -206,40 +202,12 @@ export class SpotMapComponent implements AfterViewInit {
     this.map.focusOnGeolocation();
   }
 
-  _updateCornerTileCoordinatesForZ16(
-    northEast: google.maps.LatLngLiteral,
-    southWest: google.maps.LatLngLiteral
-  ) {
-    let northEastTileCoords16: { x: number; y: number } =
-      MapHelpers.getTileCoordinatesForLocationAndZoom(northEast, 16);
-    let southWestTileCoords16: { x: number; y: number } =
-      MapHelpers.getTileCoordinatesForLocationAndZoom(southWest, 16);
-
-    this._northEastTileCoordsZ16 = northEastTileCoords16;
-    this._southWestTileCoordsZ16 = southWestTileCoords16;
-  }
-
-  mapBoundsChanged(bounds: google.maps.LatLngBounds, zoom: number) {
-    // update the local bounds variable
-    this.bounds = bounds;
-
-    // update tile coordinates
-    let northEastPoint: google.maps.LatLngLiteral = {
-      lat: bounds.getNorthEast().lat(),
-      lng: bounds.getNorthEast().lng(),
-    };
-    let southWestPoint: google.maps.LatLngLiteral = {
-      lat: bounds.getSouthWest().lat(),
-      lng: bounds.getSouthWest().lng(),
-    };
-    this._updateCornerTileCoordinatesForZ16(northEastPoint, southWestPoint);
-    if (!this._northEastTileCoordsZ16 || !this._southWestTileCoordsZ16) {
-      console.error("Tile coordinates not set");
-      return;
-    }
-
+  visibleTilesChanged(visibleTilesObj: TilesObject) {
+    if (!visibleTilesObj) return;
     // compute the tiles for this zoom level
     // that is only 4, 8, 12 and 16 since we are only loading spots and dots for these zoom levels
+    const zoom = visibleTilesObj.zoom;
+
     let tileZoom: 4 | 8 | 12 | 16;
     if (zoom > 16) {
       tileZoom = 16;
@@ -248,37 +216,19 @@ export class SpotMapComponent implements AfterViewInit {
     } else {
       tileZoom = (zoom - (zoom % 4)) as 4 | 8 | 12;
     }
-
-    // Compute the tile corners for this zoom level
-    const southWestTile = new google.maps.Point(
-      this._southWestTileCoordsZ16.x >> (16 - tileZoom),
-      this._southWestTileCoordsZ16.y >> (16 - tileZoom)
+    const tileSw = new google.maps.Point(
+      visibleTilesObj.sw.x >> (zoom - tileZoom),
+      visibleTilesObj.sw.y >> (zoom - tileZoom)
     );
-    const northEastTile = new google.maps.Point(
-      this._northEastTileCoordsZ16.x >> (16 - tileZoom),
-      this._northEastTileCoordsZ16.y >> (16 - tileZoom)
+    const tileNe = new google.maps.Point(
+      visibleTilesObj.ne.x >> (zoom - tileZoom),
+      visibleTilesObj.ne.y >> (zoom - tileZoom)
     );
-
-    // compare these tile corners to the previous tile corners and abort if they are the same
-    if (
-      this._previousTileZoom === tileZoom &&
-      this._previousSouthWestTile?.equals(southWestTile) &&
-      this._previousNorthEastTile?.equals(northEastTile)
-    ) {
-      // abort, nothing needs to change since the tiles stayed the same...
-      return;
-    }
-
-    // now we know that some visible tiles have changed, we need to update the visible spots and dots
-    // but first store the current tile corners for comparison in the next iteration
-    this._previousTileZoom = tileZoom;
-    this._previousSouthWestTile = southWestTile;
-    this._previousNorthEastTile = northEastTile;
 
     // make a list of all the tiles that are visible for this tile zoom to show only those dots/spots
     const visibleTiles = new Set<ClusterTileKey>();
-    for (let x = southWestTile.x; x <= northEastTile.x; x++) {
-      for (let y = northEastTile.y; y <= southWestTile.y; y++) {
+    for (let x = tileSw.x; x <= tileNe.x; x++) {
+      for (let y = tileNe.y; y <= tileSw.y; y++) {
         // here we go through all the x,y pairs for every visible tile on screen right now
         // and add them to the set of visible tiles
         visibleTiles.add(getClusterTileKey(tileZoom, x, y));
@@ -315,17 +265,22 @@ export class SpotMapComponent implements AfterViewInit {
 
       this.loadNewClusterTiles(tilesToLoad);
     }
+  }
+
+  mapBoundsChanged(bounds: google.maps.LatLngBounds, zoom: number) {
+    // update the local bounds variable
+    this.bounds = bounds;
 
     // store the new last location in the browser memory to restore it on next visit
-    let newCenter: google.maps.LatLngLiteral = bounds.getCenter().toJSON();
-    if (this.isInitiated && newCenter !== this.mapCenterStart) {
-      if (this.mapCenter !== newCenter || zoom !== this.mapZoom) {
-        this.mapsAPIService.storeLastLocationAndZoom({
-          location: newCenter,
-          zoom: zoom,
-        });
-      }
-    }
+    // let newCenter: google.maps.LatLngLiteral = bounds.getCenter().toJSON();
+    // if (this.isInitiated && newCenter !== this.mapCenterStart) {
+    //   if (this.mapCenter !== newCenter || zoom !== this.mapZoom) {
+    //     this.mapsAPIService.storeLastLocationAndZoom({
+    //       location: newCenter,
+    //       zoom: zoom,
+    //     });
+    //   }
+    // }
   }
 
   // Spot loading /////////////////////////////////////////////////////////////

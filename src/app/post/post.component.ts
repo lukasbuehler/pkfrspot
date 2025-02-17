@@ -172,7 +172,7 @@ export class PostComponent implements OnInit {
 
   getLocationDisplayCoordinates(coords: google.maps.LatLngLiteral) {
     if (coords) {
-      return MapHelpers.getDisplayCoordinates(coords);
+      return MapHelpers.getHumanReadableCoordinates(coords);
     }
     return "";
   }

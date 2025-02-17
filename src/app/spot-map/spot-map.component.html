@@ -13,6 +13,7 @@
   [minZoom]="minZoom"
   [mapStyle]="mapStyle()"
   (boundsChange)="mapBoundsChanged($event, mapZoom)"
+  (visibleTilesChange)="visibleTilesChanged($event)"
   (zoomChange)="zoomChanged($event)"
   (mapClick)="isClickable ? mapClick($event) : null"
   (spotClick)="isClickable ? openSpotByWhateverMeansNecessary($event) : null"

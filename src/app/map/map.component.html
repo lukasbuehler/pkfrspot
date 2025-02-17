@@ -3,17 +3,60 @@
   #googleMap
   id="googleMap"
   [center]="center"
-  [zoom]="_zoom"
+  [zoom]="_zoom()"
   [options]="mapOptions"
   [mapTypeId]="mapTypeId()"
   (mapClick)="mapClick.emit()"
-  (boundsChanged)="emitBoundsChanged()"
-  (centerChanged)="emitCenterChanged()"
+  (boundsChanged)="boundsChanged()"
+  (centerChanged)="centerChanged()"
   (zoomChanged)="getAndEmitChangedZoom()"
   width="100%"
   height="100%"
 >
-  <!-- <map-heatmap-layer [data]="dots" [options]="heatmapDarkOptions" /> -->
+  @if(isDebug()) {
+  <!-- rectangles for each tile -->
+  @for(tile of visibleTiles()?.tiles; track tile) {
+  <map-rectangle
+    [bounds]="
+      getBoundsForTile({ zoom: visibleTiles().zoom, x: tile.x, y: tile.y })
+    "
+    [options]="{
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.7,
+      strokeWeight: 1,
+      fillOpacity: 0
+    }"
+  ></map-rectangle>
+  }
+
+  <!-- Debug: Rendering bounds -->
+  <map-rectangle
+    [bounds]="boundsToRender()"
+    [options]="{
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillOpacity: 0
+    }"
+  ></map-rectangle>
+
+  <!-- Debug zoom level -->
+  <div
+    style="
+      color: white;
+      background-color: red;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      padding: 10px;
+    "
+  >
+    Zoom {{ zoom }}, sw: ({{ visibleTiles()?.sw.x }},
+    {{ visibleTiles()?.sw.y }}), ne: ({{ visibleTiles()?.ne.x }},
+    {{ visibleTiles()?.ne.y }})
+  </div>
+
+  }
 
   <!-- Cluster Markers -->
   @for (dot of dots; track $index) {
@@ -127,19 +170,17 @@
   </div> } -->
 
   <!-- Geolocation -->
-  @if(showGeolocation) {
+  @if(showGeolocation && geolocation()) {
   <div #geolocationMarker class="geolocation-marker"></div>
   <map-advanced-marker
-    *ngIf="geolocation$ | async"
-    [position]="(geolocation$ | async).location"
+    [position]="geolocation().location"
     [content]="geolocationMarker"
     [zIndex]="1000000"
   >
   </map-advanced-marker>
   <map-circle
-    *ngIf="geolocation$ | async"
-    [center]="(geolocation$ | async).location"
-    [radius]="(geolocation$ | async).accuracy"
+    [center]="geolocation().location"
+    [radius]="geolocation().accuracy"
     [options]="geolocationCircleOptions"
   ></map-circle>
   }
