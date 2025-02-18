@@ -17,6 +17,7 @@ import {
   ModelSignal,
   OnChanges,
   signal,
+  effect,
 } from "@angular/core";
 import { LocalSpot, Spot, SpotId } from "../../db/models/Spot";
 import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
@@ -90,7 +91,8 @@ export class MapComponent implements OnInit, OnChanges {
   // add math function to markup
   sqrt = Math.sqrt;
 
-  isDebug = input<boolean>(true);
+  focusZoom = input<number>(17);
+  isDebug = input<boolean>(false);
 
   isDarkMode = input<boolean>(true); // should be false if mapStyle is roadmap and the dark map is used
   markers = input<MarkerSchema[]>([]);
@@ -222,7 +224,6 @@ export class MapComponent implements OnInit, OnChanges {
     }
 
     this._previouslyVisibleTiles = tilesObj;
-    this.visibleTilesChange.emit(tilesObj);
     return tilesObj;
   });
 
@@ -235,6 +236,12 @@ export class MapComponent implements OnInit, OnChanges {
     //     this.selectedSpot
     //   );
     // }
+
+    effect(() => {
+      const visibleTiles = this.visibleTiles();
+
+      this.visibleTilesChange.emit(visibleTiles);
+    });
   }
 
   isApiLoadedSubscription: Subscription;
@@ -439,25 +446,30 @@ export class MapComponent implements OnInit, OnChanges {
     if (!this.googleMap) return;
     const bounds = this.googleMap.getBounds()!;
 
-    // set the bounds to render
-    // TODO remove: for debugging set it to half the actual bounds now
-    const boundsCenter = bounds.getCenter();
-    const halvedBoundsLiteral: google.maps.LatLngBoundsLiteral = {
-      north:
-        boundsCenter.lat() +
-        (bounds.getNorthEast().lat() - boundsCenter.lat()) / 2,
-      south:
-        boundsCenter.lat() +
-        (bounds.getSouthWest().lat() - boundsCenter.lat()) / 2,
-      east:
-        boundsCenter.lng() +
-        (bounds.getNorthEast().lng() - boundsCenter.lng()) / 2,
-      west:
-        boundsCenter.lng() +
-        (bounds.getSouthWest().lng() - boundsCenter.lng()) / 2,
-    };
-    const halvedBounds = new google.maps.LatLngBounds(halvedBoundsLiteral);
-    this.boundsToRender.set(halvedBounds);
+    if (this.isDebug()) {
+      // set the bounds to render
+      // TODO remove: for debugging set it to half the actual bounds now
+      const boundsCenter = bounds.getCenter();
+      const halvedBoundsLiteral: google.maps.LatLngBoundsLiteral = {
+        north:
+          boundsCenter.lat() +
+          (bounds.getNorthEast().lat() - boundsCenter.lat()) / 2,
+        south:
+          boundsCenter.lat() +
+          (bounds.getSouthWest().lat() - boundsCenter.lat()) / 2,
+        east:
+          boundsCenter.lng() +
+          (bounds.getNorthEast().lng() - boundsCenter.lng()) / 2,
+        west:
+          boundsCenter.lng() +
+          (bounds.getSouthWest().lng() - boundsCenter.lng()) / 2,
+      };
+
+      const halvedBounds = new google.maps.LatLngBounds(halvedBoundsLiteral);
+      this.boundsToRender.set(halvedBounds);
+    } else {
+      this.boundsToRender.set(bounds);
+    }
 
     this.boundsChange.emit(this.boundsToRender());
   }
@@ -496,13 +508,13 @@ export class MapComponent implements OnInit, OnChanges {
         dot.location.latitude,
         dot.location.longitude
       );
-      this.focusOnLocation(location, Math.min(this.zoom + 4, 17));
+      this.focusOnLocation(location, Math.min(this.zoom + 4, this.focusZoom()));
     }
   }
 
   focusOnLocation(
     location: google.maps.LatLngLiteral | google.maps.LatLng,
-    zoom: number = 17
+    zoom: number = this.focusZoom()
   ) {
     if (!this.googleMap) return;
 

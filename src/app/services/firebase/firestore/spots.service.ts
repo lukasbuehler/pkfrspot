@@ -72,6 +72,8 @@ export class SpotsService {
   }
 
   getSpotById$(spotId: SpotId, locale: LocaleCode): Observable<Spot> {
+    console.log("Getting spot with id: ", spotId);
+
     return new Observable<Spot>((observer) => {
       return onSnapshot(
         doc(this.firestore, "spots", spotId),
@@ -91,6 +93,7 @@ export class SpotsService {
           });
         }
       );
+      observer.next(undefined);
     });
   }
 
@@ -107,6 +110,8 @@ export class SpotsService {
     locale: LocaleCode
   ): Observable<Spot[]> {
     const observables = tiles.map((tile) => {
+      console.log("Getting spots for tile: ", tile);
+
       return new Observable<Spot[]>((observer) => {
         const unsubscribe = onSnapshot(
           query(
@@ -144,24 +149,26 @@ export class SpotsService {
     tiles: ClusterTileKey[]
   ): Observable<SpotClusterTileSchema[]> {
     const observables = tiles.map((tile) => {
+      console.log("Getting spot cluster tile: ", tile);
+
       return new Observable<SpotClusterTileSchema[]>((observer) => {
-        const unsubscribe = onSnapshot(
-          doc(this.firestore, "spot_clusters", tile),
-          (snap) => {
-            if (snap.exists()) {
-              observer.next([snap.data() as SpotClusterTileSchema]);
-            } else {
-              observer.next([]);
-            }
-          },
-          (error) => {
-            console.error(error);
-            observer.error(error);
-          }
-        );
-        return () => {
-          unsubscribe();
-        };
+        // const unsubscribe = onSnapshot(
+        //   doc(this.firestore, "spot_clusters", tile),
+        //   (snap) => {
+        //     if (snap.exists()) {
+        //       observer.next([snap.data() as SpotClusterTileSchema]);
+        //     } else {
+        //       observer.next([]);
+        //     }
+        //   },
+        //   (error) => {
+        //     console.error(error);
+        //     observer.error(error);
+        //   }
+        // );
+        // return () => {
+        //   unsubscribe();
+        // };
       }).pipe(take(1));
     });
 

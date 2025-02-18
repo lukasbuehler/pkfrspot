@@ -211,7 +211,6 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
   // Initialization ///////////////////////////////////////////////////////////
 
   ngOnInit() {
-    console.log("MapPageComponent ngOnInit");
     this._getSpotIdFromRoute()
       .then((spotId) => {
         if (spotId) {
@@ -246,8 +245,11 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
         })
       )
       .subscribe(async (event: NavigationEnd) => {
-        const spotId = await this._getSpotIdFromRoute();
-        if (spotId) await this.loadSpotById(spotId); // TODO out of context
+        this._getSpotIdFromRoute()
+          .then((spotId) => {
+            if (spotId) return this.loadSpotById(spotId); // TODO out of context
+          })
+          .then(() => {});
       });
 
     // subscribe to the spot search control and update the search results
@@ -309,10 +311,7 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
     if (value.type === "place") {
       this.openGooglePlaceById(value.id);
     } else {
-      this.loadSpotById(value.id as SpotId).then(() => {
-        if (!this.selectedSpot) return;
-        this.spotMap?.focusSpot(this.selectedSpot);
-      });
+      this.loadSpotById(value.id as SpotId);
     }
   }
 
@@ -323,14 +322,14 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  async loadSpotById(spotId: SpotId): Promise<void> {
-    const spot: Spot = await this._spotsService.getSpotByIdHttp(
-      spotId,
-      this.locale
-    );
-    this.selectedSpot = spot;
-    this.setSpotMetaTags();
-    console.log("is selected spot now");
+  loadSpotById(spotId: SpotId) {
+    this._spotsService.getSpotByIdHttp(spotId, this.locale).then((spot) => {
+      if (!spot) return;
+      this.selectedSpot = spot;
+      this.setSpotMetaTags();
+      this.spotMap?.focusSpot(this.selectedSpot);
+      console.log("is selected spot now");
+    });
   }
 
   updateMapURL() {

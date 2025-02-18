@@ -42,6 +42,7 @@ import { SpotsService } from "../services/firebase/firestore/spots.service";
 import { LocaleCode } from "../../db/models/Interfaces";
 import { MarkerSchema } from "../marker/marker.component";
 import { OsmDataService } from "../services/osm-data.service";
+import { MapClusterStore } from "./MapClusterStore";
 
 /**
  * This interface is used to reference a spot in the loaded spots array.
@@ -134,7 +135,7 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
   visibleAmenityMarkers: MarkerSchema[] = [];
   visibleMarkers: MarkerSchema[] = [];
 
-  loadedClusterTiles = new Map<ClusterTileKey, SpotClusterTileSchema>();
+  cachedClusterTiles: MapClusterStore = new MapClusterStore();
   hightlightedSpots: SpotPreviewData[] = [];
   visibleDots: SpotClusterDotSchema[] = [];
 
@@ -143,6 +144,7 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
   private _previousSouthWestTile: google.maps.Point | undefined;
   private _previousNorthEastTile: google.maps.Point | undefined;
   private _visibleTiles: Set<ClusterTileKey> = new Set<ClusterTileKey>();
+  private _visibleTilesObj: TilesObject | undefined;
 
   constructor(
     @Inject(LOCALE_ID) public locale: LocaleCode,
@@ -212,6 +214,7 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
   }
 
   visibleTilesChanged(visibleTilesObj: TilesObject) {
+    this._visibleTilesObj = visibleTilesObj;
     if (!visibleTilesObj) return;
     // compute the tiles for this zoom level
     // that is only 4, 8, 12 and 16 since we are only loading spots and dots for these zoom levels
@@ -228,6 +231,17 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
       visibleTilesObj.ne.x >> shift,
       visibleTilesObj.ne.y >> shift
     );
+    const tileVisibleTilesObj: TilesObject = {
+      zoom: tileZoom,
+      sw: tileSw,
+      ne: tileNe,
+      tiles: visibleTilesObj.tiles.map((tile) => {
+        return {
+          x: tile.x >> shift,
+          y: tile.y >> shift,
+        };
+      }),
+    };
 
     // make a list of all the tiles that are visible for this tile zoom to show only those dots/spots
     const visibleTiles = new Set<ClusterTileKey>();
@@ -256,16 +270,16 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
       this.loadAmeinitesForTiles(visibleTiles);
     } else {
       // show clustered dots instead of spots
+      this.clearVisibleSpots();
 
       // now update the visible dots to show all the loaded dots for the visible tiles
-      this.updateVisibleDotsAndHighlightedSpots(visibleTiles);
-
-      this.clearVisibleSpots();
+      this.updateVisibleDotsAndHighlightedSpots(visibleTilesObj);
 
       // now that the visible tiles have been updated, we can load new spots and dots if necessary
       // for that we call getUnloadedVisibleTiles to figure out if/which new tiles need to be loaded
+
       const tilesToLoad: Set<ClusterTileKey> =
-        this.getUnloadedVisibleClusterTiles(visibleTiles);
+        this.getUnloadedVisibleClusterTiles(tileVisibleTilesObj);
 
       this.loadNewClusterTiles(tilesToLoad);
     }
@@ -308,11 +322,11 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
    * tiles are already loaded or not. If they are not yet loaded it returns
    * the set of all those keys that need to be loaded. If there are no new tiles
    * to load, it returns an empty set.
-   * @param visibleTiles
+   * @param visibleTilesObj
    * @returns
    */
   getUnloadedVisibleClusterTiles(
-    visibleTiles: Set<ClusterTileKey>
+    visibleTilesObj: TilesObject
   ): Set<ClusterTileKey> {
     if (this.mapZoom >= 16) {
       throw new Error(
@@ -320,9 +334,12 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
       );
     }
 
-    return new Set(
-      [...visibleTiles].filter((tile) => !this.loadedClusterTiles.has(tile))
-    );
+    const tilesToLoad = this.cachedClusterTiles.getTilesToLoad(visibleTilesObj);
+    const visibleUncachedTileKeys = tilesToLoad.tiles.map((tile) => {
+      return getClusterTileKey(tilesToLoad.zoom, tile.x, tile.y);
+    });
+
+    return new Set(visibleUncachedTileKeys);
   }
 
   getUnloadedVisibleZ16Tiles(
@@ -408,7 +425,7 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
   dotsTimeout: NodeJS.Timeout | undefined;
 
   updateVisibleDotsAndHighlightedSpots(
-    visibleTiles: Set<ClusterTileKey> = this._visibleTiles,
+    visibleTiles: TilesObject = this._visibleTilesObj,
     bounds: google.maps.LatLngBounds | undefined = this.bounds
   ) {
     this.dotsTimeout = setTimeout(() => {
@@ -416,30 +433,37 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
       this.visibleDots = [];
       this.hightlightedSpots = [];
 
-      for (let tileKey of visibleTiles) {
-        if (this.loadedClusterTiles.has(tileKey)) {
-          const clusterTiles: SpotClusterTileSchema | undefined =
-            this.loadedClusterTiles.get(tileKey);
-          if (!clusterTiles) continue;
+      const zoom = visibleTiles.zoom;
+      const xStart = visibleTiles.sw.x;
+      const xEnd = visibleTiles.ne.x;
+      const yStart = visibleTiles.ne.y;
+      const yEnd = visibleTiles.sw.y;
 
-          // const dotsInBounds = clusterTiles.dots.filter((dot) => {
-          //   if (bounds) {
-          //     return bounds.contains({
-          //       lat: dot.location.latitude,
-          //       lng: dot.location.longitude,
-          //     });
-          //   } else {
-          //     return true;
-          //   }
-          // });
-          const dotsInBounds = clusterTiles.dots;
+      const clusterTiles: SpotClusterTileSchema[] =
+        this.cachedClusterTiles.getClustersForZoomAndRange(
+          zoom,
+          xStart,
+          xEnd,
+          yStart,
+          yEnd
+        );
+      if (clusterTiles.length === 0) return;
 
-          this.visibleDots = this.visibleDots.concat(dotsInBounds);
-          this.hightlightedSpots = this.hightlightedSpots.concat(
-            clusterTiles.spots
-          );
-        }
-      }
+      // const dotsInBounds = clusterTiles.dots.filter((dot) => {
+      //   if (bounds) {
+      //     return bounds.contains({
+      //       lat: dot.location.latitude,
+      //       lng: dot.location.longitude,
+      //     });
+      //   } else {
+      //     return true;
+      //   }
+      // });
+      const dotsInBounds = clusterTiles.map((tile) => tile.dots).flat();
+      const spotsInBounds = clusterTiles.map((tile) => tile.spots).flat();
+
+      this.visibleDots = this.visibleDots.concat(dotsInBounds);
+      this.hightlightedSpots = this.hightlightedSpots.concat(spotsInBounds);
 
       this.hightlightedSpotsChange.emit(this.hightlightedSpots);
     }, 0);
@@ -673,12 +697,12 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
       .then((clusterTiles) => {
         if (clusterTiles.length > 0) {
           clusterTiles.forEach((clusterTile) => {
-            const key = getClusterTileKey(
+            this.cachedClusterTiles.insert(
               clusterTile.zoom,
               clusterTile.x,
-              clusterTile.y
+              clusterTile.y,
+              clusterTile
             );
-            this.loadedClusterTiles.set(key, clusterTile);
           });
 
           this.updateVisibleDotsAndHighlightedSpots();
