@@ -239,6 +239,17 @@ export class MapComponent implements OnInit, OnChanges {
 
     effect(() => {
       const visibleTiles = this.visibleTiles();
+      if (!visibleTiles) return;
+
+      if (visibleTiles.tiles.length > 30) {
+        console.warn(
+          "Visible tiles are more than 30, not rendering.",
+          "Would have rendered: ",
+          visibleTiles.tiles.length,
+          "tiles"
+        );
+        return;
+      }
 
       this.visibleTilesChange.emit(visibleTiles);
     });

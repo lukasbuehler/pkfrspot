@@ -245,7 +245,7 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
 
     // make a list of all the tiles that are visible for this tile zoom to show only those dots/spots
     const visibleTiles = new Set<ClusterTileKey>();
-    console.log("Visible tiles changed", tileZoom, tileSw, tileNe);
+    console.debug("Visible tiles changed", tileZoom, tileSw, tileNe);
     for (let x = tileSw.x; x <= tileNe.x; x++) {
       for (let y = tileNe.y; y <= tileSw.y; y++) {
         // here we go through all the x,y pairs for every visible tile on screen right now
