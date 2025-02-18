@@ -174,10 +174,10 @@ export class MapComponent implements OnInit, OnChanges {
 
   private _previouslyVisibleTiles: TilesObject | null = null;
   visibleTiles = computed<TilesObject | null>(() => {
-    const zoom = this._zoom();
+    const zoom = this.googleMap?.getZoom(); // this needs to be getZoom because _zoom is still outdated if panning
     const boundsToRender = this.boundsToRender();
 
-    if (!boundsToRender) {
+    if (!boundsToRender || !zoom) {
       return null;
     }
 
@@ -241,9 +241,10 @@ export class MapComponent implements OnInit, OnChanges {
       const visibleTiles = this.visibleTiles();
       if (!visibleTiles) return;
 
-      if (visibleTiles.tiles.length > 30) {
+      const tooManyTiles = 100;
+      if (visibleTiles.tiles.length > tooManyTiles) {
         console.warn(
-          "Visible tiles are more than 30, not rendering.",
+          "Visible tiles are more than " + tooManyTiles + ", not rendering.",
           "Would have rendered: ",
           visibleTiles.tiles.length,
           "tiles"
@@ -511,7 +512,7 @@ export class MapComponent implements OnInit, OnChanges {
     return { lat: geoPoint.latitude, lng: geoPoint.longitude };
   }
 
-  clickOnDot(dot: SpotClusterDotSchema) {
+  clickDot(dot: SpotClusterDotSchema) {
     if (dot.spot_id) {
       this.spotClick.emit(dot.spot_id as SpotId);
     } else {
@@ -535,8 +536,8 @@ export class MapComponent implements OnInit, OnChanges {
       return;
     }
 
-    this.googleMap.panTo(location);
     this.setZoom(zoom);
+    this.googleMap.panTo(location);
   }
 
   focusOnGeolocation() {
