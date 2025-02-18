@@ -540,7 +540,8 @@
       <segment state="initial">
         <source>I have read and understood the <pc id="0" equivStart="START_BOLD_TEXT"
             equivEnd="CLOSE_BOLD_TEXT" type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Terms
-          of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT" equivEnd="CLOSE_BOLD_TEXT"
+            of Service</pc> and the <pc id="1" equivStart="START_BOLD_TEXT"
+            equivEnd="CLOSE_BOLD_TEXT"
             type="fmt" dispStart="&lt;b&gt;" dispEnd="&lt;/b&gt;">Privacy Policy</pc> and agree to
           both.</source>
         <target>He leído y comprendido los <pc id="0" equivStart="START_BOLD_TEXT"
@@ -1039,6 +1040,15 @@
       </segment>
     </unit>
     <unit id="events.title">
+      <notes>
+        <note category="description">:</note>
+      </notes>
+      <segment state="initial">
+        <source>Events</source>
+        <target>Eventos</target>
+      </segment>
+    </unit>
+    <unit id="events.nav_label">
       <segment state="initial">
         <source>Events</source>
         <target>Eventos</target>

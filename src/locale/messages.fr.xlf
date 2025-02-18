@@ -1043,6 +1043,15 @@
       </segment>
     </unit>
     <unit id="events.title">
+      <notes>
+        <note category="description">:</note>
+      </notes>
+      <segment state="initial">
+        <source>Events</source>
+        <target>Événements</target>
+      </segment>
+    </unit>
+    <unit id="events.nav_label">
       <segment state="initial">
         <source>Events</source>
         <target>Événements</target>
