@@ -248,7 +248,7 @@ export class AppComponent implements OnInit {
         tooltip: "",
       },*/
       {
-        name: $localize`:@@events.title:Events`,
+        name: $localize`:@@events.nav_label:Events`,
         link: "/events",
         icon: "calendar_month", // or event, local_activity, calendar_month
       },

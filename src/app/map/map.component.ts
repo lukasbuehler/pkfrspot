@@ -29,7 +29,7 @@ import {
   MapRectangle,
   //   MapHeatmapLayer,
 } from "@angular/google-maps";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, Subscriber, Subscription } from "rxjs";
 import { environment } from "../../environments/environment";
 import { MapsApiService } from "../services/maps-api.service";
 import {
@@ -237,13 +237,17 @@ export class MapComponent implements OnInit, OnChanges {
     // }
   }
 
+  isApiLoadedSubscription: Subscription;
+
   ngOnInit() {
-    this.mapsApiService.isApiLoaded$.subscribe((isLoaded) => {
-      if (isLoaded) {
-        this.initMap();
-        this.initGeolocation();
+    this.isApiLoadedSubscription = this.mapsApiService.isApiLoaded$.subscribe(
+      (isLoaded) => {
+        if (isLoaded) {
+          this.initMap();
+          this.initGeolocation();
+        }
       }
-    });
+    );
 
     if (this.boundRestriction) {
       this.mapOptions.restriction = {
@@ -258,6 +262,10 @@ export class MapComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     // console.log("markers in map", this.markers());
+  }
+
+  ngOnDestroy() {
+    this.isApiLoadedSubscription.unsubscribe();
   }
 
   initMap(): void {
@@ -451,7 +459,7 @@ export class MapComponent implements OnInit, OnChanges {
     const halvedBounds = new google.maps.LatLngBounds(halvedBoundsLiteral);
     this.boundsToRender.set(halvedBounds);
 
-    this.boundsChange.emit(bounds);
+    this.boundsChange.emit(this.boundsToRender());
   }
 
   centerChanged() {

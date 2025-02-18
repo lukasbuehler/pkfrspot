@@ -58,7 +58,7 @@ export namespace MapHelpers {
     };
   }
 
-  export function getTileCoordinatesForLocationAndZoom(
+  export function getUnroundedTileCoordinatesForLocationAndZoom(
     latLng: google.maps.LatLngLiteral,
     zoom: number
   ): { x: number; y: number } {
@@ -67,8 +67,21 @@ export namespace MapHelpers {
     var worldCoordinate = mercatorProjection(latLng);
 
     return {
-      x: Math.floor((worldCoordinate.x * scale) / TILE_SIZE),
-      y: Math.floor((worldCoordinate.y * scale) / TILE_SIZE),
+      x: (worldCoordinate.x * scale) / TILE_SIZE,
+      y: (worldCoordinate.y * scale) / TILE_SIZE,
+    };
+  }
+
+  export function getTileCoordinatesForLocationAndZoom(
+    latLng: google.maps.LatLngLiteral,
+    zoom: number
+  ): { x: number; y: number } {
+    var unroundedTileCoordinates =
+      getUnroundedTileCoordinatesForLocationAndZoom(latLng, zoom);
+
+    return {
+      x: Math.floor(unroundedTileCoordinates.x),
+      y: Math.floor(unroundedTileCoordinates.y),
     };
   }
 

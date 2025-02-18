@@ -11,7 +11,7 @@ import { NgOptimizedImage } from "@angular/common";
 import { Spot, SpotId } from "../../db/models/Spot";
 import { SpotListComponent } from "../spot-list/spot-list.component";
 import { SpotsService } from "../services/firebase/firestore/spots.service";
-import { lastValueFrom, take, timeout } from "rxjs";
+import { firstValueFrom, lastValueFrom, take, timeout } from "rxjs";
 import { LocaleCode } from "../../db/models/Interfaces";
 import { MarkerSchema } from "../marker/marker.component";
 import { MetaInfoService } from "../services/meta-info.service";
@@ -96,12 +96,11 @@ export class EventPageComponent implements OnInit {
   constructor() {
     afterNextRender(() => {
       this.swissJamSpotIds.forEach((spotId) => {
-        this._spotService
-          .getSpotById$(spotId, this.locale)
-          .pipe(take(1), timeout(10000))
-          .subscribe((spot) => {
-            this.spots.push(spot);
-          });
+        firstValueFrom(
+          this._spotService.getSpotById$(spotId, this.locale)
+        ).then((spot) => {
+          this.spots.push(spot);
+        });
       });
     });
   }

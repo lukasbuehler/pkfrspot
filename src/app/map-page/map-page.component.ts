@@ -133,7 +133,9 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   showAmenities = signal<boolean>(false);
 
-  _routerSubscription?: Subscription;
+  private _alainModeSubscription?: Subscription;
+  private _routerSubscription?: Subscription;
+  private _spotSearchSubscription?: Subscription;
 
   constructor(
     @Inject(LOCALE_ID) public locale: LocaleCode,
@@ -151,9 +153,11 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
     private _snackbar: MatSnackBar,
     private titleService: Title
   ) {
-    GlobalVariables.alainMode.subscribe((value) => {
-      this.alainMode = value;
-    });
+    this._alainModeSubscription = GlobalVariables.alainMode.subscribe(
+      (value) => {
+        this.alainMode = value;
+      }
+    );
 
     this.isServer = isPlatformServer(platformId);
 
@@ -247,25 +251,26 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
     // subscribe to the spot search control and update the search results
-    this.spotSearchControl.valueChanges.subscribe((query) => {
-      if (query) {
-        this._searchService.searchSpotsAndPlaces(query).then((results) => {
-          this.spotAndPlaceSearchResults$.next(results);
-          console.log("results", results);
-        });
-      } else {
-        this.spotAndPlaceSearchResults$.next(null);
-      }
+    this._spotSearchSubscription =
+      this.spotSearchControl.valueChanges.subscribe((query) => {
+        if (query) {
+          this._searchService.searchSpotsAndPlaces(query).then((results) => {
+            this.spotAndPlaceSearchResults$.next(results);
+            console.log("results", results);
+          });
+        } else {
+          this.spotAndPlaceSearchResults$.next(null);
+        }
 
-      //   this.mapsService
-      //     .autocompletePlaceSearch(query, ["geocode"])
-      //     .then((results) => {
-      //       this.spotAndPlaceSearchResults$.next({
-      //         places: results,
-      //         spots: null,
-      //       });
-      //     });
-    });
+        //   this.mapsService
+        //     .autocompletePlaceSearch(query, ["geocode"])
+        //     .then((results) => {
+        //       this.spotAndPlaceSearchResults$.next({
+        //         places: results,
+        //         spots: null,
+        //       });
+        //     });
+      });
   }
 
   async _getSpotIdFromRoute(): Promise<SpotId | void> {
@@ -362,5 +367,7 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.spotAndPlaceSearchResults$.complete();
     this._routerSubscription?.unsubscribe();
+    this._alainModeSubscription?.unsubscribe();
+    this._spotSearchSubscription?.unsubscribe();
   }
 }
