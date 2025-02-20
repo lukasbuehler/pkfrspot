@@ -9,7 +9,7 @@
     [(isEditing)]="isEditing"
     [(mapStyle)]="mapStyle"
     [showAmenities]="showAmenities()"
-    (visibleSpotsChange)="setVisibleSpots($event, spotMap.map.center)"
+    (visibleSpotsChange)="setVisibleSpots($event, spotMap.map!.center!)"
     (hightlightedSpotsChange)="highlightedSpots = $event"
     (hasGeolocationChange)="askedGeoPermission = true; hasGeolocation = $event"
   ></app-spot-map>
@@ -28,7 +28,7 @@
         <button
           mat-icon-button
           matSuffix
-          (click)="$event.stopPropagation(); spotMap.closeSpot()"
+          (click)="$event.stopPropagation(); spotMap?.closeSpot()"
           class="me-2"
         >
           <mat-icon>close</mat-icon>
@@ -55,7 +55,8 @@
           "
           class="mt-2 rounded"
         >
-          @if((spotAndPlaceSearchResults$ | async)?.spots?.hits?.length > 0) {
+          @if(((spotAndPlaceSearchResults$ | async)?.spots?.hits?.length ?? 0) >
+          0) {
           <div>
             <p class="mat-label-medium ps-3 pt-1 mb-1">Spots</p>
             <mat-divider></mat-divider>
@@ -83,9 +84,11 @@
               >Location: {{ spot.location.lat }}, {{ spot.location.lng }}</small
             > -->
           </mat-option>
-          @if((spotAndPlaceSearchResults$ | async)?.spots?.hits?.length > 0) {
+          @if(((spotAndPlaceSearchResults$ | async)?.spots?.hits?.length ?? 0) >
+          0) {
           <div class="pt-2"></div>
-          } @if((spotAndPlaceSearchResults$ | async)?.places?.length > 0) {
+          } @if(((spotAndPlaceSearchResults$ | async)?.places?.length ?? 0) > 0)
+          {
           <div>
             <p class="mat-label-medium ps-3 pt-1 mb-1">Places</p>
             <mat-divider></mat-divider>
@@ -122,7 +125,7 @@
       </mat-form-field>
     </div>
 
-    @if(selectedSpot) {
+    @if(spotMap) { @if(selectedSpot) {
     <div class="info-panel d-none d-md-block spot-preview-container p-3 pt-4">
       <app-spot-details
         @fadeInOut
@@ -178,6 +181,7 @@
       ></app-spot-list>
       }
     </app-bottom-sheet>
+    }
   </div>
 
   <!-- Search option chips -->

@@ -36,7 +36,7 @@ import { PageHeaderComponent } from "../page-header/page-header.component";
   ],
 })
 export class SignUpPageComponent implements OnInit {
-  createAccountForm: UntypedFormGroup;
+  createAccountForm: UntypedFormGroup | undefined;
   signUpError: string = "";
   isInviteOnly: boolean = true;
 
@@ -61,7 +61,10 @@ export class SignUpPageComponent implements OnInit {
       {
         validators: [
           (c: AbstractControl) => {
-            if (c.get("password").value === c.get("repeatPassword").value) {
+            const password = c.get("password")?.value;
+            const repeatedPassword = c.get("repeatPassword")?.value;
+
+            if (password && repeatedPassword && password === repeatedPassword) {
               return null; // all good
             } else {
               // repeated password does not match password

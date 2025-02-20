@@ -37,8 +37,8 @@ export interface SpeedDialFabButtonConfig {
   imports: [MatFabButton, MatTooltip, MatIcon, NgIf, NgFor, MatMiniFabButton],
 })
 export class SpeedDialFabComponent implements OnInit {
-  @ViewChild("fabContainer") fabContainer: ElementRef;
-  @Input("buttonConfig") buttonConfig: SpeedDialFabButtonConfig;
+  @ViewChild("fabContainer") fabContainer: ElementRef | undefined;
+  @Input("buttonConfig") buttonConfig: SpeedDialFabButtonConfig | undefined;
   @Input("rotationDegrees") rotationDegrees: number = 45;
   @Input("openOnHover") openOnHover: boolean = false;
 
@@ -56,8 +56,8 @@ export class SpeedDialFabComponent implements OnInit {
   isOpen: boolean = false;
 
   @HostListener("document:click", ["$event.target"])
-  public onClick(target) {
-    const clickedInside = this.fabContainer.nativeElement.contains(target);
+  public onClick(target: any) {
+    const clickedInside = this.fabContainer?.nativeElement.contains(target);
     if (!clickedInside) {
       // this click event from outside
       this.onClickOutside();

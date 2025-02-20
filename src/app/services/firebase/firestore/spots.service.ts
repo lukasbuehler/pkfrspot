@@ -17,7 +17,7 @@ import { Observable, forkJoin } from "rxjs";
 import { map, take } from "rxjs/operators";
 import { Spot, SpotId } from "../../../../db/models/Spot";
 import {
-  ClusterTileKey,
+  MapTileKey,
   getDataFromClusterTileKey,
   SpotClusterTileSchema,
 } from "../../../../db/schemas/SpotClusterTile";
@@ -78,7 +78,7 @@ export class SpotsService {
       return onSnapshot(
         doc(this.firestore, "spots", spotId),
         (snap) => {
-          if (snap.exists) {
+          if (snap.exists()) {
             const data = snap.data() as SpotSchema;
             let spot = new Spot(snap.id as SpotId, data, locale);
             observer.next(spot);
@@ -98,7 +98,7 @@ export class SpotsService {
   }
 
   getSpotsForTileKeys(
-    tileKeys: ClusterTileKey[],
+    tileKeys: MapTileKey[],
     locale: LocaleCode
   ): Observable<Spot[]> {
     const tiles = tileKeys.map((key) => getDataFromClusterTileKey(key));
@@ -146,7 +146,7 @@ export class SpotsService {
   }
 
   getSpotClusterTiles(
-    tiles: ClusterTileKey[]
+    tiles: MapTileKey[]
   ): Observable<SpotClusterTileSchema[]> {
     const observables = tiles.map((tile) => {
       console.debug("Getting spot cluster tile: ", tile);
@@ -216,7 +216,7 @@ export class SpotsService {
     spotUpdateData: Partial<SpotSchema>
   ): Promise<void> {
     // remove the reviews, review_histogram and review_count fields
-    const fieldsToRemove = [
+    const fieldsToRemove: (keyof SpotSchema)[] = [
       "rating",
       "num_reviews",
       "rating_histogram",

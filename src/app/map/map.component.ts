@@ -256,7 +256,7 @@ export class MapComponent implements OnInit, OnChanges {
     });
   }
 
-  isApiLoadedSubscription: Subscription;
+  isApiLoadedSubscription: Subscription | null = null;
 
   ngOnInit() {
     this.isApiLoadedSubscription = this.mapsApiService.isApiLoaded$.subscribe(
@@ -284,7 +284,8 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   ngOnDestroy() {
-    this.isApiLoadedSubscription.unsubscribe();
+    if (this.isApiLoadedSubscription)
+      this.isApiLoadedSubscription.unsubscribe();
   }
 
   initMap(): void {
@@ -483,7 +484,7 @@ export class MapComponent implements OnInit, OnChanges {
       this.boundsToRender.set(bounds);
     }
 
-    this.boundsChange.emit(this.boundsToRender());
+    this.boundsChange.emit(this.boundsToRender() ?? undefined);
   }
 
   centerChanged() {

@@ -19,17 +19,17 @@ export interface SpotClusterTileSchema {
   spots: SpotPreviewData[];
 }
 
-export type ClusterTileKey = string & { __brand: "ClusterTileKey" };
+export type MapTileKey = string & { __brand: "ClusterTileKey" };
 
 export function getClusterTileKey(
   zoom: number,
   x: number,
   y: number
-): ClusterTileKey {
-  return `z${zoom}_${x}_${y}` as ClusterTileKey;
+): MapTileKey {
+  return `z${zoom}_${x}_${y}` as MapTileKey;
 }
 
-export function getDataFromClusterTileKey(key: ClusterTileKey): {
+export function getDataFromClusterTileKey(key: MapTileKey): {
   zoom: number;
   x: number;
   y: number;

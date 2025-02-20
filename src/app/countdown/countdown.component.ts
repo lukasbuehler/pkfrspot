@@ -15,13 +15,13 @@ import { FancyCounterComponent } from "../fancy-counter/fancy-counter.component"
   styleUrl: "./countdown.component.scss",
 })
 export class CountdownComponent implements AfterViewInit {
-  timestamp: InputSignal<Date> = input<Date>();
+  timestamp: InputSignal<Date> = input<Date>(new Date());
   days: WritableSignal<number> = signal<number>(0);
   hours: WritableSignal<number> = signal<number>(0);
   minutes: WritableSignal<number> = signal<number>(0);
   seconds: WritableSignal<number> = signal<number>(0);
 
-  private intervalId: NodeJS.Timeout;
+  private intervalId: NodeJS.Timeout | undefined;
 
   ngAfterViewInit() {
     this.startCountdown();
