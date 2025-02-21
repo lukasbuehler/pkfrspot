@@ -17,9 +17,11 @@
           </div>
           <mat-card-header>
             <mat-card-title>Swiss Jam 25</mat-card-title>
-            <mat-card-subtitle i18n="@@date_tba"
-              >Exact Date TBA</mat-card-subtitle
-            >
+            <mat-card-subtitle>{{
+              readableStartDate !== readableEndDate
+                ? readableStartDate + " - " + readableEndDate
+                : readableStartDate
+            }}</mat-card-subtitle>
           </mat-card-header>
           <mat-card-content></mat-card-content>
         </mat-card>

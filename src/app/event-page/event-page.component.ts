@@ -37,6 +37,12 @@ export class EventPageComponent implements OnInit {
   localityString: string = "Zurich, Switzerland";
   start: Date = new Date("2025-05-24T09:00:00+01:00");
   end: Date = new Date("2025-05-25T16:00:00+01:00");
+  readableStartDate: string = this.start.toLocaleDateString(this.locale, {
+    dateStyle: "full",
+  });
+  readableEndDate: string = this.end.toLocaleDateString(this.locale, {
+    dateStyle: "full",
+  });
 
   private swissJamSpotIds: SpotId[] = [
     "yhRsQmaXABRQVrbtgQ7D" as SpotId,

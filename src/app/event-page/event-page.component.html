@@ -13,7 +13,13 @@
   <div class="row">
     <div class="col-md-12 p-3">
       <h2 class="mat-heading-large">{{ name }}</h2>
-      <p i18n="@@date_tba">Exact Date TBA</p>
+      <p>
+        {{
+          readableStartDate !== readableEndDate
+            ? readableStartDate + " - " + readableEndDate
+            : readableStartDate
+        }}
+      </p>
       @defer{
       <p>
         <span i18n>Starts in: </span>
