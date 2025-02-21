@@ -319,7 +319,7 @@ export class SpotMapComponent implements AfterViewInit {
     this.selectedSpot.set(
       new LocalSpot(
         {
-          name: { [this.locale]: $localize`New Spot` }, // TODO change to user lang
+          name: { [this.locale]: $localize`Unnamed Spot` }, // TODO change to user lang
           location: new GeoPoint(
             center_coordinates.lat,
             center_coordinates.lng

@@ -641,8 +641,8 @@
     </unit>
     <unit id="6590727333456499202">
       <segment state="initial">
-        <source>New Spot</source>
-        <target>Nuovo spot</target>
+        <source>Unnamed Spot</source>
+        <target>Spot senza nome</target>
       </segment>
     </unit>
     <unit id="5749021803913348721">

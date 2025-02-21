@@ -34,7 +34,7 @@ export class SpotMapDataManager {
   _osmDataService = inject(OsmDataService);
 
   private _spotClusterTiles: Map<MapTileKey, SpotClusterTileSchema>;
-  private _spotClusterKeysByZoom: Map<number, Map<string, MapTileKey>>;
+  // private _spotClusterKeysByZoom: Map<number, Map<string, MapTileKey>>;
   private _spots: Map<MapTileKey, Spot[]>;
   private _markers: Map<MapTileKey, MarkerSchema[]>;
   private _tilesLoading: Set<MapTileKey>;
@@ -60,7 +60,7 @@ export class SpotMapDataManager {
 
   constructor(readonly locale: LocaleCode, readonly debugMode: boolean = true) {
     this._spotClusterTiles = new Map<MapTileKey, SpotClusterTileSchema>();
-    this._spotClusterKeysByZoom = new Map<number, Map<string, MapTileKey>>();
+    // this._spotClusterKeysByZoom = new Map<number, Map<string, MapTileKey>>();
     this._spots = new Map<MapTileKey, Spot[]>();
     this._markers = new Map<MapTileKey, MarkerSchema[]>();
     this._tilesLoading = new Set<MapTileKey>();
@@ -94,6 +94,10 @@ export class SpotMapDataManager {
       this._showCachedSpotClustersForTiles(visibleTilesObj);
 
       // now determine missing information and load spot clusters for that
+      const spotClusterTilesToLoad: Set<MapTileKey> =
+        this._getSpotClusterTilesToLoad(visibleTilesObj);
+
+      this._loadSpotClustersForTiles(spotClusterTilesToLoad);
     }
 
     // const clampedZoom = Math.max(Math.min(zoom, 16), 4);
@@ -224,6 +228,7 @@ export class SpotMapDataManager {
       }
     });
 
+    this._visibleDotsBehaviorSubject.next([]);
     this._visibleSpotsBehaviorSubject.next(spots);
     this._visibleMarkersBehaviorSubject.next(markers);
   }
@@ -238,11 +243,10 @@ export class SpotMapDataManager {
     }
 
     // get the tiles object for the cluster zoom
-    const tilesZ = this.clusterZooms.find((zoom) => zoom >= tiles.zoom);
-    if (!tilesZ) {
-      return this.clusterZooms[0];
-      // return the first cluster zoom (4), which might be larger than zoom.
-    }
+    const tilesZ =
+      this.clusterZooms
+        .filter((zoom) => zoom <= tiles.zoom)
+        .sort((a, b) => b - a)[0] ?? this.clusterZooms[0];
 
     const tilesZObj = this._transformTilesObjectToZoom(tiles, tilesZ);
 
@@ -252,10 +256,11 @@ export class SpotMapDataManager {
       const key = getClusterTileKey(tilesZObj.zoom, tile.x, tile.y);
       if (this._spotClusterTiles.has(key)) {
         const spotCluster = this._spotClusterTiles.get(key)!;
-        dots.concat(spotCluster.dots);
+        dots.push(...spotCluster.dots);
       }
     });
 
+    this._visibleSpotsBehaviorSubject.next([]);
     this._visibleDotsBehaviorSubject.next(dots);
   }
 
@@ -390,11 +395,11 @@ export class SpotMapDataManager {
   ): Set<MapTileKey> {
     let zoom = visibleTilesObj.zoom;
 
-    if (zoom % this.divisor !== 0) {
+    if (zoom > 16) {
+      visibleTilesObj = this._transformTilesObjectToZoom(visibleTilesObj, 16);
+    } else if (zoom < 16) {
       console.warn(
-        "Zoom level is not divisible by " +
-          this.divisor +
-          ", returning no bounds to load for this zoom level."
+        "The zoom level is less than 16, this function should not be called"
       );
       return new Set();
     }
@@ -414,7 +419,37 @@ export class SpotMapDataManager {
     return tilesToLoad;
   }
 
-  getAllLoadedSpots(): Spot[] {
+  _getSpotClusterTilesToLoad(
+    visibleTilesObj: TilesObject,
+    markAsLoading: boolean = true
+  ): Set<MapTileKey> {
+    let zoom = visibleTilesObj.zoom;
+
+    // transform the visible tiles to the zoom level of the spot clusters
+    // get the tiles object for the cluster zoom
+    const tilesZ =
+      this.clusterZooms
+        .filter((zoom) => zoom <= visibleTilesObj.zoom)
+        .sort((a, b) => b - a)[0] ?? this.clusterZooms[0];
+
+    visibleTilesObj = this._transformTilesObjectToZoom(visibleTilesObj, tilesZ);
+
+    const missingTiles = [...visibleTilesObj.tiles]
+      .map((tile) => getClusterTileKey(visibleTilesObj.zoom, tile.x, tile.y))
+      .filter((tileKey) => !this._spotClusterTiles.has(tileKey));
+
+    const tilesToLoad = new Set(
+      missingTiles.filter((tileKey: MapTileKey) => !this.isTileLoading(tileKey))
+    );
+
+    if (markAsLoading) {
+      this.markTilesAsLoading(tilesToLoad);
+    }
+
+    return tilesToLoad;
+  }
+
+  _getAllLoadedSpots(): Spot[] {
     const allSpots: Spot[] = [];
     for (const key of this._spots.keys()) {
       if (!key.includes("z16")) continue;
@@ -431,8 +466,8 @@ export class SpotMapDataManager {
   private _loadSpotClustersForTiles(tilesToLoad: Set<MapTileKey>) {
     if (tilesToLoad.size === 0) return;
 
-    // add an empty array for the tiles that spot clusters will be loaded for
-    tilesToLoad.forEach((key) => this._tilesLoading.add(key));
+    // mark the cluster tiles as loading
+    this.markTilesAsLoading(tilesToLoad);
 
     // load the spot clusters and add them
     firstValueFrom(
@@ -484,6 +519,31 @@ export class SpotMapDataManager {
     if (_lastVisibleTiles) {
       this._showCachedSpotClustersForTiles(_lastVisibleTiles);
     }
+
+    //   const { zoom, x, y } = data;
+    //   if (zoom % this.divisor !== 0) {
+    //     console.warn(
+    //       `Zoom level is not divisible by ${this.divisor}, skipping insertion.`
+    //     );
+    //     return;
+    //   }
+
+    //   // 2. make the cluster key
+    //   const tileKey = getClusterTileKey(zoom, x, y);
+
+    //   // 3. insert into all clusters
+    //   // make an additional check if we are re-inserting a cluster
+    //   if (this.debugMode && this._spotClusters.has(tileKey)) {
+    //     console.warn(`Cluster already exists for ${tileKey}`);
+    //     return;
+    //   }
+    //   this._spotClusters.set(tileKey, data);
+
+    //   // 4. insert the tile key into the clusters by zoom map with the zoom level
+    //   if (!this._spotClusterKeysByZoom.has(zoom)) {
+    //     this._spotClusterKeysByZoom.set(zoom, new Map());
+    //   }
+    //   this._spotClusterKeysByZoom.get(zoom).set(`${x},${y}`, tileKey);
   }
 
   ////////// helpers
@@ -492,23 +552,70 @@ export class SpotMapDataManager {
     tilesObj: TilesObject,
     targetZoom: number
   ): TilesObject {
-    const shift = targetZoom - tilesObj.zoom;
+    let shift = targetZoom - tilesObj.zoom;
 
-    const tileSw = new google.maps.Point(
-      tilesObj.sw.x >> shift, // divide shift times by 2
-      tilesObj.sw.y >> shift
-    );
-    const tileNe = new google.maps.Point(
-      tilesObj.ne.x >> shift,
-      tilesObj.ne.y >> shift
-    );
+    if (shift === 0) {
+      return tilesObj;
+    }
 
     const tiles: { x: number; y: number }[] = [];
-    tilesObj.tiles.forEach((tile) => {
-      if (!tiles.includes(tile)) {
-        tiles.push(tile);
-      }
-    });
+    let tileSw = tilesObj.sw;
+    let tileNe = tilesObj.ne;
+
+    if (shift < 0) {
+      shift = -shift;
+      tileSw = {
+        x: tileSw.x >> shift, // divide shift times by 2
+        y: tileSw.y >> shift,
+      };
+      tileNe = {
+        x: tileNe.x >> shift,
+        y: tileNe.y >> shift,
+      };
+
+      tilesObj.tiles.forEach((tile) => {
+        tile = {
+          x: tile.x >> shift,
+          y: tile.y >> shift,
+        };
+
+        if (
+          !tiles.some(
+            (existingTile) =>
+              existingTile.x === tile.x && existingTile.y === tile.y
+          )
+        ) {
+          tiles.push(tile);
+        }
+      });
+    } else {
+      // shift > 0
+
+      tileSw = {
+        x: tileSw.x << shift, // divide shift times by 2
+        y: tileSw.y << shift,
+      };
+      tileNe = {
+        x: tileNe.x << shift,
+        y: tileNe.y << shift,
+      };
+
+      tilesObj.tiles.forEach((tile) => {
+        tile = {
+          x: tile.x << shift,
+          y: tile.y << shift,
+        };
+
+        if (
+          !tiles.some(
+            (existingTile) =>
+              existingTile.x === tile.x && existingTile.y === tile.y
+          )
+        ) {
+          tiles.push(tile);
+        }
+      });
+    }
 
     const newTilesObj: TilesObject = {
       zoom: targetZoom,
@@ -532,105 +639,8 @@ export class SpotMapDataManager {
 
   /////////////////////
 
-  // insertSpotClusterTile(data: SpotClusterTileSchema) {
-  //   // 1. check that the data matches the requirements
-  //   const { zoom, x, y } = data;
-  //   if (zoom % this.divisor !== 0) {
-  //     console.warn(
-  //       `Zoom level is not divisible by ${this.divisor}, skipping insertion.`
-  //     );
-  //     return;
-  //   }
-
-  //   // 2. make the cluster key
-  //   const tileKey = getClusterTileKey(zoom, x, y);
-
-  //   // 3. insert into all clusters
-  //   // make an additional check if we are re-inserting a cluster
-  //   if (this.debugMode && this._spotClusters.has(tileKey)) {
-  //     console.warn(`Cluster already exists for ${tileKey}`);
-  //     return;
-  //   }
-  //   this._spotClusters.set(tileKey, data);
-
-  //   // 4. insert the tile key into the clusters by zoom map with the zoom level
-  //   if (!this._spotClusterKeysByZoom.has(zoom)) {
-  //     this._spotClusterKeysByZoom.set(zoom, new Map());
-  //   }
-  //   this._spotClusterKeysByZoom.get(zoom).set(`${x},${y}`, tileKey);
-  // }
-
-  // insertSpots(zoom: number, spots: Spot[]) {}
-
-  // insertMarkers(zoom: number, markers: MarkerSchema[]) {}
-
-  // getClustersForZoomAnCorners(
-  //   zoom: number,
-  //   sw: { x: number; y: number },
-  //   ne: { x: number; y: number }
-  // ): SpotClusterTileSchema[] {
-  //   const clusters: SpotClusterTileSchema[] = [];
-
-  //   // if the zoom is not divisible by the devisor round it down, and scale the coords
-  //   const diff = zoom % this.divisor;
-  //   zoom -= diff;
-  //   xStart = xStart >> diff;
-  //   xEnd = xEnd >> diff;
-  //   yStart = yStart >> diff;
-  //   yEnd = yEnd >> diff;
-
-  //   for (let x = xStart; x <= xEnd; x++) {
-  //     for (let y = yStart; y <= yEnd; y++) {
-  //       const cluster = this.getCluster(zoom, x, y);
-
-  //       if (cluster) {
-  //         clusters.push(cluster);
-  //       }
-  //     }
-  //   }
-
-  //   return clusters;
-  // }
-
-  // getCluster(zoom: number, x: number, y: number): T | undefined {
-  //   if (!this._spotClustersByZoom.has(zoom)) {
-  //     return undefined;
-  //   }
-
-  //   const key = `${x},${y}`;
-  //   const clusterToReturn = this._spotClustersByZoom.get(zoom).get(key);
-
-  //   return clusterToReturn;
-  // }
-
-  // loadSpotsForTiles(tilesToLoad: Set<ClusterTileKey>) {}
-
-  // loadNewClusterTiles(tilesToLoad: Set<ClusterTileKey>) {
-  //   if (tilesToLoad.size === 0) return;
-
-  //   firstValueFrom(
-  //     this._spotsService.getSpotClusterTiles(Array.from(tilesToLoad))
-  //   )
-  //     .then((clusterTiles) => {
-  //       if (clusterTiles.length > 0) {
-  //         clusterTiles.forEach((clusterTile) => {
-  //           this.cachedClusterTiles.insert(
-  //             clusterTile.zoom,
-  //             clusterTile.x,
-  //             clusterTile.y,
-  //             clusterTile
-  //           );
-  //         });
-
-  //         this.updateVisibleDotsAndHighlightedSpots();
-  //         if (this.mapZoom === 16) this.updateVisibleSpotsAndMarkers();
-  //       }
-  //     })
-  //     .catch((err) => console.error(err));
-  // }
-
   // getReferenceToLoadedSpotById(spotId: string): LoadedSpotReference | null {
-  //   const allSpots = this.getAllLoadedSpots();
+  //   const allSpots = this._getAllLoadedSpots();
 
   //   // find the spot with no id
   //   const spot: Spot | undefined = allSpots.find((spot) => {
