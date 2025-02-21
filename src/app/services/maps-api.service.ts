@@ -72,6 +72,24 @@ export class MapsApiService {
     return Promise.resolve(JSON.parse(lastLocationAndZoom));
   }
 
+  storeMapStyle(mapStyle: "roadmap" | "satellite") {
+    if (typeof localStorage === "undefined") return;
+
+    localStorage.setItem("mapStyle", mapStyle);
+  }
+
+  loadMapStyle(
+    defaultStyle: "roadmap" | "satellite"
+  ): Promise<"roadmap" | "satellite"> {
+    if (typeof localStorage === "undefined")
+      return Promise.resolve(defaultStyle);
+
+    let mapStyle = localStorage.getItem("mapStyle");
+    if (!mapStyle) return Promise.resolve(defaultStyle);
+
+    return Promise.resolve(mapStyle as "roadmap" | "satellite");
+  }
+
   isMacOSOriOS(): boolean {
     if (typeof window === "undefined") return false; // abort if not in browser
 

@@ -28,9 +28,8 @@ import {
   MapCircle,
   MapAdvancedMarker,
   MapRectangle,
-  //   MapHeatmapLayer,
 } from "@angular/google-maps";
-import { BehaviorSubject, Observable, Subscriber, Subscription } from "rxjs";
+import { Subscription } from "rxjs";
 import { environment } from "../../environments/environment";
 import { MapsApiService } from "../services/maps-api.service";
 import {
@@ -38,7 +37,7 @@ import {
   SpotClusterTileSchema,
 } from "../../db/schemas/SpotClusterTile.js";
 import { GeoPoint } from "firebase/firestore";
-import { NgIf, NgFor, AsyncPipe, NgClass } from "@angular/common";
+import { AsyncPipe, NgClass } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
 import { trigger, transition, style, animate } from "@angular/animations";
 import { MarkerComponent, MarkerSchema } from "../marker/marker.component";
@@ -56,14 +55,12 @@ export interface TilesObject {
   templateUrl: "./map.component.html",
   styleUrls: ["./map.component.scss"],
   imports: [
-    NgIf,
     GoogleMap,
     MapCircle,
     MapPolygon,
     MapRectangle,
     MapAdvancedMarker,
     MatIconModule,
-    NgFor,
     NgClass,
     AsyncPipe,
     MarkerComponent,
@@ -95,7 +92,7 @@ export class MapComponent implements OnInit, OnChanges {
   isDebug = input<boolean>(false);
 
   isDarkMode = input<boolean>(true); // should be false if mapStyle is roadmap and the dark map is used
-  markers = input<MarkerSchema[]>([]);
+  markers: InputSignal<MarkerSchema[]> = input<MarkerSchema[]>([]);
 
   private _center: google.maps.LatLngLiteral | undefined;
   @Input() set center(coords: google.maps.LatLngLiteral) {
@@ -409,22 +406,22 @@ export class MapComponent implements OnInit, OnChanges {
     fillColor: "#b8c4ff",
     strokeColor: "#0036ba",
     strokeOpacity: 0.8,
-    fillOpacity: 0.8,
+    fillOpacity: 0.6,
     strokeWeight: 3,
     editable: false,
     draggable: false,
     clickable: true,
   };
-  spotPolygonLightOptions: google.maps.PolygonOptions = {
-    fillColor: "#0036ba",
-    strokeColor: "#b8c4ff",
-    strokeOpacity: 0.8,
-    fillOpacity: 0.5,
-    strokeWeight: 3,
-    editable: false,
-    draggable: false,
-    clickable: true,
-  };
+  // spotPolygonLightOptions: google.maps.PolygonOptions = {
+  //   fillColor: "#0036ba",
+  //   strokeColor: "#b8c4ff",
+  //   strokeOpacity: 0.8,
+  //   fillOpacity: 0.5,
+  //   strokeWeight: 3,
+  //   editable: false,
+  //   draggable: false,
+  //   clickable: true,
+  // };
   spotPolygonOptions: google.maps.PolygonOptions = this.spotPolygonDarkOptions;
   //   spotPolygonEditingOptions: google.maps.PolygonOptions = {
   //     ...this.spotPolygonOptions,
@@ -521,7 +518,7 @@ export class MapComponent implements OnInit, OnChanges {
         dot.location.latitude,
         dot.location.longitude
       );
-      this.focusOnLocation(location, Math.min(this.zoom + 4, this.focusZoom()));
+      this.focusOnLocation(location, Math.max(this.zoom + 4, this.focusZoom()));
     }
   }
 

@@ -113,7 +113,7 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   selectedSpot: Spot | LocalSpot | null = null;
   isEditing: boolean = false;
-  mapStyle: "roadmap" | "satellite" = "roadmap";
+  mapStyle: "roadmap" | "satellite" | null = null;
 
   askedGeoPermission: boolean = false;
   hasGeolocation: boolean = false;
@@ -181,18 +181,11 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
     ],
   };
 
-  setVisibleSpots(spots: Spot[], mapCenter: google.maps.LatLngLiteral) {
-    if (!spots || !mapCenter) return;
-    spots.sort((a, b) => {
-      return (
-        Math.sqrt(a.location().lat ** 2 + a.location().lng ** 2) -
-        Math.sqrt(mapCenter.lat ** 2 + mapCenter.lng ** 2) -
-        (Math.sqrt(b.location().lat ** 2 + b.location().lng ** 2) -
-          Math.sqrt(mapCenter.lat ** 2 + mapCenter.lng ** 2))
-      );
-    });
-
-    spots.sort((a, b) => b?.media?.length ?? 0 - a?.media?.length ?? 0);
+  setVisibleSpots(spots: Spot[]) {
+    if (!spots || spots.length === 0) {
+      this.visibleSpots = [];
+      return;
+    }
 
     this.visibleSpots = spots;
   }

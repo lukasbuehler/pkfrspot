@@ -14,6 +14,7 @@ import { SpotsService } from "../services/firebase/firestore/spots.service";
 import { LocaleCode } from "../../db/models/Interfaces";
 import { OsmDataService } from "../services/osm-data.service";
 import { MapHelpers } from "../../scripts/MapHelpers";
+import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
 
 /**
  * This interface is used to reference a spot in the loaded spots array.
@@ -46,10 +47,15 @@ export class SpotMapDataManager {
   private _visibleMarkersBehaviorSubject = new BehaviorSubject<MarkerSchema[]>(
     []
   );
+  private _visibleHighlightedSpotsBehaviorSubject = new BehaviorSubject<
+    SpotPreviewData[]
+  >([]);
 
   public visibleSpots$ = this._visibleSpotsBehaviorSubject.asObservable();
   public visibleDots$ = this._visibleDotsBehaviorSubject.asObservable();
   public visibleMarkers$ = this._visibleMarkersBehaviorSubject.asObservable();
+  public visibleHighlightedSpots$ =
+    this._visibleHighlightedSpotsBehaviorSubject.asObservable();
 
   private _lastVisibleTiles = signal<TilesObject | null>(null);
 
@@ -57,6 +63,7 @@ export class SpotMapDataManager {
   readonly markerZoom = 12;
   readonly clusterZooms = [4, 8, 12];
   readonly divisor = 4;
+  readonly defaultRating = 1.5;
 
   constructor(readonly locale: LocaleCode, readonly debugMode: boolean = true) {
     this._spotClusterTiles = new Map<MapTileKey, SpotClusterTileSchema>();
@@ -228,7 +235,28 @@ export class SpotMapDataManager {
       }
     });
 
+    // sort the spots
+    spots.sort((a, b) => {
+      // sort rating in descending order
+      if (
+        (b.rating ?? this.defaultRating) !== (a.rating ?? this.defaultRating)
+      ) {
+        return (
+          (b.rating ?? this.defaultRating) - (a.rating ?? this.defaultRating)
+        );
+      }
+      // if same rating, spots with an image go first
+      if (a.hasMedia() && !b.hasMedia()) {
+        return -1;
+      }
+      if (!a.hasMedia() && b.hasMedia()) {
+        return 1;
+      }
+      return 0;
+    });
+
     this._visibleDotsBehaviorSubject.next([]);
+    this._visibleHighlightedSpotsBehaviorSubject.next([]);
     this._visibleSpotsBehaviorSubject.next(spots);
     this._visibleMarkersBehaviorSubject.next(markers);
   }
@@ -252,16 +280,40 @@ export class SpotMapDataManager {
 
     // get the spot clusters for these tiles
     const dots: SpotClusterDotSchema[] = [];
+    const spots: SpotPreviewData[] = [];
     tilesZObj.tiles.forEach((tile) => {
       const key = getClusterTileKey(tilesZObj.zoom, tile.x, tile.y);
       if (this._spotClusterTiles.has(key)) {
         const spotCluster = this._spotClusterTiles.get(key)!;
         dots.push(...spotCluster.dots);
+        spots.push(...spotCluster.spots);
       }
     });
 
+    // sort the spots by rating, and if they have media
+    spots.sort((a, b) => {
+      // sort rating in descending order
+      if (
+        (b.rating ?? this.defaultRating) !== (a.rating ?? this.defaultRating)
+      ) {
+        return (
+          (b.rating ?? this.defaultRating) - (a.rating ?? this.defaultRating)
+        );
+      }
+      // if same rating, spots with an image go first
+      if (a.imageSrc && !b.imageSrc) {
+        return -1;
+      }
+      if (!a.imageSrc && b.imageSrc) {
+        return 1;
+      }
+      return 0;
+    });
+
     this._visibleSpotsBehaviorSubject.next([]);
+    this._visibleMarkersBehaviorSubject.next([]);
     this._visibleDotsBehaviorSubject.next(dots);
+    this._visibleHighlightedSpotsBehaviorSubject.next(spots);
   }
 
   private _loadSpotsForTiles(tilesToLoad: Set<MapTileKey>) {
@@ -592,7 +644,7 @@ export class SpotMapDataManager {
       // shift > 0
 
       tileSw = {
-        x: tileSw.x << shift, // divide shift times by 2
+        x: tileSw.x << shift, // multiply shift times by 2
         y: tileSw.y << shift,
       };
       tileNe = {
@@ -600,21 +652,12 @@ export class SpotMapDataManager {
         y: tileNe.y << shift,
       };
 
-      tilesObj.tiles.forEach((tile) => {
-        tile = {
-          x: tile.x << shift,
-          y: tile.y << shift,
-        };
-
-        if (
-          !tiles.some(
-            (existingTile) =>
-              existingTile.x === tile.x && existingTile.y === tile.y
-          )
-        ) {
-          tiles.push(tile);
+      // since we are zooming out here we need to add all the tiles that are in the new zoom level
+      for (let x = tileSw.x; x <= tileNe.x; x++) {
+        for (let y = tileNe.y; y <= tileSw.y; y++) {
+          tiles.push({ x: x, y: y });
         }
-      });
+      }
     }
 
     const newTilesObj: TilesObject = {

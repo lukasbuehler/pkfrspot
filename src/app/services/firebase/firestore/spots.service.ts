@@ -93,7 +93,6 @@ export class SpotsService {
           });
         }
       );
-      observer.next(undefined);
     });
   }
 

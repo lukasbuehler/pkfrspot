@@ -1,5 +1,5 @@
+@if(mapsApiService.isApiLoaded$ | async) {
 <google-map
-  *ngIf="mapsApiService.isApiLoaded$ | async"
   #googleMap
   id="googleMap"
   [center]="center"
@@ -199,3 +199,4 @@
     [position]="selectedMarker"
   ></map-advanced-marker> -->
 </google-map>
+}

@@ -19,12 +19,13 @@ import {
   ViewChild,
   ChangeDetectorRef,
   OnDestroy,
+  signal,
 } from "@angular/core";
 import { LocalSpot, Spot, SpotId } from "../../db/models/Spot";
 import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
 import { ActivatedRoute } from "@angular/router";
 import { GeoPoint } from "firebase/firestore";
-import { firstValueFrom, Observable, retry } from "rxjs";
+import { firstValueFrom, Observable, retry, Subscription } from "rxjs";
 import { MapHelpers } from "../../scripts/MapHelpers";
 import { AuthenticationService } from "../services/firebase/authentication.service";
 import { MapComponent, TilesObject } from "../map/map.component";
@@ -43,6 +44,7 @@ import { LocaleCode } from "../../db/models/Interfaces";
 import { MarkerSchema } from "../marker/marker.component";
 import { OsmDataService } from "../services/osm-data.service";
 import { SpotMapDataManager } from "./SpotMapDataManager";
+import { distinctUntilChanged } from "rxjs/operators";
 
 @Component({
   selector: "app-spot-map",
@@ -51,14 +53,14 @@ import { SpotMapDataManager } from "./SpotMapDataManager";
   imports: [MapComponent, MatSnackBarModule, AsyncPipe],
   animations: [],
 })
-export class SpotMapComponent implements AfterViewInit {
+export class SpotMapComponent implements AfterViewInit, OnDestroy {
   @ViewChild("map") map: MapComponent | undefined;
 
   osmDataService = inject(OsmDataService);
 
   selectedSpot = model<Spot | LocalSpot | null>(null); // input and output signal
   isEditing = model<boolean>(false);
-  mapStyle = model<"roadmap" | "satellite">("roadmap");
+  mapStyle = model<"roadmap" | "satellite" | null>(null);
   markers = input<MarkerSchema[]>([]);
   selectedMarker = input<google.maps.LatLngLiteral | null>(null);
   focusZoom = input<number>(17);
@@ -95,7 +97,7 @@ export class SpotMapComponent implements AfterViewInit {
   loadedInputMarkers: Signal<Map<MapTileKey, MarkerSchema[]>> = computed(() => {
     const map = new Map<MapTileKey, MarkerSchema[]>();
 
-    if (this.markers.length > 0) {
+    if (this.markers().length > 0) {
       this.markers().forEach((marker) => {
         const tile = MapHelpers.getTileCoordinatesForLocationAndZoom(
           marker.location,
@@ -112,12 +114,6 @@ export class SpotMapComponent implements AfterViewInit {
 
     return map;
   });
-  loadedAmenityMarkers: Map<MapTileKey, MarkerSchema[]> = new Map<
-    MapTileKey,
-    MarkerSchema[]
-  >();
-  visibleAmenityMarkers: MarkerSchema[] = [];
-  visibleMarkers: MarkerSchema[] = [];
 
   private _spotMapDataManager = new SpotMapDataManager(this.locale);
 
@@ -125,6 +121,16 @@ export class SpotMapComponent implements AfterViewInit {
   visibleSpots$: Observable<Spot[]> = this._spotMapDataManager.visibleSpots$;
   visibleDots$: Observable<SpotClusterDotSchema[]> =
     this._spotMapDataManager.visibleDots$;
+  visibleHighlightedSpots$: Observable<SpotPreviewData[]> =
+    this._spotMapDataManager.visibleHighlightedSpots$;
+  visibleAmenityMarkers$: Observable<MarkerSchema[]> =
+    this._spotMapDataManager.visibleMarkers$;
+
+  visibleMarkers = signal<MarkerSchema[]>([]);
+
+  private _visibleSpotsSubscription: Subscription | undefined;
+  private _visibleHighlightedSpotsSubscription: Subscription | undefined;
+  private _visibleMarkersSubscription: Subscription | undefined;
 
   // previous tile coordinates used to check if the visible tiles have changed
   private _previousTileZoom: 4 | 8 | 12 | 16 | undefined;
@@ -152,7 +158,25 @@ export class SpotMapComponent implements AfterViewInit {
   isInitiated: boolean = false;
 
   ngAfterViewInit(): void {
-    if (!this.selectedSpot) {
+    console.log("SpotMapComponent initialized");
+
+    if (!this.map) {
+      console.warn("Map not initialized in ngAFterViewInit!");
+      return;
+    }
+
+    // load the map style from memory
+    if (this.mapStyle() === null) {
+      this.mapsAPIService
+        .loadMapStyle("roadmap")
+        .then((style: "satellite" | "roadmap") => {
+          if (style) {
+            this.mapStyle.set(style);
+          }
+        });
+    }
+
+    if (!this.selectedSpot()) {
       // load the last location and zoom from memory
       this.mapsAPIService
         .loadLastLocationAndZoom()
@@ -166,8 +190,54 @@ export class SpotMapComponent implements AfterViewInit {
               this.mapZoom = this.startZoom;
             }
           }
-          this.isInitiated = true;
         });
+    }
+
+    this._visibleSpotsSubscription = this.visibleSpots$
+      .pipe(
+        distinctUntilChanged(
+          (prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)
+        )
+      )
+      .subscribe((spots) => {
+        this.visibleSpotsChange.emit(spots);
+      });
+
+    this._visibleHighlightedSpotsSubscription = this.visibleHighlightedSpots$
+      .pipe(
+        distinctUntilChanged(
+          (prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)
+        )
+      )
+      .subscribe((highlightedSpots) => {
+        this.hightlightedSpotsChange.emit(highlightedSpots);
+      });
+
+    // TODO this is not sufficient if the input changes
+    this.visibleMarkers.set(this.markers());
+
+    this._visibleMarkersSubscription = this.visibleAmenityMarkers$.subscribe(
+      (markers) => {
+        if (!markers || markers.length === 0) {
+          this.visibleMarkers.set(this.markers());
+          return;
+        }
+        this.visibleMarkers.set(markers.concat(this.markers()));
+      }
+    );
+
+    this.isInitiated = true;
+  }
+
+  ngOnDestroy(): void {
+    if (this._visibleSpotsSubscription) {
+      this._visibleSpotsSubscription.unsubscribe();
+    }
+    if (this._visibleHighlightedSpotsSubscription) {
+      this._visibleHighlightedSpotsSubscription.unsubscribe();
+    }
+    if (this._visibleMarkersSubscription) {
+      this._visibleMarkersSubscription.unsubscribe();
     }
   }
 
@@ -212,16 +282,18 @@ export class SpotMapComponent implements AfterViewInit {
     // update the local bounds variable
     this.bounds = bounds;
 
-    // store the new last location in the browser memory to restore it on next visit
-    // let newCenter: google.maps.LatLngLiteral = bounds.getCenter().toJSON();
-    // if (this.isInitiated && newCenter !== this.mapCenterStart) {
-    //   if (this.mapCenter !== newCenter || zoom !== this.mapZoom) {
-    //     this.mapsAPIService.storeLastLocationAndZoom({
-    //       location: newCenter,
-    //       zoom: zoom,
-    //     });
-    //   }
-    // }
+    if (!this.boundRestriction) {
+      // store the new last location in the browser memory to restore it on next visit
+      let newCenter: google.maps.LatLngLiteral = bounds.getCenter().toJSON();
+      if (this.isInitiated && newCenter !== this.mapCenterStart) {
+        if (this.mapCenter !== newCenter || zoom !== this.mapZoom) {
+          this.mapsAPIService.storeLastLocationAndZoom({
+            location: newCenter,
+            zoom: zoom,
+          });
+        }
+      }
+    }
   }
 
   // Spot loading /////////////////////////////////////////////////////////////
@@ -280,7 +352,7 @@ export class SpotMapComponent implements AfterViewInit {
     zoom: number = this.focusZoom()
   ) {
     this.map?.googleMap?.panTo(point);
-    this.mapZoom = zoom;
+    this.mapZoom = Math.max(this.mapZoom, zoom);
   }
 
   focusBounds(bounds: google.maps.LatLngBounds) {
@@ -288,15 +360,21 @@ export class SpotMapComponent implements AfterViewInit {
   }
 
   toggleMapStyle() {
+    let newMapStyle: "roadmap" | "satellite" = "roadmap";
     if (this.mapStyle() === "roadmap") {
       // if it is equal to roadmap, toggle to satellite
-      this.mapStyle.set("satellite");
+      newMapStyle = "satellite";
+
       // this.setLightMode();
     } else {
       // otherwise toggle back to roadmap
-      this.mapStyle.set("roadmap");
+      newMapStyle = "roadmap";
       // this.setDarkMode();
     }
+    this.mapStyle.set(newMapStyle);
+
+    // store the new map style in the browser memory
+    this.mapsAPIService.storeMapStyle(newMapStyle);
   }
 
   createSpot() {
