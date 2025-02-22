@@ -65,6 +65,7 @@ import { LocaleCode, SpotSlug } from "../../db/models/Interfaces";
 import { SlugsService } from "../services/firebase/firestore/slugs.service";
 import { MetaInfoService } from "../services/meta-info.service";
 import { MatChipsModule } from "@angular/material/chips";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @Component({
   selector: "app-map-page",
@@ -104,6 +105,7 @@ import { MatChipsModule } from "@angular/material/chips";
     // UserMenuContentComponent,
     AsyncPipe,
     MatDividerModule,
+    MatTooltipModule,
   ],
 })
 export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {

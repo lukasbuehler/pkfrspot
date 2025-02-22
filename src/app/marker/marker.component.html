@@ -6,6 +6,7 @@
     'pin-secondary': color() === 'secondary' && !isIconic(),
     'pin-tertiary': color() === 'tertiary' && !isIconic()
   }"
+  [style]="{ scale: size() }"
 >
   <div class="mat-label-large">
     @if(icon()) {

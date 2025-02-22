@@ -124,7 +124,7 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
   visibleHighlightedSpots$: Observable<SpotPreviewData[]> =
     this._spotMapDataManager.visibleHighlightedSpots$;
   visibleAmenityMarkers$: Observable<MarkerSchema[]> =
-    this._spotMapDataManager.visibleMarkers$;
+    this._spotMapDataManager.visibleAmenityMarkers$;
 
   visibleMarkers = signal<MarkerSchema[]>([]);
 
@@ -151,6 +151,27 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
       const spot = this.selectedSpot();
       if (spot) {
         this.focusSpot(spot);
+      }
+    });
+
+    effect(() => {
+      const showAmenities = this.showAmenities();
+      const inputMarkers = this.markers();
+
+      if (showAmenities) {
+        this._visibleMarkersSubscription =
+          this.visibleAmenityMarkers$.subscribe((markers) => {
+            if (!markers || markers.length === 0) {
+              this.visibleMarkers.set(inputMarkers);
+              return;
+            }
+            this.visibleMarkers.set(markers.concat(inputMarkers));
+          });
+      } else {
+        this.visibleMarkers.set(inputMarkers);
+        if (this._visibleMarkersSubscription) {
+          this._visibleMarkersSubscription.unsubscribe();
+        }
       }
     });
   }
@@ -215,16 +236,6 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
 
     // TODO this is not sufficient if the input changes
     this.visibleMarkers.set(this.markers());
-
-    this._visibleMarkersSubscription = this.visibleAmenityMarkers$.subscribe(
-      (markers) => {
-        if (!markers || markers.length === 0) {
-          this.visibleMarkers.set(this.markers());
-          return;
-        }
-        this.visibleMarkers.set(markers.concat(this.markers()));
-      }
-    );
 
     this.isInitiated = true;
   }

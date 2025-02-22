@@ -53,7 +53,8 @@ export class SpotMapDataManager {
 
   public visibleSpots$ = this._visibleSpotsBehaviorSubject.asObservable();
   public visibleDots$ = this._visibleDotsBehaviorSubject.asObservable();
-  public visibleMarkers$ = this._visibleMarkersBehaviorSubject.asObservable();
+  public visibleAmenityMarkers$ =
+    this._visibleMarkersBehaviorSubject.asObservable();
   public visibleHighlightedSpots$ =
     this._visibleHighlightedSpotsBehaviorSubject.asObservable();
 
@@ -86,16 +87,16 @@ export class SpotMapDataManager {
       this._showCachedSpotsAndMarkersForTiles(visibleTilesObj);
 
       // now determine the missing information and load spots and markers for it
-      const spotTilesToLoad: Set<MapTileKey> =
+      const spotTilesToLoad16: Set<MapTileKey> =
         this._getSpotTilesToLoad(visibleTilesObj);
-      const markerTilesToLoad: Set<MapTileKey> =
+      const markerTilesToLoad16: Set<MapTileKey> =
         this._getMarkerTilesToLoad(visibleTilesObj);
 
       // load spots for missing tiles
-      this._loadSpotsForTiles(spotTilesToLoad);
+      this._loadSpotsForTiles(spotTilesToLoad16);
 
       // load markers for missing tiles
-      this._loadMarkersForTiles(markerTilesToLoad);
+      this._loadMarkersForTiles(markerTilesToLoad16);
     } else {
       // show spot clusters
       this._showCachedSpotClustersForTiles(visibleTilesObj);
@@ -106,50 +107,6 @@ export class SpotMapDataManager {
 
       this._loadSpotClustersForTiles(spotClusterTilesToLoad);
     }
-
-    // const clampedZoom = Math.max(Math.min(zoom, 16), 4);
-    // const tileZoom = (clampedZoom - (clampedZoom % 4)) as 4 | 8 | 12 | 16;
-
-    // // make a list of all the tiles that are visible for this tile zoom to show only those dots/spots
-    // const visibleTiles = new Set<ClusterTileKey>();
-    // console.debug("Visible tiles changed", tileZoom, tileSw, tileNe);
-    // for (let x = tileSw.x; x <= tileNe.x; x++) {
-    //   for (let y = tileNe.y; y <= tileSw.y; y++) {
-    //     // here we go through all the x,y pairs for every visible tile on screen right now
-    //     // and add them to the set of visible tiles
-    //     visibleTiles.add(getClusterTileKey(tileZoom, x, y));
-    //   }
-    // }
-
-    // if (tileZoom === 16) {
-    //   // spots are close enough to render in detail
-    //   this._visibleDotsBehaviorSubject.next([]);
-
-    //   // TODO what happens to the highlighted spots? they just stay the same until zoom is 16 or smaller again
-
-    //   this.updateVisibleSpotsAndMarkers(visibleTiles);
-
-    //   const tilesToLoad: Set<ClusterTileKey> =
-    //     this.getUnloadedVisibleZ16Tiles(visibleTiles);
-
-    //   this.loadSpotsForTiles(tilesToLoad);
-
-    //   this.loadAmeinitesForTiles(visibleTiles);
-    // } else {
-    //   // show clustered dots instead of spots
-    //   this.clearVisibleSpots();
-
-    //   // now update the visible dots to show all the loaded dots for the visible tiles
-    //   this.updateVisibleDotsAndHighlightedSpots(visibleTilesObj);
-
-    //   // now that the visible tiles have been updated, we can load new spots and dots if necessary
-    //   // for that we call getUnloadedVisibleTiles to figure out if/which new tiles need to be loaded
-
-    //   const tilesToLoad: Set<ClusterTileKey> =
-    //     this.getUnloadedVisibleClusterTiles(tileVisibleTilesObj);
-
-    //   this.loadNewClusterTiles(tilesToLoad);
-    // }
   }
 
   // saveSpot(spot: Spot | LocalSpot) {
@@ -333,106 +290,149 @@ export class SpotMapDataManager {
       .catch((err) => console.error(err));
   }
 
-  private _getMarkerTilesToLoad(
-    visibleTilesObj16: TilesObject
-  ): Set<MapTileKey> {
-    if (visibleTilesObj16.zoom === 16) {
-      return new Set<MapTileKey>();
-    }
+  private _getMarkerTilesToLoad(visibleTilesObj: TilesObject): Set<MapTileKey> {
+    console.debug("Getting marker tiles to load");
 
-    // TODO add if tiles are already loading
+    const visibleTilesObj16 = this._transformTilesObjectToZoom(
+      visibleTilesObj,
+      16
+    );
 
     if (visibleTilesObj16.tiles.length === 0) return new Set();
 
     // make 12 tiles from the 16 tiles
     const tiles = new Set<MapTileKey>();
     visibleTilesObj16.tiles.forEach((tile16) => {
-      const tile14 = getClusterTileKey(14, tile16.x >> 2, tile16.y >> 2);
-      tiles.add(tile14);
+      const tile16key = getClusterTileKey(16, tile16.x, tile16.y);
+      if (!this._markers.has(tile16key)) {
+        tiles.add(tile16key);
+      }
     });
 
     return tiles;
   }
 
-  private _loadMarkersForTiles(tiles12: Set<MapTileKey>) {
-    // if (!tiles12 || tiles12.size === 0) return;
-    // // add an empty array for the tiles that water markers will be loaded for
-    // tiles12.forEach((tileKey) => {
-    //   if (!this._markers.has(tileKey)) {
-    //     this._markers.set(tileKey, []);
-    //     // get the bounds for the tile
-    //     const { zoom, x, y } = getDataFromClusterTileKey(tileKey);
-    //     const bounds = MapHelpers.getBoundsForTile(zoom, x, y);
-    //     // load the water markers and add them
-    //     firstValueFrom(this._osmDataService.getDrinkingWaterAndToilets(bounds))
-    //       .then((data) => {
-    //         const markers = data.elements
-    //           .map((element) => {
-    //             if (element.tags.amenity === "drinking_water") {
-    //               const marker: MarkerSchema = {
-    //                 location: {
-    //                   lat: element.lat,
-    //                   lng: element.lon,
-    //                 },
-    //                 icon: "local_drink", // water_drop
-    //                 name:
-    //                   element.tags.name +
-    //                   (element.tags.operator
-    //                     ? ` (${element.tags.operator})`
-    //                     : ""),
-    //                 color:
-    //                   element.tags.fee === "yes" ? "tertiary" : "secondary",
-    //               };
-    //               return marker;
-    //             } else if (element.tags.amenity === "toilets") {
-    //               const marker: MarkerSchema = {
-    //                 location: {
-    //                   lat: element.lat,
-    //                   lng: element.lon,
-    //                 },
-    //                 icon: "wc",
-    //                 name:
-    //                   element.tags.name +
-    //                   (element.tags.operator
-    //                     ? ` (${element.tags.operator})`
-    //                     : ""),
-    //                 color:
-    //                   element.tags.drinking_water === "yes"
-    //                     ? "secondary"
-    //                     : "tertiary",
-    //               };
-    //               return marker;
-    //             } else if (element.tags.amenity === "fountain") {
-    //               const marker: MarkerSchema = {
-    //                 location: {
-    //                   lat: element.lat,
-    //                   lng: element.lon,
-    //                 },
-    //                 icon: "water_drop",
-    //                 name:
-    //                   element.tags.name +
-    //                   (element.tags.operator
-    //                     ? ` (${element.tags.operator})`
-    //                     : ""),
-    //                 color:
-    //                   element.tags.drinking_water === "yes"
-    //                     ? "secondary"
-    //                     : "tertiary",
-    //               };
-    //               return marker;
-    //             }
-    //           })
-    //           .filter((marker) => marker !== undefined);
-    //         // console.log("Amenity markers", markers);
-    //         this._markers.set(tileKey, markers);
-    //         const _lastVisibleTiles = this._lastVisibleTiles();
-    //         if (_lastVisibleTiles) {
-    //           this._showCachedSpotsAndMarkersForTiles(_lastVisibleTiles);
-    //         }
-    //       })
-    //       .catch((err) => console.error(err));
-    //   }
-    // });
+  private _loadMarkersForTiles(tiles16: Set<MapTileKey>) {
+    if (!tiles16 || tiles16.size === 0) return;
+
+    // first we transform the 16 tiles to 12 tiles to load the markers
+    const tiles12 = new Set<MapTileKey>();
+
+    tiles16.forEach((tile16) => {
+      const { zoom, x, y } = getDataFromClusterTileKey(tile16);
+      const tile12 = getClusterTileKey(zoom - 4, x >> 4, y >> 4);
+      if (!tiles12.has(tile12)) tiles12.add(tile12);
+    });
+
+    console.debug("Loading markers for tiles", tiles12);
+
+    // add an empty array for the tiles that water markers will be loaded for
+    tiles12.forEach((tileKey) => {
+      if (!this._markers.has(tileKey)) {
+        this._markers.set(tileKey, []);
+        // get the bounds for the tile
+        const { zoom, x, y } = getDataFromClusterTileKey(tileKey);
+
+        const bounds = MapHelpers.getBoundsForTile(zoom, x, y);
+        // load the water markers and add them
+        firstValueFrom(this._osmDataService.getDrinkingWaterAndToilets(bounds))
+          .then((data) => {
+            const markers: {
+              marker: MarkerSchema;
+              tile: { x: number; y: number };
+            }[] = data.elements
+              .map((element) => {
+                if (element.tags.amenity === "drinking_water") {
+                  const marker: MarkerSchema = {
+                    location: {
+                      lat: element.lat,
+                      lng: element.lon,
+                    },
+                    icon: "local_drink", // water_drop
+                    name:
+                      element.tags.name +
+                      (element.tags.operator
+                        ? ` (${element.tags.operator})`
+                        : ""),
+                    color:
+                      element.tags.fee === "yes" ? "tertiary" : "secondary",
+                  };
+                  const tileCoords16 =
+                    MapHelpers.getTileCoordinatesForLocationAndZoom(
+                      marker.location,
+                      16
+                    );
+                  return { marker: marker, tile: tileCoords16 };
+                } else if (element.tags.amenity === "toilets") {
+                  const marker: MarkerSchema = {
+                    location: {
+                      lat: element.lat,
+                      lng: element.lon,
+                    },
+                    icon: "wc",
+                    name:
+                      element.tags.name +
+                      (element.tags.operator
+                        ? ` (${element.tags.operator})`
+                        : ""),
+                    color:
+                      element.tags.drinking_water === "yes"
+                        ? "secondary"
+                        : "tertiary",
+                  };
+                  const tileCoords16 =
+                    MapHelpers.getTileCoordinatesForLocationAndZoom(
+                      marker.location,
+                      16
+                    );
+                  return { marker: marker, tile: tileCoords16 };
+                } else if (element.tags.amenity === "fountain") {
+                  const marker: MarkerSchema = {
+                    location: {
+                      lat: element.lat,
+                      lng: element.lon,
+                    },
+                    icon: "water_drop",
+                    name:
+                      element.tags.name +
+                      (element.tags.operator
+                        ? ` (${element.tags.operator})`
+                        : ""),
+                    color:
+                      element.tags.drinking_water === "yes"
+                        ? "secondary"
+                        : "tertiary",
+                  };
+                  const tileCoords16 =
+                    MapHelpers.getTileCoordinatesForLocationAndZoom(
+                      marker.location,
+                      16
+                    );
+                  return { marker: marker, tile: tileCoords16 };
+                }
+              })
+              .filter((marker) => marker !== undefined);
+
+            markers.forEach((markerObj) => {
+              const key = getClusterTileKey(
+                16,
+                markerObj.tile.x,
+                markerObj.tile.y
+              );
+              if (!this._markers.has(key)) {
+                this._markers.set(key, []);
+              }
+              this._markers.get(key)!.push(markerObj.marker);
+            });
+
+            const _lastVisibleTiles = this._lastVisibleTiles();
+            if (_lastVisibleTiles) {
+              this._showCachedSpotsAndMarkersForTiles(_lastVisibleTiles);
+            }
+          })
+          .catch((err) => console.error(err));
+      }
+    });
   }
 
   /*

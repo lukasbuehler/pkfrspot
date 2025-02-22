@@ -201,6 +201,12 @@
       id="mapStyleFab"
       (click)="spotMap.toggleMapStyle()"
       color="primary"
+      i18n-matTootlip
+      [matTooltip]="
+        mapStyle === 'roadmap' ? 'Show satellite map' : 'Show roadmap'
+      "
+      matTooltipPosition="left"
+      matTooltipShowDelay="500"
     >
       <mat-icon>
         {{ mapStyle === "roadmap" ? "terrain" : "map" }}
@@ -213,6 +219,10 @@
       id="geolocationFab"
       color="primary"
       (click)="spotMap.focusOnGeolocation()"
+      i18n-matTootlip
+      matTooltip="Go to your location"
+      matTooltipPosition="left"
+      matTooltipShowDelay="500"
     >
       <mat-icon>
         {{
@@ -225,6 +235,7 @@
       </mat-icon>
     </button>
 
+    <!-- Show amenity markers mini FAB-->
     <button
       mat-mini-fab
       #amenitiesFab
@@ -232,6 +243,12 @@
       color="primary"
       (click)="showAmenities.set(!showAmenities())"
       [disabled]="spotMap?.mapZoom < 16"
+      i18n-matTootlip
+      [matTooltip]="
+        showAmenities() ? 'Hide amenity markers' : 'Show amenity markers'
+      "
+      matTooltipPosition="left"
+      matTooltipShowDelay="500"
     >
       <mat-icon>
         {{ showAmenities() ? "location_off" : "location_on" }}

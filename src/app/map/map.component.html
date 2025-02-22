@@ -191,7 +191,12 @@
     [position]="marker.location"
     [content]="markerComp.elementRef.nativeElement"
   ></map-advanced-marker>
-  <app-marker #markerComp [icon]="marker.icon" [color]="marker.color">
+  <app-marker
+    #markerComp
+    [icon]="marker.icon"
+    [color]="marker.color"
+    [size]="0.8"
+  >
   </app-marker>
   }
   <!-- <map-advanced-marker

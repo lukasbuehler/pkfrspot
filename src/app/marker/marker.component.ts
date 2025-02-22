@@ -21,4 +21,5 @@ export class MarkerComponent {
   icon = input<string | null>(null);
   isIconic = input<boolean>(false);
   color = input<"primary" | "secondary" | "tertiary">("primary");
+  size = input<number>(1);
 }

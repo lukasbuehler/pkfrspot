@@ -518,7 +518,7 @@ export class MapComponent implements OnInit, OnChanges {
         dot.location.latitude,
         dot.location.longitude
       );
-      this.focusOnLocation(location, Math.max(this.zoom + 4, this.focusZoom()));
+      this.focusOnLocation(location, this.zoom + 4);
     }
   }
 
