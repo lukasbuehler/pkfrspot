@@ -1,6 +1,6 @@
 import path from "node:path";
 import express from "express";
-// import compression from "compression";
+import compression from "compression";
 
 const supportedLanguages = ["en", "de", "it", "de-CH", "fr", "es", "nl"];
 const defaultLanguage = "en";
@@ -71,7 +71,7 @@ function run() {
   const port = process.env.PORT || 8080;
   const server = express();
 
-  // server.use(compression());
+  server.use(compression());
 
   // Global caching middleware that sets Cache-Control and Last-Modified,
   // and checks for a conditional GET request.
