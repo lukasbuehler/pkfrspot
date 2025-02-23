@@ -193,7 +193,7 @@ export class MapsApiService {
       placesService.getDetails(
         {
           placeId: placeId,
-          fields: ["name", "geometry", "photos"],
+          fields: ["name", "geometry", "photos", "rating", "url"],
         },
         (place, status) => {
           if (status !== "OK") {

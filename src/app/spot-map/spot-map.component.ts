@@ -314,6 +314,14 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
   openSpotByWhateverMeansNecessary(spot: Spot | SpotPreviewData | SpotId) {
     console.debug("Opening spot by whatever means necessary:", spot);
 
+    if (this.selectedSpot() === spot) {
+      this.closeSpot();
+      if (this.selectedSpot() === spot) {
+        // still selected, abort
+        return;
+      }
+    }
+
     if (spot instanceof Spot) {
       this.selectedSpot.set(spot);
     }

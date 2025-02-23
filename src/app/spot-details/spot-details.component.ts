@@ -205,6 +205,16 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
 
   isAppleMaps: boolean = false;
 
+  googlePlace:
+    | {
+        name: string;
+        rating: number;
+        photo_url: string;
+        url: string;
+        opening_hours: any;
+      }
+    | undefined;
+
   get isNewSpot() {
     return this.spot instanceof LocalSpot;
   }
@@ -248,6 +258,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     this.startHeight = this._element.nativeElement.clientHeight;
 
     this.loadReportForSpot();
+    this._loadGooglePlaceDataForSpot();
   }
 
   private _filterCountries(value: string): any[] {
@@ -454,6 +465,23 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
       });
   }
 
+  private _loadGooglePlaceDataForSpot() {
+    if (!this.spot.googlePlaceId()) return;
+
+    this._mapsApiService
+      .getGooglePlaceById(this.spot.googlePlaceId())
+      .then((place) => {
+        const photoUrl = this._mapsApiService.getPhotoURLOfGooglePlace(place);
+        this.googlePlace = {
+          name: place.name,
+          rating: place.rating,
+          photo_url: photoUrl,
+          opening_hours: place.opening_hours,
+          url: place.url,
+        };
+      });
+  }
+
   hasBounds() {
     return this.spot?.hasBounds();
   }
@@ -527,7 +555,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     }
 
     let isUpdate: boolean = false;
-    let review: SpotReviewSchema;
+    let review: SpotReviewSchema | undefined;
 
     // TODO somehow show that we are loading the review
 
@@ -537,9 +565,6 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
       .then((_review) => {
         review = _review;
         isUpdate = true;
-      })
-      .catch((err) => {
-        console.error(err);
       })
       .finally(() => {
         if (!this.spot) {
@@ -552,7 +577,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
           return;
         }
 
-        // otherwise create an empty review
+        // don't throw an error if the review doesn't exist, create a new one
+
         if (!review) {
           review = {
             spot: {

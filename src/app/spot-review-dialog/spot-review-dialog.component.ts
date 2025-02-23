@@ -1,4 +1,10 @@
-import { Component, Inject, LOCALE_ID, WritableSignal } from "@angular/core";
+import {
+  Component,
+  Inject,
+  LOCALE_ID,
+  WritableSignal,
+  signal,
+} from "@angular/core";
 import { SpotReviewSchema } from "../../db/schemas/SpotReviewSchema";
 import {
   MatButtonModule,
@@ -60,7 +66,7 @@ export class SpotReviewDialogComponent {
     this.isUpdate = data.isUpdate;
     this.hoverRating = this.review.rating;
 
-    this.reviewComment = signal(this.review.comment?.text ?? "");
+    this.reviewComment = signal<string>(this.review.comment?.text ?? "");
   }
 
   onNoClick(): void {
@@ -82,7 +88,4 @@ export class SpotReviewDialogComponent {
         console.error(err);
       });
   }
-}
-function signal(arg0: string): WritableSignal<string> {
-  throw new Error("Function not implemented.");
 }

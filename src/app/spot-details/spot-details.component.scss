@@ -155,3 +155,14 @@ div.hist-grid-container {
   grid-template-columns: 1fr 1fr 1fr;
   gap: 10px;
 }
+
+div.img-container {
+  border-radius: 0;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+
+  > img {
+    object-fit: cover;
+  }
+}
