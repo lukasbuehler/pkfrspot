@@ -14,7 +14,7 @@ import {
   StorageService,
 } from "../services/firebase/storage.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { Timestamp } from "firebase/firestore";
+import { Timestamp } from "@firebase/firestore";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
 import {
   MatDatepickerInput,

@@ -45,7 +45,6 @@
     "compression": "^1.8.0",
     "croppie": "^2.6.5",
     "express": "^4.18.2",
-    "firebase": "^10.12.4",
     "rxjs": "^7.8.1",
     "swiper": "^11.1.7",
     "timers": "^0.1.1",

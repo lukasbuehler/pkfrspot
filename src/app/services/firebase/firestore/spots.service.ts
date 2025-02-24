@@ -24,6 +24,7 @@ import {
 import { SpotSchema } from "../../../../db/schemas/SpotSchema";
 import { LocaleCode } from "../../../../db/models/Interfaces";
 import { transformFirestoreData } from "../../../../scripts/Helpers";
+import { GeoPoint } from "@firebase/firestore";
 
 @Injectable({
   providedIn: "root",
@@ -223,12 +224,12 @@ export class SpotsService {
     ];
 
     for (let field of fieldsToRemove) {
-      if (spotUpdateData[field]) {
+      if (field in spotUpdateData) {
         delete spotUpdateData[field];
       }
     }
 
-    console.log("Updating spot with data: ", spotUpdateData);
+    console.log("Updating spot with data: ", JSON.stringify(spotUpdateData));
 
     return updateDoc(doc(this.firestore, "spots", spotId), spotUpdateData);
   }

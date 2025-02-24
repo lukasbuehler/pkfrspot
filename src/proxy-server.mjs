@@ -1,11 +1,10 @@
 import path from "node:path";
 import express from "express";
 import compression from "compression";
+import { LAST_MODIFIED } from "./build-info.mjs";
 
 const supportedLanguages = ["en", "de", "it", "de-CH", "fr", "es", "nl"];
 const defaultLanguage = "en";
-
-const LAST_MODIFIED = "Mon, 24 Feb 2025 14:56:02 GMT+0100"; //"Fri, 08 Feb 2025 15:00:00 GMT";
 
 const serverExpressApps = {};
 
@@ -92,6 +91,11 @@ function run() {
       }
     }
     next();
+  });
+
+  server.get("/assets/*", (req, res) => {
+    const __dirname = path.dirname(new URL(import.meta.url).pathname);
+    res.sendFile(path.join(__dirname, "../browser/en", req.path));
   });
 
   server.get("/robots.txt", (req, res) => {

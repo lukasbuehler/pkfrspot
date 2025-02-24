@@ -1,4 +1,4 @@
-import { GeoPoint } from "firebase/firestore";
+import { GeoPoint } from "@firebase/firestore";
 import {
   LocaleMap,
   ContributedMedia,

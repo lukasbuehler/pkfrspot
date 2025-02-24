@@ -109,54 +109,29 @@ export class SpotMapDataManager {
     }
   }
 
-  // saveSpot(spot: Spot | LocalSpot) {
-  //   if (!spot) return;
+  saveSpot(spot: Spot | LocalSpot): Promise<void> {
+    if (!spot) return;
 
-  //   // if (spot.hasBounds()) {
-  //   //   let editedPaths = this.map.getPolygonPathForSpot(spot.id);
-  //   //   if (editedPaths) {
-  //   //     spot.paths = editedPaths;
-  //   //   }
-  //   // }
+    let saveSpotPromise: Promise<void>;
+    if (spot instanceof Spot) {
+      // this spot already exists in the database
+      saveSpotPromise = this._spotsService.updateSpot(spot.id, spot.data());
+    } else {
+      // this is a new (client / local) spot
+      saveSpotPromise = this._spotsService
+        .createSpot(spot.data())
+        .then((id: SpotId) => {
+          // replace the LocalSpot with a Spot
+          spot = new Spot(id, spot.data(), this.locale);
+          return;
+        });
+    }
 
-  //   // If the spot does not have an ID, it does not exist in the database yet.
-
-  //   let saveSpotPromise: Promise<void>;
-  //   if (spot instanceof Spot) {
-  //     // this is an old spot that is edited
-  //     saveSpotPromise = this._spotsService.updateSpot(spot.id, spot.data());
-  //   } else {
-  //     // this is a new (local) spot
-  //     saveSpotPromise = this._spotsService
-  //       .createSpot(spot.data())
-  //       .then((id: SpotId) => {
-  //         // replace the LocalSpot with a Spot
-  //         spot = new Spot(id, spot.data(), this.locale);
-  //         return;
-  //       });
-  //   }
-
-  //   saveSpotPromise
-  //     .then(() => {
-  //       this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spot as Spot);
-
-  //       // Successfully updated
-  //       this.isEditing.set(false);
-  //       this.snackBar.open(
-  //         $localize`Spot saved successfully`,
-  //         $localize`Dismiss`
-  //       );
-
-  //       // update the selected spot so that it is displayed in the URL
-  //       this.selectedSpot.set(null);
-  //       this.selectedSpot.set(spot);
-  //     })
-  //     .catch((error) => {
-  //       this.isEditing.set(false);
-  //       console.error("Error saving spot:", error);
-  //       this.snackBar.open($localize`Error saving spot`, $localize`Dismiss`);
-  //     });
-  // }
+    return saveSpotPromise.then(() => {
+      this.addOrUpdateNewSpotToLoadedSpotsAndUpdate(spot as Spot);
+      return Promise.resolve();
+    });
+  }
 
   // private functions
 
@@ -682,76 +657,77 @@ export class SpotMapDataManager {
 
   /////////////////////
 
-  // getReferenceToLoadedSpotById(spotId: string): LoadedSpotReference | null {
-  //   const allSpots = this._getAllLoadedSpots();
+  getReferenceToLoadedSpotById(spotId: string): LoadedSpotReference | null {
+    const allSpots = this._getAllLoadedSpots();
 
-  //   // find the spot with no id
-  //   const spot: Spot | undefined = allSpots.find((spot) => {
-  //     return spot.id === spotId;
-  //   });
+    // find the spot with no id
+    const spot: Spot | undefined = allSpots.find((spot) => {
+      return spot.id === spotId;
+    });
 
-  //   if (spot) {
-  //     const tile = spot?.tileCoordinates?.z16!;
+    if (spot) {
+      const tile = spot?.tileCoordinates?.z16!;
 
-  //     const indexInTileArray = this.loadedSpots
-  //       .get(getClusterTileKey(16, tile.x, tile.y))
-  //       ?.indexOf(spot)!;
+      const indexInTileArray = this._spots
+        .get(getClusterTileKey(16, tile.x, tile.y))
+        ?.indexOf(spot)!;
 
-  //     const loadedSpotRef: LoadedSpotReference = {
-  //       spot: spot,
-  //       tile: tile,
-  //       indexInTileArray: indexInTileArray,
-  //       indexInTotalArray: spot ? allSpots.indexOf(spot) : -1,
-  //     };
+      const loadedSpotRef: LoadedSpotReference = {
+        spot: spot,
+        tile: tile,
+        indexInTileArray: indexInTileArray,
+        indexInTotalArray: spot ? allSpots.indexOf(spot) : -1,
+      };
 
-  //     return loadedSpotRef;
-  //   } else {
-  //     return null;
-  //   }
-  // }
+      return loadedSpotRef;
+    } else {
+      return null;
+    }
+  }
 
-  // /**
-  //  * Add a newly created spot (before first save) to the loaded spots for nice display. It can be identified by having its ID set to empty string
-  //  * @param newSpot The newly created spot class.
-  //  */
-  // addOrUpdateNewSpotToLoadedSpotsAndUpdate(newSpot: Spot) {
-  //   if (!newSpot.id) {
-  //     throw new Error(
-  //       "The spot has no ID. It needs to be saved before it can be added to the loaded spots."
-  //     );
-  //   }
+  /**
+   * Add a newly created spot (before first save) to the loaded spots for nice display. It can be identified by having its ID set to empty string
+   * @param newSpot The newly created spot class.
+   */
+  addOrUpdateNewSpotToLoadedSpotsAndUpdate(newSpot: Spot) {
+    //Get the tile coordinates to save in loaded spots
+    const ref = this.getReferenceToLoadedSpotById(newSpot.id);
 
-  //   //Get the tile coordinates to save in loaded spots
-  //   const ref = this.getReferenceToLoadedSpotById(newSpot.id);
-  //   console.log("spot to update ref", ref);
-  //   if (ref?.spot && ref.indexInTileArray >= 0 && ref.tile) {
-  //     // The spot exists and should be updated
-  //     // Update the spot
-  //     this.loadedSpots.get(getClusterTileKey(16, ref.tile.x, ref.tile.y))![
-  //       ref.indexInTileArray
-  //     ] = newSpot;
-  //   } else {
-  //     // the spot does not exist
+    console.log("spot to update ref", ref);
+    if (ref?.spot && ref.indexInTileArray >= 0 && ref.tile) {
+      // The spot exists and should be updated
+      // Update the spot
+      this._spots.get(getClusterTileKey(16, ref.tile.x, ref.tile.y))![
+        ref.indexInTileArray
+      ] = newSpot;
+    } else {
+      // the spot does not exist
 
-  //     // get the tile coordinates for the location of the new spot
-  //     let tile = MapHelpers.getTileCoordinatesForLocationAndZoom(
-  //       newSpot.location(),
-  //       16
-  //     );
-  //     let spots = this.loadedSpots.get(getClusterTileKey(16, tile.x, tile.y));
+      // get the tile coordinates for the location of the new spot
+      let tile = MapHelpers.getTileCoordinatesForLocationAndZoom(
+        newSpot.location(),
+        16
+      );
+      let spots = this._spots.get(getClusterTileKey(16, tile.x, tile.y));
 
-  //     if (spots && spots.length > 0) {
-  //       // There are spots loaded for this 16 tile, add the new spot to the loaded spots array
-  //       spots.push(newSpot);
-  //     } else {
-  //       // There are no spots loaded for this 16 tile, add it to the loaded spots
-  //       spots = [newSpot];
-  //     }
-  //     this.loadedSpots.set(getClusterTileKey(16, tile.x, tile.y), spots);
-  //   }
-  //   // update the map to show the new spot on the loaded spots array.
-  //   this.updateVisibleSpotsAndMarkers();
-  // }
+      if (spots && spots.length > 0) {
+        // There are spots loaded for this 16 tile, add the new spot to the loaded spots array
+        spots.push(newSpot);
+      } else {
+        // There are no spots loaded for this 16 tile, add it to the loaded spots
+        spots = [newSpot];
+      }
+      this._spots.set(getClusterTileKey(16, tile.x, tile.y), spots);
+    }
+
+    // update the map to show the new spot on the loaded spots array.
+    if (
+      this._lastVisibleTiles() &&
+      this._lastVisibleTiles().zoom >= this.spotZoom
+    ) {
+      this._showCachedSpotsAndMarkersForTiles(this._lastVisibleTiles());
+    }
+  }
 
   // /**
   //  * This function is used if the new spot was saved and now has an id. It replaces the first spot it finds with no ID with the newSaveSpot

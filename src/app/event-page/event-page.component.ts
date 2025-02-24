@@ -129,12 +129,14 @@ export class EventPageComponent implements OnInit {
 
   constructor() {
     afterNextRender(() => {
-      this.swissJamSpotIds.forEach((spotId) => {
-        firstValueFrom(
+      const promises = this.swissJamSpotIds.map((spotId) => {
+        return firstValueFrom(
           this._spotService.getSpotById$(spotId, this.locale)
-        ).then((spot) => {
-          this.spots.push(spot);
-        });
+        );
+      });
+
+      Promise.all(promises).then((spots) => {
+        this.spots = spots;
       });
     });
   }

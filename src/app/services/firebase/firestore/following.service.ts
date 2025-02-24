@@ -12,7 +12,7 @@ import {
 } from "@angular/fire/firestore";
 import { Observable } from "rxjs";
 import { User } from "../../../../db/models/User";
-import { Timestamp } from "firebase/firestore";
+import { Timestamp } from "@firebase/firestore";
 
 @Injectable({
   providedIn: "root",

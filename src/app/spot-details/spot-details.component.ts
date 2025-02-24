@@ -14,6 +14,12 @@ import {
   Pipe,
   PipeTransform,
   CUSTOM_ELEMENTS_SCHEMA,
+  Signal,
+  signal,
+  input,
+  computed,
+  effect,
+  WritableSignal,
 } from "@angular/core";
 import {
   MatProgressBar,
@@ -155,7 +161,7 @@ export class AsRatingKeyPipe implements PipeTransform {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SpotDetailsComponent implements AfterViewInit, OnChanges {
-  @Input() spot: Spot | LocalSpot | null = null;
+  spot = input<Spot | LocalSpot | null>(null);
   @Input() infoOnly: boolean = false;
   @Input() dismissable: boolean = false;
   @Input() border: boolean = false;
@@ -205,7 +211,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
 
   isAppleMaps: boolean = false;
 
-  googlePlace:
+  googlePlace = signal<
     | {
         name: string;
         rating: number;
@@ -213,7 +219,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
         url: string;
         opening_hours: any;
       }
-    | undefined;
+    | undefined
+  >(undefined);
 
   get isNewSpot() {
     return this.spot instanceof LocalSpot;
@@ -246,6 +253,14 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
         country ? this._filterCountries(country) : this.countries.slice()
       )
     );
+
+    effect(() => {
+      const spot = this.spot();
+
+      if (spot instanceof Spot) {
+        this._loadGooglePlaceDataForSpot();
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -258,7 +273,6 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     this.startHeight = this._element.nativeElement.clientHeight;
 
     this.loadReportForSpot();
-    this._loadGooglePlaceDataForSpot();
   }
 
   private _filterCountries(value: string): any[] {
@@ -296,7 +310,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   saveButtonClick() {
     this.isSaving = true;
 
-    this.saveClick.emit(this.spot as Spot);
+    this.saveClick.emit(this.spot() as Spot);
   }
   discardButtonClick() {
     this.discardClick.emit();
@@ -443,7 +457,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     if (typeof plausible !== "undefined" && this.spot instanceof Spot) {
       plausible("Opening in Maps", { props: { spotId: this.spot.id } });
     }
-    if (this.spot) this._mapsApiService.openLatLngInMaps(this.spot.location());
+    if (this.spot)
+      this._mapsApiService.openLatLngInMaps(this.spot().location());
   }
 
   openDirectionsInMaps() {
@@ -452,7 +467,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     }
 
     if (this.spot)
-      this._mapsApiService.openDirectionsInMaps(this.spot.location());
+      this._mapsApiService.openDirectionsInMaps(this.spot().location());
   }
 
   loadReportForSpot() {
@@ -466,24 +481,27 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   private _loadGooglePlaceDataForSpot() {
-    if (!this.spot.googlePlaceId()) return;
+    if (!this.spot().googlePlaceId()) {
+      this.googlePlace.set(undefined);
+      return;
+    }
 
     this._mapsApiService
-      .getGooglePlaceById(this.spot.googlePlaceId())
+      .getGooglePlaceById(this.spot().googlePlaceId())
       .then((place) => {
         const photoUrl = this._mapsApiService.getPhotoURLOfGooglePlace(place);
-        this.googlePlace = {
+        this.googlePlace.set({
           name: place.name,
           rating: place.rating,
           photo_url: photoUrl,
           opening_hours: place.opening_hours,
           url: place.url,
-        };
+        });
       });
   }
 
   hasBounds() {
-    return this.spot?.hasBounds();
+    return this.spot()?.hasBounds();
   }
 
   capitalize(s: string) {
@@ -582,7 +600,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
         if (!review) {
           review = {
             spot: {
-              name: this.spot.name(),
+              name: this.spot().name(),
               id: spotId,
             },
             user: {
