@@ -447,7 +447,25 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
   }
 
   saveSpot(spot: LocalSpot | Spot) {
-    // this._spotMapDataManager.saveSpot(spot);
+    this._spotMapDataManager
+      .saveSpot(spot)
+      .then(() => {
+        // Successfully updated
+        this.isEditing.set(false);
+        this.snackBar.open(
+          $localize`Spot saved successfully`,
+          $localize`Dismiss`
+        );
+
+        // update the selected spot so that it is displayed in the URL
+        this.selectedSpot.set(null);
+        this.selectedSpot.set(spot);
+      })
+      .catch((error) => {
+        this.isEditing.set(false);
+        console.error("Error saving spot:", error);
+        this.snackBar.open($localize`Error saving spot`, $localize`Dismiss`);
+      });
   }
 
   discardEdit() {

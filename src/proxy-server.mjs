@@ -93,6 +93,11 @@ function run() {
     next();
   });
 
+  server.get("/assets/*", (req, res) => {
+    const __dirname = path.dirname(new URL(import.meta.url).pathname);
+    res.sendFile(path.join(__dirname, "../browser/en", req.path));
+  });
+
   server.get("/robots.txt", (req, res) => {
     const __dirname = path.dirname(new URL(import.meta.url).pathname);
     res.sendFile(path.join(__dirname, "../browser/en/robots.txt"));

@@ -19,6 +19,12 @@ import { SpotReviewSchema } from "../schemas/SpotReviewSchema";
 export type SpotId = string & { __brand: "SpotId" };
 export type SpotSlug = string & { __brand: "SpotSlug" };
 
+/**
+ * A spot is a location of interest to the Parkour and Freerunning community.
+ * It has information like a name, location, description, media, and more metadata.
+ * A LocalSpot is like a Spot, but only exists locally on the client and not
+ * in the Firestore database, hence it does not have an id.
+ */
 export class LocalSpot {
   names: WritableSignal<LocaleMap>;
   name: Signal<string>;
@@ -428,6 +434,9 @@ export class LocalSpot {
   }
 }
 
+/**
+ * A Spot is a LocalSpot with an id, since it is stored in the Firestore database.
+ */
 export class Spot extends LocalSpot {
   readonly id: SpotId;
 
