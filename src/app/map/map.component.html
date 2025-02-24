@@ -61,7 +61,6 @@
   <!-- Cluster Markers -->
   @for (dot of dots; track $index) {
   <div
-    @fadeInOut
     #smallDot
     class="small-dot-marker"
     [ngClass]="{
@@ -111,7 +110,7 @@
     [zIndex]="1000000 + 1"
   ></map-advanced-marker>
   <app-marker
-    @fadeInOut
+    class="fade-in"
     #selectedSpotMarkerNode
     id="selectedSpotMarkerNode"
     [icon]="selectedSpot.isIconic ? 'star' : 'directions_run'"
@@ -193,6 +192,7 @@
   ></map-advanced-marker>
   <app-marker
     #markerComp
+    class="fade-in"
     [icon]="marker.icon"
     [color]="marker.color"
     [size]="0.8"

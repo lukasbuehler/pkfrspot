@@ -29,20 +29,23 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-8 pb-5">
-      <div class="d-flex flex-row justify-content-between">
-        <h3 class="mat-heading-small mb-2" style="height: 42px" i18n>
+    <div class="col-md-6 col-lg-8 pb-5">
+      <div class="d-flex flex-row justify-content-between flex-wrap mb-2">
+        <h3
+          class="mat-heading-small text-truncate mb-0"
+          style="height: 42px"
+          i18n
+        >
           Event spot map
         </h3>
         <a [routerLink]="['/map']">
           <button
             mat-stroked-button
             color="primary"
-            i18n
             matTooltip="Show all spots"
           >
             <mat-icon>map</mat-icon>
-            Open global spot map
+            <span class="text-truncate" i18n>Open global spot map</span>
           </button>
         </a>
       </div>
@@ -68,7 +71,7 @@
         [selectedSpot]="selectedSpot()"
         (selectedSpotChange)="selectedSpot.set($event)"
         class="w-100 rounded overflow-hidden"
-        style="height: 400px; display: inline-block"
+        style="display: inline-block; aspect-ratio: 4/3"
       ></app-spot-map>
       <div class="d-flex flex-row gap-3">
         @for(marker of markers; track marker) {
@@ -85,7 +88,7 @@
       </div>
       }
     </div>
-    <div class="col-md-4 pb-5">
+    <div class="col-md-6 col-lg-4 pb-5">
       <!-- <h3 class="mat-title-large">Spots</h3> -->
       @if(selectedSpot()) {
       <app-spot-details
@@ -103,7 +106,7 @@
         [spots]="spots"
         [withHrefLink]="false"
         (spotClickIndex)="spotClickedIndex($event)"
-        text="Spots at this event"
+        text="Event spots"
         i18n-text
       ></app-spot-list>
       } }

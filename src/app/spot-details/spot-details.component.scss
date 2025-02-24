@@ -144,11 +144,10 @@ div.hist-grid-container {
   gap: 10px;
 }
 
-div.img-container {
+div.google-img-container {
   border-radius: 0;
-  position: relative;
-  width: 100%;
   aspect-ratio: 4/3;
+  position: relative;
 
   > img {
     object-fit: cover;

@@ -21,6 +21,7 @@ mat-card.compact {
   > div.img-container {
     border-radius: 0;
     position: relative;
+    aspect-ratio: 1/1;
 
     > img {
       object-fit: cover;

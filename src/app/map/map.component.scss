@@ -31,3 +31,16 @@
     }
   }
 }
+
+.fade-in {
+  opacity: 0;
+  transform: scale(0) translateY(20px);
+  animation: fadeIn 0.3s forwards; // adjust duration as needed
+}
+
+@keyframes fadeIn {
+  to {
+    transform: scale(1) translate(0px);
+    opacity: 1;
+  }
+}

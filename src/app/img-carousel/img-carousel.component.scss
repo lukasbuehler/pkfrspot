@@ -36,3 +36,10 @@
 ::ng-deep .square {
   aspect-ratio: 1 / 1;
 }
+
+::ng-deep .dialog {
+  width: min(800px, 95vw, 95vh);
+  height: min(800px, 95vw, 95vh);
+  // optionally force a square aspect ratio
+  aspect-ratio: 1;
+}

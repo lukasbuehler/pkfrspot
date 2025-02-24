@@ -49,8 +49,7 @@ export class ImgCarouselComponent {
       hasBackdrop: true,
       maxWidth: "95vw",
       maxHeight: "95vh",
-      panelClass: "square",
-      height: "100%",
+      panelClass: "dialog",
     });
 
     // dialogRef.afterClosed().subscribe((result) => {
