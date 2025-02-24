@@ -6,6 +6,10 @@
     id="spotMap"
     [selectedSpot]="selectedSpot"
     (selectedSpotChange)="selectedSpot = $event; updateMapURL()"
+    [centerStart]="{
+      lat: 48.6270939,
+      lng: 2.4305363,
+    }"
     [(isEditing)]="isEditing"
     [(mapStyle)]="mapStyle"
     [showAmenities]="showAmenities()"
@@ -24,18 +28,7 @@
         class="spot-search-field mat-elevation-z3"
         appearance="fill"
       >
-        @if(selectedSpot) {
-        <button
-          mat-icon-button
-          matSuffix
-          (click)="$event.stopPropagation(); spotMap?.closeSpot()"
-          class="me-2"
-        >
-          <mat-icon>close</mat-icon>
-        </button>
-        } @else {
         <mat-icon matSuffix>search</mat-icon>
-        }
 
         <input
           #mapSearchInput
@@ -126,13 +119,13 @@
     </div>
 
     @if(spotMap) { @if(selectedSpot) {
-    <div class="info-panel d-none d-md-block spot-preview-container p-3 pt-4">
+    <div class="info-panel d-none d-md-block spot-preview-container p-1 pt-3">
       <app-spot-details
         @fadeInOut
         #spotDetail
         [spot]="selectedSpot"
-        [flat]="true"
-        [dismissable]="false"
+        [border]="false"
+        [dismissable]="true"
         [infoOnly]="false"
         [editable]="true"
         [isEditing]="isEditing"
@@ -159,8 +152,8 @@
           @fadeInOut
           #spotDetail
           [spot]="selectedSpot"
-          [flat]="true"
-          [dismissable]="false"
+          [border]="false"
+          [dismissable]="true"
           [infoOnly]="false"
           [editable]="true"
           [isEditing]="isEditing"
@@ -174,11 +167,13 @@
         ></app-spot-details>
       </div>
       } @else {
-      <app-spot-list
-        @fadeInOut
-        [spots]="visibleSpots"
-        [highlightedSpots]="highlightedSpots"
-      ></app-spot-list>
+      <div class="px-3">
+        <app-spot-list
+          @fadeInOut
+          [spots]="visibleSpots"
+          [highlightedSpots]="highlightedSpots"
+        ></app-spot-list>
+      </div>
       }
     </app-bottom-sheet>
     }

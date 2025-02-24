@@ -4,17 +4,24 @@ import {
   LOCALE_ID,
   afterNextRender,
   OnInit,
+  ViewChild,
+  signal,
 } from "@angular/core";
 import { CountdownComponent } from "../countdown/countdown.component";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
 import { NgOptimizedImage } from "@angular/common";
-import { Spot, SpotId } from "../../db/models/Spot";
+import { LocalSpot, Spot, SpotId } from "../../db/models/Spot";
 import { SpotListComponent } from "../spot-list/spot-list.component";
 import { SpotsService } from "../services/firebase/firestore/spots.service";
 import { firstValueFrom, lastValueFrom, take, timeout } from "rxjs";
 import { LocaleCode } from "../../db/models/Interfaces";
-import { MarkerSchema } from "../marker/marker.component";
+import { MarkerComponent, MarkerSchema } from "../marker/marker.component";
 import { MetaInfoService } from "../services/meta-info.service";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { RouterLink } from "@angular/router";
+import { SpotDetailsComponent } from "../spot-details/spot-details.component";
+import { trigger, transition, style, animate } from "@angular/animations";
 
 @Component({
   selector: "app-event-page",
@@ -23,14 +30,35 @@ import { MetaInfoService } from "../services/meta-info.service";
     SpotMapComponent,
     NgOptimizedImage,
     SpotListComponent,
+    MarkerComponent,
+    MatButtonModule,
+    MatIconModule,
+    RouterLink,
+    SpotDetailsComponent,
+  ],
+  animations: [
+    trigger("fadeInOut", [
+      transition(":enter", [
+        style({ opacity: 0, scale: 0.8 }),
+        animate("0.3s ease-out", style({ opacity: 1, scale: 1 })),
+      ]),
+      transition(":leave", [
+        style({ opacity: 1, scale: 1 }),
+        animate("0.3s ease-in", style({ opacity: 0, scale: 0.8 })),
+      ]),
+    ]),
   ],
   templateUrl: "./event-page.component.html",
   styleUrl: "./event-page.component.scss",
 })
 export class EventPageComponent implements OnInit {
+  @ViewChild("spotMap") spotMap: SpotMapComponent;
+
   metaInfoService = inject(MetaInfoService);
   locale = inject<LocaleCode>(LOCALE_ID);
   private _spotService = inject(SpotsService);
+
+  selectedSpot = signal<Spot | LocalSpot | null>(null);
 
   name: string = "Swiss Jam 2025";
   bannerImageSrc: string = "/assets/swissjam.jpg";
@@ -53,7 +81,7 @@ export class EventPageComponent implements OnInit {
   markers: MarkerSchema[] = [
     // WC
     {
-      name: "WC",
+      name: $localize`WC`,
       color: "tertiary",
       location: {
         lat: 47.3971769023667,
@@ -64,7 +92,7 @@ export class EventPageComponent implements OnInit {
 
     // Workshop 1
     {
-      name: "Workshop 1",
+      name: `Workshop 1`,
       color: "secondary",
       location: {
         lat: 47.39723208524732,
@@ -85,7 +113,7 @@ export class EventPageComponent implements OnInit {
     // },
     // Info
     {
-      name: "Info",
+      name: $localize`Info stand`,
       color: "primary",
       location: {
         lat: 47.397277939269756,
@@ -125,5 +153,9 @@ export class EventPageComponent implements OnInit {
             this.end.toLocaleDateString()) +
         ")"
     );
+  }
+
+  spotClickedIndex(spotIndex: number) {
+    this.selectedSpot.set(this.spots[spotIndex]);
   }
 }

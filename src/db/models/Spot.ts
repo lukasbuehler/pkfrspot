@@ -60,7 +60,7 @@ export class LocalSpot {
   formattedAddress: Signal<string>;
   localityString: Signal<string>;
 
-  googlePlaceId?: Signal<string>;
+  googlePlaceId = signal<string | undefined>(undefined);
 
   type?: string;
   area?: string;
@@ -214,9 +214,7 @@ export class LocalSpot {
 
     // set google place id
     if (data.external_references?.google_maps_place_id) {
-      this.googlePlaceId = signal(
-        data.external_references.google_maps_place_id
-      );
+      this.googlePlaceId.set(data.external_references.google_maps_place_id);
     }
 
     this.type = data.type;

@@ -212,14 +212,11 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
           console.log("got spotId from route", spotId, "loading now");
           return this.loadSpotById(spotId);
         }
-        return Promise.reject();
+        return Promise.resolve();
       })
-      .then(() => {
-        console.log("loaded spot");
-      })
+      .then(() => {})
       .catch((err) => {
-        if (!err) return; // ignore, because no spotId was found in route
-        console.error("Error loading spot", err);
+        console.error("Error opening spot", err);
       });
   }
 

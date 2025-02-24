@@ -1,4 +1,4 @@
-<div
+<!-- <div
   class="header w-100"
   style="height: 200px; overflow: hidden; position: relative"
 >
@@ -8,8 +8,8 @@
     fill
     style="object-fit: cover"
   />
-</div>
-<div class="container p-3">
+</div> -->
+<div class="container-fluid p-3">
   <div class="row">
     <div class="col-md-12 p-3">
       <h2 class="mat-heading-large">{{ name }}</h2>
@@ -29,26 +29,26 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6 pb-5">
-      <!-- <h3 class="mat-title-large">Spots</h3> -->
-      @if(spots?.length > 0) {
-      <app-spot-list
-        [spots]="spots"
-        text="Spots at this event"
-        i18n-text
-      ></app-spot-list>
-      }
-    </div>
-    <div class="col-md-6 pb-5">
-      <h3
-        class="mat-heading-small mb-2"
-        style="height: 42px"
-        i18n="@@spot_map_label"
-      >
-        Map
-      </h3>
+    <div class="col-md-8 pb-5">
+      <div class="d-flex flex-row justify-content-between">
+        <h3 class="mat-heading-small mb-2" style="height: 42px" i18n>
+          Event spot map
+        </h3>
+        <a [routerLink]="['/map']">
+          <button
+            mat-stroked-button
+            color="primary"
+            i18n
+            matTooltip="Show all spots"
+          >
+            <mat-icon>map</mat-icon>
+            Open global spot map
+          </button>
+        </a>
+      </div>
       @if(spots?.length > 0) {
       <app-spot-map
+        @fadeInOut
         #spotMap
         id="spotMap"
         [isClickable]="true"
@@ -61,13 +61,52 @@
           east: 8.55208,
         }"
         [minZoom]="16"
+        [centerStart]="markers[markers.length - 1].location"
         [mapStyle]="mapStyle"
         [markers]="markers"
         [spots]="spots"
+        [selectedSpot]="selectedSpot()"
+        (selectedSpotChange)="selectedSpot.set($event)"
         class="w-100 rounded overflow-hidden"
         style="height: 400px; display: inline-block"
       ></app-spot-map>
+      <div class="d-flex flex-row gap-3">
+        @for(marker of markers; track marker) {
+        <span
+          class="d-flex flex-row gap-1 mat-title-small justify-content-center align-items-center"
+          ><app-marker
+            [icon]="marker.icon"
+            [color]="marker.color"
+            [size]="0.8"
+          ></app-marker>
+          {{ marker.name }}</span
+        >
+        }
+      </div>
       }
+    </div>
+    <div class="col-md-4 pb-5">
+      <!-- <h3 class="mat-title-large">Spots</h3> -->
+      @if(selectedSpot()) {
+      <app-spot-details
+        @fadeInOut
+        [spot]="selectedSpot()"
+        [editable]="false"
+        [isEditing]="false"
+        [dismissable]="true"
+        [border]="true"
+        (dismiss)="selectedSpot.set(null)"
+      ></app-spot-details>
+      } @else {@if(spots?.length > 0) {
+      <app-spot-list
+        @fadeInOut
+        [spots]="spots"
+        [withHrefLink]="false"
+        (spotClickIndex)="spotClickedIndex($event)"
+        text="Spots at this event"
+        i18n-text
+      ></app-spot-list>
+      } }
     </div>
   </div>
   <div class="row">

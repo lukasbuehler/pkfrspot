@@ -6,11 +6,6 @@ mat-card {
   height: auto;
   overflow-y: scroll;
   overflow: visible;
-
-  ::ng-deep .mat-card-header-text {
-    width: 100%;
-    margin: 0;
-  }
 }
 
 .clickable {
@@ -96,14 +91,7 @@ mat-card-header {
 
 mat-card-header {
   ::ng-deep div.mat-mdc-card-header-text {
-    flex-shrink: 1;
-    min-width: 0;
-
-    * {
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-    }
+    width: 100%;
   }
 }
 

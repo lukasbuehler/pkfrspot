@@ -158,7 +158,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   @Input() spot: Spot | LocalSpot | null = null;
   @Input() infoOnly: boolean = false;
   @Input() dismissable: boolean = false;
-  @Input() flat: boolean = false;
+  @Input() border: boolean = false;
   @Input() clickable: boolean = false;
   @Input() editable: boolean = false;
   @Input() isEditing: boolean = false;

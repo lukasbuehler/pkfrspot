@@ -66,6 +66,7 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
   focusZoom = input<number>(17);
   isClickable = input<boolean>(true);
   showAmenities = input<boolean>(false);
+  centerStart = input<google.maps.LatLngLiteral | null>(null);
 
   @Input() showGeolocation: boolean = true;
   @Input() showSatelliteToggle: boolean = false;
@@ -86,10 +87,6 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
 
   startZoom: number = 4;
   mapZoom: number = this.startZoom;
-  mapCenterStart: google.maps.LatLngLiteral = {
-    lat: 48.6270939,
-    lng: 2.4305363,
-  };
   mapCenter?: google.maps.LatLngLiteral;
   bounds?: google.maps.LatLngBounds;
 
@@ -197,7 +194,7 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
         });
     }
 
-    if (!this.selectedSpot()) {
+    if (!this.selectedSpot() && !this.boundRestriction) {
       // load the last location and zoom from memory
       this.mapsAPIService
         .loadLastLocationAndZoom()
@@ -207,12 +204,25 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
               this.map.center = lastLocationAndZoom.location;
               this.mapZoom = lastLocationAndZoom.zoom;
             } else {
-              this.map.center = this.mapCenterStart;
+              this.map.center = this.centerStart();
               this.mapZoom = this.startZoom;
             }
           }
         });
+    } else if (this.boundRestriction && !this.centerStart()) {
+      console.debug("Using start center since we have bounds restriction");
+
+      this.map.center = new google.maps.LatLngBounds(this.boundRestriction)
+        .getCenter()
+        .toJSON();
+    } else {
+      this.map.center = this.centerStart() ?? {
+        lat: 48.6270939,
+        lng: 2.4305363,
+      };
     }
+
+    this.mapZoom = this.focusZoom();
 
     this._visibleSpotsSubscription = this.visibleSpots$
       .pipe(
@@ -296,7 +306,7 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
     if (!this.boundRestriction) {
       // store the new last location in the browser memory to restore it on next visit
       let newCenter: google.maps.LatLngLiteral = bounds.getCenter().toJSON();
-      if (this.isInitiated && newCenter !== this.mapCenterStart) {
+      if (this.isInitiated && newCenter !== this.centerStart()) {
         if (this.mapCenter !== newCenter || zoom !== this.mapZoom) {
           this.mapsAPIService.storeLastLocationAndZoom({
             location: newCenter,

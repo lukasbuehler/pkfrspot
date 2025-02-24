@@ -8,24 +8,102 @@
   matRipple
   [matRippleDisabled]="!clickable"
   class="pt-0 bg-transparent"
-  [class.mat-elevation-z0]="flat"
+  [class.border]="border"
   [class.clickable]="clickable"
 >
   @if(spot) {@if(!isEditing) {
-  <mat-card-header class="pb-2">
-    <mat-card-title [matTooltip]="spot.name()">
-      {{ spot.name() }}
+  <mat-card-header class="pb-2 px-3">
+    <mat-card-title class="d-flex justify-content-between align-items-center">
+      <span [matTooltip]="spot.name()">{{ spot.name() }}</span>
+
+      <!-- dismiss button -->
+      @if(dismissable) {
+      <button
+        mat-icon-button
+        (click)="dismissed()"
+        i18n-matTooltip
+        matTooltip="Close Spot"
+      >
+        <mat-icon>close</mat-icon>
+        <!-- <mat-icon>turn_right</mat-icon> -->
+        <!-- <mat-icon>route</mat-icon> -->
+        <!-- <mat-icon>share_location</mat-icon> -->
+      </button>
+      }
     </mat-card-title>
-    <mat-card-subtitle class="d-flex flex-column">
-      @if(spot.rating) {
-      <app-spot-rating
-        class="flex-shrink-0"
-        [rating1to5]="spot.rating"
-        [showNumReviews]="true"
-        [numReviews]="spot.numReviews"
-      ></app-spot-rating>
-      } @if(spot.address()) {
-      <span class="text-truncate">{{ spot.localityString() }}</span>
+    <mat-card-subtitle class="d-flex flex-row justify-content-between">
+      <div class="d-flex flex-column justify-content-center text-truncate">
+        @if(spot.rating) {
+        <app-spot-rating
+          class="flex-shrink-0"
+          [rating1to5]="spot.rating"
+          [showNumReviews]="true"
+          [numReviews]="spot.numReviews"
+        ></app-spot-rating>
+        } @if(spot.address()) {
+        <span class="text-truncate">{{ spot.localityString() }}</span>
+        }
+      </div>
+
+      <!-- Icon buttons in header -->
+      @if(!isEditing) {
+      <div class="spot-button-row">
+        @if(authenticationService.isSignedIn) { @if (!visited) {
+        <button
+          mat-icon-button
+          color="accent"
+          matTooltip="Bookmark this spot"
+          aria-label="Icon button with a bookmark icon"
+          (click)="bookmarked = !bookmarked; $event.stopPropagation()"
+        >
+          <mat-icon>{{ bookmarked ? "bookmark" : "bookmark_border" }}</mat-icon>
+        </button>
+
+        }
+        <button
+          mat-icon-button
+          color="primary"
+          matTooltip="Mark this spot as visited"
+          aria-label="Icon button with a flag icon"
+          (click)="
+            visited = !visited; bookmarked = false; $event.stopPropagation()
+          "
+        >
+          <mat-icon>{{ visited ? "flag" : "outlined_flag" }}</mat-icon>
+        </button>
+        }
+        <button
+          mat-icon-button
+          matTooltip="Share this spot"
+          i18n-matTooltip="
+            Share spot tooltip|The tootltip of the share spot icon
+            button@@share_spot_tooltip"
+          aria-label="Icon button with a share icon"
+          i18n-aria-label="
+            Share spot aria label|The aria label of the share spot icon
+            button@@share_spot_aria_label"
+          (click)="shareSpot(); $event.stopPropagation()"
+        >
+          <mat-icon>share</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          matTooltip="Directions to spot"
+          i18n-matTooltip="
+            Directions spot tooltip|The tooltip of the directions spot icon
+            button@@directions_spot_tooltip"
+          aria-label="Icon button with a directions icon"
+          i18n-aria-label="
+            Spot directions aria label|The aria label of the directions spot
+            icon button@@directions_spot_aria_label"
+          (click)="openDirectionsInMaps()"
+        >
+          <mat-icon>directions</mat-icon>
+          <!-- <mat-icon>turn_right</mat-icon> -->
+          <!-- <mat-icon>route</mat-icon> -->
+          <!-- <mat-icon>share_location</mat-icon> -->
+        </button>
+      </div>
       }
     </mat-card-subtitle>
     <!-- <mat-card-subtitle class="pt-2 d-flex flex-row">
@@ -37,67 +115,6 @@
       }}</mat-chip>
       }
     </mat-card-subtitle> -->
-
-    <!-- Icon buttons in header -->
-    @if(!isEditing) {
-    <div class="spot-button-row">
-      @if(authenticationService.isSignedIn) { @if (!visited) {
-      <button
-        mat-icon-button
-        color="accent"
-        matTooltip="Bookmark this spot"
-        aria-label="Icon button with a bookmark icon"
-        (click)="bookmarked = !bookmarked; $event.stopPropagation()"
-      >
-        <mat-icon>{{ bookmarked ? "bookmark" : "bookmark_border" }}</mat-icon>
-      </button>
-
-      }
-      <button
-        mat-icon-button
-        color="primary"
-        matTooltip="Mark this spot as visited"
-        aria-label="Icon button with a flag icon"
-        (click)="
-          visited = !visited; bookmarked = false; $event.stopPropagation()
-        "
-      >
-        <mat-icon>{{ visited ? "flag" : "outlined_flag" }}</mat-icon>
-      </button>
-      }
-      <button
-        mat-icon-button
-        matTooltip="Share this spot"
-        i18n-matTooltip="
-          Share spot tooltip|The tootltip of the share spot icon
-          button@@share_spot_tooltip"
-        aria-label="Icon button with a share icon"
-        i18n-aria-label="
-          Share spot aria label|The aria label of the share spot icon
-          button@@share_spot_aria_label"
-        (click)="shareSpot(); $event.stopPropagation()"
-      >
-        <mat-icon>share</mat-icon>
-      </button>
-      <button
-        mat-icon-button
-        matTooltip="Directions to spot"
-        i18n-matTooltip="
-          Directions spot tooltip|The tooltip of the directions spot icon
-          button@@directions_spot_tooltip"
-        aria-label="Icon button with a directions icon"
-        i18n-aria-label="
-          Spot directions aria label|The aria label of the directions spot icon
-          button@@directions_spot_aria_label"
-        (click)="openDirectionsInMaps()"
-      >
-        <mat-icon>directions</mat-icon>
-        <!-- <mat-icon>turn_right</mat-icon> -->
-        <!-- <mat-icon>route</mat-icon> -->
-        <!-- <mat-icon>share_location</mat-icon> -->
-      </button>
-    </div>
-    }
   </mat-card-header>
   } @if(report) {
   <div class="report-info">
@@ -349,7 +366,7 @@
     </div> -->
 
     <!-- Action buttons -->
-    @if(authenticationService.isSignedIn) {
+    @if(authenticationService.isSignedIn && editable) {
     <mat-divider></mat-divider>
     <div class="d-flex my-3 gap-2">
       <button

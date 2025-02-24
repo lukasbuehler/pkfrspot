@@ -1,11 +1,12 @@
 import {
   Component,
   EventEmitter,
+  input,
   Input,
   OnChanges,
   Output,
 } from "@angular/core";
-import { Spot } from "../../db/models/Spot";
+import { LocalSpot, Spot } from "../../db/models/Spot";
 import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
 import { SpotPreviewCardComponent } from "../spot-preview-card/spot-preview-card.component";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
@@ -27,7 +28,11 @@ export class SpotListComponent implements OnChanges {
   @Input() highlightedSpots: SpotPreviewData[] = [];
   @Input() spots: Spot[] = [];
 
-  @Input() text: string = $localize`Spots in this area`;
+  withHrefLink = input(true);
+
+  text = input<string>($localize`Spots in this area`);
+
+  @Output("spotClickIndex") spotClickIndexEvent = new EventEmitter<number>();
 
   // all spots minus the highlighted spots, set manually in ngOnChanges
   remainingSpots: Spot[] = [];
@@ -48,5 +53,9 @@ export class SpotListComponent implements OnChanges {
       // meaning we want to return true if a spot is not found for it be not filtered out
       return !foundSpot;
     });
+  }
+
+  spotClick(spotIndex: number) {
+    this.spotClickIndexEvent.emit(spotIndex);
   }
 }

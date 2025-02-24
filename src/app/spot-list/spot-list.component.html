@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center mb-2">
-  <h3 class="mat-title-medium m-0">{{ text }}</h3>
+  <h3 class="mat-title-medium m-0">{{ text() }}</h3>
   <mat-button-toggle-group #group="matButtonToggleGroup" value="grid">
     <mat-button-toggle value="grid" aria-label="Grid view">
       <mat-icon>grid_view</mat-icon>
@@ -21,7 +21,7 @@
   Highlights
 </h4>
 <div [class.compact]="group.value === 'compact'" class="spot-container pb-3">
-  @for(spot of highlightedSpots; track spot) {
+  @for(spot of highlightedSpots; track $index) { @if(withHrefLink()) {
   <a [routerLink]="['/map', spot.id]">
     <app-spot-preview-card
       [spot]="spot"
@@ -32,7 +32,17 @@
     >
     </app-spot-preview-card>
   </a>
-  }
+  } @else {
+  <app-spot-preview-card
+    [spot]="spot"
+    [infoOnly]="true"
+    [clickable]="true"
+    [isCompact]="group.value === 'compact'"
+    (click)="spotClick($index)"
+    class="w-100"
+  >
+  </app-spot-preview-card>
+  } }
 </div>
 }
 
@@ -41,7 +51,7 @@
 <h4 class="mat-title-medium" i18n="@@regular_spots_text">Spots</h4>
 } @if(remainingSpots.length > 0) {
 <div [class.compact]="group.value === 'compact'" class="spot-container">
-  @for(spot of remainingSpots; track spot) {
+  @for(spot of remainingSpots; track $index) { @if(withHrefLink()) {
   <a [routerLink]="['/map', spot.id]">
     <app-spot-preview-card
       [spot]="spot"
@@ -50,9 +60,18 @@
       [isCompact]="group.value === 'compact'"
       class="w-100"
     >
-    </app-spot-preview-card>
-  </a>
-  }
+    </app-spot-preview-card> </a
+  >} @else {
+  <app-spot-preview-card
+    [spot]="spot"
+    [infoOnly]="true"
+    [clickable]="true"
+    [isCompact]="group.value === 'compact'"
+    class="w-100"
+    (click)="spotClick($index)"
+  >
+  </app-spot-preview-card>
+  } }
 </div>
 }
 
