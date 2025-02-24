@@ -83,7 +83,9 @@ export class BottomSheetComponent {
         if (!this.bottomSheet) return;
 
         let pageY =
-          event instanceof TouchEvent ? event.touches[0].pageY : event.pageY;
+          window.TouchEvent && event instanceof TouchEvent
+            ? event.touches[0].pageY
+            : (event as MouseEvent).pageY;
 
         const isScrollingUp = pageY - shiftY > 0;
         if (isScrollingUp && isScrollableUp) {

@@ -146,12 +146,7 @@
 
     <!-- Google place -->
     @if(googlePlace) {
-    <h4
-      class="mat-title-small"
-      i18n="description header|The header for the spot description"
-    >
-      Data from Google Maps®
-    </h4>
+    <h4 class="mat-title-small" i18n>This spot on Google Maps®</h4>
     <a
       [href]="googlePlace.url"
       target="_blank"
@@ -172,8 +167,8 @@
           >
             {{ googlePlace.name }}
           </mat-card-title>
-          <mat-card-subtitle class="d-flex flex-row gap-2 mat-title-small">
-            @if(googlePlace.rating) { Google Maps® Rating:
+          <mat-card-subtitle i18n class="d-flex flex-row gap-2 mat-title-small">
+            @if(googlePlace.rating) { Rating:
             <app-spot-rating
               [rating1to5]="googlePlace.rating"
               [showEmptyStars]="false"
