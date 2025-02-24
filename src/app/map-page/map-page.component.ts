@@ -320,6 +320,7 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selectedSpot = spot;
       this.setSpotMetaTags();
       this.spotMap?.focusSpot(this.selectedSpot);
+      this.updateMapURL();
       console.log("is selected spot now");
     });
   }
@@ -341,10 +342,31 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     const title: string = `${spot.name()} Spot`;
-    const image_src: string = spot.previewImageSrc();
-    const description: string =
-      $localize`:The text before the localized location of the spot. E.g. Spot in Wiedikon, Zurich, CH@@spot.locality.pretext:Spot in ` +
-      spot.localityString();
+    const image_src: string =
+      spot.previewImageSrc() ?? "/assets/banner_1200x630.png";
+
+    let description: string = "";
+    if (spot.localityString()) {
+      description =
+        $localize`:The text before the localized location of the spot. E.g. Spot in Wiedikon, Zurich, CH@@spot.locality.pretext:Spot in ` +
+        spot.localityString();
+    }
+
+    if (description) {
+      description += " - ";
+    }
+
+    if (spot.rating) {
+      description += $localize`Rating: ${spot.rating} / 5`;
+    }
+
+    if (description) {
+      description += " - ";
+    }
+
+    if (spot.description()) {
+      description += `${spot.description()}`;
+    }
 
     this.metaInfoService.setMetaTags(title, image_src, description);
 

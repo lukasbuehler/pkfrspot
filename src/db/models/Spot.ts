@@ -10,7 +10,7 @@ import {
 } from "./Interfaces";
 import { MapHelpers } from "../../scripts/MapHelpers";
 import { environment } from "../../environments/environment";
-import { GeoPoint } from "firebase/firestore";
+import { GeoPoint } from "@firebase/firestore";
 import { SpotAddressSchema, SpotSchema } from "../schemas/SpotSchema";
 import { computed, Signal, signal, WritableSignal } from "@angular/core";
 import { defaultSpotNames } from "../../../functions/src/spotHelpers";
@@ -268,6 +268,13 @@ export class LocalSpot {
       amenities: this.amenities(),
       bounds: this._makeBoundsFromPaths(this.paths ?? []),
     };
+
+    // delete all the fields from the object that are undefined
+    for (let key of Object.keys(data)) {
+      if (data[key] === undefined) {
+        delete data[key];
+      }
+    }
 
     return data;
   }

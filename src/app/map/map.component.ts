@@ -36,7 +36,7 @@ import {
   SpotClusterDotSchema,
   SpotClusterTileSchema,
 } from "../../db/schemas/SpotClusterTile.js";
-import { GeoPoint } from "firebase/firestore";
+import { GeoPoint } from "@firebase/firestore";
 import { AsyncPipe, NgClass } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
 import { trigger, transition, style, animate } from "@angular/animations";
