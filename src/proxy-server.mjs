@@ -5,7 +5,7 @@ import compression from "compression";
 const supportedLanguages = ["en", "de", "it", "de-CH", "fr", "es", "nl"];
 const defaultLanguage = "en";
 
-const LAST_MODIFIED = "Fri, 08 Feb 2025 15:00:00 GMT";
+const LAST_MODIFIED = "Mon, 24 Feb 2025 14:56:02 GMT+0100"; //"Fri, 08 Feb 2025 15:00:00 GMT";
 
 const serverExpressApps = {};
 
