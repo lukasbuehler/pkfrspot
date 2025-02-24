@@ -1,11 +1,10 @@
 import path from "node:path";
 import express from "express";
 import compression from "compression";
+import { LAST_MODIFIED } from "./build-info.mjs";
 
 const supportedLanguages = ["en", "de", "it", "de-CH", "fr", "es", "nl"];
 const defaultLanguage = "en";
-
-const LAST_MODIFIED = "Fri, 08 Feb 2025 15:00:00 GMT";
 
 const serverExpressApps = {};
 
