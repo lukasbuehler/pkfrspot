@@ -639,7 +639,7 @@
         <target>Spots en esta zona</target>
       </segment>
     </unit>
-    <unit id="6590727333456499202">
+    <unit id="5387369293317164071">
       <segment state="initial">
         <source>Unnamed Spot</source>
         <target>Spot sin nombre</target>
@@ -971,18 +971,6 @@
         <target>Mostrar geolocalización</target>
       </segment>
     </unit>
-    <unit id="403853342752104901">
-      <segment state="initial">
-        <source>Spots at this event</source>
-        <target>Spots en este evento</target>
-      </segment>
-    </unit>
-    <unit id="date_tba">
-      <segment state="initial">
-        <source>Exact Date TBA</source>
-        <target>Fecha exacta por anunciar</target>
-      </segment>
-    </unit>
     <unit id="6044258067304510448">
       <segment state="initial">
         <source>Starts in: </source>
@@ -1052,6 +1040,74 @@
       <segment state="initial">
         <source>Events</source>
         <target>Eventos</target>
+      </segment>
+    </unit>
+    <unit id="7592065336526383033">
+      <segment state="initial">
+        <source> Event spot map </source>
+        <target> Mapa de spots de eventos </target>
+      </segment>
+    </unit>
+    <unit id="518955764655136497">
+      <segment state="initial">
+        <source>Open global spot map</source>
+        <target>Abrir mapa global de spots</target>
+      </segment>
+    </unit>
+    <unit id="8755396282893693521">
+      <segment state="initial">
+        <source>Event spots</source>
+        <target>Spots de eventos</target>
+      </segment>
+    </unit>
+    <unit id="6019314900948916795">
+      <segment state="initial">
+        <source>WC</source>
+        <target>WC</target>
+      </segment>
+    </unit>
+    <unit id="4218851671709080860">
+      <segment state="initial">
+        <source>Info stand</source>
+        <target>Puesto de información</target>
+      </segment>
+    </unit>
+    <unit id="1541983925188119749">
+      <segment state="initial">
+        <source>Rating: <ph id="0" equiv="PH" disp="spot.rating" /> / 5</source>
+        <target>Valoración: <ph id="0" equiv="PH" disp="spot.rating" /> / 5</target>
+      </segment>
+    </unit>
+    <unit id="7023259128494836441">
+      <segment state="initial">
+        <source>Close Spot</source>
+        <target>Cerrar spot</target>
+      </segment>
+    </unit>
+    <unit id="3427802043987444957">
+      <segment state="initial">
+        <source>This spot on Google Maps®</source>
+        <target>Este spot en Google Maps®</target>
+      </segment>
+    </unit>
+    <unit id="4433625416488305982">
+      <segment state="initial">
+        <source>
+          <pc id="0" equivStart="START_BLOCK_IF" equivEnd="CLOSE_BLOCK_IF" type="other"
+            dispStart="@if(googlePlace().rating) {" dispEnd="}"> Rating: <pc id="1"
+              equivStart="START_TAG_APP_SPOT_RATING" equivEnd="CLOSE_TAG_APP_SPOT_RATING"
+              type="other"
+              dispStart="&lt;app-spot-rating [rating1to5]=&quot;googlePlace().rating&quot; [showEmptyStars]=&quot;false&quot; [isCompact]=&quot;true&quot; &gt;"
+              dispEnd="&lt;/app-spot-rating&gt;" /></pc>
+        </source>
+        <target>
+          <pc id="0" equivStart="START_BLOCK_IF" equivEnd="CLOSE_BLOCK_IF" type="other"
+            dispStart="@if(googlePlace().rating) {" dispEnd="}"> Valoración: <pc id="1"
+              equivStart="START_TAG_APP_SPOT_RATING" equivEnd="CLOSE_TAG_APP_SPOT_RATING"
+              type="other"
+              dispStart="&lt;app-spot-rating [rating1to5]=&quot;googlePlace().rating&quot; [showEmptyStars]=&quot;false&quot; [isCompact]=&quot;true&quot; &gt;"
+              dispEnd="&lt;/app-spot-rating&gt;" /></pc>
+        </target>
       </segment>
     </unit>
   </file>
