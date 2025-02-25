@@ -1,14 +1,13 @@
 import path from "node:path";
 import express from "express";
 import compression from "compression";
-import { LAST_MODIFIED } from "./build-info.mjs";
+import { LAST_MODIFIED, supportedLanguageCodes } from "./build-info.mjs";
 
-const supportedLanguages = ["en", "de", "it", "de-CH", "fr", "es", "nl"];
 const defaultLanguage = "en";
 
 const serverExpressApps = {};
 
-for (const lang of supportedLanguages) {
+for (const lang of supportedLanguageCodes) {
   serverExpressApps[lang] = (await import(`./${lang}/server.mjs`)).app;
   console.log("Loaded server for lang:", lang);
 }
@@ -21,7 +20,7 @@ function detectLanguage(req, res, next) {
   const firstSegment = pathSegments[0];
 
   // If the first segment is a valid language code, pass control to the next middleware
-  if (supportedLanguages.includes(firstSegment)) {
+  if (supportedLanguageCodes.includes(firstSegment)) {
     return next();
   }
 
@@ -54,7 +53,7 @@ function detectLanguage(req, res, next) {
     const languages = Array.from(uniqueLanguages);
 
     preferredLanguage =
-      languages.find((lang) => supportedLanguages.includes(lang)) ||
+      languages.find((lang) => supportedLanguageCodes.includes(lang)) ||
       defaultLanguage;
   }
 
@@ -107,7 +106,7 @@ function run() {
   server.get("*", detectLanguage);
 
   // Mount language specific angular SSR server apps
-  for (const lang of supportedLanguages) {
+  for (const lang of supportedLanguageCodes) {
     server.use(`/${lang}`, serverExpressApps[lang]());
   }
 

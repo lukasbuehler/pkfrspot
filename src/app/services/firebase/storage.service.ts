@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { generateUUID } from "../../../scripts/Helpers";
 
-import { getDownloadURL, getStorage } from "@angular/fire/storage";
+import { getDownloadURL, Storage } from "@angular/fire/storage";
 import { deleteObject, ref, uploadBytes } from "firebase/storage";
 
 export enum StorageFolder {
@@ -15,9 +15,10 @@ export enum StorageFolder {
   providedIn: "root",
 })
 export class StorageService {
+  storage = inject(Storage);
+
   constructor() {}
 
-  storage = getStorage();
   uploadObs: Observable<string> = null;
 
   getStoredContent() {}
