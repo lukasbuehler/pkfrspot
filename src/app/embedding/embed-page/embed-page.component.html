@@ -1,5 +1,5 @@
 <div class="container p-5">
-  <div class="row my-5">
+  <div class="row mb-5">
     <div class="col-md-12">
       <h2 class="mat-heading-large" i18n>Embed</h2>
     </div>
@@ -27,6 +27,19 @@
 
       <h3 class="mat-title-large" i18n>Embedding Preferences</h3>
       <div class="p-3">
+        <!-- General settings -->
+        <mat-form-field class="w-100 mb-3" appearance="outline">
+          <mat-label i18n>Language</mat-label>
+          <mat-select [(ngModel)]="embedLanguage">
+            <mat-option value="auto">Automatic</mat-option>
+            @for(code of supportedLanguageCodes; track code) {
+            <mat-option [value]="code"
+              >{{ languages[code].name_native }} ({{ code }})</mat-option
+            >
+            }
+          </mat-select>
+        </mat-form-field>
+
         @switch (tab()) { @case ("map") {
         <mat-slide-toggle [(ngModel)]="showSatelliteToggle" i18n
           >Show satellite toggle</mat-slide-toggle

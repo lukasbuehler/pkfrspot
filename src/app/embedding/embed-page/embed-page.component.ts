@@ -19,6 +19,9 @@ import { APP_BASE_HREF, DOCUMENT, isPlatformBrowser } from "@angular/common";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatInputModule } from "@angular/material/input";
+import { LocaleCode } from "../../../db/models/Interfaces";
+import { MatSelectModule } from "@angular/material/select";
+import { languageCodes } from "../../../scripts/Languages";
 
 type EmbedType = "map" | "event";
 
@@ -36,6 +39,7 @@ type EmbedType = "map" | "event";
     MatFormFieldModule,
     MatAutocompleteModule,
     MatInputModule,
+    MatSelectModule,
   ],
   templateUrl: "./embed-page.component.html",
   styleUrls: ["./embed-page.component.scss"],
@@ -45,7 +49,7 @@ type EmbedType = "map" | "event";
       useFactory: (platformId: Object) => {
         if (isPlatformBrowser(platformId)) {
           const pathSegments = window.location.pathname.split("/");
-          return window.location.origin + "/" + pathSegments[1];
+          return window.location.origin;
         }
         return "/"; // fallback for server-side
       },
@@ -57,6 +61,10 @@ export class EmbedPageComponent {
   sanitizer = inject(DomSanitizer);
   // doc = inject(DOCUMENT);
   baseHref = inject(APP_BASE_HREF);
+
+  supportedLanguageCodes = ["en", "de", "de-CH", "fr", "it", "nl", "es"]; // TODO get supported languages somehow
+  languages = languageCodes;
+  embedLanguage = signal<LocaleCode | "auto">("auto");
 
   showSatelliteToggle = signal<boolean>(true);
   showGeolocation = signal<boolean>(false);
@@ -76,7 +84,10 @@ export class EmbedPageComponent {
   unsafeIframeUrl = computed<string>(() => {
     const baseUrl = `${this.baseHref}`;
     const tab = this.tab();
-    let url = baseUrl + "/embedded/";
+    const language = this.embedLanguage();
+
+    let url =
+      baseUrl + (language === "auto" ? "" : "/" + language) + "/embedded/";
 
     switch (tab) {
       case "map":
