@@ -1,0 +1,19 @@
+.code-container {
+  position: relative;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+  pre {
+    background-color: black;
+    border-radius: 20px;
+    padding: 20px;
+    overflow: scroll;
+    margin: 0;
+  }
+
+  button {
+    display: flex;
+  }
+}

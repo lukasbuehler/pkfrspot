@@ -70,11 +70,11 @@ export const routes: Routes = [
     component: EventPageComponent,
     data: { routeName: "Embedded Event" },
   },
-  // {
-  //   path: "embedded/map",
-  //   component: EmbeddedMapPageComponent,
-  //   data: { routeName: "Embedded Map" },
-  // },
+  {
+    path: "embedded/map",
+    component: EmbeddedMapPageComponent,
+    data: { routeName: "Embedded Map" },
+  },
 
   // Events
   {

@@ -1,4 +1,8 @@
-<div class="h-100 d-flex flex-column gap-3">
+<div
+  class="h-100 d-flex flex-column gap-3 p-3"
+  [style]="{ 'padding-top': isEmbedded ? '0 !important' : '1rem' }"
+>
+  @if(showHeader()) {
   <!-- Header image -->
   <!-- <div
   class="header w-100"
@@ -13,25 +17,55 @@
 </div> -->
 
   <!-- Header info -->
-  <div class="p-3">
-    <h2 class="mat-heading-large">{{ name }}</h2>
-    <p>
-      {{
-        readableStartDate !== readableEndDate
-          ? readableStartDate + " - " + readableEndDate
-          : readableStartDate
-      }}
-    </p>
-    @defer{
-    <p>
-      <span i18n>Starts in: </span>
-      <app-countdown [timestamp]="start"></app-countdown>
-    </p>
+  <div class="d-flex flex-row gap-3 w-100">
+    <div class="flex-grow-1">
+      <h2 class="mat-heading-large">{{ name }}</h2>
+      <p>
+        {{
+          readableStartDate !== readableEndDate
+            ? readableStartDate + " - " + readableEndDate
+            : readableStartDate
+        }}
+      </p>
+      @defer{
+      <p>
+        <span i18n>Starts in: </span>
+        <app-countdown [timestamp]="start"></app-countdown>
+      </p>
+      }
+    </div>
+    @if(!isEmbedded) {
+    <div class="d-flex flex-row gap-2">
+      <button mat-icon-button class="d-flex">
+        <mat-icon>share</mat-icon>
+      </button>
+      <button mat-icon-button class="d-flex" [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </div>
     }
   </div>
 
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item disabled>
+      <mat-icon>report</mat-icon>
+      <span i18n>Report</span>
+    </button>
+    <a
+      [routerLink]="['/embed']"
+      [queryParams]="{ type: 'event' }"
+      class="text-decoration-none"
+    >
+      <button mat-menu-item>
+        <mat-icon>code</mat-icon>
+        <span i18n>Embed</span>
+      </button>
+    </a>
+  </mat-menu>
+  }
+
   <!-- Map stuff -->
-  <div class="p-3 flex-grow-1">
+  <div class="flex-grow-1">
     <!-- <div class="d-flex flex-row justify-content-between flex-wrap mb-2">
         <h3
           class="mat-heading-small text-truncate mb-0"
@@ -52,7 +86,7 @@
         </a>
       </div> -->
 
-    @if(spots?.length > 0) {
+    @if(spots()?.length > 0) {
     <app-spot-map
       @fadeInOut
       #spotMap
@@ -70,7 +104,7 @@
       [centerStart]="markers[markers.length - 1].location"
       [mapStyle]="mapStyle"
       [markers]="markers"
-      [spots]="spots"
+      [spots]="spots()"
       [selectedSpot]="selectedSpot()"
       (selectedSpotChange)="selectedSpot.set($event)"
       class="w-100 h-100 rounded overflow-hidden d-inline-block"

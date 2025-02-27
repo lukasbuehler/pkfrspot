@@ -6,26 +6,53 @@
   </div>
   <div class="row my-5">
     <div class="col-md-6">
+      <h3 class="mat-title-large" i18n>Embed Type</h3>
+      <mat-chip-listbox class="pb-3">
+        @for(embedType of embedTypes; track embedType) {
+        <mat-chip-option
+          value="{{ embedType }}"
+          [selected]="tab() == embedType"
+          (selectionChange)="tab.set($event?.source?.value ?? defaultEmbedType)"
+          >{{ embedTypeName[embedType] }}</mat-chip-option
+        >
+        }
+      </mat-chip-listbox>
+
+      @if(tab() == "event") {
+      <mat-form-field class="w-100 mb-3" appearance="outline">
+        <mat-label i18n>Event</mat-label>
+        <input matInput [value]="'Swiss Jam 25'" [disabled]="true" />
+      </mat-form-field>
+      }
+
       <h3 class="mat-title-large" i18n>Embedding Preferences</h3>
       <div class="p-3">
-        <mat-slide-toggle [(ngModel)]="showSatelliteToggle" i18n>Show satellite toggle</mat-slide-toggle>
-        <mat-slide-toggle [(ngModel)]="showGeolocation" i18n>Show geolocation</mat-slide-toggle>
+        @switch (tab()) { @case ("map") {
+        <mat-slide-toggle [(ngModel)]="showSatelliteToggle" i18n
+          >Show satellite toggle</mat-slide-toggle
+        >
+        <mat-slide-toggle [(ngModel)]="showGeolocation" i18n
+          >Show geolocation</mat-slide-toggle
+        >
+        } @case ("event") {
+        <mat-slide-toggle [(ngModel)]="showEventHeader" i18n
+          >Show Event header</mat-slide-toggle
+        >
+        } }
       </div>
     </div>
     <div class="col-md-6">
       <iframe
         class="bg-black shadow-lg w-100 border"
-        [src]="'http://localhost:4200/de-CH/embedded/map?gps='+ showGeolocation ? 1 : 0"
+        [src]="safeIframeUrl()"
         height="600px"
       ></iframe>
     </div>
   </div>
   <div class="row my-5">
     <div class="col-md-12">
-      <pre>
-        {{"\<iframe src=\"https:\/\/pkfrspot.com\/en\/embedded\/map\"\>\</iframe\>"}}
-      </pre>
+      <h3 class="mat-title-large" i18n>HTML Embed Code</h3>
+      <app-code-block [code]="iframeCode()"></app-code-block>
     </div>
   </div>
 </div>
-

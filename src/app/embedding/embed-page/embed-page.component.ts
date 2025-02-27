@@ -1,11 +1,26 @@
-import { Component } from "@angular/core";
+import {
+  Component,
+  computed,
+  inject,
+  PLATFORM_ID,
+  signal,
+} from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
-import { MatFormField, MatFormFieldModule } from "@angular/material/form-field";
+import { MatFormFieldModule } from "@angular/material/form-field";
 import {
   _MatSlideToggleRequiredValidatorModule,
   MatSlideToggleModule,
 } from "@angular/material/slide-toggle";
+import { CodeBlockComponent } from "../../code-block/code-block.component";
+import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
+import { MatChipsModule } from "@angular/material/chips";
+import { APP_BASE_HREF, DOCUMENT, isPlatformBrowser } from "@angular/common";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatInputModule } from "@angular/material/input";
+
+type EmbedType = "map" | "event";
 
 @Component({
   selector: "app-embed-page",
@@ -15,11 +30,74 @@ import {
     _MatSlideToggleRequiredValidatorModule,
     MatButtonModule,
     ReactiveFormsModule,
+    CodeBlockComponent,
+    MatChipsModule,
+    MatTooltipModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    MatInputModule,
   ],
   templateUrl: "./embed-page.component.html",
-  styleUrl: "./embed-page.component.scss",
+  styleUrls: ["./embed-page.component.scss"],
+  providers: [
+    {
+      provide: APP_BASE_HREF,
+      useFactory: (platformId: Object) => {
+        if (isPlatformBrowser(platformId)) {
+          const pathSegments = window.location.pathname.split("/");
+          return window.location.origin + "/" + pathSegments[1];
+        }
+        return "/"; // fallback for server-side
+      },
+      deps: [PLATFORM_ID],
+    },
+  ],
 })
 export class EmbedPageComponent {
-  showSatelliteToggle: boolean = true;
-  showGeolocation: boolean = false;
+  sanitizer = inject(DomSanitizer);
+  // doc = inject(DOCUMENT);
+  baseHref = inject(APP_BASE_HREF);
+
+  showSatelliteToggle = signal<boolean>(true);
+  showGeolocation = signal<boolean>(false);
+
+  eventId = signal<string>("swissjam25");
+  showEventHeader = signal<boolean>(false);
+
+  defaultEmbedType: EmbedType = "event";
+  embedTypes: EmbedType[] = ["event"]; // "map",
+  embedTypeName: Record<EmbedType, string> = {
+    map: $localize`Map`,
+    event: $localize`Event`,
+  };
+
+  tab = signal<EmbedType>(this.defaultEmbedType);
+
+  unsafeIframeUrl = computed<string>(() => {
+    const baseUrl = `${this.baseHref}`;
+    const tab = this.tab();
+    let url = baseUrl + "/embedded/";
+
+    switch (tab) {
+      case "map":
+        url += "map/";
+        break;
+      case "event":
+        url += "event/";
+        url += this.eventId();
+        url += "?showHeader=" + (this.showEventHeader() ? "true" : "false");
+        break;
+    }
+
+    return url;
+  });
+
+  safeIframeUrl = computed<SafeResourceUrl>(() => {
+    const url = this.unsafeIframeUrl();
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  });
+
+  iframeCode = computed<string>(() => {
+    return `<iframe src="${this.unsafeIframeUrl()}"></iframe>`;
+  });
 }
