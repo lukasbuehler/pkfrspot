@@ -10,7 +10,7 @@ import {
 } from "@angular/core";
 import { CountdownComponent } from "../countdown/countdown.component";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
-import { NgOptimizedImage } from "@angular/common";
+import { LocationStrategy, NgOptimizedImage } from "@angular/common";
 import { LocalSpot, Spot, SpotId } from "../../db/models/Spot";
 import { SpotListComponent } from "../spot-list/spot-list.component";
 import { SpotsService } from "../services/firebase/firestore/spots.service";
@@ -31,6 +31,8 @@ import { SpotDetailsComponent } from "../spot-details/spot-details.component";
 import { trigger, transition, style, animate } from "@angular/animations";
 import { CodeBlockComponent } from "../code-block/code-block.component";
 import { MatMenuModule } from "@angular/material/menu";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { MatChipsModule } from "@angular/material/chips";
 
 @Component({
   selector: "app-event-page",
@@ -45,6 +47,7 @@ import { MatMenuModule } from "@angular/material/menu";
     RouterLink,
     SpotDetailsComponent,
     MatMenuModule,
+    MatChipsModule,
   ],
   animations: [
     trigger("fadeInOut", [
@@ -68,6 +71,9 @@ export class EventPageComponent implements OnInit, OnDestroy {
   locale = inject<LocaleCode>(LOCALE_ID);
   private _spotService = inject(SpotsService);
   private _route = inject(ActivatedRoute);
+  private _locationStrategy = inject(LocationStrategy);
+  private _snackbar = inject(MatSnackBar);
+
   private _routeSubscription: Subscription;
 
   selectedSpot = signal<Spot | LocalSpot | null>(null);
@@ -76,6 +82,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
 
   isEmbedded = false;
 
+  eventId: string = "swissjam25";
   name: string = "Swiss Jam 2025";
   bannerImageSrc: string = "/assets/swissjam.jpg";
   localityString: string = "Zurich, Switzerland";
@@ -196,6 +203,37 @@ export class EventPageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this._routeSubscription) {
       this._routeSubscription.unsubscribe();
+    }
+  }
+
+  async shareEvent() {
+    const url = "https://pkfrspot.com";
+    const baseUrl = this._locationStrategy.getBaseHref();
+
+    // TODO use slug instead of id if available
+
+    const link = url + "/events/" + this.eventId;
+
+    if (navigator["share"]) {
+      try {
+        const shareData = {
+          title: this.name,
+          text: `PKFR Spot: ${this.name}`,
+          url: link,
+        };
+
+        await navigator["share"](shareData);
+      } catch (err) {
+        console.error("Couldn't share this spot");
+        console.error(err);
+      }
+    } else {
+      navigator.clipboard.writeText(`${this.name} - PKFR Spot \n${link}`);
+      this._snackbar.open("Link to spot copied to clipboard", "Dismiss", {
+        duration: 3000,
+        horizontalPosition: "center",
+        verticalPosition: "top",
+      });
     }
   }
 }

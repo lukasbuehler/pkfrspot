@@ -440,7 +440,9 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
         console.error(err);
       }
     } else {
-      navigator.clipboard.writeText(`${this.spot.name()} - PKFR Spot\n${link}`);
+      navigator.clipboard.writeText(
+        `${this.spot.name()} - PKFR Spot \n${link}`
+      );
       this._snackbar.open("Link to spot copied to clipboard", "Dismiss", {
         duration: 3000,
         horizontalPosition: "center",

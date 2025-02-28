@@ -67,6 +67,7 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
   isClickable = input<boolean>(true);
   showAmenities = input<boolean>(false);
   centerStart = input<google.maps.LatLngLiteral | null>(null);
+  showSpotPreview = input<boolean>(false);
 
   @Input() showGeolocation: boolean = true;
   @Input() showSatelliteToggle: boolean = false;

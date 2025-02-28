@@ -7,9 +7,12 @@ import {
   Inject,
   LOCALE_ID,
   OnChanges,
+  ElementRef,
+  inject,
+  input,
 } from "@angular/core";
 import { Router } from "@angular/router";
-import { Spot } from "../../db/models/Spot";
+import { LocalSpot, Spot } from "../../db/models/Spot";
 import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
 import { StorageService } from "../services/firebase/storage.service";
 import { MatCardModule } from "@angular/material/card";
@@ -32,7 +35,11 @@ import { LocaleCode } from "../../db/models/Interfaces";
   ],
 })
 export class SpotPreviewCardComponent implements OnChanges {
-  @Input() spot: Spot | SpotPreviewData | null = null;
+  public elementRef = inject(ElementRef);
+
+  hasBorder = input<boolean>(true);
+
+  @Input() spot: Spot | LocalSpot | SpotPreviewData | null = null;
   @Input() infoOnly: boolean = false;
   @Input() clickable: boolean = false;
   @Input() isCompact: boolean = false;
@@ -55,7 +62,7 @@ export class SpotPreviewCardComponent implements OnChanges {
 
   ngOnChanges() {
     if (this.spot) {
-      if (this.spot instanceof Spot) {
+      if (this.spot instanceof Spot || this.spot instanceof LocalSpot) {
         this.spotName = this.spot.name();
         this.spotLocality = this.spot.localityString();
         this.spotImage = this.spot.previewImageSrc();
@@ -72,7 +79,7 @@ export class SpotPreviewCardComponent implements OnChanges {
   }
 
   onClick() {
-    if (this.clickable && this.spot) {
+    if (this.clickable && this.spot && this.spot instanceof Spot) {
       // open the spot in the spot map
       this._router.navigateByUrl(`/map/${this.spot.id}`);
     }

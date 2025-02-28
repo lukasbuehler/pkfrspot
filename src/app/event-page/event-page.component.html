@@ -17,7 +17,7 @@
 </div> -->
 
   <!-- Header info -->
-  <div class="d-flex flex-row gap-3 w-100">
+  <div class="d-flex flex-row gap-3 w-100 pt-3">
     <div class="flex-grow-1">
       <h2 class="mat-heading-large">{{ name }}</h2>
       <p>
@@ -36,7 +36,7 @@
     </div>
     @if(!isEmbedded) {
     <div class="d-flex flex-row gap-2">
-      <button mat-icon-button class="d-flex">
+      <button mat-icon-button class="d-flex" (click)="shareEvent()">
         <mat-icon>share</mat-icon>
       </button>
       <button mat-icon-button class="d-flex" [matMenuTriggerFor]="menu">
@@ -63,6 +63,11 @@
     </a>
   </mat-menu>
   }
+
+  <!-- <mat-chip-listbox class="py-2">
+    <mat-chip-option i18n>Spot Map</mat-chip-option>
+    <mat-chip-option i18n disabled>Challenges</mat-chip-option>
+  </mat-chip-listbox> -->
 
   <!-- Map stuff -->
   <div class="flex-grow-1">
@@ -106,6 +111,7 @@
       [markers]="markers"
       [spots]="spots()"
       [selectedSpot]="selectedSpot()"
+      [showSpotPreview]="true"
       (selectedSpotChange)="selectedSpot.set($event)"
       class="w-100 h-100 rounded overflow-hidden d-inline-block"
     ></app-spot-map>
