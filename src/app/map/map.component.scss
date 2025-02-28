@@ -34,13 +34,13 @@
 
 .fade-in {
   opacity: 0;
-  transform: scale(0) translateY(20px);
+  transform: translateY(50%) scale(0) translateY(0px) translateY(-50%);
   animation: fadeIn 0.3s forwards; // adjust duration as needed
 }
 
 @keyframes fadeIn {
   to {
-    transform: scale(1) translate(0px);
+    transform: translateY(50%) scale(1) translate(0px) translateY(-50%);
     opacity: 1;
   }
 }

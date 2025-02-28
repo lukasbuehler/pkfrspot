@@ -1,0 +1,22 @@
+.code-container {
+  position: relative;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+  pre {
+    background-color: black;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 0;
+
+    white-space: pre-wrap;
+    overflow-y: auto;
+    word-break: break-word;
+  }
+
+  button {
+    display: flex;
+  }
+}

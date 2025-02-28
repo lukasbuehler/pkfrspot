@@ -42,6 +42,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { trigger, transition, style, animate } from "@angular/animations";
 import { MarkerComponent, MarkerSchema } from "../marker/marker.component";
 import { MapHelpers } from "../../scripts/MapHelpers";
+import { SpotPreviewCardComponent } from "../spot-preview-card/spot-preview-card.component";
 
 export interface TilesObject {
   zoom: number;
@@ -64,6 +65,7 @@ export interface TilesObject {
     NgClass,
     AsyncPipe,
     MarkerComponent,
+    SpotPreviewCardComponent,
   ],
   animations: [
     trigger("fadeInOut", [
@@ -90,6 +92,7 @@ export class MapComponent implements OnInit, OnChanges {
 
   focusZoom = input<number>(17);
   isDebug = input<boolean>(false);
+  showSpotPreview = input<boolean>(false);
 
   isDarkMode = input<boolean>(true); // should be false if mapStyle is roadmap and the dark map is used
   markers: InputSignal<MarkerSchema[]> = input<MarkerSchema[]>([]);

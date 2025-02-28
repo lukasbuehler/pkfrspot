@@ -1043,24 +1043,6 @@
         <target>Events</target>
       </segment>
     </unit>
-    <unit id="7592065336526383033">
-      <segment state="initial">
-        <source> Event spot map </source>
-        <target> Veranstaltungs Spot-Karte </target>
-      </segment>
-    </unit>
-    <unit id="518955764655136497">
-      <segment state="initial">
-        <source>Open global spot map</source>
-        <target>Globale Spot-Karte öffnen</target>
-      </segment>
-    </unit>
-    <unit id="8755396282893693521">
-      <segment state="initial">
-        <source>Event spots</source>
-        <target>Veranstaltungs Spots</target>
-      </segment>
-    </unit>
     <unit id="6019314900948916795">
       <segment state="initial">
         <source>WC</source>
@@ -1109,6 +1091,72 @@
               dispStart="&lt;app-spot-rating [rating1to5]=&quot;googlePlace().rating&quot; [showEmptyStars]=&quot;false&quot; [isCompact]=&quot;true&quot; &gt;"
               dispEnd="&lt;/app-spot-rating&gt;" /></pc>
         </target>
+      </segment>
+    </unit>
+    <unit id="4323470180912194028">
+      <segment state="initial">
+        <source>Copy</source>
+        <target>Kopieren</target>
+      </segment>
+    </unit>
+    <unit id="7708270344948043036">
+      <segment state="initial">
+        <source>
+          <ph id="0" equiv="INTERPOLATION"
+            disp="{{ hasChanged ? &quot;Discard&quot; : &quot;Cancel&quot; }}" />
+        </source>
+        <target>
+          <ph id="0" equiv="INTERPOLATION"
+            disp="{{ hasChanged ? &quot;Verwerfen&quot; : &quot;Abbrechen&quot; }}" />
+        </target>
+      </segment>
+    </unit>
+    <unit id="4973187879197257053">
+      <segment state="initial">
+        <source>Embed Type</source>
+        <target>Einbettungstyp</target>
+      </segment>
+    </unit>
+    <unit id="3304972143698843178">
+      <segment state="initial">
+        <source>Event</source>
+        <target>Veranstaltung</target>
+      </segment>
+    </unit>
+    <unit id="2826581353496868063">
+      <segment state="initial">
+        <source>Language</source>
+        <target>Sprache</target>
+      </segment>
+    </unit>
+    <unit id="7855274718891325217">
+      <segment state="initial">
+        <source>Show Event header</source>
+        <target>Veranstaltungs-Header anzeigen</target>
+      </segment>
+    </unit>
+    <unit id="822217384326702238">
+      <segment state="initial">
+        <source>HTML Embed Code</source>
+        <target>HTML Einbettungscode</target>
+      </segment>
+    </unit>
+    <unit id="5813867925497374051">
+      <segment state="initial">
+        <source>Map</source>
+        <target>Karte</target>
+      </segment>
+    </unit>
+    <unit id="7008439939460403347">
+      <segment state="initial">
+        <source>Report</source>
+        <target>Melden</target>
+      </segment>
+    </unit>
+    <unit id="7650916050216152686">
+      <segment state="initial">
+        <source>Report post</source>
+        <target>Beitrag melden</target>
       </segment>
     </unit>
   </file>

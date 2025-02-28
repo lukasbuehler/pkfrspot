@@ -1,4 +1,10 @@
-<!-- <div
+<div
+  class="h-100 d-flex flex-column gap-3 p-3"
+  [style]="{ 'padding-top': isEmbedded ? '0 !important' : '1rem' }"
+>
+  @if(showHeader()) {
+  <!-- Header image -->
+  <!-- <div
   class="header w-100"
   style="height: 200px; overflow: hidden; position: relative"
 >
@@ -9,9 +15,10 @@
     style="object-fit: cover"
   />
 </div> -->
-<div class="container-fluid p-3">
-  <div class="row">
-    <div class="col-md-12 p-3">
+
+  <!-- Header info -->
+  <div class="d-flex flex-row gap-3 w-100 pt-3">
+    <div class="flex-grow-1">
       <h2 class="mat-heading-large">{{ name }}</h2>
       <p>
         {{
@@ -27,10 +34,44 @@
       </p>
       }
     </div>
+    @if(!isEmbedded) {
+    <div class="d-flex flex-row gap-2">
+      <button mat-icon-button class="d-flex" (click)="shareEvent()">
+        <mat-icon>share</mat-icon>
+      </button>
+      <button mat-icon-button class="d-flex" [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </div>
+    }
   </div>
-  <div class="row">
-    <div class="col-md-6 col-lg-8 pb-5">
-      <div class="d-flex flex-row justify-content-between flex-wrap mb-2">
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item disabled>
+      <mat-icon>report</mat-icon>
+      <span i18n>Report</span>
+    </button>
+    <a
+      [routerLink]="['/embed']"
+      [queryParams]="{ type: 'event' }"
+      class="text-decoration-none"
+    >
+      <button mat-menu-item>
+        <mat-icon>code</mat-icon>
+        <span i18n>Embed</span>
+      </button>
+    </a>
+  </mat-menu>
+  }
+
+  <!-- <mat-chip-listbox class="py-2">
+    <mat-chip-option i18n>Spot Map</mat-chip-option>
+    <mat-chip-option i18n disabled>Challenges</mat-chip-option>
+  </mat-chip-listbox> -->
+
+  <!-- Map stuff -->
+  <div class="flex-grow-1">
+    <!-- <div class="d-flex flex-row justify-content-between flex-wrap mb-2">
         <h3
           class="mat-heading-small text-truncate mb-0"
           style="height: 42px"
@@ -48,32 +89,34 @@
             <span class="text-truncate" i18n>Open global spot map</span>
           </button>
         </a>
-      </div>
-      @if(spots?.length > 0) {
-      <app-spot-map
-        @fadeInOut
-        #spotMap
-        id="spotMap"
-        [isClickable]="true"
-        [showGeolocation]="false"
-        [showSatelliteToggle]="true"
-        [boundRestriction]="{
+      </div> -->
+
+    @if(spots()?.length > 0) {
+    <app-spot-map
+      @fadeInOut
+      #spotMap
+      id="spotMap"
+      [isClickable]="true"
+      [showGeolocation]="false"
+      [showSatelliteToggle]="true"
+      [boundRestriction]="{
           north: 47.4, 
           south: 47.395,
           west: 8.54087, 
           east: 8.55208,
         }"
-        [minZoom]="16"
-        [centerStart]="markers[markers.length - 1].location"
-        [mapStyle]="mapStyle"
-        [markers]="markers"
-        [spots]="spots"
-        [selectedSpot]="selectedSpot()"
-        (selectedSpotChange)="selectedSpot.set($event)"
-        class="w-100 rounded overflow-hidden"
-        style="display: inline-block; aspect-ratio: 4/3"
-      ></app-spot-map>
-      <div class="d-flex flex-row gap-3">
+      [minZoom]="16"
+      [centerStart]="markers[markers.length - 1].location"
+      [mapStyle]="mapStyle"
+      [markers]="markers"
+      [spots]="spots()"
+      [selectedSpot]="selectedSpot()"
+      [showSpotPreview]="true"
+      (selectedSpotChange)="selectedSpot.set($event)"
+      class="w-100 h-100 rounded overflow-hidden d-inline-block"
+    ></app-spot-map>
+    }
+    <!-- <div class="d-flex flex-row gap-3">
         @for(marker of markers; track marker) {
         <span
           class="d-flex flex-row gap-1 mat-title-small justify-content-center align-items-center"
@@ -85,11 +128,8 @@
           {{ marker.name }}</span
         >
         }
-      </div>
-      }
-    </div>
-    <div class="col-md-6 col-lg-4 pb-5">
-      <!-- <h3 class="mat-title-large">Spots</h3> -->
+      </div> -->
+    <!-- <div class="col-md-6 col-lg-4 pb-5">
       @if(selectedSpot()) {
       <app-spot-details
         @fadeInOut
@@ -110,9 +150,6 @@
         i18n-text
       ></app-spot-list>
       } }
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12"></div>
+    </div> -->
   </div>
 </div>
