@@ -141,6 +141,7 @@ export class AppComponent implements OnInit {
 
       if (
         !isABot &&
+        !this.isEmbedded() &&
         acceptedVersion !== currentTermsVersion &&
         this.welcomeDialog.openDialogs.length === 0
       ) {
