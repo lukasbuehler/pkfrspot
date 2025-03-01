@@ -1,5 +1,6 @@
 <div
-  class="h-100 d-flex flex-column gap-3 p-3"
+  class="h-100 d-flex flex-column gap-3"
+  [class.p-3]="!isEmbedded"
   [style]="{ 'padding-top': isEmbedded ? '0 !important' : '1rem' }"
 >
   @if(showHeader()) {
@@ -17,7 +18,7 @@
 </div> -->
 
   <!-- Header info -->
-  <div class="d-flex flex-row gap-3 w-100 pt-3">
+  <div class="d-flex flex-row gap-3 w-100 pt-3" [class.p-3]="isEmbedded">
     <div class="flex-grow-1">
       <h2 class="mat-heading-large">{{ name }}</h2>
       <p>
@@ -113,7 +114,8 @@
       [selectedSpot]="selectedSpot()"
       [showSpotPreview]="true"
       (selectedSpotChange)="selectedSpot.set($event)"
-      class="w-100 h-100 rounded overflow-hidden d-inline-block"
+      class="w-100 h-100 overflow-hidden d-inline-block"
+      style="border-radius: 0.375rem 0.375rem 0px 0px"
     ></app-spot-map>
     }
     <!-- <div class="d-flex flex-row gap-3">

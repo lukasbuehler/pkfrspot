@@ -96,16 +96,16 @@ export const routes: Routes = [
   },
 
   // Posts
-  { path: "posts", component: HomePageComponent, data: { routeName: "Posts" } },
-  {
-    path: "p/:postId",
-    redirectTo: "post/:postId",
-  },
-  {
-    path: "post/:postId",
-    component: PostPageComponent,
-    data: { routeName: "Post" },
-  },
+  // { path: "posts", component: HomePageComponent, data: { routeName: "Posts" } },
+  // {
+  //   path: "p/:postId",
+  //   redirectTo: "post/:postId",
+  // },
+  // {
+  //   path: "post/:postId",
+  //   component: PostPageComponent,
+  //   data: { routeName: "Post" },
+  // },
 
   // Community, Groups, Teams, Sessions
   //   {

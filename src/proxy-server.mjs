@@ -57,12 +57,11 @@ function detectLanguage(req, res, next) {
       defaultLanguage;
   }
 
-  if (req.path === "/") {
-    return res.redirect(301, `/${preferredLanguage}`);
-  } else {
-    // For other cases, redirect to the root of the detected language
-    return res.redirect(301, `/${preferredLanguage}${req.path}`);
-  }
+  const targetUrl =
+    req.originalUrl === "/"
+      ? `/${preferredLanguage}`
+      : `/${preferredLanguage}${req.originalUrl}`;
+  return res.redirect(301, targetUrl);
 }
 
 function run() {

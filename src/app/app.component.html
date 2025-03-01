@@ -15,7 +15,7 @@
     </a>
     @for (button of navbarConfig; track button) { @if(button.spacerBefore) {
     <div class="spacer"></div>
-    } @else { @if(button.link) {
+    } @if(button.link) {
     <a [routerLink]="button.link">
       <app-mat3-nav-button
         [icon]="button.icon"
@@ -28,7 +28,7 @@
       [icon]="button.icon"
       [label]="button.name"
     ></app-mat3-nav-button>
-    } } }
+    } }
 
     <!-- terms  -->
     <span

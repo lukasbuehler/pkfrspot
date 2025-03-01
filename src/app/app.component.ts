@@ -259,11 +259,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     ];
 
     this.navbarConfig = [
-      {
-        name: "Posts",
-        link: "/posts",
-        icon: "question_answer",
-      },
+      // {
+      //   name: "Posts",
+      //   link: "/posts",
+      //   icon: "question_answer",
+      // },
       {
         name: $localize`:Spot map navbar button label|A very short label for the navbar spot map label@@spot_map_label:Spot map`,
         link: "/map",
