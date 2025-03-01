@@ -29,6 +29,7 @@ import {
   MatMenu,
   MatMenuItem,
   MatMenuPanel,
+  MatMenuModule,
 } from "@angular/material/menu";
 import { MatToolbar } from "@angular/material/toolbar";
 import { NavRailContentComponent } from "./nav-rail-content/nav-rail-content.component";
@@ -56,7 +57,7 @@ interface LinkButton extends ButtonBase {
 }
 
 interface MenuButton extends ButtonBase {
-  menu: MatMenuPanel<any>;
+  menu: "lang" | "user";
   link?: never;
   function?: never;
 }
@@ -94,12 +95,10 @@ type ButtonConfig = LinkMenuButton[];
     MatFabButton,
     Mat3NavButtonComponent,
     NgOptimizedImage,
+    MatMenuModule,
   ],
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  @ViewChild("langMenu") langMenu: MatMenuPanel;
-  @ViewChild("userMenu") userMenu: MatMenuPanel;
-
   readonly welcomeDialog = inject(MatDialog);
   private _snackbar = inject(MatSnackBar);
 
@@ -235,29 +234,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.unauthenticatedUserMenuConfig = [
-      {
-        name: $localize`:@@login.nav_label:Login`,
-        link: "/sign-in",
-        icon: "login",
-      },
-      {
-        name: $localize`:@@create_acc.nav_label:Create Account`,
-        link: "/sign-up",
-        icon: "person_add",
-      },
-      {
-        name: $localize`:Language button label|The label of the change language button@@lang_btn_label:Language`,
-        icon: "language",
-        menu: this.langMenu,
-      },
-      {
-        name: $localize`:About page navbar button label|A very short label for the navbar about page button:About`,
-        link: "/about",
-        icon: "info",
-      },
-    ];
-
     this.navbarConfig = [
       // {
       //   name: "Posts",
@@ -276,9 +252,32 @@ export class AppComponent implements OnInit, AfterViewInit {
       },
       {
         spacerBefore: true,
-        name: $localize`Profile`,
-        menu: this.userMenu,
+        name: $localize`Account`, // TODO use the user's name here if authenticated
+        menu: "user",
         icon: "person",
+      },
+    ];
+
+    this.unauthenticatedUserMenuConfig = [
+      {
+        name: $localize`:@@login.nav_label:Login`,
+        link: "/sign-in",
+        icon: "login",
+      },
+      {
+        name: $localize`:@@create_acc.nav_label:Create Account`,
+        link: "/sign-up",
+        icon: "person_add",
+      },
+      {
+        name: $localize`:Language button label|The label of the change language button@@lang_btn_label:Language`,
+        icon: "language",
+        menu: "lang",
+      },
+      {
+        name: $localize`:About page navbar button label|A very short label for the navbar about page button:About`,
+        link: "/about",
+        icon: "info",
       },
     ];
 
@@ -338,5 +337,12 @@ export class AppComponent implements OnInit, AfterViewInit {
           }
         );
       });
+  }
+
+  openMenu(trigger: MatMenuTrigger, menu: MatMenu) {
+    console.log("Opening menu", menu, trigger);
+
+    trigger.menu = menu;
+    trigger.openMenu();
   }
 }
