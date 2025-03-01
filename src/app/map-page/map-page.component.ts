@@ -47,7 +47,6 @@ import { StorageService } from "../services/firebase/storage.service";
 import { GlobalVariables } from "../../scripts/global";
 import { SpotListComponent } from "../spot-list/spot-list.component";
 import { SpotsService } from "../services/firebase/firestore/spots.service";
-// import { UserMenuContentComponent } from "../user-menu-content/user-menu-content.component";
 import { SpotDetailsComponent } from "../spot-details/spot-details.component";
 import { MatOption } from "@angular/material/core";
 import {

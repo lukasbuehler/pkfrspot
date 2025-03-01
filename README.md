@@ -160,16 +160,10 @@ After that the language files will be updated (and possibly reformatted, which i
    ```
 
 3. Copy an existing language file like `messages.de.xlf` in `src/locale` and paste it with the same name as in [`angular.json`](./angular.json), e.g. `messages.xx-XX.xlf` or `messages.xx.xlf`.
-4. Update the [src/proxy-server.mjs](./src/proxy-server.mjs) file to include the new language in the `supportedLanguages` array at the very top.
 
-   ```mjs
-   const supportedLanguages = ["en", "de", "de-CH", "xx-XX"]; // here
-   ...
-   ```
+4. Edit this new language file in [`src/locales`](./src/locale/).
 
-5. Edit this new language file in [`src/locales`](./src/locale/).
-
-6. Submit a pull-request with your changes on [GitHub](https://github.com/lukasbuehler/pkfrspot/compare)
+5. Submit a pull-request with your changes on [GitHub](https://github.com/lukasbuehler/pkfrspot/compare)
 
 ### Developing Locally
 

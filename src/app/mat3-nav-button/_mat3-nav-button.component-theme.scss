@@ -11,30 +11,56 @@
       color: mat.get-theme-color($theme, on-surface-variant);
     }
 
-    .button-container.active > mat-icon,
-    .button-container:active > mat-icon {
-      color: mat.get-theme-color($theme, on-secondary-container);
-      background-color: mat.get-theme-color($theme, secondary-container);
-    }
+    .button-container {
+      // Hover and focus states
+      &:hover,
+      &:focus {
+        > mat-icon,
+        > .image {
+          color: mat.get-theme-color($theme, on-surface-variant);
+          background-color: mat.get-theme-color(
+            $theme,
+            surface-container-highest
+          );
 
-    .button-container:hover > mat-icon {
-      color: mat.get-theme-color($theme, on-surface-variant);
-      background-color: mat.get-theme-color($theme, surface-container-highest);
-    }
-    .button-container:focus > mat-icon {
-      color: mat.get-theme-color($theme, on-surface-variant);
-      background-color: mat.get-theme-color($theme, surface-container-highest);
-    }
+          // Hover/focus combined with active/selected state
+          .button-container.active &,
+          .button-container:active & {
+            color: mat.get-theme-color($theme, on-secondary-container);
+            background-color: mat.get-theme-color($theme, secondary-container);
+          }
+        }
+      }
 
-    .button-container:hover.active > mat-icon,
-    .button-container:hover:active > mat-icon {
-      color: mat.get-theme-color($theme, on-secondary-container);
-      background-color: mat.get-theme-color($theme, secondary-container);
+      &.active,
+      &:active {
+        > mat-icon,
+        > .image {
+          color: mat.get-theme-color($theme, on-secondary-container);
+          background-color: mat.get-theme-color($theme, secondary-container);
+
+          img {
+            border-color: mat.get-theme-color($theme, on-secondary-container);
+            border-style: solid;
+            border-width: 2px;
+          }
+        }
+      }
     }
-    .button-container:focus.active > mat-icon,
-    .button-container:focus:active > mat-icon {
+  }
+
+  // Active and selected states
+  app-mat3-nav-button.active > .button-container {
+    > mat-icon,
+    > .image {
       color: mat.get-theme-color($theme, on-secondary-container);
       background-color: mat.get-theme-color($theme, secondary-container);
+
+      img {
+        border-color: mat.get-theme-color($theme, on-secondary-container);
+        border-style: solid;
+        border-width: 2px;
+      }
     }
   }
 }

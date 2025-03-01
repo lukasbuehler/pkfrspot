@@ -96,16 +96,16 @@ export const routes: Routes = [
   },
 
   // Posts
-  { path: "posts", component: HomePageComponent, data: { routeName: "Posts" } },
-  {
-    path: "p/:postId",
-    redirectTo: "post/:postId",
-  },
-  {
-    path: "post/:postId",
-    component: PostPageComponent,
-    data: { routeName: "Post" },
-  },
+  // { path: "posts", component: HomePageComponent, data: { routeName: "Posts" } },
+  // {
+  //   path: "p/:postId",
+  //   redirectTo: "post/:postId",
+  // },
+  // {
+  //   path: "post/:postId",
+  //   component: PostPageComponent,
+  //   data: { routeName: "Post" },
+  // },
 
   // Community, Groups, Teams, Sessions
   //   {
@@ -128,6 +128,11 @@ export const routes: Routes = [
   //   { path: "wiki", component: WikiPageComponent, data: { routeName: "Wiki" } },
 
   // Profiles and sign-in flow
+  {
+    path: "profile",
+    component: ProfilePageComponent,
+    data: { routeName: "Profile" },
+  },
   {
     path: "u/:userID",
     component: ProfilePageComponent,

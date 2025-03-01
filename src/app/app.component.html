@@ -13,28 +13,23 @@
         height="48.5"
       />
     </a>
-    @for (button of navbarConfig.buttons; track button) {
-    <a [routerLink]="button.link">
+    @for (button of navbarConfig; track button) { @if(button.spacerBefore) {
+    <div class="spacer"></div>
+    } @if(button.link) {
+    <a [routerLink]="button.link" tabindex="-1">
       <app-mat3-nav-button
         [icon]="button.icon"
         [label]="button.name"
       ></app-mat3-nav-button>
     </a>
-    }
-    <div class="spacer"></div>
+    } @else {
     <app-mat3-nav-button
-      [matMenuTriggerFor]="langMenu"
-      icon="language"
-      i18n-label="
-        Language button label|The label of the change language
-        button@@lang_btn_label"
-      label="Language"
+      [matMenuTriggerFor]="button.menu == 'lang' ? langMenu : userMenu"
+      [icon]="button.icon"
+      [image]="button.image"
+      [label]="button.name"
     ></app-mat3-nav-button>
-    <!-- <app-mat3-nav-button
-      [matMenuTriggerFor]="navUserMenu"
-      icon="person"
-      label="Log in"
-    ></app-mat3-nav-button> -->
+    } }
 
     <!-- terms  -->
     <span
@@ -54,102 +49,74 @@
     @if(!alainMode) {
     <!-- Bottom navigation bar -->
     <mat-toolbar class="d-md-none mat-elevation-z1">
-      @for (button of navbarConfig.buttons; track button){
-      <a [routerLink]="button.link">
+      @for (button of navbarConfig; track button) { @if(button.link) {
+      <a [routerLink]="button.link" tabindex="-1">
         <app-mat3-nav-button
           [icon]="button.icon"
           [label]="button.name"
-        ></app-mat3-nav-button
-      ></a>
-      }
+        ></app-mat3-nav-button>
+      </a>
+      } @else if(button.function) {
       <app-mat3-nav-button
-        [matMenuTriggerFor]="langMenu"
-        icon="language"
-        i18n-label="
-          Language button label|The label of the change language
-          button@@lang_btn_label"
-        label="Language"
+        (click)="button.function()"
+        [icon]="button.icon"
+        [label]="button.name"
       ></app-mat3-nav-button>
-
-      <!-- Profile button -->
-      <!-- <app-mat3-nav-button
-        [matMenuTriggerFor]="navUserMenu"
-        icon="person"
-        label="Log in"
-      ></app-mat3-nav-button> -->
+      } @else {
+      <app-mat3-nav-button
+        [matMenuTriggerFor]="button.menu == 'lang' ? langMenu : userMenu"
+        [icon]="button.icon"
+        [image]="button.image"
+        [label]="button.name"
+        class="active"
+      ></app-mat3-nav-button>
+      } }
     </mat-toolbar>
     } @else {
     <!-- Menu button -->
     <button
       mat-fab
+      #mainMenuTrigger="matMenuTrigger"
       [matMenuTriggerFor]="mainMenu"
+      (click)="mainMenuTrigger.openMenu()"
       id="alainMenuButton"
       color="primary"
     >
       <mat-icon>menu</mat-icon>
     </button>
     <mat-menu #mainMenu="matMenu">
-      @for(button of navbarConfig.buttons; track button) {
+      @for(button of navbarConfig; track button) { @if(button.link) {
       <a [routerLink]="button.link">
         <button mat-menu-item>
           <mat-icon>{{ button.icon }}</mat-icon>
           <span>{{ button.name }}</span>
         </button>
       </a>
-      }
-
-      <!-- Language button -->
-      <button mat-menu-item [matMenuTriggerFor]="langMenu">
-        <mat-icon>language</mat-icon>
-        <span
-          i18n="
-            Language button label|The label of the change language
-            button@@lang_btn_label"
-          >Language</span
-        >
+      }@else if(button.function) {
+      <button mat-menu-item (click)="button.function()">
+        <mat-icon>{{ button.icon }}</mat-icon>
+        <span>{{ button.name }}</span>
       </button>
-
-      <!-- Profile button -->
-      <!-- <button mat-menu-item [matMenuTriggerFor]="navUserMenu">
-        <mat-icon>person</mat-icon>
-        <span i18n>Log in</span>
-      </button> -->
+      } @else {
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="button.menu == 'lang' ? langMenu : userMenu"
+      >
+        @if(button.image) {
+        <img
+          [ngSrc]="button.image"
+          width="24"
+          height="24"
+          class="rounded-circle"
+          style="margin-right: 12px"
+        />
+        } @else {<mat-icon>{{ button.icon }}</mat-icon
+        >}
+        <span>{{ button.name }}</span>
+      </button>
+      } }
     </mat-menu>
     }
-
-    <!-- Language menu -->
-    <mat-menu #langMenu="matMenu">
-      @for(language of languages; track language ) {
-      <a mat-menu-item [href]="language.url">{{ language.name }}</a>
-      }
-    </mat-menu>
-
-    <!-- User FAB -->
-    <!-- <button
-      mat-fab
-      color="primary"
-      class="profile-icon-button login-fab d-none d-md-block"
-      [matMenuTriggerFor]="navUserMenu"
-    >
-      @if (!authService.isSignedIn) {
-      <mat-icon>person_outline</mat-icon>
-      }
-      <img
-        *ngIf="authService.isSignedIn && authService.user?.data?.profilePicture"
-        [ngSrc]="
-          storageService.getSpotMediaURL(
-            authService.user.data.profilePicture,
-            200
-          )
-        "
-        width="56"
-        height="56"
-      />
-    </button> -->
-
-    <mat-menu #navUserMenu="matMenu">
-      <app-user-menu-content></app-user-menu-content>
-    </mat-menu>
 
     <!-- Terms and Privacy -->
 
@@ -189,3 +156,61 @@
   </div>
 </div>
 }
+
+<!-- Language menu -->
+<mat-menu #langMenu="matMenu" id="langMenu">
+  @for(code of availableLanguageCodes; track code ) {
+  <a mat-menu-item [href]="'/' + code + '/'">{{
+    languageCodes[code].name_native
+  }}</a>
+  }
+</mat-menu>
+
+<!-- User FAB -->
+<!-- <button
+  mat-fab
+  color="primary"
+  class="profile-icon-button login-fab d-none d-md-block"
+  [matMenuTriggerFor]="userMenu"
+>
+  @if (!authService.isSignedIn) {
+  <mat-icon>person_outline</mat-icon>
+  }
+  <img
+    *ngIf="authService.isSignedIn && authService.user?.data?.profilePicture"
+    [ngSrc]="
+      storageService.getSpotMediaURL(
+        authService.user.data.profilePicture,
+        200
+      )
+    "
+    width="56"
+    height="56"
+  />
+</button> -->
+
+<mat-menu #userMenu="matMenu" id="userMenu">
+  @for(button of (authService.isSignedIn ? authenticatedUserMenuConfig :
+  unauthenticatedUserMenuConfig); track button) { @if(button.link) {
+  <a [routerLink]="button.link">
+    <button mat-menu-item>
+      <mat-icon>{{ button.icon }}</mat-icon>
+      <span>{{ button.name }}</span>
+    </button>
+  </a>
+  } @else if(button.function) {
+  <button mat-menu-item (click)="button.function()">
+    <mat-icon>{{ button.icon }}</mat-icon>
+    <span>{{ button.name }}</span>
+  </button>
+
+  } @else {
+  <button
+    mat-menu-item
+    [matMenuTriggerFor]="button.menu == 'lang' ? langMenu : userMenu"
+  >
+    <mat-icon>{{ button.icon }}</mat-icon>
+    <span>{{ button.name }}</span>
+  </button>
+  } }
+</mat-menu>

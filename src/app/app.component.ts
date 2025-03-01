@@ -1,9 +1,12 @@
 import {
+  AfterViewInit,
   Component,
   HostListener,
   inject,
   OnInit,
   signal,
+  TemplateRef,
+  ViewChild,
   WritableSignal,
 } from "@angular/core";
 import {
@@ -13,16 +16,22 @@ import {
   RouterOutlet,
   ActivatedRoute,
   NavigationEnd,
+  RouterModule,
 } from "@angular/router";
-import { filter, map, tap } from "rxjs/operators";
+import { filter } from "rxjs/operators";
 import { AuthenticationService } from "./services/firebase/authentication.service";
 import { StorageService } from "./services/firebase/storage.service";
 import { GlobalVariables } from "../scripts/global";
-import { UserMenuContentComponent } from "./user-menu-content/user-menu-content.component";
 import { NgOptimizedImage } from "@angular/common";
 import { MatFabButton } from "@angular/material/button";
 import { MatIcon } from "@angular/material/icon";
-import { MatMenuTrigger, MatMenu, MatMenuItem } from "@angular/material/menu";
+import {
+  MatMenuTrigger,
+  MatMenu,
+  MatMenuItem,
+  MatMenuPanel,
+  MatMenuModule,
+} from "@angular/material/menu";
 import { MatToolbar } from "@angular/material/toolbar";
 import { NavRailContentComponent } from "./nav-rail-content/nav-rail-content.component";
 import { Mat3NavButtonComponent } from "./mat3-nav-button/mat3-nav-button.component";
@@ -30,8 +39,44 @@ import { NavRailComponent } from "./nav-rail/nav-rail.component";
 import { NavRailContainerComponent } from "./nav-rail-container/nav-rail-container.component";
 import { WelcomeDialogComponent } from "./welcome-dialog/welcome-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
+import { languageCodes } from "../scripts/Languages";
+import { LocaleCode } from "../db/models/Interfaces";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
+
+interface ButtonBase {
+  name: string;
+  icon?: string;
+  image?: string;
+}
+
+interface LinkButton extends ButtonBase {
+  link: string;
+  menu?: never;
+  function?: never;
+}
+
+interface MenuButton extends ButtonBase {
+  menu: "lang" | "user";
+  link?: never;
+  function?: never;
+}
+
+interface FunctionButton extends ButtonBase {
+  function: () => void;
+  link?: never;
+  menu?: never;
+}
+
+type LinkMenuButton = LinkButton | MenuButton | FunctionButton;
+
+type NavbarButton = LinkMenuButton & {
+  spacerBefore?: boolean;
+};
+
+type NavbarButtonConfig = NavbarButton[];
+type ButtonConfig = LinkMenuButton[];
 
 @Component({
   selector: "app-root",
@@ -49,17 +94,19 @@ declare function plausible(eventName: string, options?: { props: any }): void;
     MatMenuItem,
     MatIcon,
     MatFabButton,
-    UserMenuContentComponent,
     Mat3NavButtonComponent,
     NgOptimizedImage,
+    MatMenuModule,
+    RouterModule,
   ],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   readonly welcomeDialog = inject(MatDialog);
+  private _snackbar = inject(MatSnackBar);
 
   constructor(
-    public router: Router,
     public authService: AuthenticationService,
+    public router: Router,
     public storageService: StorageService,
     private route: ActivatedRoute
   ) {
@@ -75,39 +122,17 @@ export class AppComponent implements OnInit {
 
   baseUrl = "https://pkfrspot.com";
 
-  languages: {
-    name: string;
-    url: string;
-  }[] = [
-    {
-      name: "English",
-      url: this.baseUrl + "/en/",
-    },
-    {
-      name: "Deutsch",
-      url: this.baseUrl + "/de/",
-    },
-    {
-      name: "Schwiizerdütsch",
-      url: this.baseUrl + "/de-CH/",
-    },
-    {
-      name: "Français",
-      url: this.baseUrl + "/fr/",
-    },
-    {
-      name: "Italiano",
-      url: this.baseUrl + "/it/",
-    },
-    {
-      name: "Español",
-      url: this.baseUrl + "/es/",
-    },
-    {
-      name: "Nederlands",
-      url: this.baseUrl + "/nl/",
-    },
+  availableLanguageCodes: LocaleCode[] = [
+    "en",
+    "de",
+    "de-CH",
+    "fr",
+    "it",
+    "es",
+    "nl",
   ];
+
+  languageCodes = languageCodes;
 
   @HostListener("window:resize", ["$event"])
   onResize(event: Event) {
@@ -127,6 +152,10 @@ export class AppComponent implements OnInit {
       }
     }
   }
+
+  navbarConfig: NavbarButtonConfig;
+  unauthenticatedUserMenuConfig: ButtonConfig;
+  authenticatedUserMenuConfig: ButtonConfig;
 
   ngOnInit() {
     const currentTermsVersion = "1";
@@ -185,6 +214,8 @@ export class AppComponent implements OnInit {
           isAuthenticated = true;
         }
 
+        this.updateMenus();
+
         if (typeof plausible !== "undefined") {
           plausible("pageview", { props: { authenticated: isAuthenticated } });
         }
@@ -207,62 +238,125 @@ export class AppComponent implements OnInit {
       });
   }
 
-  navbarConfig = {
-    color: "primary",
-    buttons: [
-      //   {
-      //     name: "Posts",
-      //     link: "/posts",
-      //     icon: "question_answer",
-      //     badge: {
-      //       number: 0,
-      //       color: "accent",
-      //     },
-      //     tooltip: "",
-      //   },
+  ngAfterViewInit() {
+    this.updateMenus();
+  }
+
+  logUserOut() {
+    if (!this.authService) {
+      console.error("AuthService not available");
+      return;
+    }
+    if (!this.authService.isSignedIn) {
+      console.error("User is not signed in");
+      return;
+    }
+
+    this.authService
+      .logUserOut()
+      .then(() => {
+        // Successfully logged out
+        this._snackbar.open("You were successfully signed out!", "OK", {
+          duration: 2000,
+          horizontalPosition: "center",
+          verticalPosition: "bottom",
+        });
+      })
+      .catch((err) => {
+        // There was an error logging out.
+        this._snackbar.open(
+          "Error, there was a problem signing out!",
+          "Dismiss",
+          {
+            duration: 5000,
+            horizontalPosition: "center",
+            verticalPosition: "bottom",
+          }
+        );
+      });
+  }
+
+  updateMenus() {
+    const displayName: string | undefined =
+      this.authService?.auth?.currentUser?.displayName ?? undefined;
+    let userPhoto: string | undefined =
+      this.authService?.user?.data?.profilePicture ?? undefined;
+
+    userPhoto = userPhoto
+      ? this.storageService.getSpotMediaURL(userPhoto, 200)
+      : undefined;
+
+    this.navbarConfig = [
+      // {
+      //   name: "Posts",
+      //   link: "/posts",
+      //   icon: "question_answer",
+      // },
       {
         name: $localize`:Spot map navbar button label|A very short label for the navbar spot map label@@spot_map_label:Spot map`,
         link: "/map",
         icon: "map",
-        badge: {
-          number: 0,
-          color: "accent",
-        },
-        tooltip: "",
       },
-      /*{
-        name: "Wiki",
-        link: "/wiki",
-        badge: {
-          number: 0,
-          color: "accent",
-        },
-        tooltip: "",
-      },*/
-      /*{
-        name: "Community",
-        link: "/community",
-        badge: {
-          number: 0,
-          color: "accent",
-        },
-        tooltip: "",
-      },*/
       {
         name: $localize`:@@events.nav_label:Events`,
         link: "/events",
         icon: "calendar_month", // or event, local_activity, calendar_month
       },
       {
+        spacerBefore: true,
+        name: displayName ? displayName : $localize`Account`,
+        menu: "user",
+        icon: "person",
+        image: displayName && userPhoto ? userPhoto : "",
+      },
+    ];
+
+    this.unauthenticatedUserMenuConfig = [
+      {
+        name: $localize`:@@login.nav_label:Login`,
+        link: "/sign-in",
+        icon: "login",
+      },
+      {
+        name: $localize`:@@create_acc.nav_label:Create Account`,
+        link: "/sign-up",
+        icon: "person_add",
+      },
+      {
+        name: $localize`:Language button label|The label of the change language button@@lang_btn_label:Language`,
+        icon: "language",
+        menu: "lang",
+      },
+      {
         name: $localize`:About page navbar button label|A very short label for the navbar about page button:About`,
         link: "/about",
         icon: "info",
-        badge: {
-          number: 0,
-          color: "accent",
-        },
-        tootltip: "",
       },
-    ],
-  };
+    ];
+
+    this.authenticatedUserMenuConfig = [
+      {
+        name: $localize`:@@profile.nav_label:My Profile`,
+        link: "/profile",
+        icon: "face",
+      },
+      {
+        name: $localize`:@@settings.nav_label:Settings`,
+        link: "/settings",
+        icon: "settings",
+      },
+      {
+        name: $localize`:About page navbar button label|A very short label for the navbar about page button:About`,
+        link: "/about",
+        icon: "info",
+      },
+      {
+        name: $localize`:@@logout.nav_label:Logout`,
+        function: () => {
+          return this.logUserOut();
+        },
+        icon: "logout",
+      },
+    ];
+  }
 }
