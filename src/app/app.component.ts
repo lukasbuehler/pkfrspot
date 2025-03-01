@@ -16,6 +16,7 @@ import {
   RouterOutlet,
   ActivatedRoute,
   NavigationEnd,
+  RouterModule,
 } from "@angular/router";
 import { filter } from "rxjs/operators";
 import { AuthenticationService } from "./services/firebase/authentication.service";
@@ -96,6 +97,7 @@ type ButtonConfig = LinkMenuButton[];
     Mat3NavButtonComponent,
     NgOptimizedImage,
     MatMenuModule,
+    RouterModule,
   ],
 })
 export class AppComponent implements OnInit, AfterViewInit {
@@ -211,6 +213,8 @@ export class AppComponent implements OnInit, AfterViewInit {
           isAuthenticated = true;
         }
 
+        this.updateMenus();
+
         if (typeof plausible !== "undefined") {
           plausible("pageview", { props: { authenticated: isAuthenticated } });
         }
@@ -234,75 +238,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.navbarConfig = [
-      // {
-      //   name: "Posts",
-      //   link: "/posts",
-      //   icon: "question_answer",
-      // },
-      {
-        name: $localize`:Spot map navbar button label|A very short label for the navbar spot map label@@spot_map_label:Spot map`,
-        link: "/map",
-        icon: "map",
-      },
-      {
-        name: $localize`:@@events.nav_label:Events`,
-        link: "/events",
-        icon: "calendar_month", // or event, local_activity, calendar_month
-      },
-      {
-        spacerBefore: true,
-        name: $localize`Account`, // TODO use the user's name here if authenticated
-        menu: "user",
-        icon: "person",
-      },
-    ];
-
-    this.unauthenticatedUserMenuConfig = [
-      {
-        name: $localize`:@@login.nav_label:Login`,
-        link: "/sign-in",
-        icon: "login",
-      },
-      {
-        name: $localize`:@@create_acc.nav_label:Create Account`,
-        link: "/sign-up",
-        icon: "person_add",
-      },
-      {
-        name: $localize`:Language button label|The label of the change language button@@lang_btn_label:Language`,
-        icon: "language",
-        menu: "lang",
-      },
-      {
-        name: $localize`:About page navbar button label|A very short label for the navbar about page button:About`,
-        link: "/about",
-        icon: "info",
-      },
-    ];
-
-    this.authenticatedUserMenuConfig = [
-      {
-        name: $localize`:@@profile.nav_label:Profile`,
-        link: "/u/", // + this.authService.user?.data?.uid,
-        icon: "person",
-      },
-      {
-        name: $localize`:@@settings.nav_label:Settings`,
-        link: "/settings",
-        icon: "settings",
-      },
-      {
-        name: $localize`:About page navbar button label|A very short label for the navbar about page button:About`,
-        link: "/about",
-        icon: "info",
-      },
-      {
-        name: $localize`:@@logout.nav_label:Logout`,
-        function: this.logUserOut,
-        icon: "logout",
-      },
-    ];
+    this.updateMenus();
   }
 
   logUserOut() {
@@ -339,10 +275,87 @@ export class AppComponent implements OnInit, AfterViewInit {
       });
   }
 
-  openMenu(trigger: MatMenuTrigger, menu: MatMenu) {
-    console.log("Opening menu", menu, trigger);
+  updateMenus() {
+    const displayName: string | undefined =
+      this.authService?.auth?.currentUser?.displayName ?? undefined;
+    let userPhoto: string | undefined =
+      this.authService?.user?.data?.profilePicture ?? undefined;
 
-    trigger.menu = menu;
-    trigger.openMenu();
+    userPhoto = userPhoto
+      ? this.storageService.getSpotMediaURL(userPhoto, 200)
+      : undefined;
+
+    this.navbarConfig = [
+      // {
+      //   name: "Posts",
+      //   link: "/posts",
+      //   icon: "question_answer",
+      // },
+      {
+        name: $localize`:Spot map navbar button label|A very short label for the navbar spot map label@@spot_map_label:Spot map`,
+        link: "/map",
+        icon: "map",
+      },
+      {
+        name: $localize`:@@events.nav_label:Events`,
+        link: "/events",
+        icon: "calendar_month", // or event, local_activity, calendar_month
+      },
+      {
+        spacerBefore: true,
+        name: displayName ? displayName : $localize`Account`,
+        menu: "user",
+        icon: "person",
+        image: displayName && userPhoto ? userPhoto : "",
+      },
+    ];
+
+    this.unauthenticatedUserMenuConfig = [
+      {
+        name: $localize`:@@login.nav_label:Login`,
+        link: "/sign-in",
+        icon: "login",
+      },
+      {
+        name: $localize`:@@create_acc.nav_label:Create Account`,
+        link: "/sign-up",
+        icon: "person_add",
+      },
+      {
+        name: $localize`:Language button label|The label of the change language button@@lang_btn_label:Language`,
+        icon: "language",
+        menu: "lang",
+      },
+      {
+        name: $localize`:About page navbar button label|A very short label for the navbar about page button:About`,
+        link: "/about",
+        icon: "info",
+      },
+    ];
+
+    this.authenticatedUserMenuConfig = [
+      {
+        name: $localize`:@@profile.nav_label:My Profile`,
+        link: "/profile",
+        icon: "face",
+      },
+      {
+        name: $localize`:@@settings.nav_label:Settings`,
+        link: "/settings",
+        icon: "settings",
+      },
+      {
+        name: $localize`:About page navbar button label|A very short label for the navbar about page button:About`,
+        link: "/about",
+        icon: "info",
+      },
+      {
+        name: $localize`:@@logout.nav_label:Logout`,
+        function: () => {
+          return this.logUserOut();
+        },
+        icon: "logout",
+      },
+    ];
   }
 }

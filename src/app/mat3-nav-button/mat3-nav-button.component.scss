@@ -11,7 +11,8 @@
   background: transparent;
   border: none;
 
-  > mat-icon {
+  > mat-icon,
+  .image {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,14 +22,21 @@
   }
 }
 
-.button-container > mat-icon {
+.button-container > mat-icon,
+.button-container > .image {
   transition: color 0.2s, background-color 0.2s, width 0.2s;
 }
 
 .button-container:hover > mat-icon,
+.button-container:hover > .image,
 .button-container:focus > mat-icon,
+.button-container:focus > .image,
 .button-container.active > mat-icon,
-.button-container:active > mat-icon {
+.button-container.active > .image,
+.button-container:active > mat-icon,
+.button-container:active > .image,
+:host.active > .button-container > mat-icon,
+:host.active > .button-container > .image {
   @media (max-width: 767px) {
     width: 64px;
   }

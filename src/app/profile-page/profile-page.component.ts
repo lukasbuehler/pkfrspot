@@ -5,7 +5,7 @@ import {
   MatDialogRef,
 } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { ActivatedRoute, RouterLink } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { Post } from "../../db/models/Post";
 import { User } from "../../db/models/User";
 import { AuthenticationService } from "../services/firebase/authentication.service";
@@ -59,6 +59,7 @@ export class ProfilePageComponent implements OnInit {
     private _usersService: UsersService,
     private _postsService: PostsService,
     private _route: ActivatedRoute,
+    private _router: Router,
     private _snackbar: MatSnackBar,
     private _storageService: StorageService
   ) {}
@@ -83,17 +84,20 @@ export class ProfilePageComponent implements OnInit {
   private lastLoadedFollowing: firebase.default.firestore.Timestamp;
 
   ngOnInit(): void {
-    this.userId = this._route.snapshot.paramMap.get("userID") || "";
+    this.userId =
+      this._route.snapshot.paramMap.get("userID") ??
+      this._authService?.user?.uid ??
+      "";
+
+    if (!this.userId) {
+      // redirect to sign-in page
+      this._router.navigate(["/sign-in"]);
+      return;
+    } else {
+      this._router.navigate(["/u", this.userId]);
+    }
+
     this.init();
-
-    this._route.paramMap.subscribe((map) => {
-      let _userId = map.get("userID");
-
-      if (_userId) {
-        this.userId = _userId || "";
-        this.init();
-      }
-    });
 
     this._authService.authState$.subscribe((user) => {
       if (user) {

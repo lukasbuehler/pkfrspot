@@ -16,7 +16,7 @@
     @for (button of navbarConfig; track button) { @if(button.spacerBefore) {
     <div class="spacer"></div>
     } @if(button.link) {
-    <a [routerLink]="button.link">
+    <a [routerLink]="button.link" tabindex="-1">
       <app-mat3-nav-button
         [icon]="button.icon"
         [label]="button.name"
@@ -26,6 +26,7 @@
     <app-mat3-nav-button
       [matMenuTriggerFor]="button.menu == 'lang' ? langMenu : userMenu"
       [icon]="button.icon"
+      [image]="button.image"
       [label]="button.name"
     ></app-mat3-nav-button>
     } }
@@ -49,7 +50,7 @@
     <!-- Bottom navigation bar -->
     <mat-toolbar class="d-md-none mat-elevation-z1">
       @for (button of navbarConfig; track button) { @if(button.link) {
-      <a [routerLink]="button.link">
+      <a [routerLink]="button.link" tabindex="-1">
         <app-mat3-nav-button
           [icon]="button.icon"
           [label]="button.name"
@@ -65,7 +66,9 @@
       <app-mat3-nav-button
         [matMenuTriggerFor]="button.menu == 'lang' ? langMenu : userMenu"
         [icon]="button.icon"
+        [image]="button.image"
         [label]="button.name"
+        class="active"
       ></app-mat3-nav-button>
       } }
     </mat-toolbar>
@@ -99,7 +102,16 @@
         mat-menu-item
         [matMenuTriggerFor]="button.menu == 'lang' ? langMenu : userMenu"
       >
-        <mat-icon>{{ button.icon }}</mat-icon>
+        @if(button.image) {
+        <img
+          [ngSrc]="button.image"
+          width="24"
+          height="24"
+          class="rounded-circle"
+          style="margin-right: 12px"
+        />
+        } @else {<mat-icon>{{ button.icon }}</mat-icon
+        >}
         <span>{{ button.name }}</span>
       </button>
       } }

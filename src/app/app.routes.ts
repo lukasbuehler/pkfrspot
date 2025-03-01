@@ -129,6 +129,11 @@ export const routes: Routes = [
 
   // Profiles and sign-in flow
   {
+    path: "profile",
+    component: ProfilePageComponent,
+    data: { routeName: "Profile" },
+  },
+  {
     path: "u/:userID",
     component: ProfilePageComponent,
     data: { routeName: "Profile" },
