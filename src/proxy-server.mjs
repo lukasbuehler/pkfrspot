@@ -1,7 +1,10 @@
 import path from "node:path";
 import express from "express";
 import compression from "compression";
-import { LAST_MODIFIED, supportedLanguageCodes } from "./build-info.mjs";
+import {
+  LAST_MODIFIED,
+  SUPPORTED_LANGUAGE_CODES as supportedLanguageCodes,
+} from "./build-info.mjs";
 
 const defaultLanguage = "en";
 
