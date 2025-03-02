@@ -725,34 +725,17 @@
         <source>Sign in</source>
       </segment>
     </unit>
-    <unit id="7028204981963450021">
-      <segment>
-        <source>Sign up</source>
-      </segment>
-    </unit>
-    <unit id="1237816927659510577">
-      <notes>
-        <note category="description">The profile dropdown menu label for &apos;my profile&apos;</note>
-        <note category="meaning">my profile label</note>
-      </notes>
+    <unit id="profile.nav_label">
       <segment>
         <source>My Profile</source>
       </segment>
     </unit>
-    <unit id="5060391165154083287">
-      <notes>
-        <note category="description">The profile dropdown menu label for the settings</note>
-        <note category="meaning">settings label</note>
-      </notes>
+    <unit id="settings.nav_label">
       <segment>
         <source>Settings</source>
       </segment>
     </unit>
-    <unit id="339940386378543699">
-      <notes>
-        <note category="description">The profile dropdown menu label to logout</note>
-        <note category="meaning">logout label</note>
-      </notes>
+    <unit id="logout.nav_label">
       <segment>
         <source>Logout</source>
       </segment>
@@ -934,19 +917,6 @@
         <source>Report</source>
       </segment>
     </unit>
-    <unit id="7650916050216152686">
-      <segment>
-        <source>Report post</source>
-      </segment>
-    </unit>
-    <unit id="7708270344948043036">
-      <segment>
-        <source>
-          <ph id="0" equiv="INTERPOLATION"
-            disp="{{ hasChanged ? &quot;Discard&quot; : &quot;Cancel&quot; }}" />
-        </source>
-      </segment>
-    </unit>
     <unit id="7855274718891325217">
       <segment>
         <source>Show Event header</source>
@@ -955,6 +925,21 @@
     <unit id="822217384326702238">
       <segment>
         <source>HTML Embed Code</source>
+      </segment>
+    </unit>
+    <unit id="4086606389696938932">
+      <segment>
+        <source>Account</source>
+      </segment>
+    </unit>
+    <unit id="create_acc.nav_label">
+      <segment>
+        <source>Create Account</source>
+      </segment>
+    </unit>
+    <unit id="login.nav_label">
+      <segment>
+        <source>Login</source>
       </segment>
     </unit>
   </file>

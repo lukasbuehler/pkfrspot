@@ -348,37 +348,19 @@
         <target>Accedi</target>
       </segment>
     </unit>
-    <unit id="7028204981963450021">
-      <segment state="initial">
-        <source>Sign up</source>
-        <target>Registrati</target>
-      </segment>
-    </unit>
-    <unit id="1237816927659510577">
-      <notes>
-        <note category="description">The profile dropdown menu label for &apos;my profile&apos;</note>
-        <note category="meaning">my profile label</note>
-      </notes>
+    <unit id="profile.nav_label">
       <segment state="initial">
         <source>My Profile</source>
         <target>Il mio profilo</target>
       </segment>
     </unit>
-    <unit id="5060391165154083287">
-      <notes>
-        <note category="description">The profile dropdown menu label for the settings</note>
-        <note category="meaning">settings label</note>
-      </notes>
+    <unit id="settings.nav_label">
       <segment state="initial">
         <source>Settings</source>
         <target>Impostazioni</target>
       </segment>
     </unit>
-    <unit id="339940386378543699">
-      <notes>
-        <note category="description">The profile dropdown menu label to logout</note>
-        <note category="meaning">logout label</note>
-      </notes>
+    <unit id="logout.nav_label">
       <segment state="initial">
         <source>Logout</source>
         <target>Esci</target>
@@ -1100,18 +1082,6 @@
         <target>Copia</target>
       </segment>
     </unit>
-    <unit id="7708270344948043036">
-      <segment state="initial">
-        <source>
-          <ph id="0" equiv="INTERPOLATION"
-            disp="{{ hasChanged ? &quot;Discard&quot; : &quot;Cancel&quot; }}" />
-        </source>
-        <target>
-          <ph id="0" equiv="INTERPOLATION"
-            disp="{{ hasChanged ? &quot;Annulla modifiche&quot; : &quot;Annulla&quot; }}" />
-        </target>
-      </segment>
-    </unit>
     <unit id="4973187879197257053">
       <segment state="initial">
         <source>Embed Type</source>
@@ -1154,10 +1124,22 @@
         <target>Segnala</target>
       </segment>
     </unit>
-    <unit id="7650916050216152686">
+    <unit id="4086606389696938932">
       <segment state="initial">
-        <source>Report post</source>
-        <target>Segnala post</target>
+        <source>Account</source>
+        <target>Account</target>
+      </segment>
+    </unit>
+    <unit id="login.nav_label">
+      <segment state="initial">
+        <source>Login</source>
+        <target>Accedi</target>
+      </segment>
+    </unit>
+    <unit id="create_acc.nav_label">
+      <segment state="initial">
+        <source>Create Account</source>
+        <target>Crea account</target>
       </segment>
     </unit>
   </file>
