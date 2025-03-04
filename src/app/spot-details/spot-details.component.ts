@@ -223,13 +223,13 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   >(undefined);
 
   get isNewSpot() {
-    return this.spot instanceof LocalSpot;
+    return this.spot() instanceof LocalSpot;
   }
 
   startHeight: number = 0;
 
   @HostBinding("@grow") get grow() {
-    return { value: this.spot, params: { startHeight: this.startHeight } };
+    return { value: this.spot(), params: { startHeight: this.startHeight } };
   }
 
   constructor(
@@ -335,7 +335,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   addBoundsClicked() {
-    if (this.spot instanceof LocalSpot) {
+    if (this.spot() instanceof LocalSpot) {
       console.error("the spot needs to be saved first before adding bounds");
     }
     if (!this.isEditing) {
@@ -414,7 +414,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   // }
 
   async shareSpot() {
-    if (!(this.spot instanceof Spot)) {
+    const spot = this.spot();
+    if (!(spot instanceof Spot)) {
       console.error("Cannot share a spot that hasn't been saved yet");
       return;
     }
@@ -424,13 +425,13 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
 
     // TODO use slug instead of id if available
 
-    const link = url + "/map/" + this.spot.id;
+    const link = url + "/map/" + spot.id;
 
     if (navigator["share"]) {
       try {
         const shareData = {
-          title: "Spot: " + this.spot.name(),
-          text: `PKFR Spot: ${this.spot.name()}`,
+          title: "Spot: " + spot.name(),
+          text: `PKFR Spot: ${spot.name()}`,
           url: link,
         };
 
@@ -440,9 +441,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
         console.error(err);
       }
     } else {
-      navigator.clipboard.writeText(
-        `${this.spot.name()} - PKFR Spot \n${link}`
-      );
+      navigator.clipboard.writeText(`${spot.name()} - PKFR Spot \n${link}`);
       this._snackbar.open("Link to spot copied to clipboard", "Dismiss", {
         duration: 3000,
         horizontalPosition: "center",
@@ -451,35 +450,34 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     }
 
     if (typeof plausible !== "undefined") {
-      plausible("Share Spot", { props: { spotId: this.spot.id } });
+      plausible("Share Spot", { props: { spotId: spot.id } });
     }
   }
 
   openSpotInMaps() {
-    if (typeof plausible !== "undefined" && this.spot instanceof Spot) {
-      plausible("Opening in Maps", { props: { spotId: this.spot.id } });
+    const spot = this.spot();
+    if (typeof plausible !== "undefined" && spot instanceof Spot) {
+      plausible("Opening in Maps", { props: { spotId: spot.id } });
     }
-    if (this.spot)
-      this._mapsApiService.openLatLngInMaps(this.spot().location());
+    if (spot) this._mapsApiService.openLatLngInMaps(spot.location());
   }
 
   openDirectionsInMaps() {
-    if (typeof plausible !== "undefined" && this.spot instanceof Spot) {
-      plausible("Opening in Google Maps", { props: { spotId: this.spot.id } });
+    const spot = this.spot();
+    if (typeof plausible !== "undefined" && spot instanceof Spot) {
+      plausible("Opening in Google Maps", { props: { spotId: spot.id } });
     }
 
-    if (this.spot)
-      this._mapsApiService.openDirectionsInMaps(this.spot().location());
+    if (spot) this._mapsApiService.openDirectionsInMaps(spot.location());
   }
 
   loadReportForSpot() {
-    if (!(this.spot instanceof Spot)) return;
+    const spot = this.spot();
+    if (!(spot instanceof Spot)) return;
 
-    this._spotReportsService
-      .getSpotReportsBySpotId(this.spot.id)
-      .then((reports) => {
-        this.report = reports[0] || null;
-      });
+    this._spotReportsService.getSpotReportsBySpotId(spot.id).then((reports) => {
+      this.report = reports[0] || null;
+    });
   }
 
   private _loadGooglePlaceDataForSpot() {
@@ -538,7 +536,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   openSpotReportDialog() {
-    if (!(this.spot instanceof Spot)) return;
+    const spot = this.spot();
+    if (!(spot instanceof Spot)) return;
 
     if (
       !this.authenticationService.isSignedIn ||
@@ -549,8 +548,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
 
     const spotReportData: SpotReportSchema = {
       spot: {
-        id: this.spot.id,
-        name: this.spot.name(),
+        id: spot.id,
+        name: spot.name(),
       },
       user: {
         uid: this.authenticationService.user.uid,
@@ -564,10 +563,12 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   openSpotReviewDialog() {
-    if (!(this.spot instanceof Spot)) return;
+    const spot = this.spot();
+    console.log(typeof Spot);
+    if (!(spot instanceof Spot)) return;
 
     const uid = this.authenticationService.user.uid;
-    const spotId = this.spot.id;
+    const spotId = spot.id;
 
     if (!uid) {
       console.error("User not signed in, cannot open review dialog");
@@ -587,7 +588,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
         isUpdate = true;
       })
       .finally(() => {
-        if (!this.spot) {
+        if (!spot) {
           console.warn("Spot has been unselected after opening review dialog");
           this.reviewDialog.closeAll();
           return;
@@ -602,7 +603,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
         if (!review) {
           review = {
             spot: {
-              name: this.spot().name(),
+              name: spot.name(),
               id: spotId,
             },
             user: {

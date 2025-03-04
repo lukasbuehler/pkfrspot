@@ -277,8 +277,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   updateMenus() {
-    const displayName: string | undefined =
-      this.authService?.auth?.currentUser?.displayName ?? undefined;
+    const shortDisplayName: string | undefined =
+      this.authService?.auth?.currentUser?.displayName.split(" ")[0] ??
+      undefined;
     let userPhoto: string | undefined =
       this.authService?.user?.data?.profilePicture ?? undefined;
 
@@ -303,11 +304,16 @@ export class AppComponent implements OnInit, AfterViewInit {
         icon: "calendar_month", // or event, local_activity, calendar_month
       },
       {
+        name: $localize`:About page navbar button label|A very short label for the navbar about page button:About`,
+        link: "/about",
+        icon: "info",
+      },
+      {
         spacerBefore: true,
-        name: displayName ? displayName : $localize`Account`,
+        name: shortDisplayName ? shortDisplayName : $localize`Account`,
         menu: "user",
         icon: "person",
-        image: displayName && userPhoto ? userPhoto : "",
+        image: shortDisplayName && userPhoto ? userPhoto : "",
       },
     ];
 
@@ -326,11 +332,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         name: $localize`:Language button label|The label of the change language button@@lang_btn_label:Language`,
         icon: "language",
         menu: "lang",
-      },
-      {
-        name: $localize`:About page navbar button label|A very short label for the navbar about page button:About`,
-        link: "/about",
-        icon: "info",
       },
     ];
 
