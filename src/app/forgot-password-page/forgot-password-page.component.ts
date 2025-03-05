@@ -14,14 +14,12 @@ import { MatButton } from "@angular/material/button";
 import { NgIf } from "@angular/common";
 import { MatInput } from "@angular/material/input";
 import { MatFormField, MatLabel, MatError } from "@angular/material/form-field";
-import { PageHeaderComponent } from "../page-header/page-header.component";
 
 @Component({
   selector: "app-forgot-password-page",
   templateUrl: "./forgot-password-page.component.html",
   styleUrls: ["./forgot-password-page.component.scss"],
   imports: [
-    PageHeaderComponent,
     FormsModule,
     ReactiveFormsModule,
     MatFormField,
@@ -38,7 +36,7 @@ export class ForgotPasswordPageComponent implements OnInit {
   forgotPasswordError: string = "";
 
   private _recaptchaSolved = false;
-  recaptcha: firebase.default.auth.RecaptchaVerifier = null;
+  recaptcha: firebase.default.auth.RecaptchaVerifier | null = null;
   sendingSuccessful: boolean = false;
 
   constructor(
@@ -69,7 +67,7 @@ export class ForgotPasswordPageComponent implements OnInit {
       "reCaptchaDiv",
       {
         size: "invisible",
-        callback: (response) => {
+        callback: (response: any) => {
           // reCAPTCHA solved, allow sign in
           this._recaptchaSolved = true;
           console.log("recaptcha solved");
@@ -84,7 +82,7 @@ export class ForgotPasswordPageComponent implements OnInit {
     this.recaptcha.render();
   }
 
-  resetPassword(forgotPasswordFormValue) {
+  resetPassword(forgotPasswordFormValue: { email: string }) {
     console.log("resetting password");
 
     if (this.sendingSuccessful) {
@@ -93,7 +91,7 @@ export class ForgotPasswordPageComponent implements OnInit {
     }
 
     let email = forgotPasswordFormValue.email;
-    if (!this._recaptchaSolved) {
+    if (this.recaptcha && !this._recaptchaSolved) {
       this.recaptcha.verify().then(
         (str) => {
           console.log(str);

@@ -39,13 +39,13 @@ import { MatChipsModule } from "@angular/material/chips";
   imports: [
     CountdownComponent,
     SpotMapComponent,
-    NgOptimizedImage,
-    SpotListComponent,
-    MarkerComponent,
+    // NgOptimizedImage,
+    // SpotListComponent,
+    // MarkerComponent,
     MatButtonModule,
     MatIconModule,
     RouterLink,
-    SpotDetailsComponent,
+    // SpotDetailsComponent,
     MatMenuModule,
     MatChipsModule,
   ],
@@ -65,7 +65,7 @@ import { MatChipsModule } from "@angular/material/chips";
   styleUrl: "./event-page.component.scss",
 })
 export class EventPageComponent implements OnInit, OnDestroy {
-  @ViewChild("spotMap") spotMap: SpotMapComponent;
+  @ViewChild("spotMap") spotMap: SpotMapComponent | undefined;
 
   metaInfoService = inject(MetaInfoService);
   locale = inject<LocaleCode>(LOCALE_ID);

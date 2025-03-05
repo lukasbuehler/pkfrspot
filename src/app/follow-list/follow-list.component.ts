@@ -80,7 +80,7 @@ export class FollowListComponent implements OnInit {
 
   isLoading: boolean = false;
   hasLoadedAll: boolean = false;
-  lastLoadedFollowing: firebase.default.firestore.Timestamp = null;
+  lastLoadedFollowing: firebase.default.firestore.Timestamp | null = null;
 
   ngOnInit(): void {
     this._loadFollowing();
@@ -121,7 +121,7 @@ export class FollowListComponent implements OnInit {
           // this was not the end
           console.log("not the end!");
           this.lastLoadedFollowing =
-            followings[followings.length - 1].start_following;
+            followings[followings.length - 1].start_following ?? null;
         }
       },
       (err) => {},

@@ -214,10 +214,10 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   googlePlace = signal<
     | {
         name: string;
-        rating: number;
-        photo_url: string;
-        url: string;
-        opening_hours: any;
+        rating?: number;
+        photo_url?: string;
+        url?: string;
+        opening_hours?: any;
       }
     | undefined
   >(undefined);
@@ -481,19 +481,19 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   }
 
   private _loadGooglePlaceDataForSpot() {
-    if (!this.spot().googlePlaceId()) {
+    if (!this.spot()?.googlePlaceId()) {
       this.googlePlace.set(undefined);
       return;
     }
 
     this._mapsApiService
-      .getGooglePlaceById(this.spot().googlePlaceId())
+      .getGooglePlaceById(this.spot()!.googlePlaceId()!)
       .then((place) => {
         const photoUrl = this._mapsApiService.getPhotoURLOfGooglePlace(place);
         this.googlePlace.set({
-          name: place.name,
+          name: place.name ?? "",
           rating: place.rating,
-          photo_url: photoUrl,
+          photo_url: photoUrl ?? undefined,
           opening_hours: place.opening_hours,
           url: place.url,
         });

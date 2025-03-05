@@ -13,14 +13,12 @@ import { MatButton } from "@angular/material/button";
 import { NgIf } from "@angular/common";
 import { MatInput } from "@angular/material/input";
 import { MatFormField, MatLabel, MatError } from "@angular/material/form-field";
-import { PageHeaderComponent } from "../page-header/page-header.component";
 
 @Component({
   selector: "app-sign-in-page",
   templateUrl: "./sign-in-page.component.html",
   styleUrls: ["./sign-in-page.component.scss"],
   imports: [
-    PageHeaderComponent,
     FormsModule,
     ReactiveFormsModule,
     MatFormField,

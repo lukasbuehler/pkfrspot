@@ -46,7 +46,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     public dialog: MatDialog
   ) {}
 
-  private _updatesSubscription: Subscription = null;
+  private _updatesSubscription: Subscription | null = null;
   updatePosts: Post.Class[] = [];
   todaysTopPosts: Post.Class[] = [];
   loadingUpdates: boolean = false;
@@ -61,7 +61,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     this.getTodaysTopPosts();
 
     if (this.authService.isSignedIn) {
-      this._subscribeToUpdates(this.authService.user.uid);
+      this._subscribeToUpdates(this.authService.user.uid!);
     }
     this.authService.authState$.subscribe(
       (user) => {
@@ -69,7 +69,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
         this.updatePosts = [];
 
         if (user) {
-          this._subscribeToUpdates(user.uid);
+          this._subscribeToUpdates(user.uid!);
         } else {
           this._unsubscribeFromUpdates();
         }
@@ -126,7 +126,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
                 // sort
                 this.updatePosts.sort((a, b) => {
-                  return b.timePosted.getTime() - a.timePosted.getTime();
+                  return b.timePosted!.getTime() - a.timePosted!.getTime();
                 });
               }
             });
@@ -165,7 +165,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
             this.todaysTopPosts.sort((a, b) => {
               return (
                 b.likeCount - a.likeCount ||
-                b.timePosted.getTime() - a.timePosted.getTime()
+                b.timePosted!.getTime() - a.timePosted!.getTime()
               );
             });
           }
@@ -216,8 +216,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
       body: body,
       time_posted: Timestamp.now(),
       user: {
-        uid: this.authService.user.uid,
-        display_name: this.authService.user.data.displayName,
+        uid: this.authService.user.uid!,
+        display_name: this.authService.user.data!.displayName,
         ref: this._postsService.docRef("users/" + this.authService.user.uid),
       },
     };
@@ -232,7 +232,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
       post.spot = {
         name: spot.name(),
         spot_location: new GeoPoint(lat, lng),
-        image_src: spot.media && spot.media[0]?.src ? spot.media[0].src : "",
+        image_src:
+          spot.media && spot.media()[0]?.src ? spot.media()[0].src : "",
         ref: this._postsService.docRef("spots/" + spot.id),
       };
     }

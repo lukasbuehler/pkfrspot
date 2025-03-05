@@ -45,8 +45,8 @@ import { NgIf, NgFor } from "@angular/common";
   imports: [NgIf, NgFor, PostComponent, MatProgressSpinner],
 })
 export class PostCollectionComponent implements OnInit {
-  @Input() posts: Post.Class[];
-  @Input() title: string;
+  @Input() posts: Post.Class[] = [];
+  @Input() title: string = "";
   @Input() loading: boolean = false;
 
   constructor() {}

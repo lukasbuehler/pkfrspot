@@ -15,14 +15,12 @@ import { MatCheckbox } from "@angular/material/checkbox";
 import { MatInput } from "@angular/material/input";
 import { MatFormField, MatLabel, MatHint } from "@angular/material/form-field";
 import { MatButton } from "@angular/material/button";
-import { PageHeaderComponent } from "../page-header/page-header.component";
 
 @Component({
   selector: "app-sign-up-page",
   templateUrl: "./sign-up-page.component.html",
   styleUrls: ["./sign-up-page.component.scss"],
   imports: [
-    PageHeaderComponent,
     MatButton,
     RouterLink,
     FormsModule,

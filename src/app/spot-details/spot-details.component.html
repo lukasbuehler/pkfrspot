@@ -11,10 +11,10 @@
   [class.border]="border"
   [class.clickable]="clickable"
 >
-  @if(spot) {@if(!isEditing) {
+  @if(spot()) {@if(!isEditing) {
   <mat-card-header class="pb-2 px-3">
     <mat-card-title class="d-flex justify-content-between align-items-center">
-      <span [matTooltip]="spot().name()">{{ spot().name() }}</span>
+      <span [matTooltip]="spot()!.name()">{{ spot()!.name() }}</span>
 
       <!-- dismiss button -->
       @if(dismissable) {
@@ -33,15 +33,15 @@
     </mat-card-title>
     <mat-card-subtitle class="d-flex flex-row justify-content-between">
       <div class="d-flex flex-column justify-content-center text-truncate">
-        @if(spot().rating) {
+        @if(spot()?.rating) {
         <app-spot-rating
           class="flex-shrink-0"
-          [rating1to5]="spot().rating"
+          [rating1to5]="spot()!.rating"
           [showNumReviews]="true"
-          [numReviews]="spot().numReviews"
+          [numReviews]="spot()!.numReviews"
         ></app-spot-rating>
-        } @if(spot().address()) {
-        <span class="text-truncate">{{ spot().localityString() }}</span>
+        } @if(spot()?.address()) {
+        <span class="text-truncate">{{ spot()!.localityString() }}</span>
         }
       </div>
 
@@ -126,8 +126,8 @@
   <mat-card-content>
     @if(!isEditing) {
     <!-- spot media carousel  -->
-    @if(spot().media() && spot().media().length > 0) {
-    <app-img-carousel class="mb-2 mt-1" [media]="spot().media()">
+    @if(spot()?.media() && spot()!.media().length > 0) {
+    <app-img-carousel class="mb-2 mt-1" [media]="spot()!.media()">
     </app-img-carousel>
     }
 
@@ -150,7 +150,7 @@
     @if(googlePlace()) {
     <h4 class="mat-title-small" i18n>This spot on Google Maps®</h4>
     <a
-      [href]="googlePlace().url"
+      [href]="googlePlace()!.url"
       target="_blank"
       rel="noopener noreferrer"
       style="text-decoration: none; color: inherit"
@@ -160,20 +160,22 @@
         class="mat-elevation-z0 clickable border rounded d-flex flex-row mb-4 overflow-hidden"
         style="height: 80px"
       >
+        @if(googlePlace()!.photo_url) {
         <div mat-card-sm-image class="google-img-container">
-          <img [ngSrc]="googlePlace().photo_url" fill />
+          <img [ngSrc]="googlePlace()!.photo_url!" fill />
         </div>
+        }
         <mat-card-header class="pb-2">
           <mat-card-title
             class="text-truncate mw-100 pt-2 mat-title-medium"
             style="font-size: 1.2rem"
           >
-            {{ googlePlace().name }}
+            {{ googlePlace()!.name }}
           </mat-card-title>
           <mat-card-subtitle i18n class="d-flex flex-row gap-2 mat-title-small">
-            @if(googlePlace().rating) { Rating:
+            @if(googlePlace()!.rating) { Rating:
             <app-spot-rating
-              [rating1to5]="googlePlace().rating"
+              [rating1to5]="googlePlace()!.rating!"
               [showEmptyStars]="false"
               [isCompact]="true"
             ></app-spot-rating>
@@ -189,7 +191,7 @@
     }
 
     <!-- Freatures -->
-    @if(spot().amentitiesArray() && spot().amentitiesArray().length > 0) {
+    @if(spot()?.amentitiesArray() && spot()!.amentitiesArray().length > 0) {
     <div class="mb-4">
       <h4
         i18n="amenities header|The header for the spot features and amenities"
@@ -198,7 +200,7 @@
         Features and amenities
       </h4>
       <mat-chip-set>
-        @for(amenity of spot().amentitiesArray(); track amenity) {
+        @for(amenity of spot()!.amentitiesArray(); track amenity) {
         <mat-chip>
           <mat-icon matChipAvatar>{{ amenity.icon }}</mat-icon>
           {{ amenity.name }}
@@ -209,7 +211,7 @@
     }
 
     <!-- Spot Description -->
-    @if(spot().description()) {
+    @if(spot()?.description()) {
     <div>
       <h4
         class="mat-title-small"
@@ -218,38 +220,38 @@
         Description
       </h4>
       <p>
-        {{ spot().description() }}
+        {{ spot()!.description() }}
       </p>
     </div>
     }
 
     <!-- Ratings -->
-    @if(spot().rating || authenticationService.isSignedIn) {
+    @if(spot()?.rating || authenticationService.isSignedIn) {
     <div class="mb-4">
       <h4 class="mat-title-small" i18n>Rating and user reviews</h4>
-      @if(spot().rating) {
+      @if(spot()!.rating) {
       <div class="d-flex flex-row align-items-center mb-3">
         <div
           class="d-flex flex-column align-items-center justify-content-center gap-1 pe-4"
         >
           <span class="mat-headline-large mb-0">{{
-            spot().rating.toFixed(1)
+            spot()!.rating!.toFixed(1)
           }}</span>
           <app-spot-rating
-            [rating1to5]="spot().rating"
+            [rating1to5]="spot()!.rating"
             [showNumReviews]="false"
             [showRating]="false"
           ></app-spot-rating>
-          @if(spot().numReviews) {
+          @if(spot()?.numReviews) {
           <span class="mat-body-medium text-nowrap" i18n
-            >{spot().numReviews, plural, =0 {no reviews} =1 {1 review} other
-            {{{ spot().numReviews }} reviews}}</span
+            >{spot()!.numReviews, plural, =0 {no reviews} =1 {1 review} other
+            {{{ spot()!.numReviews }} reviews}}</span
           >
           }
         </div>
-        @if(spot().normalizedRatingHistogram()) {
+        @if(spot()?.normalizedRatingHistogram()) {
         <div class="flex-grow-1 hist-grid-container">
-          @for(item of spot().normalizedRatingHistogram() | keyvalue | reverse;
+          @for(item of spot()!.normalizedRatingHistogram() | keyvalue | reverse;
           track item) {
           <!-- row -->
           <div class="grid-item mat-label-medium">
@@ -262,7 +264,7 @@
             style="margin-top: -2px"
           ></mat-progress-bar>
           <div class="grid-item mat-label-medium">
-            ({{ spot().ratingHistogram()[item.key | asRatingKey] }})
+            ({{ spot()!.ratingHistogram()[item.key | asRatingKey] }})
           </div>
           }
         </div>
@@ -297,7 +299,7 @@
 
     <!-- Spot Address or Location and action buttons -->
     <div class="d-flex justify-start mb-4 flex-column">
-      @if(spot().address()?.formatted) {
+      @if(spot()?.address()?.formatted) {
       <h4
         class="mat-title-small"
         i18n="
@@ -306,11 +308,11 @@
       >
         Address
       </h4>
-      <p class="mat-body-large">{{ spot().address()?.formatted }}</p>
+      <p class="mat-body-large">{{ spot()!.address()?.formatted }}</p>
       } @else {
       <h4 class="mat-title-small">Location</h4>
       <p class="mat-body-large">
-        {{ spot().locationString() }}
+        {{ spot()!.locationString() }}
       </p>
       }
       <div class="d-flex flex-column flex-xl-row gap-2">
@@ -396,7 +398,7 @@
         Report
       </button>
     </div>
-    } } @else {
+    } @else {
     <!-- Spot title editing field -->
     <form>
       <mat-form-field style="width: 100%">
@@ -409,9 +411,9 @@
         <input
           #spotNameInput
           matInput
-          [value]="spot().name()"
+          [value]="spot()!.name()"
           (change)="
-            spot().setName(getValueFromEventTarget($event.target), locale)
+            spot()!.setName(getValueFromEventTarget($event.target), locale)
           "
         />
       </mat-form-field>
@@ -479,41 +481,41 @@
 
     <mat-chip-listbox class="">
       <mat-chip-option
-        [selected]="spot().amenities().indoor"
+        [selected]="spot()!.amenities().indoor"
         (selectionChange)="
-          spot().amenities().indoor = $event.selected;
-          spot().amenities().outdoor = !$event.selected
+          spot()!.amenities().indoor = $event.selected;
+          spot()!.amenities().outdoor = !$event.selected
         "
         ><mat-icon matChipAvatar>{{ AmenityIcons["indoor"] }}</mat-icon
         >{{ AmenityNames["indoor"] }}</mat-chip-option
       >
       <mat-chip-option
-        [selected]="spot().amenities().outdoor"
+        [selected]="spot()!.amenities().outdoor"
         (selectionChange)="
-          spot().amenities().outdoor = $event.selected;
-          spot().amenities().indoor = !$event.selected
+          spot()!.amenities().outdoor = $event.selected;
+          spot()!.amenities().indoor = !$event.selected
         "
         ><mat-icon matChipAvatar>{{ AmenityIcons["outdoor"] }}</mat-icon
         >{{ AmenityNames["outdoor"] }}</mat-chip-option
       >
     </mat-chip-listbox>
-    @if(spot().amenities().indoor) {
+    @if(spot()!.amenities().indoor) {
     <mat-chip-set>
       @for(amenity of IndoorAmenities; track amenity) {
       <mat-chip-option
-        [selected]="spot().amenities()[amenity]"
-        (selectionChange)="spot().amenities()[amenity] = $event.selected"
+        [selected]="spot()!.amenities()[amenity]"
+        (selectionChange)="spot()!.amenities()[amenity] = $event.selected"
         ><mat-icon matChipAvatar>{{ AmenityIcons[amenity] }}</mat-icon
         >{{ AmenityNames[amenity] }}</mat-chip-option
       >
       }
     </mat-chip-set>
-    } @if(spot().amenities().outdoor) {
+    } @if(spot()!.amenities().outdoor) {
     <mat-chip-set>
       @for(amenity of OutdoorAmenities; track amenity) {
       <mat-chip-option
-        [selected]="spot().amenities()[amenity]"
-        (selectionChange)="spot().amenities()[amenity] = $event.selected"
+        [selected]="spot()!.amenities()[amenity]"
+        (selectionChange)="spot()!.amenities()[amenity] = $event.selected"
         ><mat-icon matChipAvatar>{{ AmenityIcons[amenity] }}</mat-icon
         >{{ AmenityNames[amenity] }}</mat-chip-option
       >
@@ -523,8 +525,8 @@
     <mat-chip-set>
       @for(amenity of GeneralAmenities; track amenity) {
       <mat-chip-option
-        [selected]="spot().amenities()[amenity]"
-        (selectionChange)="spot().amenities()[amenity] = $event.selected"
+        [selected]="spot()!.amenities()[amenity]"
+        (selectionChange)="spot()!.amenities()[amenity] = $event.selected"
         ><mat-icon matChipAvatar>{{ AmenityIcons[amenity] }}</mat-icon
         >{{ AmenityNames[amenity] }}</mat-chip-option
       >
@@ -547,8 +549,8 @@
           description edit field
         "
         placeholder="Description of the spot, its features and more..."
-        [value]="spot().description()"
-        (change)="descriptionTextChanged(spot(), $event.target)"
+        [value]="spot()!.description()"
+        (change)="descriptionTextChanged(spot()!, $event.target)"
       ></textarea>
     </mat-form-field>
 
@@ -565,7 +567,7 @@
       </button>
       }
     </div>
-    }
+    } }
   </mat-card-content>
   @if(isEditing) {
   <mat-card-actions class="mt-3 gap-2">

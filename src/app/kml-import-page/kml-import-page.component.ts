@@ -118,10 +118,10 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
   @ViewChild("stepperHorizontal") stepperHorizontal: MatStepper | undefined;
   @ViewChild("spotMap") spotMap: SpotMapComponent | undefined;
 
-  uploadFormGroup: UntypedFormGroup;
-  setupFormGroup: UntypedFormGroup;
+  uploadFormGroup?: UntypedFormGroup;
+  setupFormGroup?: UntypedFormGroup;
 
-  kmlUploadFile: File = null;
+  kmlUploadFile: File | null = null;
 
   private _selectedVerificationSpot: KMLSpot | null = null;
   get selectedVerificationSpot(): KMLSpot | null {
@@ -130,7 +130,7 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
   set selectedVerificationSpot(value: KMLSpot | null) {
     this._selectedVerificationSpot = value;
 
-    if (!this.spotMap) return;
+    if (!this.spotMap || !this._selectedVerificationSpot) return;
 
     this.spotMap.focusPoint(this._selectedVerificationSpot.spot.location);
   }
@@ -156,9 +156,14 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
   }
 
   regexEnabled: boolean = false;
-  regexValue: RegExp;
+  regexValue: RegExp | null = null;
 
   setRegexEnabled(enabled: boolean) {
+    if (!this.kmlParserService.setupInfo) {
+      console.error("setupInfo is invalid");
+      return;
+    }
+
     this.regexEnabled = enabled;
     if (!enabled) {
       this.kmlParserService.setupInfo.regex = null;
@@ -169,13 +174,18 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
 
   updateRegex(regex: MyRegex) {
     this.regexValue = new RegExp(regex.regularExpression);
+    if (!this.kmlParserService.setupInfo) {
+      console.error("setupInfo is invalid");
+      return;
+    }
+
     if (this.regexEnabled)
       this.kmlParserService.setupInfo.regex = this.regexValue;
   }
 
   ngAfterViewInit(): void {}
 
-  onUploadMediaSelect(file) {
+  onUploadMediaSelect(file: File) {
     this.kmlUploadFile = file;
   }
 
@@ -201,6 +211,10 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
     this.kmlUploadFile.text().then((data) => {
       this.kmlParserService.parseKMLFromString(data).then(
         () => {
+          if (!this.stepperHorizontal || !this.stepperHorizontal.selected) {
+            console.error("stepperHorizontal is not defined");
+            return;
+          }
           // parsing was successful
           this.stepperHorizontal.selected.completed = true;
           this.stepperHorizontal.next();
@@ -216,6 +230,11 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
 
   continueToVerification() {
     this.kmlParserService.confirmSetup().then(() => {
+      if (!this.stepperHorizontal || !this.stepperHorizontal.selected) {
+        console.error("stepperHorizontal is not defined");
+        return;
+      }
+
       this.stepperHorizontal.selected.completed = true; // TODO move
       this.stepperHorizontal.next();
 
@@ -236,6 +255,11 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
   }
 
   goBack() {
+    if (!this.stepperHorizontal || !this.stepperHorizontal.selected) {
+      console.error("stepperHorizontal is not defined");
+      return;
+    }
+
     this.stepperHorizontal.previous();
   }
 
@@ -243,6 +267,11 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
    * Import the spots into the database
    */
   importSpots() {
+    if (!this.stepperHorizontal || !this.stepperHorizontal.selected) {
+      console.error("stepperHorizontal is not defined");
+      return;
+    }
+
     this.stepperHorizontal.selected.completed = true;
     this.stepperHorizontal.next();
 
@@ -275,11 +304,21 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
   }
 
   private _spotImportSuccessful() {
+    if (!this.stepperHorizontal || !this.stepperHorizontal.selected) {
+      console.error("stepperHorizontal is not defined");
+      return;
+    }
+
     this.stepperHorizontal.selected.completed = true;
     this.stepperHorizontal.next();
   }
 
   private _spotImportFailed() {
+    if (!this.stepperHorizontal || !this.stepperHorizontal.selected) {
+      console.error("stepperHorizontal is not defined");
+      return;
+    }
+
     this.stepperHorizontal.selected.completed = false;
     this.stepperHorizontal.previous();
   }

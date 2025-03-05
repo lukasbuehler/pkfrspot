@@ -153,9 +153,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
-  navbarConfig: NavbarButtonConfig;
-  unauthenticatedUserMenuConfig: ButtonConfig;
-  authenticatedUserMenuConfig: ButtonConfig;
+  navbarConfig?: NavbarButtonConfig;
+  unauthenticatedUserMenuConfig?: ButtonConfig;
+  authenticatedUserMenuConfig?: ButtonConfig;
 
   ngOnInit() {
     const currentTermsVersion = "1";
@@ -278,7 +278,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   updateMenus() {
     const shortDisplayName: string | undefined =
-      this.authService?.auth?.currentUser?.displayName.split(" ")[0] ??
+      this.authService?.auth?.currentUser?.displayName?.split(" ")[0] ??
       undefined;
     let userPhoto: string | undefined =
       this.authService?.user?.data?.profilePicture ?? undefined;

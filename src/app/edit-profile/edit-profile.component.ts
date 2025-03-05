@@ -56,19 +56,19 @@ import { getValueFromEventTarget } from "../../scripts/Helpers";
   ],
 })
 export class EditProfileComponent implements OnInit {
-  @ViewChild("croppie") croppie: ElementRef;
+  @ViewChild("croppie") croppie: ElementRef | undefined;
   @Output("changes")
   changes: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   user: User.Class | null = null;
   // user properties
-  displayName: string;
-  biography: string;
-  startDate: Date | null;
+  displayName: string | null = null;
+  biography: string | null = null;
+  startDate: Date | null = null;
 
-  newProfilePicture: File = null;
+  newProfilePicture: File | null = null;
   newProfilePictureSrc: string = "";
-  croppieObj: Croppie = null;
+  croppieObj: Croppie | null = null;
   isUpdatingProfilePicture: boolean = false;
 
   getValueFromEventTarget = getValueFromEventTarget;
@@ -81,11 +81,11 @@ export class EditProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.user = this.authService?.user?.data || null;
+    this.user = this.authService?.user?.data ?? null;
     this._updateInfoOnView();
 
     this.authService.authState$.subscribe((user) => {
-      this.user = user.data;
+      this.user = user.data ?? null;
       this._updateInfoOnView();
     });
   }
@@ -103,12 +103,13 @@ export class EditProfileComponent implements OnInit {
 
     if (
       this.croppie &&
+      this.croppieObj &&
       this.croppie.nativeElement.className === "croppie-container"
     ) {
       this.croppieObj.destroy();
     }
 
-    this.croppieObj = new Croppie(document.getElementById("croppie"), {
+    this.croppieObj = new Croppie(document.getElementById("croppie")!, {
       viewport: {
         width: 256,
         height: 256,
@@ -123,9 +124,9 @@ export class EditProfileComponent implements OnInit {
 
     let reader = new FileReader();
     reader.onload = (event) => {
-      this.newProfilePictureSrc = event.target.result as string;
+      this.newProfilePictureSrc = event.target!.result as string;
 
-      this.croppieObj.bind({
+      this.croppieObj!.bind({
         url: this.newProfilePictureSrc,
       });
     };
@@ -185,9 +186,9 @@ export class EditProfileComponent implements OnInit {
                     .then(() => {
                       this.isUpdatingProfilePicture = false;
                       this.newProfilePicture = null;
-                      this.user.profilePicture = url;
+                      this.user!.profilePicture = url;
                       this.newProfilePictureSrc = "";
-                      this.croppieObj.destroy();
+                      this.croppieObj!.destroy();
                       resolve();
                     })
                     .catch((err) => {
@@ -217,7 +218,7 @@ export class EditProfileComponent implements OnInit {
 
   detectIfChanges() {
     if (
-      this.displayName !== this.user.displayName ||
+      this.displayName !== this.user?.displayName ||
       this.newProfilePicture ||
       this.startDate !== this.user.startDate ||
       this.biography !== this.user.biography
@@ -235,11 +236,11 @@ export class EditProfileComponent implements OnInit {
 
       // Update display name if changed
       if (this.displayName !== this.user.displayName) {
-        data.display_name = this.displayName;
+        data.display_name = this.displayName ?? undefined;
       }
 
       if (this.biography !== this.user.biography) {
-        data.biography = this.biography;
+        data.biography = this.biography ?? undefined;
       }
 
       // Update profile picture if changed
@@ -252,7 +253,7 @@ export class EditProfileComponent implements OnInit {
       }
 
       // Start date
-      if (this.startDate !== this.user.startDate) {
+      if (this.startDate && this.startDate !== this.user.startDate) {
         data.start_date = new Timestamp(this.startDate.getTime() / 1000, 0);
       }
 
