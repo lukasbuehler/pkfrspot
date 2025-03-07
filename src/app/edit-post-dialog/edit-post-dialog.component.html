@@ -35,7 +35,7 @@
             matInput
             name="link"
             type="text"
-            (input)="onLinkUpdate(getValueFromEventTarget($event.target))"
+            (input)="onLinkUpdate(getValueFromEventTarget($event.target) ?? '')"
             [formControl]="linkInputFormControl"
           />
           <mat-icon matSuffix>link</mat-icon>

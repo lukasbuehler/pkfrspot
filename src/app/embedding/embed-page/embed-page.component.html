@@ -12,7 +12,7 @@
         <mat-chip-option
           value="{{ embedType }}"
           [selected]="tab() == embedType"
-          (selectionChange)="tab.set($event?.source?.value ?? defaultEmbedType)"
+          (selectionChange)="tab.set($event.source.value ?? defaultEmbedType)"
           >{{ embedTypeName[embedType] }}</mat-chip-option
         >
         }

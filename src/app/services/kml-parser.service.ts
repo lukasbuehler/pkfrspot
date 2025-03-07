@@ -98,19 +98,19 @@ export class KmlParserService {
           if (!doc.Folder) {
             console.error("No folders found in KML file");
           }
-          doc.Folder.forEach((folder, folderIndex) => {
+          doc.Folder.forEach((folder: any, folderIndex: number) => {
             let numberOfSpotsinFolder: number = folder?.Placemark?.length ?? 0;
-            this.setupInfo.spotCount += numberOfSpotsinFolder;
+            this.setupInfo!.spotCount += numberOfSpotsinFolder;
 
             // add the folder name to the folders.
-            this.setupInfo.folders.push({
+            this.setupInfo!.folders.push({
               name: folder.name[0] || "Unnamed folder",
               spotCount: numberOfSpotsinFolder,
               import: true,
             });
 
             // load the spots from the folder.
-            let kmlSpots: KMLSpot[] = folder.Placemark.map((placemark) => {
+            let kmlSpots: KMLSpot[] = folder.Placemark.map((placemark: any) => {
               const regex = /(-?\d+\.\d+),(-?\d+\.\d+)/;
               const matches = placemark.Point[0].coordinates[0].match(regex);
 
@@ -131,7 +131,7 @@ export class KmlParserService {
 
               return kmlSpot;
             });
-            this._spotFolders[folderIndex] = kmlSpots;
+            this._spotFolders![folderIndex] = kmlSpots;
           });
 
           // parsing was successful
@@ -152,8 +152,18 @@ export class KmlParserService {
     let spotsNotToImport: KMLSpot[] = [];
     let tilesToLoad: google.maps.Point[] = [];
 
+    if (!this.setupInfo) {
+      console.error("No setup info found. Please parse a KML file first.");
+      return;
+    }
+
+    if (!this._spotFolders) {
+      console.error("No spot folders found. Please parse a KML file first.");
+      return;
+    }
+
     this.setupInfo.folders.forEach((folder, folderIndex) => {
-      let spotsInFolder: KMLSpot[] = this._spotFolders[folderIndex];
+      let spotsInFolder: KMLSpot[] = this._spotFolders![folderIndex];
 
       if (folder.import) {
         spotsInFolder.forEach((spot) => {
@@ -189,7 +199,7 @@ export class KmlParserService {
         let minLng = kmlSpot.spot.location.lng - latLngDist;
         let maxLng = kmlSpot.spot.location.lng + latLngDist;
 
-        this._spotFolders[folderIndex][spotIndex].possibleDuplicateOf =
+        this._spotFolders![folderIndex][spotIndex].possibleDuplicateOf =
           spotsToCheckForDuplicates.filter((spot) => {
             if (spot.location().lat > minlat && spot.location().lat < maxLat) {
               if (
@@ -204,12 +214,19 @@ export class KmlParserService {
     });
 
     this.setupInfo.folders.forEach((folder, folderIndex) => {
-      let spotsInFolder = this._spotFolders[folderIndex];
+      let spotsInFolder = this._spotFolders![folderIndex];
       if (folder.import) {
         spotsInFolder.forEach((spot) => {
           // apply the name regex to all spots in the folder
-          if (this.setupInfo.regex) {
-            spot.spot.name = this.setupInfo.regex.exec(spot.spot.name)[0];
+          const regex = this.setupInfo?.regex;
+          if (regex) {
+            const matches = regex.exec(spot.spot.name);
+            if (matches) {
+              spot.spot.name = matches[0];
+            } else {
+              spotsNotToImport.push(spot);
+              return;
+            }
           }
 
           if (spot.possibleDuplicateOf.length > 0) {

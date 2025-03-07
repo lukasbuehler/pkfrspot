@@ -239,7 +239,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
 
     if (mediaType) {
-      this._storageService.upload().subscribe(
+      this._storageService.upload()?.subscribe(
         (src) => {
           // now create the DB entry for the post
           (post.media = {

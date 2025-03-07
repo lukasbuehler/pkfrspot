@@ -63,7 +63,8 @@ export class EmbedPageComponent {
   baseHref = inject(APP_BASE_HREF);
 
   supportedLanguageCodes = ["en", "de", "de-CH", "fr", "it", "nl", "es"]; // TODO get supported languages somehow
-  languages = languageCodes;
+  languages: Record<string, { name_english: string; name_native: string }> =
+    languageCodes;
   embedLanguage = signal<LocaleCode | "auto">("auto");
 
   showSatelliteToggle = signal<boolean>(true);

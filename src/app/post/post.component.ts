@@ -45,14 +45,14 @@ import { NgIf } from "@angular/common";
   ],
 })
 export class PostComponent implements OnInit {
-  @Input() post: Post.Class;
+  @Input() post: Post.Class | null = null;
   @Input() showCard: boolean = true;
 
-  @ViewChild("matCardMedia") matCardMedia: ElementRef;
+  @ViewChild("matCardMedia") matCardMedia: ElementRef | undefined;
 
-  dateAndTimeString: string;
-  timeAgoString: string;
-  likedByUser: boolean = null;
+  dateAndTimeString?: string;
+  timeAgoString?: string;
+  likedByUser: boolean | null = null;
 
   currentlyAuthenticatedUserId: string = "";
 
@@ -73,17 +73,20 @@ export class PostComponent implements OnInit {
 
     // Check if posts are liked by the user if a user is authenticated, every time the uid changes
 
-    if (this._authenticationService.user.uid) {
-      this.currentlyAuthenticatedUserId = this._authenticationService.user.uid;
+    if (this.post) {
+      if (this._authenticationService.user.uid) {
+        this.currentlyAuthenticatedUserId =
+          this._authenticationService.user.uid;
 
-      this._postService
-        .userHasLikedPost(this.post.id, this.currentlyAuthenticatedUserId)
-        .then((bool) => {
-          this.likedByUser = bool;
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+        this._postService
+          .userHasLikedPost(this.post.id, this.currentlyAuthenticatedUserId)
+          .then((bool) => {
+            this.likedByUser = bool;
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
     }
   }
 
@@ -92,15 +95,39 @@ export class PostComponent implements OnInit {
   //   }
 
   getTimeAgoString(): string {
+    if (!this.post) {
+      console.error("Post is null");
+      return "";
+    }
+
+    if (!this.post.timePosted) {
+      console.error("Post time is null");
+      return "";
+    }
+
     return humanTimeSince(this.post.timePosted);
   }
 
   getDateAndTimeString(): string {
+    if (!this.post) {
+      console.error("Post is null");
+      return "";
+    }
+
+    if (!this.post.timePosted) {
+      console.error("Post time is null");
+      return "";
+    }
+
     return humanTimeSince(this.post.timePosted);
   }
 
   likeButtonPress() {
-    if (this._authenticationService.isSignedIn) {
+    if (
+      this.post &&
+      this._authenticationService.isSignedIn &&
+      this._authenticationService.user.uid
+    ) {
       if (this.likedByUser !== null) {
         if (!this.likedByUser) {
           // show the like
@@ -177,7 +204,12 @@ export class PostComponent implements OnInit {
     return "";
   }
 
-  updateMediaHeight(width, height) {
+  updateMediaHeight(width: number, height: number) {
+    if (!this.matCardMedia) {
+      console.error("matCardMedia is null");
+      return;
+    }
+
     if (height / width > this.maxHeightToWidthRatio) {
       this.maxHeightToWidthRatio = height / width;
     }
@@ -188,6 +220,11 @@ export class PostComponent implements OnInit {
   }
 
   deletePost() {
+    if (!this.post) {
+      console.error("Post is null");
+      return;
+    }
+
     this._postService
       .deletePost(this.post.id)
       .then(() => {

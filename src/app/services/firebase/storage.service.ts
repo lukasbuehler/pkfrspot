@@ -19,7 +19,7 @@ export class StorageService {
 
   constructor() {}
 
-  uploadObs: Observable<string> = null;
+  uploadObs: Observable<string> | null = null;
 
   getStoredContent() {}
 
@@ -57,7 +57,7 @@ export class StorageService {
     });
   }
 
-  upload(): Observable<string> {
+  upload(): Observable<string> | null {
     return this.uploadObs;
   }
 

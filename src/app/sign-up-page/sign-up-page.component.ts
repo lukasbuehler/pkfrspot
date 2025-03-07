@@ -9,7 +9,7 @@ import {
 } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { AuthenticationService } from "../services/firebase/authentication.service";
-import { RecaptchaVerifier } from "firebase/auth";
+import { Auth, RecaptchaVerifier } from "@firebase/auth";
 import { NgIf } from "@angular/common";
 import { MatCheckbox } from "@angular/material/checkbox";
 import { MatInput } from "@angular/material/input";
@@ -77,9 +77,10 @@ export class SignUpPageComponent implements OnInit {
   }
 
   setupSignUpReCaptcha() {
-    let recaptcha = new RecaptchaVerifier(null, "reCaptchaDiv", {
+    const auth: Auth = this._authService.auth;
+    let recaptcha = new RecaptchaVerifier(auth, "reCaptchaDiv", {
       size: "invisible",
-      callback: (response) => {
+      callback: (response: any) => {
         // reCAPTCHA solved, allow sign in
         this._recaptchaSolved = true;
         console.log("recaptcha solved", response);
@@ -92,7 +93,14 @@ export class SignUpPageComponent implements OnInit {
     recaptcha.render();
   }
 
-  tryCreateAccount(createAccountFormValue) {
+  tryCreateAccount(createAccountFormValue: {
+    displayName: string;
+    email: string;
+    password: string;
+    repeatPassword: string;
+    agreeCheck: boolean;
+    inviteCode: string;
+  }) {
     let displayName = createAccountFormValue.displayName;
     let email = createAccountFormValue.email;
     const password = createAccountFormValue.password;

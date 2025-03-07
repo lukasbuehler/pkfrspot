@@ -12,7 +12,7 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from "@angular/fire/auth";
-import { Subject, firstValueFrom } from "rxjs";
+import { BehaviorSubject, Subject, firstValueFrom } from "rxjs";
 import { User } from "../../../db/models/User";
 import { UsersService } from "./firestore/users.service";
 
@@ -36,7 +36,8 @@ export class AuthenticationService {
    */
   public user: AuthServiceUser = {};
 
-  public authState$: Subject<AuthServiceUser> = new Subject();
+  public authState$: BehaviorSubject<AuthServiceUser | null> =
+    new BehaviorSubject<AuthServiceUser | null>(null);
 
   public auth = getAuth();
 
@@ -47,13 +48,13 @@ export class AuthenticationService {
     );
   }
 
-  private _currentFirebaseUser: FirebaseUser = null;
+  private _currentFirebaseUser: FirebaseUser | null = null;
 
   private _defaultUserSettings: User.Schema["settings"] = {
     maps: "googlemaps",
   };
 
-  private firebaseAuthChangeListener = (firebaseUser: FirebaseUser) => {
+  private firebaseAuthChangeListener = (firebaseUser: FirebaseUser | null) => {
     // Auth state changed
     if (firebaseUser) {
       // If we have a firebase user, we are signed in.
@@ -61,7 +62,7 @@ export class AuthenticationService {
       this.isSignedIn = true;
 
       this.user.uid = firebaseUser.uid;
-      this.user.email = firebaseUser.email;
+      this.user.email = firebaseUser.email ?? undefined;
       this.user.emailVerified = firebaseUser.emailVerified;
 
       this._fetchUserData(firebaseUser.uid, true);
@@ -79,7 +80,7 @@ export class AuthenticationService {
     console.error(error);
   };
 
-  private _fetchUserData(uid, sendUpdate = true) {
+  private _fetchUserData(uid: string, sendUpdate = true) {
     this._userService.getUserById(uid).subscribe(
       (_user) => {
         if (_user) {
@@ -106,10 +107,15 @@ export class AuthenticationService {
    * Also: Following and Followers are not updated with this function call. Only things like display name, profile picture and so on.
    */
   public refetchUserData() {
+    if (!this.user.uid) {
+      console.error("No user uid found when refetching User Data");
+      return;
+    }
+
     this._fetchUserData(this.user.uid, true);
   }
 
-  public signInEmailPassword(email, password) {
+  public signInEmailPassword(email: string, password: string) {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
@@ -133,6 +139,11 @@ export class AuthenticationService {
           });
         }
 
+        if (!googleSignInResponse.user.displayName) {
+          console.error("Google Sign In: No display name found");
+          return;
+        }
+
         // create a database entry for the user
         this._userService.addUser(
           googleSignInResponse.user.uid,
@@ -154,6 +165,9 @@ export class AuthenticationService {
   }
 
   public resendVerificationEmail(): Promise<void> {
+    if (!this._currentFirebaseUser) {
+      return Promise.reject("No current firebase user found");
+    }
     return sendEmailVerification(this._currentFirebaseUser);
   }
 
@@ -167,6 +181,10 @@ export class AuthenticationService {
       email,
       confirmedPassword
     );
+
+    if (!this._currentFirebaseUser) {
+      return Promise.reject("No current firebase user found");
+    }
 
     if (typeof plausible !== "undefined") {
       plausible("Create Account", {

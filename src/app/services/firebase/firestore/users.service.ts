@@ -33,7 +33,7 @@ export class UsersService {
     return setDoc(doc(this.firestore, "users", userId), schema);
   }
 
-  getUserById(userId): Observable<User.Class | null> {
+  getUserById(userId: string): Observable<User.Class | null> {
     return new Observable<User.Class | null>((observer) => {
       return onSnapshot(
         doc(this.firestore, "users", userId),

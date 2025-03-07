@@ -53,7 +53,9 @@ import { MatButton } from "@angular/material/button";
   ],
 })
 export class SettingsPageComponent implements OnInit {
-  @ViewChild("editProfileComponent") editProfileComponent: EditProfileComponent;
+  @ViewChild("editProfileComponent") editProfileComponent:
+    | EditProfileComponent
+    | undefined;
 
   constructor(
     public authService: AuthenticationService,
@@ -119,12 +121,12 @@ export class SettingsPageComponent implements OnInit {
     ],
   };
 
-  emailAddress: string;
+  emailAddress?: string;
 
   ngOnInit(): void {
     this.emailAddress = this.authService?.user?.email || "";
     this.authService.authState$.subscribe((user) => {
-      this.emailAddress = user.email;
+      this.emailAddress = user?.email;
     });
 
     let tab: string = this.route.snapshot.paramMap.get("tab") || "";
@@ -144,7 +146,7 @@ export class SettingsPageComponent implements OnInit {
     // else do nothing
   }
 
-  updateURL(selectedPoint) {
+  updateURL(selectedPoint: string) {
     this.location.go(`/settings/${selectedPoint}`);
   }
 
@@ -176,7 +178,7 @@ export class SettingsPageComponent implements OnInit {
     // TODO
   }
 
-  profileHasChanges(hasChanges) {
+  profileHasChanges(hasChanges: boolean) {
     this.menuPoints[0].hasChanges = hasChanges;
     this.updateChanges();
   }
@@ -191,7 +193,7 @@ export class SettingsPageComponent implements OnInit {
     this.hasChanges = false;
   }
 
-  miniFabPressed(event) {
+  miniFabPressed() {
     this.discardAllChanges();
   }
 
@@ -202,8 +204,8 @@ export class SettingsPageComponent implements OnInit {
   saveAllChanges() {
     // Save all changes in components
     this.editProfileComponent
-      .saveAllChanges()
-      .then(() => {
+      ?.saveAllChanges()
+      ?.then(() => {
         this._snackbar.open("Successfully saved all changes!", "Dismiss", {
           duration: 3000,
           horizontalPosition: "center",

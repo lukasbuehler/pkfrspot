@@ -110,7 +110,7 @@ export class SpotMapDataManager {
   }
 
   saveSpot(spot: Spot | LocalSpot): Promise<void> {
-    if (!spot) return;
+    if (!spot) return Promise.reject("No spot provided");
 
     let saveSpotPromise: Promise<void>;
     if (spot instanceof Spot) {
@@ -721,11 +721,9 @@ export class SpotMapDataManager {
     }
 
     // update the map to show the new spot on the loaded spots array.
-    if (
-      this._lastVisibleTiles() &&
-      this._lastVisibleTiles().zoom >= this.spotZoom
-    ) {
-      this._showCachedSpotsAndMarkersForTiles(this._lastVisibleTiles());
+    const lastVisibleTiles = this._lastVisibleTiles();
+    if (lastVisibleTiles && lastVisibleTiles?.zoom >= this.spotZoom) {
+      this._showCachedSpotsAndMarkersForTiles(lastVisibleTiles);
     }
   }
 

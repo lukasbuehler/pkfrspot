@@ -80,7 +80,7 @@
                 >
               </mat-form-field>
               <button
-                [disabled]="emailAddress === authService.user?.email"
+                [disabled]="emailAddress === authService.user.email"
                 mat-flat-button
                 class="mt-3 mb-1"
                 color="primary"
@@ -160,5 +160,5 @@
   [openOnHover]="true"
   [rotationDegrees]="0"
   (mainFabClick)="saveAllChanges()"
-  (miniFabClick)="miniFabPressed($event)"
+  (miniFabClick)="miniFabPressed()"
 ></app-speed-dial-fab>

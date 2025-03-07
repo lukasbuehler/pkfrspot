@@ -38,7 +38,7 @@ interface ExpressionFlags {
   sticky?: boolean; // y
 }
 
-const expressionFlagsChars = {
+const expressionFlagsChars: Record<string, string> = {
   g: "global",
   i: "caseInsensitive",
   m: "multiline",
@@ -107,7 +107,8 @@ export class RegexInputComponent
     return this.parts.invalid && this.parts.dirty;
   }
   getErrorMessage() {
-    if (this.parts.get("regularExpression").errors["invalidRegex"]) {
+    const regexParts = this.parts.get("regularExpression");
+    if (regexParts?.errors && regexParts.errors["invalidRegex"]) {
       return "The regular expression is invalid";
     }
     return "An unkown error occured";
@@ -145,6 +146,11 @@ export class RegexInputComponent
   @Output() valueChange = new EventEmitter<MyRegex>();
 
   @Input() get flags(): string {
+    if (!this.value) {
+      console.error("value is null");
+      return "";
+    }
+
     return this.value.expressionFlags;
   }
   set flags(flags: ExpressionFlags) {
@@ -153,10 +159,10 @@ export class RegexInputComponent
   }
 
   @Input() get flagsString(): string {
-    return this.parts.get("experssionFlags").value;
+    return this.parts.get("experssionFlags")?.value;
   }
   set flagsString(flagsString: string) {
-    this.parts.get("expressionFlags").setValue(flagsString);
+    this.parts.get("expressionFlags")?.setValue(flagsString);
     this.stateChanges.next();
   }
 
@@ -167,7 +173,7 @@ export class RegexInputComponent
     this._placeholder = plh;
     this.stateChanges.next();
   }
-  private _placeholder: string;
+  private _placeholder: string = "";
 
   @Input() get required() {
     return this._required;
@@ -186,7 +192,7 @@ export class RegexInputComponent
     if (this.disabledFlags) {
       this._disabled
         ? this.parts.disable()
-        : this.parts.get("regularExpression").enable();
+        : this.parts.get("regularExpression")?.enable();
     } else {
       this._disabled ? this.parts.disable() : this.parts.enable();
     }
@@ -200,13 +206,13 @@ export class RegexInputComponent
   set disabledFlags(value: boolean) {
     this._disabledFlags = coerceBooleanProperty(value);
     this._disabledFlags
-      ? this.parts.get("expressionFlags").disable()
-      : this.parts.get("expressionFlags").enable();
+      ? this.parts.get("expressionFlags")?.disable()
+      : this.parts.get("expressionFlags")?.enable();
     this.stateChanges.next();
   }
   private _disabledFlags = false;
 
-  @Input("aria-describedby") userAriaDescribedBy: string;
+  @Input("aria-describedby") userAriaDescribedBy: string = ""; // TODO
   setDescribedByIds(ids: string[]) {
     // const controlElement =
     //   this._elementRef.nativeElement.querySelector("regularExpression")!;
@@ -223,7 +229,7 @@ export class RegexInputComponent
 
   onContainerClick(event: MouseEvent) {
     if ((event.target as Element).tagName.toLowerCase() != "input") {
-      this._elementRef.nativeElement.querySelector("input").focus();
+      this._elementRef.nativeElement.querySelector("input")?.focus();
     }
   }
 
@@ -254,7 +260,7 @@ export class RegexInputComponent
       this.stateChanges.next();
     });
   }
-  validate(control: AbstractControl): ValidationErrors {
+  validate(control: AbstractControl): ValidationErrors | null {
     return this.parts.errors;
   }
   registerOnValidatorChange?(fn: () => void): void {}
@@ -274,8 +280,11 @@ export class RegexInputComponent
 
     for (let char in expressionFlagsChars) {
       if (flagString?.includes(char)) {
+        const flag: keyof ExpressionFlags = expressionFlagsChars[
+          char
+        ] as keyof ExpressionFlags;
         // set the matching expression flag to true
-        expressionFlags[expressionFlagsChars[char]] = true;
+        expressionFlags[flag] = true;
       }
     }
 

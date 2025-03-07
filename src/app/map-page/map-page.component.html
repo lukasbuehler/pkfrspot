@@ -91,7 +91,7 @@
             class="spotAutocompleteOption"
             *ngFor="let place of (spotAndPlaceSearchResults$ | async)?.places"
             [value]="{ type: 'place', id: place.place_id }"
-            ><span>{{ place.description ?? "" }}</span>
+            ><span>{{ place.description }}</span>
           </mat-option>
         </mat-autocomplete>
         <!-- <button
@@ -194,7 +194,7 @@
       mat-mini-fab
       #mapStyleFab
       id="mapStyleFab"
-      (click)="spotMap.toggleMapStyle()"
+      (click)="spotMap ? spotMap.toggleMapStyle() : null"
       color="primary"
       i18n-matTootlip
       [matTooltip]="
@@ -213,7 +213,7 @@
       #geolocationFab
       id="geolocationFab"
       color="primary"
-      (click)="spotMap.focusOnGeolocation()"
+      (click)="spotMap ? spotMap.focusOnGeolocation() : null"
       i18n-matTootlip
       matTooltip="Go to your location"
       matTooltipPosition="left"
@@ -237,7 +237,7 @@
       id="amenitiesFab"
       color="primary"
       (click)="showAmenities.set(!showAmenities())"
-      [disabled]="spotMap?.mapZoom < 16"
+      [disabled]="spotMap ? spotMap.mapZoom < 16 : true"
       i18n-matTootlip
       [matTooltip]="
         showAmenities() ? 'Hide amenity markers' : 'Show amenity markers'
@@ -268,7 +268,7 @@
     #createSpotSpeedDial
     id="createSpotSpeedDial"
     color="primary"
-    (click)="spotMap.createSpot()"
+    (click)="spotMap ? spotMap.createSpot() : null"
   >
     <mat-icon> add_location </mat-icon>
   </button>

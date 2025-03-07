@@ -270,7 +270,7 @@ export class LocalSpot {
     };
 
     // delete all the fields from the object that are undefined
-    for (let key: keyof SpotSchema of Object.keys(data)) {
+    for (const key of Object.keys(data) as (keyof SpotSchema)[]) {
       if (data[key] === undefined) {
         delete data[key];
       }

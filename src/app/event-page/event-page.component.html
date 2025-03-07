@@ -92,7 +92,7 @@
         </a>
       </div> -->
 
-    @if(spots()?.length > 0) {
+    @if(spots() && spots()!.length > 0) {
     <app-spot-map
       @fadeInOut
       #spotMap

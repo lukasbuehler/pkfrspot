@@ -47,7 +47,7 @@ declare function plausible(eventName: string, options?: { props: any }): void;
 
 interface ButtonBase {
   name: string;
-  icon?: string;
+  icon: string;
   image?: string;
 }
 

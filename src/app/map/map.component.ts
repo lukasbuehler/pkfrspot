@@ -97,7 +97,10 @@ export class MapComponent implements OnInit, OnChanges {
   isDarkMode = input<boolean>(true); // should be false if mapStyle is roadmap and the dark map is used
   markers: InputSignal<MarkerSchema[]> = input<MarkerSchema[]>([]);
 
-  private _center: google.maps.LatLngLiteral | undefined;
+  private _center: google.maps.LatLngLiteral = {
+    lat: 48.6270939,
+    lng: 2.4305363,
+  };
   @Input() set center(coords: google.maps.LatLngLiteral) {
     this._center = coords;
     if (this.googleMap) {
@@ -105,7 +108,7 @@ export class MapComponent implements OnInit, OnChanges {
     }
   }
   @Output() centerChange = new EventEmitter<google.maps.LatLngLiteral>();
-  get center(): google.maps.LatLngLiteral | undefined {
+  get center(): google.maps.LatLngLiteral {
     return this._center;
   }
 

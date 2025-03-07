@@ -18,7 +18,7 @@
   @for(tile of visibleTiles()?.tiles; track tile) {
   <map-rectangle
     [bounds]="
-      getBoundsForTile({ zoom: visibleTiles().zoom, x: tile.x, y: tile.y })
+      getBoundsForTile({ zoom: visibleTiles()!.zoom, x: tile.x, y: tile.y })
     "
     [options]="{
       strokeColor: '#FF0000',
@@ -31,7 +31,7 @@
 
   <!-- Debug: Rendering bounds -->
   <map-rectangle
-    [bounds]="boundsToRender()"
+    [bounds]="boundsToRender()!"
     [options]="{
       strokeColor: '#FF0000',
       strokeOpacity: 0.8,
@@ -51,9 +51,9 @@
       padding: 10px;
     "
   >
-    Debug Mode: Zoom {{ zoom }}, sw: ({{ visibleTiles()?.sw.x }},
-    {{ visibleTiles()?.sw.y }}), ne: ({{ visibleTiles()?.ne.x }},
-    {{ visibleTiles()?.ne.y }})
+    Debug Mode: Zoom {{ zoom }}, sw: ({{ visibleTiles()!.sw.x }},
+    {{ visibleTiles()!.sw.y }}), ne: ({{ visibleTiles()!.ne.x }},
+    {{ visibleTiles()!.ne.y }})
   </div>
 
   }
@@ -94,7 +94,7 @@
   <map-polygon
     [id]="'polygon-' + spot.id"
     [options]="spotPolygonOptions"
-    [paths]="spot.paths[0]"
+    [paths]="spot.paths![0]"
     (polygonClick)="spotClick.emit(spot)"
   ></map-polygon>
   } } }
@@ -105,7 +105,7 @@
     id="selectedSpotMarker"
     [position]="selectedSpot.location()"
     [draggable]="isEditing"
-    (mapDragend)="editingSpotPositionChanged($event.latLng)"
+    (mapDragend)="editingSpotPositionChanged($event.latLng!)"
     [content]="selectedSpotInfoWindow"
     [zIndex]="1000000 + 1"
   ></map-advanced-marker>
@@ -139,7 +139,7 @@
     id="selectedSpotMarker"
     [position]="selectedSpot.location()"
     [draggable]="isEditing"
-    (mapDragend)="editingSpotPositionChanged($event.latLng)"
+    (mapDragend)="editingSpotPositionChanged($event.latLng!)"
     [content]="selectedSpotMarkerNode.elementRef.nativeElement"
     [zIndex]="1000000 + 1"
   ></map-advanced-marker>
@@ -206,14 +206,14 @@
   @if(showGeolocation && geolocation()) {
   <div #geolocationMarker class="geolocation-marker"></div>
   <map-advanced-marker
-    [position]="geolocation().location"
+    [position]="geolocation()!.location"
     [content]="geolocationMarker"
     [zIndex]="1000000"
   >
   </map-advanced-marker>
   <map-circle
-    [center]="geolocation().location"
-    [radius]="geolocation().accuracy"
+    [center]="geolocation()!.location"
+    [radius]="geolocation()!.accuracy"
     [options]="geolocationCircleOptions"
   ></map-circle>
   }
@@ -227,8 +227,8 @@
   <app-marker
     #markerComp
     class="fade-in"
-    [icon]="marker.icon"
-    [color]="marker.color"
+    [icon]="marker.icon ?? null"
+    [color]="marker.color ?? 'primary'"
     [size]="0.8"
   >
   </app-marker>

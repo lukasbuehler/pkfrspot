@@ -193,7 +193,9 @@ export class KmlImportPageComponent implements OnInit, AfterViewInit {
     return spots.map((spot) => spot.spot.location);
   }
 
-  getSpotMarkers(spots: KMLSpot[]): MarkerSchema[] {
+  getSpotMarkers(spots: KMLSpot[] | null): MarkerSchema[] {
+    if (!spots) return [];
+
     return spots.map((spot) => {
       return {
         color: "tertiary",

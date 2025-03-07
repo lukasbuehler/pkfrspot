@@ -205,7 +205,10 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
               this.map.center = lastLocationAndZoom.location;
               this.mapZoom = lastLocationAndZoom.zoom;
             } else {
-              this.map.center = this.centerStart();
+              const centerStart = this.centerStart();
+              if (centerStart) {
+                this.map.center = centerStart;
+              }
               this.mapZoom = this.startZoom;
             }
           }

@@ -32,7 +32,7 @@ import { MatFormField, MatLabel, MatError } from "@angular/material/form-field";
   ],
 })
 export class SignInPageComponent implements OnInit {
-  signInForm: UntypedFormGroup;
+  signInForm?: UntypedFormGroup;
   signInError: string = "";
 
   constructor(
@@ -50,17 +50,18 @@ export class SignInPageComponent implements OnInit {
 
   get emailFieldHasError(): boolean {
     return (
-      this.signInForm.controls["email"].invalid &&
-      (this.signInForm.controls["email"].dirty ||
-        this.signInForm.controls["email"].touched)
+      (this.signInForm?.controls["email"].invalid &&
+        (this.signInForm?.controls["email"].dirty ||
+          this.signInForm?.controls["email"].touched)) ??
+      false
     );
   }
 
   get passwordFieldHasError(): boolean {
-    return this.signInForm.controls["password"].invalid;
+    return this.signInForm?.controls["password"].invalid ?? false;
   }
 
-  trySignIn(signInFormValue) {
+  trySignIn(signInFormValue: { email: string; password: string }) {
     let email = signInFormValue.email;
     let password = signInFormValue.password;
 

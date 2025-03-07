@@ -41,7 +41,7 @@ export class PostsService {
   }
 
   getPostUpdates(
-    userId
+    userId: string
   ): Observable<{ type: DocumentChangeType; post: Post.Class }[]> {
     /**
      * 1) Get all followings of the currently authenticated user
@@ -108,8 +108,8 @@ export class PostsService {
     });
   }
 
-  getPostsFromUser(userId: string): Observable<Post.Schema> {
-    return new Observable<Post.Schema>((observer) => {
+  getPostsFromUser(userId: string): Observable<Record<string, Post.Schema>> {
+    return new Observable<Record<string, Post.Schema>>((observer) => {
       return onSnapshot(
         query(
           collection(this.firestore, "posts"),
@@ -131,7 +131,7 @@ export class PostsService {
     });
   }
 
-  deletePost(postId): Promise<void> {
+  deletePost(postId: string): Promise<void> {
     if (!postId) {
       return Promise.reject("The post ID is empty");
     }

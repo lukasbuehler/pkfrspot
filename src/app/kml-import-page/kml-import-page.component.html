@@ -38,11 +38,11 @@
 
           <!-- Steps -->
           <!-- Select step -->
-          <mat-step [stepControl]="uploadFormGroup" state="select">
+          <mat-step [stepControl]="uploadFormGroup!" state="select">
             <ng-template matStepLabel
               ><span class="d-none d-md-block">Select</span></ng-template
             >
-            <form class="pt-3 px-3" [formGroup]="uploadFormGroup">
+            <form class="pt-3 px-3" [formGroup]="uploadFormGroup!">
               <h3 class="mat-h3">Please select a KML file.</h3>
               <app-upload-media-ui
                 (uploadMedia)="onUploadMediaSelect($event)"
@@ -69,11 +69,11 @@
           </mat-step>
 
           <!-- Setup step -->
-          <mat-step [stepControl]="setupFormGroup" state="setup">
+          <mat-step [stepControl]="setupFormGroup!" state="setup">
             <ng-template matStepLabel
               ><span class="d-none d-md-block">Import Setup</span></ng-template
             >
-            <form class="px-3" [formGroup]="setupFormGroup">
+            <form class="px-3" [formGroup]="setupFormGroup!">
               <div class="container d-lg-block mt-3">
                 <div class="row">
                   <div class="col-md-6">
@@ -178,8 +178,8 @@
                       class="example-list-section"
                     >
                       <ul class="checkbox-list">
-                        @for(folder of kmlParserService.setupInfo.folders; track
-                        folder) {
+                        @for(folder of kmlParserService.setupInfo?.folders;
+                        track folder) {
                         <li>
                           <mat-checkbox
                             *ngIf="folder"
@@ -194,7 +194,10 @@
                       </ul>
                     </span>
                     <p
-                      *ngIf="!(kmlParserService.setupInfo?.folders?.length > 0)"
+                      *ngIf="
+                        !kmlParserService.setupInfo?.folders ||
+                        (kmlParserService.setupInfo?.folders)!.length === 0
+                      "
                       class="mat-body"
                     >
                       No folders in KML file.
@@ -211,7 +214,7 @@
                   mat-flat-button
                   class="float-right"
                   color="accent"
-                  [disabled]="setupFormGroup.invalid || regex.errorState"
+                  [disabled]="setupFormGroup?.invalid || regex.errorState"
                   (click)="continueToVerification()"
                 >
                   Continue

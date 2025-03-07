@@ -25,7 +25,7 @@ export class FollowingService {
       return onSnapshot(
         doc(this.firestore, "users", myUserId, "following", otherUserId),
         (snap) => {
-          if (snap.exists) {
+          if (snap.exists()) {
             obs.next(true);
           } else {
             obs.next(false);
@@ -46,7 +46,7 @@ export class FollowingService {
       return onSnapshot(
         doc(this.firestore, "users", myUserId, "followers", otherUserId),
         (snap) => {
-          if (snap.exists) {
+          if (snap.exists()) {
             obs.next(true);
           } else {
             obs.next(false);

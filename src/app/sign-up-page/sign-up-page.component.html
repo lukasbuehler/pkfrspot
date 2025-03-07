@@ -31,9 +31,9 @@
     <div class="col-md-8">
       <h2 class="mat-h2 mt-5" i18n>Create a new account</h2>
       <form
-        [formGroup]="createAccountForm"
+        [formGroup]="createAccountForm!"
         class="d-flex flex-column"
-        (ngSubmit)="tryCreateAccount(createAccountForm.value)"
+        (ngSubmit)="tryCreateAccount(createAccountForm!.value)"
       >
         <mat-form-field appearance="outline">
           <mat-label i18n>Display Name</mat-label>
@@ -109,7 +109,7 @@
             mat-raised-button
             color="accent"
             type="submit"
-            (click)="tryCreateAccount(createAccountForm.value)"
+            (click)="tryCreateAccount(createAccountForm!.value)"
             i18n
           >
             Create Account

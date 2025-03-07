@@ -42,7 +42,8 @@
       type="text"
       [value]="displayName"
       (input)="
-        displayName = getValueFromEventTarget($event.target); detectIfChanges()
+        displayName = getValueFromEventTarget($event.target) ?? '';
+        detectIfChanges()
       "
     />
   </mat-form-field>
@@ -60,7 +61,8 @@
       placeholder="Write your Bio here..."
       [value]="biography"
       (input)="
-        biography = getValueFromEventTarget($event.target); detectIfChanges()
+        biography = getValueFromEventTarget($event.target) ?? '';
+        detectIfChanges()
       "
     ></textarea>
   </mat-form-field>

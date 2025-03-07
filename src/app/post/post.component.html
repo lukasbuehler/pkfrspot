@@ -7,8 +7,8 @@
     <mat-card-title>{{ post.title }}</mat-card-title>
     <mat-card-subtitle>
       <span>
-        <a routerLink="/u/{{ post.user.uid }}">{{
-          post.user.display_name || "A Traceur"
+        <a routerLink="/u/{{ post.user?.uid }}">{{
+          post.user?.display_name || "A Traceur"
         }}</a>
       </span>
       <span>{{ timeAgoString }}</span></mat-card-subtitle
@@ -63,8 +63,8 @@
     class="spot-container-link"
     *ngIf="post.spot && (post.spot?.ref || post.spot?.spot_location)"
     [routerLink]="
-      post.spot?.ref
-        ? '/map/' + post.spot?.ref?.id
+      post.spot.ref
+        ? '/map/' + post.spot.ref.id
         : '/map?lat=' +
           post.spot.spot_location.latitude +
           '&lng=' +
@@ -80,7 +80,7 @@
       <div class="spot-container-text">
         <h5>{{ post.spot.name }}</h5>
         <span>{{
-          post.spot?.spot_location
+          post.spot.spot_location
             ? getLocationDisplayCoordinates({
                 lat: post.spot.spot_location.latitude,
                 lng: post.spot.spot_location.longitude
@@ -126,14 +126,14 @@
     <mat-icon>info</mat-icon>
     <span>More Information</span>
   </button>
-  <button *ngIf="post.location || post.spot" mat-menu-item routerLink="/map">
+  <button *ngIf="post?.location || post?.spot" mat-menu-item routerLink="/map">
     <mat-icon>place</mat-icon>
     <span>Open on Map</span>
   </button>
   <button
     *ngIf="
       currentlyAuthenticatedUserId &&
-      post.user.uid !== currentlyAuthenticatedUserId
+      post?.user?.uid !== currentlyAuthenticatedUserId
     "
     mat-menu-item
   >
@@ -143,7 +143,7 @@
   <button
     *ngIf="
       currentlyAuthenticatedUserId &&
-      post.user.uid === currentlyAuthenticatedUserId
+      post?.user?.uid === currentlyAuthenticatedUserId
     "
     mat-menu-item
     (click)="deletePost()"

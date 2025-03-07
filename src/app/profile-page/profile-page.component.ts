@@ -46,7 +46,7 @@ import { PostsService } from "../services/firebase/firestore/posts.service";
 })
 export class ProfilePageComponent implements OnInit {
   userId: string = "";
-  user: User.Class = null;
+  user: User.Class | null = null;
   isLoading: boolean = false;
 
   postsFromUser: Post.Class[] = [];
@@ -69,7 +69,7 @@ export class ProfilePageComponent implements OnInit {
   loadingFollowing: boolean = false;
   isFollowing: boolean = false;
 
-  followDialogRef: MatDialogRef<FollowListComponent> = null;
+  followDialogRef: MatDialogRef<FollowListComponent> | null = null;
 
   private dialogConfig: MatDialogConfig = {
     autoFocus: true,
@@ -81,7 +81,7 @@ export class ProfilePageComponent implements OnInit {
     maxHeight: "80%",
   };
 
-  private lastLoadedFollowing: firebase.default.firestore.Timestamp;
+  private lastLoadedFollowing?: firebase.default.firestore.Timestamp;
 
   ngOnInit(): void {
     this.userId =
@@ -180,19 +180,23 @@ export class ProfilePageComponent implements OnInit {
 
   loadPostsForUser(userId: string) {
     this._postsService.getPostsFromUser(userId).subscribe(
-      (postMap) => {
+      (postMap: Record<string, Post.Schema>) => {
         for (let postId in postMap) {
           let docIndex = this.postsFromUser.findIndex((post, index, obj) => {
             return post.id === postId;
           });
           if (docIndex >= 0) {
             // the document already exists already in this array
-            this.postsFromUser[docIndex].updateData(postMap[postId]);
+            const postSchema: Post.Schema = postMap[postId];
+            this.postsFromUser[docIndex].updateData(postSchema);
           } else {
             // create and add new Post
             this.postsFromUser.push(new Post.Class(postId, postMap[postId]));
             this.postsFromUser.sort((a, b) => {
-              return b.timePosted.getTime() - a.timePosted.getTime();
+              if (b.timePosted && a.timePosted) {
+                return b.timePosted.getTime() - a.timePosted.getTime();
+              }
+              return 0;
             });
           }
         }
@@ -210,7 +214,7 @@ export class ProfilePageComponent implements OnInit {
     this.loadingFollowing = true;
 
     if (this.user && !this.isMyProfile) {
-      if (this.isFollowing) {
+      if (this._authService.user.uid && this.isFollowing) {
         // Already following this user, unfollow
         this._followingService
           .unfollowUser(this._authService.user.uid, this.userId)
@@ -231,7 +235,11 @@ export class ProfilePageComponent implements OnInit {
           });
       } else {
         // Not following this user, try to follow
-        if (!this._authService.isSignedIn) {
+        if (
+          !this._authService.isSignedIn ||
+          !this._authService.user.uid ||
+          !this._authService.user.data?.data
+        ) {
           this.loadingFollowing = false;
           this._snackbar.open("You need to log in to follow!", "Ok", {
             verticalPosition: "bottom",
@@ -241,10 +249,15 @@ export class ProfilePageComponent implements OnInit {
           return;
         }
 
+        if (!this.user.data) {
+          console.log("User data is null");
+          return;
+        }
+
         this._followingService
           .followUser(
             this._authService.user.uid,
-            this._authService.user.data,
+            this._authService.user.data.data,
             this.userId,
             this.user.data
           )

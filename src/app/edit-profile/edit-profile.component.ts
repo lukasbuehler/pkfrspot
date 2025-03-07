@@ -85,7 +85,7 @@ export class EditProfileComponent implements OnInit {
     this._updateInfoOnView();
 
     this.authService.authState$.subscribe((user) => {
-      this.user = user.data ?? null;
+      this.user = user?.data ?? null;
       this._updateInfoOnView();
     });
   }
