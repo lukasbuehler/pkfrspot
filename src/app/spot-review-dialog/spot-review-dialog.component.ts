@@ -55,6 +55,9 @@ export class SpotReviewDialogComponent {
 
   reviewComment: WritableSignal<string>;
 
+  addReviewText = $localize`:add review button label@@add_review_label:Add Review`;
+  updateReviewText = $localize`:update review button label@@update_review_label:Update Review`;
+
   constructor(
     public dialogref: MatDialogRef<SpotReviewDialogComponent>,
     @Inject(MAT_DIALOG_DATA)

@@ -892,19 +892,6 @@
         <target>¿Qué puntuación le darías a este spot, de una a cinco estrellas?</target>
       </segment>
     </unit>
-    <unit id="6715455427777949206">
-      <notes>
-        <note category="meaning">review button label</note>
-      </notes>
-      <segment state="initial">
-        <source>
-          <ph id="0" equiv="INTERPOLATION" disp="{{ isUpdate ? &quot;Update&quot; : &quot;&quot; }}" />
-          Review </source>
-        <target>
-          <ph id="0" equiv="INTERPOLATION"
-            disp="{{ isUpdate ? &quot;Actualizar&quot; : &quot;&quot; }}" /> Reseña </target>
-      </segment>
-    </unit>
     <unit id="1115951775217164684">
       <segment state="initial">
         <source>{VAR_PLURAL, plural, =0 {no reviews} =1 {1 review} other {<ph id="0"
@@ -1058,10 +1045,10 @@
       <segment state="initial">
         <source>
           <pc id="0" equivStart="START_BLOCK_IF" equivEnd="CLOSE_BLOCK_IF" type="other"
-            dispStart="@if(googlePlace().rating) {" dispEnd="}"> Rating: <pc id="1"
+            dispStart="@if(googlePlace()!.rating) {" dispEnd="}"> Rating: <pc id="1"
               equivStart="START_TAG_APP_SPOT_RATING" equivEnd="CLOSE_TAG_APP_SPOT_RATING"
               type="other"
-              dispStart="&lt;app-spot-rating [rating1to5]=&quot;googlePlace().rating&quot; [showEmptyStars]=&quot;false&quot; [isCompact]=&quot;true&quot; &gt;"
+              dispStart="&lt;app-spot-rating [rating1to5]=&quot;googlePlace()!.rating!&quot; [showEmptyStars]=&quot;false&quot; [isCompact]=&quot;true&quot; &gt;"
               dispEnd="&lt;/app-spot-rating&gt;" /></pc>
         </source>
         <target>
@@ -1138,6 +1125,30 @@
       <segment state="initial">
         <source>Create Account</source>
         <target>Crear cuenta</target>
+      </segment>
+    </unit>
+    <unit id="1466012768716286509">
+      <segment state="initial">
+        <source>Sign Up</source>
+        <target>Registrarse</target>
+      </segment>
+    </unit>
+    <unit id="add_review_label">
+      <notes>
+        <note category="description">add review button label</note>
+      </notes>
+      <segment state="initial">
+        <source>Add Review</source>
+        <target>Agregar reseña</target>
+      </segment>
+    </unit>
+    <unit id="update_review_label">
+      <notes>
+        <note category="description">update review button label</note>
+      </notes>
+      <segment state="initial">
+        <source>Update Review</source>
+        <target>Actualizar reseña</target>
       </segment>
     </unit>
   </file>

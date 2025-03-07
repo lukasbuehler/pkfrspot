@@ -37,8 +37,7 @@
     color="warn"
     cdkFocusInitial
     (click)="submitReview()"
-    i18n="review button label|"
   >
-    {{ isUpdate ? "Update" : "" }} Review
+    {{ isUpdate ? updateReviewText : addReviewText }}
   </button>
 </mat-dialog-actions>
