@@ -15,9 +15,6 @@
       [allowedMimeTypes]="['image/png', 'image/jpeg', 'image/jpg']"
       (uploadMedia)="setNewProfilePicture($event)"
     ></app-upload-media-ui>
-    <div class="pt-3">
-      <div id="croppie" #croppie></div>
-    </div>
     <button
       *ngIf="newProfilePicture"
       mat-flat-button

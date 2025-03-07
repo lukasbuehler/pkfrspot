@@ -8,7 +8,6 @@ import {
 } from "@angular/core";
 import { User } from "../../db/models/User";
 import { AuthenticationService } from "../services/firebase/authentication.service";
-import Croppie from "croppie";
 import {
   StorageFolder,
   StorageService,
@@ -56,7 +55,6 @@ import { getValueFromEventTarget } from "../../scripts/Helpers";
   ],
 })
 export class EditProfileComponent implements OnInit {
-  @ViewChild("croppie") croppie: ElementRef | undefined;
   @Output("changes")
   changes: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -68,7 +66,6 @@ export class EditProfileComponent implements OnInit {
 
   newProfilePicture: File | null = null;
   newProfilePictureSrc: string = "";
-  croppieObj: Croppie | null = null;
   isUpdatingProfilePicture: boolean = false;
 
   getValueFromEventTarget = getValueFromEventTarget;
@@ -101,34 +98,9 @@ export class EditProfileComponent implements OnInit {
   setNewProfilePicture(file: File) {
     this.newProfilePicture = file;
 
-    if (
-      this.croppie &&
-      this.croppieObj &&
-      this.croppie.nativeElement.className === "croppie-container"
-    ) {
-      this.croppieObj.destroy();
-    }
-
-    this.croppieObj = new Croppie(document.getElementById("croppie")!, {
-      viewport: {
-        width: 256,
-        height: 256,
-        type: "circle",
-      },
-      boundary: {
-        width: 300,
-        height: 300,
-      },
-      enableExif: true,
-    });
-
     let reader = new FileReader();
     reader.onload = (event) => {
       this.newProfilePictureSrc = event.target!.result as string;
-
-      this.croppieObj!.bind({
-        url: this.newProfilePictureSrc,
-      });
     };
 
     reader.readAsDataURL(file);
@@ -159,59 +131,54 @@ export class EditProfileComponent implements OnInit {
 
   private _handleProfilePictureUploadAndSave(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      if (
-        this.user &&
-        this.user.uid &&
-        this.newProfilePictureSrc &&
-        this.croppieObj
-      ) {
+      if (this.user && this.user.uid && this.newProfilePictureSrc) {
         const userId = this.user.uid;
         this.isUpdatingProfilePicture = true;
 
-        this.croppieObj
-          .result({
-            type: "blob",
-            format: "png",
-            circle: false,
-          })
-          .then((blob) => {
-            this._storageService
-              .setUploadToStorage(blob, StorageFolder.ProfilePictures, userId)
-              .then(
-                (url) => {
-                  this._userService
-                    .updateUser(userId, {
-                      profile_picture: url,
-                    })
-                    .then(() => {
-                      this.isUpdatingProfilePicture = false;
-                      this.newProfilePicture = null;
-                      this.user!.profilePicture = url;
-                      this.newProfilePictureSrc = "";
-                      this.croppieObj!.destroy();
-                      resolve();
-                    })
-                    .catch((err) => {
-                      console.error(
-                        "Error saving the url to the newly uploaded profile picture",
-                        err
-                      );
-                      this.isUpdatingProfilePicture = false;
-                      reject("Error saving the uploaded profile picture!");
-                    });
-                },
-                (err) => {
-                  console.error("Error on profile picture upload", err);
-                  reject("Error uploading the cropped image!");
-                  this.isUpdatingProfilePicture = false;
-                }
-              );
-          })
-          .catch((err) => {
-            console.error("Error getting the blob from croppie", err);
-            reject("Error Cropping the image!");
-            this.isUpdatingProfilePicture = false;
-          });
+        // this.croppieObj
+        //   .result({
+        //     type: "blob",
+        //     format: "png",
+        //     circle: false,
+        //   })
+        //   .then((blob) => {
+        //     this._storageService
+        //       .setUploadToStorage(blob, StorageFolder.ProfilePictures, userId)
+        //       .then(
+        //         (url) => {
+        //           this._userService
+        //             .updateUser(userId, {
+        //               profile_picture: url,
+        //             })
+        //             .then(() => {
+        //               this.isUpdatingProfilePicture = false;
+        //               this.newProfilePicture = null;
+        //               this.user!.profilePicture = url;
+        //               this.newProfilePictureSrc = "";
+        //               this.croppieObj!.destroy();
+        //               resolve();
+        //             })
+        //             .catch((err) => {
+        //               console.error(
+        //                 "Error saving the url to the newly uploaded profile picture",
+        //                 err
+        //               );
+        //               this.isUpdatingProfilePicture = false;
+        //               reject("Error saving the uploaded profile picture!");
+        //             });
+        //         },
+        //         (err) => {
+        //           console.error("Error on profile picture upload", err);
+        //           reject("Error uploading the cropped image!");
+        //           this.isUpdatingProfilePicture = false;
+        //         }
+        //       );
+        //   })
+        //   .catch((err) => {
+        //     console.error("Error getting the blob from croppie", err);
+        //     reject("Error Cropping the image!");
+        //     this.isUpdatingProfilePicture = false;
+        //   });
       }
     });
   }
@@ -244,11 +211,7 @@ export class EditProfileComponent implements OnInit {
       }
 
       // Update profile picture if changed
-      if (
-        this.newProfilePictureSrc &&
-        this.croppieObj &&
-        this.newProfilePicture
-      ) {
+      if (this.newProfilePictureSrc && this.newProfilePicture) {
         promises.push(this._handleProfilePictureUploadAndSave());
       }
 

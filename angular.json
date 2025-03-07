@@ -69,7 +69,6 @@
               "src/sitemap.xml"
             ],
             "styles": [
-              "node_modules/croppie/croppie.css",
               "node_modules/swiper/swiper-bundle.css",
               "node_modules/@videogular/ngx-videogular/fonts/videogular.css",
               "src/theming/m3-theme.scss",
