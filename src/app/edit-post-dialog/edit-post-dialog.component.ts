@@ -40,7 +40,7 @@ import { MatButton } from "@angular/material/button";
 import { MatOption } from "@angular/material/core";
 import { NgIf, NgFor } from "@angular/common";
 import { MatIcon } from "@angular/material/icon";
-import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
+import { MediaUpload } from "../media-upload/media-upload.component";
 import { MatTabGroup, MatTab } from "@angular/material/tabs";
 import { MatInput } from "@angular/material/input";
 import {
@@ -69,7 +69,7 @@ export interface PostDialogData {
     MatInput,
     MatTabGroup,
     MatTab,
-    UploadMediaUiComponent,
+    MediaUpload,
     ReactiveFormsModule,
     MatIcon,
     MatSuffix,

@@ -62,7 +62,7 @@ import {
 } from "@angular/material/form-field";
 import { NgIf, AsyncPipe } from "@angular/common";
 import { MatButton } from "@angular/material/button";
-import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
+import { MediaUpload } from "../media-upload/media-upload.component";
 import { MatIcon } from "@angular/material/icon";
 import { locale } from "core-js";
 import { LocaleCode } from "../../db/models/Interfaces";
@@ -87,7 +87,7 @@ import { MarkerSchema } from "../marker/marker.component";
     MatStepLabel,
     FormsModule,
     ReactiveFormsModule,
-    UploadMediaUiComponent,
+    MediaUpload,
     MatButton,
     NgIf,
     MatFormField,

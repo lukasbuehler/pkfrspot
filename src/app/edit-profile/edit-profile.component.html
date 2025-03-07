@@ -10,11 +10,11 @@
       <img class="profile-picture" [src]="user.profilePicture" />
       <h5 class="mat-body mt-3 mb-4">Your current profile picture</h5>
     </div>
-    <app-upload-media-ui
+    <app-media-upload
       class="w-100"
       [allowedMimeTypes]="['image/png', 'image/jpeg', 'image/jpg']"
       (uploadMedia)="setNewProfilePicture($event)"
-    ></app-upload-media-ui>
+    ></app-media-upload>
     <button
       *ngIf="newProfilePicture"
       mat-flat-button

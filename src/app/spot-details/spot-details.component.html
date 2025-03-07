@@ -116,13 +116,18 @@
       }
     </mat-card-subtitle> -->
   </mat-card-header>
-  } @if(report) {
+  }
+  <!-- if(!isEditing)  -->
+
+  @if(report) {
   <div class="report-info">
     <span class="mat-h3 m-0" i18n
       >This spot was reported as "{{ report.reason }}"</span
     >
   </div>
   }
+  <!-- @if(report) -->
+
   <mat-card-content>
     @if(!isEditing) {
     <!-- spot media carousel  -->
@@ -273,6 +278,7 @@
       } @else {
       <p i18n>This spot has no reviews yet, be the first to leave one!</p>
       }
+      <!-- if(spot.rating) -->
 
       <!-- Spot review histogram -->
       <!-- // TODO review histogram -->
@@ -398,6 +404,9 @@
         Report
       </button>
     </div>
+    }
+    <!-- @if(authenticationService.isSignedIn && editable) -->
+
     } @else {
     <!-- Spot title editing field -->
     <form>
@@ -427,11 +436,11 @@
 
     <!-- Image upload  -->
     <div class="upload-spot-image-box">
-      <app-upload-media-ui
+      <app-media-upload
         [allowedMimeTypes]="['image/jpg', 'image/jpeg', 'image/png']"
         (uploadMedia)="setSpotImage($event)"
       >
-      </app-upload-media-ui>
+      </app-media-upload>
       <button
         mat-flat-button
         (click)="uploadImage()"
@@ -567,7 +576,7 @@
       </button>
       }
     </div>
-    } }
+    }
   </mat-card-content>
   @if(isEditing) {
   <mat-card-actions class="mt-3 gap-2">

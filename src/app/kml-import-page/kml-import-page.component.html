@@ -44,7 +44,7 @@
             >
             <form class="pt-3 px-3" [formGroup]="uploadFormGroup!">
               <h3 class="mat-h3">Please select a KML file.</h3>
-              <app-upload-media-ui
+              <app-media-upload
                 (uploadMedia)="onUploadMediaSelect($event)"
                 [allowedMimeTypes]="[
                   'application/xml',
@@ -53,7 +53,7 @@
                 ]"
                 acceptString=".kml, .xml"
                 [required]="true"
-              ></app-upload-media-ui>
+              ></app-media-upload>
               <div class="mt-5">
                 <button
                   mat-raised-button

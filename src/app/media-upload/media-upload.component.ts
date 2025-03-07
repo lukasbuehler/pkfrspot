@@ -10,7 +10,7 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from "@angular/forms";
-import { humanFileSize } from "./../../scripts/Helpers";
+import { humanFileSize } from "../../scripts/Helpers";
 import { NgIf } from "@angular/common";
 import { MatInput } from "@angular/material/input";
 import {
@@ -24,9 +24,9 @@ import { MatIcon } from "@angular/material/icon";
 import { MatMiniFabButton } from "@angular/material/button";
 
 @Component({
-  selector: "app-upload-media-ui",
-  templateUrl: "./upload-media-ui.component.html",
-  styleUrls: ["./upload-media-ui.component.scss"],
+  selector: "app-media-upload",
+  templateUrl: "./media-upload.component.html",
+  styleUrls: ["./media-upload.component.scss"],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -41,7 +41,7 @@ import { MatMiniFabButton } from "@angular/material/button";
     MatError,
   ],
 })
-export class UploadMediaUiComponent implements OnInit, ControlValueAccessor {
+export class MediaUpload implements OnInit, ControlValueAccessor {
   @Input() required: boolean = false;
   @Input() maximumSizeInBytes: number | null = null;
   @Input() allowedMimeTypes: string[] | null = null;

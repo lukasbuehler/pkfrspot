@@ -28,7 +28,7 @@ import {
   MatHint,
 } from "@angular/material/form-field";
 import { MatButton } from "@angular/material/button";
-import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
+import { MediaUpload } from "../media-upload/media-upload.component";
 import { MatBadge } from "@angular/material/badge";
 import { NgIf } from "@angular/common";
 import { UsersService } from "../services/firebase/firestore/users.service";
@@ -41,7 +41,7 @@ import { getValueFromEventTarget } from "../../scripts/Helpers";
   imports: [
     NgIf,
     MatBadge,
-    UploadMediaUiComponent,
+    MediaUpload,
     MatButton,
     MatFormField,
     MatLabel,

@@ -26,7 +26,7 @@ import {
   MatProgressBarModule,
 } from "@angular/material/progress-bar";
 import { LocalSpot, Spot } from "../../db/models/Spot";
-import { UploadMediaUiComponent } from "../upload-media-ui/upload-media-ui.component";
+import { MediaUpload } from "../media-upload/media-upload.component";
 import { Post } from "../../db/models/Post";
 import {
   StorageService,
@@ -145,7 +145,7 @@ export class AsRatingKeyPipe implements PipeTransform {
     MatLabel,
     MatInput,
     MediaPreviewGridComponent,
-    UploadMediaUiComponent,
+    MediaUpload,
     // MatSelect,
     // MatOption,
     MatChipListbox,
@@ -177,8 +177,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   @Output() saveClick: EventEmitter<Spot> = new EventEmitter<Spot>();
   @Output() discardClick: EventEmitter<void> = new EventEmitter<void>();
 
-  @ViewChild(UploadMediaUiComponent)
-  uploadMediaComp: UploadMediaUiComponent | null = null;
+  @ViewChild(MediaUpload)
+  uploadMediaComp: MediaUpload | null = null;
 
   getValueFromEventTarget = getValueFromEventTarget;
 
