@@ -234,6 +234,10 @@ export class SpotsService {
     return updateDoc(doc(this.firestore, "spots", spotId), spotUpdateData);
   }
 
+  updateSpotMedia(spotId: SpotId, media: SpotSchema["media"]) {
+    return updateDoc(doc(this.firestore, "spots", spotId), { media });
+  }
+
   createMultipleSpots(spotData: SpotSchema[]): Promise<void> {
     const batch = writeBatch(this.firestore);
     spotData.forEach((spot) => {

@@ -12,7 +12,13 @@
     (cdkDropListDropped)="drop($event)"
   >
     <div cdkDrag class="drag-element">
-      <img class="tile-image" [src]="mediaObj.src" />
+      <div class="tile-image">
+        <img
+          class="tile-image"
+          [ngSrc]="storageService.getSpotMediaURL(mediaObj.src, 200)"
+          fill
+        />
+      </div>
       <button
         class="bl-fab"
         mat-icon-button

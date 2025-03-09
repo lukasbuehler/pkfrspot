@@ -10,6 +10,7 @@ import {
 import {
   Component,
   EventEmitter,
+  inject,
   Input,
   OnInit,
   Output,
@@ -18,7 +19,8 @@ import {
 import { ContributedMedia, Media, MediaType } from "../../db/models/Interfaces";
 import { MatIcon } from "@angular/material/icon";
 import { MatIconButton } from "@angular/material/button";
-import { NgIf, NgFor } from "@angular/common";
+import { NgIf, NgFor, NgOptimizedImage } from "@angular/common";
+import { StorageService } from "../services/firebase/storage.service";
 
 @Component({
   selector: "app-media-preview-grid",
@@ -32,12 +34,16 @@ import { NgIf, NgFor } from "@angular/common";
     CdkDrag,
     MatIconButton,
     MatIcon,
+    NgOptimizedImage,
   ],
 })
 export class MediaPreviewGridComponent implements OnInit {
-  @Input() media: (Media | ContributedMedia)[] = [];
-  @Output() mediaChanged: EventEmitter<(Media | ContributedMedia)[]> =
-    new EventEmitter<(Media | ContributedMedia)[]>();
+  @Input() media: ContributedMedia[] = [];
+  @Output() mediaChanged: EventEmitter<ContributedMedia[]> = new EventEmitter<
+    ContributedMedia[]
+  >();
+
+  storageService = inject(StorageService);
 
   constructor() {}
 
@@ -54,9 +60,7 @@ export class MediaPreviewGridComponent implements OnInit {
   }
 
   removeMedia(index: number) {
-    let mediaCopy: (Media | ContributedMedia)[] = JSON.parse(
-      JSON.stringify(this.media)
-    );
+    let mediaCopy: ContributedMedia[] = JSON.parse(JSON.stringify(this.media));
     mediaCopy.splice(index, 1);
     this.mediaChanged.emit(mediaCopy);
   }

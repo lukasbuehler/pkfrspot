@@ -142,6 +142,7 @@ div.search-group {
   app-bottom-sheet,
   div.info-panel {
     overflow-y: auto;
+    overflow-x: hidden;
     pointer-events: visible;
     border-radius: 16px;
     width: 100%;

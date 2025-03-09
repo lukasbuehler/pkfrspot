@@ -429,10 +429,10 @@
     </form>
 
     <!-- Media preview grid -->
-    <!-- <app-media-preview-grid
-      [media]="spot.userMedia()"
+    <app-media-preview-grid
+      [media]="spot()!.userMedia()"
       (mediaChanged)="mediaChanged($event)"
-    ></app-media-preview-grid> -->
+    ></app-media-preview-grid>
 
     <!-- Image upload  -->
     <div class="pb-4 pt-2">

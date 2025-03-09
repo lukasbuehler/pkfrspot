@@ -44,6 +44,7 @@ import {
   ContributedMedia,
   MediaType,
   LocaleCode,
+  Media,
 } from "../../db/models/Interfaces";
 
 //import { MatTooltipModule } from "@angular/material/tooltip";
@@ -399,6 +400,10 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
           this.authenticationService.user.uid
         );
       }
+      if (spot instanceof Spot) {
+        // if possible, already save the uploaded media
+        this._spotsService.updateSpotMedia(spot.id, spot.media());
+      }
 
       console.debug("Spot after adding media", spot);
       return spot;
@@ -413,9 +418,9 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     }
   }
 
-  // mediaChanged(newSpotMedia) {
-  // this.spot.setMedia(newSpotMedia, this._spotsService, this._storageService);
-  // }
+  mediaChanged(newSpotMedia: ContributedMedia[]) {
+    this.spot()?.userMedia.set(newSpotMedia);
+  }
 
   async shareSpot() {
     const spot = this.spot();
