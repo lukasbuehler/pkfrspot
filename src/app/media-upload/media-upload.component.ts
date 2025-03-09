@@ -31,6 +31,7 @@ import {
 
 export interface Media {
   file: File;
+  previewSrc: string;
   uploadProgress: number;
 }
 @Component({
@@ -111,6 +112,7 @@ export class MediaUpload implements OnInit, ControlValueAccessor {
         const file = fileList[i];
 
         const newMedia: Media = {
+          previewSrc: this.getFileImageSrc(file),
           file: file,
           uploadProgress: 0,
         };
@@ -176,10 +178,17 @@ export class MediaUpload implements OnInit, ControlValueAccessor {
 
   getFileImageSrc(file: File): string {
     if (!file || !this.fileIsImage(file)) {
+      console.warn(
+        "Cannot make image src file is",
+        typeof file,
+        "type:",
+        file?.type
+      );
       return "";
     }
 
     const src: string = URL.createObjectURL(file);
+    console.log(file, "src", src);
     return src;
   }
 

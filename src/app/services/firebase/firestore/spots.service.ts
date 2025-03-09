@@ -25,12 +25,16 @@ import { SpotSchema } from "../../../../db/schemas/SpotSchema";
 import { LocaleCode } from "../../../../db/models/Interfaces";
 import { transformFirestoreData } from "../../../../scripts/Helpers";
 import { GeoPoint } from "@firebase/firestore";
+import { StorageService } from "../storage.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class SpotsService {
-  constructor(private firestore: Firestore) {}
+  constructor(
+    private firestore: Firestore,
+    private storageService: StorageService
+  ) {}
 
   docRef(path: string) {
     return doc(this.firestore, path);
@@ -213,7 +217,8 @@ export class SpotsService {
 
   updateSpot(
     spotId: SpotId,
-    spotUpdateData: Partial<SpotSchema>
+    spotUpdateData: Partial<SpotSchema>,
+    oldSpotData?: Partial<SpotSchema>
   ): Promise<void> {
     // remove the reviews, review_histogram and review_count fields
     const fieldsToRemove: (keyof SpotSchema)[] = [
@@ -229,13 +234,55 @@ export class SpotsService {
       }
     }
 
-    console.log("Updating spot with data: ", JSON.stringify(spotUpdateData));
+    // check if the media has changed and delete the old media from storage
+    let oldSpotMediaPromise: Promise<SpotSchema["media"]>;
+    if (oldSpotData && oldSpotData.media) {
+      oldSpotMediaPromise = Promise.resolve(oldSpotData.media);
+    } else {
+      oldSpotMediaPromise = this.getSpotById(spotId, "en").then((spot) => {
+        return spot.media();
+      });
+    }
 
+    oldSpotMediaPromise.then((oldSpotMedia) => {
+      this._checkMediaDiffAndDeleteFromStorageIfNecessary(
+        oldSpotMedia,
+        spotUpdateData.media
+      );
+    });
+
+    console.log("Updating spot with data: ", JSON.stringify(spotUpdateData));
     return updateDoc(doc(this.firestore, "spots", spotId), spotUpdateData);
   }
 
   updateSpotMedia(spotId: SpotId, media: SpotSchema["media"]) {
     return updateDoc(doc(this.firestore, "spots", spotId), { media });
+  }
+
+  _checkMediaDiffAndDeleteFromStorageIfNecessary(
+    oldMedia: SpotSchema["media"],
+    newMedia: SpotSchema["media"]
+  ) {
+    console.log("oldSpotMedia", oldMedia);
+    console.log("newSpotMedia", newMedia);
+
+    oldMedia?.forEach((oldMediaItem) => {
+      if (
+        !newMedia ||
+        !newMedia.find((newMediaItem) => newMediaItem.src === oldMediaItem.src)
+      ) {
+        let filenameRegex = RegExp(
+          /(?:spot_pictures)(?:\/|%2F)(.+?)(?:\?.*)?$/
+        );
+        let storageFilenameMatch = oldMediaItem.src.match(filenameRegex);
+        if (storageFilenameMatch && storageFilenameMatch[1]) {
+          let storageFilename = storageFilenameMatch[1] || "";
+          // delete oldMediaItem from storage
+          console.log("Deleting media item: ", oldMediaItem);
+          this.storageService.deleteSpotImageFromStorage(storageFilename);
+        }
+      }
+    });
   }
 
   createMultipleSpots(spotData: SpotSchema[]): Promise<void> {

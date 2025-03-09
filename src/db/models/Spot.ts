@@ -305,71 +305,11 @@ export class LocalSpot {
     return this.media()[index];
   }
 
-  /// MEDIA
-
   public addMedia(src: string, type: MediaType, uid: string) {
     const _userMedia: ContributedMedia[] = this.userMedia();
     _userMedia.push({ src: src, type: type, uid: uid });
     this.userMedia.set(_userMedia);
   }
-
-  public removeMedia(index: number) {
-    const _userMedia: ContributedMedia[] = this.userMedia();
-    _userMedia.splice(index, 1);
-    this.userMedia.set(_userMedia);
-  }
-
-  // public setMedia(
-  //   media: ContributedMedia[],
-  //   _dbService: SpotsService,
-  //   _storageService: StorageService
-  // ) {
-  //   for (let mediaObj of this._data.media) {
-  //     if (
-  //       media.findIndex((val) => {
-  //         return val.src === mediaObj.src;
-  //       }) < 0 &&
-  //       mediaObj.type === MediaType.Image
-  //     ) {
-  //       // this image was deleted
-  //       let filenameRegex = RegExp(
-  //         /(?:spot_pictures)(?:\/|%2F)(.+?)(?:\?.*)?$/
-  //       );
-  //       let storageFilenameMatch = mediaObj.src.match(filenameRegex);
-  //       if (storageFilenameMatch[1]) {
-  //         let storageFilename = storageFilenameMatch[1] || "";
-
-  //         if (storageFilename) {
-  //           _storageService.deleteSpotImageFromStorage(storageFilename).then(
-  //             () => {
-  //               // deleting successful
-  //               console.log("successfully deleted file: " + storageFilename);
-  //             },
-  //             (error) => {
-  //               console.error(error);
-  //             }
-  //           );
-  //         } else {
-  //           console.error(
-  //             "Couldn't resolve storage filename when setting media"
-  //           );
-  //         }
-  //       } else {
-  //         console.error("Regex Match doesn't resolve a filename");
-  //         console.log(storageFilenameMatch);
-  //       }
-  //     }
-  //   }
-
-  //   this._data.media = media;
-  //   // this._updateMedia(_dbService);
-  // }
-
-  // private _updateMedia(_dbService: SpotsService) {
-  //   _dbService.updateSpot(this._id, { media: this._data.media });
-  // }
-
-  /////////////////// END MEDIA
 
   public clone(): LocalSpot {
     const dataCopy: SpotSchema = JSON.parse(JSON.stringify(this.data()));

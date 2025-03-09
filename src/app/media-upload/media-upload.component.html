@@ -6,7 +6,7 @@
       @if(fileIsImage(media.file)) {
       <div class="img-container rounded">
         <img
-          [ngSrc]="getFileImageSrc(media.file)"
+          [ngSrc]="media.previewSrc"
           fill
           [alt]="media.file.name"
           [class.grayed-out]="media.uploadProgress < 100"
