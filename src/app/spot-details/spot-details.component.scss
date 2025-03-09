@@ -67,19 +67,6 @@ form {
   margin-right: 5px;
 }
 
-div.upload-spot-image-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-}
-
-app-media-upload {
-  width: 100%;
-}
-
 mat-progress-bar {
   margin-bottom: -4px;
   z-index: 1;

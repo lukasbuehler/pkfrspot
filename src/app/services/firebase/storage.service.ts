@@ -3,7 +3,8 @@ import { Observable } from "rxjs";
 import { generateUUID } from "../../../scripts/Helpers";
 
 import { getDownloadURL, Storage } from "@angular/fire/storage";
-import { deleteObject, ref, uploadBytes } from "firebase/storage";
+import { deleteObject, ref, uploadBytes } from "@firebase/storage";
+import { uploadBytesResumable } from "@firebase/storage";
 
 export enum StorageFolder {
   PostMedia = "post_media",
@@ -33,13 +34,41 @@ export class StorageService {
   setUploadToStorage(
     blob: Blob,
     location: StorageFolder,
+    progressCallback?: (progressPercent: number) => void,
     filename?: string
   ): Promise<string> {
     let uploadFileName = filename || generateUUID();
     let uploadRef = ref(this.storage, `${location}/${uploadFileName}`);
 
-    return uploadBytes(uploadRef, blob).then((snapshot) => {
-      return getDownloadURL(snapshot.ref);
+    // return uploadBytes(uploadRef, blob).then((snapshot) => {
+    //   return getDownloadURL(snapshot.ref);
+    // });
+
+    return new Promise<string>((resolve, reject) => {
+      const uploadTask = uploadBytesResumable(uploadRef, blob);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.debug("Upload is " + progress + "% done");
+          if (progressCallback) {
+            progressCallback(progress);
+          }
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          reject(error);
+        },
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          resolve(getDownloadURL(uploadTask.snapshot.ref));
+        }
+      );
     });
   }
 

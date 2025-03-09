@@ -435,25 +435,15 @@
     ></app-media-preview-grid> -->
 
     <!-- Image upload  -->
-    <div class="upload-spot-image-box">
+    <div class="pb-4 pt-2">
       <app-media-upload
+        class="w-100"
         [allowedMimeTypes]="['image/jpg', 'image/jpeg', 'image/png']"
-        (uploadMedia)="setSpotImage($event)"
+        [multipleAllowed]="true"
+        [storageFolder]="mediaStorageFolder"
+        (newMedia)="setNewMediaFromUpload($event)"
       >
       </app-media-upload>
-      <button
-        mat-flat-button
-        (click)="uploadImage()"
-        [disabled]="!newSpotImage"
-        class="mt-2"
-        color="primary"
-        i18n="
-          Upload spot image button label|Label of the button to upload a spot
-          image
-        "
-      >
-        Upload Spot Image
-      </button>
     </div>
 
     <!-- <mat-form-field style="width: 100%">

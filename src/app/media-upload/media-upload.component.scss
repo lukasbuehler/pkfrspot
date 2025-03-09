@@ -18,3 +18,29 @@ mat-form-field,
 ::ng-deep .mat-form-field-wrapper {
   width: 100%;
 }
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 10px;
+
+  .img-container {
+    width: 100%;
+    aspect-ratio: 4/3;
+    position: relative;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    > img {
+      object-fit: contain;
+    }
+  }
+}
+
+.grayed-out {
+  filter: grayscale(100%) brightness(0.5);
+  -webkit-filter: grayscale(100%) brightness(0.5);
+}

@@ -1,41 +1,70 @@
-<div class="main" [formGroup]="formGroup">
-  <button
-    mat-mini-fab
-    color="primary"
-    id="attachMedia"
-    class="mini-fab"
-    (click)="fileInput.click()"
-  >
-    <mat-icon>attach_file</mat-icon>
-  </button>
-  <input
-    #fileInput
-    hidden="true"
-    type="file"
-    [accept]="acceptString ?? allowedMimeTypes?.join(',')"
-    onclick="value=null"
-    (change)="onSelectFile($event.target)"
-    formControlName="input"
-    required
-  />
-  <mat-form-field appearance="outline">
-    <mat-label>Please select a File</mat-label>
-    <input
-      #filenameInput
-      matInput
-      name="filenameInput"
-      type="text"
-      ng-readonly="true"
+<div class="d-flex flex-column">
+  @if(showPreview()) {
+  <div class="preview-grid overflow-y-scroll pb-3">
+    @for(media of mediaList(); track $index) { @if(media && media.file) {
+    <div class="d-flex flex-column gap-2">
+      @if(fileIsImage(media.file)) {
+      <div class="img-container rounded">
+        <img
+          [ngSrc]="getFileImageSrc(media.file)"
+          fill
+          [alt]="media.file.name"
+          [class.grayed-out]="media.uploadProgress < 100"
+        />
+        @if(media.uploadProgress < 100) {
+        <mat-spinner class="position: absolute"></mat-spinner>
+        }
+      </div>
+      }
+      <mat-progress-bar
+        class="rounded"
+        [value]="media.uploadProgress"
+      ></mat-progress-bar>
+    </div>
+    } }
+  </div>
+  }
+  <div class="main" [formGroup]="formGroup">
+    <button
+      mat-mini-fab
+      color="primary"
+      id="attachMedia"
+      class="mini-fab"
       (click)="fileInput.click()"
-      readonly
-      [value]="uploadFileName"
+    >
+      <mat-icon>attach_file</mat-icon>
+    </button>
+    <input
+      #fileInput
+      hidden="true"
+      type="file"
+      [accept]="acceptString ?? allowedMimeTypes?.join(',')"
+      onclick="value=null"
+      (change)="onSelectFiles($event.target)"
+      formControlName="input"
+      required
+      [multiple]="multipleAllowed"
     />
-    <mat-icon matSuffix>cloud_upload</mat-icon>
-    <mat-hint *ngIf="!hasError || formGroup.get('input')?.invalid">{{
-      uploadFile
-        ? "Size: " + uploadFileSizeString + ", Type: " + uploadFile.type
-        : "Click to select a file"
-    }}</mat-hint>
-    <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
-  </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Please select a File</mat-label>
+      <input
+        #filenameInput
+        matInput
+        name="filenameInput"
+        type="text"
+        ng-readonly="true"
+        (click)="fileInput.click()"
+        readonly
+        [value]="uploadFileName"
+        [multiple]="multipleAllowed"
+      />
+      <mat-icon matSuffix>cloud_upload</mat-icon>
+      <mat-hint *ngIf="!hasError || formGroup.get('input')?.invalid">{{
+        uploadFile
+          ? "Size: " + uploadFileSizeString + ", Type: " + uploadFile.type
+          : "Click to select a file"
+      }}</mat-hint>
+      <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
+    </mat-form-field>
+  </div>
 </div>

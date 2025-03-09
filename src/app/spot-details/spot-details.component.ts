@@ -20,6 +20,7 @@ import {
   computed,
   effect,
   WritableSignal,
+  model,
 } from "@angular/core";
 import {
   MatProgressBar,
@@ -161,7 +162,7 @@ export class AsRatingKeyPipe implements PipeTransform {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SpotDetailsComponent implements AfterViewInit, OnChanges {
-  spot = input<Spot | LocalSpot | null>(null);
+  spot = model<Spot | LocalSpot | null>(null);
   @Input() infoOnly: boolean = false;
   @Input() dismissable: boolean = false;
   @Input() border: boolean = false;
@@ -210,6 +211,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   automaticallyDetermineAddress: boolean = true;
 
   isAppleMaps: boolean = false;
+
+  mediaStorageFolder: StorageFolder = StorageFolder.SpotPictures;
 
   googlePlace = signal<
     | {
@@ -366,47 +369,48 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   //   this.spot.address.set(newAddress);
   // }
 
-  setSpotImage(file: File) {
-    console.log("setting image");
-    if (file && this.uploadMediaComp?.isImageSelected()) {
-      this.newSpotImage = file;
-    } else {
-      this.newSpotImage = null;
-    }
+  setSpotImages(files: File[]) {
+    // console.log("setting image");
+    // if (file && this.uploadMediaComp?.isImageSelected()) {
+    //   this.newSpotImage = file;
+    // } else {
+    //   this.newSpotImage = null;
+    // }
   }
 
-  uploadImage() {
-    // if (!this.newSpotImage) {
-    //   console.error("No file selected or passed to this component");
-    // }
-    // if (this.uploadMediaComp) {
-    //   if (this.uploadMediaComp.isImageSelected()) {
-    //     let observable = this._storageService.setUploadToStorage(
-    //       this.newSpotImage,
-    //       StorageFolder.SpotPictures
-    //     );
-    //     observable.then(
-    //       (imageLink) => {
-    //         this.spot.addMedia(
-    //           this._spotsService,
-    //           imageLink,
-    //           MediaType.Image,
-    //           this.authenticationService.user.uid
-    //         );
-    //         if (typeof plausible !== "undefined") {
-    //           plausible("Upload Spot Image", {
-    //             props: { spotId: this.spot.id },
-    //           });
-    //         }
-    //       },
-    //       (error) => {}
-    //     );
-    //   } else {
-    //     console.error("Selected media is not an image");
-    //   }
-    // } else {
-    //   console.error("The upload media is not even loaded");
-    // }
+  setNewMediaFromUpload(media: { url: string }) {
+    console.log("Setting new media from upload");
+    const spot = this.spot();
+    if (!spot) {
+      console.error("No spot to add media to");
+      return;
+    }
+
+    this.spot.update((spot) => {
+      if (spot) {
+        if (!this.authenticationService.user.uid) {
+          console.error("User not signed in, cannot upload media");
+          return spot;
+        }
+
+        spot.addMedia(
+          media.url,
+          MediaType.Image,
+          this.authenticationService.user.uid
+        );
+      }
+
+      console.debug("Spot after adding media", spot);
+      return spot;
+    });
+
+    if (typeof plausible !== "undefined") {
+      if (this.spot instanceof Spot) {
+        plausible("Upload Spot Image", {
+          props: { spotId: this.spot.id },
+        });
+      }
+    }
   }
 
   // mediaChanged(newSpotMedia) {

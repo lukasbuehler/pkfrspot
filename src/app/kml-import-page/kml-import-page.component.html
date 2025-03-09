@@ -45,7 +45,6 @@
             <form class="pt-3 px-3" [formGroup]="uploadFormGroup!">
               <h3 class="mat-h3">Please select a KML file.</h3>
               <app-media-upload
-                (uploadMedia)="onUploadMediaSelect($event)"
                 [allowedMimeTypes]="[
                   'application/xml',
                   'text/xml',

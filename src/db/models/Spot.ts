@@ -307,18 +307,17 @@ export class LocalSpot {
 
   /// MEDIA
 
-  // public addMedia(
-  //   _dbService: SpotsService,
-  //   src: string,
-  //   type: MediaType,
-  //   uid: string
-  // ) {
-  //   const _userMedia: ContributedMedia[] = this.userMedia();
-  //   _userMedia.push({ src: src, type: type, uid: uid })
-  //   this.userMedia.set(_userMedia);
+  public addMedia(src: string, type: MediaType, uid: string) {
+    const _userMedia: ContributedMedia[] = this.userMedia();
+    _userMedia.push({ src: src, type: type, uid: uid });
+    this.userMedia.set(_userMedia);
+  }
 
-  //   // this._updateMedia(_dbService);
-  // }
+  public removeMedia(index: number) {
+    const _userMedia: ContributedMedia[] = this.userMedia();
+    _userMedia.splice(index, 1);
+    this.userMedia.set(_userMedia);
+  }
 
   // public setMedia(
   //   media: ContributedMedia[],
