@@ -39,6 +39,10 @@ export class MetaInfoService {
 
     // Description
     this.meta.updateTag({
+      name: "description",
+      content: description,
+    });
+    this.meta.updateTag({
       property: "og:description",
       content: description,
     });
