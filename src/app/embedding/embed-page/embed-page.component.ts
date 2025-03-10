@@ -110,6 +110,6 @@ export class EmbedPageComponent {
   });
 
   iframeCode = computed<string>(() => {
-    return `<iframe src="${this.unsafeIframeUrl()}"></iframe>`;
+    return `<iframe src="${this.unsafeIframeUrl()}" style="display: block;"></iframe>`;
   });
 }

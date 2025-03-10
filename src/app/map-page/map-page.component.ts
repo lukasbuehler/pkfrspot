@@ -369,7 +369,7 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.metaInfoService.setMetaTags(title, image_src, description);
 
-    console.debug("Set meta tags for spot", spot.name());
+    // console.debug("Set meta tags for spot", spot.name());
   }
 
   clearTitleAndMetaTags() {

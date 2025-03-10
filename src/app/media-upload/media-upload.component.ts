@@ -70,10 +70,7 @@ export class MediaUpload implements OnInit, ControlValueAccessor {
   showPreview = signal(true);
 
   mediaList = signal<Media[]>([]);
-
   uploadFile: File | null = null;
-  uploadFileName: string = "";
-  uploadFileSizeString: string = "";
 
   formGroup: UntypedFormGroup;
 
@@ -233,5 +230,11 @@ export class MediaUpload implements OnInit, ControlValueAccessor {
 
   mediaFinishedUploading(media: Media, imageLink: string) {
     this.newMedia.emit({ url: imageLink });
+  }
+
+  clear() {
+    this.uploadFile = null;
+    this.mediaList.set([]);
+    this.changed.emit();
   }
 }

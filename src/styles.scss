@@ -18,6 +18,7 @@ html {
 
   overscroll-behavior-y: contain;
   position: relative;
+  overflow: hidden;
   background-color: var(--mat-app-background-color);
 }
 

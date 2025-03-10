@@ -55,15 +55,15 @@
         ng-readonly="true"
         (click)="fileInput.click()"
         readonly
-        [value]="uploadFileName"
+        placeholder="Click to select a file"
         [multiple]="multipleAllowed"
       />
       <mat-icon matSuffix>cloud_upload</mat-icon>
-      <mat-hint *ngIf="!hasError || formGroup.get('input')?.invalid">{{
+      <!-- <mat-hint *ngIf="!hasError || formGroup.get('input')?.invalid">{{
         uploadFile
           ? "Size: " + uploadFileSizeString + ", Type: " + uploadFile.type
           : "Click to select a file"
-      }}</mat-hint>
+      }}</mat-hint> -->
       <mat-error *ngIf="hasError">{{ errorMessage }}</mat-error>
     </mat-form-field>
   </div>

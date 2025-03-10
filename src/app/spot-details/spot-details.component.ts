@@ -180,7 +180,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   @Output() discardClick: EventEmitter<void> = new EventEmitter<void>();
 
   @ViewChild(MediaUpload)
-  uploadMediaComp: MediaUpload | null = null;
+  mediaUploadComponent: MediaUpload | null = null;
 
   getValueFromEventTarget = getValueFromEventTarget;
 
@@ -370,15 +370,6 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
   //   this.spot.address.set(newAddress);
   // }
 
-  setSpotImages(files: File[]) {
-    // console.log("setting image");
-    // if (file && this.uploadMediaComp?.isImageSelected()) {
-    //   this.newSpotImage = file;
-    // } else {
-    //   this.newSpotImage = null;
-    // }
-  }
-
   setNewMediaFromUpload(media: { url: string }) {
     console.log("Setting new media from upload");
     const spot = this.spot();
@@ -408,6 +399,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
       console.debug("Spot after adding media", spot);
       return spot;
     });
+
+    this.mediaUploadComponent?.clear();
 
     if (typeof plausible !== "undefined") {
       if (this.spot instanceof Spot) {
