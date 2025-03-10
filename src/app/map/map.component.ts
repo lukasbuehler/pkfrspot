@@ -43,6 +43,7 @@ import { trigger, transition, style, animate } from "@angular/animations";
 import { MarkerComponent, MarkerSchema } from "../marker/marker.component";
 import { MapHelpers } from "../../scripts/MapHelpers";
 import { SpotPreviewCardComponent } from "../spot-preview-card/spot-preview-card.component";
+import { PolygonSchema } from "../../db/schemas/PolygonSchema";
 
 export interface TilesObject {
   zoom: number;
@@ -82,8 +83,8 @@ export interface TilesObject {
 })
 export class MapComponent implements OnInit, OnChanges {
   @ViewChild("googleMap") googleMap: GoogleMap | undefined;
-  @ViewChildren(MapPolygon) polygons: QueryList<MapPolygon> | undefined;
-  @ViewChildren(MapPolygon, { read: ElementRef })
+  // @ViewChildren(MapPolygon) spotPolygons: QueryList<MapPolygon> | undefined;
+  // @ViewChildren(MapPolygon, { read: ElementRef })
   polygonElements: QueryList<ElementRef> | undefined;
   @ViewChild("selectedSpotMarkerNode") selectedSpotMarkerNode: Node | undefined;
 
@@ -161,6 +162,10 @@ export class MapComponent implements OnInit, OnChanges {
   @Input() minZoom: number = 4;
 
   mapStyle = input<"roadmap" | "satellite">("roadmap");
+  polygons = input<PolygonSchema[]>([]);
+
+  defaultMarkerCollisionBehavior: google.maps.CollisionBehavior =
+    google.maps.CollisionBehavior.OPTIONAL_AND_HIDES_LOWER_PRIORITY;
 
   mapTypeId: Signal<google.maps.MapTypeId> = computed(() => {
     switch (this.mapStyle()) {
@@ -555,14 +560,14 @@ export class MapComponent implements OnInit, OnChanges {
 
   // private _getPolygonBySpotId(spotId: string): MapPolygon | undefined {
   //   console.log(this.polygonElements?.toArray());
-  //   console.log(this.polygons?.toArray());
+  //   console.log(this.spotPolygons?.toArray());
 
   //   const elementRef = this.polygonElements.find(
   //     (element) => element.nativeElement.id === "polygon-" + spotId
   //   );
   //   if (elementRef) {
   //     const index = this.polygonElements.toArray().indexOf(elementRef);
-  //     return this.polygons.toArray()[index];
+  //     return this.spotPolygons.toArray()[index];
   //   }
   //   return undefined;
   // }

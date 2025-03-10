@@ -7,6 +7,7 @@
   [dots]="(visibleDots$ | async) ?? []"
   [selectedSpot]="selectedSpot()"
   [markers]="visibleMarkers.asReadonly()()"
+  [polygons]="polygons()"
   [selectedMarker]="selectedMarker()"
   [isEditing]="isEditing()"
   [showGeolocation]="showGeolocation"

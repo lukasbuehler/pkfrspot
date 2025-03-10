@@ -223,19 +223,24 @@
   <map-advanced-marker
     [position]="marker.location"
     [content]="markerComp.elementRef.nativeElement"
+    [options]="{
+      collisionBehavior: defaultMarkerCollisionBehavior,
+    }"
   ></map-advanced-marker>
   <app-marker
     #markerComp
     class="fade-in"
-    [icon]="marker.icon ?? null"
+    [icon]="marker.icon"
+    [number]="marker.number"
     [color]="marker.color ?? 'primary'"
     [size]="0.8"
   >
   </app-marker>
   }
-  <!-- <map-advanced-marker
-    *ngIf="selectedMarker"
-    [position]="selectedMarker"
-  ></map-advanced-marker> -->
+
+  <!-- Additional Polygons -->
+  @for(polygon of polygons(); track $index) {
+  <map-polygon [options]="polygon" [paths]="polygon.paths"></map-polygon>
+  }
 </google-map>
 }

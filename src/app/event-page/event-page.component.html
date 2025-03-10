@@ -106,6 +106,7 @@
           west: 8.54087, 
           east: 8.55208,
         }"
+      [polygons]="areaPolygon() ? [areaPolygon()!] : []"
       [minZoom]="16"
       [centerStart]="markers[markers.length - 1].location"
       [mapStyle]="mapStyle"

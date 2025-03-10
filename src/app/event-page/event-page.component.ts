@@ -7,6 +7,7 @@ import {
   ViewChild,
   signal,
   OnDestroy,
+  AfterViewInit,
 } from "@angular/core";
 import { CountdownComponent } from "../countdown/countdown.component";
 import { SpotMapComponent } from "../spot-map/spot-map.component";
@@ -15,6 +16,7 @@ import { LocalSpot, Spot, SpotId } from "../../db/models/Spot";
 import { SpotListComponent } from "../spot-list/spot-list.component";
 import { SpotsService } from "../services/firebase/firestore/spots.service";
 import {
+  filter,
   firstValueFrom,
   lastValueFrom,
   Subscription,
@@ -33,6 +35,8 @@ import { CodeBlockComponent } from "../code-block/code-block.component";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MatChipsModule } from "@angular/material/chips";
+import { MapsApiService } from "../services/maps-api.service";
+import { PolygonSchema } from "../../db/schemas/PolygonSchema";
 
 @Component({
   selector: "app-event-page",
@@ -73,6 +77,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
   private _route = inject(ActivatedRoute);
   private _locationStrategy = inject(LocationStrategy);
   private _snackbar = inject(MatSnackBar);
+  private _mapsApiService = inject(MapsApiService);
 
   private _routeSubscription: Subscription;
 
@@ -101,6 +106,8 @@ export class EventPageComponent implements OnInit, OnDestroy {
     "EcI4adxBhMYZOXT8tPe3" as SpotId,
   ];
 
+  areaPolygon = signal<PolygonSchema | null>(null);
+
   markers: MarkerSchema[] = [
     // WC
     {
@@ -115,25 +122,27 @@ export class EventPageComponent implements OnInit, OnDestroy {
 
     // Workshop 1
     {
-      name: `Workshop 1`,
+      name: `Challenge 1`,
       color: "secondary",
       location: {
         lat: 47.39723208524732,
         lng: 8.547745381467138,
       },
       icon: "diversity_3",
+      number: 1,
     },
 
-    // // Workshop 2
-    // {
-    //   name: "Workshop 2",
-    //   color: "secondary",
-    //   location: {
-    //     lat: 47.39736800362042,
-    //     lng: 8.54858267174903,
-    //   },
-    //   icon: "diversity_3",
-    // },
+    // Workshop 2
+    {
+      name: "Challenge 2",
+      color: "secondary",
+      location: {
+        lat: 47.39736800362042,
+        lng: 8.54858267174903,
+      },
+      icon: "person",
+      number: 2,
+    },
     // Info
     {
       name: $localize`Info stand`,
@@ -143,6 +152,27 @@ export class EventPageComponent implements OnInit, OnDestroy {
         lng: 8.548552088730592,
       },
       icon: "info",
+      priority: "required",
+    },
+
+    // Tram stations
+    {
+      name: "Milchbuck",
+      color: "tertiary",
+      location: {
+        lat: 47.39778445846257,
+        lng: 8.541912684696003,
+      },
+      icon: "tram",
+    },
+    {
+      name: "Universität Irchel",
+      color: "tertiary",
+      location: {
+        lat: 47.39606604052732,
+        lng: 8.544833096010917,
+      },
+      icon: "tram",
     },
   ];
 
@@ -194,6 +224,38 @@ export class EventPageComponent implements OnInit, OnDestroy {
             this.end.toLocaleDateString()) +
         ")"
     );
+
+    firstValueFrom(
+      this._mapsApiService.isApiLoaded$.pipe(
+        filter((isLoaded) => isLoaded),
+        take(1)
+      )
+    ).then(() => {
+      this.areaPolygon.set({
+        paths: new google.maps.MVCArray<
+          google.maps.MVCArray<google.maps.LatLng>
+        >([
+          new google.maps.MVCArray<google.maps.LatLng>([
+            new google.maps.LatLng(0, -90),
+            new google.maps.LatLng(0, 90),
+            new google.maps.LatLng(90, -90),
+            new google.maps.LatLng(90, 90),
+          ]),
+          new google.maps.MVCArray<google.maps.LatLng>([
+            new google.maps.LatLng(47.39690440489847, 8.54137955373239),
+            new google.maps.LatLng(47.39922912784592, 8.54270958874722),
+            new google.maps.LatLng(47.39976970395402, 8.546988087725437),
+            new google.maps.LatLng(47.39852765134482, 8.552592984179212),
+            new google.maps.LatLng(47.39266322242201, 8.550449664195357),
+            new google.maps.LatLng(47.395861761732796, 8.546175461394029),
+          ]),
+        ]),
+        strokeOpacity: 0,
+        strokeWeight: 0,
+        fillColor: "#000000",
+        fillOpacity: 0.5,
+      });
+    });
   }
 
   spotClickedIndex(spotIndex: number) {

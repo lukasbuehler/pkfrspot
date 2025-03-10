@@ -347,11 +347,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         icon: "settings",
       },
       {
-        name: $localize`:About page navbar button label|A very short label for the navbar about page button:About`,
-        link: "/about",
-        icon: "info",
-      },
-      {
         name: $localize`:@@logout.nav_label:Logout`,
         function: () => {
           return this.logUserOut();

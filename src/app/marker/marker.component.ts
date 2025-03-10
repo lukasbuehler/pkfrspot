@@ -7,6 +7,8 @@ export interface MarkerSchema {
   color?: "primary" | "secondary" | "tertiary";
   location: google.maps.LatLngLiteral;
   icon?: string;
+  number?: number;
+  priority?: "required" | number;
 }
 
 @Component({
@@ -18,7 +20,8 @@ export interface MarkerSchema {
 export class MarkerComponent {
   public elementRef = inject(ElementRef);
 
-  icon = input<string | null>(null);
+  icon = input<string | null | undefined>(null);
+  number = input<number | null | undefined>(null);
   isIconic = input<boolean>(false);
   color = input<"primary" | "secondary" | "tertiary">("primary");
   size = input<number>(1);

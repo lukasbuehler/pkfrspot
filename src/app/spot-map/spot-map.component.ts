@@ -45,6 +45,7 @@ import { MarkerSchema } from "../marker/marker.component";
 import { OsmDataService } from "../services/osm-data.service";
 import { SpotMapDataManager } from "./SpotMapDataManager";
 import { distinctUntilChanged } from "rxjs/operators";
+import { PolygonSchema } from "../../db/schemas/PolygonSchema";
 
 @Component({
   selector: "app-spot-map",
@@ -62,6 +63,7 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
   isEditing = model<boolean>(false);
   mapStyle = model<"roadmap" | "satellite" | null>(null);
   markers = input<MarkerSchema[]>([]);
+  polygons = input<PolygonSchema[]>([]);
   selectedMarker = input<google.maps.LatLngLiteral | null>(null);
   focusZoom = input<number>(17);
   isClickable = input<boolean>(true);
