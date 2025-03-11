@@ -1,4 +1,4 @@
-# PKFR Spot ([pkfrspot.com](https://pkfrspot.com))
+# PK Spot ([pkspot.app](https://pkspot.app))
 
 **The spot for Parkour and Freerunning.**
 

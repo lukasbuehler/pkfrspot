@@ -16,9 +16,9 @@ export class AboutPageComponent implements OnInit {
 
   ngOnInit(): void {
     this._metaInfoService.setMetaTags(
-      $localize`:@@about.title:About PKFR Spot`,
+      $localize`:@@about.title:About PK Spot`,
       "/assets/banner_1200x630.png",
-      $localize`:@@about.description:About PKFR Spot`
+      $localize`:@@about.description:About PK Spot`
     );
   }
 }

@@ -98,25 +98,7 @@
             }
           },
           "configurations": {
-            "dev-fast": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.development.ts"
-                }
-              ],
-              "outputHashing": "none",
-              "optimization": false,
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": false,
-              "statsJson": false,
-              "progress": false,
-              "localize": ["de"],
-              "baseHref": "/de/"
-            },
-            "dev-debug": {
+            "dev": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -176,11 +158,8 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
-            "dev-fast": {
-              "buildTarget": "pkfrspot:build:dev-fast"
-            },
-            "dev-debug": {
-              "buildTarget": "pkfrspot:build:dev-debug"
+            "dev": {
+              "buildTarget": "pkfrspot:build:dev"
             },
             "staging": {
               "buildTarget": "pkfrspot:build:staging"
@@ -189,12 +168,12 @@
               "buildTarget": "pkfrspot:build:production"
             }
           },
-          "defaultConfiguration": "dev-debug"
+          "defaultConfiguration": "dev"
         },
         "extract-i18n": {
           "builder": "ng-extract-i18n-merge:ng-extract-i18n-merge",
           "options": {
-            "buildTarget": "pkfrspot:build:dev-debug",
+            "buildTarget": "pkfrspot:build:dev",
             "format": "xlf2",
             "outputPath": "src/locale",
             "targetFiles": [

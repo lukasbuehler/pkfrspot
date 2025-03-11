@@ -162,7 +162,7 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.isServer = isPlatformServer(platformId);
 
-    this.titleService.setTitle($localize`:@@pkfr.spotmap.title:PKFR Spot map`);
+    this.titleService.setTitle($localize`:@@pk.spotmap.title:PK Spot map`);
   }
 
   // Speed dial FAB //////////////////////////////////////////////////////////
@@ -373,7 +373,7 @@ export class MapPageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   clearTitleAndMetaTags() {
-    this.titleService.setTitle($localize`:@@pkfr.spotmap.title:PKFR Spot map`);
+    this.titleService.setTitle($localize`:@@pk.spotmap.title:PK Spot map`);
   }
 
   ngOnDestroy() {

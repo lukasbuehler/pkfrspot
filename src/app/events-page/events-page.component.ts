@@ -26,7 +26,7 @@ export class EventsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.metaInfoService.setMetaTags(
-      $localize`:@@events.title:Events` + " | PKFR Spot",
+      $localize`:@@events.title:Events` + " | PK Spot",
       "/assets/banner_1200x630.png",
       $localize`:@@events.title:Events`
     );

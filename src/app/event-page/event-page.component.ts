@@ -212,7 +212,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.metaInfoService.setMetaTags(
-      this.name, //+ " | PKFR Spot",
+      this.name,
       this.bannerImageSrc,
       $localize`Event in ` +
         this.localityString +
@@ -352,7 +352,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
   }
 
   async shareEvent() {
-    const url = "https://pkfrspot.com";
+    const url = "https://pkspot.app";
     const baseUrl = this._locationStrategy.getBaseHref();
 
     // TODO use slug instead of id if available
@@ -363,7 +363,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
       try {
         const shareData = {
           title: this.name,
-          text: `PKFR Spot: ${this.name}`,
+          text: `PK Spot: ${this.name}`,
           url: link,
         };
 
@@ -373,7 +373,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
         console.error(err);
       }
     } else {
-      navigator.clipboard.writeText(`${this.name} - PKFR Spot \n${link}`);
+      navigator.clipboard.writeText(`${this.name} - PK Spot \n${link}`);
       this._snackbar.open("Link to spot copied to clipboard", "Dismiss", {
         duration: 3000,
         horizontalPosition: "center",

@@ -5,10 +5,9 @@
     "ng": "ng",
     "start": "ng serve",
     "serve": "ng serve",
-    "dev": "ng serve --watch --configuration=dev-fast",
-    "debug": "ng serve --watch --configuration=dev-debug",
+    "dev": "ng serve --watch --configuration=dev",
     "build": "ng build && node copy-proxy-server.js",
-    "build:dev": "ng build --configuration=dev-debug && node copy-proxy-server.js",
+    "build:dev": "ng build --configuration=dev && node copy-proxy-server.js",
     "build:prod": "ng build --configuration=production && node copy-proxy-server.js",
     "test": "ng test",
     "lint": "ng lint",
@@ -64,6 +63,7 @@
     "@types/xml2js": "^0.4.9",
     "ng-extract-i18n-merge": "^2.14.1",
     "sass": "^1.63.3",
+    "schema-dts": "^1.1.5",
     "typescript": "5.6"
   }
 }

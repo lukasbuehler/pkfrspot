@@ -422,7 +422,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
       return;
     }
 
-    const url = "https://pkfrspot.com";
+    const url = "https://pkspot.app";
     const baseUrl = this._locationStrategy.getBaseHref();
 
     // TODO use slug instead of id if available
@@ -433,7 +433,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
       try {
         const shareData = {
           title: "Spot: " + spot.name(),
-          text: `PKFR Spot: ${spot.name()}`,
+          text: `PK Spot: ${spot.name()}`,
           url: link,
         };
 
@@ -443,7 +443,7 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
         console.error(err);
       }
     } else {
-      navigator.clipboard.writeText(`${spot.name()} - PKFR Spot \n${link}`);
+      navigator.clipboard.writeText(`${spot.name()} - PK Spot \n${link}`);
       this._snackbar.open("Link to spot copied to clipboard", "Dismiss", {
         duration: 3000,
         horizontalPosition: "center",

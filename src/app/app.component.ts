@@ -42,6 +42,8 @@ import { MatDialog } from "@angular/material/dialog";
 import { languageCodes } from "../scripts/Languages";
 import { LocaleCode } from "../db/models/Interfaces";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { WebSite } from "schema-dts";
+import { StructuredDataService } from "./services/structured-data.service";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
@@ -103,6 +105,7 @@ type ButtonConfig = LinkMenuButton[];
 export class AppComponent implements OnInit, AfterViewInit {
   readonly welcomeDialog = inject(MatDialog);
   private _snackbar = inject(MatSnackBar);
+  private _structuredDataService = inject(StructuredDataService);
 
   constructor(
     public authService: AuthenticationService,
@@ -120,7 +123,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   isEmbedded: WritableSignal<boolean> = signal(false);
 
-  baseUrl = "https://pkfrspot.com";
+  baseUrl = "https://pkspot.app";
 
   availableLanguageCodes: LocaleCode[] = [
     "en",
@@ -158,7 +161,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   authenticatedUserMenuConfig?: ButtonConfig;
 
   ngOnInit() {
-    const currentTermsVersion = "1";
+    const currentTermsVersion = "2";
 
     let isABot: boolean = false;
     if (typeof window !== "undefined") {
@@ -202,6 +205,21 @@ export class AppComponent implements OnInit, AfterViewInit {
             });
           });
       }
+
+      // structured data
+      const json: WebSite = {
+        "@type": "WebSite",
+        name: "PK Spot",
+        alternateName: [
+          "pkspot.app",
+          "PK Spot App",
+          "Parkour Spot",
+          "PKFR Spot",
+          "pkfrspot.com",
+        ],
+        url: "https://pkspot.app/",
+      };
+      this._structuredDataService.addStructuredData("website", json);
     }
 
     this.authService.authState$.subscribe(
