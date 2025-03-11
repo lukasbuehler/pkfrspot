@@ -269,18 +269,47 @@ export class EventPageComponent implements OnInit, OnDestroy {
       location: {
         "@type": "Place",
         name: "Universität Irchel",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Zürich",
+          postalCode: "8057",
+          streetAddress:
+            "Universitätscampus Irchel, Winterthurerstrasse 190, Zürich, CH",
+        },
       },
       image: [this.bannerImageSrc],
       description:
-        "The Adventures of Kira and Morrison is coming to Snickertown in a can't miss performance.",
-      // offers: {
-      //   "@type": "Offer",
-      //   url: "https://www.example.com/event_offer/12345_202403180430",
-      //   price: 30,
-      //   priceCurrency: "USD",
-      //   availability: "https://schema.org/InStock",
-      //   validFrom: "2024-05-21T12:00",
-      // },
+        "The Swiss Jam 2025 invites the whole Parkour community to Zurich.\n" +
+        "The main event area is located at the Irchepark. Different workshops for all skill levels can be joined. A big spot with major extensions gives enough room for all kind of movements and inspirations. A big Video-Screeing shows our communitys creativity.\n" +
+        "Join the event to jam, to learn, to get inspired and inspire!",
+      offers: {
+        "@type": "AggregateOffer",
+        priceCurrency: "CHF",
+        highPrice: "29.90",
+        lowPrice: "14.90",
+        offerCount: "3",
+        offers: [
+          {
+            "@type": "Offer",
+            name: "All Workshops",
+            price: "29.90",
+            priceCurrency: "CHF",
+          },
+          {
+            "@type": "Offer",
+            name: "2x Workshops",
+            price: "24.90",
+            priceCurrency: "CHF",
+          },
+          {
+            "@type": "Offer",
+            name: "1x Workshops",
+            price: "14.90",
+            priceCurrency: "CHF",
+          },
+        ],
+        url: "https://eventfrog.ch/de/p/sport-fitness/sonstige-veranstaltungen/swiss-jam-2025-7291100335594076233.html",
+      },
       organizer: {
         "@type": "Organization",
         name: "Swiss Parkour Tour",
