@@ -256,6 +256,50 @@ export class EventPageComponent implements OnInit, OnDestroy {
         fillOpacity: 0.5,
       });
     });
+
+    // add the structured data for the event
+    const structuredDataJson = {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      name: this.name,
+      startDate: this.start.toISOString(),
+      endDate: this.end.toISOString(),
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      eventStatus: "https://schema.org/EventScheduled",
+      location: {
+        "@type": "Place",
+        name: "Universität Irchel",
+      },
+      image: [this.bannerImageSrc],
+      description:
+        "The Adventures of Kira and Morrison is coming to Snickertown in a can't miss performance.",
+      // offers: {
+      //   "@type": "Offer",
+      //   url: "https://www.example.com/event_offer/12345_202403180430",
+      //   price: 30,
+      //   priceCurrency: "USD",
+      //   availability: "https://schema.org/InStock",
+      //   validFrom: "2024-05-21T12:00",
+      // },
+      organizer: {
+        "@type": "Organization",
+        name: "Swiss Parkour Tour",
+        url: "https://www.swissparkourtour.ch/",
+        memberOf: {
+          "@type": "Organization",
+          name: "Swiss Parkour Association",
+          url: "https://spka.ch",
+        },
+      },
+      url: "https://www.swissparkourtour.ch/swiss-jam-2025/",
+    };
+
+    if (typeof document !== "undefined") {
+      const script = document.createElement("script");
+      script.type = "application/ld+json";
+      script.textContent = JSON.stringify(structuredDataJson);
+      document.body.appendChild(script);
+    }
   }
 
   spotClickedIndex(spotIndex: number) {
@@ -265,6 +309,16 @@ export class EventPageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this._routeSubscription) {
       this._routeSubscription.unsubscribe();
+    }
+
+    // remove the event structured data element
+    if (typeof document !== "undefined") {
+      const script = document.querySelector(
+        'script[type="application/ld+json"]'
+      );
+      if (script) {
+        script.remove();
+      }
     }
   }
 
