@@ -23,7 +23,7 @@ import { AuthenticationService } from "./services/firebase/authentication.servic
 import { StorageService } from "./services/firebase/storage.service";
 import { GlobalVariables } from "../scripts/global";
 import { NgOptimizedImage } from "@angular/common";
-import { MatFabButton } from "@angular/material/button";
+import { MatButtonModule, MatFabButton } from "@angular/material/button";
 import { MatIcon } from "@angular/material/icon";
 import {
   MatMenuTrigger,
@@ -100,6 +100,7 @@ type ButtonConfig = LinkMenuButton[];
     NgOptimizedImage,
     MatMenuModule,
     RouterModule,
+    MatButtonModule,
   ],
 })
 export class AppComponent implements OnInit, AfterViewInit {

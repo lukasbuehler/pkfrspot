@@ -10,7 +10,7 @@ Discover spots, <strike>challenges, events, and fellow athletes, plan training s
 
 ### Future Updates
 
-For the detailed progress please refer to the following GitHub project: [PKFR Spot Updates](https://github.com/users/lukasbuehler/projects/1/views/8)
+For the detailed progress please refer to the following GitHub project: [PK Spot Updates](https://github.com/users/lukasbuehler/projects/1/views/8)
 
 | Non-binding time estimate | Features                                                                                          |
 | :------------------------ | :------------------------------------------------------------------------------------------------ |
@@ -116,7 +116,7 @@ After that the language files will be updated (and possibly reformatted, which i
    {
    ...
    "projects": {
-       "pkfrspot": {
+       "pkspot": {
        ...
        "i18n": {
            ...

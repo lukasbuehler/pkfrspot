@@ -133,13 +133,13 @@
 } @else {
 <div class="d-flex flex-column h-100">
   <div
-    class="w-100 text-center d-flex align-items-center justify-content-center flex-shrink-1"
+    class="w-100 text-center d-flex flex-row align-items-center justify-content-between flex-shrink-1 p-3"
     style="height: 60px"
   >
     <a
       target="_blank"
       href="https://pkspot.app"
-      class="text-decoration-none text-center text-light text-wrap p-2"
+      class="text-decoration-none text-center text-light text-wrap"
     >
       <img
         ngSrc="/assets/logos/pkfrspot/pkspot_logo_oneline_dark.png"
@@ -148,6 +148,24 @@
         width="200"
         height="33.78"
       />
+    </a>
+    <a
+      mat-stroked-button
+      target="_blank"
+      href="https://pkspot.app/map"
+      class="d-none d-sm-flex"
+    >
+      <mat-icon>map</mat-icon>
+      <span i18n>Open global spot map</span>
+    </a>
+    <a
+      href="https://pkspot.app/"
+      target="_blank"
+      mat-mini-fab
+      class="d-flex d-sm-none"
+      color="primary"
+    >
+      <mat-icon> open_in_new </mat-icon>
     </a>
   </div>
   <div class="flex-grow-1">
