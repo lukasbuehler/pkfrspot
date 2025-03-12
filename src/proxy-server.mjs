@@ -17,9 +17,14 @@ for (const lang of supportedLanguageCodes) {
 
 // New domain redirect middleware
 function redirectDomain(req, res, next) {
-  const host = req.headers.host;
+  let host = req.headers.host;
 
-  if (host === "pkfrspot.com" || host.endsWith(".pkfrspot.com")) {
+  //replace the port
+  if (host) {
+    host = host.replace(/:\d+$/, "");
+  }
+
+  if (host === "pkfrspot.com") {
     const protocol = req.secure ? "https" : "http";
     const redirectUrl = `https://pkspot.app${req.originalUrl}`;
     return res.redirect(301, redirectUrl);
