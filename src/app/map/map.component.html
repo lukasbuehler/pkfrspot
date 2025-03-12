@@ -143,14 +143,14 @@
     [content]="selectedSpotMarkerNode.elementRef.nativeElement"
     [zIndex]="1000000 + 1"
     [options]="{
-      gmpDraggable: true
+      gmpDraggable: isEditing
     }"
   ></map-advanced-marker>
   <app-marker
     #selectedSpotMarkerNode
     class="fade-in"
     id="selectedSpotMarkerNode"
-    [icon]="selectedSpot.isIconic ? 'star' : 'directions_run'"
+    [icons]="[selectedSpot.isIconic ? 'star' : 'directions_run']"
     [isIconic]="selectedSpot.isIconic"
   >
   </app-marker>
@@ -231,7 +231,7 @@
   <app-marker
     #markerComp
     class="fade-in"
-    [icon]="marker.icon"
+    [icons]="marker.icons"
     [number]="marker.number"
     [color]="marker.color ?? 'primary'"
     [size]="0.8"

@@ -396,8 +396,8 @@ export class MapComponent implements OnInit, OnChanges {
   spotCircleDarkOptions: google.maps.CircleOptions = {
     fillColor: "#b8c4ff",
     strokeColor: "#0036ba",
-    fillOpacity: 0.8,
     strokeOpacity: 0.8,
+    fillOpacity: 0.5,
     strokeWeight: 3,
     draggable: false,
     clickable: true,
@@ -417,7 +417,7 @@ export class MapComponent implements OnInit, OnChanges {
     fillColor: "#b8c4ff",
     strokeColor: "#0036ba",
     strokeOpacity: 0.8,
-    fillOpacity: 0.6,
+    fillOpacity: 0.5,
     strokeWeight: 3,
     editable: false,
     draggable: false,

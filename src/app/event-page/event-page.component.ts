@@ -90,6 +90,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
   eventId: string = "swissjam25";
   name: string = "Swiss Jam 2025";
   bannerImageSrc: string = "/assets/swissjam.jpg";
+  venueString: string = "Universität Irchel";
   localityString: string = "Zurich, Switzerland";
   start: Date = new Date("2025-05-24T09:00:00+01:00");
   end: Date = new Date("2025-05-25T16:00:00+01:00");
@@ -114,44 +115,20 @@ export class EventPageComponent implements OnInit, OnDestroy {
       name: $localize`WC`,
       color: "tertiary",
       location: {
-        lat: 47.3971769023667,
-        lng: 8.549297630031907,
+        lat: 47.397143104254134,
+        lng: 8.549462816940418,
       },
-      icon: "wc",
-    },
-
-    // Workshop 1
-    {
-      name: `Challenge 1`,
-      color: "secondary",
-      location: {
-        lat: 47.39723208524732,
-        lng: 8.547745381467138,
-      },
-      icon: "diversity_3",
-      number: 1,
-    },
-
-    // Workshop 2
-    {
-      name: "Challenge 2",
-      color: "secondary",
-      location: {
-        lat: 47.39736800362042,
-        lng: 8.54858267174903,
-      },
-      icon: "person",
-      number: 2,
+      icons: ["wc"],
     },
     // Info
     {
       name: $localize`Info stand`,
-      color: "primary",
+      color: "secondary",
       location: {
         lat: 47.397277939269756,
         lng: 8.548552088730592,
       },
-      icon: "info",
+      icons: ["info", "local_activity", "restaurant"],
       priority: "required",
     },
 
@@ -163,7 +140,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
         lat: 47.39778445846257,
         lng: 8.541912684696003,
       },
-      icon: "tram",
+      icons: ["tram", "directions_bus"],
     },
     {
       name: "Universität Irchel",
@@ -172,8 +149,32 @@ export class EventPageComponent implements OnInit, OnDestroy {
         lat: 47.39622541657696,
         lng: 8.544870658516267,
       },
-      icon: "tram",
+      icons: ["tram"],
     },
+
+    // // Workshop 1
+    // {
+    //   name: `Challenge 1`,
+    //   color: "secondary",
+    //   location: {
+    //     lat: 47.39723208524732,
+    //     lng: 8.547745381467138,
+    //   },
+    //   icon: "diversity_3",
+    //   number: 1,
+    // },
+
+    // // Workshop 2
+    // {
+    //   name: "Challenge 2",
+    //   color: "secondary",
+    //   location: {
+    //     lat: 47.39736800362042,
+    //     lng: 8.54858267174903,
+    //   },
+    //   icon: "person",
+    //   number: 2,
+    // },
   ];
 
   spots = signal<Spot[]>([]);

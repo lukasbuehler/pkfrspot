@@ -6,15 +6,24 @@
     'pin-secondary': color() === 'secondary' && !isIconic(),
     'pin-tertiary': color() === 'tertiary' && !isIconic()
   }"
+  [class.clickable]="clickable()"
   [style]="{ scale: size() }"
+  (click)="onClick($event)"
+  (blur)="onBlur()"
+  matRipple
+  [matRippleDisabled]="!clickable()"
 >
   <div class="mat-label-large">
-    @if(icon()) {
+    @if(icons()) { @for(icon of icons()!; track icon) {
     <mat-icon style="height: 20px; font-size: 20px; width: 20px">
-      {{ icon() }}
+      {{ icon }}
     </mat-icon>
-    } @if(number()) {
+    } } @if(number()) {
     <span class>{{ number() }}</span>
+    } @if(isExpanded()) {
+    <div class="expanded-content">
+      <span class="mat-label-medium">Hello</span>
+    </div>
     }
   </div>
   <svg

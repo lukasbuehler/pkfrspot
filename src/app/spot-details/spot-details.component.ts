@@ -21,6 +21,8 @@ import {
   effect,
   WritableSignal,
   model,
+  inject,
+  OnDestroy,
 } from "@angular/core";
 import {
   MatProgressBar,
@@ -95,6 +97,8 @@ import { PostsService } from "../services/firebase/firestore/posts.service";
 import { SpotReviewSchema } from "../../db/schemas/SpotReviewSchema";
 import { SpotReviewsService } from "../services/firebase/firestore/spot-reviews.service";
 import { getValueFromEventTarget } from "../../scripts/Helpers";
+import { StructuredDataService } from "../services/structured-data.service";
+import { Place } from "schema-dts";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
@@ -162,7 +166,9 @@ export class AsRatingKeyPipe implements PipeTransform {
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class SpotDetailsComponent implements AfterViewInit, OnChanges {
+export class SpotDetailsComponent
+  implements OnInit, AfterViewInit, OnChanges, OnDestroy
+{
   spot = model<Spot | LocalSpot | null>(null);
   @Input() infoOnly: boolean = false;
   @Input() dismissable: boolean = false;
@@ -181,6 +187,8 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
 
   @ViewChild(MediaUpload)
   mediaUploadComponent: MediaUpload | null = null;
+
+  private _structuredDataService = inject(StructuredDataService);
 
   getValueFromEventTarget = getValueFromEventTarget;
 
@@ -267,6 +275,35 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     });
   }
 
+  ngOnInit() {
+    // add structured data for place
+    if (this.spot instanceof Spot) {
+      const placeData: Place = {
+        "@type": "Place",
+        name: this.spot.name(),
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: this.spot.location().lat,
+          longitude: this.spot.location().lng,
+        },
+        keywords: "parkour,spot",
+        image: this.spot.hasMedia() ? this.spot.previewImageSrc() : undefined,
+      };
+
+      const address = this.spot.address();
+      if (address) {
+        placeData.address = {
+          "@type": "PostalAddress",
+          streetAddress: address.formatted,
+          addressLocality: address.locality,
+          addressCountry: address.country?.code,
+        };
+      }
+
+      this._structuredDataService.addStructuredData("spot", placeData);
+    }
+  }
+
   ngAfterViewInit() {
     this.isAppleMaps = this._mapsApiService.isMacOSOriOS();
   }
@@ -277,6 +314,10 @@ export class SpotDetailsComponent implements AfterViewInit, OnChanges {
     this.startHeight = this._element.nativeElement.clientHeight;
 
     this.loadReportForSpot();
+  }
+
+  ngOnDestroy(): void {
+    this._structuredDataService.removeStructuredData("spot");
   }
 
   private _filterCountries(value: string): any[] {

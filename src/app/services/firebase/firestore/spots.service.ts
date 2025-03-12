@@ -114,7 +114,7 @@ export class SpotsService {
     locale: LocaleCode
   ): Observable<Spot[]> {
     const observables = tiles.map((tile) => {
-      console.debug("Getting spots for tile: ", tile);
+      // console.debug("Getting spots for tile: ", tile);
 
       return new Observable<Spot[]>((observer) => {
         const unsubscribe = onSnapshot(

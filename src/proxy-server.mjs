@@ -15,26 +15,6 @@ for (const lang of supportedLanguageCodes) {
   console.log("Loaded server for lang:", lang);
 }
 
-// New domain redirect middleware
-function redirectDomain(req, res, next) {
-  console.log("req.headers", JSON.stringify(req.headers));
-  const referrerOrHost = req.get("x-forwarded-host") || req.headers.host;
-
-  // replace everything but the domain
-  const domain = referrerOrHost.replace(/(^\w+:|^)\/\//, "");
-
-  console.log("domain is", domain);
-
-  if (domain === "pkfrspot.com") {
-    const protocol = req.secure ? "https" : "http";
-    const redirectUrl = `https://pkspot.app${req.originalUrl}`;
-    console.log("redirecting to", redirectUrl);
-    return res.redirect(301, redirectUrl);
-  }
-
-  next();
-}
-
 function detectLanguage(req, res, next) {
   console.log(JSON.stringify(req.path));
 
@@ -113,9 +93,6 @@ function run() {
     }
     next();
   });
-
-  // Add domain redirect middleware first
-  server.use(redirectDomain);
 
   server.get("/assets/*", (req, res) => {
     const __dirname = path.dirname(new URL(import.meta.url).pathname);
