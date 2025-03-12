@@ -20,13 +20,16 @@ function redirectDomain(req, res, next) {
   let host = req.headers.host;
 
   //replace the port
-  if (host) {
+  if (host.match(/:\d+$/)) {
     host = host.replace(/:\d+$/, "");
   }
+
+  console.log("host is", host);
 
   if (host === "pkfrspot.com") {
     const protocol = req.secure ? "https" : "http";
     const redirectUrl = `https://pkspot.app${req.originalUrl}`;
+    console.log("redirecting to", redirectUrl);
     return res.redirect(301, redirectUrl);
   }
 
@@ -42,7 +45,7 @@ function detectLanguage(req, res, next) {
 
   // If the first segment is a valid language code, pass control to the next middleware
   if (supportedLanguageCodes.includes(firstSegment)) {
-    return next();
+    return next(); // TODO is return needed here?
   }
 
   // Extract the preferred language from the Accept-Language header
