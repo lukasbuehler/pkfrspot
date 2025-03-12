@@ -207,7 +207,11 @@ export class SpotsService {
     return newSpots;
   }
 
-  createSpot(spotData: SpotSchema): Promise<SpotId> {
+  createSpot(spotData: Partial<SpotSchema>): Promise<SpotId> {
+    // remove the reviews, review_histogram and review_count fields
+    spotData = this._removeForbiddenFieldsFromSpotData(spotData);
+
+    console.debug("Creating spot with data: ", JSON.stringify(spotData));
     return addDoc(collection(this.firestore, "spots"), spotData).then(
       (data) => {
         return data.id as SpotId;
@@ -221,18 +225,7 @@ export class SpotsService {
     oldSpotData?: Partial<SpotSchema>
   ): Promise<void> {
     // remove the reviews, review_histogram and review_count fields
-    const fieldsToRemove: (keyof SpotSchema)[] = [
-      "rating",
-      "num_reviews",
-      "rating_histogram",
-      "highlighted_reviews",
-    ];
-
-    for (let field of fieldsToRemove) {
-      if (field in spotUpdateData) {
-        delete spotUpdateData[field];
-      }
-    }
+    spotUpdateData = this._removeForbiddenFieldsFromSpotData(spotUpdateData);
 
     // check if the media has changed and delete the old media from storage
     let oldSpotMediaPromise: Promise<SpotSchema["media"]>;
@@ -253,6 +246,25 @@ export class SpotsService {
 
     console.log("Updating spot with data: ", JSON.stringify(spotUpdateData));
     return updateDoc(doc(this.firestore, "spots", spotId), spotUpdateData);
+  }
+
+  _removeForbiddenFieldsFromSpotData(
+    spotData: Partial<SpotSchema>
+  ): Partial<SpotSchema> {
+    const fieldsToRemove: (keyof SpotSchema)[] = [
+      "rating",
+      "num_reviews",
+      "rating_histogram",
+      "highlighted_reviews",
+    ];
+
+    for (let field of fieldsToRemove) {
+      if (field in spotData) {
+        delete spotData[field];
+      }
+    }
+
+    return spotData;
   }
 
   updateSpotMedia(spotId: SpotId, media: SpotSchema["media"]) {

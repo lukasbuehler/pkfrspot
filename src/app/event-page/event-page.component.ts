@@ -169,8 +169,8 @@ export class EventPageComponent implements OnInit, OnDestroy {
       name: "Universität Irchel",
       color: "tertiary",
       location: {
-        lat: 47.39606604052732,
-        lng: 8.544833096010917,
+        lat: 47.39622541657696,
+        lng: 8.544870658516267,
       },
       icon: "tram",
     },

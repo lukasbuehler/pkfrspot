@@ -142,6 +142,9 @@
     (mapDragend)="editingSpotPositionChanged($event.latLng!)"
     [content]="selectedSpotMarkerNode.elementRef.nativeElement"
     [zIndex]="1000000 + 1"
+    [options]="{
+      gmpDraggable: true
+    }"
   ></map-advanced-marker>
   <app-marker
     #selectedSpotMarkerNode
@@ -223,9 +226,7 @@
   <map-advanced-marker
     [position]="marker.location"
     [content]="markerComp.elementRef.nativeElement"
-    [options]="{
-      collisionBehavior: defaultMarkerCollisionBehavior,
-    }"
+    [options]="{}"
   ></map-advanced-marker>
   <app-marker
     #markerComp

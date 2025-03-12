@@ -10,10 +10,10 @@ service cloud.firestore {
 
       // TODO: In the future there should be a voting feature for changes on spots.
       // for now every authenticated user can write for every spot.
-      allow write: if request.auth.uid != null 
-        && !(request.resource.data.diff(resource.data).affectedKeys().hasAny(
-          ['rating', 'num_reviews', 'rating_histogram', 'highlighted_reviews']
-        ));
+      allow write: if request.auth.uid != null &&
+        (resource == null || resource.data == null ?
+           !request.resource.data.keys().hasAny(['rating', 'num_reviews', 'rating_histogram', 'highlighted_reviews']) :
+           !request.resource.data.diff(resource.data).affectedKeys().hasAny(['rating', 'num_reviews', 'rating_histogram', 'highlighted_reviews']))
 
       match /reviews/{userId} {
         allow read: if true;

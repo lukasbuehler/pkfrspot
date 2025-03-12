@@ -164,8 +164,8 @@ export class MapComponent implements OnInit, OnChanges {
   mapStyle = input<"roadmap" | "satellite">("roadmap");
   polygons = input<PolygonSchema[]>([]);
 
-  defaultMarkerCollisionBehavior: google.maps.CollisionBehavior =
-    google.maps.CollisionBehavior.OPTIONAL_AND_HIDES_LOWER_PRIORITY;
+  // defaultMarkerCollisionBehavior: google.maps.CollisionBehavior =
+  //   google.maps.CollisionBehavior.OPTIONAL_AND_HIDES_LOWER_PRIORITY;
 
   mapTypeId: Signal<google.maps.MapTypeId> = computed(() => {
     switch (this.mapStyle()) {

@@ -112,6 +112,8 @@ export class SpotMapDataManager {
   saveSpot(spot: Spot | LocalSpot): Promise<void> {
     if (!spot) return Promise.reject("No spot provided");
 
+    console.debug("Saving spot", spot);
+
     let saveSpotPromise: Promise<void>;
     if (spot instanceof Spot) {
       // this spot already exists in the database
