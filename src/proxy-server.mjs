@@ -17,16 +17,15 @@ for (const lang of supportedLanguageCodes) {
 
 // New domain redirect middleware
 function redirectDomain(req, res, next) {
-  let host = req.headers.host;
+  console.log("req", JSON.stringify(req));
+  const referrerOrHost = req.get("x-forwarded-host") || req.headers.host;
 
-  //replace the port
-  if (host.match(/:\d+$/)) {
-    host = host.replace(/:\d+$/, "");
-  }
+  // replace everything but the domain
+  const domain = referrerOrHost.replace(/(^\w+:|^)\/\//, "");
 
-  console.log("host is", host);
+  console.log("domain is", domain);
 
-  if (host === "pkfrspot.com") {
+  if (domain === "pkfrspot.com") {
     const protocol = req.secure ? "https" : "http";
     const redirectUrl = `https://pkspot.app${req.originalUrl}`;
     console.log("redirecting to", redirectUrl);
@@ -53,10 +52,10 @@ function detectLanguage(req, res, next) {
   let preferredLanguage = defaultLanguage;
 
   // TODO remove
-  console.log("preferredLanguage is", preferredLanguage);
-  console.log("pathSegments is", pathSegments.join(","));
-  console.log("first segment is", firstSegment);
-  console.log("path is", `${req.path}`);
+  // console.log("preferredLanguage is", preferredLanguage);
+  // console.log("pathSegments is", pathSegments.join(","));
+  // console.log("first segment is", firstSegment);
+  // console.log("path is", `${req.path}`);
 
   if (acceptLanguage) {
     const browserLanguages = acceptLanguage
