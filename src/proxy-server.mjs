@@ -17,7 +17,7 @@ for (const lang of supportedLanguageCodes) {
 
 // New domain redirect middleware
 function redirectDomain(req, res, next) {
-  console.log("req", JSON.stringify(req));
+  console.log("req.headers", JSON.stringify(req.headers));
   const referrerOrHost = req.get("x-forwarded-host") || req.headers.host;
 
   // replace everything but the domain
