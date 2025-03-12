@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const sourcePath = "src/proxy-server.mjs";
-const destinationDir = "dist/pkfrspot/server";
+const destinationDir = "dist/pkspot/server";
 const destinationFile = path.join(destinationDir, "server.mjs");
 const buildInfoFile = path.join(destinationDir, "build-info.mjs");
 

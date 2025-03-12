@@ -2,7 +2,7 @@
   "targets": {
     "parkour-base-project": {
       "hosting": {
-        "pkfrspot": [
+        "pkspot": [
           "parkour-base-project"
         ]
       }

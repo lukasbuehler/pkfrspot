@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "pkfrspot": {
+    "pkspot": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -55,7 +55,7 @@
               }
             },
             "localize": ["en", "de", "de-CH", "it", "fr", "es", "nl"],
-            "outputPath": "dist/pkfrspot",
+            "outputPath": "dist/pkspot",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js", "@angular/localize/init"],
@@ -159,13 +159,13 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "dev": {
-              "buildTarget": "pkfrspot:build:dev"
+              "buildTarget": "pkspot:build:dev"
             },
             "staging": {
-              "buildTarget": "pkfrspot:build:staging"
+              "buildTarget": "pkspot:build:staging"
             },
             "production": {
-              "buildTarget": "pkfrspot:build:production"
+              "buildTarget": "pkspot:build:production"
             }
           },
           "defaultConfiguration": "dev"
@@ -173,7 +173,7 @@
         "extract-i18n": {
           "builder": "ng-extract-i18n-merge:ng-extract-i18n-merge",
           "options": {
-            "buildTarget": "pkfrspot:build:dev",
+            "buildTarget": "pkspot:build:dev",
             "format": "xlf2",
             "outputPath": "src/locale",
             "targetFiles": [

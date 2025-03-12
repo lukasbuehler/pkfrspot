@@ -15,6 +15,19 @@ for (const lang of supportedLanguageCodes) {
   console.log("Loaded server for lang:", lang);
 }
 
+// New domain redirect middleware
+function redirectDomain(req, res, next) {
+  const host = req.headers.host;
+
+  if (host === "pkfrspot.com" || host.endsWith(".pkfrspot.com")) {
+    const protocol = req.secure ? "https" : "http";
+    const redirectUrl = `https://pkspot.app${req.originalUrl}`;
+    return res.redirect(301, redirectUrl);
+  }
+
+  next();
+}
+
 function detectLanguage(req, res, next) {
   console.log(JSON.stringify(req.path));
 
@@ -93,6 +106,9 @@ function run() {
     }
     next();
   });
+
+  // Add domain redirect middleware first
+  server.use(redirectDomain);
 
   server.get("/assets/*", (req, res) => {
     const __dirname = path.dirname(new URL(import.meta.url).pathname);
