@@ -71,7 +71,7 @@
     </unit>
     <unit id="about.title">
       <segment>
-        <source>About PKFR Spot</source>
+        <source>About PK Spot</source>
       </segment>
     </unit>
     <unit id="lang_btn_label">
@@ -131,9 +131,9 @@
         <source>Find spots and places</source>
       </segment>
     </unit>
-    <unit id="pkfr.spotmap.title">
+    <unit id="pk.spotmap.title">
       <segment>
-        <source>PKFR Spot map</source>
+        <source>PK Spot map</source>
       </segment>
     </unit>
     <unit id="spot.locality.pretext">
@@ -222,9 +222,9 @@
         <source>General settings</source>
       </segment>
     </unit>
-    <unit id="6471548761726956967">
+    <unit id="5223089976416033243">
       <segment>
-        <source> General settings to tune your experience on PKFR Spot. </source>
+        <source> General settings to tune your experience on PK Spot. </source>
       </segment>
     </unit>
     <unit id="5851560788527570644">
@@ -542,15 +542,6 @@
         <source>Spot name</source>
       </segment>
     </unit>
-    <unit id="5447579510411800451">
-      <notes>
-        <note category="description">Label of the button to upload a spot image</note>
-        <note category="meaning">Upload spot image button label</note>
-      </notes>
-      <segment>
-        <source> Upload Spot Image </source>
-      </segment>
-    </unit>
     <unit id="4902817035128594900">
       <segment>
         <source>Description</source>
@@ -732,7 +723,7 @@
     </unit>
     <unit id="welcomeDialogTitle">
       <segment>
-        <source>Welcome to PKFR Spot!</source>
+        <source>Welcome to PK Spot!</source>
       </segment>
     </unit>
     <unit id="welcomeDialogText">
@@ -824,7 +815,7 @@
     </unit>
     <unit id="about.description">
       <segment>
-        <source>About PKFR Spot</source>
+        <source>About PK Spot</source>
       </segment>
     </unit>
     <unit id="events.title">
@@ -951,6 +942,16 @@
       </notes>
       <segment>
         <source>Update Review</source>
+      </segment>
+    </unit>
+    <unit id="518955764655136497">
+      <segment>
+        <source>Open global spot map</source>
+      </segment>
+    </unit>
+    <unit id="927015953957235009">
+      <segment>
+        <source>More Information</source>
       </segment>
     </unit>
   </file>

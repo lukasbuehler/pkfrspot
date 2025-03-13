@@ -189,16 +189,6 @@
         <target>Spot Name</target>
       </segment>
     </unit>
-    <unit id="5447579510411800451">
-      <notes>
-        <note category="description">Label of the button to upload a spot image</note>
-        <note category="meaning">Upload spot image button label</note>
-      </notes>
-      <segment state="initial">
-        <source> Upload Spot Image </source>
-        <target> Spot Bild ufelade </target>
-      </segment>
-    </unit>
     <unit id="4902817035128594900">
       <segment state="initial">
         <source>Description</source>
@@ -327,7 +317,7 @@
         <target>Allgemeini Ihstellige</target>
       </segment>
     </unit>
-    <unit id="6471548761726956967">
+    <unit id="5223089976416033243">
       <segment state="initial">
         <source> General settings to tune your experience on PK Spot. </source>
         <target> Deini allgemeine Ihstellige für PK Spot </target>
@@ -716,13 +706,13 @@
     </unit>
     <unit id="about.title">
       <segment state="initial">
-        <source>About PKFR Spot</source>
+        <source>About PK Spot</source>
         <target>Über PKFR Spot</target>
       </segment>
     </unit>
-    <unit id="pkfr.spotmap.title">
+    <unit id="pk.spotmap.title">
       <segment state="initial">
-        <source>PKFR Spot map</source>
+        <source>PK Spot map</source>
         <target>PKFR Spot Charte</target>
       </segment>
     </unit>
@@ -946,7 +936,7 @@
     </unit>
     <unit id="welcomeDialogTitle">
       <segment state="initial">
-        <source>Welcome to PKFR Spot!</source>
+        <source>Welcome to PK Spot!</source>
         <target>Willkomme bi PKFR Spot!</target>
       </segment>
     </unit>
@@ -984,7 +974,7 @@
     </unit>
     <unit id="about.description">
       <segment state="initial">
-        <source>About PKFR Spot</source>
+        <source>About PK Spot</source>
         <target>Über PKFR Spot</target>
       </segment>
     </unit>
@@ -1147,6 +1137,18 @@
       <segment state="initial">
         <source>Update Review</source>
         <target>Bewertig aktualisiere</target>
+      </segment>
+    </unit>
+    <unit id="518955764655136497">
+      <segment state="initial">
+        <source>Open global spot map</source>
+        <target>Globali Spot charte öffne</target>
+      </segment>
+    </unit>
+    <unit id="927015953957235009">
+      <segment state="initial">
+        <source>More Information</source>
+        <target>Meh Informatione</target>
       </segment>
     </unit>
   </file>
