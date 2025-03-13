@@ -40,7 +40,7 @@ import { NavRailContainerComponent } from "./nav-rail-container/nav-rail-contain
 import { WelcomeDialogComponent } from "./welcome-dialog/welcome-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import { languageCodes } from "../scripts/Languages";
-import { LocaleCode } from "../db/models/Interfaces";
+import { LocaleCode, SizedStorageSrc } from "../db/models/Interfaces";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { WebSite } from "schema-dts";
 import { StructuredDataService } from "./services/structured-data.service";
@@ -299,11 +299,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     const shortDisplayName: string | undefined =
       this.authService?.auth?.currentUser?.displayName?.split(" ")[0] ??
       undefined;
-    let userPhoto: string | undefined =
+    const userPhotoStorageSrc: SizedStorageSrc | undefined =
       this.authService?.user?.data?.profilePicture ?? undefined;
 
-    userPhoto = userPhoto
-      ? StorageService.getSpotMediaURL(userPhoto, 200)
+    const userPhoto = userPhotoStorageSrc
+      ? StorageService.getSrc(userPhotoStorageSrc, 200)
       : undefined;
 
     this.navbarConfig = [

@@ -59,7 +59,7 @@ export class ImgCarouselComponent {
 
   getSrc(mediaObj: OtherMedia | SizedUserMedia): string {
     if ("uid" in mediaObj) {
-      return mediaObj.src[400];
+      return StorageService.getSrc(mediaObj.src, 400);
     } else {
       return mediaObj.src;
     }

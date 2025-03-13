@@ -26,18 +26,24 @@ export enum MediaType {
   Vimeo = "vimeo",
 }
 
+/**
+ * SizedStorageSrc is a string that represents a URL to a file in Firebase Storage.
+ * It has a brand to distinguish it from other strings.
+ *
+ * To convert it to a string, call StorageService.getSrc(sizedStorageSrc).
+ */
+export type SizedStorageSrc = string & { __brand: "SizedStorageSrc" };
+
 export interface OtherMedia {
   type: MediaType;
   src: string;
   origin?: "user" | "streetview" | "other";
 }
 
-export interface SizedUserMedia {
-  type: MediaType;
+export interface SizedUserMedia extends OtherMedia {
   uid: string;
-  src: {
-    [size: number]: string;
-  };
+  src: SizedStorageSrc;
+  isSized?: boolean;
 }
 
 export type Media = OtherMedia | SizedUserMedia;

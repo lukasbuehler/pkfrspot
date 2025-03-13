@@ -21,27 +21,6 @@
   <div class="d-flex flex-row gap-3 w-100 pt-3" [class.p-3]="isEmbedded">
     <div class="flex-grow-1">
       <h2 class="mat-heading-large">{{ name }}</h2>
-      <p>{{ venueString }}, {{ localityString }}</p>
-      <p class="d-flex flex-column">
-        <span>
-          {{
-            readableStartDate !== readableEndDate
-              ? readableStartDate + " - " + readableEndDate
-              : readableStartDate
-          }}
-        </span>
-        @defer{
-        <span>
-          <span i18n>Starts in: </span>
-          <app-countdown [timestamp]="start"></app-countdown>
-        </span>
-        }
-      </p>
-      <p>
-        <a [href]="url" target="_blank" mat-stroked-button>
-          <mat-icon>launch</mat-icon><span i18n>More Information</span></a
-        >
-      </p>
     </div>
     @if(!isEmbedded) {
     <div class="d-flex flex-row gap-2">
@@ -56,6 +35,29 @@
       </button>
     </div>
     }
+  </div>
+  <div>
+    <p>{{ venueString }}, {{ localityString }}</p>
+    <p class="d-flex flex-column">
+      <span>
+        {{
+          readableStartDate !== readableEndDate
+            ? readableStartDate + " - " + readableEndDate
+            : readableStartDate
+        }}
+      </span>
+      @defer{
+      <span>
+        <span i18n>Starts in: </span>
+        <app-countdown [timestamp]="start"></app-countdown>
+      </span>
+      }
+    </p>
+    <p>
+      <a [href]="url" target="_blank" mat-stroked-button>
+        <mat-icon>launch</mat-icon><span i18n>More Information</span></a
+      >
+    </p>
   </div>
 
   <mat-menu #menu="matMenu">

@@ -27,7 +27,6 @@ import {
   OtherMedia,
   MediaType,
 } from "../../db/models/Interfaces";
-import { ImgCarouselComponent } from "../img-carousel/img-carousel.component";
 
 @Component({
   selector: "app-spot-preview-card",
@@ -39,7 +38,6 @@ import { ImgCarouselComponent } from "../img-carousel/img-carousel.component";
     MatIconModule,
     NgOptimizedImage,
     SpotRatingComponent,
-    ImgCarouselComponent,
   ],
 })
 export class SpotPreviewCardComponent implements OnChanges {
@@ -56,9 +54,11 @@ export class SpotPreviewCardComponent implements OnChanges {
   @Output() dismiss: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() edit: EventEmitter<any> = new EventEmitter<any>();
 
+  fallbackImgSrc = "/assets/no_media.png";
+
   spotName?: string;
   spotLocality?: string;
-  media = computed<(OtherMedia | SizedUserMedia)[]>(() => {
+  media = computed<string[]>(() => {
     const spot = this.spot();
 
     if (!spot) {
@@ -66,13 +66,18 @@ export class SpotPreviewCardComponent implements OnChanges {
     }
 
     if (spot instanceof Spot || spot instanceof LocalSpot) {
-      return spot.media();
+      if (spot.media().length === 0) {
+        return [this.fallbackImgSrc];
+      }
+      return spot.media().map((m) => {
+        if ("uid" in m) {
+          return StorageService.getSrc(m.src, this.imgSize());
+        } else {
+          return m.src;
+        }
+      });
     } else {
-      const media: OtherMedia = {
-        type: MediaType.Image,
-        src: spot.imageSrc,
-      };
-      return [media];
+      return [spot.imageSrc];
     }
   });
 

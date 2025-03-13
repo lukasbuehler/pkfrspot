@@ -10,6 +10,7 @@ import {
   OtherMedia,
   Media,
   mediaIsUserMedia,
+  SizedStorageSrc,
 } from "./Interfaces";
 import { MapHelpers } from "../../scripts/MapHelpers";
 import { environment } from "../../environments/environment";
@@ -121,13 +122,10 @@ export class LocalSpot {
     const userMediaArr: SizedUserMedia[] | undefined = data?.media?.map(
       (media) => {
         const userMedia: SizedUserMedia = {
-          src: {
-            200: StorageService.getSpotMediaURL(media.src, 200),
-            400: StorageService.getSpotMediaURL(media.src, 400),
-            800: StorageService.getSpotMediaURL(media.src, 800),
-          },
+          src: media.src,
           type: media.type,
           uid: media.uid,
+          isSized: media.isSized ?? true,
         };
         return userMedia;
       }
@@ -153,7 +151,7 @@ export class LocalSpot {
       //   return [streetview, ...userMedia];
       // } else {
       //   return userMedia;
-      return userMedia;
+      return [...userMedia];
     });
 
     this.hasMedia = computed(() => {
@@ -168,8 +166,8 @@ export class LocalSpot {
         const media = this.media()[0];
 
         if (mediaIsUserMedia(media)) {
-          const src = media.src[previewSize];
-          return StorageService.getSpotMediaURL(src, previewSize);
+          const src = media.src;
+          return StorageService.getSrc(src, previewSize);
         } else {
           return media.src;
         }
@@ -277,7 +275,7 @@ export class LocalSpot {
         return {
           type: media.type,
           uid: media.uid,
-          src: StorageService.getSpotMediaPathFromURL(media.src[200]),
+          src: StorageService.getStorageSrcFromSrc(media.src[200]),
         };
       }),
       is_iconic: this.isIconic,
@@ -328,7 +326,7 @@ export class LocalSpot {
     return this.media()[index];
   }
 
-  public addMedia(src: string, type: MediaType, uid: string) {
+  public addMedia(src: SizedStorageSrc, type: MediaType, uid: string) {
     const _userMedia: SizedUserMedia[] = this.userMedia();
     _userMedia.push({ src: src, type: type, uid: uid });
     this.userMedia.set(_userMedia);

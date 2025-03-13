@@ -23,7 +23,11 @@ import {
   take,
   timeout,
 } from "rxjs";
-import { LocaleCode, MediaType } from "../../db/models/Interfaces";
+import {
+  LocaleCode,
+  MediaType,
+  SizedStorageSrc,
+} from "../../db/models/Interfaces";
 import { MarkerComponent, MarkerSchema } from "../marker/marker.component";
 import { MetaInfoService } from "../services/meta-info.service";
 import { MatButtonModule } from "@angular/material/button";
@@ -192,38 +196,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
     // },
   ];
 
-  spots = signal<(Spot | LocalSpot)[]>([
-    new LocalSpot(
-      {
-        location: new GeoPoint(47.39726582727994, 8.548446302021873),
-        name: {
-          user_provided: {
-            en: `Main Spot`,
-            de: "Hauptspot",
-            fr: "Spot principal",
-            it: "Spot principale",
-          },
-        },
-        media: [
-          {
-            src: this.bannerImageSrc,
-            uid: "",
-            type: MediaType.Image,
-            origin: "other",
-          },
-        ],
-        bounds: [
-          new GeoPoint(47.397237163433424, 8.54852286554543),
-          new GeoPoint(47.39727438598336, 8.548373942307316),
-          new GeoPoint(47.39742969172247, 8.548445028774058),
-          new GeoPoint(47.397365317957394, 8.548779092061668),
-          new GeoPoint(47.39725743643263, 8.548711980937691),
-          new GeoPoint(47.397297807170254, 8.548555067641223),
-        ],
-      },
-      this.locale
-    ),
-  ]);
+  spots = signal<(Spot | LocalSpot)[]>([]);
 
   mapStyle: "roadmap" | "satellite" = "satellite";
 
@@ -255,9 +228,45 @@ export class EventPageComponent implements OnInit, OnDestroy {
         this.spots.update((spots) => [...spots, ...loadedSpots]);
       });
     });
+
+    const mainSpot = new LocalSpot(
+      {
+        location: new GeoPoint(47.39732893509323, 8.548509576285669),
+        name: {
+          user_provided: {
+            en: `Main Spot`,
+            de: "Hauptspot",
+            fr: "Spot principal",
+            it: "Spot principale",
+          },
+        },
+        bounds: [
+          new GeoPoint(47.397237163433424, 8.54852286554543),
+          new GeoPoint(47.39727438598336, 8.548373942307316),
+          new GeoPoint(47.39742969172247, 8.548445028774058),
+          new GeoPoint(47.397365317957394, 8.548779092061668),
+          new GeoPoint(47.39725743643263, 8.548711980937691),
+          new GeoPoint(47.397297807170254, 8.548555067641223),
+        ],
+        media: [
+          {
+            src: "/assets/swissjam.jpg" as SizedStorageSrc,
+            type: MediaType.Image,
+            isSized: false,
+            uid: "",
+          },
+        ],
+        is_iconic: true,
+      },
+      this.locale
+    );
+
+    this.spots.set([mainSpot]);
   }
 
   ngOnInit() {
+    console.log("LOCALE_ID", this.locale);
+
     this.metaInfoService.setMetaTags(
       this.name,
       this.bannerImageSrc,

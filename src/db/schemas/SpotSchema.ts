@@ -4,6 +4,7 @@ import {
   SizedUserMedia,
   AmenitiesMap,
   MediaType,
+  SizedStorageSrc,
 } from "../models/Interfaces";
 import { SpotReviewSchema } from "./SpotReviewSchema";
 
@@ -38,8 +39,8 @@ export interface SpotSchema {
   media?: {
     type: MediaType;
     uid: string;
-    src: string;
-    origin?: "user" | "streetview" | "other";
+    src: SizedStorageSrc;
+    isSized?: boolean;
   }[];
 
   is_iconic?: boolean;

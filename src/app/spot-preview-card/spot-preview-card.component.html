@@ -63,12 +63,12 @@
   </div> -->
   @if(isCompact) { @if(media() && media().length > 0) {
   <div mat-card-sm-image class="img-container">
-    <img [ngSrc]="media()[0].src[imgSize()]" fill />
+    <img [ngSrc]="media()[0]" fill />
   </div>
 
   } } @else { @if(media()) {
   <div class="img-container">
-    <img [ngSrc]="media()[0].src[imgSize()]" fill priority />
+    <img [ngSrc]="media()[0]" fill priority />
   </div>
   } }
 </mat-card>

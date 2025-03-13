@@ -5,6 +5,7 @@ import { generateUUID } from "../../../scripts/Helpers";
 import { getDownloadURL, Storage } from "@angular/fire/storage";
 import { deleteObject, ref, uploadBytes } from "@firebase/storage";
 import { uploadBytesResumable } from "@firebase/storage";
+import { SizedStorageSrc } from "../../../db/models/Interfaces";
 
 export enum StorageFolder {
   PostMedia = "post_media",
@@ -90,11 +91,11 @@ export class StorageService {
     return this.uploadObs;
   }
 
-  static getSpotMediaURL(pathUrl: string, size: 200 | 400 | 800): string {
-    return pathUrl.replace(/\?/, `_${size}x${size}?`);
+  static getSrc(src: SizedStorageSrc, size: 200 | 400 | 800): string {
+    return src.replace(/\?/, `_${size}x${size}?`);
   }
 
-  static getSpotMediaPathFromURL(url: string): string {
-    return url.replace(/_\d+x\d+\?/, "?");
+  static getStorageSrcFromSrc(url: string): SizedStorageSrc {
+    return url.replace(/_\d+x\d+\?/, "?") as SizedStorageSrc;
   }
 }

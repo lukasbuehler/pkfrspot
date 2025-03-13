@@ -28,6 +28,7 @@ import {
   StorageFolder,
   StorageService,
 } from "../services/firebase/storage.service";
+import { SizedStorageSrc } from "../../db/models/Interfaces";
 
 export interface Media {
   file: File;
@@ -48,10 +49,9 @@ export interface Media {
     MatInput,
     MatSuffix,
     NgIf,
-    MatHint,
+    // MatHint,
     MatError,
     MatProgressBarModule,
-    NgOptimizedImage,
     MatProgressSpinnerModule,
   ],
 })
@@ -63,7 +63,7 @@ export class MediaUpload implements OnInit, ControlValueAccessor {
   @Input() allowedMimeTypes: string[] | null = null;
   @Input() acceptString: string | null = null;
   @Output() changed = new EventEmitter<void>();
-  @Output() newMedia = new EventEmitter<{ url: string }>();
+  @Output() newMedia = new EventEmitter<{ url: SizedStorageSrc }>();
 
   private _storageService = inject(StorageService);
 
@@ -229,7 +229,7 @@ export class MediaUpload implements OnInit, ControlValueAccessor {
   }
 
   mediaFinishedUploading(media: Media, imageLink: string) {
-    this.newMedia.emit({ url: imageLink });
+    this.newMedia.emit({ url: imageLink as SizedStorageSrc });
   }
 
   clear() {

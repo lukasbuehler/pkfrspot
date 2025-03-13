@@ -47,6 +47,7 @@ import {
   MediaType,
   LocaleCode,
   OtherMedia,
+  SizedStorageSrc,
 } from "../../db/models/Interfaces";
 
 //import { MatTooltipModule } from "@angular/material/tooltip";
@@ -411,7 +412,7 @@ export class SpotDetailsComponent
   //   this.spot.address.set(newAddress);
   // }
 
-  setNewMediaFromUpload(media: { url: string }) {
+  setNewMediaFromUpload(media: { url: SizedStorageSrc }) {
     console.log("Setting new media from upload");
     const spot = this.spot();
     if (!spot) {
