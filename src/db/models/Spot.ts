@@ -1,5 +1,5 @@
 import {
-  ContributedMedia,
+  SizedUserMedia,
   LocaleMap,
   MediaType,
   AmenitiesMap,
@@ -7,6 +7,9 @@ import {
   AmenityIcons,
   AmenitiesOrder,
   LocaleCode,
+  OtherMedia,
+  Media,
+  mediaIsUserMedia,
 } from "./Interfaces";
 import { MapHelpers } from "../../scripts/MapHelpers";
 import { environment } from "../../environments/environment";
@@ -15,6 +18,7 @@ import { SpotAddressSchema, SpotSchema } from "../schemas/SpotSchema";
 import { computed, Signal, signal, WritableSignal } from "@angular/core";
 import { defaultSpotNames } from "../../../functions/src/spotHelpers";
 import { SpotReviewSchema } from "../schemas/SpotReviewSchema";
+import { StorageService } from "../../app/services/firebase/storage.service";
 
 export type SpotId = string & { __brand: "SpotId" };
 export type SpotSlug = string & { __brand: "SpotSlug" };
@@ -37,9 +41,9 @@ export class LocalSpot {
   description: Signal<string>;
 
   // Media stuff
-  userMedia: WritableSignal<ContributedMedia[]>;
-  private _streetview?: Signal<ContributedMedia | undefined>; // signal that is computed from location
-  readonly media: Signal<ContributedMedia[]>;
+  userMedia: WritableSignal<SizedUserMedia[]>;
+  private _streetview?: Signal<OtherMedia | undefined>; // signal that is computed from location
+  readonly media: Signal<Media[]>;
   readonly hasMedia: Signal<boolean>;
   readonly previewImageSrc: Signal<string>;
 
@@ -114,7 +118,22 @@ export class LocalSpot {
       return "";
     });
 
-    this.userMedia = signal(data.media ?? []);
+    const userMediaArr: SizedUserMedia[] | undefined = data?.media?.map(
+      (media) => {
+        const userMedia: SizedUserMedia = {
+          src: {
+            200: StorageService.getSpotMediaURL(media.src, 200),
+            400: StorageService.getSpotMediaURL(media.src, 400),
+            800: StorageService.getSpotMediaURL(media.src, 800),
+          },
+          type: media.type,
+          uid: media.uid,
+        };
+        return userMedia;
+      }
+    );
+
+    this.userMedia = signal(userMediaArr ?? []);
     // initilize media signal with streetview
     this._loadStreetviewForLocation(this.location()).then((streetview) => {
       this._streetview = signal(streetview);
@@ -143,20 +162,16 @@ export class LocalSpot {
     });
 
     this.previewImageSrc = computed(() => {
-      const previewSize: string = "400x400";
+      const previewSize = 200;
 
       if (this.hasMedia()) {
-        if (this.userMedia().length > 0) {
-          let media = this.userMedia()[0];
-          let url = media.src;
-          if (media.uid) {
-            // has uid: is from a user.
-            url = url.replace(/\?/, `_${previewSize}?`);
-          }
+        const media = this.media()[0];
 
-          return url;
+        if (mediaIsUserMedia(media)) {
+          const src = media.src[previewSize];
+          return StorageService.getSpotMediaURL(src, previewSize);
         } else {
-          return this.media()[0].src;
+          return media.src;
         }
       }
       return "";
@@ -258,7 +273,13 @@ export class LocalSpot {
       location: new GeoPoint(location.lat, location.lng),
       tile_coordinates: MapHelpers.getTileCoordinates(location),
       description: this.descriptions(),
-      media: this.userMedia(),
+      media: this.userMedia().map((media) => {
+        return {
+          type: media.type,
+          uid: media.uid,
+          src: StorageService.getSpotMediaPathFromURL(media.src[200]),
+        };
+      }),
       is_iconic: this.isIconic,
       rating: this.rating ?? undefined,
       num_reviews: this.numReviews,
@@ -303,12 +324,12 @@ export class LocalSpot {
     return !!(this.paths && this.paths.length > 0 && this.paths[0].length > 0);
   }
 
-  public getMediaByIndex(index: number): ContributedMedia {
+  public getMediaByIndex(index: number): Media {
     return this.media()[index];
   }
 
   public addMedia(src: string, type: MediaType, uid: string) {
-    const _userMedia: ContributedMedia[] = this.userMedia();
+    const _userMedia: SizedUserMedia[] = this.userMedia();
     _userMedia.push({ src: src, type: type, uid: uid });
     this.userMedia.set(_userMedia);
   }
@@ -346,7 +367,7 @@ export class LocalSpot {
   // TODO move this to maps api service
   private async _loadStreetviewForLocation(
     location: google.maps.LatLngLiteral
-  ): Promise<ContributedMedia | undefined> {
+  ): Promise<OtherMedia | undefined> {
     // street view metadata
     return fetch(
       `https://maps.googleapis.com/maps/api/streetview/metadata?size=800x800&location=${
@@ -363,7 +384,7 @@ export class LocalSpot {
       .then((data) => {
         if (data.status !== "ZERO_RESULTS") {
           // street view media
-          const streetView: ContributedMedia = {
+          const streetView: OtherMedia = {
             src: `https://maps.googleapis.com/maps/api/streetview?size=800x800&location=${
               location.lat
             },${
@@ -372,7 +393,6 @@ export class LocalSpot {
               environment.keys.firebaseConfig.apiKey
             }`,
             type: MediaType.Image,
-            uid: "",
             origin: "streetview",
           };
 

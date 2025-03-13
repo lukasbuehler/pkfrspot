@@ -1,8 +1,9 @@
 import { GeoPoint } from "@firebase/firestore";
 import {
   LocaleMap,
-  ContributedMedia,
+  SizedUserMedia,
   AmenitiesMap,
+  MediaType,
 } from "../models/Interfaces";
 import { SpotReviewSchema } from "./SpotReviewSchema";
 
@@ -34,7 +35,12 @@ export interface SpotSchema {
 
   isMiniSpot?: boolean;
   description?: LocaleMap;
-  media?: ContributedMedia[];
+  media?: {
+    type: MediaType;
+    uid: string;
+    src: string;
+    origin?: "user" | "streetview" | "other";
+  }[];
 
   is_iconic?: boolean;
   rating?: number; // from 1 to 5, set by cloud function.

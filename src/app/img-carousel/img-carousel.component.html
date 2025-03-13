@@ -6,15 +6,7 @@
     style="cursor: pointer"
     (click)="imageClick($index)"
   >
-    <img
-      [ngSrc]="
-        mediaObj.uid
-          ? storageService.getSpotMediaURL(mediaObj.src, 400)
-          : mediaObj.src
-      "
-      fill
-      priority
-    />
+    <img [ngSrc]="getSrc(mediaObj)" fill priority />
   </div>
   } }
 </div>

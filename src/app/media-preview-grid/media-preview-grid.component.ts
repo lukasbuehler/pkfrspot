@@ -16,7 +16,11 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import { ContributedMedia, Media, MediaType } from "../../db/models/Interfaces";
+import {
+  SizedUserMedia,
+  OtherMedia,
+  MediaType,
+} from "../../db/models/Interfaces";
 import { MatIcon } from "@angular/material/icon";
 import { MatIconButton } from "@angular/material/button";
 import { NgIf, NgFor, NgOptimizedImage } from "@angular/common";
@@ -38,9 +42,9 @@ import { StorageService } from "../services/firebase/storage.service";
   ],
 })
 export class MediaPreviewGridComponent implements OnInit {
-  @Input() media: ContributedMedia[] = [];
-  @Output() mediaChanged: EventEmitter<ContributedMedia[]> = new EventEmitter<
-    ContributedMedia[]
+  @Input() media: SizedUserMedia[] = [];
+  @Output() mediaChanged: EventEmitter<SizedUserMedia[]> = new EventEmitter<
+    SizedUserMedia[]
   >();
 
   storageService = inject(StorageService);
@@ -60,7 +64,7 @@ export class MediaPreviewGridComponent implements OnInit {
   }
 
   removeMedia(index: number) {
-    let mediaCopy: ContributedMedia[] = JSON.parse(JSON.stringify(this.media));
+    let mediaCopy: SizedUserMedia[] = JSON.parse(JSON.stringify(this.media));
     mediaCopy.splice(index, 1);
     this.mediaChanged.emit(mediaCopy);
   }

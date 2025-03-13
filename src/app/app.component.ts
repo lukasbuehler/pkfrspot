@@ -303,7 +303,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.authService?.user?.data?.profilePicture ?? undefined;
 
     userPhoto = userPhoto
-      ? this.storageService.getSpotMediaURL(userPhoto, 200)
+      ? StorageService.getSpotMediaURL(userPhoto, 200)
       : undefined;
 
     this.navbarConfig = [

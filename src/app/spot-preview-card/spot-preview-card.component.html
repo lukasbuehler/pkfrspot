@@ -16,9 +16,9 @@
     </mat-card-title>
     <!-- @if(isCompact) { -->
     <mat-card-subtitle class="d-flex flex-row gap-2 mat-title-small">
-      @if(spot?.rating) {
+      @if(spot()?.rating) {
       <app-spot-rating
-        [rating1to5]="spot?.rating ?? null"
+        [rating1to5]="spot()?.rating ?? null"
         [showEmptyStars]="false"
         [isCompact]="true"
       ></app-spot-rating>
@@ -61,21 +61,14 @@
       <mat-icon>share</mat-icon>
     </button>
   </div> -->
-  @if(isCompact) { @if(spotImage) {
+  @if(isCompact) { @if(media() && media().length > 0) {
   <div mat-card-sm-image class="img-container">
-    <img [ngSrc]="spotImage" fill />
-  </div>
-  } } @else {
-  <div class="img-container">
-    <img
-      [ngSrc]="spotImage || 'assets/no_media.png'"
-      [alt]="
-        spotImage ? 'Image of spot ' + spotName : 'No media for spot' + spotName
-      "
-      fill
-      priority
-    />
+    <img [ngSrc]="media()[0].src[imgSize()]" fill />
   </div>
 
-  }
+  } } @else { @if(media()) {
+  <div class="img-container">
+    <img [ngSrc]="media()[0].src[imgSize()]" fill priority />
+  </div>
+  } }
 </mat-card>

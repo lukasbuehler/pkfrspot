@@ -13,11 +13,7 @@
   >
     <div cdkDrag class="drag-element">
       <div class="tile-image">
-        <img
-          class="tile-image"
-          [ngSrc]="storageService.getSpotMediaURL(mediaObj.src, 200)"
-          fill
-        />
+        <img class="tile-image" [ngSrc]="mediaObj.src[200]" fill />
       </div>
       <button
         class="bl-fab"

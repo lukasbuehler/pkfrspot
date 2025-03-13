@@ -10,6 +10,7 @@ import {
   ElementRef,
   inject,
   input,
+  computed,
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { LocalSpot, Spot } from "../../db/models/Spot";
@@ -20,7 +21,13 @@ import { MatRippleModule } from "@angular/material/core";
 import { MatIconModule } from "@angular/material/icon";
 import { NgOptimizedImage } from "@angular/common";
 import { SpotRatingComponent } from "../spot-rating/spot-rating.component";
-import { LocaleCode } from "../../db/models/Interfaces";
+import {
+  SizedUserMedia,
+  LocaleCode,
+  OtherMedia,
+  MediaType,
+} from "../../db/models/Interfaces";
+import { ImgCarouselComponent } from "../img-carousel/img-carousel.component";
 
 @Component({
   selector: "app-spot-preview-card",
@@ -32,14 +39,16 @@ import { LocaleCode } from "../../db/models/Interfaces";
     MatIconModule,
     NgOptimizedImage,
     SpotRatingComponent,
+    ImgCarouselComponent,
   ],
 })
 export class SpotPreviewCardComponent implements OnChanges {
   public elementRef = inject(ElementRef);
 
   hasBorder = input<boolean>(true);
+  imgSize = input<200 | 400 | 800>(200);
 
-  @Input() spot: Spot | LocalSpot | SpotPreviewData | null = null;
+  spot = input<Spot | LocalSpot | SpotPreviewData | null>(null);
   @Input() infoOnly: boolean = false;
   @Input() clickable: boolean = false;
   @Input() isCompact: boolean = false;
@@ -49,7 +58,23 @@ export class SpotPreviewCardComponent implements OnChanges {
 
   spotName?: string;
   spotLocality?: string;
-  spotImage?: string;
+  media = computed<(OtherMedia | SizedUserMedia)[]>(() => {
+    const spot = this.spot();
+
+    if (!spot) {
+      return [];
+    }
+
+    if (spot instanceof Spot || spot instanceof LocalSpot) {
+      return spot.media();
+    } else {
+      const media: OtherMedia = {
+        type: MediaType.Image,
+        src: spot.imageSrc,
+      };
+      return [media];
+    }
+  });
 
   bookmarked = false;
   visited = false;
@@ -61,16 +86,15 @@ export class SpotPreviewCardComponent implements OnChanges {
   ) {}
 
   ngOnChanges() {
-    if (this.spot) {
-      console.log(this.spot);
-      if (this.spot instanceof Spot || this.spot instanceof LocalSpot) {
-        this.spotName = this.spot.name();
-        this.spotLocality = this.spot.localityString();
-        this.spotImage = this.spot.previewImageSrc();
+    const spot = this.spot();
+    if (spot) {
+      console.log(spot);
+      if (spot instanceof Spot || spot instanceof LocalSpot) {
+        this.spotName = spot.name();
+        this.spotLocality = spot.localityString();
       } else {
-        this.spotName = this.spot.name;
-        this.spotLocality = this.spot.locality;
-        this.spotImage = this.spot.imageSrc;
+        this.spotName = spot.name;
+        this.spotLocality = spot.locality;
       }
     }
   }

@@ -26,15 +26,29 @@ export enum MediaType {
   Vimeo = "vimeo",
 }
 
-export interface Media {
-  src: string;
+export interface OtherMedia {
   type: MediaType;
+  src: string;
+  origin?: "user" | "streetview" | "other";
 }
 
-export interface ContributedMedia extends Media {
+export interface SizedUserMedia {
+  type: MediaType;
   uid: string;
-  origin?: "streetview" | "user";
+  src: {
+    [size: number]: string;
+  };
 }
+
+export type Media = OtherMedia | SizedUserMedia;
+
+export function mediaIsUserMedia(media: Media): media is SizedUserMedia {
+  return (media as SizedUserMedia).uid !== undefined;
+}
+
+// export interface StreetViewMedia {
+
+// }
 
 export interface AmenitiesMap {
   entry_fee?: boolean;

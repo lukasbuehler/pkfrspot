@@ -43,10 +43,10 @@ import {
   IndoorAmenities,
   OutdoorAmenities,
   GeneralAmenities,
-  ContributedMedia,
+  SizedUserMedia,
   MediaType,
   LocaleCode,
-  Media,
+  OtherMedia,
 } from "../../db/models/Interfaces";
 
 //import { MatTooltipModule } from "@angular/material/tooltip";
@@ -434,7 +434,7 @@ export class SpotDetailsComponent
       }
       if (spot instanceof Spot) {
         // if possible, already save the uploaded media
-        this._spotsService.updateSpotMedia(spot.id, spot.media());
+        this._spotsService.updateSpotMedia(spot.id, spot.userMedia());
       }
 
       console.debug("Spot after adding media", spot);
@@ -452,7 +452,7 @@ export class SpotDetailsComponent
     }
   }
 
-  mediaChanged(newSpotMedia: ContributedMedia[]) {
+  mediaChanged(newSpotMedia: SizedUserMedia[]) {
     this.spot()?.userMedia.set(newSpotMedia);
   }
 

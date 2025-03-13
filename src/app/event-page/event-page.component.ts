@@ -209,7 +209,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
             src: this.bannerImageSrc,
             uid: "",
             type: MediaType.Image,
-            origin: "user",
+            origin: "other",
           },
         ],
         bounds: [

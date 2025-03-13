@@ -22,7 +22,11 @@ import {
   SpotClusterTileSchema,
 } from "../../../../db/schemas/SpotClusterTile";
 import { SpotSchema } from "../../../../db/schemas/SpotSchema";
-import { LocaleCode } from "../../../../db/models/Interfaces";
+import {
+  LocaleCode,
+  Media,
+  SizedUserMedia,
+} from "../../../../db/models/Interfaces";
 import { transformFirestoreData } from "../../../../scripts/Helpers";
 import { GeoPoint } from "@firebase/firestore";
 import { StorageService } from "../storage.service";
@@ -233,11 +237,12 @@ export class SpotsService {
       oldSpotMediaPromise = Promise.resolve(oldSpotData.media);
     } else {
       oldSpotMediaPromise = this.getSpotById(spotId, "en").then((spot) => {
-        return spot.media();
+        const dbMedia = spot.data().media;
+        return dbMedia;
       });
     }
 
-    oldSpotMediaPromise.then((oldSpotMedia) => {
+    oldSpotMediaPromise.then((oldSpotMedia: SpotSchema["media"]) => {
       this._checkMediaDiffAndDeleteFromStorageIfNecessary(
         oldSpotMedia,
         spotUpdateData.media
@@ -267,7 +272,7 @@ export class SpotsService {
     return spotData;
   }
 
-  updateSpotMedia(spotId: SpotId, media: SpotSchema["media"]) {
+  updateSpotMedia(spotId: SpotId, media: SizedUserMedia[]): Promise<void> {
     return updateDoc(doc(this.firestore, "spots", spotId), { media });
   }
 
@@ -286,7 +291,7 @@ export class SpotsService {
         let filenameRegex = RegExp(
           /(?:spot_pictures)(?:\/|%2F)(.+?)(?:\?.*)?$/
         );
-        let storageFilenameMatch = oldMediaItem.src.match(filenameRegex);
+        let storageFilenameMatch = oldMediaItem.src[200].match(filenameRegex);
         if (storageFilenameMatch && storageFilenameMatch[1]) {
           let storageFilename = storageFilenameMatch[1] || "";
           // delete oldMediaItem from storage

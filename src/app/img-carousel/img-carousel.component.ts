@@ -6,7 +6,7 @@ import {
   Inject,
   PLATFORM_ID,
 } from "@angular/core";
-import { ContributedMedia } from "../../db/models/Interfaces";
+import { SizedUserMedia, OtherMedia, Media } from "../../db/models/Interfaces";
 import { MatRippleModule } from "@angular/material/core";
 import { MatButtonModule, MatIconButton } from "@angular/material/button";
 import { MatIcon } from "@angular/material/icon";
@@ -32,7 +32,7 @@ import { isPlatformBrowser, NgOptimizedImage } from "@angular/common";
   styleUrl: "./img-carousel.component.scss",
 })
 export class ImgCarouselComponent {
-  @Input() media: ContributedMedia[] | undefined;
+  @Input() media: Media[] | undefined;
 
   constructor(
     public dialog: MatDialog,
@@ -56,6 +56,14 @@ export class ImgCarouselComponent {
     //   console.log("The dialog was closed");
     // });
   }
+
+  getSrc(mediaObj: OtherMedia | SizedUserMedia): string {
+    if ("uid" in mediaObj) {
+      return mediaObj.src[400];
+    } else {
+      return mediaObj.src;
+    }
+  }
 }
 
 @Component({
@@ -69,12 +77,7 @@ export class ImgCarouselComponent {
           @if(mediaObj.origin !== 'streetview') {
           <!-- if the media is not a street view image, use the 800x800 size -->
           <div class="swiper-img-container">
-            <img
-              ngSrc="{{
-                this.storageService.getSpotMediaURL(mediaObj.src, 800)
-              }}"
-              fill
-            />
+            <img ngSrc="{{ mediaObj.src[800] }}" fill />
           </div>
 
           } @else {

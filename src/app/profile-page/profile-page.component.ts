@@ -139,7 +139,7 @@ export class ProfilePageComponent implements OnInit {
         this.isLoading = false;
 
         // Load the profile picture of this user
-        this.profilePicture = this._storageService.getSpotMediaURL(
+        this.profilePicture = StorageService.getSpotMediaURL(
           this.user.profilePicture,
           400
         );
