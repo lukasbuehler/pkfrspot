@@ -27,7 +27,7 @@ export type SpotSlug = string & { __brand: "SpotSlug" };
  */
 export class LocalSpot {
   names: WritableSignal<LocaleMap>;
-  name: Signal<string>;
+  readonly name: Signal<string>;
 
   location: WritableSignal<google.maps.LatLngLiteral>;
   locationString: Signal<string>;
@@ -78,7 +78,9 @@ export class LocalSpot {
   constructor(data: SpotSchema, readonly locale: LocaleCode) {
     this.names = signal(data.name);
     this.name = computed(() => {
-      const namesMap = this.names() as Record<string, string>;
+      const namesMap =
+        (this.names().user_provided as Record<string, string>) ??
+        (this.names() as Record<string, string>);
       if (namesMap[locale]) {
         return namesMap[locale];
       } else {

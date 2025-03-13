@@ -62,6 +62,7 @@ export class SpotPreviewCardComponent implements OnChanges {
 
   ngOnChanges() {
     if (this.spot) {
+      console.log(this.spot);
       if (this.spot instanceof Spot || this.spot instanceof LocalSpot) {
         this.spotName = this.spot.name();
         this.spotLocality = this.spot.localityString();

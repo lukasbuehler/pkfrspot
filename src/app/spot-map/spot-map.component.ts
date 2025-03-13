@@ -80,7 +80,7 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
     west: number;
     east: number;
   } | null = null;
-  @Input() spots: Spot[] = [];
+  @Input() spots: (Spot | LocalSpot)[] = [];
 
   @Output() hasGeolocationChange = new EventEmitter<boolean>();
   @Output() visibleSpotsChange = new EventEmitter<Spot[]>();
@@ -327,7 +327,9 @@ export class SpotMapComponent implements AfterViewInit, OnDestroy {
 
   // Public Map helper functions
 
-  openSpotByWhateverMeansNecessary(spot: Spot | SpotPreviewData | SpotId) {
+  openSpotByWhateverMeansNecessary(
+    spot: LocalSpot | Spot | SpotPreviewData | SpotId
+  ) {
     console.debug("Opening spot by whatever means necessary:", spot);
 
     if (this.selectedSpot() === spot) {

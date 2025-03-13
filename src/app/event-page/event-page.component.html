@@ -37,9 +37,17 @@
         </span>
         }
       </p>
+      <p>
+        <a [href]="url" target="_blank" mat-stroked-button>
+          <mat-icon>launch</mat-icon><span i18n>More Information</span></a
+        >
+      </p>
     </div>
     @if(!isEmbedded) {
     <div class="d-flex flex-row gap-2">
+      <a [href]="url" target="_blank" mat-icon-button class="d-flex">
+        <mat-icon>launch</mat-icon>
+      </a>
       <button mat-icon-button class="d-flex" (click)="shareEvent()">
         <mat-icon>share</mat-icon>
       </button>
@@ -95,7 +103,26 @@
         </a>
       </div> -->
 
-    @if(spots() && spots()!.length > 0) {
+    @if(swissJamSpotIds.length > 0) { @if(spots() && spots()!.length > 0) {
+    <app-map
+      @fadeInOut
+      #spotMap
+      id="spotMap"
+      [showGeolocation]="false"
+      [boundRestriction]="bounds"
+      [polygons]="areaPolygon() ? [areaPolygon()!] : []"
+      [minZoom]="16"
+      [mapStyle]="mapStyle"
+      [markers]="markers"
+      [spots]="spots()"
+      [selectedSpot]="selectedSpot()"
+      (spotClick)="selectSpot($event)"
+      (mapClick)="deselectSpot()"
+      [showSpotPreview]="true"
+      class="w-100 h-100 overflow-hidden d-inline-block"
+      style="border-radius: 0.375rem 0.375rem 0px 0px"
+    ></app-map>
+    } }@else { @if(spots() && spots()!.length > 0) {
     <app-spot-map
       @fadeInOut
       #spotMap
@@ -103,12 +130,7 @@
       [isClickable]="true"
       [showGeolocation]="false"
       [showSatelliteToggle]="true"
-      [boundRestriction]="{
-          north: 47.4, 
-          south: 47.395,
-          west: 8.54087, 
-          east: 8.55208,
-        }"
+      [boundRestriction]="bounds"
       [polygons]="areaPolygon() ? [areaPolygon()!] : []"
       [minZoom]="16"
       [centerStart]="markers[markers.length - 1].location"
@@ -121,7 +143,7 @@
       class="w-100 h-100 overflow-hidden d-inline-block"
       style="border-radius: 0.375rem 0.375rem 0px 0px"
     ></app-spot-map>
-    }
+    } }
     <!-- <div class="d-flex flex-row gap-3">
         @for(marker of markers; track marker) {
         <span

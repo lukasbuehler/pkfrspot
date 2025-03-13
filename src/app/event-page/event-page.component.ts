@@ -23,7 +23,7 @@ import {
   take,
   timeout,
 } from "rxjs";
-import { LocaleCode } from "../../db/models/Interfaces";
+import { LocaleCode, MediaType } from "../../db/models/Interfaces";
 import { MarkerComponent, MarkerSchema } from "../marker/marker.component";
 import { MetaInfoService } from "../services/meta-info.service";
 import { MatButtonModule } from "@angular/material/button";
@@ -37,6 +37,9 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { MatChipsModule } from "@angular/material/chips";
 import { MapsApiService } from "../services/maps-api.service";
 import { PolygonSchema } from "../../db/schemas/PolygonSchema";
+import { MapComponent } from "../map/map.component";
+import { GeoPoint } from "@firebase/firestore";
+import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
 
 @Component({
   selector: "app-event-page",
@@ -52,6 +55,7 @@ import { PolygonSchema } from "../../db/schemas/PolygonSchema";
     // SpotDetailsComponent,
     MatMenuModule,
     MatChipsModule,
+    MapComponent,
   ],
   animations: [
     trigger("fadeInOut", [
@@ -94,6 +98,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
   localityString: string = "Zurich, Switzerland";
   start: Date = new Date("2025-05-24T09:00:00+01:00");
   end: Date = new Date("2025-05-25T16:00:00+01:00");
+  url: string = "https://www.swissparkourtour.ch/swiss-jam-2025/";
   readableStartDate: string = this.start.toLocaleDateString(this.locale, {
     dateStyle: "full",
   });
@@ -101,13 +106,23 @@ export class EventPageComponent implements OnInit, OnDestroy {
     dateStyle: "full",
   });
 
-  private swissJamSpotIds: SpotId[] = [
-    "yhRsQmaXABRQVrbtgQ7D" as SpotId,
+  swissJamSpotIds: SpotId[] = [
+    // "yhRsQmaXABRQVrbtgQ7D" as SpotId, // main spot
     "23Oek5FVSThPbuG6MSjj" as SpotId,
     "EcI4adxBhMYZOXT8tPe3" as SpotId,
+    "lhSX9YEqSTKbZ9jfYy6L" as SpotId,
+    "ZkDaO5DSY7wyBQkgZMWC" as SpotId,
+    "sRX9lb5lNYKGqQ5e4rcO" as SpotId,
   ];
 
   areaPolygon = signal<PolygonSchema | null>(null);
+
+  bounds = {
+    north: 47.4,
+    south: 47.395,
+    west: 8.54087,
+    east: 8.55208,
+  };
 
   markers: MarkerSchema[] = [
     // WC
@@ -125,8 +140,8 @@ export class EventPageComponent implements OnInit, OnDestroy {
       name: $localize`Info stand`,
       color: "secondary",
       location: {
-        lat: 47.397277939269756,
-        lng: 8.548552088730592,
+        lat: 47.39723002436682,
+        lng: 8.548602928177829,
       },
       icons: ["info", "local_activity", "restaurant"],
       priority: "required",
@@ -177,7 +192,38 @@ export class EventPageComponent implements OnInit, OnDestroy {
     // },
   ];
 
-  spots = signal<Spot[]>([]);
+  spots = signal<(Spot | LocalSpot)[]>([
+    new LocalSpot(
+      {
+        location: new GeoPoint(47.39726582727994, 8.548446302021873),
+        name: {
+          user_provided: {
+            en: `Main Spot`,
+            de: "Hauptspot",
+            fr: "Spot principal",
+            it: "Spot principale",
+          },
+        },
+        media: [
+          {
+            src: this.bannerImageSrc,
+            uid: "",
+            type: MediaType.Image,
+            origin: "user",
+          },
+        ],
+        bounds: [
+          new GeoPoint(47.397237163433424, 8.54852286554543),
+          new GeoPoint(47.39727438598336, 8.548373942307316),
+          new GeoPoint(47.39742969172247, 8.548445028774058),
+          new GeoPoint(47.397365317957394, 8.548779092061668),
+          new GeoPoint(47.39725743643263, 8.548711980937691),
+          new GeoPoint(47.397297807170254, 8.548555067641223),
+        ],
+      },
+      this.locale
+    ),
+  ]);
 
   mapStyle: "roadmap" | "satellite" = "satellite";
 
@@ -205,8 +251,8 @@ export class EventPageComponent implements OnInit, OnDestroy {
         );
       });
 
-      Promise.all(promises).then((spots) => {
-        this.spots.set(spots);
+      Promise.all(promises).then((loadedSpots) => {
+        this.spots.update((spots) => [...spots, ...loadedSpots]);
       });
     });
   }
@@ -321,7 +367,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
           url: "https://spka.ch",
         },
       },
-      url: "https://www.swissparkourtour.ch/swiss-jam-2025/",
+      url: this.url,
     };
 
     if (typeof document !== "undefined") {
@@ -381,5 +427,15 @@ export class EventPageComponent implements OnInit, OnDestroy {
         verticalPosition: "top",
       });
     }
+  }
+
+  selectSpot(spot: Spot | LocalSpot | SpotId | SpotPreviewData) {
+    if (spot instanceof Spot || spot instanceof LocalSpot) {
+      this.selectedSpot.set(spot);
+    }
+  }
+
+  deselectSpot() {
+    this.selectedSpot.set(null);
   }
 }

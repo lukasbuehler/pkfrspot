@@ -138,14 +138,16 @@ export class MapComponent implements OnInit, OnChanges {
   @Output() boundsChange = new EventEmitter<google.maps.LatLngBounds>();
   @Output() visibleTilesChange = new EventEmitter<TilesObject>();
   @Output() mapClick = new EventEmitter<google.maps.LatLngLiteral>();
-  @Output() spotClick = new EventEmitter<Spot | SpotPreviewData | SpotId>();
+  @Output() spotClick = new EventEmitter<
+    LocalSpot | Spot | SpotPreviewData | SpotId
+  >();
   @Output() polygonChanged = new EventEmitter<{
     spotId: string;
     path: google.maps.LatLngLiteral[][];
   }>();
   @Output() hasGeolocationChange = new EventEmitter<boolean>();
 
-  @Input() spots: Spot[] = [];
+  @Input() spots: (LocalSpot | Spot)[] = [];
   @Input() dots: SpotClusterDotSchema[] = [];
 
   @Input() selectedSpot: Spot | LocalSpot | null = null;
