@@ -53,17 +53,41 @@ export function getSpotName(
     ) as LocaleCode[];
     if (nameLocales.length > 0) {
       if (nameLocales.includes(locale)) {
-        return spotSchema.name[locale as LocaleCode]!.text;
+        const map = spotSchema.name[locale as LocaleCode]!;
+        if (typeof map === "string") {
+          return map;
+        } else if ("text" in map) {
+          return map.text;
+        } else {
+          return defaultSpotNames[locale] ?? defaultSpotNames["en"]!;
+        }
       } else if (nameLocales.includes(locale.split("-")[0] as LocaleCode)) {
-        return spotSchema.name[locale.split("-")[0] as LocaleCode]!.text;
+        const map = spotSchema.name[locale.split("-")[0] as LocaleCode]!;
+        if (typeof map === "string") {
+          return map;
+        } else if ("text" in map) {
+          return map.text;
+        } else {
+          return defaultSpotNames[locale] ?? defaultSpotNames["en"]!;
+        }
       } else if (nameLocales.includes("en")) {
-        return spotSchema.name["en"]!.text;
+        const map = spotSchema.name["en"]!;
+        if (typeof map === "string") {
+          return map;
+        } else if ("text" in map) {
+          return map.text;
+        } else {
+          return defaultSpotNames[locale] ?? defaultSpotNames["en"]!;
+        }
       } else {
-        return (
-          spotSchema.name[nameLocales[0] as LocaleCode]?.text ??
-          defaultSpotNames[locale] ??
-          defaultSpotNames["en"]!
-        );
+        const map = spotSchema.name[nameLocales[0]]!;
+        if (typeof map === "string") {
+          return map;
+        } else if ("text" in map) {
+          return map.text;
+        } else {
+          return defaultSpotNames[locale] ?? defaultSpotNames["en"]!;
+        }
       }
     }
   }

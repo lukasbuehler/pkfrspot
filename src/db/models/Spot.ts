@@ -83,7 +83,22 @@ export class LocalSpot {
   paths?: google.maps.LatLngLiteral[][];
 
   constructor(data: SpotSchema, readonly locale: LocaleCode) {
-    this.names = signal(data.name);
+    const namesMap = data.name;
+    const localeMap: LocaleMap = {};
+    for (const key of Object.keys(namesMap) as LocaleCode[]) {
+      const name = namesMap[key];
+      if (typeof name === "string") {
+        localeMap[key] = {
+          text: name,
+          provider: "user",
+          timestamp: new Date(),
+        };
+      } else {
+        localeMap[key] = name;
+      }
+    }
+
+    this.names = signal(localeMap);
     this.name = computed(() => {
       const namesMap = this.names();
       if (namesMap[locale]) {
@@ -300,7 +315,14 @@ export class LocalSpot {
       return;
     }
 
-    this.names.set({ [locale]: newName });
+    this.names.update((names) => {
+      names[locale] = {
+        text: newName,
+        provider: "user",
+        timestamp: new Date(),
+      };
+      return names;
+    });
   }
 
   public setDescription(newDescription: string, locale: LocaleCode) {

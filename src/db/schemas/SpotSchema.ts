@@ -14,7 +14,7 @@ export interface SpotAddressSchema {
 }
 
 export interface SpotSchema {
-  name: LocaleMap;
+  name: LocaleMap | Record<string, string>;
 
   location: GeoPoint;
 
@@ -30,7 +30,7 @@ export interface SpotSchema {
   };
 
   isMiniSpot?: boolean;
-  description?: LocaleMap;
+  description?: LocaleMap | Record<string, string>;
   media?: {
     type: MediaType;
     uid: string;
