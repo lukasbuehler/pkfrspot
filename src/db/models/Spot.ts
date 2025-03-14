@@ -2,16 +2,18 @@ import {
   SizedUserMedia,
   LocaleMap,
   MediaType,
-  AmenitiesMap,
-  AmenityNames,
-  AmenityIcons,
-  AmenitiesOrder,
   LocaleCode,
   OtherMedia,
   Media,
   mediaIsUserMedia,
   SizedStorageSrc,
 } from "./Interfaces";
+import {
+  AmenitiesMap,
+  AmenityIcons,
+  AmenitiesOrder,
+} from "../schemas/Amenities";
+import { AmenityNames } from "./Amenities";
 import { MapHelpers } from "../../scripts/MapHelpers";
 import { environment } from "../../environments/environment";
 import { GeoPoint } from "@firebase/firestore";
@@ -83,14 +85,13 @@ export class LocalSpot {
   constructor(data: SpotSchema, readonly locale: LocaleCode) {
     this.names = signal(data.name);
     this.name = computed(() => {
-      const namesMap =
-        (this.names().user_provided as Record<string, string>) ??
-        (this.names() as Record<string, string>);
+      const namesMap = this.names();
       if (namesMap[locale]) {
-        return namesMap[locale];
+        return namesMap[locale].text;
       } else {
         // return the first name if the locale doesn't exist
-        return namesMap[Object.keys(namesMap)[0]];
+        const firstKey = Object.keys(namesMap)[0] as LocaleCode;
+        return namesMap[firstKey]?.text || "";
       }
     });
 
@@ -271,13 +272,7 @@ export class LocalSpot {
       location: new GeoPoint(location.lat, location.lng),
       tile_coordinates: MapHelpers.getTileCoordinates(location),
       description: this.descriptions(),
-      media: this.userMedia().map((media) => {
-        return {
-          type: media.type,
-          uid: media.uid,
-          src: StorageService.getStorageSrcFromSrc(media.src[200]),
-        };
-      }),
+      media: this.userMedia(),
       is_iconic: this.isIconic,
       rating: this.rating ?? undefined,
       num_reviews: this.numReviews,
@@ -310,10 +305,14 @@ export class LocalSpot {
 
   public setDescription(newDescription: string, locale: LocaleCode) {
     let descriptions = this.descriptions() ?? {};
-    if (!descriptions?.user_provided) {
-      descriptions.user_provided = {};
+    if (!descriptions) {
+      descriptions = {};
     }
-    descriptions.user_provided[locale] = newDescription;
+    descriptions[locale] = {
+      text: newDescription,
+      provider: "user",
+      timestamp: new Date(),
+    };
 
     this.descriptions.set(descriptions);
   }

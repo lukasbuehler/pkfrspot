@@ -38,17 +38,19 @@ import {
 import { Observable, Subscription } from "rxjs";
 import { AuthenticationService } from "../services/firebase/authentication.service";
 import {
-  AmenityIcons,
-  AmenityNames,
-  IndoorAmenities,
-  OutdoorAmenities,
-  GeneralAmenities,
   SizedUserMedia,
   MediaType,
   LocaleCode,
   OtherMedia,
   SizedStorageSrc,
 } from "../../db/models/Interfaces";
+import {
+  AmenityIcons,
+  IndoorAmenities,
+  OutdoorAmenities,
+  GeneralAmenities,
+} from "../../db/schemas/Amenities";
+import { AmenityNames } from "../../db/models/Amenities";
 
 //import { MatTooltipModule } from "@angular/material/tooltip";
 

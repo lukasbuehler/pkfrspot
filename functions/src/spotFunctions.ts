@@ -6,6 +6,8 @@ import {
 } from "firebase-functions/v2/firestore";
 
 import { googleAPIKey } from "./secrets";
+import { SpotSchema } from "./spotHelpers";
+import { SpotReviewSchema } from "../../src/db/schemas/SpotReviewSchema";
 
 type AddressType = {
   sublocality?: string;
@@ -140,7 +142,7 @@ export const updateAllSpotAddresses = onDocumentCreated(
     const apiKey: string = googleAPIKey.value();
 
     for (const spot of spots.docs) {
-      const location = spot.data().location as GeoPoint;
+      const location = (spot.data() as SpotSchema).location;
       if (!location) {
         console.warn("Spot has no location", spot.id);
         continue;
@@ -188,7 +190,8 @@ export const computeRatingOnWrite = onDocumentWritten(
         };
 
         snapshot.forEach((doc) => {
-          const rating: 1 | 2 | 3 | 4 | 5 = doc.data().rating;
+          const rating: 1 | 2 | 3 | 4 | 5 = (doc.data() as SpotReviewSchema)
+            .rating as 1 | 2 | 3 | 4 | 5;
           ratingSum += rating;
           ratingHistogram[rating]++;
         });

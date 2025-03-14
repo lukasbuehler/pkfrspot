@@ -59,7 +59,19 @@ async function _clusterAllSpots() {
         const id = spotAndId.id;
         const spot = spotAndId.data;
         const spotIsClusterWorthy =
-          (spot.rating || spot.isIconic) && spot.media?.length > 0;
+          (spot.rating || spot.is_iconic) &&
+          spot.media &&
+          spot.media.length > 0;
+
+        if (!spot.location) {
+          console.error("Spot has no location", id);
+          return;
+        }
+
+        if (!spot.tile_coordinates || !spot.tile_coordinates.z12) {
+          console.error("Spot has no tile coordinates", id);
+          return;
+        }
 
         // for each spot, add a point of weight 1 to a cluster tile of zoom 14
 
@@ -78,7 +90,7 @@ async function _clusterAllSpots() {
             name: getSpotName(spot, "en"),
             id: id,
             rating: spot.rating,
-            isIconic: spot.isIconic ?? false,
+            isIconic: spot.is_iconic ?? false,
             imageSrc: getSpotPreviewImage(spot),
             locality: getSpotLocalityString(spot),
           };

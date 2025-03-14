@@ -12,7 +12,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatDrawer } from "@angular/material/sidenav";
 import { EditPostDialogComponent } from "../edit-post-dialog/edit-post-dialog.component";
 import { Spot } from "../../db/models/Spot";
-import { LocaleCode, MediaType } from "../../db/models/Interfaces";
+import { LocaleCode, Media, MediaType } from "../../db/models/Interfaces";
 import { StorageService } from "../services/firebase/storage.service";
 import { AuthenticationService } from "../services/firebase/authentication.service";
 import { DocumentChangeType } from "@angular/fire/compat/firestore";
@@ -232,10 +232,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       post.spot = {
         name: spot.name(),
         spot_location: new GeoPoint(lat, lng),
-        image_src:
-          spot.media && spot.media()[0]?.src[200]
-            ? spot.media()[0].src[200]
-            : "",
+        image_src: spot.previewImageSrc(),
         ref: this._postsService.docRef("spots/" + spot.id),
       };
     }

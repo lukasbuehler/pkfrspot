@@ -291,7 +291,7 @@ export class SpotsService {
         let filenameRegex = RegExp(
           /(?:spot_pictures)(?:\/|%2F)(.+?)(?:\?.*)?$/
         );
-        let storageFilenameMatch = oldMediaItem.src[200].match(filenameRegex);
+        let storageFilenameMatch = oldMediaItem.src.match(filenameRegex);
         if (storageFilenameMatch && storageFilenameMatch[1]) {
           let storageFilename = storageFilenameMatch[1] || "";
           // delete oldMediaItem from storage

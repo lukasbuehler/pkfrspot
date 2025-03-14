@@ -60,13 +60,13 @@ export namespace User {
     biography?: string;
     profile_picture?: string;
     follower_count?: number;
-    start_date?: firebase.default.firestore.Timestamp;
+    start_date?: Timestamp;
     nationality?: string;
     verified_email?: boolean;
     invite_code?: string;
     settings?: UserSettingsSchema;
 
-    creationDate?: firebase.default.firestore.Timestamp;
+    creationDate?: Timestamp;
   }
 
   export interface UserSettingsSchema {

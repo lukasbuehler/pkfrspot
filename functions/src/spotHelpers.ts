@@ -1,64 +1,73 @@
-import { GeoPoint } from "@firebase/firestore";
+// import { GeoPoint } from "@firebase/firestore";
+import { LocaleCode } from "../../src/db/models/Interfaces";
+import { SpotSchema as DbSpotSchema } from "../../src/db/schemas/SpotSchema";
 
-export interface PartialSpotSchema {
-  name: { [langCode: string]: string };
-  address?: {
-    country: {
-      code: string;
-      name: string;
-    };
-    formatted: string;
-    locality: string;
-    sublocality?: string;
-  };
-  media: {
-    src: string;
-    type: string;
-    uid?: string;
-  }[];
-  location: GeoPoint;
-  tile_coordinates: {
-    z2: { x: number; y: number };
-    z4: { x: number; y: number };
-    z6: { x: number; y: number };
-    z8: { x: number; y: number };
-    z10: { x: number; y: number };
-    z12: { x: number; y: number };
-    z14: { x: number; y: number };
-    z16: { x: number; y: number };
-  };
-  isIconic?: boolean;
-  rating?: number;
-}
+export type SpotSchema = DbSpotSchema;
+export type PartialSpotSchema = Partial<SpotSchema>;
+// {
+//   name: { [langCode: string]: string };
+//   address?: {
+//     country: {
+//       code: string;
+//       name: string;
+//     };
+//     formatted: string;
+//     locality: string;
+//     sublocality?: string;
+//   };
+//   media: {
+//     src: string;
+//     type: string;
+//     uid?: string;
+//   }[];
+//   location: GeoPoint;
+//   tile_coordinates: {
+//     z2: { x: number; y: number };
+//     z4: { x: number; y: number };
+//     z6: { x: number; y: number };
+//     z8: { x: number; y: number };
+//     z10: { x: number; y: number };
+//     z12: { x: number; y: number };
+//     z14: { x: number; y: number };
+//     z16: { x: number; y: number };
+//   };
+//   is_iconic?: boolean;
+//   rating?: number;
+// }
 
-export const defaultSpotNames: { [code: string]: string } = {
+export const defaultSpotNames: Partial<Record<LocaleCode, string>> = {
   en: "Unnamed Spot",
   "en-US": "Unnamed Spot",
   "en-GB": "Unnamed Spot",
   de: "Unbenannter Spot",
-  "de-DE": "Unbenannter Spot",
   "de-CH": "Unbenännte Spot",
 };
 
 export function getSpotName(
   spotSchema: PartialSpotSchema,
-  locale: string
+  locale: LocaleCode
 ): string {
   if (spotSchema.name) {
-    const nameLocales: string[] = Object.keys(spotSchema.name);
+    const nameLocales: LocaleCode[] = Object.keys(
+      spotSchema.name
+    ) as LocaleCode[];
     if (nameLocales.length > 0) {
       if (nameLocales.includes(locale)) {
-        return spotSchema.name[locale];
-      } else if (nameLocales.includes(locale.split("-")[0])) {
-        return spotSchema.name[locale.split("-")[0]];
+        return spotSchema.name[locale as LocaleCode]!.text;
+      } else if (nameLocales.includes(locale.split("-")[0] as LocaleCode)) {
+        return spotSchema.name[locale.split("-")[0] as LocaleCode]!.text;
       } else if (nameLocales.includes("en")) {
-        return spotSchema.name["en"];
+        return spotSchema.name["en"]!.text;
       } else {
-        return spotSchema.name[nameLocales[0]];
+        return (
+          spotSchema.name[nameLocales[0] as LocaleCode]?.text ??
+          defaultSpotNames[locale] ??
+          defaultSpotNames["en"]!
+        );
       }
     }
   }
-  return defaultSpotNames[locale];
+  return defaultSpotNames[locale] ?? defaultSpotNames["en"]!;
 }
 
 export function getSpotPreviewImage(spotSchema: PartialSpotSchema): string {

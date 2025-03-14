@@ -74,16 +74,9 @@ export class ImgCarouselComponent {
         @for (mediaObj of data.media; track $index) { @if(mediaObj.type ===
         'image') {
         <div class="swiper-slide">
-          @if(mediaObj.origin !== 'streetview') {
-          <!-- if the media is not a street view image, use the 800x800 size -->
           <div class="swiper-img-container">
-            <img ngSrc="{{ mediaObj.src[800] }}" fill />
+            <img ngSrc="{{ getSrc(mediaObj) }}" fill />
           </div>
-
-          } @else {
-          <!-- if the media is a streetview image, or link show the source directly -->
-          <img ngSrc="{{ mediaObj.src }}" />
-          }
         </div>
         } }
       </div>
@@ -146,6 +139,14 @@ export class SwiperDialogComponent implements AfterViewInit {
     dialogRef.disableClose = false;
 
     this.isBroswer = isPlatformBrowser(platformId);
+  }
+
+  getSrc(mediaObj: Media) {
+    if ("isSized" in mediaObj) {
+      return StorageService.getSrc(mediaObj.src, 800);
+    } else {
+      return mediaObj.src;
+    }
   }
 
   ngAfterViewInit() {

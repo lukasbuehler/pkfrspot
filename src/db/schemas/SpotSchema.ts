@@ -1,12 +1,7 @@
-import { GeoPoint } from "@firebase/firestore";
-import {
-  LocaleMap,
-  SizedUserMedia,
-  AmenitiesMap,
-  MediaType,
-  SizedStorageSrc,
-} from "../models/Interfaces";
+import { GeoPoint, Timestamp } from "@firebase/firestore";
+import { LocaleMap, MediaType, SizedStorageSrc } from "../models/Interfaces";
 import { SpotReviewSchema } from "./SpotReviewSchema";
+import { AmenitiesMap } from "./Amenities";
 
 export interface SpotAddressSchema {
   sublocality?: string;
@@ -68,7 +63,7 @@ export interface SpotSchema {
 
   bounds?: GeoPoint[];
 
-  time_created?: firebase.default.firestore.Timestamp;
+  time_created?: Timestamp;
   time_updated?: { seconds: number; nanoseconds: number };
 }
 
