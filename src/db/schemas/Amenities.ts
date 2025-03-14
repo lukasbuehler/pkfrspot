@@ -7,10 +7,13 @@ export interface AmenitiesMap {
   wc?: boolean;
   changing_room?: boolean;
   lockers?: boolean;
+  heated?: boolean;
+  ac?: boolean;
   drinking_water?: boolean;
   parking_on_site?: boolean;
   power_outlets?: boolean;
   maybe_overgrown?: boolean;
+  water_feature?: boolean;
 }
 
 export const AmenitiesOrder = [
@@ -21,16 +24,21 @@ export const AmenitiesOrder = [
   "wc",
   "changing_room",
   "lockers",
+  "heated",
+  "ac",
   "drinking_water",
   "parking_on_site",
   "power_outlets",
   "maybe_overgrown",
+  "water_feature",
 ] as (keyof AmenitiesMap)[];
 
 export const IndoorAmenities = [
   "changing_room",
   "lockers",
   "power_outlets",
+  "heated",
+  "ac",
 ] as (keyof AmenitiesMap)[];
 
 export const GeneralAmenities = [
@@ -40,9 +48,12 @@ export const GeneralAmenities = [
   "parking_on_site",
 ] as (keyof AmenitiesMap)[];
 
-export const OutdoorAmenities = ["covered", "lighting", "maybe_overgrown"] as (
-  | keyof AmenitiesMap
-)[];
+export const OutdoorAmenities = [
+  "covered",
+  "lighting",
+  "maybe_overgrown",
+  "water_feature",
+] as (keyof AmenitiesMap)[];
 
 export const AmenityIcons: { [key in keyof AmenitiesMap]: string } = {
   covered: "roofing",
@@ -51,10 +62,13 @@ export const AmenityIcons: { [key in keyof AmenitiesMap]: string } = {
   lighting: "lightbulb",
   wc: "wc",
   changing_room: "checkroom",
+  heated: "thermostat", // "whatshot",
+  ac: "ac_unit",
   lockers: "lock",
   entry_fee: "paid",
   drinking_water: "water_drop",
   parking_on_site: "local_parking",
   power_outlets: "power",
   maybe_overgrown: "grass",
+  water_feature: "water",
 };

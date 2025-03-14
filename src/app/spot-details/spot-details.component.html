@@ -484,67 +484,79 @@
       </mat-select>
     </mat-form-field> -->
 
-    <!-- Features and Amenities -->
-    <h4
-      i18n="amenities header|The header for the spot features and amenities"
-      class="mat-title-small"
+    <!-- Iconic -->
+    <mat-slide-toggle
+      i18n
+      class="mb-4"
+      [checked]="spot()!.isIconic"
+      color="primary"
+      (change)="setSpotIconicFromToggle($event)"
+      >Iconic Spot</mat-slide-toggle
     >
-      Features and amenities
-    </h4>
 
-    <mat-chip-listbox class="">
-      <mat-chip-option
-        [selected]="spot()!.amenities().indoor"
-        (selectionChange)="
-          spot()!.amenities().indoor = $event.selected;
-          spot()!.amenities().outdoor = !$event.selected
-        "
-        ><mat-icon matChipAvatar>{{ AmenityIcons["indoor"] }}</mat-icon
-        >{{ AmenityNames["indoor"] }}</mat-chip-option
+    <!-- Features and Amenities -->
+    <div class="w-100 mb-4">
+      <h4
+        i18n="amenities header|The header for the spot features and amenities"
+        class="mat-title-small"
       >
-      <mat-chip-option
-        [selected]="spot()!.amenities().outdoor"
-        (selectionChange)="
-          spot()!.amenities().outdoor = $event.selected;
-          spot()!.amenities().indoor = !$event.selected
-        "
-        ><mat-icon matChipAvatar>{{ AmenityIcons["outdoor"] }}</mat-icon
-        >{{ AmenityNames["outdoor"] }}</mat-chip-option
-      >
-    </mat-chip-listbox>
-    @if(spot()!.amenities().indoor) {
-    <mat-chip-set>
-      @for(amenity of IndoorAmenities; track amenity) {
-      <mat-chip-option
-        [selected]="spot()!.amenities()[amenity]"
-        (selectionChange)="spot()!.amenities()[amenity] = $event.selected"
-        ><mat-icon matChipAvatar>{{ AmenityIcons[amenity] }}</mat-icon
-        >{{ AmenityNames[amenity] }}</mat-chip-option
-      >
+        Features and amenities
+      </h4>
+
+      <mat-chip-listbox>
+        <mat-chip-option
+          [selected]="spot()!.amenities().indoor"
+          (selectionChange)="
+            spot()!.amenities().indoor = $event.selected;
+            spot()!.amenities().outdoor = !$event.selected
+          "
+          ><mat-icon matChipAvatar>{{ AmenityIcons["indoor"] }}</mat-icon
+          >{{ AmenityNames["indoor"] }}</mat-chip-option
+        >
+        <mat-chip-option
+          [selected]="spot()!.amenities().outdoor"
+          (selectionChange)="
+            spot()!.amenities().outdoor = $event.selected;
+            spot()!.amenities().indoor = !$event.selected
+          "
+          ><mat-icon matChipAvatar>{{ AmenityIcons["outdoor"] }}</mat-icon
+          >{{ AmenityNames["outdoor"] }}</mat-chip-option
+        >
+      </mat-chip-listbox>
+      @if(spot()!.amenities().indoor) {
+      <mat-chip-set>
+        @for(amenity of IndoorAmenities; track amenity) {
+        <mat-chip-option
+          [selected]="spot()!.amenities()[amenity]"
+          (selectionChange)="spot()!.amenities()[amenity] = $event.selected"
+          ><mat-icon matChipAvatar>{{ AmenityIcons[amenity] }}</mat-icon
+          >{{ AmenityNames[amenity] }}</mat-chip-option
+        >
+        }
+      </mat-chip-set>
+      } @if(spot()!.amenities().outdoor) {
+      <mat-chip-set>
+        @for(amenity of OutdoorAmenities; track amenity) {
+        <mat-chip-option
+          [selected]="spot()!.amenities()[amenity]"
+          (selectionChange)="spot()!.amenities()[amenity] = $event.selected"
+          ><mat-icon matChipAvatar>{{ AmenityIcons[amenity] }}</mat-icon
+          >{{ AmenityNames[amenity] }}</mat-chip-option
+        >
+        }
+      </mat-chip-set>
       }
-    </mat-chip-set>
-    } @if(spot()!.amenities().outdoor) {
-    <mat-chip-set>
-      @for(amenity of OutdoorAmenities; track amenity) {
-      <mat-chip-option
-        [selected]="spot()!.amenities()[amenity]"
-        (selectionChange)="spot()!.amenities()[amenity] = $event.selected"
-        ><mat-icon matChipAvatar>{{ AmenityIcons[amenity] }}</mat-icon
-        >{{ AmenityNames[amenity] }}</mat-chip-option
-      >
-      }
-    </mat-chip-set>
-    }
-    <mat-chip-set>
-      @for(amenity of GeneralAmenities; track amenity) {
-      <mat-chip-option
-        [selected]="spot()!.amenities()[amenity]"
-        (selectionChange)="spot()!.amenities()[amenity] = $event.selected"
-        ><mat-icon matChipAvatar>{{ AmenityIcons[amenity] }}</mat-icon
-        >{{ AmenityNames[amenity] }}</mat-chip-option
-      >
-      }
-    </mat-chip-set>
+      <mat-chip-set>
+        @for(amenity of GeneralAmenities; track amenity) {
+        <mat-chip-option
+          [selected]="spot()!.amenities()[amenity]"
+          (selectionChange)="spot()!.amenities()[amenity] = $event.selected"
+          ><mat-icon matChipAvatar>{{ AmenityIcons[amenity] }}</mat-icon
+          >{{ AmenityNames[amenity] }}</mat-chip-option
+        >
+        }
+      </mat-chip-set>
+    </div>
 
     <!-- Description -->
     <h4

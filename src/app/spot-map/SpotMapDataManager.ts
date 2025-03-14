@@ -331,8 +331,33 @@ export class SpotMapDataManager {
                       (element.tags.operator
                         ? ` (${element.tags.operator})`
                         : ""),
-                    color:
-                      element.tags.fee === "yes" ? "tertiary" : "secondary",
+                    color: "secondary",
+                  };
+                  const tileCoords16 =
+                    MapHelpers.getTileCoordinatesForLocationAndZoom(
+                      marker.location,
+                      16
+                    );
+                  return { marker: marker, tile: tileCoords16 };
+                } else if (element.tags.amenity === "fountain") {
+                  if (element.tags.drinking_water === "no") {
+                    return;
+                  }
+                  const marker: MarkerSchema = {
+                    location: {
+                      lat: element.lat,
+                      lng: element.lon,
+                    },
+                    icons:
+                      element.tags.drinking_water === "yes"
+                        ? ["local_drink"]
+                        : ["water_drop"],
+                    name:
+                      element.tags.name +
+                      (element.tags.operator
+                        ? ` (${element.tags.operator})`
+                        : ""),
+                    color: "secondary",
                   };
                   const tileCoords16 =
                     MapHelpers.getTileCoordinatesForLocationAndZoom(
@@ -346,39 +371,22 @@ export class SpotMapDataManager {
                       lat: element.lat,
                       lng: element.lon,
                     },
-                    icons: ["wc"],
+                    icons:
+                      element.tags.fee === "yes"
+                        ? ["wc", "paid"]
+                        : element.tags.fee === "no"
+                        ? ["wc", "money_off"]
+                        : ["wc"],
                     name:
                       element.tags.name +
+                      (element.tags.fee ? ` Fee: ${element.tags.charge}` : "") +
                       (element.tags.operator
                         ? ` (${element.tags.operator})`
+                        : "") +
+                      (element.tags.opening_hours
+                        ? `Opening hours: ${element.tags.opening_hours}`
                         : ""),
-                    color:
-                      element.tags.drinking_water === "yes"
-                        ? "secondary"
-                        : "tertiary",
-                  };
-                  const tileCoords16 =
-                    MapHelpers.getTileCoordinatesForLocationAndZoom(
-                      marker.location,
-                      16
-                    );
-                  return { marker: marker, tile: tileCoords16 };
-                } else if (element.tags.amenity === "fountain") {
-                  const marker: MarkerSchema = {
-                    location: {
-                      lat: element.lat,
-                      lng: element.lon,
-                    },
-                    icons: ["water_drop"],
-                    name:
-                      element.tags.name +
-                      (element.tags.operator
-                        ? ` (${element.tags.operator})`
-                        : ""),
-                    color:
-                      element.tags.drinking_water === "yes"
-                        ? "secondary"
-                        : "tertiary",
+                    color: "tertiary",
                   };
                   const tileCoords16 =
                     MapHelpers.getTileCoordinatesForLocationAndZoom(

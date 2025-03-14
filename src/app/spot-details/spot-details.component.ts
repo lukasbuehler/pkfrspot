@@ -102,6 +102,10 @@ import { SpotReviewsService } from "../services/firebase/firestore/spot-reviews.
 import { getValueFromEventTarget } from "../../scripts/Helpers";
 import { StructuredDataService } from "../services/structured-data.service";
 import { Place } from "schema-dts";
+import {
+  MatSlideToggle,
+  MatSlideToggleChange,
+} from "@angular/material/slide-toggle";
 
 declare function plausible(eventName: string, options?: { props: any }): void;
 
@@ -166,6 +170,7 @@ export class AsRatingKeyPipe implements PipeTransform {
     ReversePipe,
     AsRatingKeyPipe,
     NgOptimizedImage,
+    MatSlideToggle,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -678,5 +683,13 @@ export class SpotDetailsComponent
           },
         });
       });
+  }
+
+  setSpotIconicFromToggle(event: MatSlideToggleChange) {
+    this.spot!.update((spot) => {
+      if (!spot) return spot;
+      spot.isIconic = event.checked;
+      return spot;
+    });
   }
 }
