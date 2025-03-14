@@ -9,10 +9,18 @@
 >
   <mat-card-header class="pb-2">
     <mat-card-title
-      class="text-truncate mw-100 pt-2 mat-title-medium"
+      class="pt-2 mat-title-medium d-flex w-100 gap-2 align-items-center"
       style="font-size: 1.2rem"
     >
-      {{ spotName }}
+      @if(spot()?.isIconic) {
+      <mat-icon
+        style="width: 24px; flex-shrink: 0; margin: -2px"
+        matTooltip="Iconic Spot"
+        i18n-matTootltip
+        >stars</mat-icon
+      >
+      }
+      <span class="text-truncate">{{ spotName }}</span>
     </mat-card-title>
     <!-- @if(isCompact) { -->
     <mat-card-subtitle class="d-flex flex-row gap-2 mat-title-small">

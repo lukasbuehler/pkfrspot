@@ -2,6 +2,7 @@ import { onSchedule } from "firebase-functions/v2/scheduler";
 import { GeoPoint } from "firebase-admin/firestore";
 import * as admin from "firebase-admin";
 import { onDocumentCreated } from "firebase-functions/v2/firestore";
+import { SpotPreviewData } from "../../src/db/schemas/SpotPreviewData";
 
 import {
   PartialSpotSchema,
@@ -16,15 +17,6 @@ interface ClusterTileDot {
   spot_id?: string;
 }
 
-interface SpotForClusterTile {
-  name: string;
-  id: string;
-  locality: string;
-  imageSrc: string;
-  isIconic: boolean;
-  rating?: number; // whole number 1-10
-}
-
 interface SpotClusterTile {
   // the zoom level the tile should be loaded and displayed at.
   zoom: number;
@@ -34,7 +26,7 @@ interface SpotClusterTile {
   // the array of cluster points with their corresponding weights.
   dots: ClusterTileDot[];
 
-  spots: SpotForClusterTile[];
+  spots: SpotPreviewData[];
 }
 
 async function _clusterAllSpots() {
@@ -84,7 +76,7 @@ async function _clusterAllSpots() {
           spot_id: id,
         };
 
-        let spotForTile: SpotForClusterTile;
+        let spotForTile: SpotPreviewData;
         if (spotIsClusterWorthy) {
           spotForTile = {
             name: getSpotName(spot, "en"),
@@ -170,7 +162,7 @@ async function _clusterAllSpots() {
         // only add the best spots to the cluster tile
         const numberOfClusterSpots = 1;
         const iconicScore = 4;
-        const clusterSpots: SpotForClusterTile[] = smallerTileKeys
+        const clusterSpots: SpotPreviewData[] = smallerTileKeys
           .map((key) => {
             return (clusterTiles.get(key) as SpotClusterTile).spots;
           })

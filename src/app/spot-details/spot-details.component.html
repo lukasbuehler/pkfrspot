@@ -13,8 +13,22 @@
 >
   @if(spot()) {@if(!isEditing) {
   <mat-card-header class="pb-2 px-3">
-    <mat-card-title class="d-flex justify-content-between align-items-center">
-      <span [matTooltip]="spot()!.name()">{{ spot()!.name() }}</span>
+    <mat-card-title class="d-flex align-items-center w-100 gap-1">
+      <span
+        class="flex-grow-1 w-100 overflow-hidden d-flex flex-row align-items-center gap-2"
+      >
+        @if(spot()?.isIconic) {
+        <mat-icon
+          style="width: 24px; flex-shrink: 0"
+          matTooltip="Iconic Spot"
+          i18n-matTootltip
+          >stars</mat-icon
+        >
+        }
+        <span [matTooltip]="spot()!.name()" class="text-truncate d-block">{{
+          spot()!.name()
+        }}</span>
+      </span>
 
       <!-- dismiss button -->
       @if(dismissable) {
