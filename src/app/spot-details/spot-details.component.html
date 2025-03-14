@@ -62,8 +62,9 @@
       <!-- Icon buttons in header -->
       @if(!isEditing) {
       <div class="spot-button-row">
-        @if(authenticationService.isSignedIn) { @if (!visited) {
-        <button
+        <!--@if(authenticationService.isSignedIn) {
+        @if (!visited) {
+         <button
           mat-icon-button
           color="accent"
           matTooltip="Bookmark this spot"
@@ -84,8 +85,10 @@
           "
         >
           <mat-icon>{{ visited ? "flag" : "outlined_flag" }}</mat-icon>
-        </button>
+        </button> 
         }
+        -->
+
         <button
           mat-icon-button
           matTooltip="Share this spot"

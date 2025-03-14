@@ -44,6 +44,7 @@ import { PolygonSchema } from "../../db/schemas/PolygonSchema";
 import { MapComponent } from "../map/map.component";
 import { GeoPoint } from "@firebase/firestore";
 import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
+import { MatSidenavModule } from "@angular/material/sidenav";
 
 @Component({
   selector: "app-event-page",
@@ -51,15 +52,16 @@ import { SpotPreviewData } from "../../db/schemas/SpotPreviewData";
     CountdownComponent,
     SpotMapComponent,
     // NgOptimizedImage,
-    // SpotListComponent,
+    SpotListComponent,
     // MarkerComponent,
     MatButtonModule,
     MatIconModule,
     RouterLink,
-    // SpotDetailsComponent,
+    SpotDetailsComponent,
     MatMenuModule,
     MatChipsModule,
     MapComponent,
+    MatSidenavModule,
   ],
   animations: [
     trigger("fadeInOut", [
@@ -90,6 +92,8 @@ export class EventPageComponent implements OnInit, OnDestroy {
   private _routeSubscription: Subscription;
 
   selectedSpot = signal<Spot | LocalSpot | null>(null);
+
+  sidenavOpen = signal<boolean>(false);
 
   showHeader = signal<boolean>(true);
 
@@ -444,5 +448,9 @@ export class EventPageComponent implements OnInit, OnDestroy {
 
   deselectSpot() {
     this.selectedSpot.set(null);
+  }
+
+  toggleSidenav() {
+    this.sidenavOpen.update((open) => !open);
   }
 }

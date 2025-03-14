@@ -52,7 +52,7 @@
 } @if(remainingSpots.length > 0) {
 <div [class.compact]="group.value === 'compact'" class="spot-container">
   @for(spot of remainingSpots; track $index) { @if(withHrefLink()) {
-  <a [routerLink]="['/map', spot.id]">
+  <a [routerLink]="['/map', getSpotId(spot)]">
     <app-spot-preview-card
       [spot]="spot"
       [infoOnly]="true"

@@ -26,7 +26,7 @@ import { RouterLink } from "@angular/router";
 })
 export class SpotListComponent implements OnChanges {
   @Input() highlightedSpots: SpotPreviewData[] = [];
-  @Input() spots: Spot[] = [];
+  @Input() spots: (Spot | LocalSpot)[] = [];
 
   withHrefLink = input(true);
 
@@ -35,7 +35,7 @@ export class SpotListComponent implements OnChanges {
   @Output("spotClickIndex") spotClickIndexEvent = new EventEmitter<number>();
 
   // all spots minus the highlighted spots, set manually in ngOnChanges
-  remainingSpots: Spot[] = [];
+  remainingSpots: (Spot | LocalSpot)[] = [];
 
   ngOnChanges() {
     this.filterOutHighlightedSpotsFromOtherSpots();
@@ -45,7 +45,10 @@ export class SpotListComponent implements OnChanges {
     this.remainingSpots = this.spots.filter((spot) => {
       const foundSpot: SpotPreviewData | undefined = this.highlightedSpots.find(
         (highlightedSpot) => {
-          return highlightedSpot.id === spot.id;
+          if (spot instanceof Spot && highlightedSpot.id) {
+            return highlightedSpot.id === spot.id;
+          }
+          return false;
         }
       );
       // if the spot is found in the highlights array,
@@ -57,5 +60,13 @@ export class SpotListComponent implements OnChanges {
 
   spotClick(spotIndex: number) {
     this.spotClickIndexEvent.emit(spotIndex);
+  }
+
+  getSpotId(spot: Spot | LocalSpot): string {
+    if (spot instanceof Spot) {
+      return spot.id;
+    } else {
+      return spot.name().toLowerCase().replace(" ", "-");
+    }
   }
 }

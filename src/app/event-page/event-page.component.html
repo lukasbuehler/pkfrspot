@@ -36,7 +36,7 @@
     </div>
     }
   </div>
-  <div>
+  <div [class.p-3]="isEmbedded">
     <p>{{ venueString }}, {{ localityString }}</p>
     <p class="d-flex flex-column">
       <span>
@@ -83,70 +83,103 @@
     <mat-chip-option i18n disabled>Challenges</mat-chip-option>
   </mat-chip-listbox> -->
 
-  <!-- Map stuff -->
-  <div class="flex-grow-1">
-    <!-- <div class="d-flex flex-row justify-content-between flex-wrap mb-2">
-        <h3
-          class="mat-heading-small text-truncate mb-0"
-          style="height: 42px"
-          i18n
-        >
-          Event spot map
-        </h3>
-        <a [routerLink]="['/map']">
-          <button
-            mat-stroked-button
-            color="primary"
-            matTooltip="Show all spots"
-          >
-            <mat-icon>map</mat-icon>
-            <span class="text-truncate" i18n>Open global spot map</span>
-          </button>
-        </a>
-      </div> -->
+  <mat-drawer-container class="flex-grow-1">
+    <mat-drawer
+      #drawer
+      [opened]="sidenavOpen()"
+      class="drawer d-block overflow-x-hidden"
+      mode="side"
+      position="end"
+    >
+      <div class="p-3" [class.border]="!isEmbedded" style="border-radius: 16px">
+        @if(selectedSpot()) {
+        <app-spot-details
+          @fadeInOut
+          [spot]="selectedSpot()"
+          [editable]="false"
+          [isEditing]="false"
+          [dismissable]="true"
+          [border]="true"
+          (dismiss)="selectedSpot.set(null)"
+          [border]="false"
+          class="d-block overflow-x-hidden h-100"
+        ></app-spot-details>
+        } @else {@if(spots() && spots()!.length > 0) {
+        <app-spot-list
+          @fadeInOut
+          [spots]="spots()"
+          [withHrefLink]="false"
+          (spotClickIndex)="spotClickedIndex($event)"
+          text="Event spots"
+          i18n-text
+        ></app-spot-list>
+        } }
+      </div>
+    </mat-drawer>
 
-    @if(swissJamSpotIds.length > 0) { @if(spots() && spots()!.length > 0) {
-    <app-map
-      @fadeInOut
-      #spotMap
-      id="spotMap"
-      [showGeolocation]="false"
-      [boundRestriction]="bounds"
-      [polygons]="areaPolygon() ? [areaPolygon()!] : []"
-      [minZoom]="16"
-      [mapStyle]="mapStyle"
-      [markers]="markers"
-      [spots]="spots()"
-      [selectedSpot]="selectedSpot()"
-      (spotClick)="selectSpot($event)"
-      (mapClick)="deselectSpot()"
-      [showSpotPreview]="true"
-      class="w-100 h-100 overflow-hidden d-inline-block"
-      style="border-radius: 0.375rem 0.375rem 0px 0px"
-    ></app-map>
-    } }@else { @if(spots() && spots()!.length > 0) {
-    <app-spot-map
-      @fadeInOut
-      #spotMap
-      id="spotMap"
-      [isClickable]="true"
-      [showGeolocation]="false"
-      [showSatelliteToggle]="true"
-      [boundRestriction]="bounds"
-      [polygons]="areaPolygon() ? [areaPolygon()!] : []"
-      [minZoom]="16"
-      [centerStart]="markers[markers.length - 1].location"
-      [mapStyle]="mapStyle"
-      [markers]="markers"
-      [spots]="spots()"
-      [selectedSpot]="selectedSpot()"
-      [showSpotPreview]="true"
-      (selectedSpotChange)="selectedSpot.set($event)"
-      class="w-100 h-100 overflow-hidden d-inline-block"
-      style="border-radius: 0.375rem 0.375rem 0px 0px"
-    ></app-spot-map>
-    } }
-    <!-- <div class="d-flex flex-row gap-3">
+    <!-- Map stuff -->
+    <div class="h-100 d-flex">
+      @if(swissJamSpotIds.length > 0) { @if(spots() && spots()!.length > 0) {
+      <app-map
+        @fadeInOut
+        #spotMap
+        id="spotMap"
+        [showGeolocation]="false"
+        [boundRestriction]="bounds"
+        [polygons]="areaPolygon() ? [areaPolygon()!] : []"
+        [minZoom]="16"
+        [mapStyle]="mapStyle"
+        [markers]="markers"
+        [spots]="spots()"
+        [selectedSpot]="selectedSpot()"
+        (spotClick)="selectSpot($event)"
+        (mapClick)="deselectSpot()"
+        [showSpotPreview]="!sidenavOpen()"
+        class="w-100 h-100 overflow-hidden d-inline-block"
+        style="border-radius: 0.375rem 0.375rem 0px 0px"
+      ></app-map>
+      } }@else { @if(spots() && spots()!.length > 0) {
+      <app-spot-map
+        @fadeInOut
+        #spotMap
+        id="spotMap"
+        [isClickable]="true"
+        [showGeolocation]="false"
+        [showSatelliteToggle]="true"
+        [boundRestriction]="bounds"
+        [polygons]="areaPolygon() ? [areaPolygon()!] : []"
+        [minZoom]="16"
+        [centerStart]="markers[markers.length - 1].location"
+        [mapStyle]="mapStyle"
+        [markers]="markers"
+        [spots]="spots()"
+        [selectedSpot]="selectedSpot()"
+        [showSpotPreview]="!sidenavOpen()"
+        (selectedSpotChange)="selectedSpot.set($event)"
+        class="w-100 h-100 overflow-hidden d-inline-block"
+        style="border-radius: 0.375rem 0.375rem 0px 0px"
+      ></app-spot-map>
+      } }
+    </div>
+
+    <div style="top: calc(50% - 36px / 2); right: 5px; position: absolute">
+      <button
+        mat-icon-button
+        (click)="toggleSidenav()"
+        class="d-flex"
+        style="
+          background-color: var(--mat-bottom-sheet-container-background-color);
+        "
+      >
+        @if(sidenavOpen()) {
+        <mat-icon>chevron_right</mat-icon>
+        } @else {
+        <mat-icon>chevron_left</mat-icon>}
+      </button>
+    </div>
+  </mat-drawer-container>
+
+  <!-- <div class="d-flex flex-row gap-3">
         @for(marker of markers; track marker) {
         <span
           class="d-flex flex-row gap-1 mat-title-small justify-content-center align-items-center"
@@ -159,7 +192,7 @@
         >
         }
       </div> -->
-    <!-- <div class="col-md-6 col-lg-4 pb-5">
+  <!-- <div class="col-md-6 col-lg-4 pb-5">
       @if(selectedSpot()) {
       <app-spot-details
         @fadeInOut
@@ -181,5 +214,4 @@
       ></app-spot-list>
       } }
     </div> -->
-  </div>
 </div>
