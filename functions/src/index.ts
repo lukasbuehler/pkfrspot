@@ -11,7 +11,7 @@ import {
   clusterAllSpotsOnRun,
   clusterAllSpotsOnSchedule,
 } from "./spotClusteringFunctions";
-import { fixSpotLocations } from "./fixFunctions";
+import { fixSpotLocations, fixLocaleMaps } from "./fixFunctions";
 
 setGlobalOptions({ maxInstances: 10 });
 admin.initializeApp();
@@ -26,4 +26,4 @@ export { updateAllSpotAddresses, computeRatingOnWrite };
 export { clusterAllSpotsOnRun, clusterAllSpotsOnSchedule };
 
 // fixes
-export { fixSpotLocations };
+export { fixSpotLocations, fixLocaleMaps };

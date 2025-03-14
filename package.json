@@ -13,10 +13,12 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "serve:ssr": "node dist/pkspot/server/server.mjs",
+    "deploy:rules": "firebase deploy --only firestore:rules",
     "deploy:test:rules": "firebase use test && firebase deploy --only firestore:rules",
     "deploy:prod:rules": "firebase use prod && firebase deploy --only firestore:rules",
-    "deploy:test:functions": "firebase use test && cd ../functions && npm run build && firebase deploy --only functions",
-    "deploy:prod:functions": "firebase use prod && cd ../functions && npm run build && firebase deploy --only functions"
+    "deploy:functions": "cd ./functions && npm run build && firebase deploy --only functions && cd ..",
+    "deploy:test:functions": "firebase use test && cd ./functions && npm run build && firebase deploy --only functions && cd ..",
+    "deploy:prod:functions": "firebase use prod && cd ./functions && npm run build && firebase deploy --only functions && cd .."
   },
   "private": true,
   "dependencies": {
